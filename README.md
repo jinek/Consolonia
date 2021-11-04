@@ -1,6 +1,6 @@
 # Consolonia UI
 
-TUI (Text User Interface) implementation for [Avalonia UI](https://github.com/AvaloniaUI)
+TUI (Text User Interface) (GUI Framework) implementation for [Avalonia UI](https://github.com/AvaloniaUI)
 
 > Project is in proof of concept state and is looking for collaboration.
 
