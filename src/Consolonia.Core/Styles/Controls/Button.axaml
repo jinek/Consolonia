@@ -1,0 +1,62 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
+    <Style Selector="Button">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeControlMidBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeBorderLowBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Padding"
+                Value="1,0,1,0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <TextBlock Grid.Column="0"
+                                   Text="["
+                                   Foreground="{TemplateBinding BorderBrush}"
+                                   VerticalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                        <helpers:CaretControl Grid.Column="1"
+                                              Padding="-1,0,0,0"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              IsCaretShown="{TemplateBinding IsFocused}">
+
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              BorderBrush="{TemplateBinding BorderBrush}"
+                                              BorderThickness="{TemplateBinding BorderThickness}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Content="{TemplateBinding Content}"
+                                              HorizontalContentAlignment="Stretch"
+                                              VerticalContentAlignment="Stretch"
+                                              TextBlock.Foreground="{TemplateBinding Foreground}" />
+                        </helpers:CaretControl>
+                        <TextBlock Grid.Column="2"
+                                   Text="]"
+                                   Foreground="{TemplateBinding BorderBrush}"
+                                   VerticalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="Button:focus">
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeBorderMidBrush}" />
+    </Style>
+    <Style Selector="Button:pressed">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeControlHighBrush}" />
+    </Style>
+    <Style Selector="Button:disabled">
+        <Setter Property="Opacity"
+                Value="{DynamicResource ThemeDisabledOpacity}" />
+    </Style>
+</Styles>

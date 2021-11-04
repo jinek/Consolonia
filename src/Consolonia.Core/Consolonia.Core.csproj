@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="0.10.3" />
+      <PackageReference Include="Avalonia.FreeDesktop" Version="0.10.3" />
+      <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.3" />
+      <PackageReference Include="Avalonia.Skia" Version="0.10.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Avalonia.Controls.DataGrid, Version=0.10.3.0, Culture=neutral, PublicKeyToken=c8d484a7012f9a8b">
+        <HintPath>..\..\..\..\.nuget\packages\avalonia.controls.datagrid\0.10.3\lib\netstandard2.0\Avalonia.Controls.DataGrid.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
