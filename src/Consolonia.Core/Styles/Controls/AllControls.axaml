@@ -1,0 +1,18 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StyleInclude Source="/Styles/Controls/TextBlock.axaml"/>
+    <StyleInclude Source="/Styles/Controls/Window.axaml"/>
+    <StyleInclude Source="/Styles/Controls/Button.axaml"/>
+    <StyleInclude Source="/Styles/Controls/TextBox.axaml"/>
+    <StyleInclude Source="/Styles/Controls/CheckBox.axaml"/>
+    <StyleInclude Source="/Styles/Controls/ScrollViewer.axaml"/>
+    <StyleInclude Source="/Styles/Controls/ScrollBar.axaml"/>
+    <StyleInclude Source="/Styles/Controls/ComboBoxItem.axaml"/>
+    <StyleInclude Source="/Styles/Controls/ComboBox.axaml"/>
+    <StyleInclude Source="/Styles/Controls/ToggleButton.axaml"/>
+    <StyleInclude Source="/Styles/Controls/Popup.axaml"/>
+    <StyleInclude Source="/Styles/Controls/OverlayPopupHost.axaml"/>
+    <StyleInclude Source="/Styles/Controls/ContentControl.axaml"/>
+    <StyleInclude Source="/Styles/Controls/DataGrid.axaml"/>
+    <StyleInclude Source="/Styles/Controls/CaretControl.axaml"/>
+</Styles>

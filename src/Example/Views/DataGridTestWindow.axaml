@@ -1,0 +1,110 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
+        x:Class="Example.Views.DataGridTestWindow"
+        Title="Movie Catalog">
+    <Grid ColumnDefinitions="* 35">
+        <Grid>
+            <DataGrid Items="{Binding}"
+                      Name="grid"
+                      SelectionMode="Single"
+                      Focusable="True"
+                      AutoGenerateColumns="False"
+                      HorizontalScrollBarVisibility="Disabled">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id"
+                                        Binding="{Binding Id}"
+                                        MaxWidth="5"
+                                        Width="5" />
+                    <DataGridTextColumn Header="Title"
+                                        Binding="{Binding Title}"
+                                        Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock Text="movies"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Margin="4,0,0,0" />
+        </Grid>
+        <Grid Grid.Column="1">
+            <Border BorderThickness="1"
+                    DataContext="{Binding ElementName=grid, Path=SelectedItem}">
+                <Border.BorderBrush>
+                    <drawing:FourBitColorBrush Color="DarkGray" />
+                </Border.BorderBrush>
+                <Grid ColumnDefinitions="Auto *">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical"
+                                Margin="1,0">
+                        <StackPanel.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="Foreground">
+                                    <Setter.Value>
+                                        <drawing:FourBitColorBrush Color="Gray" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </StackPanel.Styles>
+                        <TextBlock Text="Id" />
+                        <TextBlock Text="Title" />
+                        <TextBlock Text="Genre (F3)" />
+
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="1,0">
+                        <TextBlock Text="{Binding Id}" />
+                        <TextBox Text="{Binding Title, Mode=TwoWay}"
+                                 Height="1" />
+                        <ComboBox SelectedItem="{Binding Genre, Mode=TwoWay}"
+                                  Name="combo" />
+                    </StackPanel>
+
+                    <Rectangle Height="1"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Top"
+                               Stroke="{DynamicResource ThemeBorderLowBrush}"
+                               StrokeThickness="1"
+                               Grid.Row="1"
+                               Margin="-1,0"
+                               Grid.ColumnSpan="2" />
+                    <CheckBox IsChecked="{Binding IsListed, Mode=TwoWay}"
+                              Content="Listed"
+                              Grid.Row="2"
+                              Margin="1,0,0,0" />
+                    <Rectangle Height="1"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Top"
+                               Stroke="{DynamicResource ThemeBorderLowBrush}"
+                               StrokeThickness="1"
+                               Grid.Row="3"
+                               Margin="-1,0"
+                               Grid.ColumnSpan="2" />
+                    <Button Content="Delete"
+                            Grid.Row="4"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Center"
+                            Click="delete_Clicked" />
+
+                </Grid>
+            </Border>
+            <TextBlock Text="details"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Margin="4,0,0,0" />
+        </Grid>
+    </Grid>
+</Window>
