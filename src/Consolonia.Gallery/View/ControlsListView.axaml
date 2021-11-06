@@ -1,0 +1,34 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery"
+        xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
+        x:Class="Consolonia.Gallery.View.ControlsListView"
+        Title="ControlsListView">
+    <Window.Resources>
+        <gallery:GalleryItemConverter x:Key="GalleryItemConverter" />
+    </Window.Resources>
+    <DockPanel>
+        <DataGrid x:Name="grid"
+                  Width="20"
+                  SelectionMode="Single"
+                  DockPanel.Dock="Left">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name"
+                                    Binding="{Binding Name}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Border Child="{Binding ElementName=grid,Path=SelectedItem, Converter={StaticResource GalleryItemConverter}}"
+                BorderThickness="1">
+            <Border.BorderBrush>
+                <drawing:FourBitColorBrush Color="White"/>
+            </Border.BorderBrush>
+        </Border>
+        <!--<galleryViews:GalleryWelcome/>-->
+
+    </DockPanel>
+</Window>
