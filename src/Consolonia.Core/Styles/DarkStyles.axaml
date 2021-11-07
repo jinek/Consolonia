@@ -3,10 +3,11 @@
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="/Styles/BaseResources.axaml" />
+                <!--<ResourceInclude Source="/Styles/BaseResources.axaml" />-->
+                <ResourceInclude Source="/Styles/ConsoloniaBrushes.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
-    <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml" />
+    <!--<StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml" />-->
     <StyleInclude Source="/Styles/Controls/AllControls.axaml" />
 </Styles>

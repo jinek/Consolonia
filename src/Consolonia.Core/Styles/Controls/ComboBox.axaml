@@ -9,9 +9,9 @@
         <Setter Property="BorderThickness"
                 Value="0" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderLowBrush}" />
+                Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="HorizontalContentAlignment"
-                Value="Center" />
+                Value="Left" />
         <Setter Property="VerticalContentAlignment"
                 Value="Center" />
         <Setter Property="Padding"
@@ -69,8 +69,9 @@
                                MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
                                MaxHeight="{TemplateBinding MaxDropDownHeight}"
                                PlacementTarget="{TemplateBinding}"><!--IsLightDismissEnabled="True"-->
-                            <Border BorderBrush="{DynamicResource ThemeBorderMidBrush}"
-                                    BorderThickness="1">
+                            <Border BorderBrush="{DynamicResource ThemeBorderBrush}"
+                                    BorderThickness="1"
+                                    Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
                                 <ScrollViewer
                                     HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                     VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
