@@ -238,6 +238,7 @@
   </Style>-->
 
     <Style Selector="DataGrid">
+        <Setter Property="Focusable" Value="True"/>
         <Setter Property="RowBackground">
             <Setter.Value>
                 <drawing:FourBitColorBrush Mode="Transparent" />
