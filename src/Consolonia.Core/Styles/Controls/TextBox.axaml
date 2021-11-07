@@ -2,11 +2,14 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers"
        Selector="TextBox">
-    <Setter Property="CaretBrush" Value="{DynamicResource ThemeForegroundBrush}" />
-    <Setter Property="Background" Value="{DynamicResource ThemeControlLowBrush}" />
-    <Setter Property="SelectionBrush" Value="{DynamicResource HighlightBrush}" />
-    <Setter Property="SelectionForegroundBrush" Value="{DynamicResource HighlightForegroundBrush}" />
-    <Setter Property="Padding" Value="0" />
+    <Setter Property="Background"
+            Value="{DynamicResource ThemeControlLowBrush}" />
+    <Setter Property="SelectionBrush"
+            Value="{DynamicResource HighlightBrush}" />
+    <Setter Property="SelectionForegroundBrush"
+            Value="{DynamicResource HighlightForegroundBrush}" />
+    <Setter Property="Padding"
+            Value="0" />
     <Setter Property="Template">
         <ControlTemplate>
             <Border Name="border"
@@ -14,18 +17,28 @@
                     BorderThickness="0"
                     Margin="{TemplateBinding Padding}"
                     VerticalAlignment="Stretch">
-                <helpers:ConsoloniaTextPresenter Name="PART_TextPresenter"
-                               Text="{TemplateBinding Text, Mode=TwoWay}"
-                               CaretIndex="{TemplateBinding CaretIndex}"
-                               SelectionStart="{TemplateBinding SelectionStart}"
-                               SelectionEnd="{TemplateBinding SelectionEnd}"
-                               TextAlignment="{TemplateBinding TextAlignment}"
-                               TextWrapping="{TemplateBinding TextWrapping}"
-                               PasswordChar="{TemplateBinding PasswordChar}"
-                               RevealPassword="{TemplateBinding RevealPassword}"
-                               SelectionBrush="{TemplateBinding SelectionBrush}"
-                               SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"/>
-
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <ContentPresenter Grid.Column="0"
+                                      Content="{TemplateBinding InnerLeftContent}" />
+                    <ScrollViewer Grid.Column="1"
+                                  HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                                  VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
+                                  AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}">
+                        <helpers:ConsoloniaTextPresenter Name="PART_TextPresenter"
+                                                         Text="{TemplateBinding Text, Mode=TwoWay}"
+                                                         CaretIndex="{TemplateBinding CaretIndex}"
+                                                         SelectionStart="{TemplateBinding SelectionStart}"
+                                                         SelectionEnd="{TemplateBinding SelectionEnd}"
+                                                         TextAlignment="{TemplateBinding TextAlignment}"
+                                                         TextWrapping="{TemplateBinding TextWrapping}"
+                                                         PasswordChar="{TemplateBinding PasswordChar}"
+                                                         RevealPassword="{TemplateBinding RevealPassword}"
+                                                         SelectionBrush="{TemplateBinding SelectionBrush}"
+                                                         SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}" />
+                    </ScrollViewer>
+                    <ContentPresenter Grid.Column="2"
+                                      Content="{TemplateBinding InnerRightContent}" />
+                </Grid>
             </Border>
         </ControlTemplate>
     </Setter>
