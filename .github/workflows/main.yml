@@ -36,4 +36,4 @@ jobs:
         uses: nbadal/inspectcode-action@v1
         with:
           # Path to your solution file, ex: MyProject.sln
-          solution: /src/Conslonia.sln
+          solution: src/Conslonia.sln
