@@ -23,8 +23,8 @@ namespace Consolonia.Core.Infrastructure
 
         public void MoveCaretForControl(Point? position, int size, object ownerControl)
         {
-            if (_currentControlOfCaret != ownerControl)
-                throw new InvalidOperationException();
+            /*if (_currentControlOfCaret != ownerControl)
+                throw new InvalidOperationException();*/
 
             //todo: must be int top,left instead of position
             // Console.CursorSize = size; todo: not supported on linux
@@ -40,8 +40,8 @@ namespace Consolonia.Core.Infrastructure
 
         public void AddCaretFor(object control)
         {
-            if (_currentControlOfCaret != null)
-                throw new NotSupportedException();
+           // if (_currentControlOfCaret != null)
+               // throw new NotSupportedException();
 
             _currentControlOfCaret = control;
 
@@ -57,8 +57,8 @@ namespace Consolonia.Core.Infrastructure
 
         public void RemoveCaretFor(object control)
         {
-            if (_currentControlOfCaret == null)
-                throw new NotSupportedException();
+            /*if (_currentControlOfCaret == null)
+                throw new NotSupportedException();*/
 
             _currentControlOfCaret = null;
             HideCaretInternal();
