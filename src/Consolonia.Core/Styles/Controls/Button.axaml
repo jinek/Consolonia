@@ -3,11 +3,11 @@
         xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
     <Style Selector="Button">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeControlMidBrush}" />
+                Value="{DynamicResource ThemeAccentForegroundBrush}" />
+        <!--<Setter Property="Foreground"
+                Value="{DynamicResource ThemeBackgroundBrush}" />-->
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderLowBrush}" />
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeForegroundBrush}" />
+                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Center" />
         <Setter Property="VerticalContentAlignment"
@@ -49,11 +49,11 @@
     </Style>
     <Style Selector="Button:focus">
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderMidBrush}" />
+                Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
     <Style Selector="Button:pressed">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeControlHighBrush}" />
+                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
     </Style>
     <Style Selector="Button:disabled">
         <Setter Property="Opacity"

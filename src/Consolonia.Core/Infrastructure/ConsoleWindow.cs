@@ -76,6 +76,9 @@ namespace Consolonia.Core.Infrastructure
                         case ConsoleKey.UpArrow:
                             key = Key.Up;
                             break;
+                        case ConsoleKey.Backspace:
+                            key = Key.Back;
+                            break;
                         default:
                         {
                             if (!Key.TryParse(consoleKeyInfo.Key.ToString(), out key))

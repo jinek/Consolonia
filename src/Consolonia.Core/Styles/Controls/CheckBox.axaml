@@ -2,12 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
     <Style Selector="CheckBox">
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="Background"
-                Value="{DynamicResource ThemeControlMidBrush}" />
+                Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderLowBrush}" />
+                Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="BorderThickness"
                 Value="0" />
         <Setter Property="Padding"
@@ -30,7 +28,7 @@
                                 <TextBlock Text=" " />
                                 <TextBlock Name="checkMark"
                                            Foreground="{DynamicResource HighlightBrush}"
-                                           Text="v" />
+                                           Text="X" />
                                 <TextBlock Name="indeterminateMark"
                                            Foreground="{DynamicResource HighlightBrush}"
                                            Text="■" />
@@ -55,7 +53,7 @@
     </Style>
     <Style Selector="CheckBox:focus">
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderMidBrush}" />
+                Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
     <Style Selector="CheckBox /template/ TextBlock#checkMark">
         <Setter Property="IsVisible"
