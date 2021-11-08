@@ -26,21 +26,24 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Resharper InspectCode
+      - name: Resharper CI
         # You may pin to the exact commit or the version.
-        # uses: nbadal/inspectcode-action@f12f9dfbb9e8b53895ec1a50e306ccd73c7d9aa4
-        uses: nbadal/inspectcode-action@v1
+        # uses: florius0/resharper-ci@bbd6496e177926a482bf1854c3fd664c3a68b175
+        uses: florius0/resharper-ci@v0.2.1
         with:
           # Path to your solution file, ex: MyProject.sln
-          solution:   ./src/Consolonia.sln 
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v2.2.4
-        with:        
-          # A file, directory or wildcard pattern that describes what to upload
-          path: ./github/workspace/report.xml
-          # The desired behavior if no files are found using the provided path.
-          retention-days: 2
+          solution: ./src/Consolonia.sln
+          # Path to your .DotSettings file
+          # profile: # optional
+          # Set minimal reported severity level to [INFO, HINT, SUGGESTION, WARNING, ERROR]. Default to WARNING
+          severity: HINT # optional, default is WARNING
+          # Semicolon-separated list of relative paths or wildcards that define the files to include during the inspection
+          # include: # optional
+          # Semicolon-separated list of relative paths or wildcards that define the files to exclude during the inspection
+          # exclude: # optional
+          # Semicolon-separated list of IssueType Ids that will be ignored
+          # discard-issues: # optional
+          # Should project be built before checks, defaults to true
+          # build: # optional, default is true
+          # Hides output of build ('dotnet build') and resharper ('jb inspectcode ...')
+          # hide-output: # optional, default is true
