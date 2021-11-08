@@ -25,13 +25,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: Unofficial Resharper for GitHub
+      # Runs a single command using the runners shell  
+      - name: ReSharper CLI InspectCode
         # You may pin to the exact commit or the version.
-        # uses: glassechidna/resharper-action@f126ffcbe0169723a481d462639a5f63d5fdfcbb
-        uses: glassechidna/resharper-action@v1
+        # uses: muno92/resharper_inspectcode@abfda1b04059f495134107adc16c2017d8e36b59
+        uses: muno92/resharper_inspectcode@1.2.0
         with:
-          # Path to an .sln file
-          solution: ./src/Consolonia.sln
-          # Path to an .xml file of a pre-created report
-          #report: # optional
+          # input solution file path here
+          solutionPath: ./src/Consolonia.sln
