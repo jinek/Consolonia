@@ -2,9 +2,8 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers"
        Selector="TextBox">
-    <Setter Property="CaretBrush" Value="{DynamicResource ThemeAccentForegroundBrush}" />
     <Setter Property="Background" Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-    <Setter Property="SelectionBrush" Value="{DynamicResource ThemeAccentForegroundBrush}" />
+    <Setter Property="SelectionBrush" Value="{DynamicResource ThemeAccentBackgroundBrush}" />
     <Setter Property="SelectionForegroundBrush" Value="{DynamicResource ThemeBackgroundBrush}" />
     <Setter Property="Padding" Value="0,0" />
     <Setter Property="Template">
