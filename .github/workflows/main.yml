@@ -26,24 +26,12 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Resharper CI
+      - name: Unofficial Resharper for GitHub
         # You may pin to the exact commit or the version.
-        # uses: florius0/resharper-ci@bbd6496e177926a482bf1854c3fd664c3a68b175
-        uses: florius0/resharper-ci@v0.2.1
+        # uses: glassechidna/resharper-action@f126ffcbe0169723a481d462639a5f63d5fdfcbb
+        uses: glassechidna/resharper-action@v1
         with:
-          # Path to your solution file, ex: MyProject.sln
+          # Path to an .sln file
           solution: ./src/Consolonia.sln
-          # Path to your .DotSettings file
-          # profile: # optional
-          # Set minimal reported severity level to [INFO, HINT, SUGGESTION, WARNING, ERROR]. Default to WARNING
-          severity: HINT # optional, default is WARNING
-          # Semicolon-separated list of relative paths or wildcards that define the files to include during the inspection
-          # include: # optional
-          # Semicolon-separated list of relative paths or wildcards that define the files to exclude during the inspection
-          # exclude: # optional
-          # Semicolon-separated list of IssueType Ids that will be ignored
-          # discard-issues: # optional
-          # Should project be built before checks, defaults to true
-          # build: # optional, default is true
-          # Hides output of build ('dotnet build') and resharper ('jb inspectcode ...')
-          # hide-output: # optional, default is true
+          # Path to an .xml file of a pre-created report
+          #report: # optional
