@@ -16,4 +16,5 @@
     <StyleInclude Source="/Styles/Controls/DataGrid.axaml"/>
     <StyleInclude Source="/Styles/Controls/CaretControl.axaml"/>
     <StyleInclude Source="/Styles/Controls/UserControl.axaml"/>
+    <StyleInclude Source="/Styles/Controls/ItemsControl.axaml"/>
 </Styles>

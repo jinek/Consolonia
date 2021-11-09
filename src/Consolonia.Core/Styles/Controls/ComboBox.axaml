@@ -14,6 +14,10 @@
                 Value="Left" />
         <Setter Property="VerticalContentAlignment"
                 Value="Center" />
+        <Setter Property="(helpers:ComboBoxExtensions.OpenOnEnter)"
+                Value="True" />
+        <Setter Property="(helpers:ComboBoxExtensions.FocusOnOpen)"
+                Value="True" />
         <Setter Property="Padding"
                 Value="1,0" />
         <Setter Property="MinHeight"
@@ -22,6 +26,8 @@
                 Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
                 Value="Disabled" />
+        <Setter Property="MaxDropDownHeight"
+                Value="22" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="border"

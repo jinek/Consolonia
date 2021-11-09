@@ -125,6 +125,12 @@ namespace Consolonia.Core.Drawing
 
             if (brush is not null)
             {
+                if (brush is IVisualBrush visualBrush)
+                {
+                    _visualBrushRenderer.RenderVisualBrush(this, visualBrush);
+                    return;
+                }
+                
                 if (brush is not FourBitColorBrush backgroundBrush)
                 {
                     ConsoloniaPlatform.RaiseNotSupported(9, brush, pen, rect, boxShadows);

@@ -62,7 +62,7 @@ namespace Consolonia.Core.Styles.Controls.Helpers
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            return _shapedText.Size;
+            return _shapedText?.Size??Size.Empty;
         }
     }
 }
