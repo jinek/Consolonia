@@ -20,23 +20,21 @@
                       Background="{TemplateBinding Background}">
                     <Grid Name="border"
                           ColumnDefinitions="Auto,Auto,Auto">
-                        <TextBlock Text="["
-                                   Foreground="{TemplateBinding BorderBrush}" />
+                        <helpers:SymbolsControl Text="["
+                                                Foreground="{TemplateBinding BorderBrush}" />
                         <helpers:CaretControl Grid.Column="1"
                                               IsCaretShown="{TemplateBinding IsFocused}">
                             <Panel>
-                                <TextBlock Text=" " />
-                                <TextBlock Name="checkMark"
-                                           Foreground="{DynamicResource HighlightBrush}"
-                                           Text="X" />
-                                <TextBlock Name="indeterminateMark"
-                                           Foreground="{DynamicResource HighlightBrush}"
-                                           Text="■" />
+                                <helpers:SymbolsControl Text=" "/>
+                                <helpers:SymbolsControl Name="checkMark"
+                                                        Text="V" />
+                                <helpers:SymbolsControl Name="indeterminateMark"
+                                                        Text="■" />
                             </Panel>
                         </helpers:CaretControl>
-                        <TextBlock Text="]"
-                                   Grid.Column="2"
-                                   Foreground="{TemplateBinding BorderBrush}" />
+                        <helpers:SymbolsControl Text="]"
+                                                Grid.Column="2"
+                                                Foreground="{TemplateBinding BorderBrush}" />
                     </Grid>
                     <ContentPresenter Name="PART_ContentPresenter"
                                       TextBlock.Foreground="{TemplateBinding Foreground}"
@@ -55,24 +53,34 @@
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
-    <Style Selector="CheckBox /template/ TextBlock#checkMark">
+    <Style Selector="CheckBox /template/ Panel helpers|SymbolsControl">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
+    </Style>
+    <Style Selector="CheckBox /template/ helpers|SymbolsControl#checkMark">
         <Setter Property="IsVisible"
                 Value="False" />
     </Style>
-    <Style Selector="CheckBox /template/ TextBlock#indeterminateMark">
+    <Style Selector="CheckBox /template/ helpers|SymbolsControl#indeterminateMark">
         <Setter Property="IsVisible"
                 Value="False" />
     </Style>
-    <Style Selector="CheckBox:checked /template/ TextBlock#checkMark">
+    <Style Selector="CheckBox:checked /template/ helpers|SymbolsControl#checkMark">
         <Setter Property="IsVisible"
                 Value="True" />
     </Style>
-    <Style Selector="CheckBox:indeterminate /template/ TextBlock#indeterminateMark">
+    <Style Selector="CheckBox:indeterminate /template/ helpers|SymbolsControl#indeterminateMark">
         <Setter Property="IsVisible"
                 Value="True" />
     </Style>
-    <Style Selector="CheckBox:disabled /template/ Border#border">
-        <Setter Property="Opacity"
-                Value="{DynamicResource ThemeDisabledOpacity}" />
+    <Style Selector="CheckBox:disabled /template/ helpers|SymbolsControl">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+    </Style>
+    <Style Selector="CheckBox:disabled">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
     </Style>
 </Styles>
