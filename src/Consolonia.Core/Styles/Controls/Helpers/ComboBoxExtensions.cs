@@ -1,6 +1,11 @@
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Input;
+using Avalonia.LogicalTree;
 
 namespace Consolonia.Core.Styles.Controls.Helpers
 {
@@ -10,7 +15,7 @@ namespace Consolonia.Core.Styles.Controls.Helpers
             AvaloniaProperty.RegisterAttached<ComboBox, bool>("OpenOnEnter", typeof(ComboBoxExtensions));
         
         public static readonly AttachedProperty<bool> FocusOnOpenProperty =
-            AvaloniaProperty.RegisterAttached<ComboBox, bool>("FocusOnOpen", typeof(ComboBoxExtensions));
+            AvaloniaProperty.RegisterAttached<ItemsPresenter, bool>("FocusOnOpen", typeof(ComboBoxExtensions));
 
         static ComboBoxExtensions()
         {
@@ -22,34 +27,30 @@ namespace Consolonia.Core.Styles.Controls.Helpers
                     box.KeyDown -= BoxOnKeyDown;
             });
 
-            /* todo: this does not work
-             ComboBox.IsDropDownOpenProperty.Changed.Subscribe(Observer.Create<AvaloniaPropertyChangedEventArgs>(args =>
+            FocusOnOpenProperty.Changed.Subscribe(args =>
             {
-                if (args.Sender.GetValue(FocusOnOpenProperty))
+                
+                if (args.NewValue.Value)
                 {
-                    var comboBox = (ComboBox)args.Sender;
-                    ItemsPresenter? PART_ItemsPresenter = null;
-                    foreach (IControl templateChild in comboBox.GetTemplateChildren())
+                    var itemsPresenter = (Visual)args.Sender;
+                    itemsPresenter.AttachedToVisualTree += ItemContainerGeneratorOnMaterialized;
+                    
+                    static async void ItemContainerGeneratorOnMaterialized(object? sender,
+                        VisualTreeAttachmentEventArgs visualTreeAttachmentEventArgs)
                     {
-                        var itemsPresenter = templateChild.FindLogicalDescendantOfType<ItemsPresenter>();
-                        if (itemsPresenter?.Name == "PART_ItemsPresenter")
-                        {
-                            PART_ItemsPresenter = itemsPresenter;
-                            break;
-                        }
-                    }
-
-                    if (PART_ItemsPresenter == null)
-                        throw new NotImplementedException();
-
-                    Dispatcher.UIThread.Post(() => {
-                    ComboBoxItem? comboBoxItem = PART_ItemsPresenter.Items.Cast<ComboBoxItem>().ToArray()[comboBox.SelectedIndex];
-                        
-                    comboBoxItem?.Focus();
-                    });
+                        var comboBox = ((ItemsPresenter)sender).FindLogicalAncestorOfType<ComboBox>();
+                        await Task.Yield();
+                        typeof(ComboBox).GetMethod("TryFocusSelectedItem",
+                                BindingFlags.Instance | BindingFlags.NonPublic)
+                            .Invoke(comboBox, null);
+                    }    
                 }
-            }));*/
-            
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            });
+
             FocusOnOpenProperty.Changed.AddClassHandler<ComboBox>((box, args) =>
             {
                 if ((bool)args.NewValue)

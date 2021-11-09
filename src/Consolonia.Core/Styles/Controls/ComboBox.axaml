@@ -16,8 +16,6 @@
                 Value="Center" />
         <Setter Property="(helpers:ComboBoxExtensions.OpenOnEnter)"
                 Value="True" />
-        <Setter Property="(helpers:ComboBoxExtensions.FocusOnOpen)"
-                Value="True" />
         <Setter Property="Padding"
                 Value="1,0" />
         <Setter Property="MinHeight"
@@ -85,7 +83,15 @@
                                                     Items="{TemplateBinding Items}"
                                                     ItemsPanel="{TemplateBinding ItemsPanel}"
                                                     ItemTemplate="{TemplateBinding ItemTemplate}"
-                                                    VirtualizationMode="{TemplateBinding VirtualizationMode}" />
+                                                    VirtualizationMode="{TemplateBinding VirtualizationMode}">
+                                        <ItemsPresenter.Styles>
+                                            <!--todo: How to set this property directly on the control-->
+                                            <Style Selector="ItemsPresenter">
+                                                <Setter Property="(helpers:ComboBoxExtensions.FocusOnOpen)"
+                                                        Value="true" />
+                                            </Style>
+                                        </ItemsPresenter.Styles>
+                                    </ItemsPresenter>
                                 </ScrollViewer>
                             </Border>
                         </Popup>
