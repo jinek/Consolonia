@@ -21,6 +21,8 @@ namespace Consolonia.Core.Drawing
         private readonly PixelBuffer.PixelBuffer _pixelBuffer;
         private readonly ConsoleWindow _consoleWindow;
         private readonly IVisualBrushRenderer _visualBrushRenderer;
+        private Matrix _postTransform = Matrix.Identity;
+        private Matrix _transform;
 
         public DrawingContextImpl(ConsoleWindow consoleWindow, IVisualBrushRenderer visualBrushRenderer,
             PixelBuffer.PixelBuffer pixelBuffer)
@@ -127,7 +129,16 @@ namespace Consolonia.Core.Drawing
             {
                 if (brush is IVisualBrush visualBrush)
                 {
-                    _visualBrushRenderer.RenderVisualBrush(this, visualBrush);
+                    try
+                    {
+                        _postTransform = Transform;
+                        _visualBrushRenderer.RenderVisualBrush(this, visualBrush);
+                    }
+                    finally
+                    {
+                        _postTransform = Matrix.Identity;
+                    }
+
                     return;
                 }
                 
@@ -251,7 +262,11 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
-        public Matrix Transform { get; set; }
+        public Matrix Transform
+        {
+            get => _transform;
+            set => _transform = value*_postTransform;
+        }
 
         private static ConsoleColor? ExtractConsoleColorOrNullWithPlatformCheck(IPen pen)
         {

@@ -15,6 +15,7 @@
     <DockPanel>
         <DataGrid x:Name="grid"
                   Width="20"
+                  SelectedIndex="0"
                   SelectionMode="Single"
                   DockPanel.Dock="Left">
             <DataGrid.Columns>
@@ -25,10 +26,8 @@
         <Border Child="{Binding ElementName=grid,Path=SelectedItem, Converter={StaticResource GalleryItemConverter}}"
                 BorderThickness="1">
             <Border.BorderBrush>
-                <drawing:FourBitColorBrush Color="White"/>
+                <drawing:FourBitColorBrush Color="{DynamicResource ThemeBorderBrush}"/>
             </Border.BorderBrush>
         </Border>
-        <!--<galleryViews:GalleryWelcome/>-->
-
     </DockPanel>
 </Window>

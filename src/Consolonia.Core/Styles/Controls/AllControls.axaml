@@ -17,4 +17,5 @@
     <StyleInclude Source="/Styles/Controls/CaretControl.axaml"/>
     <StyleInclude Source="/Styles/Controls/UserControl.axaml"/>
     <StyleInclude Source="/Styles/Controls/ItemsControl.axaml"/>
+    <StyleInclude Source="/Styles/Controls/LightDismissOverlaylayer.axaml"/>
 </Styles>

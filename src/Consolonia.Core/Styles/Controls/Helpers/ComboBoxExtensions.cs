@@ -1,11 +1,11 @@
 using System;
 using System.Reflection;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
+using Avalonia.Threading;
 
 namespace Consolonia.Core.Styles.Controls.Helpers
 {
@@ -13,9 +13,12 @@ namespace Consolonia.Core.Styles.Controls.Helpers
     {
         public static readonly AttachedProperty<bool> OpenOnEnterProperty =
             AvaloniaProperty.RegisterAttached<ComboBox, bool>("OpenOnEnter", typeof(ComboBoxExtensions));
-        
+
         public static readonly AttachedProperty<bool> FocusOnOpenProperty =
             AvaloniaProperty.RegisterAttached<ItemsPresenter, bool>("FocusOnOpen", typeof(ComboBoxExtensions));
+
+        private static readonly AttachedProperty<IDisposable[]> DisposablesProperty =
+            AvaloniaProperty.RegisterAttached<ItemsPresenter, IDisposable[]>("Disposables", typeof(ComboBoxExtensions));
 
         static ComboBoxExtensions()
         {
@@ -29,25 +32,57 @@ namespace Consolonia.Core.Styles.Controls.Helpers
 
             FocusOnOpenProperty.Changed.Subscribe(args =>
             {
-                
+                var itemsPresenter = (ItemsPresenter)args.Sender;
+                var comboBox = itemsPresenter.FindLogicalAncestorOfType<ComboBox>();
+
                 if (args.NewValue.Value)
                 {
-                    var itemsPresenter = (Visual)args.Sender;
                     itemsPresenter.AttachedToVisualTree += ItemContainerGeneratorOnMaterialized;
-                    
-                    static async void ItemContainerGeneratorOnMaterialized(object? sender,
-                        VisualTreeAttachmentEventArgs visualTreeAttachmentEventArgs)
-                    {
-                        var comboBox = ((ItemsPresenter)sender).FindLogicalAncestorOfType<ComboBox>();
-                        await Task.Yield();
-                        typeof(ComboBox).GetMethod("TryFocusSelectedItem",
-                                BindingFlags.Instance | BindingFlags.NonPublic)
-                            .Invoke(comboBox, null);
-                    }    
+
+                    IDisposable disposable1 = comboBox.GetPropertyChangedObservable(ComboBox.IsFocusedProperty)
+                        .Subscribe(eventArgs =>
+                        {
+                            if (!(bool)eventArgs.NewValue && !itemsPresenter.IsKeyboardFocusWithin)
+                            {
+                                Dispatcher.UIThread.Post(() => { comboBox.IsDropDownOpen = false; });
+                            }
+                        });
+
+                    IDisposable disposable2 = itemsPresenter
+                        .GetPropertyChangedObservable(ItemsPresenter.IsKeyboardFocusWithinProperty)
+                        .Subscribe(eventArgs =>
+                        {
+                            if (!(bool)eventArgs.NewValue && !comboBox.IsKeyboardFocusWithin)
+                            {
+                                Dispatcher.UIThread.Post(() =>
+                                {
+                                    comboBox.IsDropDownOpen = false;
+                                    comboBox.Focus();
+                                });
+                            }
+                        });
+
+                    itemsPresenter.SetValue(DisposablesProperty, new[] { disposable1, disposable2 });
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    var disposables = itemsPresenter.GetValue(DisposablesProperty);
+                    foreach (IDisposable disposable in disposables)
+                        disposable.Dispose();
+
+                    itemsPresenter.AttachedToVisualTree -= ItemContainerGeneratorOnMaterialized;
+                }
+
+                static void ItemContainerGeneratorOnMaterialized(object? sender,
+                    VisualTreeAttachmentEventArgs visualTreeAttachmentEventArgs)
+                {
+                    var comboBox = ((ItemsPresenter)sender).FindLogicalAncestorOfType<ComboBox>();
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        typeof(ComboBox).GetMethod("TryFocusSelectedItem",
+                                BindingFlags.Instance | BindingFlags.NonPublic)
+                            .Invoke(comboBox, null);
+                    });
                 }
             });
 

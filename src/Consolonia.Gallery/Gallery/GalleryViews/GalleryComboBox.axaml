@@ -20,19 +20,22 @@
                         Value="22" />
             </Style>
         </StackPanel.Styles>
-        <ComboBox PlaceholderText="Pick an Item" SelectedIndex="0">
+        <ComboBox PlaceholderText="Pick an Item">
             <ComboBoxItem>Inline Items</ComboBoxItem>
             <ComboBoxItem>Inline Item 2</ComboBoxItem>
             <ComboBoxItem>Inline Item 3</ComboBoxItem>
             <ComboBoxItem>Inline Item 4</ComboBoxItem>
         </ComboBox>
-
+        
+        <ComboBox PlaceholderText="Disabled" IsEnabled="False">
+            <ComboBoxItem>Can't be choosen</ComboBoxItem>
+        </ComboBox>
         
         <ComboBox>
             <ComboBox.Items>
                 <collections:ArrayList>
-                    <x:Null />
                     <system:String>Hello</system:String>
+                    <x:Null />
                     <system:String>World</system:String>
                 </collections:ArrayList>
             </ComboBox.Items>
@@ -47,11 +50,11 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <ComboBox > <!--todo: Needs visual brush for that??? return back SelectedIndex="0"-->
+        <ComboBox SelectedIndex="0"> 
             <ComboBoxItem>
-                <Panel>
-                    <Rectangle Fill="{DynamicResource ThemeAccentBackgroundBrush}" />
-                    <TextBlock Margin="1">Control Items</TextBlock>
+                <Panel >
+                    <Rectangle Fill="{drawing:FourBitColorBrush Red}"/>
+                    <TextBlock Text="Still item" Margin="1"/>
                 </Panel>
             </ComboBoxItem>
             <ComboBoxItem>
@@ -59,15 +62,16 @@
                                         Foreground="{drawing:FourBitColorBrush Yellow}" />
             </ComboBoxItem>
             <ComboBoxItem>
-                <TextBox Text="TextBox" />
+                <TextBox Text="TextBox" Focusable="True"/>
             </ComboBoxItem>
         </ComboBox>
         
-        <ComboBox x:Name="fontComboBox"
-                  SelectedIndex="0">
+        <ComboBox x:Name="varsComboBox">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}"/>
+                    <TextBlock Text="{Binding}"
+                               MaxWidth="40"
+                               TextTrimming="CharacterEllipsis" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>

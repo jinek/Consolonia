@@ -17,13 +17,13 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             AvaloniaXamlLoader.Load(this);
 
-            var fontComboBox = this.Find<ComboBox>("fontComboBox");
+            var fontComboBox = this.Find<ComboBox>("varsComboBox");
             
             fontComboBox.Items = Environment.GetEnvironmentVariables()
                 .Cast<DictionaryEntry>()
                 .Select(environmentVariable => environmentVariable.Key + "=" + environmentVariable.Value).ToList();
 
-            fontComboBox.SelectedIndex = 0;
+                fontComboBox.SelectedIndex = 0;
         }
     }
 }
