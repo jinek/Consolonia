@@ -18,17 +18,24 @@ namespace Consolonia.Core.Infrastructure
             ActualizeSize();
             int width = Console.WindowWidth;
             int height = Console.WindowHeight;
+
             while (true)
             {
+                int timeout;
                 if (width != Console.WindowWidth || height != Console.WindowHeight)
                 {
                     ActualizeSize();
 
                     Resized?.Invoke();
                     InitializeCache();
+                    timeout = 1;//todo: magic numbers. probably need to rely on fps instead
+                }
+                else
+                {
+                    timeout = 1000;
                 }
 
-                await Task.Delay(1000);
+                await Task.Delay(timeout);
             }
 
             void ActualizeSize()
