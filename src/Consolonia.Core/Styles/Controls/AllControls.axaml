@@ -18,4 +18,5 @@
     <StyleInclude Source="/Styles/Controls/UserControl.axaml"/>
     <StyleInclude Source="/Styles/Controls/ItemsControl.axaml"/>
     <StyleInclude Source="/Styles/Controls/LightDismissOverlaylayer.axaml"/>
+    <StyleInclude Source="/Styles/Controls/DataValidationErrors.axaml"/>
 </Styles>

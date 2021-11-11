@@ -9,4 +9,5 @@
     <drawing:FourBitColorBrush x:Key="ThemeBorderBrush" Color="Gray"/>
     <drawing:FourBitColorBrush x:Key="ThemeAccentForegroundBrush" Color="DarkCyan"/>
     <drawing:FourBitColorBrush x:Key="ThemeAccentBackgroundBrush" Color="Green"/>
+    <drawing:FourBitColorBrush x:Key="ThemeErrorBrush" Color="Red"/>
 </ResourceDictionary>
