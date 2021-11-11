@@ -35,13 +35,11 @@
                       Height="20"
                       AllowAutoHide="{Binding AllowAutoHide}"
                       HorizontalScrollBarVisibility="{Binding HorizontalScrollVisibility}"
-                      VerticalScrollBarVisibility="{Binding VerticalScrollVisibility}">
+                      VerticalScrollBarVisibility="{Binding VerticalScrollVisibility}"
+                      Focusable="True">
             <helpers:CaretControl IsCaretShown="{Binding ElementName=cowTextBlock, Path=IsFocused}">
-                <TextBlock x:Name="cowTextBlock"
-                           KeyDown="CowTextBlock_OnKeyDown"
-                           xml:space="preserve"
-                           Foreground="{drawing:FourBitColorBrush DarkCyan}"
-                           Focusable="True">Focus here to scroll
+                <TextBlock xml:space="preserve"
+                           Foreground="{drawing:FourBitColorBrush DarkCyan}">Focus to ScrollViewer
                                        /;    ;\
                                    __  \\____//
                                   /{_\_/   `'\____

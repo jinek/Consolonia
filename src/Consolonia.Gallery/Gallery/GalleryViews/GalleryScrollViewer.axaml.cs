@@ -21,30 +21,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             AvaloniaXamlLoader.Load(this);
         }
-
-        private void CowTextBlock_OnKeyDown(object? sender, KeyEventArgs e)
-        {
-            var scrollViewer = this.Get<ScrollViewer>("ScrollViewer");
-            switch (e.Key)
-            {
-                case Key.Up:
-                    scrollViewer.Offset = scrollViewer.Offset.WithY(scrollViewer.Offset.Y - 1);
-                    e.Handled = true;
-                    break;
-                case Key.Down:
-                    scrollViewer.Offset = scrollViewer.Offset.WithY(scrollViewer.Offset.Y + 1);
-                    e.Handled = true;
-                    break;
-                case Key.Left:
-                    scrollViewer.Offset = scrollViewer.Offset.WithX(scrollViewer.Offset.X - 1);
-                    e.Handled = true;
-                    break;
-                case Key.Right:
-                    scrollViewer.Offset = scrollViewer.Offset.WithX(scrollViewer.Offset.X + 1);
-                    e.Handled = true;
-                    break;
-            }
-        }
     }
 
     public class ScrollViewerPageViewModel : ViewModelBase
