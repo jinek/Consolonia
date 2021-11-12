@@ -42,7 +42,8 @@
           <Panel Grid.Row="1"
                  Grid.Column="1"
                  Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
-            <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
+            <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
+                                  IsVisible="{TemplateBinding Focusable}">
               <helpers:SymbolsControl Text="+" 
                                       Foreground="{TemplateBinding Background}"/>
             </helpers:CaretControl>
