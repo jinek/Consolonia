@@ -20,6 +20,7 @@ namespace Consolonia.Core.Styles.Controls.Helpers
                 if (args.NewValue.Value)
                 {
                     Line line = caretControl._line;
+                    if (line == null) return;
                     ((MoveConsoleCaretToPositionBrush)line.Stroke).SetOwnerControl(caretControl);
                     _console.AddCaretFor(caretControl);
                 }
@@ -43,6 +44,7 @@ namespace Consolonia.Core.Styles.Controls.Helpers
             base.OnApplyTemplate(e);
 
             _line = e.NameScope.Find<Line>("PART_CaretLine");
+            CoerceValue(IsCaretShownProperty);
         }
     }
 }
