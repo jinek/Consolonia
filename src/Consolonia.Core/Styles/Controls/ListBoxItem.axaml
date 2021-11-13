@@ -1,0 +1,35 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
+    <Style Selector="ListBoxItem">
+        <Setter Property="Padding"
+                Value="1 0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <helpers:CaretControl Foreground="{TemplateBinding Foreground}"
+                                      IsCaretShown="{TemplateBinding IsFocused}">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                </helpers:CaretControl>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="ListBoxItem:selected">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeBackgroundBrush}" />
+    </Style>
+
+    <!--<Style Selector="ListBoxItem:selected:focus /template/ helpers|CaretControl">
+        <Setter Property="IsCaretShown"
+                Value="True" />
+    </Style>-->
+</Styles>
