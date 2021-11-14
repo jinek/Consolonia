@@ -78,6 +78,8 @@ namespace Consolonia.Core.Drawing
         {
             PixelBuffer.PixelBuffer pixelBuffer = _bufferBuffer;
             using (_console.StoreCaret())
+            {
+                _console.CaretVisible = false;
                 for (int y = 0; y < pixelBuffer.Height; y++)
                 for (int x = 0; x < pixelBuffer.Width; x++)
                 {
@@ -94,6 +96,7 @@ namespace Consolonia.Core.Drawing
                     _console.Print((ushort)x, (ushort)y, pixel.Background.Color, pixel.Foreground.Color,
                         pixel.Foreground.Symbol.GetCharacter());
                 }
+            }
 
             _consoleWindow.InvalidatedRects.Clear();
         }

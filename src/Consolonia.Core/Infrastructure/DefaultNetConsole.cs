@@ -13,6 +13,17 @@ namespace Consolonia.Core.Infrastructure
         private (ushort x, ushort y) _headPosition;
         private bool _caretVisible;
 
+        public bool CaretVisible
+        {
+            get => _caretVisible;
+            set
+            {
+                if (_caretVisible == value) return;
+                Console.CursorVisible = value;
+                _caretVisible = value;
+            }
+        }
+
         public DefaultNetConsole()
         {
             Console.CursorVisible = false;
@@ -29,10 +40,10 @@ namespace Consolonia.Core.Infrastructure
             //todo: must be int top,left instead of position
             // Console.CursorSize = size; todo: not supported on linux
             if (position == null)
-                HideCaretInternal();
+                CaretVisible = false;
             else
             {
-                ShowCaretInternal();
+                CaretVisible = true;
                 (double x, double y) = (Point)position;
                 SetCaretPosition(((ushort)x, (ushort)y));
             }
@@ -45,15 +56,10 @@ namespace Consolonia.Core.Infrastructure
 
             _currentControlOfCaret = control;
 
-            ShowCaretInternal();
+            CaretVisible = true;
         }
 
-        private void ShowCaretInternal()
-        {
-            if (_caretVisible)
-                return;
-            _caretVisible = Console.CursorVisible = true;
-        }
+        
 
         public void RemoveCaretFor(object control)
         {
@@ -61,14 +67,7 @@ namespace Consolonia.Core.Infrastructure
                 throw new NotSupportedException();*/
 
             _currentControlOfCaret = null;
-            HideCaretInternal();
-        }
-
-        private void HideCaretInternal()
-        {
-            if (!_caretVisible)
-                return;
-            _caretVisible = Console.CursorVisible = false;
+            CaretVisible = false;
         }
 
         public IDisposable StoreCaret()
