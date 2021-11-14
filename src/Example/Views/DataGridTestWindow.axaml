@@ -59,7 +59,7 @@
                         </StackPanel.Styles>
                         <TextBlock Text="Id" />
                         <TextBlock Text="Title" />
-                        <TextBlock Text="Genre (F3)" />
+                        <TextBlock Text="Genre(ALT+DOWN)" />
 
                     </StackPanel>
                     <StackPanel Orientation="Vertical"

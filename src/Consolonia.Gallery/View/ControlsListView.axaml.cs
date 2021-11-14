@@ -25,9 +25,8 @@ namespace Consolonia.Gallery.View
             this.AttachDevTools();
 #endif
             var grid = this.FindControl<DataGrid>("grid");
-            
-            grid.Focus();
-            grid.Items = _items = GalleryItem.Enumerated;
+
+            grid.Items = _items = GalleryItem.Enumerated.ToArray();
             
             TrySetupSelected();
 
@@ -40,7 +39,8 @@ namespace Consolonia.Gallery.View
                 GalleryItem? itemToSelect;
                 try
                 {
-                    itemToSelect = _items.SingleOrDefault(item => string.Equals(item.Name, itemToSelectName, StringComparison.CurrentCultureIgnoreCase));
+                    itemToSelect = _items.SingleOrDefault(item =>
+                        string.Equals(item.Name, itemToSelectName, StringComparison.CurrentCultureIgnoreCase));
                     if (itemToSelect == null)
                     {
                         throw new ArgumentOutOfRangeException(
@@ -54,6 +54,7 @@ namespace Consolonia.Gallery.View
                 }
 
                 grid.SelectedItem = itemToSelect;
+                grid.Focus();
             }
         }
     }
