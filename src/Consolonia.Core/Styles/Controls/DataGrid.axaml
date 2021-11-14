@@ -46,7 +46,7 @@
         <Setter Property="VerticalContentAlignment"
                 Value="Center" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="Padding"
                 Value="1,0" />
         

@@ -29,17 +29,18 @@ namespace Consolonia.Gallery.Gallery
                     .Where(type =>
                         type.Namespace == "Consolonia.Gallery.Gallery.GalleryViews" &&
                         type.Name.StartsWith(galleryPrefix))
+                    .OrderBy(GalleryOrderAttribute.GetOrder)
                     .Select(type => new GalleryItem(type.Name[galleryPrefix.Length..], type));
             }
         }
     }
-    
+
     public class GalleryItemConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return null;
-            
+
             return Activator.CreateInstance(((GalleryItem)value).Type);
         }
 

@@ -5,7 +5,6 @@
   <Style Selector="ScrollViewer">
     <Setter Property="(helpers:ScrollViewerExtensions.ScrollOnArrows)" Value="True"/>
     <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}"/>
-    <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Grid ColumnDefinitions="*,Auto" RowDefinitions="*,Auto">
@@ -74,7 +73,7 @@
                 <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Viewport.Height"/>
               </MultiBinding>
             </RepeatButton.IsVisible>
-            <Path Data="M 0 4 L 8 4 L 4 0 Z"/>
+            <helpers:SymbolsControl Text="^" Foreground="{TemplateBinding Foreground}"/>
           </RepeatButton>
           <RepeatButton DockPanel.Dock="Bottom"
                         BorderThickness="0"
@@ -89,7 +88,7 @@
                 <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Viewport.Height"/>
               </MultiBinding>
             </RepeatButton.IsVisible>
-            <Path Data="M 0 0 L 4 4 L 8 0 Z"/>
+            <helpers:SymbolsControl Text="v" Foreground="{TemplateBinding Foreground}"/>
           </RepeatButton>
           <ScrollContentPresenter Name="PART_ContentPresenter"
                                   CanHorizontallyScroll="{TemplateBinding CanHorizontallyScroll}"
@@ -103,11 +102,7 @@
       </ControlTemplate>
     </Setter>
   </Style>
-  <Style Selector="ScrollViewer.menuscroller /template/ RepeatButton > Path">
-    <Setter Property="Fill" Value="{DynamicResource ThemeForegroundLowBrush}" />
-  </Style>
-
-  <Style Selector="ScrollViewer.menuscroller /template/ RepeatButton:pointerover > Path">
-    <Setter Property="Fill" Value="{DynamicResource ThemeAccentBrush}" />
+  <Style Selector="ScrollViewer.menuscroller /template/ RepeatButton > helpers|SymbolsControl">
+    <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
   </Style>
 </Styles>

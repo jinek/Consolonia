@@ -4,10 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    [GalleryOrder(20)]
-    public class GalleryTextBlock : UserControl
+    public class GalleryAnimatedLines : UserControl
     {
-        public GalleryTextBlock()
+        public GalleryAnimatedLines()
         {
             InitializeComponent();
         }
