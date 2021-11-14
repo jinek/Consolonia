@@ -1,21 +1,29 @@
-<Styles xmlns="https://github.com/avaloniaui">
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
     <Style Selector="ComboBoxItem">
-        <Setter Property="Foreground" Value="{DynamicResource ThemeBackgroundBrush}" />
-        <Setter Property="Background" Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-        <Setter Property="Padding" Value="1,0" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeBackgroundBrush}" />
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        <Setter Property="Padding"
+                Value="1,0" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ContentPresenter Name="PART_ContentPresenter"
-                                  Background="{TemplateBinding Background}"
-                                  BorderBrush="{TemplateBinding BorderBrush}"
-                                  BorderThickness="{TemplateBinding BorderThickness}"
-                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  Content="{TemplateBinding Content}"
-                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                  Padding="{TemplateBinding Padding}" />
+                <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Padding="{TemplateBinding Padding}" />
+                </helpers:CaretControl>
             </ControlTemplate>
         </Setter>
     </Style>
@@ -27,18 +35,17 @@
     -->
 
     <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource ThemeAccentForegroundBrush}" />
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAccentForegroundBrush}" />
     </Style>
 
     <Style Selector="ComboBoxItem:selected:focus /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource ThemeAccentBackgroundBrush}" />
-    </Style>
-
-    <Style Selector="ComboBoxItem:selected:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}" />
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
     </Style>
 
     <Style Selector="ComboBoxItem:focus /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource ThemeAccentBackgroundBrush}" />
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
     </Style>
 </Styles>

@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:collections="clr-namespace:System.Collections;assembly=System.Runtime"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+             xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers;assembly=Consolonia.Core"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryComboBox">
+    <StackPanel Orientation="Vertical"
+                Spacing="1">
+        <StackPanel.Styles>            
+            <Style Selector="ComboBox">
+                <Setter Property="HorizontalAlignment"
+                        Value="Left" />
+                <Setter Property="Width"
+                        Value="22" />
+            </Style>
+        </StackPanel.Styles>
+        <ComboBox PlaceholderText="Pick an Item">
+            <ComboBoxItem>Inline Items</ComboBoxItem>
+            <ComboBoxItem>Inline Item 2</ComboBoxItem>
+            <ComboBoxItem>Inline Item 3</ComboBoxItem>
+            <ComboBoxItem>Inline Item 4</ComboBoxItem>
+        </ComboBox>
+        
+        <ComboBox PlaceholderText="Disabled" IsEnabled="False">
+            <ComboBoxItem>Can't be choosen</ComboBoxItem>
+        </ComboBox>
+        
+        <ComboBox>
+            <ComboBox.Items>
+                <collections:ArrayList>
+                    <system:String>Hello</system:String>
+                    <x:Null />
+                    <system:String>World</system:String>
+                </collections:ArrayList>
+            </ComboBox.Items>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Panel>
+                        <TextBlock Text="{Binding}" />
+                        <TextBlock Text="Null object"
+                                   IsVisible="{Binding Converter={x:Static ObjectConverters.IsNull}}" />
+                    </Panel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <ComboBox SelectedIndex="0"> 
+            <ComboBoxItem>
+                <Panel >
+                    <Rectangle Fill="{drawing:FourBitColorBrush Red}"/>
+                    <TextBlock Text="Still item" Margin="1"/>
+                </Panel>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <helpers:SymbolsControl Text="o"
+                                        Foreground="{drawing:FourBitColorBrush Yellow}" />
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBox Text="TextBox" Focusable="True"/>
+            </ComboBoxItem>
+        </ComboBox>
+        
+        <ComboBox x:Name="varsComboBox">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"
+                               MaxWidth="40"
+                               TextTrimming="CharacterEllipsis" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox PlaceholderText="Pick an Item">
+            <ComboBoxItem>Inline Items</ComboBoxItem>
+            <ComboBoxItem>Inline Item 2</ComboBoxItem>
+            <ComboBoxItem>Inline Item 3</ComboBoxItem>
+            <ComboBoxItem>Inline Item 4</ComboBoxItem>
+            <DataValidationErrors.Error>
+                <system:Exception />
+            </DataValidationErrors.Error>
+        </ComboBox>
+    </StackPanel>
+</UserControl>
