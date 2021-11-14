@@ -22,4 +22,6 @@
     <StyleInclude Source="/Styles/Controls/TabControl.axaml"/>
     <StyleInclude Source="/Styles/Controls/TabItem.axaml"/>
     <StyleInclude Source="/Styles/Controls/RadioButton.axaml"/>
+    <StyleInclude Source="/Styles/Controls/ListBox.axaml"/>
+    <StyleInclude Source="/Styles/Controls/ListBoxItem.axaml"/>
 </Styles>
