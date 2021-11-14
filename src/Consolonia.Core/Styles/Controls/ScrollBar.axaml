@@ -4,11 +4,11 @@
     <Setter Property="Cursor" Value="Arrow" />
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Background="{DynamicResource ThemeControlMidBrush}"
+        <Border Background="{DynamicResource ThemeBorderBrush}"
                 UseLayoutRounding="False">
           <Grid RowDefinitions="Auto,*,Auto">
             <Border Grid.RowSpan="3" BorderThickness="1"
-                    BorderBrush="{DynamicResource ThemeForegroundBrush}">
+                    BorderBrush="{DynamicResource ThemeBorderBrush}">
               <Border.Background>
                 <drawing:FourBitColorBrush Mode="Transparent"/>
               </Border.Background>
@@ -17,7 +17,7 @@
                        Classes="repeat"
                        Grid.Row="0"
                        Focusable="False"
-                       MinHeight="{DynamicResource ScrollBarThickness}"
+                       MinHeight="1"
                        Text="^">
               
             </TextBlock>
@@ -46,7 +46,7 @@
                           Grid.Row="2"
                           Grid.Column="2"
                           Focusable="False"
-                          MinHeight="{DynamicResource ScrollBarThickness}"
+                          MinHeight="1"
                           Text="v">
               
             </TextBlock>
@@ -55,7 +55,7 @@
       </ControlTemplate>
     </Setter>
   </Style>
-  <Style Selector="ScrollBar:horizontal">
+  <Style Selector="ScrollBar:horizontal"> <!--todo : not supported currently-->
     <Setter Property="Height" Value="{DynamicResource ScrollBarThickness}" />
     <Setter Property="Template">
       <ControlTemplate>

@@ -147,7 +147,7 @@ namespace Consolonia.Core.Drawing
                 }
             }
 
-            if (pen is null or { Thickness: 0 }) return;
+            if (pen is null or { Thickness: 0 } or {Brush: null}) return;
 
             DrawLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width));
             DrawLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width));
