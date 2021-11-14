@@ -280,11 +280,16 @@ namespace Consolonia.Core.Drawing
 
             if (pen.Brush is IConsoleCaretBrush consoleCaretBrush)
             {
-                _currentClip.ExecuteWithClipping(head,
+                int penThickness = (int)pen.Thickness;
+                if (!_currentClip.ExecuteWithClipping(head,
                     () =>
                     {
-                        consoleCaretBrush.MoveCaret(head, (int)pen.Thickness);//todo: if caret is out of clip rectangle it is displayed in old place, which is wrong
-                    });
+                        consoleCaretBrush.MoveCaret(head,
+                            penThickness);
+                    }))
+                {
+                    consoleCaretBrush.MoveCaret(null, penThickness);
+                }
                 return;
             }
 

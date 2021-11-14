@@ -65,5 +65,13 @@ namespace Consolonia.Core.Styles.Controls.Helpers
             _console.RemoveCaretFor(this);
             _caretBlinking = false;
         }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            Size measureOverride = base.MeasureOverride(availableSize);
+            if(TextWrapping==TextWrapping.NoWrap)
+                measureOverride = measureOverride.WithWidth(measureOverride.Width + 1);//space for the caret
+            return measureOverride;
+        }
     }
 }

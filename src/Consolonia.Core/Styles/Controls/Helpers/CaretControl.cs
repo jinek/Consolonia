@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
+using Avalonia.Media;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Styles.Controls.Helpers
@@ -14,11 +15,15 @@ namespace Consolonia.Core.Styles.Controls.Helpers
             IsCaretShownProperty.Changed.Subscribe(static args =>
             {
                 var caretControl = (CaretControl)args.Sender!;
-                ((MoveConsoleCaretToPositionBrush)caretControl._line.Stroke).SetOwnerControl(caretControl);
+
                 var _console = AvaloniaLocator.Current.GetService<IConsole>();
                 if (args.NewValue.Value)
-                    _console.AddCaretFor(args.Sender);
-                else _console.RemoveCaretFor(args.Sender);
+                {
+                    Line line = caretControl._line;
+                    ((MoveConsoleCaretToPositionBrush)line.Stroke).SetOwnerControl(caretControl);
+                    _console.AddCaretFor(caretControl);
+                }
+                else _console.RemoveCaretFor(caretControl);
             });
         }
 

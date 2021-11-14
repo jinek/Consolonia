@@ -5,7 +5,7 @@ namespace Consolonia.Core.Infrastructure
 {
     public interface IConsole
     {
-        void MoveCaretForControl(Point position, int size, object ownerControl);
+        void MoveCaretForControl(Point? position, int size, object ownerControl);
         void AddCaretFor(object control);
         void RemoveCaretFor(object control);
         IDisposable StoreCaret();

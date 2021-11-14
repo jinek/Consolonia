@@ -337,7 +337,7 @@ namespace Consolonia.Core.Text
         }
 
         public Size Constraint { get; }
-        public Rect Bounds { get; }
+        public Rect Bounds => new(0, 0, Text.Length, 1);
         public string Text { get; }
     }
 }
