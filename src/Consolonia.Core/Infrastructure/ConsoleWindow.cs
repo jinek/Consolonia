@@ -38,8 +38,8 @@ namespace Consolonia.Core.Infrastructure
         private void StartInputReading()
         {
             //todo: invoke IConsole instead
-            //todo: exceptions
-            Task.Run((Func<Task?>)(async () =>
+            
+            ThreadPool.QueueUserWorkItem(async _ =>
             {
                 while (true)
                 {
@@ -87,13 +87,20 @@ namespace Consolonia.Core.Infrastructure
                         }
                     }
 
+                    bool handled = false;
                     if (!char.IsControl(consoleKeyInfo.KeyChar))
                     {
                         await Dispatcher.UIThread.InvokeAsync(() =>
-                            Input(new RawTextInputEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
-                                consoleKeyInfo.KeyChar.ToString())));
+                        {
+                            var rawTextInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
+                                consoleKeyInfo.KeyChar.ToString());
+                            Input(rawTextInputEventArgs);
+                            if (rawTextInputEventArgs.Handled)
+                                handled = true;
+                        });
                     }
-                    else
+                    
+                    if(!handled)
                     {
                         var rawInputModifiers = RawInputModifiers.None;
 
@@ -103,14 +110,14 @@ namespace Consolonia.Core.Infrastructure
                             rawInputModifiers |= RawInputModifiers.Shift;
                         if (consoleKeyInfo.Modifiers.HasFlag(ConsoleModifiers.Alt))
                             rawInputModifiers |= RawInputModifiers.Alt;
-                        
+
                         await Dispatcher.UIThread.InvokeAsync(() =>
                         {
                             Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
                                 RawKeyEventType.KeyDown, key,
                                 rawInputModifiers));
                         });
-                        //await Task.Delay(100);
+                        //await Task.Delay(50);//todo: magic number
                         await Dispatcher.UIThread.InvokeAsync(() =>
                         {
                             Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
@@ -119,12 +126,14 @@ namespace Consolonia.Core.Infrastructure
                         });
                     }
                 }
-            })).ContinueWith(
+            });
+
+            /*Task.Run((Func<Task?>),).ContinueWith(
                 task =>
                 {
                     ThreadPool.QueueUserWorkItem(_ => throw new InvalidOperationException("Exception happened when reading user input",
                         task.Exception));
-                }, TaskContinuationOptions.OnlyOnFaulted);
+                }, TaskContinuationOptions.OnlyOnFaulted);*/
         }
 
         public void Dispose()

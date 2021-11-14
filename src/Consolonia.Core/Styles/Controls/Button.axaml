@@ -14,14 +14,17 @@
                 Value="Center" />
         <Setter Property="Padding"
                 Value="1,0,1,0" />
+        <Setter Property="(helpers:ButtonExtensions.DelayPress)"
+                Value="0:0:0.25" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{TemplateBinding Background}">
+                <Border Background="{TemplateBinding Background}"
+                        x:Name="InternalBorder">
                     <Grid ColumnDefinitions="Auto,*,Auto">
-                        <TextBlock Grid.Column="0"
-                                   Text="["
-                                   Foreground="{TemplateBinding BorderBrush}"
-                                   VerticalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                        <helpers:SymbolsControl Grid.Column="0"
+                                                Text="["
+                                                Foreground="{TemplateBinding BorderBrush}"
+                                                VerticalAlignment="{TemplateBinding HorizontalContentAlignment}" />
                         <helpers:CaretControl Grid.Column="1"
                                               Padding="0,0,0,0"
                                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -38,25 +41,33 @@
                                               VerticalContentAlignment="Stretch"
                                               TextBlock.Foreground="{TemplateBinding Foreground}" />
                         </helpers:CaretControl>
-                        <TextBlock Grid.Column="2"
-                                   Text="]"
-                                   Foreground="{TemplateBinding BorderBrush}"
-                                   VerticalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                        <helpers:SymbolsControl Grid.Column="2"
+                                                Text="]"
+                                                Foreground="{TemplateBinding BorderBrush}"
+                                                VerticalAlignment="{TemplateBinding HorizontalContentAlignment}" />
                     </Grid>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
+    <Style Selector="Button:disabled">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+    </Style>
     <Style Selector="Button:focus">
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
-    <Style Selector="Button:pressed">
+    <Style Selector="Button:clickdelayed">
+        <!--<Setter Property="Foreground"
+                Value="{DynamicResource ThemeAccentBackgroundBrush}" />-->
         <Setter Property="Background"
-                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        <Setter Property="Padding"
+                Value="0" />
     </Style>
-    <Style Selector="Button:disabled">
-        <Setter Property="Opacity"
-                Value="{DynamicResource ThemeDisabledOpacity}" />
+    <Style Selector="Button:clickdelayed /template/ Border#InternalBorder">
+        <Setter Property="Padding"
+                Value="1,0" />
     </Style>
 </Styles>
