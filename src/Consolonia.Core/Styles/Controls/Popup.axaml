@@ -2,7 +2,7 @@
        xmlns:drawing="clr-namespace:Consolonia.Core.Drawing"
        Selector="PopupRoot">
     <Setter Property="Background"
-            Value="{DynamicResource ThemeBackgroundBrush}" />
+            Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
     <Setter Property="Template">
         <ControlTemplate>
             <Panel>

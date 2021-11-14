@@ -1,13 +1,8 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
-        xmlns:drawing="clr-namespace:Consolonia.Core.Drawing">
+        xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls">
   <Style Selector="ScrollViewer">
-    <Setter Property="Background">
-      <Setter.Value>
-        <drawing:FourBitColorBrush Color="DarkCyan"/>
-      </Setter.Value>
-    </Setter>
+    <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Grid ColumnDefinitions="*,Auto" RowDefinitions="*,Auto">
@@ -41,7 +36,7 @@
                      Visibility="{TemplateBinding VerticalScrollBarVisibility}"
                      Grid.Column="1"
                      Focusable="False"/>
-          <Panel Grid.Row="1" Grid.Column="1" Background="{DynamicResource ThemeControlMidBrush}"/>
+          <Panel Grid.Row="1" Grid.Column="1" Background="{DynamicResource ThemeAlternativeBackgroundBrush}"/>
         </Grid>
       </ControlTemplate>
     </Setter>
