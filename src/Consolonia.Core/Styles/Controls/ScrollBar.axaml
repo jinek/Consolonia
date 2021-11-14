@@ -4,7 +4,7 @@
   <Style Selector="ScrollBar">
     <Setter Property="Cursor" Value="Arrow" />
     <Setter Property="Background"
-            Value="{DynamicResource ThemeBackgroundBrush}" />
+            Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
     <Setter Property="BorderBrush"
             Value="{DynamicResource ThemeBackgroundBrush}" />
     <Setter Property="Foreground"
@@ -16,6 +16,10 @@
             <Border Grid.Row="1"
                     BorderThickness="0"
                     Background="{TemplateBinding Background}"/>
+            <Border Grid.RowSpan="3"
+                    BorderThickness="1"
+                    BorderBrush="{TemplateBinding Foreground}"
+                    Background="{x:Null}"/>
             <helpers:SymbolsControl HorizontalAlignment="Center"
                                     Classes="repeat"
                                     Grid.Row="0"                       
@@ -50,6 +54,10 @@
             <Border Grid.Column="1"
                     BorderThickness="0"
                     Background="{TemplateBinding Background}"/>
+            <Border Grid.ColumnSpan="3"
+                    BorderThickness="1"
+                    BorderBrush="{TemplateBinding Foreground}"
+                    Background="{x:Null}"/>
             <helpers:SymbolsControl HorizontalAlignment="Center"
                                     Classes="repeat"
                                     Grid.Column="0"                       

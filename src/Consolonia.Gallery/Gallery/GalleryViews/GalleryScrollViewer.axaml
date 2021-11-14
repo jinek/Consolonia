@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers;assembly=Consolonia.Core"
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryScrollViewer">
+    <Grid RowDefinitions="Auto, *">
+        <StackPanel Orientation="Vertical"
+                    Spacing="1">
+            <CheckBox IsChecked="{Binding AllowAutoHide}"
+                      Content="Allow auto hide" />
+
+            <StackPanel Orientation="Vertical"
+                        Spacing="1">
+                <TextBlock Text="Horizontal Scroll" />
+                <ComboBox Items="{Binding AvailableVisibility}"
+                          SelectedItem="{Binding HorizontalScrollVisibility}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical"
+                        Spacing="1">
+                <TextBlock Text="Vertical Scroll" />
+                <ComboBox Items="{Binding AvailableVisibility}"
+                          SelectedItem="{Binding VerticalScrollVisibility}" />
+            </StackPanel>
+        </StackPanel>
+
+        <ScrollViewer x:Name="ScrollViewer"
+                      Grid.Row="1"
+                      Width="30"
+                      Height="20"
+                      AllowAutoHide="{Binding AllowAutoHide}"
+                      HorizontalScrollBarVisibility="{Binding HorizontalScrollVisibility}"
+                      VerticalScrollBarVisibility="{Binding VerticalScrollVisibility}"
+                      Focusable="True">
+            <helpers:CaretControl IsCaretShown="{Binding ElementName=cowTextBlock, Path=IsFocused}">
+                <TextBlock xml:space="preserve"
+                           Foreground="{drawing:FourBitColorBrush DarkCyan}">Focus to ScrollViewer
+                                       /;    ;\
+                                   __  \\____//
+                                  /{_\_/   `'\____
+                                  \___   (o)  (o  }
+       _____________________________/          :--'  
+   ,-,'`@@@@@@@@       @@@@@@         \_    `__\
+  ;:(  @@@@@@@@@        @@@             \___(o'o)
+  :: )  @@@@          @@@@@@        ,'@@(  `===='       
+  :: : @@@@@:          @@@@         `@@@:
+  :: \  @@@@@:       @@@@@@@)    (  '@@@'
+  ;; /\      /`,    @@@@@@@@@\   :@@@@@)
+  ::/  )    {_----------------:  :~`,~~;
+ ;;'`; :   )                  :  / `; ;
+;;;; : :   ;                  :  ;  ; :              
+`'`' / :  :                   :  :  : :
+    )_ \__;      ";"          :_ ;  \_\       `,','
+    :__\  \    * `,'*         \  \  :  \   *  8`;'*  *
+        `^'     \ :/           `^'  `-^-'   \v/ :  \/ 
+Bill Ames
+</TextBlock>
+            </helpers:CaretControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
