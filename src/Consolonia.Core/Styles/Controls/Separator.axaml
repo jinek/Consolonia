@@ -1,0 +1,28 @@
+<Styles xmlns="https://github.com/avaloniaui">
+
+    <Style Selector="Separator">
+        <Setter Property="Focusable"
+                Value="False" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Height="1"
+                        Margin="-1,0"
+                        Background="{TemplateBinding Background}" />
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="MenuItem > Separator, ContextMenu > Separator">
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Margin"
+                Value="1,0" />
+        <Setter Property="Height"
+                Value="1" />
+    </Style>
+
+</Styles>

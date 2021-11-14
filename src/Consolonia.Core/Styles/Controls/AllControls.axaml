@@ -24,4 +24,8 @@
     <StyleInclude Source="/Styles/Controls/RadioButton.axaml"/>
     <StyleInclude Source="/Styles/Controls/ListBox.axaml"/>
     <StyleInclude Source="/Styles/Controls/ListBoxItem.axaml"/>
+    <StyleInclude Source="/Styles/Controls/Menu.axaml"/>
+    <StyleInclude Source="/Styles/Controls/MenuItem.axaml"/>
+    <StyleInclude Source="/Styles/Controls/SymbolsControl.axaml"/>
+    <StyleInclude Source="/Styles/Controls/Separator.axaml"/>
 </Styles>

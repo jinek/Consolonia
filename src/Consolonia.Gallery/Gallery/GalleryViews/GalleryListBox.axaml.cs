@@ -4,6 +4,7 @@ using ControlCatalog.ViewModels;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
+    [GalleryOrder(70)]
     public class GalleryListBox : UserControl
     {
         public GalleryListBox()

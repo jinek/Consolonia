@@ -24,10 +24,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Border Child="{Binding ElementName=grid,Path=SelectedItem, Converter={StaticResource GalleryItemConverter}}"
-                BorderThickness="1">
-            <Border.BorderBrush>
-                <drawing:FourBitColorBrush Color="{DynamicResource ThemeBorderBrush}"/>
-            </Border.BorderBrush>
-        </Border>
+                BorderThickness="1"
+                BorderBrush="{DynamicResource ThemeBorderBrush}"/>
     </DockPanel>
 </Window>

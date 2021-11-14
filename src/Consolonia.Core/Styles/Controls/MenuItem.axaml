@@ -1,0 +1,170 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=netstandard"
+        xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers"
+        xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls">
+    <Styles.Resources>
+        <converters:PlatformKeyGestureConverter x:Key="KeyGestureConverter" />
+    </Styles.Resources>
+
+    <Style Selector="MenuItem">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="Padding"
+                Value="1,0,0,0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="root">
+                    <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuIconColumn"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto"
+                                                  SharedSizeGroup="MenuItemIGT" />
+                                <ColumnDefinition Width="2" />
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter Name="icon"
+                                              Height="1"
+                                              MaxWidth="1"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Icon}" />
+
+                            <helpers:SymbolsControl Name="check"
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    Text="V"
+                                                    IsVisible="False"
+                                                    Margin="0,0,0,0"
+                                                    VerticalAlignment="Center" />
+                            <ContentPresenter Name="PART_HeaderPresenter"
+                                              Content="{TemplateBinding Header}"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="Center"
+                                              Grid.Column="2">
+                                <ContentPresenter.DataTemplates>
+                                    <DataTemplate DataType="sys:String">
+                                        <AccessText Text="{Binding}" />
+                                    </DataTemplate>
+                                </ContentPresenter.DataTemplates>
+                            </ContentPresenter>
+                            <TextBlock x:Name="PART_InputGestureText"
+                                       Grid.Column="3"
+                                       Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
+                                       VerticalAlignment="Center" />
+                            <helpers:SymbolsControl Name="rightArrow"
+                                                    Text=">"
+                                                    Foreground="{DynamicResource ThemeForegroundBrush}"
+                                                    Margin="0,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Grid.Column="4" />
+                            <Popup Name="PART_Popup"
+                                   PlacementMode="Right"
+                                   IsLightDismissEnabled="False"
+                                   IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ScrollViewer Classes="menuscroller">
+                                        <ItemsPresenter Name="PART_ItemsPresenter"
+                                                        Items="{TemplateBinding Items}"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                        Grid.IsSharedSizeScope="True">
+                                            <ItemsPresenter.Styles>
+                                                <Style Selector="ItemsPresenter">
+                                                    <Setter Property="(helpers:MenuExtensions.FocusOnLoad)"
+                                                            Value="True" />
+                                                </Style>
+                                            </ItemsPresenter.Styles>
+                                        </ItemsPresenter>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </helpers:CaretControl>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="MenuItem:separator">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Separator Background="{DynamicResource ThemeBorderBrush}"
+                           Margin="1,0"
+                           Height="1" />
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Menu > MenuItem">
+        <Setter Property="Padding"
+                Value="1 0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="root">
+                    <Panel>
+                        <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
+                            <ContentPresenter Name="PART_HeaderPresenter"
+                                              Content="{TemplateBinding Header}"
+                                              Margin="{TemplateBinding Padding}">
+                                <ContentPresenter.DataTemplates>
+                                    <DataTemplate DataType="sys:String">
+                                        <AccessText Text="{Binding}"
+                                                    Foreground="{TemplateBinding (TemplatedControl.Foreground)}" />
+                                    </DataTemplate>
+                                </ContentPresenter.DataTemplates>
+                            </ContentPresenter>
+                        </helpers:CaretControl>
+                        <Popup Name="PART_Popup"
+                               IsLightDismissEnabled="True"
+                               OverlayInputPassThroughElement="{Binding $parent[Menu]}"
+                               IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <ScrollViewer Classes="menuscroller">
+                                    <ItemsPresenter Name="PART_ItemsPresenter"
+                                                    Items="{TemplateBinding Items}"
+                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                    ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                    Grid.IsSharedSizeScope="True">
+                                        <ItemsPresenter.Styles>
+                                            <Style Selector="ItemsPresenter">
+                                                <Setter Property="(helpers:MenuExtensions.FocusOnLoad)"
+                                                        Value="True" />
+                                            </Style>
+                                        </ItemsPresenter.Styles>
+                                    </ItemsPresenter>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Panel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="MenuItem:selected /template/ Border#root">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
+        <Setter Property="(TemplatedControl.Foreground)"
+                Value="{DynamicResource ThemeBackgroundBrush}" />
+    </Style>
+
+    <Style Selector="MenuItem:empty /template/ helpers|SymbolsControl#rightArrow">
+        <Setter Property="IsVisible"
+                Value="False" />
+    </Style>
+
+    <Style Selector="MenuItem:disabled">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeBorderBrush}" />
+    </Style>
+</Styles>
