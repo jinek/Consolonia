@@ -323,7 +323,7 @@ namespace Consolonia.Core.Drawing
                 }
             }
         }
-
+//todo: check transformations for each drawing. text can not be scaled, almost nothing can rotate etc
         private void DrawStringInternal(IBrush foreground, string str, Point origin = new())
         {
             if (foreground is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
