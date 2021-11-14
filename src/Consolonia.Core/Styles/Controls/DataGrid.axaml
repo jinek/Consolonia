@@ -277,7 +277,7 @@
         <Setter Property="VerticalGridLinesBrush"
                 Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="BorderThickness"
                 Value="1" />
         <!--<Setter Property="DropLocationIndicatorTemplate">
