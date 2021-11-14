@@ -8,7 +8,9 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Grid Background="{TemplateBinding Background}">
-                        <TextBlock Width="1"
+                        <TextBlock Width="1" Height="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
                                    IsHitTestVisible="False"
                                    IsVisible="{TemplateBinding IsCaretShown}"
                                    Margin="{TemplateBinding Padding}"
