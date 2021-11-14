@@ -21,4 +21,5 @@
     <StyleInclude Source="/Styles/Controls/DataValidationErrors.axaml"/>
     <StyleInclude Source="/Styles/Controls/TabControl.axaml"/>
     <StyleInclude Source="/Styles/Controls/TabItem.axaml"/>
+    <StyleInclude Source="/Styles/Controls/RadioButton.axaml"/>
 </Styles>
