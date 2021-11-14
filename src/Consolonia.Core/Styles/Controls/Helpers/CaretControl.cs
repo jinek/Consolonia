@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
+using Avalonia.Media;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Styles.Controls.Helpers
