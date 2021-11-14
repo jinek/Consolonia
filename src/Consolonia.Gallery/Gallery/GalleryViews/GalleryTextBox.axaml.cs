@@ -3,6 +3,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
+    [GalleryOrder(80)]
     public class GalleryTextBox : UserControl
     {
         public GalleryTextBox()
