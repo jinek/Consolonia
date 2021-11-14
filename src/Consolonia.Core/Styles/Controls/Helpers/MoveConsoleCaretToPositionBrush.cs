@@ -15,7 +15,7 @@ namespace Consolonia.Core.Styles.Controls.Helpers
             _owner = owner;
         }
 
-        public void MoveCaret(Point position, int size)
+        public void MoveCaret(Point? position, int size)
         {
             _console.MoveCaretForControl(position, size, _owner);
         }

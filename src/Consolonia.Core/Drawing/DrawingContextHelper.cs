@@ -5,10 +5,12 @@ namespace Consolonia.Core.Drawing
 {
     internal static class DrawingContextHelper
     {
-        public static void ExecuteWithClipping(this Rect rect,Point place,Action action)
+        public static bool ExecuteWithClipping(this Rect rect,Point place,Action action)
         {
-            if (ContainsAligned(rect, place))
-                action();
+            if (!ContainsAligned(rect, place)) return false;
+            
+            action();            
+            return true;
         }
 
         public static bool ContainsAligned(this Rect rect, Point p)

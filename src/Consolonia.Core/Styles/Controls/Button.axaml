@@ -23,7 +23,7 @@
                                    Foreground="{TemplateBinding BorderBrush}"
                                    VerticalAlignment="{TemplateBinding HorizontalContentAlignment}" />
                         <helpers:CaretControl Grid.Column="1"
-                                              Padding="-1,0,0,0"
+                                              Padding="0,0,0,0"
                                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                               Margin="{TemplateBinding Padding}"
