@@ -16,7 +16,7 @@
 
         public bool IsWhiteSpace()
         {
-            return char.IsWhiteSpace(Character);
+            return char.IsWhiteSpace(Character) || Character == char.MinValue;
         }
 
         public ISymbol Blend(ref ISymbol symbolAbove)
