@@ -19,4 +19,6 @@
     <StyleInclude Source="/Styles/Controls/ItemsControl.axaml"/>
     <StyleInclude Source="/Styles/Controls/LightDismissOverlaylayer.axaml"/>
     <StyleInclude Source="/Styles/Controls/DataValidationErrors.axaml"/>
+    <StyleInclude Source="/Styles/Controls/TabControl.axaml"/>
+    <StyleInclude Source="/Styles/Controls/TabItem.axaml"/>
 </Styles>
