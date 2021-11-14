@@ -14,5 +14,6 @@ namespace Consolonia.Core.Infrastructure
         void Print(ushort x, ushort y, ConsoleColor backgroundColor, ConsoleColor foregroundColor, char character);
         event Action Resized;
         (ushort width, ushort height) Size { get; }
+        bool CaretVisible { get; set; }
     }
 }

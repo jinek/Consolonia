@@ -11,6 +11,7 @@ using Avalonia.Visuals.Media.Imaging;
 using Consolonia.Core.Drawing.PixelBuffer;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.Styles.Controls.Helpers;
+using FormattedText = Consolonia.Core.Text.FormattedText;
 
 namespace Consolonia.Core.Drawing
 {
@@ -174,8 +175,16 @@ namespace Consolonia.Core.Drawing
 
         public void DrawText(IBrush foreground, Point origin, IFormattedTextImpl text)
         {
-            //todo: restrictions
-            DrawStringInternal(foreground, text.Text, origin);
+            var formattedText = (FormattedText)text;
+            
+            for (int row = 0; row < formattedText.SkiaLines.Count; row++)
+            {
+                FormattedText.AvaloniaFormattedTextLine line = formattedText.SkiaLines[row];
+                float x = formattedText.TransformX((float)origin.X, line.Width);
+                string subString = text.Text.Substring(line.Start, line.Length);
+                DrawStringInternal(foreground, subString, new Point(x, origin.Y + row), line.Start,
+                    formattedText.ForegroundBrushes.Any() ? formattedText.ForegroundBrushes : null);
+            }
         }
 
         public void DrawGlyphRun(IBrush foreground, GlyphRun glyphRun)
@@ -345,7 +354,8 @@ namespace Consolonia.Core.Drawing
             }
         }
 //todo: check transformations for each drawing. text can not be scaled, almost nothing can rotate etc
-        private void DrawStringInternal(IBrush foreground, string str, Point origin = new())
+        private void DrawStringInternal(IBrush foreground, string str, Point origin = new(), int startIndex = 0,
+            List<KeyValuePair<FormattedText.FBrushRange, IBrush>> additionalBrushes = null)
         {
             if (foreground is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
             {
@@ -361,7 +371,29 @@ namespace Consolonia.Core.Drawing
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(i, 0));
                 _currentClip.ExecuteWithClipping(characterPoint, () =>
                 {
-                    var consolePixel = new Pixel(str[i], consoleColorBrush.Color);
+                    ConsoleColor foregroundColor = consoleColorBrush.Color;
+                    if (additionalBrushes != null)
+                    {
+                        (FormattedText.FBrushRange _, IBrush brush) = additionalBrushes.FirstOrDefault(pair =>
+                        {
+                            int globalIndex = i + startIndex;
+                            (FormattedText.FBrushRange key, _) = pair;
+                            return key.StartIndex <= globalIndex && globalIndex < key.EndIndex;
+                        });
+
+                        if (brush != null)
+                        {
+                            if (brush is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } additionalBrush)
+                            {
+                                ConsoloniaPlatform.RaiseNotSupported(11);
+                                return;
+                            }
+
+                            foregroundColor = additionalBrush.Color;
+                        }
+                    }
+
+                    var consolePixel = new Pixel(str[i], foregroundColor);
 
                     _pixelBuffer.Set((int)characterPoint.X, (int)characterPoint.Y,
                         oldPixel => oldPixel.Blend(consolePixel));
