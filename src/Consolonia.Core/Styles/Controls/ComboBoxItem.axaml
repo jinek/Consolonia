@@ -2,9 +2,7 @@
         xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
     <Style Selector="ComboBoxItem">
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeBackgroundBrush}" />
-        <Setter Property="Background"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="Padding"
                 Value="1,0" />
         <Setter Property="HorizontalAlignment"
@@ -36,16 +34,16 @@
 
     <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeAccentForegroundBrush}" />
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
     </Style>
 
     <Style Selector="ComboBoxItem:selected:focus /template/ ContentPresenter">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
     </Style>
 
     <Style Selector="ComboBoxItem:focus /template/ ContentPresenter">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
     </Style>
 </Styles>

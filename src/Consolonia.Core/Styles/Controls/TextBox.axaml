@@ -1,75 +1,85 @@
-<Style xmlns="https://github.com/avaloniaui"
-       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-       xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers"
-       Selector="TextBox">
-    <Setter Property="Background"
-            Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-    <Setter Property="SelectionBrush"
-            Value="{DynamicResource ThemeAccentBackgroundBrush}" />
-    <Setter Property="SelectionForegroundBrush"
-            Value="{DynamicResource ThemeBackgroundBrush}" />
-    <Setter Property="BorderBrush"
-            Value="{DynamicResource ThemeBorderBrush}" />
-    <Setter Property="Padding"
-            Value="0,0" />
-    <Setter Property="Template">
-        <ControlTemplate>
-            <Border Name="border"
-                    Background="{TemplateBinding Background}"
-                    BorderThickness="0"
-                    VerticalAlignment="Stretch">
-                <DockPanel Margin="{TemplateBinding Padding}"
-                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                    <TextBlock Name="floatingWatermark"
-                               Foreground="{TemplateBinding SelectionBrush}"
-                               Text="{TemplateBinding Watermark}"
-                               DockPanel.Dock="Top">
-                        <TextBlock.IsVisible>
-                            <MultiBinding Converter="{x:Static BoolConverters.And}">
-                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                                         Path="UseFloatingWatermark" />
-                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                                         Path="Text"
-                                         Converter="{x:Static StringConverters.IsNotNullOrEmpty}" />
-                            </MultiBinding>
-                        </TextBlock.IsVisible>
-                    </TextBlock>
-                    <DataValidationErrors>
-                    <Grid ColumnDefinitions="Auto,*,Auto">
-                        <ContentPresenter Grid.Column="0"
-                                          Content="{TemplateBinding InnerLeftContent}" />
-                        <ScrollViewer Grid.Column="1"
-                                      HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
-                                      VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
-                                      AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}">
-                            <Panel>
-                                <TextBlock Name="watermark"
-                                           Foreground="{TemplateBinding BorderBrush}"
-                                           Text="{TemplateBinding Watermark}"
-                                           TextAlignment="{TemplateBinding TextAlignment}"
-                                           TextWrapping="{TemplateBinding TextWrapping}"
-                                           IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"/>
-                                <helpers:ConsoloniaTextPresenter Name="PART_TextPresenter"
-                                                                 Margin="{TemplateBinding Padding}"
-                                                                 Text="{TemplateBinding Text, Mode=TwoWay}"
-                                                                 CaretIndex="{TemplateBinding CaretIndex}"
-                                                                 SelectionStart="{TemplateBinding SelectionStart}"
-                                                                 SelectionEnd="{TemplateBinding SelectionEnd}"
-                                                                 TextAlignment="{TemplateBinding TextAlignment}"
-                                                                 TextWrapping="{TemplateBinding TextWrapping}"
-                                                                 PasswordChar="{TemplateBinding PasswordChar}"
-                                                                 RevealPassword="{TemplateBinding RevealPassword}"
-                                                                 SelectionBrush="{TemplateBinding SelectionBrush}"
-                                                                 SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}" />
-                            </Panel>
-                        </ScrollViewer>
-                        <ContentPresenter Grid.Column="2"
-                                          Content="{TemplateBinding InnerRightContent}" />
-                    </Grid>
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
+    <Style Selector="TextBox">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
+        <Setter Property="SelectionBrush"
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
+        <Setter Property="SelectionForegroundBrush"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <Setter Property="Padding"
+                Value="0,0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="0"
+                        VerticalAlignment="Stretch">
+                    <DockPanel Margin="{TemplateBinding Padding}"
+                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                        <TextBlock Name="floatingWatermark"
+                                   Foreground="{DynamicResource ThemeNoDisturbBrush}"
+                                   Text="{TemplateBinding Watermark}"
+                                   DockPanel.Dock="Top">
+                            <TextBlock.IsVisible>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="UseFloatingWatermark" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Text"
+                                             Converter="{x:Static StringConverters.IsNotNullOrEmpty}" />
+                                </MultiBinding>
+                            </TextBlock.IsVisible>
+                        </TextBlock>
+                        <DataValidationErrors>
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <ContentPresenter Grid.Column="0"
+                                                  Content="{TemplateBinding InnerLeftContent}" />
+                                <ScrollViewer Grid.Column="1"
+                                              HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                                              VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
+                                              AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}">
+                                    <Panel>
+                                        <TextBlock Name="watermark"
+                                                   Foreground="{TemplateBinding BorderBrush}"
+                                                   Text="{TemplateBinding Watermark}"
+                                                   TextAlignment="{TemplateBinding TextAlignment}"
+                                                   TextWrapping="{TemplateBinding TextWrapping}"
+                                                   IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}" />
+                                        <helpers:ConsoloniaTextPresenter Name="PART_TextPresenter"
+                                                                         Margin="{TemplateBinding Padding}"
+                                                                         Text="{TemplateBinding Text, Mode=TwoWay}"
+                                                                         CaretIndex="{TemplateBinding CaretIndex}"
+                                                                         SelectionStart="{TemplateBinding SelectionStart}"
+                                                                         SelectionEnd="{TemplateBinding SelectionEnd}"
+                                                                         TextAlignment="{TemplateBinding TextAlignment}"
+                                                                         TextWrapping="{TemplateBinding TextWrapping}"
+                                                                         TextBlock.Foreground="{TemplateBinding Foreground}"
+                                                                         PasswordChar="{TemplateBinding PasswordChar}"
+                                                                         RevealPassword="{TemplateBinding RevealPassword}"
+                                                                         SelectionBrush="{TemplateBinding SelectionBrush}"
+                                                                         SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}" />
+                                    </Panel>
+                                </ScrollViewer>
+                                <ContentPresenter Grid.Column="2"
+                                                  Content="{TemplateBinding InnerRightContent}" />
+                            </Grid>
                         </DataValidationErrors>
-                </DockPanel>
-            </Border>
-        </ControlTemplate>
-    </Setter>
-</Style>
+                    </DockPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="TextBox:disabled">
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
+    </Style>
+</Styles>

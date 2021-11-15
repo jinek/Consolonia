@@ -3,13 +3,13 @@
         xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
     <Style Selector="ComboBox">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeBackgroundBrush}" />
+                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeForegroundBrush}" />
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
         <Setter Property="BorderThickness"
                 Value="0" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderBrush}" />
+                Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Left" />
         <Setter Property="VerticalContentAlignment"
@@ -21,68 +21,59 @@
         <Setter Property="MinHeight"
                 Value="1" />
         <Setter Property="PlaceholderForeground"
-                Value="{DynamicResource ThemeBorderBrush}" />
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
                 Value="Disabled" />
         <Setter Property="MaxDropDownHeight"
                 Value="22" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="border"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                    <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
-                        <TextBlock Text="["
-                                   Foreground="{TemplateBinding BorderBrush}" />
+                <Grid ColumnDefinitions="*,Auto">
+                    <Panel Grid.Column="0"
+                           Background="{TemplateBinding Background}">
                         <TextBlock Name="PlaceholderTextBlock"
-                                   Grid.Column="1"
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                    Margin="{TemplateBinding Padding}"
                                    Text="{TemplateBinding PlaceholderText}"
                                    Foreground="{TemplateBinding PlaceholderForeground}"
                                    IsVisible="{TemplateBinding SelectionBoxItem, Converter={x:Static ObjectConverters.IsNull}}" />
-                        <ContentControl Grid.Column="1"
-                                        Content="{TemplateBinding SelectionBoxItem}"
+                        <ContentControl Content="{TemplateBinding SelectionBoxItem}"
                                         ContentTemplate="{TemplateBinding ItemTemplate}"
                                         Margin="{TemplateBinding Padding}"
                                         VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
-                        <helpers:SymbolsControl Foreground="{TemplateBinding BorderBrush}"
-                                                Text="["
-                                                Grid.Column="2"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Top" />
-                        <ToggleButton Name="toggle"
-                                      BorderThickness="0"
-                                      ClickMode="Press"
-                                      Focusable="False"
-                                      IsChecked="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
-                                      Grid.Column="3"
-                                      Padding="0"
-                                      VerticalAlignment="Top">
-                            <helpers:CaretControl Padding="0,0,0,0"
-                                                  IsCaretShown="{TemplateBinding IsFocused}"
-                                                  Background="{x:Null}">
-                                <helpers:SymbolsControl Foreground="{TemplateBinding BorderBrush}"
-                                                        Text="↓"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center" />
-                            </helpers:CaretControl>
-                        </ToggleButton>
-                        <TextBlock Text="]"
-                                   Foreground="{TemplateBinding BorderBrush}"
-                                   Grid.Column="4" />
-                        <Popup Grid.Column="1"
-                               Name="PART_Popup"
-                               IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
-                               MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
-                               MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                               PlacementTarget="{TemplateBinding}"
-                               IsLightDismissEnabled="True">
+                    </Panel>
+                    <ToggleButton Name="toggle"
+                                  BorderThickness="0"
+                                  ClickMode="Press"
+                                  Focusable="False"
+                                  IsChecked="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+                                  Grid.Column="1"
+                                  Padding="0"
+                                  VerticalAlignment="Top">
+                        <helpers:CaretControl Padding="0,0,0,0"
+                                              IsCaretShown="{TemplateBinding IsFocused}"
+                                              Background="{x:Null}">
+                            <helpers:SymbolsControl Foreground="{TemplateBinding BorderBrush}"
+                                                    Text="↓"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center" />
+                        </helpers:CaretControl>
+                    </ToggleButton>
+                    <Popup Grid.Column="0"
+                           Name="PART_Popup"
+                           IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+                           MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                           MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                           PlacementTarget="{TemplateBinding}"
+                           IsLightDismissEnabled="True">
+                        <Panel>
+                            <Border Background="{DynamicResource ThemeShadeBrush}"
+                                    Margin="2,1,-1,-1" />
                             <Border BorderBrush="{DynamicResource ThemeBorderBrush}"
                                     BorderThickness="1"
+                                    Margin="0,0,1,1"
                                     Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
                                 <ScrollViewer
                                     HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
@@ -102,22 +93,23 @@
                                     </ItemsPresenter>
                                 </ScrollViewer>
                             </Border>
-                        </Popup>
-                    </Grid>
-                </Border>
+                        </Panel>
+                    </Popup>
+                </Grid>
+
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="ComboBox:focus">
+    <!--<Style Selector="ComboBox:focus">
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeForegroundBrush}" />
-    </Style>
+    </Style>-->
     <Style Selector="ComboBox:disabled">
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
         <Setter Property="PlaceholderForeground"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
     </Style>
 </Styles>

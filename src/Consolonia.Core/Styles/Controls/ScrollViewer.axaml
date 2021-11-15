@@ -5,6 +5,7 @@
   <Style Selector="ScrollViewer">
     <Setter Property="(helpers:ScrollViewerExtensions.ScrollOnArrows)" Value="True"/>
     <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource ThemeBackgroundBrush}"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Grid ColumnDefinitions="*,Auto" RowDefinitions="*,Auto">
@@ -44,7 +45,7 @@
             <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
                                   IsVisible="{TemplateBinding Focusable}">
               <helpers:SymbolsControl Text="+" 
-                                      Foreground="{TemplateBinding Background}"/>
+                                      Foreground="{TemplateBinding BorderBrush}"/>
             </helpers:CaretControl>
           </Panel>
         </Grid>

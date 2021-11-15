@@ -268,7 +268,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetParent(IWindowImpl parent)
         {
-            throw new NotImplementedException();
+            //todo: return throw new NotImplementedException();
         }
 
         public void SetEnabled(bool enable)

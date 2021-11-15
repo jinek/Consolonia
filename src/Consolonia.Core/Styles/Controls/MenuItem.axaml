@@ -96,7 +96,7 @@
     <Style Selector="MenuItem:separator">
         <Setter Property="Template">
             <ControlTemplate>
-                <Separator Background="{DynamicResource ThemeBorderBrush}"
+                <Separator Background="{DynamicResource ThemeErrorBrush}"
                            Margin="1,0"
                            Height="1" />
             </ControlTemplate>
@@ -153,9 +153,16 @@
 
     <Style Selector="MenuItem:selected /template/ Border#root">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
-        <Setter Property="(TemplatedControl.Foreground)"
-                Value="{DynamicResource ThemeBackgroundBrush}" />
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <!--<Setter Property="(TemplatedControl.Foreground)"
+                Value="{DynamicResource ThemeBackgroundBrush}" />-->
+    </Style>
+    
+    <Style Selector="MenuItem:focus /template/ Border#root">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
+        <!--<Setter Property="(TemplatedControl.Foreground)"
+                Value="{DynamicResource ThemeBackgroundBrush}" />-->
     </Style>
 
     <Style Selector="MenuItem:empty /template/ helpers|SymbolsControl#rightArrow">
@@ -165,6 +172,6 @@
 
     <Style Selector="MenuItem:disabled">
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeBorderBrush}" />
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
     </Style>
 </Styles>

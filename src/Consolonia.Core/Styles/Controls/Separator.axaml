@@ -5,7 +5,7 @@
                 Value="False" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                <Border BorderBrush="{TemplateBinding Foreground}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Height="1"
                         Margin="-1,0"
@@ -15,8 +15,7 @@
     </Style>
 
     <Style Selector="MenuItem > Separator, ContextMenu > Separator">
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource ThemeNoDisturbBrush}"/>
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="Margin"

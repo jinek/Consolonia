@@ -1,3 +1,4 @@
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -11,19 +12,16 @@ namespace Consolonia.Core.Styles.Controls.Helpers
     {
         static SymbolsControl()
         {
-            AffectsRender<SymbolsControl>(ForegroundProperty, TextProperty);
-            AffectsMeasure<SymbolsControl>(TextProperty);
-            AffectsArrange<SymbolsControl>(TextProperty);
+            AffectsRender<SymbolsControl>(ForegroundProperty, TextProperty, FillProperty);
+            AffectsMeasure<SymbolsControl>(TextProperty, FillProperty);
+            AffectsArrange<SymbolsControl>(TextProperty, FillProperty);
         }
 
         /// <summary>
         /// Defines the <see cref="Foreground"/> property.
         /// </summary>
-        public static readonly AttachedProperty<IBrush> ForegroundProperty =
-            AvaloniaProperty.RegisterAttached<SymbolsControl, Control, IBrush>(
-                nameof(Foreground),
-                Brushes.Black,
-                true);
+        public static readonly StyledProperty<IBrush> ForegroundProperty =
+            TextBlock.ForegroundProperty.AddOwner<SymbolsControl>();
 
         /// <summary>
         /// Gets or sets a brush used to paint the text.
@@ -41,6 +39,15 @@ namespace Consolonia.Core.Styles.Controls.Helpers
                 defaultBindingMode: BindingMode.TwoWay,
                 enableDataValidation: true);
 
+        private static readonly StyledProperty<bool> FillProperty =
+            AvaloniaProperty.Register<SymbolsControl, bool>("Fill");
+
+        public bool Fill
+        {
+            get => GetValue(FillProperty);
+            set => SetValue(FillProperty, value);
+        }
+
         private string _text;
         private GlyphRun _shapedText;
 
@@ -57,12 +64,24 @@ namespace Consolonia.Core.Styles.Controls.Helpers
 
         public override void Render(DrawingContext context)
         {
-            context.DrawGlyphRun(Foreground, _shapedText);
+            if (!Fill)
+            {
+                context.DrawGlyphRun(Foreground, _shapedText);
+            }
+            else
+            {
+                var formattedText = new FormattedText(string.Concat(Enumerable.Repeat(Text[0], (int)Bounds.Width)),
+                    Typeface.Default, 1, TextAlignment.Left, TextWrapping.NoWrap, Bounds.Size);
+                for (int y = 0; y < Bounds.Height; y++)
+                {
+                    context.DrawText(Foreground, new Point(0, y), formattedText);
+                }
+            }
         }
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            return _shapedText?.Size??Size.Empty;
+            return !Fill ? _shapedText?.Size ?? Size.Empty : Size.Empty;
         }
     }
 }

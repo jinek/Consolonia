@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="Consolonia.Core.Styles.Controls.DialogWrap">
+
+    <Panel>
+        <Panel x:Name="Border">
+            <Border Background="{drawing:FourBitColorBrush Mode=Shaded}"
+                    Margin="2,1,-1,-1"/>
+            <Border Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                    BorderBrush="{DynamicResource ThemeBorderBrush}"
+                    BorderThickness="1"/>
+        </Panel>
+        <ContentPresenter x:Name="ContentPresenter"
+                          Margin="1" />
+    </Panel>
+
+</UserControl>

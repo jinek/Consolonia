@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
     <Style Selector="helpers|SymbolsControl">
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeForegroundBrush}" />
+        <!--<Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />-->
     </Style>
 </Styles>

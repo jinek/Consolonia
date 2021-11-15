@@ -16,7 +16,7 @@
                 <!--<Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" /> -->
                 <VisualLayerManager>
                     <!--<VisualLayerManager.ChromeOverlayLayer>
-                        <TitleBar />
+                        <TitleBar />Red
                     </VisualLayerManager.ChromeOverlayLayer>-->
                     <ContentPresenter Name="PART_ContentPresenter"
                                       ContentTemplate="{TemplateBinding ContentTemplate}"
