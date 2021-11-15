@@ -12,12 +12,13 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
                                    IsHitTestVisible="False"
+                                   Background="{DynamicResource ThemeActionBackgroundBrush}"
                                    IsVisible="{TemplateBinding IsCaretShown}"
                                    Margin="{TemplateBinding Padding}"
                                    Tag="This TextBlock is a hack. Otherwise Line below does not get redrawn in CheckBox">
-                            <TextBlock.Background>
+                            <!--<TextBlock.Background>
                                 <drawing:FourBitColorBrush Mode="Transparent"/>
-                            </TextBlock.Background>
+                            </TextBlock.Background>-->
                         </TextBlock>
                         <ContentPresenter Name="PART_ContentPresenter"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"

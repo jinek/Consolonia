@@ -51,7 +51,8 @@
                                   IsChecked="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
                                   Grid.Column="1"
                                   Padding="0"
-                                  VerticalAlignment="Top">
+                                  VerticalAlignment="Top"
+                                  Background="{x:Null}">
                         <helpers:CaretControl Padding="0,0,0,0"
                                               IsCaretShown="{TemplateBinding IsFocused}"
                                               Background="{x:Null}">
