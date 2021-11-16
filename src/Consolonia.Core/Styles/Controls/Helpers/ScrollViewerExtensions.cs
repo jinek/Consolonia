@@ -8,7 +8,7 @@ using Avalonia.Input;
 
 namespace Consolonia.Core.Styles.Controls.Helpers
 {
-    public class ScrollViewerExtensions : AvaloniaObject
+    internal class ScrollViewerExtensions : AvaloniaObject
     {
         public static readonly AttachedProperty<bool> ScrollOnArrowsProperty =
             AvaloniaProperty.RegisterAttached<ScrollViewer, bool>("ScrollOnArrows", typeof(ScrollViewerExtensions));

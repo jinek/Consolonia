@@ -2,8 +2,11 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
+using Consolonia.Core.Infrastructure;
 using DynamicData.Binding;
 
 namespace Consolonia.Core.Styles.Controls
@@ -80,14 +83,32 @@ namespace Consolonia.Core.Styles.Controls
             _disposable2 = control.GetPropertyChangedObservable(BoundsProperty).Subscribe(args =>
             {
                 var rect = (Rect)args.NewValue;
-                //Border.Margin = new Thickness(rect.Left, rect.Top, 0, 0);
-                Border.Width = rect.Width+2;
-                Border.Height = rect.Height+2;
+                Border.Width = rect.Width + 2;
+                Border.Height = rect.Height + 2;
             });
             ContentPresenter.Content = control;
         }
 
         private ContentPresenter ContentPresenter => this.Get<ContentPresenter>("ContentPresenter");
         private Control Border => this.Get<Control>("Border");
+
+        private void Close_Clicked(object? sender, RoutedEventArgs e)
+        {
+            CloseDialog();
+        }
+
+        private void CloseDialog()
+        {
+            ((Control)Content).CloseDialog();
+        }
+
+        private void InputElement_OnKeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Cancel or Key.Escape)
+            {
+                CloseDialog();
+                e.Handled = true;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 <Style xmlns="https://github.com/avaloniaui"
+       xmlns:infrastructure="clr-namespace:Consolonia.Core.Infrastructure"
        Selector="Window">
     <Setter Property="Background"
             Value="{DynamicResource ThemeBackgroundBrush}" />
@@ -7,6 +8,8 @@
             Value="{DynamicResource ThemeForegroundBrush}" />
     <Setter Property="FontSize"
             Value="{DynamicResource FontSizeNormal}" />
+    <Setter Property="(infrastructure:DialogHost.IsDialogHost)"
+            Value="True"/>
     <Setter Property="Template">
         <ControlTemplate>
             <Panel>

@@ -21,7 +21,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private void Button_OnClick(object? sender, RoutedEventArgs e)
         {
-            new SomeDialogWindow().ShowPrivate(this);
+            new SomeDialogWindow().ShowDialogPrivate(this);
         }
     }
 }

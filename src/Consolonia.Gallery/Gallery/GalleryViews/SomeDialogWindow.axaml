@@ -28,8 +28,9 @@ _____/          :--'
 
 Bill Ames
 </TextBlock>
-        <Button Content="Close"
+        <Button Content="One More"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"/>
+                VerticalAlignment="Bottom"
+                Click="OneMore_Clicked"/>
     </Panel>
 </UserControl>
