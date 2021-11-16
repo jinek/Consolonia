@@ -14,7 +14,6 @@
     </Window.Resources>
     <DockPanel>
         <DataGrid x:Name="grid"
-                  Width="20"
                   SelectedIndex="0"
                   SelectionMode="Single"
                   DockPanel.Dock="Left">

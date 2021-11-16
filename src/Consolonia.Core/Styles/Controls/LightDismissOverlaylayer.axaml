@@ -2,6 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:drawing="clr-namespace:Consolonia.Core.Drawing">
     <Style Selector="LightDismissOverlayLayer">
-        <Setter Property="Background" Value="{drawing:FourBitColorBrush Mode=Shaded}"/>
+        <Setter Property="Background" Value="{x:Null}"/>
     </Style>
 </Styles>

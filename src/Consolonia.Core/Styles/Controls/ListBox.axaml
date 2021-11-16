@@ -1,6 +1,6 @@
-<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
     <Style Selector="ListBox">
-        <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="0"/>
@@ -15,7 +15,14 @@
                                   Background="{TemplateBinding Background}"
                                   HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
                                   VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
-                                  AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}">
+                                  Margin="0,0,-1,-1">
+                        <ScrollViewer.Styles>
+                            <Style Selector="ScrollViewer">
+                                <Setter
+                                    Property="(helpers:ScrollViewerExtensions.ScrollBarsWidth)"
+                                    Value="1" />
+                            </Style>
+                        </ScrollViewer.Styles>
                         <ItemsPresenter Name="PART_ItemsPresenter"
                                         Items="{TemplateBinding Items}"
                                         ItemsPanel="{TemplateBinding ItemsPanel}"
@@ -28,6 +35,6 @@
         </Setter>
     </Style>
     <Style Selector="ListBox:disabled">
-        <Setter Property="BorderBrush" Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource ThemeNoDisturbBrush}" />
     </Style>
 </Styles>

@@ -40,7 +40,7 @@
 
     <Style Selector="DataGridColumnHeader">
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
+                Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Left" />
         <Setter Property="VerticalContentAlignment"
@@ -64,11 +64,8 @@
                         <TextBlock Name="SortIcon"
                                    Grid.Column="1"
                                    Foreground="{TemplateBinding Foreground}"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Width="1"
-                                   Margin="1,0,0,0"
-                                   Text="s" />
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                   Margin="0"/>
 
                     </Grid>
 
@@ -89,16 +86,22 @@
     <Style Selector="DataGridColumnHeader /template/ TextBlock#SortIcon">
         <Setter Property="IsVisible"
                 Value="False" />
+        <Setter Property="Text"
+                Value="" />
     </Style>
 
     <Style Selector="DataGridColumnHeader:sortascending /template/ TextBlock#SortIcon">
         <Setter Property="IsVisible"
                 Value="True" />
+        <Setter Property="Text"
+                Value="▼" />
     </Style>
 
     <Style Selector="DataGridColumnHeader:sortdescending /template/ TextBlock#SortIcon">
         <Setter Property="IsVisible"
                 Value="True" />
+        <Setter Property="Text"
+                Value="▲" />
     </Style>
 
     <Style Selector="DataGridRow">
@@ -109,18 +112,27 @@
                                     ColumnDefinitions="Auto,*"
                                     Height="1">
 
-                    <Rectangle Name="BackgroundRectangle"
+                    <Rectangle Name="SelectionRectangle"
                                Grid.RowSpan="2"
                                Grid.ColumnSpan="2"
                                Height="1"
-                               Fill="{DynamicResource ThemeAccentBackgroundBrush}" />
-
+                               Fill="{DynamicResource ThemeChooserBackgroundBrush}" />
                     
-                        <DataGridRowHeader Name="PART_RowHeader"
-                                           Grid.RowSpan="3"
-                                           DataGridFrozenGrid.IsFrozen="True" />
+                    <Rectangle Name="FocusRectangle"
+                               Grid.RowSpan="2"
+                               Grid.ColumnSpan="2"
+                               Height="1"
+                               Fill="{DynamicResource ThemeActionBackgroundBrush}"
+                               IsVisible="{Binding ElementName=FocusControl, Path=IsCaretShown}">
+                        
+                    </Rectangle>
 
-                    <helpers:CaretControl Grid.Column="1">
+
+                    <DataGridRowHeader Name="PART_RowHeader"
+                                       Grid.RowSpan="3"
+                                       DataGridFrozenGrid.IsFrozen="True" />
+
+                    <helpers:CaretControl Grid.Column="1" x:Name="FocusControl">
                         <helpers:CaretControl.IsCaretShown>
                             <MultiBinding Converter="{x:Static BoolConverters.And}">
                                 <Binding RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=DataGrid}"
@@ -141,7 +153,7 @@
         </Setter>
     </Style>
 
-    <Style Selector="DataGridRow /template/ Rectangle#BackgroundRectangle">
+    <Style Selector="DataGridRow /template/ Rectangle#SelectionRectangle">
         <Setter Property="IsVisible"
                 Value="False" />
     </Style>
@@ -151,7 +163,7 @@
     <Setter Property="Opacity" Value="0.5"/>
   </Style>-->
 
-    <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+    <Style Selector="DataGridRow:selected /template/ Rectangle#SelectionRectangle">
         <Setter Property="IsVisible"
                 Value="True" />
     </Style>
@@ -160,10 +172,10 @@
         <Setter Property="(helpers:DataGridExtensions.IsSelected)" Value="True"/>
     </Style>
 
-    <Style Selector="DataGridRow:selected">
+    <!--<Style Selector="DataGridRow:selected">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
-    </Style>
+    </Style>-->
 
     <Style Selector="DataGridRowHeader">
         <Setter Property="Focusable"
@@ -259,8 +271,6 @@
         </Setter>
         <Setter Property="AlternatingRowBackground"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-        <Setter Property="Background"
-                Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="HeadersVisibility"
                 Value="Column" />
         <Setter Property="HorizontalScrollBarVisibility"
@@ -317,23 +327,29 @@
                                                    Grid.ColumnSpan="2"
                                                    Grid.Row="2" />
                             <Rectangle Name="PART_BottomRightCorner"
-                                       Fill="{DynamicResource ThemeAccentForegroundBrush}"
                                        Grid.Column="2"
                                        Grid.Row="3" />
                             <DataGridColumnHeadersPresenter Name="PART_ColumnHeadersPresenter"
                                                             Grid.Column="1"
                                                             VerticalAlignment="Stretch"
                                                             Grid.RowSpan="6"/>
-                            <Rectangle Name="BottomLeftCorner"
+                            <!--<Rectangle Name="BottomLeftCorner"
                                        Fill="{DynamicResource ThemeAccentForegroundBrush}"
                                        Grid.Row="3"
-                                       Grid.ColumnSpan="2" />
+                                       Grid.ColumnSpan="2" 
+                                       Margin="0,0,0,-1"/>-->
                             <ScrollBar Name="PART_VerticalScrollbar"
                                        Orientation="Vertical"
                                        Grid.Column="2"
                                        Grid.Row="2"
                                        Width="1"
-                                       Margin="0" />
+                                       Margin="0,0,-1,0" />
+                            <ScrollBar Name="PART_HorizontalScrollbar"
+                                       Orientation="Horizontal"
+                                       Grid.Column="1"
+                                       Grid.Row="3"
+                                       Height="1"
+                                       Margin="0,0,0,-1" />
 
                             <!--<Grid Grid.Column="1" Grid.Row="2"
                   ColumnDefinitions="Auto,*">

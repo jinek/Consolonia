@@ -2,12 +2,18 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:drawing="clr-namespace:Consolonia.Core.Drawing"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    <!--https://www.mikrocontroller.net/attachment/483578/Turbo_Vision.gif-->
     <system:Double x:Key="FontSizeNormal">1</system:Double>
-    <drawing:FourBitColorBrush x:Key="ThemeForegroundBrush" Color="White"/>
-    <drawing:FourBitColorBrush x:Key="ThemeBackgroundBrush" Color="Black"/>
-    <drawing:FourBitColorBrush x:Key="ThemeAlternativeBackgroundBrush" Color="DarkGray"/>
-    <drawing:FourBitColorBrush x:Key="ThemeBorderBrush" Color="Gray"/>
-    <drawing:FourBitColorBrush x:Key="ThemeAccentForegroundBrush" Color="DarkCyan"/>
-    <drawing:FourBitColorBrush x:Key="ThemeAccentBackgroundBrush" Color="Green"/>
+    <drawing:FourBitColorBrush x:Key="ThemeForegroundBrush" Color="Black"/>
+    <drawing:FourBitColorBrush x:Key="ThemeBackgroundBrush" Color="Gray"/>
+    <drawing:FourBitColorBrush x:Key="ThemeChooserBackgroundBrush" Color="Cyan"/>
+    <drawing:FourBitColorBrush x:Key="ThemeActionBackgroundBrush" Color="Green"/>
+    <drawing:FourBitColorBrush x:Key="ThemeSelectionBackgroundBrush" Color="DarkBlue"/>
+    <drawing:FourBitColorBrush x:Key="ThemeSelectionForegroundBrush" Color="White"/>
+    <drawing:FourBitColorBrush x:Key="ThemeAlternativeBackgroundBrush" Color="White"/>
+    <drawing:FourBitColorBrush x:Key="ThemeBorderBrush" Color="DarkGray"/>
+    <drawing:FourBitColorBrush x:Key="ThemeNoDisturbBrush" Color="DarkGray"/>
+    <drawing:FourBitColorBrush x:Key="ThemeShadeBrush" Mode="Shaded"/>
+    <drawing:FourBitColorBrush x:Key="ThemePseudoShadeBrush" Color="Black"/>
     <drawing:FourBitColorBrush x:Key="ThemeErrorBrush" Color="Red"/>
 </ResourceDictionary>

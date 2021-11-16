@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers;assembly=Consolonia.Core"
              xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
              mc:Ignorable="d"
              d:DesignWidth="800"
@@ -37,9 +36,8 @@
                       HorizontalScrollBarVisibility="{Binding HorizontalScrollVisibility}"
                       VerticalScrollBarVisibility="{Binding VerticalScrollVisibility}"
                       Focusable="True">
-            <helpers:CaretControl IsCaretShown="{Binding ElementName=cowTextBlock, Path=IsFocused}">
-                <TextBlock xml:space="preserve"
-                           Foreground="{drawing:FourBitColorBrush DarkCyan}">Focus to ScrollViewer
+            <TextBlock xml:space="preserve"
+                       Foreground="{drawing:FourBitColorBrush DarkCyan}">Focus to ScrollViewer
                                        /;    ;\
                                    __  \\____//
                                   /{_\_/   `'\____
@@ -60,7 +58,7 @@
         `^'     \ :/           `^'  `-^-'   \v/ :  \/ 
 Bill Ames
 </TextBlock>
-            </helpers:CaretControl>
+
         </ScrollViewer>
     </Grid>
 </UserControl>
