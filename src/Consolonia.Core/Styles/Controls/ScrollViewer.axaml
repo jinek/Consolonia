@@ -47,7 +47,7 @@
             <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
                                   IsVisible="{TemplateBinding Focusable}">
               <helpers:SymbolsControl Text="+" 
-                                      Foreground="{DynamicResource ThemeChooserBackgroundBrush}"/>
+                                      Foreground="{DynamicResource ThemeSelectionBackgroundBrush}"/>
             </helpers:CaretControl>
           </Panel>
         </Grid>

@@ -13,7 +13,7 @@
                 <Setter Property="HorizontalAlignment" Value="Center"/>
             </Style>
         </StackPanel.Styles>
-        <Button Height="5">Standard _XAML Button</Button>
+        <Button>Standard _XAML Button</Button>
         <Button Foreground="{drawing:FourBitColorBrush DarkYellow}">Foreground</Button>
         <Button Background="{drawing:FourBitColorBrush Yellow}">Background</Button>
         <Button IsEnabled="False">Disabled</Button>
