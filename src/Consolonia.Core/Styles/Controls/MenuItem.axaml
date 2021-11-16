@@ -22,7 +22,8 @@
                     <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuIconColumn"/>
+                                <ColumnDefinition Width="Auto"
+                                                  SharedSizeGroup="MenuIconColumn" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto"
@@ -67,24 +68,29 @@
                                    PlacementMode="Right"
                                    IsLightDismissEnabled="False"
                                    IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
-                                <Border Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ScrollViewer Classes="menuscroller">
-                                        <ItemsPresenter Name="PART_ItemsPresenter"
-                                                        Items="{TemplateBinding Items}"
-                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                        ItemTemplate="{TemplateBinding ItemTemplate}"
-                                                        Grid.IsSharedSizeScope="True">
-                                            <ItemsPresenter.Styles>
-                                                <Style Selector="ItemsPresenter">
-                                                    <Setter Property="(helpers:MenuExtensions.FocusOnLoad)"
-                                                            Value="True" />
-                                                </Style>
-                                            </ItemsPresenter.Styles>
-                                        </ItemsPresenter>
-                                    </ScrollViewer>
-                                </Border>
+                                <Panel>
+                                    <Border Background="{DynamicResource ThemeShadeBrush}"
+                                            Margin="2,1,0,0" />
+                                    <Border Background="{TemplateBinding Background}"
+                                            Margin="0,0,2,1"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ScrollViewer Classes="menuscroller">
+                                            <ItemsPresenter Name="PART_ItemsPresenter"
+                                                            Items="{TemplateBinding Items}"
+                                                            ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                            ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                            Grid.IsSharedSizeScope="True">
+                                                <ItemsPresenter.Styles>
+                                                    <Style Selector="ItemsPresenter">
+                                                        <Setter Property="(helpers:MenuExtensions.FocusOnLoad)"
+                                                                Value="True" />
+                                                    </Style>
+                                                </ItemsPresenter.Styles>
+                                            </ItemsPresenter>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Panel>
                             </Popup>
                         </Grid>
                     </helpers:CaretControl>
@@ -96,7 +102,7 @@
     <Style Selector="MenuItem:separator">
         <Setter Property="Template">
             <ControlTemplate>
-                <Separator Background="{DynamicResource ThemeBorderBrush}"
+                <Separator Background="{DynamicResource ThemeErrorBrush}"
                            Margin="1,0"
                            Height="1" />
             </ControlTemplate>
@@ -126,24 +132,29 @@
                                IsLightDismissEnabled="True"
                                OverlayInputPassThroughElement="{Binding $parent[Menu]}"
                                IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
-                            <Border Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}">
-                                <ScrollViewer Classes="menuscroller">
-                                    <ItemsPresenter Name="PART_ItemsPresenter"
-                                                    Items="{TemplateBinding Items}"
-                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                    ItemTemplate="{TemplateBinding ItemTemplate}"
-                                                    Grid.IsSharedSizeScope="True">
-                                        <ItemsPresenter.Styles>
-                                            <Style Selector="ItemsPresenter">
-                                                <Setter Property="(helpers:MenuExtensions.FocusOnLoad)"
-                                                        Value="True" />
-                                            </Style>
-                                        </ItemsPresenter.Styles>
-                                    </ItemsPresenter>
-                                </ScrollViewer>
-                            </Border>
+                            <Panel>
+                                <Border Background="{DynamicResource ThemeShadeBrush}"
+                                        Margin="2,1,0,0" />
+                                <Border Background="{TemplateBinding Background}"
+                                        Margin="0,0,2,1"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ScrollViewer Classes="menuscroller">
+                                        <ItemsPresenter Name="PART_ItemsPresenter"
+                                                        Items="{TemplateBinding Items}"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                        Grid.IsSharedSizeScope="True">
+                                            <ItemsPresenter.Styles>
+                                                <Style Selector="ItemsPresenter">
+                                                    <Setter Property="(helpers:MenuExtensions.FocusOnLoad)"
+                                                            Value="True" />
+                                                </Style>
+                                            </ItemsPresenter.Styles>
+                                        </ItemsPresenter>
+                                    </ScrollViewer>
+                                </Border>
+                            </Panel>
                         </Popup>
                     </Panel>
                 </Border>
@@ -153,9 +164,16 @@
 
     <Style Selector="MenuItem:selected /template/ Border#root">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
-        <Setter Property="(TemplatedControl.Foreground)"
-                Value="{DynamicResource ThemeBackgroundBrush}" />
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <!--<Setter Property="(TemplatedControl.Foreground)"
+                Value="{DynamicResource ThemeBackgroundBrush}" />-->
+    </Style>
+
+    <Style Selector="MenuItem:focus /template/ Border#root">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
+        <!--<Setter Property="(TemplatedControl.Foreground)"
+                Value="{DynamicResource ThemeBackgroundBrush}" />-->
     </Style>
 
     <Style Selector="MenuItem:empty /template/ helpers|SymbolsControl#rightArrow">
@@ -165,6 +183,6 @@
 
     <Style Selector="MenuItem:disabled">
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeBorderBrush}" />
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
     </Style>
 </Styles>

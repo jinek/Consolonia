@@ -4,27 +4,28 @@
   <Style Selector="ScrollBar">
     <Setter Property="Cursor" Value="Arrow" />
     <Setter Property="Background"
-            Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+            Value="{DynamicResource ThemeChooserBackgroundBrush}" />
     <Setter Property="BorderBrush"
-            Value="{DynamicResource ThemeBackgroundBrush}" />
+            Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
     <Setter Property="Foreground"
-            Value="{DynamicResource ThemeBorderBrush}" />
+            Value="{DynamicResource ThemeChooserBackgroundBrush}" />
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Background="{TemplateBinding Foreground}">
+        <Border Background="{TemplateBinding BorderBrush}">
           <Grid RowDefinitions="Auto,*,Auto">
             <Border Grid.Row="1"
                     BorderThickness="0"
-                    Background="{TemplateBinding Background}"/>
-            <Border Grid.RowSpan="3"
-                    BorderThickness="1"
-                    BorderBrush="{TemplateBinding Foreground}"
-                    Background="{x:Null}"/>
+                    Background="{TemplateBinding Background}">
+              <helpers:SymbolsControl Fill="True"
+                                      Width="1"
+                                      Text="░"
+                                      Foreground="{TemplateBinding BorderBrush}" />
+            </Border>
             <helpers:SymbolsControl HorizontalAlignment="Center"
                                     Classes="repeat"
                                     Grid.Row="0"                       
-                                    Foreground="{TemplateBinding BorderBrush}"
-                                    Text="^"/>
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Text="▲"/>
             <Track Grid.Row="1"
                    Minimum="{TemplateBinding Minimum}"
                    Maximum="{TemplateBinding Maximum}"
@@ -35,12 +36,12 @@
               <Thumb Name="thumb"/>
             </Track>
             <helpers:SymbolsControl HorizontalAlignment="Center"
-                                    Foreground="{TemplateBinding BorderBrush}"
+                                    Foreground="{TemplateBinding Foreground}"
                                     Classes="repeat"
                                     Grid.Row="2"
                                     Focusable="False"
                                     MinHeight="1"
-                                    Text="v"/>
+                                    Text="▼"/>
           </Grid>
         </Border>
       </ControlTemplate>
@@ -49,20 +50,21 @@
   <Style Selector="ScrollBar:horizontal">
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Background="{TemplateBinding Foreground}">
+        <Border Background="{TemplateBinding BorderBrush}">
           <Grid ColumnDefinitions="Auto,*,Auto">
             <Border Grid.Column="1"
                     BorderThickness="0"
-                    Background="{TemplateBinding Background}"/>
-            <Border Grid.ColumnSpan="3"
-                    BorderThickness="1"
-                    BorderBrush="{TemplateBinding Foreground}"
-                    Background="{x:Null}"/>
+                    Background="{TemplateBinding Background}">
+              <helpers:SymbolsControl Fill="True"
+                                      Height="1"
+                                      Text="░"
+                                      Foreground="{TemplateBinding BorderBrush}" />
+            </Border>
             <helpers:SymbolsControl HorizontalAlignment="Center"
                                     Classes="repeat"
                                     Grid.Column="0"                       
-                                    Foreground="{TemplateBinding BorderBrush}"
-                                    Text="&lt;"/>
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Text="◄"/>
             <Track Grid.Column="1"
                    Minimum="{TemplateBinding Minimum}"
                    Maximum="{TemplateBinding Maximum}"
@@ -74,23 +76,40 @@
             <helpers:SymbolsControl HorizontalAlignment="Center"
                                     Classes="repeat"
                                     Grid.Column="2"                       
-                                    Foreground="{TemplateBinding BorderBrush}"
-                                    Text="&gt;"/>
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Text="►"/>
           </Grid>
         </Border>
       </ControlTemplate>
     </Setter>
   </Style>
   <Style Selector="ScrollBar /template/ Thumb#thumb">
+    <Setter Property="Foreground" Value="{DynamicResource ThemeChooserBackgroundBrush}"/>
+    <Setter Property="Background" Value="{DynamicResource ThemeSelectionBackgroundBrush}"/>
+    <Setter Property="Tag" Value="│"/>
+    <Setter Property="Width" Value="1"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate>
-          <Rectangle VerticalAlignment="Stretch"
-            Fill="{TemplateBinding Foreground}">
-          </Rectangle>
+          <Panel Background="{TemplateBinding Background}">
+            <helpers:SymbolsControl Foreground="{TemplateBinding Foreground}"
+                                    Fill="True"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Text="{TemplateBinding Tag}"
+                                    Margin="{TemplateBinding Padding}"/>
+          </Panel>
+          
         </ControlTemplate>
       </Setter.Value>
     </Setter>
+  </Style>
+  <Style Selector="ScrollBar:horizontal /template/ Thumb#thumb">
+    <Setter Property="Tag"
+            Value="─" />
+    <Setter Property="Height" Value="1"/>
+    <Setter Property="Width" Value="NaN"/>
+    <Setter Property="Padding" Value="1,0"/>
   </Style>
   <!--<Style Selector="ScrollBar /template/ Thumb#thumb:pointerover">
     <Setter Property="Background" Value="{DynamicResource ThemeControlHighBrush}"/>
@@ -98,19 +117,11 @@
   <Style Selector="ScrollBar /template/ Thumb#thumb:pressed">
     <Setter Property="Background" Value="{DynamicResource ThemeControlVeryHighBrush}"/>
   </Style>-->
-  <Style Selector="ScrollBar:horizontal /template/ Thumb#thumb">
-    <Setter Property="MinWidth" Value="{DynamicResource ScrollBarThickness}" />
-    <Setter Property="Height" Value="{DynamicResource ScrollBarThumbThickness}" />
-  </Style>
   <Style Selector="ScrollBar:vertical">
     <Setter Property="Width" Value="1" />
   </Style>
   <Style Selector="ScrollBar:horizontal">
     <Setter Property="Height" Value="1" />
-  </Style>
-  <Style Selector="ScrollBar:vertical /template/ Thumb#thumb">
-    <Setter Property="MinHeight" Value="{DynamicResource ScrollBarThickness}" />
-    <Setter Property="Width" Value="{DynamicResource ScrollBarThumbThickness}" />
   </Style>
   <!--<Style Selector="ScrollBar /template/ RepeatButton.repeat">
     <Setter Property="Padding" Value="2" />

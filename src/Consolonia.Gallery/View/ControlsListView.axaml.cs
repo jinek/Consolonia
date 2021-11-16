@@ -34,7 +34,11 @@ namespace Consolonia.Gallery.View
             {
                 string[] commandLineArgs = Environment.GetCommandLineArgs();
 
-                if (commandLineArgs.Length != 2) return;
+                if (commandLineArgs.Length != 2)
+                {
+                    grid.SelectedIndex = 0;
+                    return;
+                }
                 string itemToSelectName = commandLineArgs[1];
                 GalleryItem? itemToSelect;
                 try

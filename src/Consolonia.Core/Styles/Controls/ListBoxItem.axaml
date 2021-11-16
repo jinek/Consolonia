@@ -5,31 +5,31 @@
                 Value="1 0" />
         <Setter Property="Template">
             <ControlTemplate>
-                <helpers:CaretControl Foreground="{TemplateBinding Foreground}"
-                                      IsCaretShown="{TemplateBinding IsFocused}">
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                      Background="{TemplateBinding Background}"
-                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                      BorderThickness="{TemplateBinding BorderThickness}"
-                                      ContentTemplate="{TemplateBinding ContentTemplate}"
-                                      Content="{TemplateBinding Content}"
-                                      Padding="{TemplateBinding Padding}"
-                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
-                </helpers:CaretControl>
+                <Panel Background="{TemplateBinding Background}">
+                    <helpers:CaretControl Foreground="{TemplateBinding Foreground}"
+                                          IsCaretShown="{TemplateBinding IsFocused}">
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          Padding="{TemplateBinding Padding}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                    </helpers:CaretControl></Panel>
             </ControlTemplate>
         </Setter>
     </Style>
 
     <Style Selector="ListBoxItem:selected">
+        <!--<Setter Property="Background"
+                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />-->
         <Setter Property="Background"
-                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeBackgroundBrush}" />
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
     </Style>
 
-    <!--<Style Selector="ListBoxItem:selected:focus /template/ helpers|CaretControl">
-        <Setter Property="IsCaretShown"
-                Value="True" />
-    </Style>-->
+    <Style Selector="ListBoxItem:focus">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
+    </Style>
 </Styles>

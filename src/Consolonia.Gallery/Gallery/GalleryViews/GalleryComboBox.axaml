@@ -59,7 +59,7 @@
             </ComboBoxItem>
             <ComboBoxItem>
                 <helpers:SymbolsControl Text="o"
-                                        Foreground="{drawing:FourBitColorBrush Yellow}" />
+                                        Foreground="{drawing:FourBitColorBrush DarkMagenta}" />
             </ComboBoxItem>
             <ComboBoxItem>
                 <TextBox Text="TextBox" Focusable="True"/>

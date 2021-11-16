@@ -2,19 +2,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryButton">
-    <StackPanel Orientation="Vertical" Spacing="1">
+    <StackPanel Orientation="Vertical"
+                Spacing="1">
         <StackPanel.Styles>
             <Style Selector="Button">
-                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment"
+                        Value="Left" />
             </Style>
         </StackPanel.Styles>
         <Button>Standard _XAML Button</Button>
-        <Button Foreground="{DynamicResource ThemeAccentBackgroundBrush}">Foreground</Button>
-        <Button Background="{DynamicResource ThemeAccentBackgroundBrush}">Background</Button>
+        <Button Foreground="{drawing:FourBitColorBrush DarkYellow}">Foreground</Button>
+        <Button Background="{drawing:FourBitColorBrush Yellow}">Background</Button>
         <Button IsEnabled="False">Disabled</Button>
         <RepeatButton Name="RepeatButton">
             <TextBlock Name="RepeatButtonTextBlock"

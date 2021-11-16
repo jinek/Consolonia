@@ -32,11 +32,11 @@
     </Style>
     <Style Selector="TabItem:disabled">
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
     </Style>
     <Style Selector="TabItem:selected">
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
+                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
     </Style>
     <Style Selector="TabItem[TabStripPlacement=Right]">
         <Setter Property="HorizontalContentAlignment"

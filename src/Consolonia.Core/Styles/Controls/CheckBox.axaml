@@ -4,6 +4,8 @@
     <Style Selector="CheckBox">
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
         <Setter Property="BorderThickness"
                 Value="0" />
         <Setter Property="Padding"
@@ -51,10 +53,10 @@
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
-    <Style Selector="CheckBox /template/ Panel helpers|SymbolsControl">
+    <!--<Style Selector="CheckBox /template/ Panel helpers|SymbolsControl">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeAccentBackgroundBrush}" />
-    </Style>
+    </Style>-->
     <Style Selector="CheckBox /template/ helpers|SymbolsControl#checkMark">
         <Setter Property="IsVisible"
                 Value="False" />
@@ -71,14 +73,14 @@
         <Setter Property="IsVisible"
                 Value="True" />
     </Style>
-    <Style Selector="CheckBox:disabled /template/ helpers|SymbolsControl">
+    <!--<Style Selector="CheckBox:disabled /template/ helpers|SymbolsControl">
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-    </Style>
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
+    </Style>-->
     <Style Selector="CheckBox:disabled">
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
     </Style>
 </Styles>

@@ -27,9 +27,14 @@
                 </Flyout>
             </TextBox.ContextFlyout>
         </TextBox>
-        <TextBox Watermark="ReadOnly"
-                 IsReadOnly="True"
+        <TextBox IsReadOnly="True"
                  Text="This is read only" />
+        <TextBox Watermark="ReadOnly watermark"
+                 IsReadOnly="True"/>
+        <TextBox IsEnabled="False"
+                 Text="This is disabled" />
+        <TextBox IsEnabled="False"
+                 Watermark="This is disabled watermark" />
         <TextBox Watermark="Numeric Watermark"
                  x:Name="numericWatermark" />
         <TextBox Watermark="Floating Watermark"

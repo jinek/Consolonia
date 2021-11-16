@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.SomeDialogWindow">
+    <Panel>
+        <TextBlock xml:space="preserve"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Foreground="{drawing:FourBitColorBrush DarkRed}">.
+        /;    ;\
+    __  \\____//
+   /{_\_/   `'\____
+   \___   (o)  (o  }
+_____/          :--'  
+       \_    `__\
+         \___(o'o)
+     ,'@@(  `===='       
+     `@@@:
+  (  '@@@'
+  :@@@@@)
+
+Bill Ames
+</TextBlock>
+        <Button Content="One More"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Click="OneMore_Clicked"/>
+    </Panel>
+</UserControl>
