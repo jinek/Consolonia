@@ -40,12 +40,11 @@
                      Grid.Column="1"
                      Focusable="False"/>
           <Panel Grid.Row="1"
-                 Grid.Column="1"
-                 Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
+                 Grid.Column="1">
             <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
                                   IsVisible="{TemplateBinding Focusable}">
               <helpers:SymbolsControl Text="+" 
-                                      Foreground="{TemplateBinding BorderBrush}"/>
+                                      Foreground="{DynamicResource ThemeChooserBackgroundBrush}"/>
             </helpers:CaretControl>
           </Panel>
         </Grid>

@@ -57,7 +57,8 @@ namespace Consolonia.Core.Styles.Controls.Helpers
             set
             {
                 _text = value;
-                _shapedText = TextShaper.Current.ShapeText(new ReadOnlySlice<char>(Text.ToCharArray()),
+                _shapedText = TextShaper.Current.ShapeText(
+                    new ReadOnlySlice<char>((Text ?? string.Empty).ToCharArray()),
                     Typeface.Default, 1, null);
             }
         }
@@ -70,7 +71,7 @@ namespace Consolonia.Core.Styles.Controls.Helpers
             }
             else
             {
-                var formattedText = new FormattedText(string.Concat(Enumerable.Repeat(Text[0], (int)Bounds.Width)),
+                var formattedText = new FormattedText(string.Concat(Enumerable.Repeat(Text?[0] ?? ' ', (int)Bounds.Width)),
                     Typeface.Default, 1, TextAlignment.Left, TextWrapping.NoWrap, Bounds.Size);
                 for (int y = 0; y < Bounds.Height; y++)
                 {

@@ -331,16 +331,23 @@
                                                             Grid.Column="1"
                                                             VerticalAlignment="Stretch"
                                                             Grid.RowSpan="6"/>
-                            <Rectangle Name="BottomLeftCorner"
+                            <!--<Rectangle Name="BottomLeftCorner"
                                        Fill="{DynamicResource ThemeAccentForegroundBrush}"
                                        Grid.Row="3"
-                                       Grid.ColumnSpan="2" />
+                                       Grid.ColumnSpan="2" 
+                                       Margin="0,0,0,-1"/>-->
                             <ScrollBar Name="PART_VerticalScrollbar"
                                        Orientation="Vertical"
                                        Grid.Column="2"
                                        Grid.Row="2"
                                        Width="1"
-                                       Margin="0" />
+                                       Margin="0,0,-1,0" />
+                            <ScrollBar Name="PART_HorizontalScrollbar"
+                                       Orientation="Horizontal"
+                                       Grid.Column="1"
+                                       Grid.Row="3"
+                                       Height="1"
+                                       Margin="0,0,0,-1" />
 
                             <!--<Grid Grid.Column="1" Grid.Row="2"
                   ColumnDefinitions="Auto,*">

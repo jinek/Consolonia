@@ -58,7 +58,7 @@
                                             VerticalAlignment="Bottom"
                                             Foreground="{DynamicResource ThemePseudoShadeBrush}" />
                     <helpers:SymbolsControl Margin="0,0,0,0"
-                                            Text="▌"
+                                            Text="█"
                                             Width="1"
                                             Classes="shaded"
                                             VerticalAlignment="Stretch"

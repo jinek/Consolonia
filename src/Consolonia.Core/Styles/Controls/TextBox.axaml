@@ -43,8 +43,7 @@
                                                   Content="{TemplateBinding InnerLeftContent}" />
                                 <ScrollViewer Grid.Column="1"
                                               HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
-                                              VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
-                                              AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}">
+                                              VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
                                     <Panel>
                                         <TextBlock Name="watermark"
                                                    Foreground="{TemplateBinding BorderBrush}"
