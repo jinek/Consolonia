@@ -64,11 +64,8 @@
                         <TextBlock Name="SortIcon"
                                    Grid.Column="1"
                                    Foreground="{TemplateBinding Foreground}"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Width="1"
-                                   Margin="1,0,0,0"
-                                   Text="s" />
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                   Margin="0"/>
 
                     </Grid>
 
@@ -89,16 +86,22 @@
     <Style Selector="DataGridColumnHeader /template/ TextBlock#SortIcon">
         <Setter Property="IsVisible"
                 Value="False" />
+        <Setter Property="Text"
+                Value="" />
     </Style>
 
     <Style Selector="DataGridColumnHeader:sortascending /template/ TextBlock#SortIcon">
         <Setter Property="IsVisible"
                 Value="True" />
+        <Setter Property="Text"
+                Value="▼" />
     </Style>
 
     <Style Selector="DataGridColumnHeader:sortdescending /template/ TextBlock#SortIcon">
         <Setter Property="IsVisible"
                 Value="True" />
+        <Setter Property="Text"
+                Value="▲" />
     </Style>
 
     <Style Selector="DataGridRow">
@@ -324,7 +327,6 @@
                                                    Grid.ColumnSpan="2"
                                                    Grid.Row="2" />
                             <Rectangle Name="PART_BottomRightCorner"
-                                       Fill="{DynamicResource ThemeAccentForegroundBrush}"
                                        Grid.Column="2"
                                        Grid.Row="3" />
                             <DataGridColumnHeadersPresenter Name="PART_ColumnHeadersPresenter"

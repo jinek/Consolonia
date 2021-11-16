@@ -14,11 +14,6 @@
     <drawing:FourBitColorBrush x:Key="ThemeBorderBrush" Color="DarkGray"/>
     <drawing:FourBitColorBrush x:Key="ThemeNoDisturbBrush" Color="DarkGray"/>
     <drawing:FourBitColorBrush x:Key="ThemeShadeBrush" Mode="Shaded"/>
-    <drawing:FourBitColorBrush x:Key="ThemePseudoShadeBrush" Color="Black"/>                                                    
-    
-
-    
-    <drawing:FourBitColorBrush x:Key="ThemeAccentForegroundBrush" Color="Blue"/>
-    <drawing:FourBitColorBrush x:Key="ThemeAccentBackgroundBrush" Color="Green"/>
+    <drawing:FourBitColorBrush x:Key="ThemePseudoShadeBrush" Color="Black"/>
     <drawing:FourBitColorBrush x:Key="ThemeErrorBrush" Color="Red"/>
 </ResourceDictionary>
