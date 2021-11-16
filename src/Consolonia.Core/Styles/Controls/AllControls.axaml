@@ -28,4 +28,5 @@
     <StyleInclude Source="/Styles/Controls/MenuItem.axaml"/>
     <StyleInclude Source="/Styles/Controls/SymbolsControl.axaml"/>
     <StyleInclude Source="/Styles/Controls/Separator.axaml"/>
+    <StyleInclude Source="/Styles/Controls/ProgressBar.axaml"/>
 </Styles>
