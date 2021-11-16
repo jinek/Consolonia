@@ -1,0 +1,126 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
+    <Style Selector="ProgressBar">
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="ShowProgressText"
+                Value="True" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid>
+                    <Border Background="{TemplateBinding Background}">
+                        <Panel>
+                            <helpers:SymbolsControl Text="░"
+                                                    Fill="True"
+                                                    Foreground="{TemplateBinding BorderBrush}"/>
+                            <Border Name="PART_Indicator"
+                                    Background="{TemplateBinding BorderBrush}"
+                                    IsVisible="{Binding !IsIndeterminate, RelativeSource={RelativeSource TemplatedParent}}">
+
+                                <TextBlock Foreground="{DynamicResource ThemeForegroundBrush}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, StringFormat={}{0:0}%}"
+                                           IsVisible="{Binding ShowProgressText, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </Border>
+                            <Border
+                                IsVisible="{Binding IsIndeterminate, RelativeSource={RelativeSource TemplatedParent}}"
+                                Name="PART_IndeterminateIndicator">
+                                <Border Name="PART_IndeterminateIndicator2"
+                                        MinWidth="1"
+                                        MinHeight="1"
+                                        Background="{TemplateBinding BorderBrush}" />
+                            </Border>
+                        </Panel>
+                    </Border>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="ProgressBar:horizontal /template/ Border#PART_Indicator">
+        <Setter Property="HorizontalAlignment"
+                Value="Left" />
+        <Setter Property="VerticalAlignment"
+                Value="Stretch" />
+    </Style>
+    <Style Selector="ProgressBar:vertical /template/ Border#PART_Indicator">
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalAlignment"
+                Value="Bottom" />
+    </Style>
+    <Style Selector="ProgressBar:horizontal">
+        <Setter Property="MinWidth"
+                Value="4" />
+        <Setter Property="MinHeight"
+                Value="1" />
+    </Style>
+    <Style Selector="ProgressBar:vertical">
+        <Setter Property="MinWidth"
+                Value="4" />
+        <Setter Property="MinHeight"
+                Value="1" />
+    </Style>
+
+    <!--<Style Selector="ProgressBar:vertical /template/ LayoutTransformControl#PART_LayoutTransformControl">
+        <Setter Property="LayoutTransform">
+            <Setter.Value>
+                <RotateTransform Angle="90" />
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+
+    <Style Selector="ProgressBar:horizontal:indeterminate /template/ Border#PART_IndeterminateIndicator2">
+        <Setter Property="HorizontalAlignment"
+                Value="Right" />
+    </Style>
+    <Style Selector="ProgressBar:vertical:indeterminate /template/ Border#PART_IndeterminateIndicator2">
+        <Setter Property="VerticalAlignment"
+                Value="Bottom" />
+    </Style>
+
+    <Style Selector="ProgressBar:horizontal:indeterminate /template/ Border#PART_IndeterminateIndicator">
+        <Style.Animations>
+            <Animation Duration="0:0:1.5"
+                       IterationCount="Infinite"
+                       Easing="LinearEasing">
+                <KeyFrame Cue="0%">
+                    <Setter Property="Width"
+                            Value="0" />
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="Width"
+                            Value="{Binding IndeterminateEndingOffset, RelativeSource={RelativeSource TemplatedParent}}" />
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+        <Style.Setters>
+            <Setter Property="HorizontalAlignment"
+                    Value="Left" />
+        </Style.Setters>
+    </Style>
+    <Style Selector="ProgressBar:vertical:indeterminate /template/ Border#PART_IndeterminateIndicator">
+        <Style.Animations>
+            <Animation Duration="0:0:1.5"
+                       IterationCount="Infinite"
+                       Easing="LinearEasing">
+                <KeyFrame Cue="0%">
+                    <Setter Property="Height"
+                            Value="0" />
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="Height"
+                            Value="{Binding IndeterminateEndingOffset, RelativeSource={RelativeSource TemplatedParent}}" />
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+        <Style.Setters>
+            <Setter Property="VerticalAlignment"
+                    Value="Top" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Stretch" />
+        </Style.Setters>
+    </Style>
+</Styles>
