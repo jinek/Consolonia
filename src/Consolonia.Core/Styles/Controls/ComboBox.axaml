@@ -74,16 +74,24 @@
                                     Margin="2,1,0,0" />
                             <Border BorderBrush="{DynamicResource ThemeBorderBrush}"
                                     BorderThickness="1"
-                                    Margin="0,0,1,1"
+                                    Margin="0,0,2,1"
                                     Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
-                                <ScrollViewer Margin="0,0,0,0"
-                                    HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                    VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                                    <ItemsPresenter Name="PART_ItemsPresenter"
-                                                    Items="{TemplateBinding Items}"
-                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                    ItemTemplate="{TemplateBinding ItemTemplate}"
-                                                    VirtualizationMode="{TemplateBinding VirtualizationMode}">
+                                    <ScrollViewer Margin="0,0,-1,-0.6"
+                                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                                            <ScrollViewer.Styles>
+                                                    <!--Magic numbers. Adjusted manually, I don't have a clue why -1 vs 1 does not work. Have to set -0.6 vs 1.1-->
+                                                    <Style Selector="ScrollViewer">
+                                                            <Setter
+                                                                    Property="(helpers:ScrollViewerExtensions.ScrollBarsWidth)"
+                                                                    Value="1.1" />
+                                                    </Style>
+                                            </ScrollViewer.Styles>
+                                            <ItemsPresenter Name="PART_ItemsPresenter"
+                                                            Items="{TemplateBinding Items}"
+                                                            ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                            ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                            VirtualizationMode="{TemplateBinding VirtualizationMode}">
                                         <ItemsPresenter.Styles>
                                             <!--todo: How to set this property directly on the control-->
                                             <Style Selector="ItemsPresenter">

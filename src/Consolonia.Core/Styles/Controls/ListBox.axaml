@@ -1,4 +1,5 @@
-<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:Consolonia.Core.Styles.Controls.Helpers">
     <Style Selector="ListBox">
         <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
@@ -10,12 +11,19 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="border" BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}" Padding="0,0,0,-1">
+                        BorderThickness="{TemplateBinding BorderThickness}">
                     <ScrollViewer Name="PART_ScrollViewer"
                                   Background="{TemplateBinding Background}"
                                   HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
                                   VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
-                                  Margin="0,0,-1,0">
+                                  Margin="0,0,-1,-1">
+                        <ScrollViewer.Styles>
+                            <Style Selector="ScrollViewer">
+                                <Setter
+                                    Property="(helpers:ScrollViewerExtensions.ScrollBarsWidth)"
+                                    Value="1" />
+                            </Style>
+                        </ScrollViewer.Styles>
                         <ItemsPresenter Name="PART_ItemsPresenter"
                                         Items="{TemplateBinding Items}"
                                         ItemsPanel="{TemplateBinding ItemsPanel}"

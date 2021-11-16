@@ -11,7 +11,7 @@
     <Panel>
         <Panel x:Name="Border">
             <Border Background="{drawing:FourBitColorBrush Mode=Shaded}"
-                    Margin="2,1,-1,-1"/>
+                    Margin="2,1,-2,-1"/>
             <Border Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
                     BorderBrush="{DynamicResource ThemeBorderBrush}"
                     BorderThickness="1"/>
