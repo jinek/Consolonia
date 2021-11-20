@@ -5,8 +5,8 @@
                 Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeBorderBrush}" />
-        <Setter Property="Background"
-                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <!--<Setter Property="Background"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />-->
         <Setter Property="BorderThickness"
                 Value="0" />
         <Setter Property="Padding"
