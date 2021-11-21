@@ -3,7 +3,7 @@
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="/Themes/TurboVisionDarkColors.axaml" />
+                <ResourceInclude Source="/Themes/TurboVisionDark/TurboVisionDarkColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
