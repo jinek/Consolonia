@@ -1,9 +1,7 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.VisualTree;
-using Consolonia.Core.Infrastructure;
+using Consolonia.Themes.TurboVision.Templates.Controls.Dialog;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {

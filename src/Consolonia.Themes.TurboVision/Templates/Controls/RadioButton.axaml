@@ -1,0 +1,66 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
+    <Style Selector="RadioButton">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeBorderBrush}" />
+        <!--<Setter Property="Background"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />-->
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Padding"
+                Value="1,0,0,0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid ColumnDefinitions="Auto,*"
+                      Background="{TemplateBinding Background}">
+                    <helpers:SymbolsControl Text="( )"
+                                            Name="border"
+                                            Foreground="{TemplateBinding BorderBrush}"
+                                            VerticalAlignment="Center" />
+                    <helpers:CaretControl HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          IsCaretShown="{TemplateBinding IsFocused}">
+                        <Panel>
+                            <helpers:SymbolsControl Name="checkMark"
+                                                    Text="*"/>
+                            <helpers:SymbolsControl Name="indeterminateMark"
+                                                    Text="■"/>
+                        </Panel>
+                    </helpers:CaretControl>
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Margin="{TemplateBinding Padding}"
+                                      RecognizesAccessKey="True"
+                                      VerticalAlignment="Center"
+                                      Grid.Column="1" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="RadioButton /template/ helpers|SymbolsControl#checkMark">
+        <Setter Property="IsVisible"
+                Value="False" />
+    </Style>
+    <Style Selector="RadioButton /template/ helpers|SymbolsControl#indeterminateMark">
+        <Setter Property="IsVisible"
+                Value="False" />
+    </Style>
+    <Style Selector="RadioButton:checked /template/ helpers|SymbolsControl#checkMark">
+        <Setter Property="IsVisible"
+                Value="True" />
+    </Style>
+    <Style Selector="RadioButton:indeterminate /template/ helpers|SymbolsControl#indeterminateMark">
+        <Setter Property="IsVisible"
+                Value="True" />
+    </Style>
+    <Style Selector="RadioButton:disabled">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
+    </Style>
+</Styles>

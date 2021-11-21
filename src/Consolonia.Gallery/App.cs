@@ -1,8 +1,8 @@
 using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml.Styling;
 using Consolonia.Gallery.View;
+using Consolonia.Themes.TurboVision.Templates;
 
 namespace Consolonia.Gallery
 {
@@ -10,10 +10,7 @@ namespace Consolonia.Gallery
     {
         public App()
         {
-            Styles.Add(new StyleInclude(new Uri("avares://Consolonia.Gallery"))
-            {
-                Source = new Uri(@"avares://Consolonia.Core/Styles/DarkStyles.axaml")
-            });
+            Styles.Add(new TurboVisionTheme(new Uri("avares://Consolonia.Gallery")));
         }
 
         public override void OnFrameworkInitializationCompleted()

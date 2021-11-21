@@ -2,6 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Example.App">
     <Application.Styles>
-        <StyleInclude Source="avares://Consolonia.Core/Styles/DarkStyles.axaml"/>
+        <StyleInclude Source="../Consolonia.Themes.TurboVision/Templates/DarkStyles.axaml"/>
     </Application.Styles>
 </Application>
