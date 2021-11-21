@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing"
+             xmlns:drawing1="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+             xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="Consolonia.Themes.TurboVision.Templates.Controls.DialogWrap"
+             KeyDown="InputElement_OnKeyDown">
+
+    <Panel>
+        <Border Background="{drawing1:FourBitColorBrush Mode=Shaded}"
+                IsVisible="{Binding RelativeSource={RelativeSource Self}, Path=IsEffectivelyEnabled}" />
+        <Panel x:Name="Border">
+            <Border Background="{drawing1:FourBitColorBrush Mode=Shaded}"
+                    Margin="2,1,-2,-1" />
+            <Border Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                    BorderBrush="{DynamicResource ThemeBorderBrush}"
+                    BorderThickness="1" />
+            <StackPanel Orientation="Horizontal"
+                        Margin="0">
+                <Button Content="x"
+                        VerticalAlignment="Top"
+                        Background="{x:Null}"
+                        Padding="0"
+                        Margin="2,0,0,0"
+                        Click="Close_Clicked">
+                    <Button.Styles>
+                        <Style Selector="Button">
+                            <Setter Property="helpers:ButtonExtensions.Shadow"
+                                    Value="False" />
+                        </Style>
+                    </Button.Styles>
+                </Button>
+            </StackPanel>
+        </Panel>
+        <ContentPresenter x:Name="ContentPresenter"
+                          Margin="1" />
+    </Panel>
+
+</UserControl>

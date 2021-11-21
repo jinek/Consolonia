@@ -37,7 +37,7 @@
                       VerticalScrollBarVisibility="{Binding VerticalScrollVisibility}"
                       Focusable="True">
             <TextBlock xml:space="preserve"
-                       Foreground="{drawing:FourBitColorBrush DarkCyan}">Focus to ScrollViewer
+                       Foreground="{DynamicResource ThemeForegroundBrush}">Focus to ScrollViewer
                                        /;    ;\
                                    __  \\____//
                                   /{_\_/   `'\____

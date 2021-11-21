@@ -10,7 +10,6 @@ using Avalonia.Utilities;
 using Avalonia.Visuals.Media.Imaging;
 using Consolonia.Core.Drawing.PixelBuffer;
 using Consolonia.Core.Infrastructure;
-using Consolonia.Core.Styles.Controls.Helpers;
 using FormattedText = Consolonia.Core.Text.FormattedText;
 
 namespace Consolonia.Core.Drawing
