@@ -2,7 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Consolonia.Gallery.View;
-using Consolonia.Themes.TurboVision.Themes.TurboVisionDark;
+using Consolonia.Themes.TurboVision.Templates;
 
 namespace Consolonia.Gallery
 {
@@ -10,7 +10,7 @@ namespace Consolonia.Gallery
     {
         public App()
         {
-            Styles.Add(new TurboVisionBlackTheme(new Uri("avares://Consolonia.Gallery")));
+            Styles.Add(new TurboVisionTheme(new Uri("avares://Consolonia.Gallery")));
         }
 
         public override void OnFrameworkInitializationCompleted()
