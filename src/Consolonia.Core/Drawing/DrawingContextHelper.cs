@@ -19,5 +19,15 @@ namespace Consolonia.Core.Drawing
             return x >= rect.X && x < rect.X + rect.Width &&
                    y >= rect.Y && y < rect.Y + rect.Height;
         }
+
+        public static bool IsTranslateOnly(this Matrix transform)
+        {
+            return transform.M11 == 1 && transform.M22 == 1 && transform.M12 == 0 && transform.M21 == 0;
+        }
+        
+        public static bool NoRotation(this Matrix transform)
+        {
+            return transform.M12 == 0 && transform.M21 == 0;
+        }
     }
 }

@@ -1,17 +1,28 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
-using Avalonia;
+using Avalonia.Input;
 
 namespace Consolonia.Core.Infrastructure
 {
     internal class DefaultNetConsole : IConsole
     {
         private (ConsoleColor background, ConsoleColor foreground, char character)?[,] _cache;
+        private bool _caretVisible;
         private object _currentControlOfCaret;
         private ConsoleColor _headBackground;
         private ConsoleColor _headForeground;
-        private (ushort x, ushort y) _headPosition;
-        private bool _caretVisible;
+        private ConsolePosition _headPosition;
+
+
+        public DefaultNetConsole()
+        {
+            Console.CursorVisible = false;
+            InitializeCache();
+            StartSizeCheckTimer();
+
+            StartInputReading();
+        }
 
         public bool CaretVisible
         {
@@ -24,42 +35,36 @@ namespace Consolonia.Core.Infrastructure
             }
         }
 
-        public DefaultNetConsole()
-        {
-            Console.CursorVisible = false;
-            InitializeCache();
-            StartSizeCheckTimer();
-        }
+        public event Action<Key, char, RawInputModifiers> KeyPress;
 
 
-        public void MoveCaretForControl(Point? position, int size, object ownerControl)
+        public void MoveCaretForControl(ConsolePosition? position, int size, object ownerControl)
         {
             /*if (_currentControlOfCaret != ownerControl)
                 throw new InvalidOperationException();*/
 
-            //todo: must be int top,left instead of position
-            // Console.CursorSize = size; todo: not supported on linux
+            // Console.CursorSize = size; not supported on linux
             if (position == null)
+            {
                 CaretVisible = false;
+            }
             else
             {
                 CaretVisible = true;
-                (double x, double y) = (Point)position;
-                SetCaretPosition(((ushort)x, (ushort)y));
+                SetCaretPosition((ConsolePosition)position);
             }
         }
 
         public void AddCaretFor(object control)
         {
-           // if (_currentControlOfCaret != null)
-               // throw new NotSupportedException();
+            // if (_currentControlOfCaret != null)
+            // throw new NotSupportedException();
 
             _currentControlOfCaret = control;
 
             CaretVisible = true;
         }
 
-        
 
         public void RemoveCaretFor(object control)
         {
@@ -75,24 +80,23 @@ namespace Consolonia.Core.Infrastructure
             return new CaretStorage(this);
         }
 
-        public void SetCaretPosition((ushort x, ushort y) position)
+        public void SetCaretPosition(ConsolePosition position)
         {
-            (ushort left, ushort top) = GetCaretPosition();
-            (ushort x, ushort y) = position;
-            if (left == x && top == y) return;
-            _headPosition = (x, y);
-            Console.SetCursorPosition(x, y);
+            if (position.Equals(GetCaretPosition())) return;
+            _headPosition = position;
+            Console.SetCursorPosition(position.X, position.Y);
         }
 
-        public (ushort x, ushort y) GetCaretPosition()
+        public ConsolePosition GetCaretPosition()
         {
             return _headPosition;
         }
 
-        public void Print(ushort x, ushort y, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
+        public void Print(ConsolePosition position, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
             char character)
         {
-            SetCaretPosition((x, y));
+            SetCaretPosition(position);
+            (ushort x, ushort y) = position;
 
             if (_headBackground != backgroundColor)
                 _headBackground = Console.BackgroundColor = backgroundColor;
@@ -104,15 +108,74 @@ namespace Consolonia.Core.Infrastructure
 
             _cache[x, y] = (backgroundColor, foregroundColor, character);
             Console.Write(character);
-            if (_headPosition.x < Size.width - 1)
-                _headPosition.x++;
-            else _headPosition = ((ushort x, ushort y))(0, _headPosition.y + 1);
+            if (_headPosition.X < Size.Width - 1)
+                _headPosition = _headPosition.WithXpp();
+            else _headPosition = (ConsolePosition)((ushort)0, (ushort)(_headPosition.Y + 1));
         }
 
         public event Action? Resized;
 
-        public (ushort width, ushort height) Size =>
-            ((ushort width, ushort height))(Console.WindowWidth, Console.WindowHeight);
+        public ConsoleSize Size =>
+            new((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+
+        private void StartInputReading()
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                while (true)
+                {
+                    ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
+
+                    Key key;
+
+                    switch (consoleKeyInfo.Key)
+                    {
+                        case ConsoleKey.Spacebar:
+                            key = Key.Space;
+                            break;
+                        case ConsoleKey.RightArrow:
+                            key = Key.Right;
+                            break;
+                        case ConsoleKey.LeftArrow:
+                            key = Key.Left;
+                            break;
+                        case ConsoleKey.DownArrow:
+                            key = Key.Down;
+                            break;
+                        case ConsoleKey.UpArrow:
+                            key = Key.Up;
+                            break;
+                        case ConsoleKey.Backspace:
+                            key = Key.Back;
+                            break;
+                        default:
+                        {
+                            if (!Enum.TryParse(consoleKeyInfo.Key.ToString(), out key))
+                                throw new NotImplementedException();
+                            break;
+                        }
+                    }
+
+                    var rawInputModifiers = RawInputModifiers.None;
+
+                    if (consoleKeyInfo.Modifiers.HasFlag(ConsoleModifiers.Control))
+                        rawInputModifiers |= RawInputModifiers.Control;
+                    if (consoleKeyInfo.Modifiers.HasFlag(ConsoleModifiers.Shift))
+                        rawInputModifiers |= RawInputModifiers.Shift;
+                    if (consoleKeyInfo.Modifiers.HasFlag(ConsoleModifiers.Alt))
+                        rawInputModifiers |= RawInputModifiers.Alt;
+
+                    KeyPress?.Invoke(key, consoleKeyInfo.KeyChar, rawInputModifiers);
+                }
+            });
+
+            /*Task.Run((Func<Task?>),).ContinueWith(
+                task =>
+                {
+                    ThreadPool.QueueUserWorkItem(_ => throw new InvalidOperationException("Exception happened when reading user input",
+                        task.Exception));
+                }, TaskContinuationOptions.OnlyOnFaulted);*/
+        }
 
         private async void StartSizeCheckTimer()
         {
@@ -129,7 +192,7 @@ namespace Consolonia.Core.Infrastructure
 
                     Resized?.Invoke();
                     InitializeCache();
-                    timeout = 1;//todo: magic numbers. probably need to rely on fps instead
+                    timeout = 1; //todo: magic numbers. probably need to rely on fps instead
                 }
                 else
                 {
@@ -149,7 +212,7 @@ namespace Consolonia.Core.Infrastructure
 
         private void InitializeCache()
         {
-            _cache = new (ConsoleColor background, ConsoleColor foreground, char character)?[Size.width, Size.height];
+            _cache = new (ConsoleColor background, ConsoleColor foreground, char character)?[Size.Width, Size.Height];
         }
     }
 }

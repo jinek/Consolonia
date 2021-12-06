@@ -5,7 +5,7 @@ namespace Consolonia.Core.Infrastructure
     internal class CaretStorage : IDisposable
     {
         private readonly IConsole _console;
-        private readonly (ushort x, ushort y) _initialPosition;
+        private readonly ConsolePosition _initialPosition;
         private readonly bool _caretVisible;
 
         public CaretStorage(IConsole console)

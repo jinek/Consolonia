@@ -24,7 +24,7 @@ namespace Consolonia.Core.Drawing.PixelBuffer
             {
                 case 0b0000: return char.MinValue;
                 case 0b1000:
-                case 0b0010: //todo: or this should be empty?
+                case 0b0010:
                 case 0b1010:
                     return '│';
                 case 0b0100:
