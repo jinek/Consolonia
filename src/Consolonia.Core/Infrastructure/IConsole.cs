@@ -1,19 +1,23 @@
 using System;
-using Avalonia;
+using Avalonia.Input;
 
 namespace Consolonia.Core.Infrastructure
 {
     public interface IConsole
     {
-        void MoveCaretForControl(Point? position, int size, object ownerControl);
+        ConsoleSize Size { get; }
+        bool CaretVisible { get; set; }
+        void MoveCaretForControl(ConsolePosition? position, int size, object ownerControl);
         void AddCaretFor(object control);
         void RemoveCaretFor(object control);
         IDisposable StoreCaret();
-        void SetCaretPosition((ushort x, ushort y) position);
-        (ushort x, ushort y) GetCaretPosition();
-        void Print(ushort x, ushort y, ConsoleColor backgroundColor, ConsoleColor foregroundColor, char character);
+        void SetCaretPosition(ConsolePosition position);
+        ConsolePosition GetCaretPosition();
+
+        void Print(ConsolePosition position, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
+            char character);
+
         event Action Resized;
-        (ushort width, ushort height) Size { get; }
-        bool CaretVisible { get; set; }
+        event Action<Key, char, RawInputModifiers> KeyPress;
     }
 }

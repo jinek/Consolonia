@@ -41,7 +41,8 @@ namespace Consolonia.Core.Infrastructure
 
         public IWindowImpl CreateEmbeddableWindow()
         {
-            throw new NotImplementedException();
+            RaiseNotSupported(13);
+            return null;
         }
 
         [DebuggerStepThrough]

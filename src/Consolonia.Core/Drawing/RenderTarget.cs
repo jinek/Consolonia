@@ -80,8 +80,8 @@ namespace Consolonia.Core.Drawing
             using (_console.StoreCaret())
             {
                 _console.CaretVisible = false;
-                for (int y = 0; y < pixelBuffer.Height; y++)
-                for (int x = 0; x < pixelBuffer.Width; x++)
+                for (ushort y = 0; y < pixelBuffer.Height; y++)
+                for (ushort x = 0; x < pixelBuffer.Width; x++)
                 {
                     if (!_consoleWindow.InvalidatedRects.Any(rect =>
                         rect.ContainsAligned(new Point(x, y)))) continue;
@@ -93,7 +93,7 @@ namespace Consolonia.Core.Drawing
                     if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
                         break;
 
-                    _console.Print((ushort)x, (ushort)y, pixel.Background.Color, pixel.Foreground.Color,
+                    _console.Print(new ConsolePosition(x,y), pixel.Background.Color, pixel.Foreground.Color,
                         pixel.Foreground.Symbol.GetCharacter());
                 }
             }

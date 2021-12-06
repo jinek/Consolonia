@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Avalonia.Skia;
 
 namespace Consolonia.Core.Drawing
 {
@@ -67,9 +68,12 @@ namespace Consolonia.Core.Drawing
 
         public ITransformedGeometryImpl WithTransform(Matrix transform)
         {
-            //todo: restrictions
-            Point point = PStart.Transform(transform);
-            return new Line(point, Vertical, Length, this, transform);
+            if (!transform.NoRotation())
+                throw new NotSupportedException();
+
+            Point pStart = PStart.Transform(transform);
+            Point pEnd = PEnd.Transform(transform);
+            return new Line(pStart, Vertical, (int)(pStart - pEnd).ToSKPoint().Length, this, transform);
         }
 
         public bool TryGetPointAtDistance(double distance, out Point point)

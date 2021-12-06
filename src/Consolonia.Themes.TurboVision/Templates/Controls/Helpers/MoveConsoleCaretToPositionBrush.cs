@@ -16,7 +16,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             _owner = owner;
         }
 
-        public void MoveCaret(Point? position, int size)
+        public void MoveCaret(ConsolePosition? position, int size)
         {
             _console.MoveCaretForControl(position, size, _owner);
         }

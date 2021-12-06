@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -15,126 +13,29 @@ namespace Consolonia.Core.Infrastructure
 {
     internal class ConsoleWindow : IWindowImpl
     {
-        private IInputRoot _inputRoot;
+        private readonly IConsole _console;
         private readonly IKeyboardDevice _myKeyboardDevice;
         internal readonly List<Rect> InvalidatedRects = new(50);
-        private readonly IConsole _console;
+        private IInputRoot _inputRoot;
 
         public ConsoleWindow()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
             _console = AvaloniaLocator.Current.GetService<IConsole>();
+
+            _console = AvaloniaLocator.Current.GetService<IConsole>();
             _console.Resized += () =>
-                {
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        Resized(new Size(_console.Size.width, _console.Size.height));
-                    });
-                };
-            
-            StartInputReading();
-        }
-
-        private void StartInputReading()
-        {
-            //todo: invoke IConsole instead
-            
-            ThreadPool.QueueUserWorkItem(async _ =>
             {
-                while (true)
+                Dispatcher.UIThread.Post(() =>
                 {
-                    if (!Console.KeyAvailable)
-                    {
-                        //todo: I dunno why need this
-                        await Task.Delay(300);
-                        continue;
-                    }
+                    ConsoleSize consoleSize = _console.Size;
+                    Resized(new Size(consoleSize.Width, consoleSize.Height));
+                });
+            };
 
-                    break;
-                }
-                
-                while (true)
-                {
-                    ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
-
-                    Key key;
-
-                    switch (consoleKeyInfo.Key)
-                    {
-                        case ConsoleKey.Spacebar:
-                            key = Key.Space;
-                            break;
-                        case ConsoleKey.RightArrow:
-                            key = Key.Right;
-                            break;
-                        case ConsoleKey.LeftArrow:
-                            key = Key.Left;
-                            break;
-                        case ConsoleKey.DownArrow:
-                            key = Key.Down;
-                            break;
-                        case ConsoleKey.UpArrow:
-                            key = Key.Up;
-                            break;
-                        case ConsoleKey.Backspace:
-                            key = Key.Back;
-                            break;
-                        default:
-                        {
-                            if (!Key.TryParse(consoleKeyInfo.Key.ToString(), out key))
-                                throw new NotImplementedException();
-                            break;
-                        }
-                    }
-
-                    bool handled = false;
-                    if (!char.IsControl(consoleKeyInfo.KeyChar))
-                    {
-                        await Dispatcher.UIThread.InvokeAsync(() =>
-                        {
-                            var rawTextInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
-                                consoleKeyInfo.KeyChar.ToString());
-                            Input(rawTextInputEventArgs);
-                            if (rawTextInputEventArgs.Handled)
-                                handled = true;
-                        });
-                    }
-                    
-                    if(!handled)
-                    {
-                        var rawInputModifiers = RawInputModifiers.None;
-
-                        if (consoleKeyInfo.Modifiers.HasFlag(ConsoleModifiers.Control))
-                            rawInputModifiers |= RawInputModifiers.Control;
-                        if (consoleKeyInfo.Modifiers.HasFlag(ConsoleModifiers.Shift))
-                            rawInputModifiers |= RawInputModifiers.Shift;
-                        if (consoleKeyInfo.Modifiers.HasFlag(ConsoleModifiers.Alt))
-                            rawInputModifiers |= RawInputModifiers.Alt;
-
-                        await Dispatcher.UIThread.InvokeAsync(() =>
-                        {
-                            Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
-                                RawKeyEventType.KeyDown, key,
-                                rawInputModifiers));
-                        });
-                        //await Task.Delay(50);//todo: magic number
-                        await Dispatcher.UIThread.InvokeAsync(() =>
-                        {
-                            Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
-                                RawKeyEventType.KeyUp, key,
-                                rawInputModifiers));
-                        });
-                    }
-                }
-            });
-
-            /*Task.Run((Func<Task?>),).ContinueWith(
-                task =>
-                {
-                    ThreadPool.QueueUserWorkItem(_ => throw new InvalidOperationException("Exception happened when reading user input",
-                        task.Exception));
-                }, TaskContinuationOptions.OnlyOnFaulted);*/
+            _console.KeyPress += ConsoleOnKeyPress;
         }
+
 
         public void Dispose()
         {
@@ -145,18 +46,19 @@ namespace Consolonia.Core.Infrastructure
         {
             /*return new X11ImmediateRendererProxy(root, AvaloniaLocator.Current.GetService<IRenderLoop>())
                 { DrawDirtyRects = false, DrawFps = false };*/
-            return new AdvancedDeferredRenderer(root, AvaloniaLocator.Current.GetService<IRenderLoop>()){
+            return new AdvancedDeferredRenderer(root, AvaloniaLocator.Current.GetService<IRenderLoop>())
+            {
                 RenderRoot = this
 //                RenderOnlyOnRenderThread = true
-        };
+            };
         }
 
         public void Invalidate(Rect rect)
         {
-            if (rect.IsEmpty) return; 
+            if (rect.IsEmpty) return;
             InvalidatedRects.Add(rect);
-            
-            
+
+
             /*
              This is the code for drawing invalid rectangles
              var _console = AvaloniaLocator.Current.GetService<IConsole>();
@@ -208,7 +110,14 @@ namespace Consolonia.Core.Infrastructure
         {
         }
 
-        public Size ClientSize => new(_console.Size.width,_console.Size.height);
+        public Size ClientSize
+        {
+            get
+            {
+                ConsoleSize consoleSize = _console.Size;
+                return new Size(consoleSize.Width, consoleSize.Height);
+            }
+        }
 
         public double RenderScaling => 1;
         public IEnumerable<object> Surfaces => new[] { this };
@@ -268,7 +177,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetParent(IWindowImpl parent)
         {
-            //todo: return throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void SetEnabled(bool enable)
@@ -306,12 +215,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void Resize(Size clientSize)
         {
-            //todo: need to check here
             //support only autosizing for now
-            /*if ((int)clientSize.Width != Console.BufferWidth || (int)clientSize.Height != Console.BufferHeight)
-                throw new NotImplementedException();*/
-            //Resized?.Invoke(clientSize);
-            
         }
 
         public void Move(PixelPoint point)
@@ -348,5 +252,36 @@ namespace Consolonia.Core.Infrastructure
         public bool NeedsManagedDecorations { get; }
         public Thickness ExtendedMargins { get; }
         public Thickness OffScreenMargin { get; }
+
+        private async void ConsoleOnKeyPress(Key key, char keyChar, RawInputModifiers rawInputModifiers)
+        {
+            bool handled = false;
+            if (!char.IsControl(keyChar))
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    var rawTextInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks,
+                        _inputRoot,
+                        keyChar.ToString());
+                    Input(rawTextInputEventArgs);
+                    if (rawTextInputEventArgs.Handled)
+                        handled = true;
+                });
+
+            if (handled) return;
+
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
+                    RawKeyEventType.KeyDown, key,
+                    rawInputModifiers));
+            });
+            
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
+                    RawKeyEventType.KeyUp, key,
+                    rawInputModifiers));
+            });
+        }
     }
 }
