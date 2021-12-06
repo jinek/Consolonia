@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Input;
@@ -126,34 +127,10 @@ namespace Consolonia.Core.Infrastructure
                 {
                     ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
 
-                    Key key;
-
-                    switch (consoleKeyInfo.Key)
+                    if (!KeyMapping.TryGetValue(consoleKeyInfo.Key, out Key key))
                     {
-                        case ConsoleKey.Spacebar:
-                            key = Key.Space;
-                            break;
-                        case ConsoleKey.RightArrow:
-                            key = Key.Right;
-                            break;
-                        case ConsoleKey.LeftArrow:
-                            key = Key.Left;
-                            break;
-                        case ConsoleKey.DownArrow:
-                            key = Key.Down;
-                            break;
-                        case ConsoleKey.UpArrow:
-                            key = Key.Up;
-                            break;
-                        case ConsoleKey.Backspace:
-                            key = Key.Back;
-                            break;
-                        default:
-                        {
-                            if (!Enum.TryParse(consoleKeyInfo.Key.ToString(), out key))
-                                throw new NotImplementedException();
-                            break;
-                        }
+                        if (!Enum.TryParse(consoleKeyInfo.Key.ToString(), out key))
+                            throw new NotImplementedException();
                     }
 
                     var rawInputModifiers = RawInputModifiers.None;
@@ -168,14 +145,17 @@ namespace Consolonia.Core.Infrastructure
                     KeyPress?.Invoke(key, consoleKeyInfo.KeyChar, rawInputModifiers);
                 }
             });
-
-            /*Task.Run((Func<Task?>),).ContinueWith(
-                task =>
-                {
-                    ThreadPool.QueueUserWorkItem(_ => throw new InvalidOperationException("Exception happened when reading user input",
-                        task.Exception));
-                }, TaskContinuationOptions.OnlyOnFaulted);*/
         }
+
+        private static readonly Dictionary<ConsoleKey, Key> KeyMapping = new()
+        {
+            {ConsoleKey.Spacebar, Key.Space},
+            {ConsoleKey.RightArrow, Key.Right},
+            {ConsoleKey.LeftArrow, Key.Left},
+            {ConsoleKey.UpArrow, Key.Up},
+            {ConsoleKey.DownArrow, Key.Down},
+            {ConsoleKey.Backspace, Key.Back},
+        };
 
         private async void StartSizeCheckTimer()
         {
