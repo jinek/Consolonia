@@ -34,7 +34,7 @@ namespace Consolonia.Core.Drawing
         {
             (double width, double height) = _consoleWindow.ClientSize;
             _bufferBuffer =
-                new PixelBuffer.PixelBuffer((short)width, (short)height);
+                new PixelBuffer.PixelBuffer((ushort)width, (ushort)height);
         }
 
         public RenderTarget(IEnumerable<object> surfaces)
@@ -77,25 +77,43 @@ namespace Consolonia.Core.Drawing
         private void RenderToDevice()
         {
             PixelBuffer.PixelBuffer pixelBuffer = _bufferBuffer;
-            using (_console.StoreCaret())
+
+            _console.CaretVisible = false;
+            PixelBufferCoordinate? caretPosition = null;
+
+            for (ushort y = 0; y < pixelBuffer.Height; y++)
+            for (ushort x = 0; x < pixelBuffer.Width; x++)
+            {
+                Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
+
+                if (pixel.IsCaret)
+                {
+                    if (caretPosition != null)
+                        throw new InvalidOperationException("Caret is already shown");
+                    caretPosition = new PixelBufferCoordinate(x, y);
+                }
+
+                if (!_consoleWindow.InvalidatedRects.Any(rect =>
+                    rect.ContainsAligned(new Point(x, y)))) continue;
+                if (pixel.Background.Mode != PixelBackgroundMode.Colored)
+                    throw new InvalidOperationException(
+                        "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");
+
+                if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
+                    break;
+
+                _console.Print(new PixelBufferCoordinate(x, y), pixel.Background.Color, pixel.Foreground.Color,
+                    pixel.Foreground.Symbol.GetCharacter());
+            }
+
+            if (caretPosition != null)
+            {
+                _console.SetCaretPosition((PixelBufferCoordinate)caretPosition);
+                _console.CaretVisible = true;
+            }
+            else
             {
                 _console.CaretVisible = false;
-                for (ushort y = 0; y < pixelBuffer.Height; y++)
-                for (ushort x = 0; x < pixelBuffer.Width; x++)
-                {
-                    if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                        rect.ContainsAligned(new Point(x, y)))) continue;
-                    Pixel pixel = pixelBuffer[x, y];
-                    if (pixel.Background.Mode != PixelBackgroundMode.Colored)
-                        throw new InvalidOperationException(
-                            "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");
-
-                    if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
-                        break;
-
-                    _console.Print(new ConsolePosition(x,y), pixel.Background.Color, pixel.Foreground.Color,
-                        pixel.Foreground.Symbol.GetCharacter());
-                }
             }
 
             _consoleWindow.InvalidatedRects.Clear();
