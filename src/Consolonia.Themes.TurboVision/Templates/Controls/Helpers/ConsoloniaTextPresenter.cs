@@ -11,8 +11,6 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
     public class ConsoloniaTextPresenter : TextPresenter, ICaptureTimerStartStop
     {
-        private readonly IConsole? _console;
-
         private bool _caretBlinking;
 
         private static readonly FieldInfo _tickTimerField =
@@ -22,9 +20,8 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         {
             CaretBrushProperty.Changed.Subscribe(static args =>
             {
-                if (args.NewValue.Value is not IConsoleCaretBrush consoleCaretBrush)
+                if (args.NewValue.Value is not MoveConsoleCaretToPositionBrush consoleCaretBrush)
                     throw new NotSupportedException();
-                consoleCaretBrush.SetOwnerControl(args.Sender);
             });
         }
 
@@ -32,8 +29,6 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         {
             var caretTickTimer = (DispatcherTimer)_tickTimerField.GetValue(this);
             caretTickTimer.Tag = this;
-
-            _console = AvaloniaLocator.Current.GetService<IConsole>();
 
             CaretBrush = new MoveConsoleCaretToPositionBrush();
         }
@@ -57,13 +52,11 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 
         public void CaptureTimerStart()
         {
-            _console.AddCaretFor(this);
             _caretBlinking = true;
         }
 
         public void CaptureTimerStop()
         {
-            _console.RemoveCaretFor(this);
             _caretBlinking = false;
         }
 

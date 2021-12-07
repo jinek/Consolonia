@@ -6,7 +6,13 @@ namespace Consolonia.Core.Drawing.PixelBuffer
     {
         public readonly PixelForeground Foreground;
         public readonly PixelBackground Background;
+        public readonly bool IsCaret;
 
+        public Pixel(bool isCaret) : this(PixelBackgroundMode.Transparent)
+        {
+            IsCaret = isCaret;
+        }
+        
         public Pixel(char character, ConsoleColor foregroundColor) : this(new SimpleSymbol(character),
             foregroundColor)
         {
@@ -37,16 +43,19 @@ namespace Consolonia.Core.Drawing.PixelBuffer
         {
         }
 
-        public Pixel(PixelForeground foreground, PixelBackground background)
+        public Pixel(PixelForeground foreground, PixelBackground background, bool isCaret=false)
         {
             Foreground = foreground;
             Background = background;
+            IsCaret = isCaret;
         }
 
         public Pixel Blend(Pixel pixelAbove)
         {
             PixelForeground newForeground;
             PixelBackground newBackground;
+            bool newIsCaret;
+            
             switch (pixelAbove.Background.Mode)
             {
                 case PixelBackgroundMode.Colored:
@@ -54,15 +63,17 @@ namespace Consolonia.Core.Drawing.PixelBuffer
                 case PixelBackgroundMode.Transparent:
                     newForeground = Foreground.Blend(pixelAbove.Foreground);
                     newBackground = Background;
+                    newIsCaret = IsCaret | pixelAbove.IsCaret;
                     break;
                 case PixelBackgroundMode.Shaded:
                     (newForeground, newBackground) = Shade();
                     newForeground = newForeground.Blend(pixelAbove.Foreground);
+                    newIsCaret = IsCaret | pixelAbove.IsCaret;
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(pixelAbove));
             }
 
-            return new Pixel(newForeground, newBackground);
+            return new Pixel(newForeground, newBackground, newIsCaret);
         }
 
         private (PixelForeground, PixelBackground) Shade()

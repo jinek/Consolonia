@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
+        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision"
+        xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
     <Style Selector="helpers|CaretControl">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
@@ -33,7 +34,7 @@
                               IsVisible="{TemplateBinding IsCaretShown}"
                               StrokeThickness="1">
                             <Line.Stroke>
-                                <helpers:MoveConsoleCaretToPositionBrush />
+                                <drawing:MoveConsoleCaretToPositionBrush />
                             </Line.Stroke>
                         </Line>
                     </Grid>

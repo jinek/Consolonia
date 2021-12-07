@@ -7,6 +7,7 @@ using Avalonia.Input.Raw;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Threading;
+using Consolonia.Core.Drawing.PixelBuffer;
 using Consolonia.Core.Dummy;
 
 namespace Consolonia.Core.Infrastructure
@@ -28,8 +29,8 @@ namespace Consolonia.Core.Infrastructure
             {
                 Dispatcher.UIThread.Post(() =>
                 {
-                    ConsoleSize consoleSize = _console.Size;
-                    Resized(new Size(consoleSize.Width, consoleSize.Height));
+                    PixelBufferSize pixelBufferSize = _console.Size;
+                    Resized(new Size(pixelBufferSize.Width, pixelBufferSize.Height));
                 });
             };
 
@@ -114,8 +115,8 @@ namespace Consolonia.Core.Infrastructure
         {
             get
             {
-                ConsoleSize consoleSize = _console.Size;
-                return new Size(consoleSize.Width, consoleSize.Height);
+                PixelBufferSize pixelBufferSize = _console.Size;
+                return new Size(pixelBufferSize.Width, pixelBufferSize.Height);
             }
         }
 

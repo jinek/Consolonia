@@ -68,15 +68,15 @@ namespace Consolonia.Core.Drawing
             {
                 var myRenderTarget = (RenderTarget)source.Item;
 
-
                 int left = (int)(x + destRect.Left);
                 int top = (int)(y + destRect.Top);
                 clip.ExecuteWithClipping(new Point(left, top), () =>
                 {
-                    _pixelBuffer.Set(left, top, destPixel =>
+                    _pixelBuffer.Set(new PixelBufferCoordinate((ushort)left, (ushort)top), destPixel =>
                     {
-                        return destPixel.Blend(myRenderTarget._bufferBuffer[(int)(x + sourceRect.Left),
-                            (int)(y + sourceRect.Top)]);
+                        return destPixel.Blend(
+                            myRenderTarget._bufferBuffer[new PixelBufferCoordinate((ushort)(x + sourceRect.Left),
+                                (ushort)(y + sourceRect.Top))]);
                     });
                 });
             }
@@ -157,7 +157,7 @@ namespace Consolonia.Core.Drawing
                         int py = (int)(y + j);
                         _currentClip.ExecuteWithClipping(new Point(px, py), () =>
                         {
-                            _pixelBuffer.Set(px, py,
+                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
                                 pixel => pixel.Blend(
                                     new Pixel(
                                         new PixelBackground(backgroundBrush.Mode, backgroundBrush.Color))));
@@ -308,17 +308,13 @@ namespace Consolonia.Core.Drawing
 
             Point head = line.PStart;
 
-            if (pen.Brush is IConsoleCaretBrush consoleCaretBrush)
+            if (pen.Brush is MoveConsoleCaretToPositionBrush)
             {
-                int penThickness = (int)pen.Thickness;
-                if (!_currentClip.ExecuteWithClipping(head,
-                    () =>
-                    {
-                        consoleCaretBrush.MoveCaret(new ConsolePosition((ushort)head.X, (ushort)head.Y),
-                            penThickness);
-                    }))
-                    consoleCaretBrush.MoveCaret(null, penThickness);
-
+                _currentClip.ExecuteWithClipping(head, () =>
+                {
+                    _pixelBuffer.Set((PixelBufferCoordinate)head,pixel => pixel.Blend(new Pixel(true)));
+                });
+                
                 return;
             }
 
@@ -343,7 +339,7 @@ namespace Consolonia.Core.Drawing
                 {
                     _currentClip.ExecuteWithClipping(head, () =>
                     {
-                        _pixelBuffer.Set((int)head.X, (int)head.Y,
+                        _pixelBuffer.Set((PixelBufferCoordinate)head,
                             pixel => pixel.Blend(new Pixel(marker, consoleColor)));
                     });
                     head = line.Vertical
@@ -396,7 +392,7 @@ namespace Consolonia.Core.Drawing
 
                     var consolePixel = new Pixel(str[i], foregroundColor);
 
-                    _pixelBuffer.Set((int)characterPoint.X, (int)characterPoint.Y,
+                    _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
                         oldPixel => oldPixel.Blend(consolePixel));
                 }); //todo: send to stack to avoid heap usages
             }

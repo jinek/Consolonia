@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Input;
+using Consolonia.Core.Drawing.PixelBuffer;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -10,10 +11,9 @@ namespace Consolonia.Core.Infrastructure
     {
         private (ConsoleColor background, ConsoleColor foreground, char character)?[,] _cache;
         private bool _caretVisible;
-        private object _currentControlOfCaret;
         private ConsoleColor _headBackground;
         private ConsoleColor _headForeground;
-        private ConsolePosition _headPosition;
+        private PixelBufferCoordinate _headBufferPoint;
 
 
         public DefaultNetConsole()
@@ -37,67 +37,24 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public event Action<Key, char, RawInputModifiers> KeyPress;
-
-
-        public void MoveCaretForControl(ConsolePosition? position, int size, object ownerControl)
+     
+        public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
         {
-            /*if (_currentControlOfCaret != ownerControl)
-                throw new InvalidOperationException();*/
-
-            // Console.CursorSize = size; not supported on linux
-            if (position == null)
-            {
-                CaretVisible = false;
-            }
-            else
-            {
-                CaretVisible = true;
-                SetCaretPosition((ConsolePosition)position);
-            }
+            if (bufferPoint.Equals(GetCaretPosition())) return;
+            _headBufferPoint = bufferPoint;
+            Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
         }
 
-        public void AddCaretFor(object control)
+        public PixelBufferCoordinate GetCaretPosition()
         {
-            // if (_currentControlOfCaret != null)
-            // throw new NotSupportedException();
-
-            _currentControlOfCaret = control;
-
-            CaretVisible = true;
+            return _headBufferPoint;
         }
 
-
-        public void RemoveCaretFor(object control)
-        {
-            /*if (_currentControlOfCaret == null)
-                throw new NotSupportedException();*/
-
-            _currentControlOfCaret = null;
-            CaretVisible = false;
-        }
-
-        public IDisposable StoreCaret()
-        {
-            return new CaretStorage(this);
-        }
-
-        public void SetCaretPosition(ConsolePosition position)
-        {
-            if (position.Equals(GetCaretPosition())) return;
-            _headPosition = position;
-            Console.SetCursorPosition(position.X, position.Y);
-        }
-
-        public ConsolePosition GetCaretPosition()
-        {
-            return _headPosition;
-        }
-
-        public void Print(ConsolePosition position, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
+        public void Print(PixelBufferCoordinate bufferPoint, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
             char character)
         {
-            SetCaretPosition(position);
-            (ushort x, ushort y) = position;
+            SetCaretPosition(bufferPoint);
+            (ushort x, ushort y) = bufferPoint;
 
             if (_headBackground != backgroundColor)
                 _headBackground = Console.BackgroundColor = backgroundColor;
@@ -109,14 +66,14 @@ namespace Consolonia.Core.Infrastructure
 
             _cache[x, y] = (backgroundColor, foregroundColor, character);
             Console.Write(character);
-            if (_headPosition.X < Size.Width - 1)
-                _headPosition = _headPosition.WithXpp();
-            else _headPosition = (ConsolePosition)((ushort)0, (ushort)(_headPosition.Y + 1));
+            if (_headBufferPoint.X < Size.Width - 1)
+                _headBufferPoint = _headBufferPoint.WithXpp();
+            else _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
         }
 
         public event Action? Resized;
 
-        public ConsoleSize Size =>
+        public PixelBufferSize Size =>
             new((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
 
         private void StartInputReading()
