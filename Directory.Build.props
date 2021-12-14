@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
     <VersionPrefix>0.10.10</VersionPrefix>
-    <VersionSuffix>r</VersionSuffix>
+    <VersionSuffix></VersionSuffix>
     <Authors>Evgeny Gorbovoy</Authors>
     <Company>Evgeny Gorbovoy</Company>
     <Description>TUI (Text User Interface) (GUI Framework) implementation for Avalonia UI</Description>
