@@ -150,12 +150,6 @@ namespace Consolonia.Core.Infrastructure
 
         public AcrylicPlatformCompensationLevels AcrylicCompensationLevels => new(1, 1, 1);
 
-        public void Show(bool activate)
-        {
-            if (activate)
-                Activated();
-        }
-
         public void Show(bool activate, bool isDialog)
         {
             if (activate)
