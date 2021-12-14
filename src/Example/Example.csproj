@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <RootNamespace>Todo</RootNamespace>
+    <RootNamespace>Example</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
