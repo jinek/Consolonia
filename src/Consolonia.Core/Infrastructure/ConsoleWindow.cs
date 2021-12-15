@@ -18,6 +18,7 @@ namespace Consolonia.Core.Infrastructure
         private readonly IKeyboardDevice _myKeyboardDevice;
         internal readonly List<Rect> InvalidatedRects = new(50);
         private IInputRoot _inputRoot;
+        private Action<Size, PlatformResizeReason> _resized;
 
         public ConsoleWindow()
         {
@@ -120,12 +121,20 @@ namespace Consolonia.Core.Infrastructure
             }
         }
 
+        public Size? FrameSize { get; }
+
         public double RenderScaling => 1;
         public IEnumerable<object> Surfaces => new[] { this };
 
         public Action<RawInputEventArgs> Input { get; set; }
 
         public Action<Rect> Paint { get; set; }
+
+        Action<Size, PlatformResizeReason> ITopLevelImpl.Resized
+        {
+            get => _resized;
+            set => _resized = value;
+        }
 
         public Action<Size> Resized { get; set; }
 
@@ -141,7 +150,7 @@ namespace Consolonia.Core.Infrastructure
 
         public AcrylicPlatformCompensationLevels AcrylicCompensationLevels => new(1, 1, 1);
 
-        public void Show(bool activate)
+        public void Show(bool activate, bool isDialog)
         {
             if (activate)
                 Activated();
@@ -212,6 +221,11 @@ namespace Consolonia.Core.Infrastructure
         public void BeginResizeDrag(WindowEdge edge, PointerPressedEventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        public void Resize(Size clientSize, PlatformResizeReason reason = PlatformResizeReason.Application)
+        {
+            // throw new NotImplementedException();
         }
 
         public void Resize(Size clientSize)
