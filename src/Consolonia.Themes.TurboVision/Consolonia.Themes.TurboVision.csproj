@@ -13,11 +13,4 @@
       <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="Templates\Controls\DialogWrap.axaml.cs">
-        <DependentUpon>DialogWrap.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-    </ItemGroup>
-
 </Project>
