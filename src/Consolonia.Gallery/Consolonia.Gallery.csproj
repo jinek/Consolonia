@@ -15,11 +15,4 @@
       <PackageReference Include="Avalonia.Diagnostics" Version="0.10.3" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="View\ControlsListView.axaml.cs">
-        <DependentUpon>ControlsListView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-    </ItemGroup>
-
 </Project>
