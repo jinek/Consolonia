@@ -45,6 +45,11 @@ namespace Consolonia.Core.Infrastructure
             return null;
         }
 
+        public ITrayIconImpl? CreateTrayIcon()
+        {
+            throw new NotImplementedException();
+        }
+
         [DebuggerStepThrough]
         internal static void RaiseNotSupported(int errorCode, params object[] information)
         {
