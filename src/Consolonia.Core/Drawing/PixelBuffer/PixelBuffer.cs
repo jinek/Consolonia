@@ -10,7 +10,12 @@ namespace Consolonia.Core.Drawing.PixelBuffer
     {
         public void Set(PixelBufferCoordinate point, Func<Pixel, Pixel> changeAction)
         {
-            this[point] = changeAction(this[point]);
+            Set<object>(point, (pixel, _) => changeAction(pixel), null);
+        }
+    
+        public void Set<TUserObject>(PixelBufferCoordinate point, Func<Pixel,TUserObject, Pixel> changeAction, TUserObject userObject)
+        {
+            this[point] = changeAction(this[point],userObject);
         }
 
         public void Foreach(Func<PixelBufferCoordinate, Pixel, Pixel> replaceAction)
