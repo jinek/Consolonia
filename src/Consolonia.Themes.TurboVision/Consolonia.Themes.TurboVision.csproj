@@ -2,21 +2,15 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <IsPackable>True</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="0.10.3" />
+      <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Templates\Controls\DialogWrap.axaml.cs">
-        <DependentUpon>DialogWrap.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
     </ItemGroup>
 
 </Project>

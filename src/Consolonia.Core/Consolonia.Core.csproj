@@ -2,14 +2,15 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <IsPackable>False</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="0.10.3" />
-      <PackageReference Include="Avalonia.FreeDesktop" Version="0.10.3" />
-      <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.3" />
-      <PackageReference Include="Avalonia.Skia" Version="0.10.3" />
-      <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.10.3" />
+      <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+      <PackageReference Include="Avalonia.FreeDesktop" Version="$(AvaloniaVersion)" />
+      <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
+      <PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
+      <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
     </ItemGroup>
 
 </Project>

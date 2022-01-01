@@ -1,0 +1,13 @@
+﻿<Project>
+  <PropertyGroup>
+    <VersionPrefix>0.10.10</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <Authors>Evgeny Gorbovoy</Authors>
+    <Company>Evgeny Gorbovoy</Company>
+    <Description>TUI (Text User Interface) (GUI Framework) implementation for Avalonia UI</Description>
+    <Copyright>Copyright © Evgeny Gorbovoy 2021</Copyright>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AvaloniaVersion>0.10.10</AvaloniaVersion>
+  </PropertyGroup>
+</Project>
