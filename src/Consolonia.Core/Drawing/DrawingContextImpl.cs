@@ -158,9 +158,9 @@ namespace Consolonia.Core.Drawing
                         _currentClip.ExecuteWithClipping(new Point(px, py), () =>
                         {
                             _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                                pixel => pixel.Blend(
+                                (pixel, bb) => pixel.Blend(
                                     new Pixel(
-                                        new PixelBackground(backgroundBrush.Mode, backgroundBrush.Color))));
+                                        new PixelBackground(bb.Mode, bb.Color))),backgroundBrush);
                         });
                     }
                 }
@@ -340,7 +340,7 @@ namespace Consolonia.Core.Drawing
                     _currentClip.ExecuteWithClipping(head, () =>
                     {
                         _pixelBuffer.Set((PixelBufferCoordinate)head,
-                            pixel => pixel.Blend(new Pixel(marker, consoleColor)));
+                            (Pixel pixel, (byte, ConsoleColor) mcC) => pixel.Blend(new Pixel(mcC.Item1, mcC.Item2)),(marker, consoleColor));
                     });
                     head = line.Vertical
                         ? head.WithY(head.Y + 1)
@@ -393,8 +393,8 @@ namespace Consolonia.Core.Drawing
                     var consolePixel = new Pixel(str[i], foregroundColor);
 
                     _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                        oldPixel => oldPixel.Blend(consolePixel));
-                }); //todo: send to stack to avoid heap usages
+                        (oldPixel,cp) => oldPixel.Blend(cp),consolePixel);
+                });
             }
         }
     }
