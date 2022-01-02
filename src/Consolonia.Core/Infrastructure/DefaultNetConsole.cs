@@ -106,6 +106,8 @@ namespace Consolonia.Core.Infrastructure
 
         private static readonly Dictionary<ConsoleKey, Key> KeyMapping = new()
         {
+            {ConsoleKey.LeftWindows, Key.LWin},
+            {ConsoleKey.RightWindows, Key.RWin},
             {ConsoleKey.Spacebar, Key.Space},
             {ConsoleKey.RightArrow, Key.Right},
             {ConsoleKey.LeftArrow, Key.Left},

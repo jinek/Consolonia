@@ -28,7 +28,7 @@ namespace Consolonia.Core.Drawing
             Size constraint,
             IReadOnlyList<FormattedTextStyleSpan> spans)
         {
-            return new FormattedText(text, typeface, fontSize, textAlignment, wrapping, constraint, spans);
+            return new FormattedText(text, textAlignment, wrapping, constraint, spans);
             //return _platformRenderInterface.CreateFormattedText(text, typeface, fontSize, textAlignment, wrapping, constraint, spans);
         }
 

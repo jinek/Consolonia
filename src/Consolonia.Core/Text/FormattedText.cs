@@ -14,18 +14,13 @@ namespace Consolonia.Core.Text
         private readonly List<Rect> _rects = new();
         private readonly TextAlignment _textAlignment;
         private readonly TextWrapping _wrapping;
-        private TypefaceImpl _glyphTypefaceImpl;
-        private int _lineHeight;
-        private int _lineOffset;
 
-        public FormattedText(string? text, Typeface typeface, double fontSize, TextAlignment textAlignment,
+        public FormattedText(string? text, TextAlignment textAlignment,
             TextWrapping wrapping, Size constraint, IReadOnlyList<FormattedTextStyleSpan> spans)
         {
             Text = text ?? string.Empty;
             // Replace 0 characters with zero-width spaces (200B)
             Text = Text.Replace((char)0, (char)0x200B);
-
-            _glyphTypefaceImpl = (TypefaceImpl)typeface.GlyphTypeface.PlatformImpl;
 
             _textAlignment = textAlignment;
             _wrapping = wrapping;
@@ -60,7 +55,7 @@ namespace Consolonia.Core.Text
                 if (currentLine.Top <= y)
                 {
                     line = currentLine;
-                    nextTop = currentLine.Top + currentLine.Height;
+                    nextTop = currentLine.Top + 1;
                 }
                 else
                 {
@@ -72,13 +67,13 @@ namespace Consolonia.Core.Text
             {
                 var rects = GetRects();
 
-                for (int c = line.Start; c < line.Start + line.TextLength; c++)
+                for (int c = line.Start; c < line.Start + line.Length; c++)
                 {
                     Rect rc = rects[c];
                     if (rc.Contains(point))
                         return new TextHitTestResult
                         {
-                            IsInside = !(line.TextLength > line.Length),
+                            IsInside = true,
                             TextPosition = c,
                             IsTrailing = point.X - rc.X > rc.Width / 2
                         };
@@ -87,7 +82,7 @@ namespace Consolonia.Core.Text
                 int offset = 0;
 
                 if (point.X >= rects[line.Start].X + line.Width && line.Length > 0)
-                    offset = line.TextLength > line.Length ? line.Length : line.Length - 1;
+                    offset = line.Length - 1;
 
                 if (y < nextTop)
                     return new TextHitTestResult
@@ -98,7 +93,7 @@ namespace Consolonia.Core.Text
                     };
             }
 
-            bool end = point.X > Bounds.Width || point.Y > _lines.Sum(l => l.Height);
+            bool end = point.X > Bounds.Width || point.Y > _lines.Count;
 
             return new TextHitTestResult
             {
@@ -114,7 +109,7 @@ namespace Consolonia.Core.Text
             if (string.IsNullOrEmpty(Text))
             {
                 float alignmentOffset = TransformX(0, 0);
-                return new Rect(alignmentOffset, 0, caretWidth, _lineHeight);
+                return new Rect(alignmentOffset, 0, caretWidth, 1);
             }
 
             var rects = GetRects();
@@ -128,9 +123,9 @@ namespace Consolonia.Core.Text
             {
                 case '\n':
                 case '\r':
-                    return new Rect(r.X, r.Y, caretWidth, _lineHeight);
+                    return new Rect(r.X, r.Y, caretWidth, 1);
                 default:
-                    return new Rect(r.X + r.Width, r.Y, caretWidth, _lineHeight);
+                    return new Rect(r.X + r.Width, r.Y, caretWidth, 1);
             }
         }
 
@@ -151,7 +146,7 @@ namespace Consolonia.Core.Text
                 double left = rects[line.Start > index ? line.Start : index].X;
                 double right = rects[lineEndIndex > lastIndex ? lastIndex : lineEndIndex].Right;
 
-                result.Add(new Rect(left, line.Top, right - left, line.Height));
+                result.Add(new Rect(left, line.Top, right - left, 1));
             }
 
             return result;
@@ -188,15 +183,6 @@ namespace Consolonia.Core.Text
             int curOff = 0;
             float curY = 0;
 
-            const int mLeading = 0; // The recommended distance to add between lines of text (will be >= 0).
-
-            // This seems like the best measure of full vertical extent
-            // matches Direct2D line height
-            _lineHeight = 1;
-
-            // Rendering is relative to baseline
-            _lineOffset = 0;
-
             float widthConstraint = double.IsPositiveInfinity(Constraint.Width)
                 ? -1
                 : (float)Constraint.Width;
@@ -216,45 +202,38 @@ namespace Consolonia.Core.Text
                 var line = new AvaloniaFormattedTextLine
                 {
                     Start = curOff,
-                    TextLength = measured
+                    Length = measured
                 };
-                string subString = Text.Substring(line.Start, line.TextLength);
+                string subString = Text.Substring(line.Start, line.Length);
                 float lineWidth = subString.Length;
                 line.Length = measured - trailingnumber;
                 line.Width = lineWidth;
-                line.Height = _lineHeight;
                 line.Top = curY;
 
                 SkiaLines.Add(line);
 
-                curY += _lineHeight;
-                curY += mLeading;
+                curY += 1;
                 curOff += measured;
 
                 //if this is the last line and there are trailing newline characters then
                 //insert a additional line
-                if (curOff >= length)
+                if (curOff < length) continue;
+                string subStringMinusNewlines = subString.TrimEnd('\n', '\r');
+                int lengthDiff = subString.Length - subStringMinusNewlines.Length;
+                if (lengthDiff <= 0) continue;
+                string lastLineSubString = Text.Substring(line.Start, line.Length);
+                int lastLineWidth = lastLineSubString.Length;
+                var lastLine = new AvaloniaFormattedTextLine
                 {
-                    string subStringMinusNewlines = subString.TrimEnd('\n', '\r');
-                    int lengthDiff = subString.Length - subStringMinusNewlines.Length;
-                    if (lengthDiff <= 0) continue;
-                    string lastLineSubString = Text.Substring(line.Start, line.TextLength);
-                    int lastLineWidth = lastLineSubString.Length;
-                    var lastLine = new AvaloniaFormattedTextLine
-                    {
-                        TextLength = lengthDiff,
-                        Start = curOff - lengthDiff,
-                        Length = 0,
-                        Height = _lineHeight,
-                        Top = curY,
-                        Width = lastLineWidth
-                    };
+                    Length = lengthDiff,
+                    Start = curOff - lengthDiff,
+                    Top = curY,
+                    Width = lastLineWidth
+                };
 
-                    SkiaLines.Add(lastLine);
+                SkiaLines.Add(lastLine);
 
-                    curY += _lineHeight;
-                    curY += mLeading;
-                }
+                curY += 1;
             }
 
             // Now convert to Avalonia data formats
@@ -267,34 +246,27 @@ namespace Consolonia.Core.Text
                 if (maxX < w)
                     maxX = w;
 
-                _lines.Add(new FormattedTextLine(SkiaLines[c].TextLength, SkiaLines[c].Height));
+                _lines.Add(new FormattedTextLine(SkiaLines[c].Length, 1));
             }
 
             if (SkiaLines.Count == 0)
             {
-                _lines.Add(new FormattedTextLine(0, _lineHeight));
-                Bounds = new Rect(0, 0, 0, _lineHeight);
+                _lines.Add(new FormattedTextLine(0, 1));
+                Bounds = new Rect(0, 0, 0, 1);
             }
             else
             {
-                AvaloniaFormattedTextLine lastLine = SkiaLines[SkiaLines.Count - 1];
-                Bounds = new Rect(0, 0, maxX, lastLine.Top + lastLine.Height);
+                AvaloniaFormattedTextLine lastLine = SkiaLines[^1];
+                Bounds = new Rect(0, 0, maxX, lastLine.Top + 1);
 
                 if (double.IsPositiveInfinity(Constraint.Width)) return;
 
-                switch (_textAlignment)
+                Bounds = _textAlignment switch
                 {
-                    case TextAlignment.Center:
-                        Bounds = new Rect(Constraint).CenterRect(Bounds);
-                        break;
-                    case TextAlignment.Right:
-                        Bounds = new Rect(
-                            Constraint.Width - Bounds.Width,
-                            0,
-                            Bounds.Width,
-                            Bounds.Height);
-                        break;
-                }
+                    TextAlignment.Center => new Rect(Constraint).CenterRect(Bounds),
+                    TextAlignment.Right => new Rect(Constraint.Width - Bounds.Width, 0, Bounds.Width, Bounds.Height),
+                    _ => Bounds
+                };
             }
         }
 
@@ -309,7 +281,6 @@ namespace Consolonia.Core.Text
                 lengthBreak = (int)maxWidth;
 
             //Check for white space or line breakers before the lengthBreak
-            int startIndex = textIndex;
             int index = textIndex;
             int word_start = textIndex;
             bool prevBreak = true;
@@ -326,7 +297,7 @@ namespace Consolonia.Core.Text
 
                 prevBreak = currBreak;
 
-                if (index > startIndex + lengthBreak)
+                if (index > textIndex + lengthBreak)
                 {
                     if (currBreak)
                     {
@@ -338,9 +309,9 @@ namespace Consolonia.Core.Text
                     else
                     {
                         // backup until a whitespace (or 1 char)
-                        if (word_start == startIndex)
+                        if (word_start == textIndex)
                         {
-                            if (prevText > startIndex) index = prevText;
+                            if (prevText > textIndex) index = prevText;
                         }
                         else
                         {
@@ -353,14 +324,14 @@ namespace Consolonia.Core.Text
 
                 if ('\n' == currChar)
                 {
-                    int ret = index - startIndex;
+                    int ret = index - textIndex;
                     int lineBreakSize = 1;
                     if (index < stop)
                     {
                         currChar = textInput[index++];
                         if ('\r' == currChar)
                         {
-                            ret = index - startIndex;
+                            ret = index - textIndex;
                             ++lineBreakSize;
                         }
                     }
@@ -372,14 +343,14 @@ namespace Consolonia.Core.Text
 
                 if ('\r' == currChar)
                 {
-                    int ret = index - startIndex;
+                    int ret = index - textIndex;
                     int lineBreakSize = 1;
                     if (index < stop)
                     {
                         currChar = textInput[index++];
                         if ('\n' == currChar)
                         {
-                            ret = index - startIndex;
+                            ret = index - textIndex;
                             ++lineBreakSize;
                         }
                     }
@@ -390,7 +361,7 @@ namespace Consolonia.Core.Text
                 }
             }
 
-            return index - startIndex;
+            return index - textIndex;
         }
 
         private static bool IsBreakChar(char c)
@@ -401,10 +372,9 @@ namespace Consolonia.Core.Text
 
         internal float TransformX(float originX, float lineWidth)
         {
-            TextAlignment align = _textAlignment;
             float x = 0;
 
-            if (align == TextAlignment.Left)
+            if (_textAlignment == TextAlignment.Left)
             {
                 x = originX;
             }
@@ -414,15 +384,12 @@ namespace Consolonia.Core.Text
                     ? Constraint.Width
                     : Bounds.Width;
 
-                switch (align)
+                x = _textAlignment switch
                 {
-                    case TextAlignment.Center:
-                        x = originX + (float)(width - lineWidth) / 2;
-                        break;
-                    case TextAlignment.Right:
-                        x = originX + (float)(width - lineWidth);
-                        break;
-                }
+                    TextAlignment.Center => originX + (float)(width - lineWidth) / 2,
+                    TextAlignment.Right => originX + (float)(width - lineWidth),
+                    _ => x
+                };
             }
 
             return x;
@@ -443,11 +410,11 @@ namespace Consolonia.Core.Text
             {
                 AvaloniaFormattedTextLine line = SkiaLines[li];
                 float prevRight = TransformX(0, line.Width);
-                double nextTop = line.Top + line.Height;
+                double nextTop = line.Top + 1;
 
                 if (li + 1 < SkiaLines.Count) nextTop = SkiaLines[li + 1].Top;
 
-                for (int i = line.Start; i < line.Start + line.TextLength; i++)
+                for (int i = line.Start; i < line.Start + line.Length; i++)
                 {
                     float w = 1;
 
@@ -463,10 +430,8 @@ namespace Consolonia.Core.Text
 
         internal struct AvaloniaFormattedTextLine
         {
-            public float Height;
             public int Length;
             public int Start;
-            public int TextLength;
             public float Top;
             public float Width;
         }
