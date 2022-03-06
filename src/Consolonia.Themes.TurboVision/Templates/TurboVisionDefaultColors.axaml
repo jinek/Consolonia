@@ -4,7 +4,6 @@
                     xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
     <!--https://www.mikrocontroller.net/attachment/483578/Turbo_Vision.gif-->
     <system:Double x:Key="FontSizeNormal">1</system:Double>
-    <system:Boolean x:Key="ThemeButtonShadowVisible">True</system:Boolean>
     <drawing:FourBitColorBrush x:Key="ThemeForegroundBrush" Color="Black"/>
     <drawing:FourBitColorBrush x:Key="ThemeBackgroundBrush" Color="Gray"/>
     <drawing:FourBitColorBrush x:Key="ThemeChooserBackgroundBrush" Color="Cyan"/>

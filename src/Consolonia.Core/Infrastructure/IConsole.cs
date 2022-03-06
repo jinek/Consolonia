@@ -4,7 +4,7 @@ using Consolonia.Core.Drawing.PixelBuffer;
 
 namespace Consolonia.Core.Infrastructure
 {
-    public interface IConsole
+    public interface IConsole : IDisposable
     {
         PixelBufferSize Size { get; }
         bool CaretVisible { get; set; }
@@ -13,7 +13,7 @@ namespace Consolonia.Core.Infrastructure
         PixelBufferCoordinate GetCaretPosition();
 
         void Print(PixelBufferCoordinate bufferPoint, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
-            char character);
+            string str);
 
         event Action Resized;
         event Action<Key, char, RawInputModifiers> KeyPress;

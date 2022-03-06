@@ -3,10 +3,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
-using Consolonia.Core.Infrastructure;
 using Consolonia.Themes.TurboVision.Templates.Controls.Dialog;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls
@@ -16,6 +14,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
         private Window _parentWindow;
         private IDisposable _disposable;
         private IDisposable _disposable2;
+        private DialogWindow _dialogWindow;
 
         public DialogWrap()
         {
@@ -40,75 +39,35 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
             Height = newSize.Height;
         }
 
-        /*
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            _parentWindow = this.FindAncestorOfType<Window>();
-            /*
-            
-            
-
-            Width = ContentPresenter.DesiredSize.Width;
-            Height = ContentPresenter.DesiredSize.Height;#1#
-            /*ContentPresenter.Measure(_parentWindow.ClientSize);
-            return ContentPresenter.DesiredSize;#1#
-            ContentPresenter.Measure(_parentWindow.ClientSize);
-            
-            Size measureOverride = base.MeasureOverride(ContentPresenter.DesiredSize);
-            return measureOverride;
-            return _parentWindow.ClientSize;
-        }
-
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            _parentWindow = this.FindAncestorOfType<Window>();
-            ContentPresenter.Arrange(new Rect(_parentWindow.ClientSize)));
-            
-            Size arrangeOverride = base.ArrangeOverride(_parentWindow.ClientSize);
-            return arrangeOverride;
-            /*
-            //return ContentPresenter.Arrange();
-            base.ArrangeOverride(_parentWindow.ClientSize);
-            return _parentWindow.ClientSize;#1#
-        }*/
-
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
 
-        public void SetContent(IControl control)
+        public void SetContent(DialogWindow dialogWindow)
         {
-            _disposable2?.Dispose();
-            _disposable2 = control.GetPropertyChangedObservable(BoundsProperty).Subscribe(args =>
+            /*_disposable2?.Dispose();
+            _disposable2 = dialogWindow.GetPropertyChangedObservable(BoundsProperty).Subscribe(args =>
             {
                 var rect = (Rect)args.NewValue;
-                Border.Width = rect.Width + 2;
-                Border.Height = rect.Height + 2;
-            });
-            ContentPresenter.Content = control;
+                DialogPanelBorder.Width = rect.Width + 2;
+                DialogPanelBorder.Height = rect.Height + 2;
+            });*/
+            _dialogWindow = dialogWindow;
+            ContentPresenter.Content = dialogWindow;
         }
 
-        private ContentPresenter ContentPresenter => this.Get<ContentPresenter>("ContentPresenter");
-        private Control Border => this.Get<Control>("Border");
+        internal ContentPresenter ContentPresenter => this.Get<ContentPresenter>("ContentPresenter");
 
-        private void Close_Clicked(object? sender, RoutedEventArgs e)
-        {
-            CloseDialog();
-        }
+        /// <summary>
+        ///     Focused element when new dialog shown
+        ///     This is focus to restore when dialog closed 
+        /// </summary>
+        internal IInputElement? HadFocusOn { get; set; }
 
         private void CloseDialog()
         {
-            ((Control)Content).CloseDialog();
-        }
-
-        private void InputElement_OnKeyDown(object? sender, KeyEventArgs e)
-        {
-            if (e.Key is Key.Cancel or Key.Escape)
-            {
-                CloseDialog();
-                e.Handled = true;
-            }
+            ((DialogWindow)ContentPresenter.Content).CloseDialog();
         }
     }
 }
