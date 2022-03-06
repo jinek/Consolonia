@@ -4,12 +4,15 @@ on:
   push:
     branches: [ nuget-pack ]
   pull_request:
-    branches: [ main ] 
+    branches: [ main ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
 
     steps:
     - uses: actions/checkout@v2
