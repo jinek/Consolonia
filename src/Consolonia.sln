@@ -9,6 +9,15 @@ ProjectSection(SolutionItems) = preProject
 	readme.md = readme.md
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Gallery", "Consolonia.Gallery\Consolonia.Gallery.csproj", "{70643248-718D-46F8-8775-E1674787B195}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Themes.TurboVision", "Consolonia.Themes.TurboVision\Consolonia.Themes.TurboVision.csproj", "{850A3EF5-2E1F-4876-B3DE-D5C99FDFC135}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{476E1582-855A-4BEB-BA7D-55302428EE62}"
+	ProjectSection(SolutionItems) = preProject
+		..\Directory.Build.props = ..\Directory.Build.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,5 +32,13 @@ Global
 		{9ED11926-949D-4D5A-8EA7-41CAB1229C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9ED11926-949D-4D5A-8EA7-41CAB1229C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9ED11926-949D-4D5A-8EA7-41CAB1229C47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70643248-718D-46F8-8775-E1674787B195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70643248-718D-46F8-8775-E1674787B195}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70643248-718D-46F8-8775-E1674787B195}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70643248-718D-46F8-8775-E1674787B195}.Release|Any CPU.Build.0 = Release|Any CPU
+		{850A3EF5-2E1F-4876-B3DE-D5C99FDFC135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{850A3EF5-2E1F-4876-B3DE-D5C99FDFC135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{850A3EF5-2E1F-4876-B3DE-D5C99FDFC135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{850A3EF5-2E1F-4876-B3DE-D5C99FDFC135}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

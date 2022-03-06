@@ -1,18 +1,21 @@
 using System;
-using Avalonia;
+using Avalonia.Input;
+using Consolonia.Core.Drawing.PixelBuffer;
 
 namespace Consolonia.Core.Infrastructure
 {
-    public interface IConsole
+    public interface IConsole : IDisposable
     {
-        void MoveCaretForControl(Point position, int size, object ownerControl);
-        void AddCaretFor(object control);
-        void RemoveCaretFor(object control);
-        IDisposable StoreCaret();
-        void SetCaretPosition((ushort x, ushort y) position);
-        (ushort x, ushort y) GetCaretPosition();
-        void Print(ushort x, ushort y, ConsoleColor backgroundColor, ConsoleColor foregroundColor, char character);
+        PixelBufferSize Size { get; }
+        bool CaretVisible { get; set; }
+
+        void SetCaretPosition(PixelBufferCoordinate bufferPoint);
+        PixelBufferCoordinate GetCaretPosition();
+
+        void Print(PixelBufferCoordinate bufferPoint, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
+            string str);
+
         event Action Resized;
-        (ushort width, ushort height) Size { get; }
+        event Action<Key, char, RawInputModifiers> KeyPress;
     }
 }

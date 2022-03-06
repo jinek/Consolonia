@@ -1,0 +1,78 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryTextBox">
+    <!--Copied from https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Default/TextBox.xaml-->
+    <StackPanel Orientation="Vertical"
+                Spacing="1"
+                Margin="1,0">
+        <StackPanel.Styles>
+            <Style Selector="TextBox">
+                <Setter Property="HorizontalAlignment"
+                        Value="Left" />
+                <Setter Property="Width"
+                        Value="35" />
+            </Style>
+        </StackPanel.Styles>
+        <TextBox Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
+            <TextBox.ContextFlyout>
+                <Flyout>
+                    <TextBlock>Custom context flyout</TextBlock>
+                </Flyout>
+            </TextBox.ContextFlyout>
+        </TextBox>
+        <TextBox IsReadOnly="True"
+                 Text="This is read only" />
+        <TextBox Watermark="ReadOnly watermark"
+                 IsReadOnly="True"/>
+        <TextBox IsEnabled="False"
+                 Text="This is disabled" />
+        <TextBox IsEnabled="False"
+                 Watermark="This is disabled watermark" />
+        <TextBox Watermark="Numeric Watermark"
+                 x:Name="numericWatermark" />
+        <TextBox Watermark="Floating Watermark"
+                 UseFloatingWatermark="True"
+                 Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+        <!--<MaskedTextBox Width="200" ResetOnSpace="False"  Mask="(LLL) 999-0000"/>
+            todo: need to upgrade avalonia for this-->
+
+        <TextBox Text="Validation Error">
+            <DataValidationErrors.Error>
+                <system:Exception />
+            </DataValidationErrors.Error>
+        </TextBox>
+
+        <TextBox Watermark="Password Box"
+                 Classes="revealPasswordButton"
+                 UseFloatingWatermark="True"
+                 PasswordChar="*"
+                 Text="Password" />
+        <TextBox Text="Left aligned text"
+                 TextAlignment="Left" />
+        <TextBox Text="Center aligned text"
+                 TextAlignment="Center" />
+        <TextBox Text="Right aligned text"
+                 TextAlignment="Right" />
+        <TextBox Text="Custom selection brush"
+                 SelectionStart="5"
+                 SelectionEnd="22"
+                 SelectionBrush="{drawing:FourBitColorBrush Magenta}"
+                 SelectionForegroundBrush="{drawing:FourBitColorBrush Yellow}" />
+
+        <TextBox AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 Height="4"
+                 Text="Multiline TextBox with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
+        <TextBox AcceptsReturn="True"
+                 Height="5"
+                 Text="Multiline TextBox with no TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
+
+    </StackPanel>
+</UserControl>

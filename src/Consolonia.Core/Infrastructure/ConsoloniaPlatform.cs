@@ -41,6 +41,12 @@ namespace Consolonia.Core.Infrastructure
 
         public IWindowImpl CreateEmbeddableWindow()
         {
+            RaiseNotSupported(13);
+            return null;
+        }
+
+        public ITrayIconImpl? CreateTrayIcon()
+        {
             throw new NotImplementedException();
         }
 

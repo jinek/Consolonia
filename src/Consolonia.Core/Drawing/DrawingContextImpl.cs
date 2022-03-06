@@ -10,7 +10,7 @@ using Avalonia.Utilities;
 using Avalonia.Visuals.Media.Imaging;
 using Consolonia.Core.Drawing.PixelBuffer;
 using Consolonia.Core.Infrastructure;
-using Consolonia.Core.Styles.Controls.Helpers;
+using FormattedText = Consolonia.Core.Text.FormattedText;
 
 namespace Consolonia.Core.Drawing
 {
@@ -18,9 +18,11 @@ namespace Consolonia.Core.Drawing
     {
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly IConsole _console;
-        private readonly PixelBuffer.PixelBuffer _pixelBuffer;
         private readonly ConsoleWindow _consoleWindow;
+        private readonly PixelBuffer.PixelBuffer _pixelBuffer;
         private readonly IVisualBrushRenderer _visualBrushRenderer;
+        private Matrix _postTransform = Matrix.Identity;
+        private Matrix _transform;
 
         public DrawingContextImpl(ConsoleWindow consoleWindow, IVisualBrushRenderer visualBrushRenderer,
             PixelBuffer.PixelBuffer pixelBuffer)
@@ -66,15 +68,15 @@ namespace Consolonia.Core.Drawing
             {
                 var myRenderTarget = (RenderTarget)source.Item;
 
-
                 int left = (int)(x + destRect.Left);
                 int top = (int)(y + destRect.Top);
                 clip.ExecuteWithClipping(new Point(left, top), () =>
                 {
-                    _pixelBuffer.Set(left, top, destPixel =>
+                    _pixelBuffer.Set(new PixelBufferCoordinate((ushort)left, (ushort)top), destPixel =>
                     {
-                        return destPixel.Blend(myRenderTarget._bufferBuffer[(int)(x + sourceRect.Left),
-                            (int)(y + sourceRect.Top)]);
+                        return destPixel.Blend(
+                            myRenderTarget._bufferBuffer[new PixelBufferCoordinate((ushort)(x + sourceRect.Left),
+                                (ushort)(y + sourceRect.Top))]);
                     });
                 });
             }
@@ -118,36 +120,53 @@ namespace Consolonia.Core.Drawing
 
             if (boxShadows.Count > 0) throw new NotImplementedException();
 
-            //todo: check opacity
-
-            if (rect.Rect.IsEmpty) return; //todo: What to do here?
+            if (rect.Rect.IsEmpty) return;
             Rect r = rect.Rect;
 
             if (brush is not null)
             {
+                if (brush is IVisualBrush visualBrush)
+                {
+                    try
+                    {
+                        _postTransform = Transform;
+                        _visualBrushRenderer.RenderVisualBrush(this, visualBrush);
+                    }
+                    finally
+                    {
+                        _postTransform = Matrix.Identity;
+                    }
+
+                    return;
+                }
+
                 if (brush is not FourBitColorBrush backgroundBrush)
                 {
                     ConsoloniaPlatform.RaiseNotSupported(9, brush, pen, rect, boxShadows);
                     return;
                 }
 
-                (double x, double y) = r.TopLeft.Transform(Transform);
-                for (int i = 0; i < r.Width + (pen?.Thickness ?? 0); i++)
-                for (int j = 0; j < r.Height + (pen?.Thickness ?? 0); j++)
                 {
-                    int px = (int)(x + i);
-                    int py = (int)(y + j);
-                    _currentClip.ExecuteWithClipping(new Point(px, py), () =>
+                    Rect r2 = r.TransformToAABB(Transform);
+
+                    (double x, double y) = r2.TopLeft;
+                    for (int i = 0; i < r2.Width + (pen?.Thickness ?? 0); i++)
+                    for (int j = 0; j < r2.Height + (pen?.Thickness ?? 0); j++)
                     {
-                        _pixelBuffer.Set(px, py,
-                            pixel => pixel.Blend(
-                                new Pixel(
-                                    new PixelBackground(backgroundBrush.Mode, backgroundBrush.Color))));
-                    });
+                        int px = (int)(x + i);
+                        int py = (int)(y + j);
+                        _currentClip.ExecuteWithClipping(new Point(px, py), () =>
+                        {
+                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                (pixel, bb) => pixel.Blend(
+                                    new Pixel(
+                                        new PixelBackground(bb.Mode, bb.Color))),backgroundBrush);
+                        });
+                    }
                 }
             }
 
-            if (pen is null or { Thickness: 0 }) return;
+            if (pen is null or { Thickness: 0 } or { Brush: null }) return;
 
             DrawLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width));
             DrawLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width));
@@ -155,10 +174,23 @@ namespace Consolonia.Core.Drawing
             DrawLineInternal(pen, new Line(r.TopRight, true, (int)r.Height));
         }
 
+        public void DrawEllipse(IBrush brush, IPen pen, Rect rect)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DrawText(IBrush foreground, Point origin, IFormattedTextImpl text)
         {
-            //todo: restrictions
-            DrawStringInternal(foreground, text.Text, origin);
+            var formattedText = (FormattedText)text;
+
+            for (int row = 0; row < formattedText.SkiaLines.Count; row++)
+            {
+                FormattedText.AvaloniaFormattedTextLine line = formattedText.SkiaLines[row];
+                float x = formattedText.TransformX((float)origin.X, line.Width);
+                string subString = text.Text.Substring(line.Start, line.Length);
+                DrawStringInternal(foreground, subString, new Point(x, origin.Y + row), line.Start,
+                    formattedText.ForegroundBrushes.Any() ? formattedText.ForegroundBrushes : null);
+            }
         }
 
         public void DrawGlyphRun(IBrush foreground, GlyphRun glyphRun)
@@ -177,13 +209,11 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextLayerImpl CreateLayer(Size size)
         {
-            /*throw new InvalidOperationException();*/
             return new RenderTarget(_consoleWindow);
         }
 
         public void PushClip(Rect clip)
         {
-            //todo: check if need to apply transform
             clip = new Rect(clip.Position.Transform(Transform), clip.BottomRight.Transform(Transform));
             _clipStack.Push(_currentClip.Intersect(clip));
         }
@@ -191,7 +221,6 @@ namespace Consolonia.Core.Drawing
         public void PushClip(RoundedRect clip)
         {
             ConsoloniaPlatform.RaiseNotSupported(2);
-            //PushClip(clip.Rect);
         }
 
         public void PopClip()
@@ -245,7 +274,11 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
-        public Matrix Transform { get; set; }
+        public Matrix Transform
+        {
+            get => _transform;
+            set => _transform = value * _postTransform;
+        }
 
         private static ConsoleColor? ExtractConsoleColorOrNullWithPlatformCheck(IPen pen)
         {
@@ -265,6 +298,9 @@ namespace Consolonia.Core.Drawing
             if (consoleColorBrush.Mode == PixelBackgroundMode.Colored)
                 return consoleColorBrush.Color;
 
+            if (consoleColorBrush.Mode == PixelBackgroundMode.Transparent)
+                return null;
+            
             ConsoloniaPlatform.RaiseNotSupported(8);
 
             return null;
@@ -272,19 +308,21 @@ namespace Consolonia.Core.Drawing
 
         private void DrawLineInternal(IPen pen, Line line)
         {
-            if (pen == null) throw new NotImplementedException("What is the situation about?");
-
             if (pen.Thickness == 0) return;
 
-            Point head = line.PStart.Transform(Transform);
+            if (!Transform.NoRotation()) ConsoloniaPlatform.RaiseNotSupported(16);
 
-            if (pen.Brush is IConsoleCaretBrush consoleCaretBrush)
+            line = (Line)line.WithTransform(Transform);
+
+            Point head = line.PStart;
+
+            if (pen.Brush is MoveConsoleCaretToPositionBrush)
             {
-                _currentClip.ExecuteWithClipping(head,
-                    () =>
-                    {
-                        consoleCaretBrush.MoveCaret(head, (int)pen.Thickness);//todo: if caret is out of clip rectangle it is displayed in old place, which is wrong
-                    });
+                _currentClip.ExecuteWithClipping(head, () =>
+                {
+                    _pixelBuffer.Set((PixelBufferCoordinate)head,pixel => pixel.Blend(new Pixel(true)));
+                });
+                
                 return;
             }
 
@@ -309,8 +347,8 @@ namespace Consolonia.Core.Drawing
                 {
                     _currentClip.ExecuteWithClipping(head, () =>
                     {
-                        _pixelBuffer.Set((int)head.X, (int)head.Y,
-                            pixel => pixel.Blend(new Pixel(marker, consoleColor)));
+                        _pixelBuffer.Set((PixelBufferCoordinate)head,
+                            (Pixel pixel, (byte, ConsoleColor) mcC) => pixel.Blend(new Pixel(mcC.Item1, mcC.Item2)),(marker, consoleColor));
                     });
                     head = line.Vertical
                         ? head.WithY(head.Y + 1)
@@ -319,13 +357,16 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawStringInternal(IBrush foreground, string str, Point origin = new())
+        private void DrawStringInternal(IBrush foreground, string str, Point origin = new(), int startIndex = 0,
+            List<KeyValuePair<FormattedText.FBrushRange, IBrush>> additionalBrushes = null)
         {
             if (foreground is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
             {
                 ConsoloniaPlatform.RaiseNotSupported(4);
                 return;
             }
+
+            if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
 
             Point whereToDraw = origin.Transform(Transform);
 
@@ -335,11 +376,33 @@ namespace Consolonia.Core.Drawing
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(i, 0));
                 _currentClip.ExecuteWithClipping(characterPoint, () =>
                 {
-                    var consolePixel = new Pixel(str[i], consoleColorBrush.Color);
+                    ConsoleColor foregroundColor = consoleColorBrush.Color;
+                    if (additionalBrushes != null)
+                    {
+                        (FormattedText.FBrushRange _, IBrush brush) = additionalBrushes.FirstOrDefault(pair =>
+                        {
+                            int globalIndex = i + startIndex;
+                            (FormattedText.FBrushRange key, _) = pair;
+                            return key.StartIndex <= globalIndex && globalIndex < key.EndIndex;
+                        });
 
-                    _pixelBuffer.Set((int)characterPoint.X, (int)characterPoint.Y,
-                        oldPixel => oldPixel.Blend(consolePixel));
-                }); //todo: send to stack to avoid heap usages
+                        if (brush != null)
+                        {
+                            if (brush is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } additionalBrush)
+                            {
+                                ConsoloniaPlatform.RaiseNotSupported(11);
+                                return;
+                            }
+
+                            foregroundColor = additionalBrush.Color;
+                        }
+                    }
+
+                    var consolePixel = new Pixel(str[i], foregroundColor);
+
+                    _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                        (oldPixel,cp) => oldPixel.Blend(cp),consolePixel);
+                });
             }
         }
     }

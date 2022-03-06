@@ -8,70 +8,68 @@ namespace Consolonia.Core.Drawing.PixelBuffer
 {
     public class PixelBuffer : IEnumerable<Pixel>
     {
-        public void Set(int x, int y, Func<Pixel, Pixel> changeAction)
+        public void Set(PixelBufferCoordinate point, Func<Pixel, Pixel> changeAction)
         {
-            this[x, y] = changeAction(this[x, y]);
+            Set<object>(point, (pixel, _) => changeAction(pixel), null);
+        }
+    
+        public void Set<TUserObject>(PixelBufferCoordinate point, Func<Pixel,TUserObject, Pixel> changeAction, TUserObject userObject)
+        {
+            this[point] = changeAction(this[point],userObject);
         }
 
-        public void Foreach(Func<int, int, Pixel, Pixel> replaceAction)
+        public void Foreach(Func<PixelBufferCoordinate, Pixel, Pixel> replaceAction)
         {
-            ForeachReadonly((x, y, oldPixel) =>
+            ForeachReadonly((point, oldPixel) =>
             {
-                var newPixel = replaceAction(x, y, oldPixel);
-                this[x, y] = newPixel;
+                var newPixel = replaceAction(point, oldPixel);
+                this[point] = newPixel;
             });
         }
 
-        public void ForeachReadonly(Action<int, int, Pixel> action)
+        public void ForeachReadonly(Action<PixelBufferCoordinate, Pixel> action)
         {
-            for (int i = 0; i < Width; i++)
-            for (int j = 0; j < Height; j++)
+            for (ushort i = 0; i < Width; i++)
+            for (ushort j = 0; j < Height; j++)
             {
-                Pixel pixel = this[i, j];
-                action(i, j, pixel);
+                Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
+                action(new PixelBufferCoordinate(i, j), pixel);
             }
         }
 
-        public short Width { get; }
-        public short Height { get; }
+        public ushort Width { get; }
+        public ushort Height { get; }
 
-        public PixelBuffer(short width, short height)
+        public PixelBuffer(ushort width, ushort height)
         {
             Width = width;
             Height = height;
             Buffer = new Pixel[width, height];
-            /*Foreach((_, _, _) => new Pixel
-            {
-                Foreground = new PixelForeground
-                {
-                    Symbol = new SimpleSymbol()
-                }
-            });*/
         }
 
         public Pixel this[int i]
         {
             get
             {
-                (short x, short y) = ToXY(i);
-                return this[x, y];
+                (ushort x, ushort y) = ToXY(i);
+                return this[(PixelBufferCoordinate)(x, y)];
             }
             set
             {
-                (short x, short y) = ToXY(i);
-                this[x, y] = value;
+                (ushort x, ushort y) = ToXY(i);
+                this[(PixelBufferCoordinate)(x, y)] = value;
             }
         }
 
-        public Pixel this[int x, int y]
+        public Pixel this[PixelBufferCoordinate point]
         {
-            get => Buffer[x, y];
-            set => Buffer[x, y] = value;
+            get => Buffer[point.X, point.Y];
+            set => Buffer[point.X, point.Y] = value;
         }
 
-        private (short x, short y) ToXY(int i)
+        private (ushort x, ushort y) ToXY(int i)
         {
-            return ((short x, short y))(i % Width, i / Width);
+            return ((ushort x, ushort y))(i % Width, i / Width);
         }
 
         public readonly Pixel[,] Buffer;

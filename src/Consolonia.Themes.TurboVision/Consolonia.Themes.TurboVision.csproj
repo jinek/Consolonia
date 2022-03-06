@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <IsPackable>True</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Templates\Controls\DialogWrap.axaml.cs">
+        <DependentUpon>DialogWrap.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>

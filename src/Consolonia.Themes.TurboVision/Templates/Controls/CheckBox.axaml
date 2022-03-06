@@ -1,0 +1,86 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
+    <Style Selector="CheckBox">
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeBorderBrush}" />
+        <!--<Setter Property="Background"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />-->
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Padding"
+                Value="1,0,0,0" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid ColumnDefinitions="Auto,Auto,Auto,*"
+                      Background="{TemplateBinding Background}">
+                    <Grid Name="border"
+                          ColumnDefinitions="Auto,Auto,Auto">
+                        <helpers:SymbolsControl Text="["
+                                                Foreground="{TemplateBinding BorderBrush}" />
+                        <helpers:CaretControl Grid.Column="1"
+                                              IsCaretShown="{TemplateBinding IsFocused}">
+                            <Panel>
+                                <helpers:SymbolsControl Text=" "/>
+                                <helpers:SymbolsControl Name="checkMark"
+                                                        Text="V" />
+                                <helpers:SymbolsControl Name="indeterminateMark"
+                                                        Text="■" />
+                            </Panel>
+                        </helpers:CaretControl>
+                        <helpers:SymbolsControl Text="]"
+                                                Grid.Column="2"
+                                                Foreground="{TemplateBinding BorderBrush}" />
+                    </Grid>
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      TextBlock.Foreground="{TemplateBinding Foreground}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Margin="{TemplateBinding Padding}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      IsVisible="{TemplateBinding Content, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                      Grid.Column="1" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="CheckBox:focus">
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+    </Style>
+    <!--<Style Selector="CheckBox /template/ Panel helpers|SymbolsControl">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeAccentBackgroundBrush}" />
+    </Style>-->
+    <Style Selector="CheckBox /template/ helpers|SymbolsControl#checkMark">
+        <Setter Property="IsVisible"
+                Value="False" />
+    </Style>
+    <Style Selector="CheckBox /template/ helpers|SymbolsControl#indeterminateMark">
+        <Setter Property="IsVisible"
+                Value="False" />
+    </Style>
+    <Style Selector="CheckBox:checked /template/ helpers|SymbolsControl#checkMark">
+        <Setter Property="IsVisible"
+                Value="True" />
+    </Style>
+    <Style Selector="CheckBox:indeterminate /template/ helpers|SymbolsControl#indeterminateMark">
+        <Setter Property="IsVisible"
+                Value="True" />
+    </Style>
+    <!--<Style Selector="CheckBox:disabled /template/ helpers|SymbolsControl">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
+    </Style>-->
+    <Style Selector="CheckBox:disabled">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
+    </Style>
+</Styles>

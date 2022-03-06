@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <IsPackable>False</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
+      <ProjectReference Include="..\Consolonia.Themes.TurboVision\Consolonia.Themes.TurboVision.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+      <PackageReference Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    </ItemGroup>
+
+</Project>

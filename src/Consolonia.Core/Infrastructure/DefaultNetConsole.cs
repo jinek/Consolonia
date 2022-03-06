@@ -1,123 +1,167 @@
 using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
-using Avalonia;
+using Avalonia.Input;
+using Avalonia.Threading;
+using Consolonia.Core.Drawing.PixelBuffer;
 
 namespace Consolonia.Core.Infrastructure
 {
     internal class DefaultNetConsole : IConsole
     {
+        private bool _caretVisible;
+        private ConsoleColor _headBackground;
+        private ConsoleColor _headForeground;
+        private PixelBufferCoordinate _headBufferPoint;
+
+
         public DefaultNetConsole()
         {
             Console.CursorVisible = false;
-            InitializeCache();
-            StartSizeCheckTimer();
+            StartSizeCheckTimerAsync();
+            StartInputReading();
         }
 
-        private async void StartSizeCheckTimer()
+        public bool CaretVisible
         {
-            ActualizeSize();
-            int width = Console.WindowWidth;
-            int height = Console.WindowHeight;
-            while (true)
+            get => _caretVisible;
+            set
             {
-                if (width != Console.WindowWidth || height != Console.WindowHeight)
-                {
-                    ActualizeSize();
-
-                    Resized?.Invoke();
-                    InitializeCache();
-                }
-
-                await Task.Delay(1000);
-            }
-
-            void ActualizeSize()
-            {
-                Console.Clear();
-                width = Console.WindowWidth;
-                height = Console.WindowHeight;
+                if (_caretVisible == value) return;
+                Console.CursorVisible = value;
+                _caretVisible = value;
             }
         }
 
-
-        public void MoveCaretForControl(Point position, int size, object ownerControl)
+        public event Action<Key, char, RawInputModifiers> KeyPress;
+     
+        public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
         {
-            //todo: must be int top,left instead of position
-            //todo: check if ownerControl is current caret showing, otherwise exception
-            // Console.CursorSize = size; todo: not supported on linux
-            SetCaretPosition(((ushort)position.X, (ushort)position.Y));
+            if (bufferPoint.Equals(GetCaretPosition())) return;
+            _headBufferPoint = bufferPoint;
+
+            try
+            {
+                Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
+            }
+            catch (ArgumentOutOfRangeException argumentOutOfRangeException)
+            {
+                if (bufferPoint.X < 0 || bufferPoint.Y < 0)
+                    throw;
+                throw new InvalidDrawingContextException("Window has been resized probably",
+                    argumentOutOfRangeException);
+            }
         }
 
-        private object _carrentControlOfCaret;
-
-        public void AddCaretFor(object control)
+        public PixelBufferCoordinate GetCaretPosition()
         {
-            /*todo: if (_carrentControlOfCaret != null)
-                throw new NotSupportedException();*/
-            _carrentControlOfCaret = control;
-            Console.CursorVisible = true;
+            return _headBufferPoint;
         }
 
-        public void RemoveCaretFor(object control)
+        public void Print(PixelBufferCoordinate bufferPoint, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
+            string str)
         {
-            /*todo: if (_carrentControlOfCaret == null)
-                throw new NotSupportedException(); */
-            _carrentControlOfCaret = null;
-            Console.CursorVisible = false;
-        }
-
-        public IDisposable StoreCaret()
-        {
-            return new CaretStorage(this);
-        }
-
-        public void SetCaretPosition((ushort x, ushort y) position)
-        {
-            (ushort left, ushort top) = GetCaretPosition();
-            (ushort x, ushort y) = position;
-            if (left == x && top == y) return;
-            _headPosition = (x, y);
-            Console.SetCursorPosition(x, y);
-        }
-
-        private (ushort x, ushort y) _headPosition;
-        private ConsoleColor _headBackground;
-        private ConsoleColor _headForeground;
-        private (ConsoleColor background, ConsoleColor foreground, char character)?[,] _cache;
-
-        private void InitializeCache()
-        {
-            _cache = new (ConsoleColor background, ConsoleColor foreground, char character)?[Size.width, Size.height];
-        }
-
-        public (ushort x, ushort y) GetCaretPosition()
-        {
-            return _headPosition;
-        }
-
-        public void Print(ushort x, ushort y, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
-            char character)
-        {
-            SetCaretPosition((x, y));
+            SetCaretPosition(bufferPoint);
 
             if (_headBackground != backgroundColor)
                 _headBackground = Console.BackgroundColor = backgroundColor;
             if (_headForeground != foregroundColor)
                 _headForeground = Console.ForegroundColor = foregroundColor;
-
-            if (_cache[x, y] == (backgroundColor, foregroundColor, character))
-                return;
-
-            _cache[x, y] = (backgroundColor, foregroundColor, character);
-            Console.Write(character);
-            if (_headPosition.x < Size.width - 1)
-                _headPosition.x++;
-            else _headPosition = ((ushort x, ushort y))(0, _headPosition.y + 1);
+            
+            Console.Write(str);
+            
+            if (_headBufferPoint.X < Size.Width - str.Length)
+                _headBufferPoint = new PixelBufferCoordinate((ushort)(_headBufferPoint.X+str.Length),_headBufferPoint.Y);
+            else _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
         }
 
         public event Action? Resized;
 
-        public (ushort width, ushort height) Size =>
-            ((ushort width, ushort height))(Console.WindowWidth, Console.WindowHeight);
+        public PixelBufferSize Size { get; private set; }
+            
+
+        private void StartInputReading()
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                while (!_disposed)
+                {
+                    ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
+
+                    if (!KeyMapping.TryGetValue(consoleKeyInfo.Key, out Key key))
+                    {
+                        if (!Enum.TryParse(consoleKeyInfo.Key.ToString(), out key))
+                            throw new NotImplementedException();
+                    }
+
+                    var rawInputModifiers = RawInputModifiers.None;
+
+                    if (consoleKeyInfo.Modifiers.HasFlag(ConsoleModifiers.Control))
+                        rawInputModifiers |= RawInputModifiers.Control;
+                    if (consoleKeyInfo.Modifiers.HasFlag(ConsoleModifiers.Shift))
+                        rawInputModifiers |= RawInputModifiers.Shift;
+                    if (consoleKeyInfo.Modifiers.HasFlag(ConsoleModifiers.Alt))
+                        rawInputModifiers |= RawInputModifiers.Alt;
+
+                    KeyPress?.Invoke(key, consoleKeyInfo.KeyChar, rawInputModifiers);
+                }
+            });
+        }
+
+        private static readonly Dictionary<ConsoleKey, Key> KeyMapping = new()
+        {
+            {ConsoleKey.LeftWindows, Key.LWin},
+            {ConsoleKey.RightWindows, Key.RWin},
+            {ConsoleKey.Spacebar, Key.Space},
+            {ConsoleKey.RightArrow, Key.Right},
+            {ConsoleKey.LeftArrow, Key.Left},
+            {ConsoleKey.UpArrow, Key.Up},
+            {ConsoleKey.DownArrow, Key.Down},
+            {ConsoleKey.Backspace, Key.Back},
+        };
+
+        private bool _disposed;
+
+        private void StartSizeCheckTimerAsync()
+        {
+            ActualizeSize();
+
+            Task.Run(async () =>
+            {
+                while (!_disposed)
+                {
+                    int timeout;
+                    if (Size.Width != Console.WindowWidth || Size.Height != Console.WindowHeight)
+                    {
+                        ActualizeSize();
+
+                        await Dispatcher.UIThread.InvokeAsync(() =>
+                        {
+                            Resized?.Invoke();
+                        });
+
+                        timeout = 1; //todo: magic numbers. probably need to rely on fps instead
+                    }
+                    else
+                    {
+                        timeout = 1000;
+                    }
+
+                    await Task.Delay(timeout).ConfigureAwait(false);
+                }
+            });
+
+            void ActualizeSize()
+            {
+                Console.Clear();
+                Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+            }
+        }
+
+        public void Dispose()
+        {
+            _disposed = true;
+        }
     }
 }

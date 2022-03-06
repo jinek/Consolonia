@@ -5,13 +5,15 @@ using Avalonia.Platform;
 
 namespace Consolonia.Core.Drawing
 {
-    internal class Rectangle : IGeometryImpl
+    internal class Rectangle : ITransformedGeometryImpl
     {
         private readonly Rect _rect;
 
-        public Rectangle(Rect rect)
+        public Rectangle(Rect rect, IGeometryImpl sourceGeometry=default, Matrix transform=default)
         {
             _rect = rect;
+            SourceGeometry = sourceGeometry;
+            Transform = transform;
         }
 
         public Rect GetRenderBounds(IPen pen)
@@ -36,7 +38,7 @@ namespace Consolonia.Core.Drawing
 
         public ITransformedGeometryImpl WithTransform(Matrix transform)
         {
-            throw new NotImplementedException();
+            return new Rectangle(_rect.TransformToAABB(transform), this, transform);
         }
 
         public bool TryGetPointAtDistance(double distance, out Point point)
@@ -58,5 +60,7 @@ namespace Consolonia.Core.Drawing
         public Rect Bounds => _rect;
         public double ContourLength => (_rect.Width + _rect.Height) * 2;
         public Rect Rect => _rect;
+        public IGeometryImpl SourceGeometry { get; }
+        public Matrix Transform { get; }
     }
 }

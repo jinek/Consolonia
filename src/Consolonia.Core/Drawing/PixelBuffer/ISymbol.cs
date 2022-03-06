@@ -4,7 +4,6 @@
     {
         char GetCharacter();
         bool IsWhiteSpace();
-
         ISymbol Blend(ref ISymbol symbolAbove);
     }
 }

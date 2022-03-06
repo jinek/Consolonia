@@ -28,7 +28,7 @@ namespace Consolonia.Core.Drawing
             Size constraint,
             IReadOnlyList<FormattedTextStyleSpan> spans)
         {
-            return new FormattedText(text, typeface, fontSize, textAlignment, wrapping, constraint, spans);
+            return new FormattedText(text, textAlignment, wrapping, constraint, spans);
             //return _platformRenderInterface.CreateFormattedText(text, typeface, fontSize, textAlignment, wrapping, constraint, spans);
         }
 
@@ -53,6 +53,16 @@ namespace Consolonia.Core.Drawing
         {
             throw new NotImplementedException();
             //return _platformRenderInterface.CreateStreamGeometry();
+        }
+
+        public IGeometryImpl CreateGeometryGroup(FillRule fillRule, IReadOnlyList<Geometry> children)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometryImpl CreateCombinedGeometry(GeometryCombineMode combineMode, Geometry g1, Geometry g2)
+        {
+            throw new NotImplementedException();
         }
 
         public IRenderTarget CreateRenderTarget(IEnumerable<object> surfaces)
@@ -81,6 +91,28 @@ namespace Consolonia.Core.Drawing
         public IBitmapImpl LoadBitmap(Stream stream)
         {
             return _platformRenderInterface.LoadBitmap(stream);
+        }
+
+        public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
+            BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
+            BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IWriteableBitmapImpl LoadWriteableBitmap(string fileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IWriteableBitmapImpl LoadWriteableBitmap(Stream stream)
+        {
+            throw new NotImplementedException();
         }
 
         public IBitmapImpl LoadBitmapToWidth(Stream stream, int width,

@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryTextBlock">
+    <UserControl.Styles>
+        <Style Selector="StackPanel">
+            <Setter Property="Spacing" Value="1"/>
+        </Style>
+    </UserControl.Styles>
+    <!--Examples from Avalonia https://github.com/AvaloniaUI/Avalonia/blob/master/samples/ControlCatalog/Pages/TextBlockPage.xaml-->
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="This is TextBlock" />
+        <TextBlock Text="This is colored TextBlock">
+            <TextBlock.Background>
+                <drawing:FourBitColorBrush Color="Blue"/>
+            </TextBlock.Background>
+            <TextBlock.Foreground>
+                <drawing:FourBitColorBrush Color="DarkRed"/>
+            </TextBlock.Foreground>
+        </TextBlock>
+        <Grid ColumnDefinitions="* *">
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Background>
+                    <drawing:FourBitColorBrush Color="DarkGray" />
+                </StackPanel.Background>
+                <TextBlock TextTrimming="CharacterEllipsis"
+                           Text="Text trimming with character ellipsis. Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+                <TextBlock TextTrimming="WordEllipsis"
+                           Text="Text trimming with word ellipsis.Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+                <TextBlock Text="Left aligned text"
+                           TextAlignment="Left" />
+                <TextBlock Text="Center aligned text"
+                           TextAlignment="Center" />
+                <TextBlock Text="Right aligned text"
+                           TextAlignment="Right" />
+            </StackPanel>
+        </Grid>
+        <TextBlock
+            TextWrapping="Wrap"
+            Text="Multiline TextBlock with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
+    </StackPanel>
+
+</UserControl>

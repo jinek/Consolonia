@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Avalonia;
 using Avalonia.Platform;
 using Avalonia.Rendering;
@@ -22,20 +23,31 @@ namespace Consolonia.Core.Drawing
             _console = AvaloniaLocator.Current.GetService<IConsole>()!;
             _consoleWindow = consoleWindow;
             consoleWindow.Resized += OnResized;
-            InitializeBuffer();
+            InitializeBuffer(_consoleWindow.ClientSize);
         }
 
-        private void OnResized(Size _)
+        private void OnResized(Size size, PlatformResizeReason platformResizeReason)
         {
-            InitializeBuffer();
+            InitializeBuffer(size);
         }
 
-        private void InitializeBuffer()
+        private void InitializeBuffer(Size size)
         {
-            (double width, double height) = _consoleWindow.ClientSize;
+            ushort width = (ushort)size.Width;
+            ushort height = (ushort)size.Height;
+
             _bufferBuffer =
-                new PixelBuffer.PixelBuffer((short)width, (short)height);
+                new PixelBuffer.PixelBuffer(width, height);
+
+            InitializeCache(width, height);
         }
+
+        private void InitializeCache(ushort width, ushort height)
+        {
+            _cache = new (ConsoleColor background, ConsoleColor foreground, char character)?[width, height];
+        }
+
+        private (ConsoleColor background, ConsoleColor foreground, char character)?[,] _cache;
 
         public RenderTarget(IEnumerable<object> surfaces)
             : this(surfaces.OfType<ConsoleWindow>()
@@ -69,7 +81,13 @@ namespace Consolonia.Core.Drawing
 
         public void Blit(IDrawingContextImpl context)
         {
-            RenderToDevice();
+            try
+            {
+                RenderToDevice();
+            }
+            catch (InvalidDrawingContextException)
+            {
+            }
         }
 
         public bool CanBlit => true;
@@ -77,25 +95,131 @@ namespace Consolonia.Core.Drawing
         private void RenderToDevice()
         {
             PixelBuffer.PixelBuffer pixelBuffer = _bufferBuffer;
-            using (_console.StoreCaret())
-                for (int y = 0; y < pixelBuffer.Height; y++)
-                for (int x = 0; x < pixelBuffer.Width; x++)
+
+            _console.CaretVisible = false;
+            PixelBufferCoordinate? caretPosition = null;
+
+            var flushingBuffer = new FlushingBuffer(_console);
+
+            for (ushort y = 0; y < pixelBuffer.Height; y++)
+            for (ushort x = 0; x < pixelBuffer.Width; x++)
+            {
+                Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
+
+                if (pixel.IsCaret)
                 {
-                    if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                        rect.ContainsAligned(new Point(x, y)))) continue;
-                    Pixel pixel = pixelBuffer[x, y];
-                    if (pixel.Background.Mode != PixelBackgroundMode.Colored)
-                        throw new InvalidOperationException(
-                            "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");
-
-                    if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
-                        break;
-
-                    _console.Print((ushort)x, (ushort)y, pixel.Background.Color, pixel.Foreground.Color,
-                        pixel.Foreground.Symbol.GetCharacter());
+                    if (caretPosition != null)
+                        throw new InvalidOperationException("Caret is already shown");
+                    caretPosition = new PixelBufferCoordinate(x, y);
                 }
 
+                if (!_consoleWindow.InvalidatedRects.Any(rect =>
+                        rect.ContainsAligned(new Point(x, y)))) continue;
+                if (pixel.Background.Mode != PixelBackgroundMode.Colored)
+                    throw new InvalidOperationException(
+                        "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");
+
+                if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
+                    break;
+
+                char character = default;
+                try
+                {
+                    character = pixel.Foreground.Symbol.GetCharacter();
+                }
+                catch (NullReferenceException)
+                {
+                    //todo: need to break current drawing
+                    if (pixel.Foreground.Symbol is null) // not using 'when' as it swallows the exceptions 
+                    {
+                        // buffer re-initialized after resizing
+                        character = '░';
+                        pixel = new Pixel(new PixelForeground(), new PixelBackground(PixelBackgroundMode.Colored));
+                    }
+                }
+
+                if (character is char.MinValue or '\r' or '\n')
+                    character = ' '; // some terminals does not print \0
+
+                ConsoleColor backgroundColor = pixel.Background.Color;
+                ConsoleColor foregroundColor = pixel.Foreground.Color;
+
+                //todo: indexOutOfRange during resize
+                if (_cache[x, y] == (backgroundColor, foregroundColor, character))
+                    continue;
+
+                _cache[x, y] = (backgroundColor, foregroundColor, character);
+
+                flushingBuffer.WriteCharacter(new PixelBufferCoordinate(x, y),
+                    backgroundColor,
+                    foregroundColor,
+                    character);
+            }
+
+            flushingBuffer.Flush();
+
+            if (caretPosition != null)
+            {
+                _console.SetCaretPosition((PixelBufferCoordinate)caretPosition);
+                _console.CaretVisible = true;
+            }
+            else
+            {
+                _console.CaretVisible = false;
+            }
+
             _consoleWindow.InvalidatedRects.Clear();
+        }
+
+        private struct FlushingBuffer
+        {//todo: move class out
+            private readonly IConsole _console;
+            private readonly StringBuilder _stringBuilder;
+            private ConsoleColor _lastBackgroundColor;
+            private ConsoleColor _lastForegroundColor;
+            private PixelBufferCoordinate _currentBufferPoint;
+            private PixelBufferCoordinate _lastBufferPointStart;
+
+            public FlushingBuffer(IConsole console)
+            {
+                this = new FlushingBuffer();
+                _console = console;
+                _stringBuilder = new StringBuilder();
+            }
+
+            public void WriteCharacter(
+                PixelBufferCoordinate bufferPoint,
+                ConsoleColor backgroundColor,
+                ConsoleColor foregroundColor,
+                char character)
+            {
+                if (!bufferPoint.Equals(_currentBufferPoint) /*todo: performance*/ ||
+                    _lastForegroundColor != foregroundColor ||
+                    _lastBackgroundColor != backgroundColor)
+                {
+                    Flush();
+                }
+
+                if (_stringBuilder.Length == 0)
+                {
+                    _lastBackgroundColor = backgroundColor;
+                    _lastForegroundColor = foregroundColor;
+                    _lastBufferPointStart = _currentBufferPoint = bufferPoint;
+                }
+
+                _stringBuilder.Append(character);
+                _currentBufferPoint = _currentBufferPoint.WithXpp();
+            }
+
+            public void Flush()
+            {
+                if (_stringBuilder.Length == 0)
+                    return;
+
+                _console.Print(_lastBufferPointStart, _lastBackgroundColor, _lastForegroundColor,
+                    _stringBuilder.ToString());
+                _stringBuilder.Clear();
+            }
         }
     }
 }
