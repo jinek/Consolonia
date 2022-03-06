@@ -2,7 +2,6 @@ using System;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
-using Avalonia.Skia;
 
 namespace Consolonia.Core.Drawing
 {
@@ -73,7 +72,13 @@ namespace Consolonia.Core.Drawing
 
             Point pStart = PStart.Transform(transform);
             Point pEnd = PEnd.Transform(transform);
-            return new Line(pStart, Vertical, (int)(pStart - pEnd).ToSKPoint().Length, this, transform);
+            
+            (double vectorX, double vectorY) = pStart - pEnd;
+            return new Line(pStart, 
+                Vertical, 
+                (int)Math.Abs(vectorX + vectorY) /*always vertical or horizontal*/, 
+                this,
+                transform);
         }
 
         public bool TryGetPointAtDistance(double distance, out Point point)

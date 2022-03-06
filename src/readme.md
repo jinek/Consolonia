@@ -1,11 +1,11 @@
-[Primitives Drawing](TUI.Base/Drawing/TuiDrawingContextImpl.cs)
+[Primitives Drawing](Consolonia.Core/Drawing/DrawingContextImpl.cs)
 
-[Pixels, Buffers, Shading And Blending](TUI.Base/Drawing/ConsolePixelBuffer)
+[Pixels, Buffers, Shading And Blending](Consolonia.Core/Drawing/PixelBuffer/PixelBuffer.cs)
 
-[Native Window](TUI.Base/Infrastructure/TuiConsoleWindow.cs) - some root of things
+[Native Window](Consolonia.Core/Infrastructure/ConsoleWindow.cs) - some root of things
 
-[Platform Implementation](TUI.Base/Infrastructure/TuiPlatform.cs) - very root of things
+[Platform Implementation](Consolonia.Core/Infrastructure/ConsoloniaPlatform.cs) - very root of things
 
-[Text Formatting](TUI.Base/Text/TuiFormatterText.cs) - used for drawing text, caret and selection in TextBox
+[Text Formatting](Consolonia.Core/Text/FormattedText.cs) - used for drawing text, caret and selection in TextBox
 
 
