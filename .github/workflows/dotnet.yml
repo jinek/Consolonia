@@ -2,8 +2,6 @@ name: .NET
 
 on:
   push:
-    branches: [ nuget-pack ]
-  pull_request:
     branches: [ main ]
 
 jobs:
@@ -15,16 +13,16 @@ jobs:
         working-directory: ./src
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
-    - name: Restore dependencies
-      run: dotnet restore      
-    - name: Build
-      run: dotnet build --no-restore --configuration release
-    - name: Pack
-      run: dotnet pack --configuration release -o ./packages --version-suffix alpha-${{ github.run_number }} # https://stackoverflow.com/a/60067489/2362847
-    - name: Push
-      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore --configuration release
+      - name: Pack
+        run: dotnet pack --configuration release -o ./packages --version-suffix alpha-${{ github.run_number }} # https://stackoverflow.com/a/60067489/2362847
+      - name: Push
+        run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
