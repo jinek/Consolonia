@@ -2,7 +2,7 @@ name: .NET
 
 on:
   push:
-    branches: [ main ]
+    branches: [ nuget-pack ]
   pull_request:
     branches: [ main ]
 
@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore      
     - name: Build
       run: dotnet build --no-restore --configuration release
     - name: Pack
