@@ -18,30 +18,29 @@ namespace Consolonia.Core.Infrastructure
         private readonly IKeyboardDevice _myKeyboardDevice;
         internal readonly List<Rect> InvalidatedRects = new(50);
         private IInputRoot _inputRoot;
-        private Action<Size, PlatformResizeReason> _resized;
 
         public ConsoleWindow()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
             _console = AvaloniaLocator.Current.GetService<IConsole>();
-
-            _console = AvaloniaLocator.Current.GetService<IConsole>();
-            _console.Resized += () =>
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    PixelBufferSize pixelBufferSize = _console.Size;
-                    Resized(new Size(pixelBufferSize.Width, pixelBufferSize.Height));
-                });
-            };
-
+            _console.Resized += OnConsoleOnResized;
             _console.KeyPress += ConsoleOnKeyPress;
         }
 
-
+        private void OnConsoleOnResized()
+        {
+            PixelBufferSize pixelBufferSize = _console.Size;
+            var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
+            Resized(size, PlatformResizeReason.Unspecified);
+            //todo; Invalidate(new Rect(size));
+        }
+        
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Closed?.Invoke();
+            _console.Resized -= OnConsoleOnResized;
+            _console.KeyPress -= ConsoleOnKeyPress;
+            _console.Dispose();
         }
 
         public IRenderer CreateRenderer(IRenderRoot root)
@@ -129,14 +128,7 @@ namespace Consolonia.Core.Infrastructure
         public Action<RawInputEventArgs> Input { get; set; }
 
         public Action<Rect> Paint { get; set; }
-
-        Action<Size, PlatformResizeReason> ITopLevelImpl.Resized
-        {
-            get => _resized;
-            set => _resized = value;
-        }
-
-        public Action<Size> Resized { get; set; }
+        public Action<Size, PlatformResizeReason> Resized { get; set; }
 
         public Action<double> ScalingChanged { get; set; }
 
@@ -225,12 +217,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void Resize(Size clientSize, PlatformResizeReason reason = PlatformResizeReason.Application)
         {
-            // throw new NotImplementedException();
-        }
-
-        public void Resize(Size clientSize)
-        {
-            //support only autosizing for now
+            Resized(clientSize, reason);
         }
 
         public void Move(PixelPoint point)

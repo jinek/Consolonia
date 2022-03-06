@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryFlyout">
+    <StackPanel Orientation="Vertical"
+                Spacing="1"
+                HorizontalAlignment="Left">
+        <Button Content="Menu Flyout">
+            <Button.Flyout>
+                <MenuFlyout>
+                    <MenuItem Header="Item 1">
+                        <MenuItem Header="Subitem 1" />
+                        <MenuItem Header="Subitem 2" />
+                        <MenuItem Header="Subitem 3" />
+                    </MenuItem>
+                    <MenuItem Header="Item 2"
+                              InputGesture="Ctrl+A" />
+                    <MenuItem Header="Item 3" />
+                </MenuFlyout>
+
+            </Button.Flyout>
+        </Button>
+        <Button Content="Basic Flyout">
+            <Button.Flyout>
+                <Flyout Placement="Bottom">
+                    <Panel Width="30"
+                           Height="10">
+                        <TextBlock Text="Flyout Content!" />
+                    </Panel>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
+    </StackPanel>
+</UserControl>

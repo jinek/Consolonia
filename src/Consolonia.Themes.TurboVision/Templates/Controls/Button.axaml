@@ -27,11 +27,11 @@
                             <helpers:SymbolsControl Grid.Column="0"
                                                     Text="["
                                                     Foreground="{TemplateBinding BorderBrush}"
-                                                    VerticalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                             <helpers:SymbolsControl Grid.Column="2"
                                                     Text="]"
                                                     Foreground="{TemplateBinding BorderBrush}"
-                                                    VerticalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                             <helpers:CaretControl Grid.Column="1"
                                                   Padding="0,0,0,0"
                                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"

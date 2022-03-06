@@ -1,6 +1,6 @@
 ﻿<Project>
   <PropertyGroup>
-    <VersionPrefix>0.10.10</VersionPrefix>
+    <VersionPrefix>0.10.12</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>Evgeny Gorbovoy</Authors>
     <Company>Evgeny Gorbovoy</Company>
@@ -8,6 +8,6 @@
     <Copyright>Copyright © Evgeny Gorbovoy 2021</Copyright>
   </PropertyGroup>
   <PropertyGroup>
-    <AvaloniaVersion>0.10.10</AvaloniaVersion>
+    <AvaloniaVersion>0.10.12</AvaloniaVersion>
   </PropertyGroup>
 </Project>

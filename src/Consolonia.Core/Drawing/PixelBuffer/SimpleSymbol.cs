@@ -7,16 +7,16 @@
             Character = character;
         }
 
-        public readonly char Character;
+        private readonly char Character;
 
         char ISymbol.GetCharacter()
         {
-            return Character == char.MinValue ? ' ' : Character;
+            return Character;
         }
 
         public bool IsWhiteSpace()
         {
-            return char.IsWhiteSpace(Character) || Character == char.MinValue;
+            return Character == char.MinValue;
         }
 
         public ISymbol Blend(ref ISymbol symbolAbove)

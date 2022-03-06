@@ -9,4 +9,6 @@
     </Styles.Resources>
     <!--<StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml" />-->
     <StyleInclude Source="/Templates/TurboVision.axaml" />
+    <StyleInclude Source="/Themes/TurboVisionDark/Controls/Button.axaml" />
+    <StyleInclude Source="/Themes/TurboVisionDark/Controls/DialogWindow.axaml" />
 </Styles>

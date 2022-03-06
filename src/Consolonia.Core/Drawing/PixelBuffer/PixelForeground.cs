@@ -15,19 +15,19 @@ namespace Consolonia.Core.Drawing.PixelBuffer
 
         public PixelForeground Shade()
         {
-            var newColor = Color.Shade();
+            ConsoleColor newColor = Color.Shade();
             return new PixelForeground(Symbol, newColor);
         }
 
         public PixelForeground Blend(PixelForeground pixelAboveForeground)
         {
             //todo: check default(char) is there
-            var symbolAbove = pixelAboveForeground.Symbol;
+            ISymbol symbolAbove = pixelAboveForeground.Symbol;
 
             if (symbolAbove.IsWhiteSpace()) return this;
 
-            var newColor = pixelAboveForeground.Color;
-            var newSymbol = Symbol.Blend(ref symbolAbove);
+            ConsoleColor newColor = pixelAboveForeground.Color;
+            ISymbol newSymbol = Symbol.Blend(ref symbolAbove);
             return new PixelForeground(newSymbol, newColor);
         }
     }

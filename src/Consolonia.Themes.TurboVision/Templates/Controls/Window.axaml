@@ -1,5 +1,4 @@
 <Style xmlns="https://github.com/avaloniaui"
-       xmlns:infrastructure="clr-namespace:Consolonia.Core.Infrastructure"
        xmlns:dialog="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Dialog"
        Selector="Window">
     <Setter Property="Background"

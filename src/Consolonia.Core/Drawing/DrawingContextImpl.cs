@@ -174,6 +174,11 @@ namespace Consolonia.Core.Drawing
             DrawLineInternal(pen, new Line(r.TopRight, true, (int)r.Height));
         }
 
+        public void DrawEllipse(IBrush brush, IPen pen, Rect rect)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DrawText(IBrush foreground, Point origin, IFormattedTextImpl text)
         {
             var formattedText = (FormattedText)text;
@@ -293,6 +298,9 @@ namespace Consolonia.Core.Drawing
             if (consoleColorBrush.Mode == PixelBackgroundMode.Colored)
                 return consoleColorBrush.Color;
 
+            if (consoleColorBrush.Mode == PixelBackgroundMode.Transparent)
+                return null;
+            
             ConsoloniaPlatform.RaiseNotSupported(8);
 
             return null;

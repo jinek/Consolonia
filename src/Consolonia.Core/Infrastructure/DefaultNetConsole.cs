@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Input;
+using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBuffer;
 
 namespace Consolonia.Core.Infrastructure
 {
     internal class DefaultNetConsole : IConsole
     {
-        private (ConsoleColor background, ConsoleColor foreground, char character)?[,] _cache;
         private bool _caretVisible;
         private ConsoleColor _headBackground;
         private ConsoleColor _headForeground;
@@ -19,9 +19,7 @@ namespace Consolonia.Core.Infrastructure
         public DefaultNetConsole()
         {
             Console.CursorVisible = false;
-            InitializeCache();
-            StartSizeCheckTimer();
-
+            StartSizeCheckTimerAsync();
             StartInputReading();
         }
 
@@ -42,7 +40,18 @@ namespace Consolonia.Core.Infrastructure
         {
             if (bufferPoint.Equals(GetCaretPosition())) return;
             _headBufferPoint = bufferPoint;
-            Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
+
+            try
+            {
+                Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
+            }
+            catch (ArgumentOutOfRangeException argumentOutOfRangeException)
+            {
+                if (bufferPoint.X < 0 || bufferPoint.Y < 0)
+                    throw;
+                throw new InvalidDrawingContextException("Window has been resized probably",
+                    argumentOutOfRangeException);
+            }
         }
 
         public PixelBufferCoordinate GetCaretPosition()
@@ -51,36 +60,32 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public void Print(PixelBufferCoordinate bufferPoint, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
-            char character)
+            string str)
         {
             SetCaretPosition(bufferPoint);
-            (ushort x, ushort y) = bufferPoint;
 
             if (_headBackground != backgroundColor)
                 _headBackground = Console.BackgroundColor = backgroundColor;
             if (_headForeground != foregroundColor)
                 _headForeground = Console.ForegroundColor = foregroundColor;
-
-            if (_cache[x, y] == (backgroundColor, foregroundColor, character))
-                return;
-
-            _cache[x, y] = (backgroundColor, foregroundColor, character);
-            Console.Write(character);
-            if (_headBufferPoint.X < Size.Width - 1)
-                _headBufferPoint = _headBufferPoint.WithXpp();
+            
+            Console.Write(str);
+            
+            if (_headBufferPoint.X < Size.Width - str.Length)
+                _headBufferPoint = new PixelBufferCoordinate((ushort)(_headBufferPoint.X+str.Length),_headBufferPoint.Y);
             else _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
         }
 
         public event Action? Resized;
 
-        public PixelBufferSize Size =>
-            new((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+        public PixelBufferSize Size { get; private set; }
+            
 
         private void StartInputReading()
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                while (true)
+                while (!_disposed)
                 {
                     ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
 
@@ -116,42 +121,47 @@ namespace Consolonia.Core.Infrastructure
             {ConsoleKey.Backspace, Key.Back},
         };
 
-        private async void StartSizeCheckTimer()
+        private bool _disposed;
+
+        private void StartSizeCheckTimerAsync()
         {
             ActualizeSize();
-            int width = Console.WindowWidth;
-            int height = Console.WindowHeight;
 
-            while (true)
+            Task.Run(async () =>
             {
-                int timeout;
-                if (width != Console.WindowWidth || height != Console.WindowHeight)
+                while (!_disposed)
                 {
-                    ActualizeSize();
+                    int timeout;
+                    if (Size.Width != Console.WindowWidth || Size.Height != Console.WindowHeight)
+                    {
+                        ActualizeSize();
 
-                    Resized?.Invoke();
-                    InitializeCache();
-                    timeout = 1; //todo: magic numbers. probably need to rely on fps instead
-                }
-                else
-                {
-                    timeout = 1000;
-                }
+                        await Dispatcher.UIThread.InvokeAsync(() =>
+                        {
+                            Resized?.Invoke();
+                        });
 
-                await Task.Delay(timeout);
-            }
+                        timeout = 1; //todo: magic numbers. probably need to rely on fps instead
+                    }
+                    else
+                    {
+                        timeout = 1000;
+                    }
+
+                    await Task.Delay(timeout).ConfigureAwait(false);
+                }
+            });
 
             void ActualizeSize()
             {
                 Console.Clear();
-                width = Console.WindowWidth;
-                height = Console.WindowHeight;
+                Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
             }
         }
 
-        private void InitializeCache()
+        public void Dispose()
         {
-            _cache = new (ConsoleColor background, ConsoleColor foreground, char character)?[Size.Width, Size.Height];
+            _disposed = true;
         }
     }
 }
