@@ -25,11 +25,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell  
-      - name: ReSharper CLI InspectCode
+      - name: Resharper InspectCode
         # You may pin to the exact commit or the version.
-        # uses: muno92/resharper_inspectcode@abfda1b04059f495134107adc16c2017d8e36b59
-        uses: muno92/resharper_inspectcode@1.2.0
+        # uses: nbadal/inspectcode-action@f12f9dfbb9e8b53895ec1a50e306ccd73c7d9aa4
+        uses: nbadal/inspectcode-action@v1
         with:
-          # input solution file path here
-          solutionPath: ./src/Consolonia.sln
+          # Path to your solution file, ex: MyProject.sln
+          solution: ./src/Consolonia.sln
