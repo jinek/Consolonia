@@ -25,10 +25,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Resharper InspectCode
+      - name: Unofficial Resharper for GitHub
         # You may pin to the exact commit or the version.
-        # uses: nbadal/inspectcode-action@f12f9dfbb9e8b53895ec1a50e306ccd73c7d9aa4
-        uses: nbadal/inspectcode-action@v1
+        # uses: glassechidna/resharper-action@f126ffcbe0169723a481d462639a5f63d5fdfcbb
+        uses: glassechidna/resharper-action@v1
         with:
-          # Path to your solution file, ex: MyProject.sln
+          # Path to an .sln file
           solution: ./src/Consolonia.sln
+          # Path to an .xml file of a pre-created report
+          report: # optional
