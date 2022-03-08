@@ -31,5 +31,5 @@ jobs:
         # uses: muno92/resharper_inspectcode@abfda1b04059f495134107adc16c2017d8e36b59
         uses: muno92/resharper_inspectcode@1.2.0
         with:
-          # input solution file path here
+          # input solution file path here 
           solutionPath: ./src/Consolonia.sln
