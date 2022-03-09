@@ -4,6 +4,8 @@
         <RootNamespace>$(MSBuildProjectName)</RootNamespace>
         <!--todo: enable nullable-->
         <Nullable>disable</Nullable>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>        
     </PropertyGroup>
     <PropertyGroup>
         <VersionPrefix>0.10.12</VersionPrefix>

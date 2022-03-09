@@ -5,11 +5,11 @@ namespace Consolonia.Core.Drawing
 {
     internal static class DrawingContextHelper
     {
-        public static bool ExecuteWithClipping(this Rect rect,Point place,Action action)
+        public static bool ExecuteWithClipping(this Rect rect, Point place, Action action)
         {
             if (!ContainsAligned(rect, place)) return false;
-            
-            action();            
+
+            action();
             return true;
         }
 
@@ -24,7 +24,7 @@ namespace Consolonia.Core.Drawing
         {
             return transform.M11 == 1 && transform.M22 == 1 && transform.M12 == 0 && transform.M21 == 0;
         }
-        
+
         public static bool NoRotation(this Matrix transform)
         {
             return transform.M12 == 0 && transform.M21 == 0;
