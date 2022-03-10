@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     # from https://github.com/marketplace/actions/dotnet-format
     steps:
       - name: Get branch info
@@ -21,15 +21,23 @@ jobs:
           ref: ${{ steps.comment-branch.outputs.ref }}
           persist-credentials: false
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
       - name: Add dotnet-format problem matcher
         uses: xt0rted/dotnet-format-problem-matcher@v1
+        working-directory: ./src
 
       - name: Restore dotnet tools
         uses: xt0rted/dotnet-tool-restore@v1
+        working-directory: ./src
 
       - name: dotnet-format
-        run: dotnet format ./src/Consolonia.sln
-      
+        run: dotnet format Consolonia.sln
+        working-directory: ./src
+
       - name: Commit files
         if: steps.format.outputs.has-changes == 'true'
         run: |
