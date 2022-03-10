@@ -59,7 +59,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             });
         }
 
-        private static void OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
+        private static void OnAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
             Dispatcher.UIThread.Post(() =>
             {

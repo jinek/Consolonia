@@ -10,7 +10,7 @@ namespace Consolonia.Core.Infrastructure
     /// </summary>
     internal class ConsoloniaPlatformThreadingInterface : InternalPlatformThreadingInterface, IPlatformThreadingInterface
     {
-        public IDisposable StartTimer(DispatcherPriority priority, TimeSpan interval, Action tick)
+        public new IDisposable StartTimer(DispatcherPriority priority, TimeSpan interval, Action tick)
         {
             if (tick.Target is DispatcherTimer dispatcherTimer &&
                 dispatcherTimer.Tag is ICaptureTimerStartStop captureTimerStartStop)

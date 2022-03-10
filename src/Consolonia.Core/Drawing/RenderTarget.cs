@@ -6,14 +6,14 @@ using System.Text;
 using Avalonia;
 using Avalonia.Platform;
 using Avalonia.Rendering;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
     internal class RenderTarget : IDrawingContextLayerImpl
     {
-        internal PixelBuffer.PixelBuffer _bufferBuffer { get; private set; }
+        internal PixelBufferImplementation.PixelBuffer _bufferBuffer { get; private set; }
 
         private readonly ConsoleWindow _consoleWindow;
         private readonly IConsole _console;
@@ -37,7 +37,7 @@ namespace Consolonia.Core.Drawing
             ushort height = (ushort)size.Height;
 
             _bufferBuffer =
-                new PixelBuffer.PixelBuffer(width, height);
+                new PixelBufferImplementation.PixelBuffer(width, height);
 
             InitializeCache(width, height);
         }
@@ -94,7 +94,7 @@ namespace Consolonia.Core.Drawing
 
         private void RenderToDevice()
         {
-            PixelBuffer.PixelBuffer pixelBuffer = _bufferBuffer;
+            PixelBufferImplementation.PixelBuffer pixelBuffer = _bufferBuffer;
 
             _console.CaretVisible = false;
             PixelBufferCoordinate? caretPosition = null;

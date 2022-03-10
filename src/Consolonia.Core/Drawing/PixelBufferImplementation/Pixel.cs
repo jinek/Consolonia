@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Consolonia.Core.Drawing.PixelBuffer
+namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public readonly struct Pixel
     {
-        public readonly PixelForeground Foreground;
-        public readonly PixelBackground Background;
-        public readonly bool IsCaret;
+        public PixelForeground Foreground { get; }
+        public PixelBackground Background { get; }
+        public bool IsCaret { get; }
 
         public Pixel(bool isCaret) : this(PixelBackgroundMode.Transparent)
         {

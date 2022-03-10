@@ -40,7 +40,7 @@ namespace Consolonia.Gallery.View
                     return;
                 }
                 string itemToSelectName = commandLineArgs[1];
-                GalleryItem? itemToSelect;
+                GalleryItem itemToSelect;
                 try
                 {
                     itemToSelect = _items.SingleOrDefault(item =>

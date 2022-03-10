@@ -66,8 +66,9 @@ namespace ControlCatalog.ViewModels
         public MiniCommand SaveCommand { get; }
         public MiniCommand OpenRecentCommand { get; }
 
-        public async Task Open()
+        public Task Open()
         {
+            return Task.CompletedTask;
             /*todo: dialog does not work
              var window = View?.GetVisualRoot() as Window;
             if (window == null)

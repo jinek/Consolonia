@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -7,7 +9,7 @@ using Avalonia.Input.Raw;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Threading;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Dummy;
 
 namespace Consolonia.Core.Infrastructure
@@ -255,31 +257,31 @@ namespace Consolonia.Core.Infrastructure
         public Thickness ExtendedMargins { get; }
         public Thickness OffScreenMargin { get; }
 
-        private async void ConsoleOnKeyPress(Key key, char keyChar, RawInputModifiers rawInputModifiers)
+        private void ConsoleOnKeyPress(Key key, char keyChar, RawInputModifiers rawInputModifiers)
         {
-            bool handled = false;
-            if (!char.IsControl(keyChar))
-                await Dispatcher.UIThread.InvokeAsync(() =>
+            Dispatcher.UIThread.Post(async () =>
+            {
+                bool handled = false;
+                if (!char.IsControl(keyChar))
                 {
-                    var rawTextInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks,
+                    var rawTextInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice,
+                        (ulong)DateTime.Now.Ticks,
                         _inputRoot,
                         keyChar.ToString());
                     Input(rawTextInputEventArgs);
                     if (rawTextInputEventArgs.Handled)
                         handled = true;
-                });
+                }
 
-            if (handled) return;
+                if (handled) return;
+                await Task.Yield();
 
-            await Dispatcher.UIThread.InvokeAsync(() =>
-            {
                 Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
                     RawKeyEventType.KeyDown, key,
                     rawInputModifiers));
-            });
-            
-            await Dispatcher.UIThread.InvokeAsync(() =>
-            {
+
+                await Task.Yield();
+
                 Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
                     RawKeyEventType.KeyUp, key,
                     rawInputModifiers));

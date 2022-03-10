@@ -14,7 +14,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            TextBox? textBox = this.Find<TextBox>("numericWatermark");
+            TextBox textBox = this.Find<TextBox>("numericWatermark");
             if (textBox != null)
                 textBox
                     .TextInputOptionsQuery += (_, a) =>

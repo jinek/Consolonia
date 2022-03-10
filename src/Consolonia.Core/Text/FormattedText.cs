@@ -15,7 +15,7 @@ namespace Consolonia.Core.Text
         private readonly TextAlignment _textAlignment;
         private readonly TextWrapping _wrapping;
 
-        public FormattedText(string? text, TextAlignment textAlignment,
+        public FormattedText(string text, TextAlignment textAlignment,
             TextWrapping wrapping, Size constraint, IReadOnlyList<FormattedTextStyleSpan> spans)
         {
             Text = text ?? string.Empty;

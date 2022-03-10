@@ -1,6 +1,6 @@
 using System;
 using Avalonia.Input;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 namespace Consolonia.Core.Infrastructure
 {

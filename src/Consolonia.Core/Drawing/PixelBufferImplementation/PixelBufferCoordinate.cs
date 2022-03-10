@@ -1,6 +1,6 @@
 using Avalonia;
 
-namespace Consolonia.Core.Drawing.PixelBuffer
+namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public readonly struct PixelBufferCoordinate
     {
@@ -25,6 +25,16 @@ namespace Consolonia.Core.Drawing.PixelBuffer
         public PixelBufferCoordinate WithXpp()
         {
             return new PixelBufferCoordinate((ushort)(X + 1), Y);
+        }
+
+        public static PixelBufferCoordinate ToPixelBufferCoordinate((ushort x, ushort y) val)
+        {
+            return (PixelBufferCoordinate)val;
+        }
+
+        public static PixelBufferCoordinate ToPixelBufferCoordinate(Point point)
+        {
+            return (PixelBufferCoordinate)point;
         }
     }
 }

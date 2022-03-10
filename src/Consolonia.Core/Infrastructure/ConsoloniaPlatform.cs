@@ -45,7 +45,7 @@ namespace Consolonia.Core.Infrastructure
             return null;
         }
 
-        public ITrayIconImpl? CreateTrayIcon()
+        public ITrayIconImpl CreateTrayIcon()
         {
             throw new NotImplementedException();
         }
@@ -53,12 +53,12 @@ namespace Consolonia.Core.Infrastructure
         [DebuggerStepThrough]
         internal static void RaiseNotSupported(int errorCode, params object[] information)
         {
-            var notSupportedRequest = new NotSupportedRequest { ErrorCode = errorCode, Information = information };
+            var notSupportedRequest = new NotSupportedRequest (errorCode, information);
             NotSupported?.Invoke(notSupportedRequest);
             notSupportedRequest.CheckHandled();
         }
 
-        public static event Action<NotSupportedRequest>? NotSupported;
+        public static event Action<NotSupportedRequest> NotSupported;
 
         private static void InternalIgnore(NotSupportedRequest notSupportedRequest)
         {

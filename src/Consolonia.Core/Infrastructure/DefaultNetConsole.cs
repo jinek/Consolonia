@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Threading;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -76,7 +76,7 @@ namespace Consolonia.Core.Infrastructure
             else _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
         }
 
-        public event Action? Resized;
+        public event Action Resized;
 
         public PixelBufferSize Size { get; private set; }
             
@@ -139,7 +139,7 @@ namespace Consolonia.Core.Infrastructure
                         await Dispatcher.UIThread.InvokeAsync(() =>
                         {
                             Resized?.Invoke();
-                        });
+                        }).ConfigureAwait(false/*we are fine to check size on any thread*/);
 
                         timeout = 1; //todo: magic numbers. probably need to rely on fps instead
                     }

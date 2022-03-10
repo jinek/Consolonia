@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Consolonia.Core.Drawing.PixelBuffer
+namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     /// <summary>
     /// https://en.wikipedia.org/wiki/Box-drawing_character
@@ -9,10 +9,10 @@ namespace Consolonia.Core.Drawing.PixelBuffer
     {
         public DrawingBoxSymbol(byte upRightDownLeft)
         {
-            UpRightDownLeft = upRightDownLeft;
+            _upRightDownLeft = upRightDownLeft;
         }
 
-        public byte UpRightDownLeft;
+        private byte _upRightDownLeft;
 
         /// <summary>
         /// https://en.wikipedia.org/wiki/Code_page_437
@@ -20,7 +20,7 @@ namespace Consolonia.Core.Drawing.PixelBuffer
         char ISymbol.GetCharacter()
         {
             //DOS linedraw characters are not ordered in any programmatic manner, and calculating a particular character shape needs to use a look-up table. from https://en.wikipedia.org/wiki/Box-drawing_character
-            switch (UpRightDownLeft)
+            switch (_upRightDownLeft)
             {
                 case 0b0000: return char.MinValue;
                 case 0b1000:
@@ -41,20 +41,20 @@ namespace Consolonia.Core.Drawing.PixelBuffer
                 case 0b1011: return '┤';
                 case 0b1101: return '┴';
                 case 0b0111: return '┬';
-                default: throw new IndexOutOfRangeException();
+                default: throw new InvalidOperationException();
             }
         }
 
         public bool IsWhiteSpace()
         {
-            return UpRightDownLeft == 0b0000;
+            return _upRightDownLeft == 0b0000;
         }
 
         public ISymbol Blend(ref ISymbol symbolAbove)
         {
             if (symbolAbove is not DrawingBoxSymbol drawingBoxSymbol) return symbolAbove;
 
-            UpRightDownLeft |= drawingBoxSymbol.UpRightDownLeft;
+            _upRightDownLeft |= drawingBoxSymbol._upRightDownLeft;
             return this;
         }
     }

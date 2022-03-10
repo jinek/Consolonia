@@ -1,7 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Media;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 namespace Consolonia.Core.Drawing
 {

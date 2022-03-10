@@ -34,7 +34,7 @@ namespace Consolonia.Core
             AppBuilder app = usePlatformDetect
                 .LogToTrace();
 
-            var lifetime = new ClassicDesktopStyleApplicationLifetime
+            using var lifetime = new ClassicDesktopStyleApplicationLifetime
             {
                 /*Args = args,*/
                 ShutdownMode = ShutdownMode.OnMainWindowClose,

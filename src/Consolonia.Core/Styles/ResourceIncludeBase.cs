@@ -11,7 +11,7 @@ namespace Consolonia.Core.Styles
     {
         private readonly Uri _baseUri;
         private bool _isLoading;
-        private IStyle[]? _loaded;
+        private IStyle[] _loaded;
 
         protected ResourceIncludeBase(Uri baseUri)
         {
@@ -40,11 +40,11 @@ namespace Consolonia.Core.Styles
                     _isLoading = false;
                 }
 
-                return _loaded?[0]!;
+                return _loaded[0];
             }
         }
 
-        public bool TryGetResource(object key, out object? value)
+        public bool TryGetResource(object key, out object value)
         {
             if (!_isLoading && Loaded is IResourceProvider p) return p.TryGetResource(key, out value);
 
@@ -52,19 +52,19 @@ namespace Consolonia.Core.Styles
             return false;
         }
 
-        bool IResourceNode.HasResources => (Loaded as IResourceProvider)?.HasResources ?? false;
+        public bool HasResources => (Loaded as IResourceProvider)?.HasResources ?? false;
 
-        void IResourceProvider.AddOwner(IResourceHost owner)
+        public void AddOwner(IResourceHost owner)
         {
             (Loaded as IResourceProvider)?.AddOwner(owner);
         }
 
-        void IResourceProvider.RemoveOwner(IResourceHost owner)
+        public void RemoveOwner(IResourceHost owner)
         {
             (Loaded as IResourceProvider)?.RemoveOwner(owner);
         }
 
-        IResourceHost? IResourceProvider.Owner => (Loaded as IResourceProvider)?.Owner;
+        public IResourceHost Owner => (Loaded as IResourceProvider)?.Owner;
 
         public event EventHandler OwnerChanged
         {
@@ -78,11 +78,11 @@ namespace Consolonia.Core.Styles
             }
         }
 
-        public SelectorMatchResult TryAttach(IStyleable target, IStyleHost? host)
+        public SelectorMatchResult TryAttach(IStyleable target, IStyleHost host)
         {
             return Loaded.TryAttach(target, host);
         }
 
-        IReadOnlyList<IStyle> IStyle.Children => _loaded ?? Array.Empty<IStyle>();
+        public IReadOnlyList<IStyle> Children => _loaded ?? Array.Empty<IStyle>();
     }
 }

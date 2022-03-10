@@ -8,7 +8,7 @@ using Avalonia.Rendering;
 using Avalonia.Rendering.SceneGraph;
 using Avalonia.Utilities;
 using Avalonia.Visuals.Media.Imaging;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using FormattedText = Consolonia.Core.Text.FormattedText;
 
@@ -19,13 +19,13 @@ namespace Consolonia.Core.Drawing
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly IConsole _console;
         private readonly ConsoleWindow _consoleWindow;
-        private readonly PixelBuffer.PixelBuffer _pixelBuffer;
+        private readonly PixelBufferImplementation.PixelBuffer _pixelBuffer;
         private readonly IVisualBrushRenderer _visualBrushRenderer;
         private Matrix _postTransform = Matrix.Identity;
         private Matrix _transform;
 
         public DrawingContextImpl(ConsoleWindow consoleWindow, IVisualBrushRenderer visualBrushRenderer,
-            PixelBuffer.PixelBuffer pixelBuffer)
+            PixelBufferImplementation.PixelBuffer pixelBuffer)
         {
             _consoleWindow = consoleWindow;
             _visualBrushRenderer = visualBrushRenderer;
@@ -59,10 +59,9 @@ namespace Consolonia.Core.Drawing
             Rect destRect,
             BitmapInterpolationMode bitmapInterpolationMode = BitmapInterpolationMode.Default)
         {
-            return;
-
-            //todo: when need this?
-            Rect clip = _currentClip.Intersect(destRect);
+            /*
+            //  prototype
+             Rect clip = _currentClip.Intersect(destRect);
             for (int x = 0; x < sourceRect.Width; x++)
             for (int y = 0; y < sourceRect.Height; y++)
             {
@@ -79,7 +78,7 @@ namespace Consolonia.Core.Drawing
                                 (ushort)(y + sourceRect.Top))]);
                     });
                 });
-            }
+            }*/
         }
 
         public void DrawBitmap(IRef<IBitmapImpl> source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)

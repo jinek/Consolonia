@@ -13,7 +13,6 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
     {
         private Window _parentWindow;
         private IDisposable _disposable;
-        private IDisposable _disposable2;
         private DialogWindow _dialogWindow;
 
         public DialogWrap()
@@ -63,7 +62,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
         ///     Focused element when new dialog shown
         ///     This is focus to restore when dialog closed 
         /// </summary>
-        internal IInputElement? HadFocusOn { get; set; }
+        internal IInputElement HadFocusOn { get; set; }
 
         private void CloseDialog()
         {

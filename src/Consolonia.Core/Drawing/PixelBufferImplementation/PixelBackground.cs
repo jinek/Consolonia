@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Consolonia.Core.Drawing.PixelBuffer
+namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public struct PixelBackground
     {
@@ -10,8 +10,8 @@ namespace Consolonia.Core.Drawing.PixelBuffer
             Mode = mode;
         }
 
-        public readonly ConsoleColor Color;
-        public readonly PixelBackgroundMode Mode;
+        public ConsoleColor Color { get; }
+        public PixelBackgroundMode Mode { get; }
 
         public PixelBackground Shade()
         {

@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <IsPackable>True</IsPackable>
-    </PropertyGroup>
-
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    
     <ItemGroup>
       <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     </ItemGroup>

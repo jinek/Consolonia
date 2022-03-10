@@ -21,7 +21,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             AvaloniaXamlLoader.Load(this);
         }
 
-        private async void OneMore_Clicked(object? sender, RoutedEventArgs e)
+        private async void OneMore_Clicked(object sender, RoutedEventArgs e)
         {
             await new SomeDialogWindow().ShowDialogAsync(this);
         }

@@ -9,7 +9,6 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 {
     public class DialogWindow : UserControl
     {
-        private Window _parentWindow;
         private IDisposable _disposable2;
 
         public static readonly DirectProperty<DialogWindow, Size> ContentSizeProperty =
@@ -103,7 +102,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             return dialogHost;
         }
         
-        private void InputElement_OnKeyDown(object? sender, KeyEventArgs e)
+        private void InputElement_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (!CancelOnEscape) return;
             if (e.Key is not (Key.Cancel or Key.Escape)) return;

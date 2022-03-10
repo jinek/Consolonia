@@ -73,7 +73,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     itemsPresenter.AttachedToVisualTree -= ItemContainerGeneratorOnMaterialized;
                 }
 
-                static void ItemContainerGeneratorOnMaterialized(object? sender,
+                static void ItemContainerGeneratorOnMaterialized(object sender,
                     VisualTreeAttachmentEventArgs visualTreeAttachmentEventArgs)
                 {
                     var comboBox = ((ItemsPresenter)sender).FindLogicalAncestorOfType<ComboBox>();

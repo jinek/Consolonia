@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 
-namespace Consolonia.Core.Drawing.PixelBuffer
+namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public class PixelBuffer : IEnumerable<Pixel>
     {
@@ -44,7 +44,7 @@ namespace Consolonia.Core.Drawing.PixelBuffer
         {
             Width = width;
             Height = height;
-            Buffer = new Pixel[width, height];
+            _buffer = new Pixel[width, height];
         }
 
         public Pixel this[int i]
@@ -63,8 +63,8 @@ namespace Consolonia.Core.Drawing.PixelBuffer
 
         public Pixel this[PixelBufferCoordinate point]
         {
-            get => Buffer[point.X, point.Y];
-            set => Buffer[point.X, point.Y] = value;
+            get => _buffer[point.X, point.Y];
+            set => _buffer[point.X, point.Y] = value;
         }
 
         private (ushort x, ushort y) ToXY(int i)
@@ -72,11 +72,11 @@ namespace Consolonia.Core.Drawing.PixelBuffer
             return ((ushort x, ushort y))(i % Width, i / Width);
         }
 
-        public readonly Pixel[,] Buffer;
+        private readonly Pixel[,] _buffer;
 
         public IEnumerator<Pixel> GetEnumerator()
         {
-            return Buffer.OfType<Pixel>().GetEnumerator();
+            return _buffer.OfType<Pixel>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -84,7 +84,7 @@ namespace Consolonia.Core.Drawing.PixelBuffer
             return GetEnumerator();
         }
 
-        public int Length => Buffer.Length;
+        public int Length => _buffer.Length;
         public Rect Size => new(0, 0, Width, Height);
     }
 }

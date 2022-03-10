@@ -28,7 +28,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 
                 PseudolassesExtensions.Set(button.Classes, ":clickdelayed", true);
 
-                await Task.Delay(timeout); //todo: magic number
+                await Task.Delay(timeout).ConfigureAwait(true); //todo: magic number
 
                 PseudolassesExtensions.Set(button.Classes, ":clickdelayed", false);
             });

@@ -11,7 +11,7 @@ namespace Consolonia.Core.Dummy
         {
         }
 
-        public void Capture(IInputElement? control)
+        public void Capture(IInputElement control)
         {
         }
 
@@ -20,7 +20,7 @@ namespace Consolonia.Core.Dummy
             return new();
         }
 
-        public IInputElement? Captured => null;
+        public IInputElement Captured => null;
 
         public void TopLevelClosed(IInputRoot root)
         {
