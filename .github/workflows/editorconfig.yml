@@ -6,10 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./src
+    runs-on: ubuntu-latest    
     # from https://github.com/marketplace/actions/dotnet-format
     steps:
       - name: Get branch info
