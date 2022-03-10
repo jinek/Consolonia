@@ -3,6 +3,8 @@ name: editorconfig
 on:
   pull_request:
     branches: [ main ]
+permissions:
+  pull_request: read
 
 jobs:
   build:
@@ -21,17 +23,21 @@ jobs:
           ref: ${{ steps.comment-branch.outputs.ref }}
           persist-credentials: false
 
+      - name: Add dotnet-format problem matcher
+        uses: xt0rted/dotnet-format-problem-matcher@v1
+
       - name: Restore dotnet tools
         uses: xt0rted/dotnet-tool-restore@v1
 
       - name: Run dotnet format
         id: format
-        uses: xt0rted/dotnet-format@v1
+        uses: xt0rted/dotnet-format@v1.2.0
         env:
           VALIDATE_CSHARP: true
         with:
+          version:
           action: "fix"
-          only-changed-files: false
+          only-changed-files: "false"
 
       - name: Commit files
         if: steps.format.outputs.has-changes == 'true'
