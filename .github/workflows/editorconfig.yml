@@ -14,4 +14,6 @@ jobs:
 
     steps:
       - name: EditorConfig-Action
-        uses: zbeekman/EditorConfig-Action@v1.1.1
+      - uses: snow-actions/eclint@v1.0.1
+        with:
+          args: 'check'
