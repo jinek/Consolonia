@@ -34,6 +34,6 @@ jobs:
         uses: glassechidna/resharper-action@v1
         with:
           # Path to an .sln file
-          solution: ./Consolonia.sln
+          solution: ./src/Consolonia.sln
           # Path to an .xml file of a pre-created report
           report: # optional

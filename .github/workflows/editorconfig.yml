@@ -13,7 +13,6 @@ jobs:
         working-directory: ./src
 
     steps:
-      - name: EditorConfig-Action
       - uses: snow-actions/eclint@v1.0.1
         with:
           args: 'check'
