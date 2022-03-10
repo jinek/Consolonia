@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     # from https://github.com/marketplace/actions/dotnet-format
     steps:
-      - name: Get branch info
+      - name: Get branch info # todo: is this needed?
         id: comment-branch
         uses: xt0rted/pull-request-comment-branch@v1
         with:
