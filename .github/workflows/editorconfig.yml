@@ -31,13 +31,13 @@ jobs:
 
       - name: Run dotnet format
         id: format
-        uses: xt0rted/dotnet-format@v1.2.0
+        uses: xt0rted/dotnet-format@v3
         env:
           VALIDATE_CSHARP: true
         with:
           version:
           action: "fix"
-          only-changed-files: "false"
+          only-changed-files: "true"
 
       - name: Commit files
         if: steps.format.outputs.has-changes == 'true'
