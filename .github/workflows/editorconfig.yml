@@ -31,7 +31,7 @@ jobs:
           VALIDATE_CSHARP: true
         with:
           action: "fix"
-          only-changed-files: true
+          only-changed-files: false
 
       - name: Commit files
         if: steps.format.outputs.has-changes == 'true'
