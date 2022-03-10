@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+    build:
 
     runs-on: ubuntu-latest
     defaults:
@@ -20,18 +20,15 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout repo
-        if: steps.command.outputs.command-name
         uses: actions/checkout@v2
         with:
           ref: ${{ steps.comment-branch.outputs.ref }}
           persist-credentials: false
 
       - name: Restore dotnet tools
-        if: steps.command.outputs.command-name
         uses: xt0rted/dotnet-tool-restore@v1
 
       - name: Run dotnet format
-        if: steps.command.outputs.command-name && steps.command.outputs.command-arguments == 'format'
         id: format
         uses: xt0rted/dotnet-format@v1
         env:
@@ -41,7 +38,7 @@ jobs:
           only-changed-files: true
           
       - name: Commit files
-        if: steps.command.outputs.command-name && steps.command.outputs.command-arguments == 'format' && steps.format.outputs.has-changes == 'true'
+        if: steps.format.outputs.has-changes == 'true'
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
