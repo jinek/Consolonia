@@ -29,7 +29,7 @@ jobs:
 
       - name: Run dotnet format
         id: format
-        uses: xt0rted/dotnet-format@v1.1.2
+        uses: xt0rted/dotnet-format@v1.2.0
         env:
           VALIDATE_CSHARP: true
         with:
