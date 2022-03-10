@@ -5,8 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-    build:
-
+  build:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -36,7 +35,7 @@ jobs:
         with:
           action: "fix"
           only-changed-files: true
-          
+
       - name: Commit files
         if: steps.format.outputs.has-changes == 'true'
         run: |
