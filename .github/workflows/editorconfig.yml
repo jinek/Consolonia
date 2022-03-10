@@ -11,6 +11,4 @@ jobs:
 
     steps:
       - name: EditorConfig-Action
-        # You may pin to the exact commit or the version.
-        # uses: zbeekman/EditorConfig-Action@ad87de68f3718e100afb65800195b08ea44b7d9e
         uses: zbeekman/EditorConfig-Action@v1.1.1
