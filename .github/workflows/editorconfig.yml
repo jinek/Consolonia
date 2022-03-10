@@ -3,8 +3,6 @@ name: editorconfig
 on:
   pull_request:
     branches: [ main ]
-permissions:
-  pull_request: read
 
 jobs:
   build:
