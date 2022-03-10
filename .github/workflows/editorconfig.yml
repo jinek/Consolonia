@@ -34,6 +34,8 @@ jobs:
         if: steps.command.outputs.command-name && steps.command.outputs.command-arguments == 'format'
         id: format
         uses: xt0rted/dotnet-format@v1
+        env:
+          VALIDATE_CSHARP: true
         with:
           action: "fix"
           only-changed-files: true
