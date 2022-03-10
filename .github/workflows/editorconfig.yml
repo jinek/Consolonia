@@ -27,16 +27,9 @@ jobs:
       - name: Restore dotnet tools
         uses: xt0rted/dotnet-tool-restore@v1
 
-      - name: Run dotnet format
-        id: format
-        uses: xt0rted/dotnet-format@v1.2.0
-        env:
-          VALIDATE_CSHARP: true
-        with:
-          version: 3
-          action: "fix"
-          only-changed-files: "true"
-
+      - name: dotnet-format
+        run: dotnet format ./src/Consolonia.sln
+      
       - name: Commit files
         if: steps.format.outputs.has-changes == 'true'
         run: |
