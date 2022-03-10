@@ -9,7 +9,7 @@ namespace Consolonia.Core.Drawing
     {
         private readonly Rect _rect;
 
-        public Rectangle(Rect rect, IGeometryImpl sourceGeometry=default, Matrix transform=default)
+        public Rectangle(Rect rect, IGeometryImpl sourceGeometry = default, Matrix transform = default)
         {
             _rect = rect;
             SourceGeometry = sourceGeometry;

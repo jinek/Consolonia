@@ -36,7 +36,7 @@ namespace Consolonia.Core.Infrastructure
             Resized(size, PlatformResizeReason.Unspecified);
             //todo; Invalidate(new Rect(size));
         }
-        
+
         public void Dispose()
         {
             Closed?.Invoke();
@@ -52,7 +52,7 @@ namespace Consolonia.Core.Infrastructure
             return new AdvancedDeferredRenderer(root, AvaloniaLocator.Current.GetService<IRenderLoop>())
             {
                 RenderRoot = this
-//                RenderOnlyOnRenderThread = true
+                //                RenderOnlyOnRenderThread = true
             };
         }
 

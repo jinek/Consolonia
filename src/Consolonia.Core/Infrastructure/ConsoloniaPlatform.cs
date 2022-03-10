@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.Platform;
@@ -53,7 +53,7 @@ namespace Consolonia.Core.Infrastructure
         [DebuggerStepThrough]
         internal static void RaiseNotSupported(int errorCode, params object[] information)
         {
-            var notSupportedRequest = new NotSupportedRequest (errorCode, information);
+            var notSupportedRequest = new NotSupportedRequest(errorCode, information);
             NotSupported?.Invoke(notSupportedRequest);
             notSupportedRequest.CheckHandled();
         }

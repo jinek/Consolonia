@@ -19,7 +19,7 @@ namespace Consolonia.Core.Infrastructure
         void IRenderer.AddDirty(IVisual visual)
         {
             base.AddDirty(visual);
-            
+
             // this is from immediateRenderer, keeping original formatting
             // todo: consider how to call the original method (get rid of copypaste here)
             // ReSharper disable InvertIf

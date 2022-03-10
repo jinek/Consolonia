@@ -10,10 +10,10 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
     {
         public static readonly AttachedProperty<TimeSpan> DelayPressProperty =
             AvaloniaProperty.RegisterAttached<Button, TimeSpan>("IsDelayPress", typeof(ButtonExtensions));
-        
+
         public static readonly AttachedProperty<bool> ShadowProperty =
             AvaloniaProperty.RegisterAttached<Button, bool>("ShadowPress", typeof(ButtonExtensions));
-            
+
         static ButtonExtensions()
         {
             Button.ClickEvent.Raised.Subscribe(async tuple =>

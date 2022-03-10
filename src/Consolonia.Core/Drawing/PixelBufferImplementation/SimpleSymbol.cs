@@ -1,4 +1,4 @@
-﻿namespace Consolonia.Core.Drawing.PixelBufferImplementation
+namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public readonly struct SimpleSymbol : ISymbol
     {

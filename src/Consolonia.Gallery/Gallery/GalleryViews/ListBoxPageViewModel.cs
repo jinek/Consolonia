@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Controls;
@@ -21,7 +21,7 @@ namespace ControlCatalog.ViewModels
         public ListBoxPageViewModel()
         {
             Items = new ObservableCollection<string>(Enumerable.Range(1, 10000).Select(i => GenerateItem()));
-            
+
             Selection = new SelectionModel<string>();
             Selection.Select(1);
 

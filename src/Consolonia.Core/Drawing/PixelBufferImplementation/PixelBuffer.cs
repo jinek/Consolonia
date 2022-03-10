@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +12,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             Set<object>(point, (pixel, _) => changeAction(pixel), null);
         }
-    
-        public void Set<TUserObject>(PixelBufferCoordinate point, Func<Pixel,TUserObject, Pixel> changeAction, TUserObject userObject)
+
+        public void Set<TUserObject>(PixelBufferCoordinate point, Func<Pixel, TUserObject, Pixel> changeAction, TUserObject userObject)
         {
-            this[point] = changeAction(this[point],userObject);
+            this[point] = changeAction(this[point], userObject);
         }
 
         public void Foreach(Func<PixelBufferCoordinate, Pixel, Pixel> replaceAction)
@@ -30,11 +30,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public void ForeachReadonly(Action<PixelBufferCoordinate, Pixel> action)
         {
             for (ushort i = 0; i < Width; i++)
-            for (ushort j = 0; j < Height; j++)
-            {
-                Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
-                action(new PixelBufferCoordinate(i, j), pixel);
-            }
+                for (ushort j = 0; j < Height; j++)
+                {
+                    Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
+                    action(new PixelBufferCoordinate(i, j), pixel);
+                }
         }
 
         public ushort Width { get; }

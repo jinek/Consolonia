@@ -72,11 +72,11 @@ namespace Consolonia.Core.Drawing
 
             Point pStart = PStart.Transform(transform);
             Point pEnd = PEnd.Transform(transform);
-            
+
             (double vectorX, double vectorY) = pStart - pEnd;
-            return new Line(pStart, 
-                Vertical, 
-                (int)Math.Abs(vectorX + vectorY) /*always vertical or horizontal*/, 
+            return new Line(pStart,
+                Vertical,
+                (int)Math.Abs(vectorX + vectorY) /*always vertical or horizontal*/,
                 this,
                 transform);
         }

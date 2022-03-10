@@ -18,7 +18,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public GalleryDataGrid()
         {
             InitializeComponent();
-     
+
             var dataGridSortDescription = DataGridSortDescription.FromPath(nameof(Country.Region), ListSortDirection.Ascending, new ReversedStringComparer());
             var collectionView1 = new DataGridCollectionView(Countries.All);
             collectionView1.SortDescriptions.Add(dataGridSortDescription);
@@ -88,8 +88,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             }
         }
     }
-    
-        public static class Countries
+
+    public static class Countries
     {
         static IEnumerable<Country> GetCountries()
         {
@@ -118,7 +118,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             yield return new Country("Bermuda", "NORTHERN AMERICA", 65773, 53, 1241, 194.34, 2.49, 8.53, 36000, 98, 851.4, 11.4, 7.74);
             yield return new Country("Bhutan", "ASIA (EX. NEAR EAST)", 2279723, 47000, 48.5, 0, 0, 100.44, 1300, 42.2, 14.3, 33.65, 12.7);
             yield return new Country("Bolivia", "LATIN AMER. & CARIB", 8989046, 1098580, 8.2, 0, -1.32, 53.11, 2400, 87.2, 71.9, 23.3, 7.53);
-            yield return new Country("Bosnia & Herzegovina", "EASTERN EUROPE", 4498976, 51129, 88, 0.04, 0.31, 21.05, 6100,null, 215.4, 8.77, 8.27);
+            yield return new Country("Bosnia & Herzegovina", "EASTERN EUROPE", 4498976, 51129, 88, 0.04, 0.31, 21.05, 6100, null, 215.4, 8.77, 8.27);
             yield return new Country("Botswana", "SUB-SAHARAN AFRICA", 1639833, 600370, 2.7, 0, 0, 54.58, 9000, 79.8, 80.5, 23.08, 29.5);
             yield return new Country("Brazil", "LATIN AMER. & CARIB", 188078227, 8511965, 22.1, 0.09, -0.03, 29.61, 7600, 86.4, 225.3, 16.56, 6.17);
             yield return new Country("British Virgin Is.", "LATIN AMER. & CARIB", 23098, 153, 151, 52.29, 10.01, 18.05, 16000, 97.8, 506.5, 14.89, 4.42);
@@ -140,18 +140,18 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             yield return new Country("Comoros", "SUB-SAHARAN AFRICA", 690948, 2170, 318.4, 15.67, 0, 74.93, 700, 56.5, 24.5, 36.93, 8.2);
             yield return new Country("Congo, Dem.Rep.", "SUB - SAHARAN AFRICA", 62660551, 2345410, 26.7, 0, 0, 94.69, 700, 65.5, 0.2, 43.69, 13.27);
             yield return new Country("Congo, Repub.of the", "SUB - SAHARAN AFRICA", 3702314, 342000, 10.8, 0.05, -0.17, 93.86, 700, 83.8, 3.7, 42.57, 12.93);
-            yield return new Country("Cook Islands", "OCEANIA", 21388, 240, 89.1, 50,null,null, 5000, 95, 289.9, 21,null);
+            yield return new Country("Cook Islands", "OCEANIA", 21388, 240, 89.1, 50, null, null, 5000, 95, 289.9, 21, null);
             yield return new Country("Costa Rica", "LATIN AMER. & CARIB", 4075261, 51100, 79.8, 2.52, 0.51, 9.95, 9100, 96, 340.7, 18.32, 4.36);
             yield return new Country("Cote d'Ivoire", "SUB-SAHARAN AFRICA", 17654843, 322460, 54.8, 0.16, -0.07, 90.83, 1400, 50.9, 14.6, 35.11, 14.84);
             yield return new Country("Croatia", "EASTERN EUROPE", 4494749, 56542, 79.5, 10.32, 1.58, 6.84, 10600, 98.5, 420.4, 9.61, 11.48);
             yield return new Country("Cuba", "LATIN AMER. & CARIB", 11382820, 110860, 102.7, 3.37, -1.58, 6.33, 2900, 97, 74.7, 11.89, 7.22);
-            yield return new Country("Cyprus", "NEAR EAST", 784301, 9250, 84.8, 7.01, 0.43, 7.18, 19200, 97.6,null, 12.56, 7.68);
+            yield return new Country("Cyprus", "NEAR EAST", 784301, 9250, 84.8, 7.01, 0.43, 7.18, 19200, 97.6, null, 12.56, 7.68);
             yield return new Country("Czech Republic", "EASTERN EUROPE", 10235455, 78866, 129.8, 0, 0.97, 3.93, 15700, 99.9, 314.3, 9.02, 10.59);
             yield return new Country("Denmark", "WESTERN EUROPE", 5450661, 43094, 126.5, 16.97, 2.48, 4.56, 31100, 100, 614.6, 11.13, 10.36);
             yield return new Country("Djibouti", "SUB-SAHARAN AFRICA", 486530, 23000, 21.2, 1.37, 0, 104.13, 1300, 67.9, 22.8, 39.53, 19.31);
             yield return new Country("Dominica", "LATIN AMER. & CARIB", 68910, 754, 91.4, 19.63, -13.87, 14.15, 5400, 94, 304.8, 15.27, 6.73);
             yield return new Country("Dominican Republic", "LATIN AMER. & CARIB", 9183984, 48730, 188.5, 2.64, -3.22, 32.38, 6000, 84.7, 97.4, 23.22, 5.73);
-            yield return new Country("East Timor", "ASIA (EX. NEAR EAST)", 1062777, 15007, 70.8, 4.7, 0, 47.41, 500, 58.6,null, 26.99, 6.24);
+            yield return new Country("East Timor", "ASIA (EX. NEAR EAST)", 1062777, 15007, 70.8, 4.7, 0, 47.41, 500, 58.6, null, 26.99, 6.24);
             yield return new Country("Ecuador", "LATIN AMER. & CARIB", 13547510, 283560, 47.8, 0.79, -8.58, 23.66, 3300, 92.5, 125.6, 22.29, 4.23);
             yield return new Country("Egypt", "NORTHERN AFRICA", 78887007, 1001450, 78.8, 0.24, -0.22, 32.59, 4000, 57.7, 131.8, 22.94, 5.23);
             yield return new Country("El Salvador", "LATIN AMER. & CARIB", 6822378, 21040, 324.3, 1.46, -3.74, 25.1, 4800, 80.2, 142.4, 26.61, 5.78);
@@ -159,7 +159,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             yield return new Country("Eritrea", "SUB-SAHARAN AFRICA", 4786994, 121320, 39.5, 1.84, 0, 74.87, 700, 58.6, 7.9, 34.33, 9.6);
             yield return new Country("Estonia", "BALTICS", 1324333, 45226, 29.3, 8.39, -3.16, 7.87, 12300, 99.8, 333.8, 10.04, 13.25);
             yield return new Country("Ethiopia", "SUB-SAHARAN AFRICA", 74777981, 1127127, 66.3, 0, 0, 95.32, 700, 42.7, 8.2, 37.98, 14.86);
-            yield return new Country("Faroe Islands", "WESTERN EUROPE", 47246, 1399, 33.8, 79.84, 1.41, 6.24, 22000,null, 503.8, 14.05, 8.7);
+            yield return new Country("Faroe Islands", "WESTERN EUROPE", 47246, 1399, 33.8, 79.84, 1.41, 6.24, 22000, null, 503.8, 14.05, 8.7);
             yield return new Country("Fiji", "OCEANIA", 905949, 18270, 49.6, 6.18, -3.14, 12.62, 5800, 93.7, 112.6, 22.55, 5.65);
             yield return new Country("Finland", "WESTERN EUROPE", 5231372, 338145, 15.5, 0.37, 0.95, 3.57, 27400, 100, 405.3, 10.45, 9.86);
             yield return new Country("France", "WESTERN EUROPE", 60876136, 547030, 111.3, 0.63, 0.66, 4.26, 27600, 99, 586.4, 11.99, 9.14);
@@ -167,18 +167,18 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             yield return new Country("French Polynesia", "OCEANIA", 274578, 4167, 65.9, 60.6, 2.94, 8.44, 17500, 98, 194.5, 16.68, 4.69);
             yield return new Country("Gabon", "SUB-SAHARAN AFRICA", 1424906, 267667, 5.3, 0.33, 0, 53.64, 5500, 63.2, 27.4, 36.16, 12.25);
             yield return new Country("Gambia, The", "SUB - SAHARAN AFRICA", 1641564, 11300, 145.3, 0.71, 1.57, 72.02, 1700, 40.1, 26.8, 39.37, 12.25);
-            yield return new Country("Gaza Strip", "NEAR EAST", 1428757, 360, 3968.8, 11.11, 1.6, 22.93, 600,null, 244.3, 39.45, 3.8);
+            yield return new Country("Gaza Strip", "NEAR EAST", 1428757, 360, 3968.8, 11.11, 1.6, 22.93, 600, null, 244.3, 39.45, 3.8);
             yield return new Country("Georgia", "C.W. OF IND. STATES", 4661473, 69700, 66.9, 0.44, -4.7, 18.59, 2500, 99, 146.6, 10.41, 9.23);
             yield return new Country("Germany", "WESTERN EUROPE", 82422299, 357021, 230.9, 0.67, 2.18, 4.16, 27600, 99, 667.9, 8.25, 10.62);
             yield return new Country("Ghana", "SUB-SAHARAN AFRICA", 22409572, 239460, 93.6, 0.23, -0.64, 51.43, 2200, 74.8, 14.4, 30.52, 9.72);
-            yield return new Country("Gibraltar", "WESTERN EUROPE", 27928, 7, 3989.7, 171.43, 0, 5.13, 17500,null, 877.7, 10.74, 9.31);
+            yield return new Country("Gibraltar", "WESTERN EUROPE", 27928, 7, 3989.7, 171.43, 0, 5.13, 17500, null, 877.7, 10.74, 9.31);
             yield return new Country("Greece", "WESTERN EUROPE", 10688058, 131940, 81, 10.37, 2.35, 5.53, 20000, 97.5, 589.7, 9.68, 10.24);
-            yield return new Country("Greenland", "NORTHERN AMERICA", 56361, 2166086, 0, 2.04, -8.37, 15.82, 20000,null, 448.9, 15.93, 7.84);
+            yield return new Country("Greenland", "NORTHERN AMERICA", 56361, 2166086, 0, 2.04, -8.37, 15.82, 20000, null, 448.9, 15.93, 7.84);
             yield return new Country("Grenada", "LATIN AMER. & CARIB", 89703, 344, 260.8, 35.17, -13.92, 14.62, 5000, 98, 364.5, 22.08, 6.88);
             yield return new Country("Guadeloupe", "LATIN AMER. & CARIB", 452776, 1780, 254.4, 17.19, -0.15, 8.6, 8000, 90, 463.8, 15.05, 6.09);
             yield return new Country("Guam", "OCEANIA", 171019, 541, 316.1, 23.2, 0, 6.94, 21000, 99, 492, 18.79, 4.48);
             yield return new Country("Guatemala", "LATIN AMER. & CARIB", 12293545, 108890, 112.9, 0.37, -1.67, 35.93, 4100, 70.6, 92.1, 29.88, 5.2);
-            yield return new Country("Guernsey", "WESTERN EUROPE", 65409, 78, 838.6, 64.1, 3.84, 4.71, 20000,null, 842.4, 8.81, 10.01);
+            yield return new Country("Guernsey", "WESTERN EUROPE", 65409, 78, 838.6, 64.1, 3.84, 4.71, 20000, null, 842.4, 8.81, 10.01);
             yield return new Country("Guinea", "SUB-SAHARAN AFRICA", 9690222, 245857, 39.4, 0.13, -3.06, 90.37, 2100, 35.9, 2.7, 41.76, 15.48);
             yield return new Country("Guinea-Bissau", "SUB-SAHARAN AFRICA", 1442029, 36120, 39.9, 0.97, -1.57, 107.17, 800, 42.4, 7.4, 37.22, 16.53);
             yield return new Country("Guyana", "LATIN AMER. & CARIB", 767245, 214970, 3.6, 0.21, -2.07, 33.26, 4000, 98.8, 143.5, 18.28, 8.28);
@@ -192,16 +192,16 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             yield return new Country("Iran", "ASIA (EX. NEAR EAST)", 68688433, 1648000, 41.7, 0.15, -0.84, 41.58, 7000, 79.4, 276.4, 17, 5.55);
             yield return new Country("Iraq", "NEAR EAST", 26783383, 437072, 61.3, 0.01, 0, 50.25, 1500, 40.4, 38.6, 31.98, 5.37);
             yield return new Country("Ireland", "WESTERN EUROPE", 4062235, 70280, 57.8, 2.06, 4.99, 5.39, 29600, 98, 500.5, 14.45, 7.82);
-            yield return new Country("Isle of Man", "WESTERN EUROPE", 75441, 572, 131.9, 27.97, 5.36, 5.93, 21000,null, 676, 11.05, 11.19);
+            yield return new Country("Isle of Man", "WESTERN EUROPE", 75441, 572, 131.9, 27.97, 5.36, 5.93, 21000, null, 676, 11.05, 11.19);
             yield return new Country("Israel", "NEAR EAST", 6352117, 20770, 305.8, 1.31, 0.68, 7.03, 19800, 95.4, 462.3, 17.97, 6.18);
             yield return new Country("Italy", "WESTERN EUROPE", 58133509, 301230, 193, 2.52, 2.07, 5.94, 26700, 98.6, 430.9, 8.72, 10.4);
             yield return new Country("Jamaica", "LATIN AMER. & CARIB", 2758124, 10991, 250.9, 9.3, -4.92, 12.36, 3900, 87.9, 124, 20.82, 6.52);
             yield return new Country("Japan", "ASIA (EX. NEAR EAST)", 127463611, 377835, 337.4, 7.87, 0, 3.26, 28200, 99, 461.2, 9.37, 9.16);
-            yield return new Country("Jersey", "WESTERN EUROPE", 91084, 116, 785.2, 60.34, 2.76, 5.24, 24800,null, 811.3, 9.3, 9.28);
+            yield return new Country("Jersey", "WESTERN EUROPE", 91084, 116, 785.2, 60.34, 2.76, 5.24, 24800, null, 811.3, 9.3, 9.28);
             yield return new Country("Jordan", "NEAR EAST", 5906760, 92300, 64, 0.03, 6.59, 17.35, 4300, 91.3, 104.5, 21.25, 2.65);
             yield return new Country("Kazakhstan", "C.W. OF IND. STATES", 15233244, 2717300, 5.6, 0, -3.35, 29.21, 6300, 98.4, 164.1, 16, 9.42);
             yield return new Country("Kenya", "SUB-SAHARAN AFRICA", 34707817, 582650, 59.6, 0.09, -0.1, 61.47, 1000, 85.1, 8.1, 39.72, 14.02);
-            yield return new Country("Kiribati", "OCEANIA", 105432, 811, 130, 140.94, 0, 48.52, 800,null, 42.7, 30.65, 8.26);
+            yield return new Country("Kiribati", "OCEANIA", 105432, 811, 130, 140.94, 0, 48.52, 800, null, 42.7, 30.65, 8.26);
             yield return new Country("North Korea", "ASIA(EX.NEAR EAST)", 23113019, 120540, 191.8, 2.07, 0, 24.04, 1300, 99, 42.4, 15.54, 7.13);
             yield return new Country("South Korea", "ASIA(EX.NEAR EAST)", 48846823, 98480, 496, 2.45, 0, 7.05, 17800, 97.9, 486.1, 10, 5.85);
             yield return new Country("Kuwait", "NEAR EAST", 2418393, 17820, 135.7, 2.8, 14.18, 9.95, 19000, 83.5, 211, 21.94, 2.41);
@@ -216,7 +216,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             yield return new Country("Lithuania", "BALTICS", 3585906, 65200, 55, 0.14, -0.71, 6.89, 11400, 99.6, 223.4, 8.75, 10.98);
             yield return new Country("Luxembourg", "WESTERN EUROPE", 474413, 2586, 183.5, 0, 8.97, 4.81, 55100, 100, 515.4, 11.94, 8.41);
             yield return new Country("Macau", "ASIA (EX. NEAR EAST)", 453125, 28, 16183, 146.43, 4.86, 4.39, 19400, 94.5, 384.9, 8.48, 4.47);
-            yield return new Country("Macedonia", "EASTERN EUROPE", 2050554, 25333, 80.9, 0, -1.45, 10.09, 6700,null, 260, 12.02, 8.77);
+            yield return new Country("Macedonia", "EASTERN EUROPE", 2050554, 25333, 80.9, 0, -1.45, 10.09, 6700, null, 260, 12.02, 8.77);
             yield return new Country("Madagascar", "SUB-SAHARAN AFRICA", 18595469, 587040, 31.7, 0.82, 0, 76.83, 800, 68.9, 3.6, 41.41, 11.11);
             yield return new Country("Malawi", "SUB-SAHARAN AFRICA", 13013926, 118480, 109.8, 0, 0, 103.32, 600, 62.7, 7.9, 43.13, 19.33);
             yield return new Country("Malaysia", "ASIA (EX. NEAR EAST)", 24385858, 329750, 74, 1.42, 0, 17.7, 9000, 88.7, 179, 22.86, 5.05);
@@ -227,17 +227,17 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             yield return new Country("Martinique", "LATIN AMER. & CARIB", 436131, 1100, 396.5, 31.82, -0.05, 7.09, 14400, 97.7, 394.4, 13.74, 6.48);
             yield return new Country("Mauritania", "SUB-SAHARAN AFRICA", 3177388, 1030700, 3.1, 0.07, 0, 70.89, 1800, 41.7, 12.9, 40.99, 12.16);
             yield return new Country("Mauritius", "SUB-SAHARAN AFRICA", 1240827, 2040, 608.3, 8.68, -0.9, 15.03, 11400, 85.6, 289.3, 15.43, 6.86);
-            yield return new Country("Mayotte", "SUB-SAHARAN AFRICA", 201234, 374, 538.1, 49.52, 6.78, 62.4, 2600,null, 49.7, 40.95, 7.7);
+            yield return new Country("Mayotte", "SUB-SAHARAN AFRICA", 201234, 374, 538.1, 49.52, 6.78, 62.4, 2600, null, 49.7, 40.95, 7.7);
             yield return new Country("Mexico", "LATIN AMER. & CARIB", 107449525, 1972550, 54.5, 0.47, -4.87, 20.91, 9000, 92.2, 181.6, 20.69, 4.74);
             yield return new Country("Micronesia, Fed.St.", "OCEANIA", 108004, 702, 153.9, 870.66, -20.99, 30.21, 2000, 89, 114.8, 24.68, 4.75);
             yield return new Country("Moldova", "C.W. OF IND. STATES", 4466706, 33843, 132, 0, -0.26, 40.42, 1800, 99.1, 208.1, 15.7, 12.64);
             yield return new Country("Monaco", "WESTERN EUROPE", 32543, 2, 16271.5, 205, 7.75, 5.43, 27000, 99, 1035.6, 9.19, 12.91);
             yield return new Country("Mongolia", "ASIA (EX. NEAR EAST)", 2832224, 1564116, 1.8, 0, 0, 53.79, 1800, 97.8, 55.1, 21.59, 6.95);
-            yield return new Country("Montserrat", "LATIN AMER. & CARIB", 9439, 102, 92.5, 39.22, 0, 7.35, 3400, 97,null, 17.59, 7.1);
+            yield return new Country("Montserrat", "LATIN AMER. & CARIB", 9439, 102, 92.5, 39.22, 0, 7.35, 3400, 97, null, 17.59, 7.1);
             yield return new Country("Morocco", "NORTHERN AFRICA", 33241259, 446550, 74.4, 0.41, -0.98, 41.62, 4000, 51.7, 40.4, 21.98, 5.58);
             yield return new Country("Mozambique", "SUB-SAHARAN AFRICA", 19686505, 801590, 24.6, 0.31, 0, 130.79, 1200, 47.8, 3.5, 35.18, 21.35);
             yield return new Country("Namibia", "SUB-SAHARAN AFRICA", 2044147, 825418, 2.5, 0.19, 0, 48.98, 7200, 84, 62.6, 24.32, 18.86);
-            yield return new Country("Nauru", "OCEANIA", 13287, 21, 632.7, 142.86, 0, 9.95, 5000,null, 143, 24.76, 6.7);
+            yield return new Country("Nauru", "OCEANIA", 13287, 21, 632.7, 142.86, 0, 9.95, 5000, null, 143, 24.76, 6.7);
             yield return new Country("Nepal", "ASIA (EX. NEAR EAST)", 28287147, 147181, 192.2, 0, 0, 66.98, 1400, 45.2, 15.9, 30.98, 9.31);
             yield return new Country("Netherlands", "WESTERN EUROPE", 16491461, 41526, 397.1, 1.09, 2.91, 5.04, 28600, 99, 460.8, 10.9, 8.68);
             yield return new Country("Netherlands Antilles", "LATIN AMER. & CARIB", 221736, 960, 231, 37.92, -0.41, 10.03, 11400, 96.7, 365.3, 14.78, 6.45);
@@ -274,13 +274,13 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             yield return new Country("Sao Tome & Principe", "SUB-SAHARAN AFRICA", 193413, 1001, 193.2, 20.88, -2.72, 43.11, 1200, 79.3, 36.2, 40.25, 6.47);
             yield return new Country("Saudi Arabia", "NEAR EAST", 27019731, 1960582, 13.8, 0.13, -2.71, 13.24, 11800, 78.8, 140.6, 29.34, 2.58);
             yield return new Country("Senegal", "SUB-SAHARAN AFRICA", 11987121, 196190, 61.1, 0.27, 0.2, 55.51, 1600, 40.2, 22.2, 32.78, 9.42);
-            yield return new Country("Serbia", "EASTERN EUROPE", 9396411, 88361, 106.3, 0, -1.33, 12.89, 2200, 93, 285.8,null,null);
+            yield return new Country("Serbia", "EASTERN EUROPE", 9396411, 88361, 106.3, 0, -1.33, 12.89, 2200, 93, 285.8, null, null);
             yield return new Country("Seychelles", "SUB-SAHARAN AFRICA", 81541, 455, 179.2, 107.91, -5.69, 15.53, 7800, 58, 262.4, 16.03, 6.29);
             yield return new Country("Sierra Leone", "SUB-SAHARAN AFRICA", 6005250, 71740, 83.7, 0.56, 0, 143.64, 500, 31.4, 4, 45.76, 23.03);
             yield return new Country("Singapore", "ASIA (EX. NEAR EAST)", 4492150, 693, 6482.2, 27.85, 11.53, 2.29, 23700, 92.5, 411.4, 9.34, 4.28);
-            yield return new Country("Slovakia", "EASTERN EUROPE", 5439448, 48845, 111.4, 0, 0.3, 7.41, 13300,null, 220.1, 10.65, 9.45);
+            yield return new Country("Slovakia", "EASTERN EUROPE", 5439448, 48845, 111.4, 0, 0.3, 7.41, 13300, null, 220.1, 10.65, 9.45);
             yield return new Country("Slovenia", "EASTERN EUROPE", 2010347, 20273, 99.2, 0.23, 1.12, 4.45, 19000, 99.7, 406.1, 8.98, 10.31);
-            yield return new Country("Solomon Islands", "OCEANIA", 552438, 28450, 19.4, 18.67, 0, 21.29, 1700,null, 13.4, 30.01, 3.92);
+            yield return new Country("Solomon Islands", "OCEANIA", 552438, 28450, 19.4, 18.67, 0, 21.29, 1700, null, 13.4, 30.01, 3.92);
             yield return new Country("Somalia", "SUB-SAHARAN AFRICA", 8863338, 637657, 13.9, 0.47, 5.37, 116.7, 500, 37.8, 11.3, 45.13, 16.63);
             yield return new Country("South Africa", "SUB-SAHARAN AFRICA", 44187637, 1219912, 36.2, 0.23, -0.29, 61.81, 10700, 86.4, 107, 18.2, 22);
             yield return new Country("Spain", "WESTERN EUROPE", 40397842, 504782, 80, 0.98, 0.99, 4.42, 22000, 97.9, 453.5, 10.06, 9.72);
@@ -302,7 +302,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             yield return new Country("Turkey", "NEAR EAST", 70413958, 780580, 90.2, 0.92, 0, 41.04, 6700, 86.5, 269.5, 16.62, 5.97);
             yield return new Country("Turkmenistan", "C.W. OF IND. STATES", 5042920, 488100, 10.3, 0, -0.86, 73.08, 5800, 98, 74.6, 27.61, 8.6);
             yield return new Country("Turks & Caicos Is", "LATIN AMER. & CARIB", 21152, 430, 49.2, 90.47, 11.68, 15.67, 9600, 98, 269.5, 21.84, 4.21);
-            yield return new Country("Tuvalu", "OCEANIA", 11810, 26, 454.2, 92.31, 0, 20.03, 1100,null, 59.3, 22.18, 7.11);
+            yield return new Country("Tuvalu", "OCEANIA", 11810, 26, 454.2, 92.31, 0, 20.03, 1100, null, 59.3, 22.18, 7.11);
             yield return new Country("Uganda", "SUB-SAHARAN AFRICA", 28195754, 236040, 119.5, 0, 0, 67.83, 1400, 69.9, 3.6, 47.35, 12.24);
             yield return new Country("Ukraine", "C.W. OF IND. STATES", 46710816, 603700, 77.4, 0.46, -0.39, 20.34, 5400, 99.7, 259.9, 8.82, 14.39);
             yield return new Country("United Arab Emirates", "NEAR EAST", 2602713, 82880, 31.4, 1.59, 1.03, 14.51, 23200, 77.9, 475.3, 18.96, 4.4);
@@ -313,9 +313,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             yield return new Country("Vanuatu", "OCEANIA", 208869, 12200, 17.1, 20.72, 0, 55.16, 2900, 53, 32.6, 22.72, 7.82);
             yield return new Country("Venezuela", "LATIN AMER. & CARIB", 25730435, 912050, 28.2, 0.31, -0.04, 22.2, 4800, 93.4, 140.1, 18.71, 4.92);
             yield return new Country("Vietnam", "ASIA (EX. NEAR EAST)", 84402966, 329560, 256.1, 1.05, -0.45, 25.95, 2500, 90.3, 187.7, 16.86, 6.22);
-            yield return new Country("Virgin Islands", "LATIN AMER. & CARIB", 108605, 1910, 56.9, 9.84, -8.94, 8.03, 17200,null, 652.8, 13.96, 6.43);
-            yield return new Country("Wallis and Futuna", "OCEANIA", 16025, 274, 58.5, 47.08,null,null, 3700, 50, 118.6,null,null);
-            yield return new Country("West Bank", "NEAR EAST", 2460492, 5860, 419.9, 0, 2.98, 19.62, 800,null, 145.2, 31.67, 3.92);
+            yield return new Country("Virgin Islands", "LATIN AMER. & CARIB", 108605, 1910, 56.9, 9.84, -8.94, 8.03, 17200, null, 652.8, 13.96, 6.43);
+            yield return new Country("Wallis and Futuna", "OCEANIA", 16025, 274, 58.5, 47.08, null, null, 3700, 50, 118.6, null, null);
+            yield return new Country("West Bank", "NEAR EAST", 2460492, 5860, 419.9, 0, 2.98, 19.62, 800, null, 145.2, 31.67, 3.92);
             yield return new Country("Yemen", "NEAR EAST", 21456188, 527970, 40.6, 0.36, 0, 61.5, 800, 50.2, 37.2, 42.89, 8.3);
             yield return new Country("Zambia", "SUB-SAHARAN AFRICA", 11502010, 752614, 15.3, 0, 0, 88.29, 800, 80.6, 8.2, 41, 19.93);
             yield return new Country("Zimbabwe", "SUB-SAHARAN AFRICA", 12236805, 390580, 31.3, 0, 0, 67.69, 1900, 90.7, 26.8, 28.01, 21.84);
@@ -327,7 +327,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             get
             {
-                if(_all == null)
+                if (_all == null)
                 {
                     _all = GetCountries().ToList().AsReadOnly();
                 }
@@ -338,69 +338,69 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
     }
 
-        public class Country
-        {
-            public string Name { get; private set; }
-            public string Region { get; private set; }
-            public int Population { get; private set; }
-            //Square Miles
-            public int Area { get; private set; }
-            //Per Square Mile
-            public double PopulationDensity { get; private set; }
-            //Coast / Area
-            public double CoastLine { get; private set; }
-            public double? NetMigration { get; private set; }
-            //per 1000 births
-            public double? InfantMortality { get; private set; }
-            public int GDP { get; private set; }
-            public double? LiteracyPercent { get; private set; }
-            //per 1000
-            public double? Phones { get; private set; }
-            public double? BirthRate { get; private set; }
-            public double? DeathRate { get; private set; }
+    public class Country
+    {
+        public string Name { get; private set; }
+        public string Region { get; private set; }
+        public int Population { get; private set; }
+        //Square Miles
+        public int Area { get; private set; }
+        //Per Square Mile
+        public double PopulationDensity { get; private set; }
+        //Coast / Area
+        public double CoastLine { get; private set; }
+        public double? NetMigration { get; private set; }
+        //per 1000 births
+        public double? InfantMortality { get; private set; }
+        public int GDP { get; private set; }
+        public double? LiteracyPercent { get; private set; }
+        //per 1000
+        public double? Phones { get; private set; }
+        public double? BirthRate { get; private set; }
+        public double? DeathRate { get; private set; }
 
-            public Country(string name, string region, int population, int area, double density, double coast, double? migration, 
-                double? infantMorality, int gdp, double? literacy, double? phones, double? birth, double? death)
+        public Country(string name, string region, int population, int area, double density, double coast, double? migration,
+            double? infantMorality, int gdp, double? literacy, double? phones, double? birth, double? death)
+        {
+            Name = name;
+            Region = region;
+            Population = population;
+            Area = area;
+            PopulationDensity = density;
+            CoastLine = coast;
+            NetMigration = migration;
+            InfantMortality = infantMorality;
+            GDP = gdp;
+            LiteracyPercent = literacy;
+            BirthRate = birth;
+            DeathRate = death;
+        }
+    }
+
+    public class GDPValueConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int gdp)
             {
-                Name = name;
-                Region = region;
-                Population = population;
-                Area = area;
-                PopulationDensity = density;
-                CoastLine = coast;
-                NetMigration = migration;
-                InfantMortality = infantMorality;
-                GDP = gdp;
-                LiteracyPercent = literacy;
-                BirthRate = birth;
-                DeathRate = death;
+                if (gdp <= 5000)
+                    return new FourBitColorBrush(ConsoleColor.Yellow);
+                else if (gdp <= 10000)
+                    return new FourBitColorBrush(ConsoleColor.DarkYellow);
+                else
+                    return new FourBitColorBrush(ConsoleColor.Green);
             }
+
+            return value;
         }
 
-        public class GDPValueConverter : IValueConverter
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                if (value is int gdp)
-                {
-                    if (gdp <= 5000)
-                        return new FourBitColorBrush(ConsoleColor.Yellow);
-                    else if (gdp <= 10000)
-                        return new FourBitColorBrush(ConsoleColor.DarkYellow);
-                    else
-                        return new FourBitColorBrush(ConsoleColor.Green);
-                }
-
-                return value;
-            }
-
-            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                throw new NotSupportedException();
-            }
+            throw new NotSupportedException();
         }
-        
-            public class Person : INotifyDataErrorInfo, INotifyPropertyChanged
+    }
+
+    public class Person : INotifyDataErrorInfo, INotifyPropertyChanged
     {
         string _firstName;
         string _lastName;

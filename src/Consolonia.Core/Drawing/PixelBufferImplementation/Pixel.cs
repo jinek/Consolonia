@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -12,7 +12,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             IsCaret = isCaret;
         }
-        
+
         public Pixel(char character, ConsoleColor foregroundColor) : this(new SimpleSymbol(character),
             foregroundColor)
         {
@@ -43,7 +43,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
         }
 
-        public Pixel(PixelForeground foreground, PixelBackground background, bool isCaret=false)
+        public Pixel(PixelForeground foreground, PixelBackground background, bool isCaret = false)
         {
             Foreground = foreground;
             Background = background;
@@ -55,7 +55,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             PixelForeground newForeground;
             PixelBackground newBackground;
             bool newIsCaret;
-            
+
             switch (pixelAbove.Background.Mode)
             {
                 case PixelBackgroundMode.Colored:
