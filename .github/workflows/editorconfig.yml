@@ -33,7 +33,7 @@ jobs:
         env:
           VALIDATE_CSHARP: true
         with:
-          version:
+          version: 3
           action: "fix"
           only-changed-files: "true"
 
