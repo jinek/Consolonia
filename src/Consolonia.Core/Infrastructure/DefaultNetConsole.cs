@@ -35,7 +35,7 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public event Action<Key, char, RawInputModifiers> KeyPress;
-     
+
         public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
         {
             if (bufferPoint.Equals(GetCaretPosition())) return;
@@ -68,18 +68,18 @@ namespace Consolonia.Core.Infrastructure
                 _headBackground = Console.BackgroundColor = backgroundColor;
             if (_headForeground != foregroundColor)
                 _headForeground = Console.ForegroundColor = foregroundColor;
-            
+
             Console.Write(str);
-            
+
             if (_headBufferPoint.X < Size.Width - str.Length)
-                _headBufferPoint = new PixelBufferCoordinate((ushort)(_headBufferPoint.X+str.Length),_headBufferPoint.Y);
+                _headBufferPoint = new PixelBufferCoordinate((ushort)(_headBufferPoint.X + str.Length), _headBufferPoint.Y);
             else _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
         }
 
         public event Action Resized;
 
         public PixelBufferSize Size { get; private set; }
-            
+
 
         private void StartInputReading()
         {
@@ -111,14 +111,14 @@ namespace Consolonia.Core.Infrastructure
 
         private static readonly Dictionary<ConsoleKey, Key> KeyMapping = new()
         {
-            {ConsoleKey.LeftWindows, Key.LWin},
-            {ConsoleKey.RightWindows, Key.RWin},
-            {ConsoleKey.Spacebar, Key.Space},
-            {ConsoleKey.RightArrow, Key.Right},
-            {ConsoleKey.LeftArrow, Key.Left},
-            {ConsoleKey.UpArrow, Key.Up},
-            {ConsoleKey.DownArrow, Key.Down},
-            {ConsoleKey.Backspace, Key.Back},
+            { ConsoleKey.LeftWindows, Key.LWin },
+            { ConsoleKey.RightWindows, Key.RWin },
+            { ConsoleKey.Spacebar, Key.Space },
+            { ConsoleKey.RightArrow, Key.Right },
+            { ConsoleKey.LeftArrow, Key.Left },
+            { ConsoleKey.UpArrow, Key.Up },
+            { ConsoleKey.DownArrow, Key.Down },
+            { ConsoleKey.Backspace, Key.Back },
         };
 
         private bool _disposed;

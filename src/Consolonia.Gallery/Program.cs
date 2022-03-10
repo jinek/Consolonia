@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Consolonia.Gallery
 {
@@ -7,7 +7,7 @@ namespace Consolonia.Gallery
         static void Main(string[] args)
         {
             if (args.Length > 1) throw new NotSupportedException();
-            
+
             Core.ApplicationStartup.StartConsolonia<App>();
         }
     }

@@ -9,7 +9,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public GalleryTabControl()
         {
             InitializeComponent();
-        
+
             DataContext = new PageViewModel
             {
                 Tabs = new[]
@@ -57,7 +57,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             public string Header { get; set; }
             public string Text { get; set; }
-            public bool IsEnabled { get; set; } = true;           
+            public bool IsEnabled { get; set; } = true;
         }
     }
 }

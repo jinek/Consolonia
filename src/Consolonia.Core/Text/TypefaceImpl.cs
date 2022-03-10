@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Avalonia.Platform;
 
@@ -33,7 +33,7 @@ namespace Consolonia.Core.Text
 
         public int[] GetGlyphAdvances(ReadOnlySpan<ushort> glyphs)
         {
-            return Enumerable.Repeat(1,glyphs.Length).ToArray();
+            return Enumerable.Repeat(1, glyphs.Length).ToArray();
         }
 
         /// <summary>

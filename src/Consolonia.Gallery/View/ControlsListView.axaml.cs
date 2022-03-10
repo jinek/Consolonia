@@ -27,7 +27,7 @@ namespace Consolonia.Gallery.View
             var grid = this.FindControl<DataGrid>("grid");
 
             grid.Items = _items = GalleryItem.Enumerated.ToArray();
-            
+
             TrySetupSelected();
 
             void TrySetupSelected()

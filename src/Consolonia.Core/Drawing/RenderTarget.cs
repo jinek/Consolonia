@@ -102,59 +102,59 @@ namespace Consolonia.Core.Drawing
             var flushingBuffer = new FlushingBuffer(_console);
 
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-            for (ushort x = 0; x < pixelBuffer.Width; x++)
-            {
-                Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
-
-                if (pixel.IsCaret)
+                for (ushort x = 0; x < pixelBuffer.Width; x++)
                 {
-                    if (caretPosition != null)
-                        throw new InvalidOperationException("Caret is already shown");
-                    caretPosition = new PixelBufferCoordinate(x, y);
-                }
+                    Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
 
-                if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                        rect.ContainsAligned(new Point(x, y)))) continue;
-                if (pixel.Background.Mode != PixelBackgroundMode.Colored)
-                    throw new InvalidOperationException(
-                        "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");
-
-                if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
-                    break;
-
-                char character = default;
-                try
-                {
-                    character = pixel.Foreground.Symbol.GetCharacter();
-                }
-                catch (NullReferenceException)
-                {
-                    //todo: need to break current drawing
-                    if (pixel.Foreground.Symbol is null) // not using 'when' as it swallows the exceptions 
+                    if (pixel.IsCaret)
                     {
-                        // buffer re-initialized after resizing
-                        character = '░';
-                        pixel = new Pixel(new PixelForeground(), new PixelBackground(PixelBackgroundMode.Colored));
+                        if (caretPosition != null)
+                            throw new InvalidOperationException("Caret is already shown");
+                        caretPosition = new PixelBufferCoordinate(x, y);
                     }
+
+                    if (!_consoleWindow.InvalidatedRects.Any(rect =>
+                            rect.ContainsAligned(new Point(x, y)))) continue;
+                    if (pixel.Background.Mode != PixelBackgroundMode.Colored)
+                        throw new InvalidOperationException(
+                            "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");
+
+                    if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
+                        break;
+
+                    char character = default;
+                    try
+                    {
+                        character = pixel.Foreground.Symbol.GetCharacter();
+                    }
+                    catch (NullReferenceException)
+                    {
+                        //todo: need to break current drawing
+                        if (pixel.Foreground.Symbol is null) // not using 'when' as it swallows the exceptions 
+                        {
+                            // buffer re-initialized after resizing
+                            character = '░';
+                            pixel = new Pixel(new PixelForeground(), new PixelBackground(PixelBackgroundMode.Colored));
+                        }
+                    }
+
+                    if (character is char.MinValue or '\r' or '\n')
+                        character = ' '; // some terminals does not print \0
+
+                    ConsoleColor backgroundColor = pixel.Background.Color;
+                    ConsoleColor foregroundColor = pixel.Foreground.Color;
+
+                    //todo: indexOutOfRange during resize
+                    if (_cache[x, y] == (backgroundColor, foregroundColor, character))
+                        continue;
+
+                    _cache[x, y] = (backgroundColor, foregroundColor, character);
+
+                    flushingBuffer.WriteCharacter(new PixelBufferCoordinate(x, y),
+                        backgroundColor,
+                        foregroundColor,
+                        character);
                 }
-
-                if (character is char.MinValue or '\r' or '\n')
-                    character = ' '; // some terminals does not print \0
-
-                ConsoleColor backgroundColor = pixel.Background.Color;
-                ConsoleColor foregroundColor = pixel.Foreground.Color;
-
-                //todo: indexOutOfRange during resize
-                if (_cache[x, y] == (backgroundColor, foregroundColor, character))
-                    continue;
-
-                _cache[x, y] = (backgroundColor, foregroundColor, character);
-
-                flushingBuffer.WriteCharacter(new PixelBufferCoordinate(x, y),
-                    backgroundColor,
-                    foregroundColor,
-                    character);
-            }
 
             flushingBuffer.Flush();
 

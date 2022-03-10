@@ -55,7 +55,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         // ReSharper disable once UnusedMember.Global Used by template
         public void CloseClick(object _)
         {
-            if(CancelOnEscape)
+            if (CancelOnEscape)
                 CloseDialog();
         }
 
@@ -101,7 +101,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             DialogHost dialogHost = window.GetValue(DialogHost.DialogHostProperty);
             return dialogHost;
         }
-        
+
         private void InputElement_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (!CancelOnEscape) return;

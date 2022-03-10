@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
@@ -150,18 +150,18 @@ namespace Consolonia.Core.Drawing
 
                     (double x, double y) = r2.TopLeft;
                     for (int i = 0; i < r2.Width + (pen?.Thickness ?? 0); i++)
-                    for (int j = 0; j < r2.Height + (pen?.Thickness ?? 0); j++)
-                    {
-                        int px = (int)(x + i);
-                        int py = (int)(y + j);
-                        _currentClip.ExecuteWithClipping(new Point(px, py), () =>
+                        for (int j = 0; j < r2.Height + (pen?.Thickness ?? 0); j++)
                         {
-                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                                (pixel, bb) => pixel.Blend(
-                                    new Pixel(
-                                        new PixelBackground(bb.Mode, bb.Color))),backgroundBrush);
-                        });
-                    }
+                            int px = (int)(x + i);
+                            int py = (int)(y + j);
+                            _currentClip.ExecuteWithClipping(new Point(px, py), () =>
+                            {
+                                _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                    (pixel, bb) => pixel.Blend(
+                                        new Pixel(
+                                            new PixelBackground(bb.Mode, bb.Color))), backgroundBrush);
+                            });
+                        }
                 }
             }
 
@@ -282,13 +282,13 @@ namespace Consolonia.Core.Drawing
         private static ConsoleColor? ExtractConsoleColorOrNullWithPlatformCheck(IPen pen)
         {
             if (pen is not
-            {
-                Brush: FourBitColorBrush consoleColorBrush,
-                Thickness: 1,
-                DashStyle: null or { Dashes: { Count: 0 } },
-                LineCap: PenLineCap.Flat,
-                LineJoin: PenLineJoin.Miter
-            })
+                {
+                    Brush: FourBitColorBrush consoleColorBrush,
+                    Thickness: 1,
+                    DashStyle: null or { Dashes: { Count: 0 } },
+                    LineCap: PenLineCap.Flat,
+                    LineJoin: PenLineJoin.Miter
+                })
             {
                 ConsoloniaPlatform.RaiseNotSupported(6);
                 return null;
@@ -299,7 +299,7 @@ namespace Consolonia.Core.Drawing
 
             if (consoleColorBrush.Mode == PixelBackgroundMode.Transparent)
                 return null;
-            
+
             ConsoloniaPlatform.RaiseNotSupported(8);
 
             return null;
@@ -319,9 +319,9 @@ namespace Consolonia.Core.Drawing
             {
                 _currentClip.ExecuteWithClipping(head, () =>
                 {
-                    _pixelBuffer.Set((PixelBufferCoordinate)head,pixel => pixel.Blend(new Pixel(true)));
+                    _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true)));
                 });
-                
+
                 return;
             }
 
@@ -347,7 +347,7 @@ namespace Consolonia.Core.Drawing
                     _currentClip.ExecuteWithClipping(head, () =>
                     {
                         _pixelBuffer.Set((PixelBufferCoordinate)head,
-                            (Pixel pixel, (byte, ConsoleColor) mcC) => pixel.Blend(new Pixel(mcC.Item1, mcC.Item2)),(marker, consoleColor));
+                            (Pixel pixel, (byte, ConsoleColor) mcC) => pixel.Blend(new Pixel(mcC.Item1, mcC.Item2)), (marker, consoleColor));
                     });
                     head = line.Vertical
                         ? head.WithY(head.Y + 1)
@@ -400,7 +400,7 @@ namespace Consolonia.Core.Drawing
                     var consolePixel = new Pixel(str[i], foregroundColor);
 
                     _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                        (oldPixel,cp) => oldPixel.Blend(cp),consolePixel);
+                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
                 });
             }
         }

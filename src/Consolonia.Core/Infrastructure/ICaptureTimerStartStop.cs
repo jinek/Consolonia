@@ -1,4 +1,4 @@
-﻿namespace Consolonia.Core.Infrastructure
+namespace Consolonia.Core.Infrastructure
 {
     public interface ICaptureTimerStartStop
     {
