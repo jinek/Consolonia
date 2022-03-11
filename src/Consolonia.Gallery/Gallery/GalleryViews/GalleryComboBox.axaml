@@ -69,7 +69,7 @@
             </ComboBoxItem>
         </ComboBox>
 
-        <ComboBox x:Name="varsComboBox">
+        <ComboBox x:Name="VarsComboBox">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding}"

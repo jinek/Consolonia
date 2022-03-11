@@ -2,16 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:galleryViews="clr-namespace:Consolonia.Gallery.Gallery.GalleryViews"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
-             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryTabControl">
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryTabControl"
+             d:DataContext="{d:DesignInstance galleryViews:PageViewModel}">
     <Grid ColumnDefinitions="*,*"
           RowDefinitions="*,10">
         <DockPanel Grid.Column="0"
                    Margin="1">
             <TextBlock DockPanel.Dock="Top"
-                       Classes="h1"
                        Text="From Inline TabItems" />
             <TabControl Margin="0"
                         TabStripPlacement="{Binding TabPlacement}">
@@ -27,34 +28,35 @@
                 </TabItem>
             </TabControl>
         </DockPanel>
-        <DockPanel Grid.Column="1"
+        <DockPanel Grid.Row="0"
+                   Grid.Column="1"
                    Margin="1">
             <TextBlock DockPanel.Dock="Top"
-                       Classes="h1"
                        Text="From DataTemplate" />
             <TabControl Items="{Binding Tabs}"
                         TabStripPlacement="{Binding TabPlacement}">
                 <TabControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Header}" />
+                        <TextBlock Text="{Binding Header}"/>
                     </DataTemplate>
                 </TabControl.ItemTemplate>
                 <TabControl.ContentTemplate>
-                    <DataTemplate>
+                    <DataTemplate DataType="galleryViews:TabItemViewModel">
                         <TextBlock Text="{Binding Text}" />
-
                     </DataTemplate>
                 </TabControl.ContentTemplate>
                 <TabControl.Styles>
                     <Style Selector="TabItem">
                         <Setter Property="IsEnabled"
-                                Value="{Binding IsEnabled}" />
+                                Value="{Binding IsEnabled}" 
+                                d:DataContext="{d:DesignInstance TabItem}"/>
                     </Style>
                 </TabControl.Styles>
             </TabControl>
         </DockPanel>
         <StackPanel Grid.Row="1"
                     Grid.ColumnSpan="2"
+                    Grid.Column="0"
                     Orientation="Horizontal"
                     Spacing="1"
                     HorizontalAlignment="Center"

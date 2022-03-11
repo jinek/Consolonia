@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -23,7 +24,7 @@ namespace Consolonia.Core.Infrastructure
         public ConsoleWindow()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
-            _console = AvaloniaLocator.Current.GetService<IConsole>();
+            _console = AvaloniaLocator.Current.GetService<IConsole>()!;
             _console.Resized += OnConsoleOnResized;
             _console.KeyPress += ConsoleOnKeyPress;
         }
@@ -113,7 +114,7 @@ namespace Consolonia.Core.Infrastructure
             }
         }
 
-        public Size? FrameSize { get; }
+        public Size? FrameSize => ClientSize;
 
         public double RenderScaling => 1;
         public IEnumerable<object> Surfaces => new[] { this };
@@ -157,12 +158,18 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public double DesktopScaling { get; } = 1d;
+        // ReSharper disable once UnassignedGetOnlyAutoProperty todo: get from _console if supported
         public PixelPoint Position { get; }
         public Action<PixelPoint> PositionChanged { get; set; }
         public Action Deactivated { get; set; }
         public Action Activated { get; set; }
+        
+        // ReSharper disable once UnassignedGetOnlyAutoProperty todo: get from _console if supported
         public IPlatformHandle Handle { get; }
+        // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public Size MaxAutoSizeHint { get; }
+        
+        // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public IScreenImpl Screen { get; }
 
         public void SetTitle(string title)
@@ -242,10 +249,14 @@ namespace Consolonia.Core.Infrastructure
         public Action<WindowState> WindowStateChanged { get; set; }
         public Action GotInputWhenDisabled { get; set; }
         public Func<bool> Closing { get; set; }
+        // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public bool IsClientAreaExtendedToDecorations { get; }
         public Action<bool> ExtendClientAreaToDecorationsChanged { get; set; }
+        // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public bool NeedsManagedDecorations { get; }
+        // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public Thickness ExtendedMargins { get; }
+        // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public Thickness OffScreenMargin { get; }
 
         private void OnConsoleOnResized()
@@ -260,30 +271,38 @@ namespace Consolonia.Core.Infrastructure
         {
             Dispatcher.UIThread.Post(async () =>
             {
-                bool handled = false;
-                if (!char.IsControl(keyChar))
+                try
                 {
-                    var rawTextInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice,
-                        (ulong)DateTime.Now.Ticks,
-                        _inputRoot,
-                        keyChar.ToString());
-                    Input(rawTextInputEventArgs);
-                    if (rawTextInputEventArgs.Handled)
-                        handled = true;
+                    bool handled = false;
+                    if (!char.IsControl(keyChar))
+                    {
+                        var rawTextInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice,
+                            (ulong)DateTime.Now.Ticks,
+                            _inputRoot,
+                            keyChar.ToString());
+                        Input(rawTextInputEventArgs);
+                        if (rawTextInputEventArgs.Handled)
+                            handled = true;
+                    }
+
+                    if (handled) return;
+                    await Task.Yield();
+
+                    Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
+                        RawKeyEventType.KeyDown, key,
+                        rawInputModifiers));
+
+                    await Task.Yield();
+
+                    Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
+                        RawKeyEventType.KeyUp, key,
+                        rawInputModifiers));
                 }
-
-                if (handled) return;
-                await Task.Yield();
-
-                Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
-                    RawKeyEventType.KeyDown, key,
-                    rawInputModifiers));
-
-                await Task.Yield();
-
-                Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
-                    RawKeyEventType.KeyUp, key,
-                    rawInputModifiers));
+                catch (Exception exception)
+                {
+                    ThreadPool.QueueUserWorkItem(_ => throw new InvalidOperationException("Exception happened while reading the input. Copy of inner exception is raised in unobserved task", exception));
+                    throw;
+                }
             });
         }
     }

@@ -38,25 +38,25 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             AvaloniaXamlLoader.Load(this);
         }
+    }
 
-        private class PageViewModel : ViewModelBase
+    public class PageViewModel : ViewModelBase
+    {
+        private Dock _tabPlacement;
+
+        public TabItemViewModel[] Tabs { get; set; }
+
+        public Dock TabPlacement
         {
-            private Dock _tabPlacement;
-
-            public TabItemViewModel[] Tabs { get; set; }
-
-            public Dock TabPlacement
-            {
-                get => _tabPlacement;
-                set => RaiseAndSetIfChanged(ref _tabPlacement, value);
-            }
+            get => _tabPlacement;
+            set => RaiseAndSetIfChanged(ref _tabPlacement, value);
         }
+    }
 
-        private class TabItemViewModel
-        {
-            public string Header { get; set; }
-            public string Text { get; set; }
-            public bool IsEnabled { get; set; } = true;
-        }
+    public class TabItemViewModel
+    {
+        public string Header { get; set; }
+        public string Text { get; set; }
+        public bool IsEnabled { get; set; } = true;
     }
 }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace ControlCatalog.ViewModels
+namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public class MenuItemViewModel
     {

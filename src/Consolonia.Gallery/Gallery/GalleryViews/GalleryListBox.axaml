@@ -20,9 +20,9 @@
         </DockPanel.Styles>
         <StackPanel DockPanel.Dock="Top"
                     Margin="1">
-            <TextBlock Classes="h1">ListBox</TextBlock>
-            <TextBlock Classes="h2">Hosts a collection of ListBoxItem.</TextBlock>
-            <TextBlock Classes="h2">Each 5th item is highlighted with nth-child(5n+3) and nth-last-child(5n+4) rules.</TextBlock>
+            <TextBlock>ListBox</TextBlock>
+            <TextBlock>Hosts a collection of ListBoxItem.</TextBlock>
+            <TextBlock>Each 5th item is highlighted with nth-child(5n+3) and nth-last-child(5n+4) rules.</TextBlock>
         </StackPanel>
         <StackPanel DockPanel.Dock="Right"
                     Margin="1">

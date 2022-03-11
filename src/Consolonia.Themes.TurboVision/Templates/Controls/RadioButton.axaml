@@ -19,7 +19,8 @@
                                             Name="border"
                                             Foreground="{TemplateBinding BorderBrush}"
                                             VerticalAlignment="Center" />
-                    <helpers:CaretControl HorizontalAlignment="Center"
+                    <helpers:CaretControl Grid.Column="0"
+                                          HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
                                           IsCaretShown="{TemplateBinding IsFocused}">
                         <Panel>

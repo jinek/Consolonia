@@ -64,9 +64,9 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         {
             var control = (IControl)args.NewValue;
             _disposable2?.Dispose();
-            _disposable2 = control?.GetPropertyChangedObservable(BoundsProperty).Subscribe(args =>
+            _disposable2 = control?.GetPropertyChangedObservable(BoundsProperty).Subscribe(args2 =>
             {
-                var rect = (Rect)args.NewValue;
+                var rect = (Rect)args2.NewValue;
                 ContentSize = rect.Size;
             });
         }

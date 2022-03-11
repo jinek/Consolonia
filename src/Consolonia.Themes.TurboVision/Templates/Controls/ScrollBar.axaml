@@ -23,7 +23,6 @@
                                                     Foreground="{TemplateBinding BorderBrush}" />
                         </Border>
                         <helpers:SymbolsControl HorizontalAlignment="Center"
-                                                Classes="repeat"
                                                 Grid.Row="0"
                                                 Foreground="{TemplateBinding Foreground}"
                                                 Text="▲" />
@@ -38,7 +37,6 @@
                         </Track>
                         <helpers:SymbolsControl HorizontalAlignment="Center"
                                                 Foreground="{TemplateBinding Foreground}"
-                                                Classes="repeat"
                                                 Grid.Row="2"
                                                 Focusable="False"
                                                 MinHeight="1"
@@ -62,7 +60,6 @@
                                                     Foreground="{TemplateBinding BorderBrush}" />
                         </Border>
                         <helpers:SymbolsControl HorizontalAlignment="Center"
-                                                Classes="repeat"
                                                 Grid.Column="0"
                                                 Foreground="{TemplateBinding Foreground}"
                                                 Text="◄" />
@@ -75,7 +72,6 @@
                             <Thumb Name="thumb" />
                         </Track>
                         <helpers:SymbolsControl HorizontalAlignment="Center"
-                                                Classes="repeat"
                                                 Grid.Column="2"
                                                 Foreground="{TemplateBinding Foreground}"
                                                 Text="►" />

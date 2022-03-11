@@ -37,7 +37,8 @@
                                               VerticalAlignment="Center"
                                               Content="{TemplateBinding Icon}" />
 
-                            <helpers:SymbolsControl Name="check"
+                            <helpers:SymbolsControl Grid.Column="0"
+                                                    Name="check"
                                                     Foreground="{TemplateBinding Foreground}"
                                                     Text="V"
                                                     IsVisible="False"
@@ -64,7 +65,8 @@
                                                     Margin="0,0,0,0"
                                                     VerticalAlignment="Center"
                                                     Grid.Column="4" />
-                            <Popup Name="PART_Popup"
+                            <Popup Grid.Column="0"
+                                   Name="PART_Popup"
                                    PlacementMode="Right"
                                    IsLightDismissEnabled="False"
                                    IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
@@ -75,7 +77,7 @@
                                             Margin="0,0,2,1"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ScrollViewer Classes="menuscroller">
+                                        <ScrollViewer>
                                             <ItemsPresenter Name="PART_ItemsPresenter"
                                                             Items="{TemplateBinding Items}"
                                                             ItemsPanel="{TemplateBinding ItemsPanel}"
@@ -122,6 +124,7 @@
                                               Margin="{TemplateBinding Padding}">
                                 <ContentPresenter.DataTemplates>
                                     <DataTemplate DataType="sys:String">
+                                        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved Just workaround - Its not binding, it's TemplateBinding-->
                                         <AccessText Text="{Binding}"
                                                     Foreground="{TemplateBinding (TemplatedControl.Foreground)}" />
                                     </DataTemplate>
@@ -139,7 +142,7 @@
                                         Margin="0,0,2,1"
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ScrollViewer Classes="menuscroller">
+                                    <ScrollViewer>
                                         <ItemsPresenter Name="PART_ItemsPresenter"
                                                         Items="{TemplateBinding Items}"
                                                         ItemsPanel="{TemplateBinding ItemsPanel}"

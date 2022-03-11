@@ -11,7 +11,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
     public class ConsoloniaTextPresenter : TextPresenter, ICaptureTimerStartStop
     {
-        private static readonly FieldInfo _tickTimerField =
+        private static readonly FieldInfo TickTimerField =
             typeof(TextPresenter).GetField("_caretTimer", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
         private bool _caretBlinking;
@@ -20,14 +20,14 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         {
             CaretBrushProperty.Changed.Subscribe(static args =>
             {
-                if (args.NewValue.Value is not MoveConsoleCaretToPositionBrush consoleCaretBrush)
+                if (args.NewValue.Value is not MoveConsoleCaretToPositionBrush)
                     throw new NotSupportedException();
             });
         }
 
         public ConsoloniaTextPresenter()
         {
-            var caretTickTimer = (DispatcherTimer)_tickTimerField.GetValue(this);
+            var caretTickTimer = (DispatcherTimer)TickTimerField.GetValue(this);
             caretTickTimer.Tag = this;
 
             CaretBrush = new MoveConsoleCaretToPositionBrush();

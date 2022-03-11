@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Drawing
 {
@@ -34,9 +35,13 @@ namespace Consolonia.Core.Drawing
 
         public bool FillContains(Point point)
         {
-            if (Vertical) return point.Y == PStart.Y && point.X >= PStart.X && point.X < PStart.X + Length;
+            if (Vertical) return point.Y.IsNearlyEqual(PStart.Y) 
+                                 && point.X >= PStart.X 
+                                 && point.X < PStart.X + Length;
 
-            return point.X == PStart.X && point.Y >= PStart.Y && point.Y < PStart.Y + Length;
+            return point.X.IsNearlyEqual(PStart.X) 
+                   && point.Y >= PStart.Y 
+                   && point.Y < PStart.Y + Length;
         }
 
         public IGeometryImpl Intersect(IGeometryImpl geometry)

@@ -1,5 +1,7 @@
 name: editorconfig
 
+concurrency: build_checks_deploy
+
 on:
   pull_request:
     branches: [ main ]

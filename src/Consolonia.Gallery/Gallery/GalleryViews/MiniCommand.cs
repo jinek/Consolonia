@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace MiniMvvm
+namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public sealed class MiniCommand<T> : MiniCommand, ICommand
+    public sealed class MiniCommand<T> : MiniCommand
     {
         private readonly Func<T, Task> _acb;
         private readonly Action<T> _cb;

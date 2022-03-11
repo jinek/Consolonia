@@ -18,7 +18,7 @@ namespace Consolonia.Gallery.View
 #if DEBUG
             this.AttachDevTools();
 #endif
-            var grid = this.FindControl<DataGrid>("grid");
+            var grid = this.FindControl<DataGrid>("Grid");
 
             grid.Items = _items = GalleryItem.Enumerated.ToArray();
 

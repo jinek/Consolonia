@@ -61,8 +61,6 @@ namespace Consolonia.Core.Infrastructure
             }
             catch (ArgumentOutOfRangeException argumentOutOfRangeException)
             {
-                if (bufferPoint.X < 0 || bufferPoint.Y < 0)
-                    throw;
                 throw new InvalidDrawingContextException("Window has been resized probably",
                     argumentOutOfRangeException);
             }

@@ -1,5 +1,6 @@
 using System;
 using Avalonia;
+using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Drawing
 {
@@ -22,7 +23,10 @@ namespace Consolonia.Core.Drawing
 
         public static bool IsTranslateOnly(this Matrix transform)
         {
-            return transform.M11 == 1 && transform.M22 == 1 && transform.M12 == 0 && transform.M21 == 0;
+            return transform.M11.IsNearlyEqual(1) 
+                   && transform.M22.IsNearlyEqual(1) 
+                   && transform.M12.IsNearlyEqual(0) 
+                   && transform.M21.IsNearlyEqual(0);
         }
 
         public static bool NoRotation(this Matrix transform)

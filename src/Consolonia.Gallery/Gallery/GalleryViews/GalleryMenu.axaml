@@ -12,8 +12,7 @@
                 HorizontalAlignment="Center"
                 Spacing="1">
         <StackPanel>
-            <TextBlock Classes="h3"
-                       Margin="1 2">
+            <TextBlock Margin="1 2">
                 Defined in XAML
             </TextBlock>
             <Menu>
@@ -56,8 +55,7 @@
         </StackPanel>
 
         <StackPanel>
-            <TextBlock Classes="h3"
-                       Margin="1 2">
+            <TextBlock Margin="1 2">
                 Dyanamically generated
             </TextBlock>
             <Menu Items="{Binding MenuItems}">
@@ -78,8 +76,7 @@
 
 
         <StackPanel>
-            <TextBlock Classes="h3"
-                       Margin="1 2">
+            <TextBlock Margin="1 2">
                 Mixed
             </TextBlock>
             <Menu>

@@ -1,7 +1,6 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using ControlCatalog.ViewModels;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {

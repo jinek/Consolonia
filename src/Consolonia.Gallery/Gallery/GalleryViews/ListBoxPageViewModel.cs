@@ -3,11 +3,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Controls.Selection;
-using Consolonia.Gallery.Gallery.GalleryViews;
-using MiniMvvm;
 using ReactiveUI;
 
-namespace ControlCatalog.ViewModels
+namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public class ListBoxPageViewModel : ViewModelBase
     {
@@ -19,7 +17,7 @@ namespace ControlCatalog.ViewModels
 
         public ListBoxPageViewModel()
         {
-            Items = new ObservableCollection<string>(Enumerable.Range(1, 10000).Select(i => GenerateItem()));
+            Items = new ObservableCollection<string>(Enumerable.Range(1, 10000).Select(_ => GenerateItem()));
 
             Selection = new SelectionModel<string>();
             Selection.Select(1);

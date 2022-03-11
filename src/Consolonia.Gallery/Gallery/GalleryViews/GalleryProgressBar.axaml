@@ -7,18 +7,18 @@
              d:DesignHeight="450"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryProgressBar">
     <StackPanel>
-        <CheckBox x:Name="showProgress"
+        <CheckBox x:Name="ShowProgress"
                   IsChecked="True"
                   Margin="1,0"
                   Content="Show Progress Text" />
-        <CheckBox x:Name="isIndeterminate"
+        <CheckBox x:Name="IsIndeterminate"
                   Margin="1,0"
                   Content="Toggle Indeterminate" />
         <StackPanel Orientation="Vertical"
                     Margin="1"
                     Spacing="1">
-            <ProgressBar IsIndeterminate="{Binding #isIndeterminate.IsChecked}"
-                         ShowProgressText="{Binding #showProgress.IsChecked}">
+            <ProgressBar IsIndeterminate="{Binding #IsIndeterminate.IsChecked}"
+                         ShowProgressText="{Binding #ShowProgress.IsChecked}">
                 <ProgressBar.Styles>
                     <Style Selector="ProgressBar">
                         <Style.Animations>
@@ -39,8 +39,8 @@
                 </ProgressBar.Styles>
             </ProgressBar>
 
-            <ProgressBar IsIndeterminate="{Binding #isIndeterminate.IsChecked}"
-                         ShowProgressText="{Binding #showProgress.IsChecked}"
+            <ProgressBar IsIndeterminate="{Binding #IsIndeterminate.IsChecked}"
+                         ShowProgressText="{Binding #ShowProgress.IsChecked}"
                          Height="7"
                          HorizontalAlignment="Center"
                          Orientation="Vertical">

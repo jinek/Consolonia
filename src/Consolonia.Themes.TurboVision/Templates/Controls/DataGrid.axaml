@@ -119,18 +119,23 @@
                                Fill="{DynamicResource ThemeChooserBackgroundBrush}" />
 
                     <Rectangle Name="FocusRectangle"
+                               Grid.Row="0"
                                Grid.RowSpan="2"
                                Grid.ColumnSpan="2"
+                               Grid.Column="0"
                                Height="1"
                                Fill="{DynamicResource ThemeActionBackgroundBrush}"
                                IsVisible="{Binding ElementName=FocusControl, Path=IsCaretShown}" />
 
 
                     <DataGridRowHeader Name="PART_RowHeader"
+                                       Grid.Row="0"
                                        Grid.RowSpan="3"
+                                       Grid.Column="0"
                                        DataGridFrozenGrid.IsFrozen="True" />
 
-                    <helpers:CaretControl Grid.Column="1"
+                    <helpers:CaretControl Grid.Row="0"
+                                          Grid.Column="1"
                                           x:Name="FocusControl">
                         <helpers:CaretControl.IsCaretShown>
                             <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -201,13 +206,15 @@
                     <Rectangle x:Name="HorizontalSeparator"
                                Grid.Row="2"
                                Grid.ColumnSpan="2"
+                               Grid.Column="0"
                                Height="1"
                                Margin="1,0,1,0"
                                HorizontalAlignment="Stretch"
                                Fill="{TemplateBinding SeparatorBrush}"
                                IsVisible="{TemplateBinding AreSeparatorsVisible}" />
 
-                    <ContentPresenter Grid.RowSpan="2"
+                    <ContentPresenter Grid.Row="0"
+                                      Grid.RowSpan="2"
                                       Grid.Column="1"
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
@@ -309,6 +316,7 @@
                             <Border Grid.Row="0"
                                     VerticalAlignment="Bottom"
                                     Grid.ColumnSpan="3"
+                                    Grid.Column="0"
                                     Height="1"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="1"
@@ -327,6 +335,7 @@
 
                             <DataGridRowsPresenter Name="PART_RowsPresenter"
                                                    Grid.ColumnSpan="2"
+                                                   Grid.Column="0"
                                                    Grid.Row="2" />
                             <Rectangle Name="PART_BottomRightCorner"
                                        Grid.Column="2"
@@ -334,6 +343,7 @@
                             <DataGridColumnHeadersPresenter Name="PART_ColumnHeadersPresenter"
                                                             Grid.Column="1"
                                                             VerticalAlignment="Stretch"
+                                                            Grid.Row="0"
                                                             Grid.RowSpan="6" />
                             <!--<Rectangle Name="BottomLeftCorner"
                                        Fill="{DynamicResource ThemeAccentForegroundBrush}"

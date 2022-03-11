@@ -54,7 +54,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             if (_dialogs.TryPeek(out OverlayPopupHost previousDialog))
             {
                 previousDialog.IsEnabled = false;
-                ((DialogWrap)previousDialog.Content).HadFocusOn = FocusManager.Instance.Current;
+                ((DialogWrap)previousDialog.Content).HadFocusOn = FocusManager.Instance!.Current;
             }
 
             _dialogs.Push(popupHost);
@@ -72,7 +72,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         public void PopInternal(DialogWindow dialogWindow)
         {
             OverlayPopupHost overlayPopupHost = _dialogs.Pop();
-            if (((DialogWrap)overlayPopupHost.Content).ContentPresenter.Content != dialogWindow)
+            if (!Equals(((DialogWrap)overlayPopupHost.Content).ContentPresenter.Content, dialogWindow))
                 throw new InvalidOperationException("Dialog is not topmost. Close private dialogs first");
             overlayPopupHost.Hide();
 

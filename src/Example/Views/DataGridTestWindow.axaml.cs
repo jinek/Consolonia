@@ -20,7 +20,7 @@ namespace Example.Views
             this.AttachDevTools();
 #endif
 
-            var comboBox = this.FindControl<ComboBox>("combo");
+            var comboBox = this.FindControl<ComboBox>("Combo");
             comboBox.Items = TheItem.Genres;
             var rnd = new Random();
 
@@ -38,7 +38,7 @@ namespace Example.Views
         private async void SetSelectedAsync()
         {
             await Task.Delay(100);
-            var grid = this.FindControl<DataGrid>("grid");
+            var grid = this.Get<DataGrid>("Grid");
             grid.SelectedIndex = 0;
             grid.Focus();
         }
@@ -48,6 +48,7 @@ namespace Example.Views
             AvaloniaXamlLoader.Load(this);
         }
 
+        // ReSharper disable once UnusedParameter.Local //todo: think to remove this rule
         private void delete_Clicked(object sender, RoutedEventArgs _)
         {
             _items.Remove((TheItem)((Control)sender).DataContext);

@@ -11,25 +11,23 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
 {
     internal class DialogWrap : UserControl
     {
-        private DialogWindow _dialogWindow;
         private IDisposable _disposable;
-        private Window _parentWindow;
 
         public DialogWrap()
         {
             InitializeComponent();
-            AttachedToVisualTree += (sender, args) =>
+            AttachedToVisualTree += (_, _) =>
             {
-                _parentWindow = this.FindAncestorOfType<Window>();
-                _disposable = _parentWindow.GetPropertyChangedObservable(TopLevel.ClientSizeProperty).Subscribe(args =>
+                var parentWindow = this.FindAncestorOfType<Window>();
+                _disposable = parentWindow.GetPropertyChangedObservable(TopLevel.ClientSizeProperty).Subscribe(args =>
                 {
                     var newSize = (Size)args.NewValue;
 
                     SetNewSize(newSize);
                 });
-                SetNewSize(_parentWindow.ClientSize);
+                SetNewSize(parentWindow.ClientSize);
             };
-            DetachedFromLogicalTree += (sender, args) => { _disposable.Dispose(); };
+            DetachedFromLogicalTree += (_, _) => { _disposable.Dispose(); };
         }
 
         internal ContentPresenter ContentPresenter => this.Get<ContentPresenter>("ContentPresenter");
@@ -60,11 +58,13 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
                 DialogPanelBorder.Width = rect.Width + 2;
                 DialogPanelBorder.Height = rect.Height + 2;
             });*/
-            _dialogWindow = dialogWindow;
             ContentPresenter.Content = dialogWindow;
         }
 
+        // ReSharper disable once UnusedMember.Local Example of usage for further (when mouse support introduced for example)
+#pragma warning disable IDE0051
         private void CloseDialog()
+#pragma warning restore IDE0051
         {
             ((DialogWindow)ContentPresenter.Content).CloseDialog();
         }

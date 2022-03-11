@@ -16,7 +16,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             AvaloniaXamlLoader.Load(this);
         }
 
+        // ReSharper disable UnusedParameter.Local
         private async void Button_OnClick(object _, RoutedEventArgs e)
+            // ReSharper restore UnusedParameter.Local
         {
             await new SomeDialogWindow().ShowDialogAsync(this);
         }

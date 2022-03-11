@@ -23,21 +23,21 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 ListSortDirection.Ascending, new ReversedStringComparer());
             var collectionView1 = new DataGridCollectionView(Countries.All);
             collectionView1.SortDescriptions.Add(dataGridSortDescription);
-            var dg1 = this.FindControl<DataGrid>("dataGrid1");
+            var dg1 = this.FindControl<DataGrid>("DataGrid1");
             dg1.IsReadOnly = true;
             dg1.LoadingRow += Dg1_LoadingRow;
-            dg1.Sorting += (s, a) =>
+            dg1.Sorting += (_, a) =>
             {
                 var binding = (a.Column as DataGridBoundColumn)?.Binding as Binding;
 
-                if (binding?.Path is string property
+                if (binding?.Path is { } property
                     && property == dataGridSortDescription.PropertyPath
                     && !collectionView1.SortDescriptions.Contains(dataGridSortDescription))
                     collectionView1.SortDescriptions.Add(dataGridSortDescription);
             };
             dg1.Items = collectionView1;
 
-            var dg2 = this.FindControl<DataGrid>("dataGridGrouping");
+            var dg2 = this.FindControl<DataGrid>("DataGridGrouping");
             dg2.IsReadOnly = true;
 
             var collectionView2 = new DataGridCollectionView(Countries.All);
@@ -45,7 +45,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             dg2.Items = collectionView2;
 
-            var dg3 = this.FindControl<DataGrid>("dataGridEdit");
+            var dg3 = this.FindControl<DataGrid>("DataGridEdit");
             dg3.IsReadOnly = false;
 
             var items = new List<Person>
@@ -58,8 +58,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             dg3.Items = collectionView3;
 
-            var addButton = this.FindControl<Button>("btnAdd");
-            addButton.Click += (a, b) => collectionView3.AddNew();
+            var addButton = this.FindControl<Button>("BtnAdd");
+            addButton.Click += (_, _) => collectionView3.AddNew();
         }
 
         private void Dg1_LoadingRow(object sender, DataGridRowEventArgs e)
@@ -80,7 +80,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 {
                     string reversedLeft = new(left.Reverse().ToArray());
                     string reversedRight = new(right.Reverse().ToArray());
-                    return reversedLeft.CompareTo(reversedRight);
+                    return string.Compare(reversedLeft, reversedRight, StringComparison.Ordinal);
                 }
 
                 return Comparer.Default.Compare(x, y);
@@ -564,6 +564,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             double? migration,
             double? infantMorality, int gdp, double? literacy, double? phones, double? birth, double? death)
         {
+            Phones = phones;
             Name = name;
             Region = region;
             Population = population;
@@ -601,7 +602,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public double? LiteracyPercent { get; }
 
         //per 1000
-        public double? Phones { get; private set; }
+        public double? Phones { get; }
         public double? BirthRate { get; }
         public double? DeathRate { get; }
     }

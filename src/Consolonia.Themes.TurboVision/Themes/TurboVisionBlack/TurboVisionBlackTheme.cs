@@ -1,7 +1,7 @@
 using System;
 using Consolonia.Core.Styles;
 
-namespace Consolonia.Themes.TurboVision.Themes.TurboVisionDark
+namespace Consolonia.Themes.TurboVision.Themes.TurboVisionBlack
 {
     public class TurboVisionBlackTheme : ResourceIncludeBase
     {

@@ -36,7 +36,7 @@
         <TextBox IsEnabled="False"
                  Watermark="This is disabled watermark" />
         <TextBox Watermark="Numeric Watermark"
-                 x:Name="numericWatermark" />
+                 x:Name="NumericWatermark" />
         <TextBox Watermark="Floating Watermark"
                  UseFloatingWatermark="True"
                  Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
@@ -50,7 +50,6 @@
         </TextBox>
 
         <TextBox Watermark="Password Box"
-                 Classes="revealPasswordButton"
                  UseFloatingWatermark="True"
                  PasswordChar="*"
                  Text="Password" />

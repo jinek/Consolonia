@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using MiniMvvm;
 
-namespace ControlCatalog.ViewModels
+namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public class MenuPageViewModel
     {

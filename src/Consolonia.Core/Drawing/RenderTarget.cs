@@ -33,7 +33,7 @@ namespace Consolonia.Core.Drawing
         {
         }
 
-        internal PixelBuffer _bufferBuffer { get; private set; }
+        private PixelBuffer _bufferBuffer;
 
         public void Dispose()
         {

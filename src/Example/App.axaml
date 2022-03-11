@@ -1,8 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:turboVisionDark="clr-namespace:Consolonia.Themes.TurboVision.Themes.TurboVisionDark;assembly=Consolonia.Themes.TurboVision"
+             xmlns:turboVisionBlack="clr-namespace:Consolonia.Themes.TurboVision.Themes.TurboVisionBlack;assembly=Consolonia.Themes.TurboVision"
              x:Class="Example.App">
     <Application.Styles>
-        <turboVisionDark:TurboVisionBlackTheme />
+        <turboVisionBlack:TurboVisionBlackTheme />
     </Application.Styles>
 </Application>

@@ -18,7 +18,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             AvaloniaXamlLoader.Load(this);
 
-            var fontComboBox = this.Find<ComboBox>("varsComboBox");
+            var fontComboBox = this.Find<ComboBox>("VarsComboBox");
 
             fontComboBox.Items = Environment.GetEnvironmentVariables()
                 .Cast<DictionaryEntry>()
