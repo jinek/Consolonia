@@ -150,18 +150,18 @@ namespace Consolonia.Core.Drawing
 
                     (double x, double y) = r2.TopLeft;
                     for (int i = 0; i < r2.Width + (pen?.Thickness ?? 0); i++)
-                    for (int j = 0; j < r2.Height + (pen?.Thickness ?? 0); j++)
-                    {
-                        int px = (int)(x + i);
-                        int py = (int)(y + j);
-                        _currentClip.ExecuteWithClipping(new Point(px, py), () =>
+                        for (int j = 0; j < r2.Height + (pen?.Thickness ?? 0); j++)
                         {
-                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                                (pixel, bb) => pixel.Blend(
-                                    new Pixel(
-                                        new PixelBackground(bb.Mode, bb.Color))), backgroundBrush);
-                        });
-                    }
+                            int px = (int)(x + i);
+                            int py = (int)(y + j);
+                            _currentClip.ExecuteWithClipping(new Point(px, py), () =>
+                            {
+                                _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                    (pixel, bb) => pixel.Blend(
+                                        new Pixel(
+                                            new PixelBackground(bb.Mode, bb.Color))), backgroundBrush);
+                            });
+                        }
                 }
             }
 
