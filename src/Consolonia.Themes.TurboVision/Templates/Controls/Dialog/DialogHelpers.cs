@@ -80,7 +80,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             {
                 previousDialog.IsEnabled = true;
                 previousDialog.Focus();
-                FocusManager.Instance.Focus(((DialogWrap)previousDialog.Content).HadFocusOn);
+                FocusManager.Instance!.Focus(((DialogWrap)previousDialog.Content).HadFocusOn);
             }
 
             if (_dialogs.Count == 0)

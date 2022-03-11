@@ -30,10 +30,10 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                         .GetPropertyChangedObservable(InputElement.IsKeyboardFocusWithinProperty)
                         .Subscribe(eventArgs =>
                         {
-                            if (!(bool)eventArgs.NewValue)
+                            if (!(bool)eventArgs.NewValue!)
                                 Dispatcher.UIThread.Post(() =>
                                 {
-                                    var focusedControl = (Control)FocusManager.Instance.Current;
+                                    var focusedControl = (Control)FocusManager.Instance!.Current;
                                     var menuItems = visual.GetLogicalAncestors().OfType<MenuItem>();
 
                                     var focusedTree = focusedControl.GetLogicalAncestors();

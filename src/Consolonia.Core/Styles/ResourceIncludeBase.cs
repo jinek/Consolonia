@@ -20,7 +20,7 @@ namespace Consolonia.Core.Styles
 
         protected ResourceIncludeBase(IServiceProvider serviceProvider)
         {
-            _baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext))).BaseUri;
+            _baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext)))!.BaseUri;
         }
 
         protected abstract Uri Uri { get; }

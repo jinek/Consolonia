@@ -28,7 +28,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         public ConsoloniaTextPresenter()
         {
             var caretTickTimer = (DispatcherTimer)TickTimerField.GetValue(this);
-            caretTickTimer.Tag = this;
+            caretTickTimer!.Tag = this;
 
             CaretBrush = new MoveConsoleCaretToPositionBrush();
         }
@@ -56,8 +56,8 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         private (Point, Point) GetCaretPoints()
         {
             return ((Point, Point))typeof(TextPresenter)
-                .GetMethod(nameof(GetCaretPoints), BindingFlags.Instance | BindingFlags.NonPublic)
-                .Invoke(this, null);
+                .GetMethod(nameof(GetCaretPoints), BindingFlags.Instance | BindingFlags.NonPublic)!
+                .Invoke(this, null)!;
         }
 
         protected override Size MeasureOverride(Size availableSize)

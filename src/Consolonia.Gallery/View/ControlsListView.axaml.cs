@@ -10,8 +10,6 @@ namespace Consolonia.Gallery.View
 {
     public class ControlsListView : Window
     {
-        private readonly IEnumerable<GalleryItem> _items;
-
         public ControlsListView()
         {
             InitializeComponent();
@@ -20,7 +18,8 @@ namespace Consolonia.Gallery.View
 #endif
             var grid = this.FindControl<DataGrid>("Grid");
 
-            grid.Items = _items = GalleryItem.Enumerated.ToArray();
+            IEnumerable<GalleryItem> items;
+            grid.Items = items = GalleryItem.Enumerated.ToArray();
 
             TrySetupSelected();
 
@@ -38,7 +37,7 @@ namespace Consolonia.Gallery.View
                 GalleryItem itemToSelect;
                 try
                 {
-                    itemToSelect = _items.SingleOrDefault(item =>
+                    itemToSelect = items.SingleOrDefault(item =>
                         string.Equals(item.Name, itemToSelectName, StringComparison.CurrentCultureIgnoreCase));
                     if (itemToSelect == null)
                         throw new ArgumentOutOfRangeException(

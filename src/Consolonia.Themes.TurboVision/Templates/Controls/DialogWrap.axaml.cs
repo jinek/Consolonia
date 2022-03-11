@@ -21,7 +21,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
                 var parentWindow = this.FindAncestorOfType<Window>();
                 _disposable = parentWindow.GetPropertyChangedObservable(TopLevel.ClientSizeProperty).Subscribe(args =>
                 {
-                    var newSize = (Size)args.NewValue;
+                    var newSize = (Size)args.NewValue!;
 
                     SetNewSize(newSize);
                 });
