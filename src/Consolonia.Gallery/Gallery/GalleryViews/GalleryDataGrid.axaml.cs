@@ -629,9 +629,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     public class Person : INotifyDataErrorInfo, INotifyPropertyChanged
     {
         private readonly Dictionary<string, List<string>> _errorLookup = new();
-        private string _firstName;
+        private readonly string _firstName;
         private bool _isBanned;
-        private string _lastName;
+        private readonly string _lastName;
 
         public string FirstName
         {
