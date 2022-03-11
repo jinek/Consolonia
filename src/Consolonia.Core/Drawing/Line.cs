@@ -20,7 +20,7 @@ namespace Consolonia.Core.Drawing
 
         public Point PStart { get; }
 
-        public Point PEnd => Vertical ? PStart.WithY(PStart.Y + Length) : PStart.WithX(PStart.X + Length);
+        private Point PEnd => Vertical ? PStart.WithY(PStart.Y + Length) : PStart.WithX(PStart.X + Length);
         public bool Vertical { get; }
         public int Length { get; }
 
@@ -28,8 +28,7 @@ namespace Consolonia.Core.Drawing
         {
             //todo: check restrictions
             Point p2 = PStart;
-            if (Vertical) p2 = p2.WithY(p2.Y + Length);
-            else p2 = p2.WithX(p2.X + Length);
+            p2 = Vertical ? p2.WithY(p2.Y + Length) : p2.WithX(p2.X + Length);
             return new Rect(PStart, p2);
         }
 

@@ -10,6 +10,9 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml;
 using Consolonia.Core.Drawing;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable StringLiteralTypo
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -92,15 +95,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         private static IReadOnlyList<Country> _all;
 
-        public static IReadOnlyList<Country> All
-        {
-            get
-            {
-                if (_all == null) _all = GetCountries().ToList().AsReadOnly();
-
-                return _all;
-            }
-        }
+        public static IReadOnlyList<Country> All => _all ??= GetCountries().ToList().AsReadOnly();
 
         private static IEnumerable<Country> GetCountries()
         {
@@ -580,7 +575,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
         public string Name { get; }
-        public string Region { get; private set; }
+        public string Region { get; private init; }
 
         public int Population { get; }
 
@@ -642,10 +637,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             set
             {
                 _firstName = value;
-                if (string.IsNullOrWhiteSpace(value))
-                    SetError(nameof(FirstName), "First Name Required");
-                else
-                    SetError(nameof(FirstName), null);
+                SetError(nameof(FirstName), string.IsNullOrWhiteSpace(value) ? "First Name Required" : null);
 
                 OnPropertyChanged(nameof(FirstName));
             }
@@ -657,10 +649,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             set
             {
                 _lastName = value;
-                if (string.IsNullOrWhiteSpace(value))
-                    SetError(nameof(LastName), "Last Name Required");
-                else
-                    SetError(nameof(LastName), null);
+                SetError(nameof(LastName), string.IsNullOrWhiteSpace(value) ? "Last Name Required" : null);
 
                 OnPropertyChanged(nameof(LastName));
             }

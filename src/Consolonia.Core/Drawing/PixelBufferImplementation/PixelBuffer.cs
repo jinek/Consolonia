@@ -20,6 +20,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public ushort Width { get; }
         public ushort Height { get; }
 
+        // ReSharper disable once UnusedMember.Global
         public Pixel this[int i]
         {
             get
@@ -37,6 +38,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public Pixel this[PixelBufferCoordinate point]
         {
             get => _buffer[point.X, point.Y];
+            // ReSharper disable once MemberCanBePrivate.Global
             set => _buffer[point.X, point.Y] = value;
         }
 
@@ -73,6 +75,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             });
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public void ForeachReadonly(Action<PixelBufferCoordinate, Pixel> action)
         {
             for (ushort i = 0; i < Width; i++)

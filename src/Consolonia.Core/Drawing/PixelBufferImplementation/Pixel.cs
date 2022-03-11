@@ -1,4 +1,6 @@
 using System;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {

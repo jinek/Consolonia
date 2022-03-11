@@ -6,6 +6,7 @@ namespace Consolonia.Core.Drawing
 {
     internal static class DrawingContextHelper
     {
+        // ReSharper disable once UnusedMethodReturnValue.Global Can be used later
         public static bool ExecuteWithClipping(this Rect rect, Point place, Action action)
         {
             if (!ContainsAligned(rect, place)) return false;

@@ -2,7 +2,7 @@ using System;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    public struct PixelBackground
+    public readonly struct PixelBackground
     {
         public PixelBackground(PixelBackgroundMode mode, ConsoleColor color = ConsoleColor.Black)
         {

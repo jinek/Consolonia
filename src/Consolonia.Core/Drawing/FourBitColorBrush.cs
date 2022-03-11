@@ -19,6 +19,7 @@ namespace Consolonia.Core.Drawing
             AffectsRender<FourBitColorBrush>(ModeProperty);
         }
 
+        // ReSharper disable once UnusedMember.Global
         public FourBitColorBrush(ConsoleColor consoleColor, PixelBackgroundMode mode) : this(consoleColor)
         {
             Mode = mode;
