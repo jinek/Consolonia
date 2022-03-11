@@ -9,16 +9,18 @@ namespace Consolonia.Core.Drawing
     {
         private readonly Rect _rect;
 
-        public Rectangle(Rect rect, IGeometryImpl sourceGeometry=default, Matrix transform=default)
+        public Rectangle(Rect rect, IGeometryImpl sourceGeometry = default, Matrix transform = default)
         {
             _rect = rect;
             SourceGeometry = sourceGeometry;
             Transform = transform;
         }
 
+        public Rect Rect => _rect;
+
         public Rect GetRenderBounds(IPen pen)
         {
-            return Bounds;//todo: should be just Bounds?
+            return Bounds; //todo: should be just Bounds?
         }
 
         public bool FillContains(Point point)
@@ -59,7 +61,6 @@ namespace Consolonia.Core.Drawing
 
         public Rect Bounds => _rect;
         public double ContourLength => (_rect.Width + _rect.Height) * 2;
-        public Rect Rect => _rect;
         public IGeometryImpl SourceGeometry { get; }
         public Matrix Transform { get; }
     }

@@ -17,11 +17,27 @@
         <CheckBox>_Unchecked</CheckBox>
         <CheckBox IsChecked="True">_Checked</CheckBox>
         <CheckBox IsChecked="{x:Null}">_Indeterminate</CheckBox>
-        <CheckBox IsChecked="True" IsEnabled="False">Disabled</CheckBox>
-        
-        <CheckBox IsChecked="False" IsThreeState="True">Three State: Unchecked</CheckBox>
-        <CheckBox IsChecked="True" IsThreeState="True">Three State: Checked</CheckBox>
-        <CheckBox IsChecked="{x:Null}" IsThreeState="True">Three State: Indeterminate</CheckBox>
-        <CheckBox IsChecked="{x:Null}" IsThreeState="True" IsEnabled="False">Three State: Disabled</CheckBox>
+        <CheckBox IsChecked="True"
+                  IsEnabled="False">
+            Disabled
+        </CheckBox>
+
+        <CheckBox IsChecked="False"
+                  IsThreeState="True">
+            Three State: Unchecked
+        </CheckBox>
+        <CheckBox IsChecked="True"
+                  IsThreeState="True">
+            Three State: Checked
+        </CheckBox>
+        <CheckBox IsChecked="{x:Null}"
+                  IsThreeState="True">
+            Three State: Indeterminate
+        </CheckBox>
+        <CheckBox IsChecked="{x:Null}"
+                  IsThreeState="True"
+                  IsEnabled="False">
+            Three State: Disabled
+        </CheckBox>
     </StackPanel>
 </UserControl>

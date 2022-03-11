@@ -1,9 +1,11 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using JetBrains.Annotations;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
+    [UsedImplicitly]
     public class GalleryDialog : UserControl
     {
         public GalleryDialog()
@@ -16,7 +18,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             AvaloniaXamlLoader.Load(this);
         }
 
-        private async void Button_OnClick(object? _, RoutedEventArgs e)
+        // ReSharper disable UnusedParameter.Local
+        private async void Button_OnClick(object _, RoutedEventArgs e)
+            // ReSharper restore UnusedParameter.Local
         {
             await new SomeDialogWindow().ShowDialogAsync(this);
         }

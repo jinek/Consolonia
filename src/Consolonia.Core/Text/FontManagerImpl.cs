@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Media;
@@ -7,7 +7,7 @@ using Avalonia.Platform;
 namespace Consolonia.Core.Text
 {
     /// <summary>
-    /// https://docs.microsoft.com/en-us/typography/opentype/spec/ttch01#funits-and-the-em-square
+    ///     https://docs.microsoft.com/en-us/typography/opentype/spec/ttch01#funits-and-the-em-square
     /// </summary>
     internal class FontManagerImpl : IFontManagerImpl
     {

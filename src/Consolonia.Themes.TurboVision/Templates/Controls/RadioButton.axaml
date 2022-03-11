@@ -19,14 +19,15 @@
                                             Name="border"
                                             Foreground="{TemplateBinding BorderBrush}"
                                             VerticalAlignment="Center" />
-                    <helpers:CaretControl HorizontalAlignment="Center"
+                    <helpers:CaretControl Grid.Column="0"
+                                          HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
                                           IsCaretShown="{TemplateBinding IsFocused}">
                         <Panel>
                             <helpers:SymbolsControl Name="checkMark"
-                                                    Text="*"/>
+                                                    Text="*" />
                             <helpers:SymbolsControl Name="indeterminateMark"
-                                                    Text="■"/>
+                                                    Text="■" />
                         </Panel>
                     </helpers:CaretControl>
                     <ContentPresenter Name="PART_ContentPresenter"

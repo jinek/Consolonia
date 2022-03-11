@@ -82,7 +82,7 @@
             </Border.Styles>
         </Border>
 
-        
+
         <Border BorderBrush="{drawing:FourBitColorBrush Blue}"
                 BorderThickness="1"
                 VerticalAlignment="Bottom"

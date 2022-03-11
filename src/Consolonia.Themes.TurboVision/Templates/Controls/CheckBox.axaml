@@ -25,7 +25,7 @@
                         <helpers:CaretControl Grid.Column="1"
                                               IsCaretShown="{TemplateBinding IsFocused}">
                             <Panel>
-                                <helpers:SymbolsControl Text=" "/>
+                                <helpers:SymbolsControl Text=" " />
                                 <helpers:SymbolsControl Name="checkMark"
                                                         Text="V" />
                                 <helpers:SymbolsControl Name="indeterminateMark"

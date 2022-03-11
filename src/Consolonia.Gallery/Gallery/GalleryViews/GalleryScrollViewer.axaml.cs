@@ -3,11 +3,17 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using JetBrains.Annotations;
+
+// ReSharper disable UnusedMember.Global
+
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
+    [UsedImplicitly]
     public class GalleryScrollViewer : UserControl
     {
         public GalleryScrollViewer()
@@ -25,9 +31,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     public class ScrollViewerPageViewModel : ViewModelBase
     {
-        private bool _allowAutoHide;
-        private ScrollBarVisibility _horizontalScrollVisibility;
-        private ScrollBarVisibility _verticalScrollVisibility;
+        private readonly bool _allowAutoHide;
+        private readonly ScrollBarVisibility _horizontalScrollVisibility;
+        private readonly ScrollBarVisibility _verticalScrollVisibility;
 
         public ScrollViewerPageViewModel()
         {
@@ -47,19 +53,19 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public bool AllowAutoHide
         {
             get => _allowAutoHide;
-            set => RaiseAndSetIfChanged(ref _allowAutoHide, value);
+            init => RaiseAndSetIfChanged(ref _allowAutoHide, value);
         }
 
         public ScrollBarVisibility HorizontalScrollVisibility
         {
             get => _horizontalScrollVisibility;
-            set => RaiseAndSetIfChanged(ref _horizontalScrollVisibility, value);
+            init => RaiseAndSetIfChanged(ref _horizontalScrollVisibility, value);
         }
 
         public ScrollBarVisibility VerticalScrollVisibility
         {
             get => _verticalScrollVisibility;
-            set => RaiseAndSetIfChanged(ref _verticalScrollVisibility, value);
+            init => RaiseAndSetIfChanged(ref _verticalScrollVisibility, value);
         }
 
         public List<ScrollBarVisibility> AvailableVisibility { get; }
@@ -69,6 +75,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // ReSharper disable once UnusedMethodReturnValue.Global
         protected bool RaiseAndSetIfChanged<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
             if (!EqualityComparer<T>.Default.Equals(field, value))

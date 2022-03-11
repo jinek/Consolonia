@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+        xmlns:views="clr-namespace:Example.Views"
         mc:Ignorable="d"
         d:DesignWidth="800"
         d:DesignHeight="450"
@@ -11,7 +12,7 @@
     <Grid ColumnDefinitions="* 35">
         <Grid>
             <DataGrid Items="{Binding}"
-                      Name="grid"
+                      Name="Grid"
                       SelectionMode="Single"
                       Focusable="True"
                       AutoGenerateColumns="False"
@@ -33,11 +34,12 @@
         </Grid>
         <Grid Grid.Column="1">
             <Border BorderThickness="1"
-                    DataContext="{Binding ElementName=grid, Path=SelectedItem}">
+                    DataContext="{Binding ElementName=Grid, Path=SelectedItem}">
                 <Border.BorderBrush>
                     <drawing:FourBitColorBrush Color="DarkGray" />
                 </Border.BorderBrush>
-                <Grid ColumnDefinitions="Auto *">
+                <Grid ColumnDefinitions="Auto *"
+                      d:DataContext="{d:DesignInstance views:TheItem}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -70,7 +72,7 @@
                         <TextBox Text="{Binding Title, Mode=TwoWay}"
                                  Height="1" />
                         <ComboBox SelectedItem="{Binding Genre, Mode=TwoWay}"
-                                  Name="combo" />
+                                  Name="Combo" />
                     </StackPanel>
 
                     <Rectangle Height="1"
@@ -80,10 +82,12 @@
                                StrokeThickness="1"
                                Grid.Row="1"
                                Margin="-1,0"
-                               Grid.ColumnSpan="2" />
+                               Grid.ColumnSpan="2"
+                               Grid.Column="0" />
                     <CheckBox IsChecked="{Binding IsListed, Mode=TwoWay}"
                               Content="Listed"
                               Grid.Row="2"
+                              Grid.Column="0"
                               Margin="1,0,0,0" />
                     <Rectangle Height="1"
                                HorizontalAlignment="Stretch"
@@ -92,10 +96,12 @@
                                StrokeThickness="1"
                                Grid.Row="3"
                                Margin="-1,0"
-                               Grid.ColumnSpan="2" />
+                               Grid.ColumnSpan="2"
+                               Grid.Column="0" />
                     <Button Content="Delete"
                             Grid.Row="4"
                             Grid.ColumnSpan="2"
+                            Grid.Column="0"
                             HorizontalAlignment="Center"
                             Click="delete_Clicked" />
 

@@ -24,7 +24,7 @@
                         <ContentPresenter Name="PART_ContentPresenter"
                                           ContentTemplate="{TemplateBinding HeaderTemplate}"
                                           Content="{TemplateBinding Header}"
-                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </helpers:CaretControl>
                 </Border>
             </ControlTemplate>

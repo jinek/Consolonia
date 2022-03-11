@@ -11,12 +11,12 @@
     <Panel>
         <Border Background="{drawing1:FourBitColorBrush Mode=Shaded}"
                 IsVisible="{Binding RelativeSource={RelativeSource Self}, Path=IsEffectivelyEnabled}" />
-        
+
         <ContentPresenter x:Name="ContentPresenter"
                           HorizontalContentAlignment="Stretch"
                           VerticalContentAlignment="Stretch"
                           HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"/>
+                          VerticalAlignment="Stretch" />
     </Panel>
 
 </UserControl>

@@ -6,19 +6,16 @@ using Avalonia.Threading;
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    /// Implements special <see cref="StartTimer"/>
+    ///     Implements special <see cref="StartTimer" />
     /// </summary>
-    internal class ConsoloniaPlatformThreadingInterface : InternalPlatformThreadingInterface, IPlatformThreadingInterface
+    internal class ConsoloniaPlatformThreadingInterface : InternalPlatformThreadingInterface,
+        IPlatformThreadingInterface
     {
-        public IDisposable StartTimer(DispatcherPriority priority, TimeSpan interval, Action tick)
+        public new IDisposable StartTimer(DispatcherPriority priority, TimeSpan interval, Action tick)
         {
-            if (tick.Target is DispatcherTimer dispatcherTimer &&
-                dispatcherTimer.Tag is ICaptureTimerStartStop captureTimerStartStop)
-            {
-                return new ConsoloniaTextPresenterPointerBlinkFakeTimer(captureTimerStartStop);
-            }
-
-            return base.StartTimer(priority, interval, tick);
+            return tick.Target is DispatcherTimer { Tag: ICaptureTimerStartStop captureTimerStartStop }
+                ? new ConsoloniaTextPresenterPointerBlinkFakeTimer(captureTimerStartStop)
+                : base.StartTimer(priority, interval, tick);
         }
 
         private class ConsoloniaTextPresenterPointerBlinkFakeTimer : IDisposable

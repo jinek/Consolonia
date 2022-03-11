@@ -10,24 +10,30 @@
     <DockPanel>
         <DockPanel.Styles>
             <Style Selector="ListBox ListBoxItem:nth-child3">
-                <Setter Property="Foreground" Value="{drawing:FourBitColorBrush Red}" />
+                <Setter Property="Foreground"
+                        Value="{drawing:FourBitColorBrush Red}" />
             </Style>
             <Style Selector="ListBox ListBoxItem:nth-last-child4">
-                <Setter Property="Foreground" Value="{drawing:FourBitColorBrush Blue}" />
+                <Setter Property="Foreground"
+                        Value="{drawing:FourBitColorBrush Blue}" />
             </Style>
         </DockPanel.Styles>
-        <StackPanel DockPanel.Dock="Top" Margin="1">
-            <TextBlock Classes="h1">ListBox</TextBlock>
-            <TextBlock Classes="h2">Hosts a collection of ListBoxItem.</TextBlock>
-            <TextBlock Classes="h2">Each 5th item is highlighted with nth-child(5n+3) and nth-last-child(5n+4) rules.</TextBlock>
+        <StackPanel DockPanel.Dock="Top"
+                    Margin="1">
+            <TextBlock>ListBox</TextBlock>
+            <TextBlock>Hosts a collection of ListBoxItem.</TextBlock>
+            <TextBlock>Each 5th item is highlighted with nth-child(5n+3) and nth-last-child(5n+4) rules.</TextBlock>
         </StackPanel>
-        <StackPanel DockPanel.Dock="Right" Margin="1">
+        <StackPanel DockPanel.Dock="Right"
+                    Margin="1">
             <CheckBox IsChecked="{Binding Multiple}">Multiple</CheckBox>
             <CheckBox IsChecked="{Binding Toggle}">Toggle</CheckBox>
             <CheckBox IsChecked="{Binding AlwaysSelected}">AlwaysSelected</CheckBox>
             <CheckBox IsChecked="{Binding AutoScrollToSelectedItem}">AutoScrollToSelectedItem</CheckBox>
         </StackPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="1">
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    Margin="1">
             <Button Command="{Binding AddItemCommand}">Add</Button>
             <Button Command="{Binding RemoveItemCommand}">Remove</Button>
             <Button Command="{Binding SelectRandomItemCommand}">Select Random Item</Button>
@@ -35,6 +41,6 @@
         <ListBox Items="{Binding Items}"
                  Selection="{Binding Selection}"
                  AutoScrollToSelectedItem="{Binding AutoScrollToSelectedItem}"
-                 SelectionMode="{Binding SelectionMode^}"/>
+                 SelectionMode="{Binding SelectionMode^}" />
     </DockPanel>
 </UserControl>

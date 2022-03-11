@@ -16,7 +16,8 @@
                                           Padding="{TemplateBinding Padding}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
-                    </helpers:CaretControl></Panel>
+                    </helpers:CaretControl>
+                </Panel>
             </ControlTemplate>
         </Setter>
     </Style>

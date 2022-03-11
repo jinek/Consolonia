@@ -2,6 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="Button">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeChooserBackgroundBrush}"/>         
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
     </Style>
 </Styles>
