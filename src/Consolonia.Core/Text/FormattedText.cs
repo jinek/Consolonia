@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Consolonia.Core.InternalHelpers;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 
@@ -141,8 +142,8 @@ namespace Consolonia.Core.Text
             int lastIndex = index + length - 1;
 
             foreach (AvaloniaFormattedTextLine line in SkiaLines.Where(l =>
-                         l.Start + l.Length > index &&
-                         lastIndex >= l.Start))
+                l.Start + l.Length > index &&
+                lastIndex >= l.Start))
             {
                 int lineEndIndex = line.Start + (line.Length > 0 ? line.Length - 1 : 0);
 

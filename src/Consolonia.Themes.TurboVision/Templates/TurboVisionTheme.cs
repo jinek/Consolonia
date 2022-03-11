@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Consolonia.Themes.TurboVision.Templates
 {
-    [UsedImplicitly/*Why resharper suggests this?*/]
+    [UsedImplicitly /*Why resharper suggests this?*/]
     public class TurboVisionTheme : ResourceIncludeBase
     {
         public TurboVisionTheme(Uri baseUri) : base(baseUri)

@@ -1,4 +1,5 @@
 using System;
+
 // ReSharper disable UnusedMember.Global
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
@@ -13,7 +14,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 case ConsoleColor.Black: return color;
                 case ConsoleColor.White: return ConsoleColor.Gray;
                 default:
-                    string name = Enum.GetName(color)??throw new NotImplementedException();
+                    string name = Enum.GetName(color) ?? throw new NotImplementedException();
                     const string dark = "Dark";
                     return !name.Contains(dark, StringComparison.Ordinal)
                         ? Enum.Parse<ConsoleColor>(dark + name)

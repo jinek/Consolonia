@@ -34,12 +34,13 @@ namespace Consolonia.Core.Drawing
 
         public bool FillContains(Point point)
         {
-            if (Vertical) return point.Y.IsNearlyEqual(PStart.Y) 
-                                 && point.X >= PStart.X 
-                                 && point.X < PStart.X + Length;
+            if (Vertical)
+                return point.Y.IsNearlyEqual(PStart.Y)
+                       && point.X >= PStart.X
+                       && point.X < PStart.X + Length;
 
-            return point.X.IsNearlyEqual(PStart.X) 
-                   && point.Y >= PStart.Y 
+            return point.X.IsNearlyEqual(PStart.X)
+                   && point.Y >= PStart.Y
                    && point.Y < PStart.Y + Length;
         }
 

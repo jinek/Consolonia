@@ -1,5 +1,6 @@
 using System;
 using JetBrains.Annotations;
+
 // ReSharper disable UnusedMember.Global
 
 namespace Consolonia.Core.Infrastructure

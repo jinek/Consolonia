@@ -17,7 +17,7 @@ namespace Consolonia.Core.Drawing
 {
     internal class DrawingContextImpl : IDrawingContextImpl
     {
-        private readonly Stack<Rect> _clipStack = new(100);        
+        private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
         private readonly PixelBuffer _pixelBuffer;
         private readonly IVisualBrushRenderer _visualBrushRenderer;
@@ -281,13 +281,13 @@ namespace Consolonia.Core.Drawing
         private static ConsoleColor? ExtractConsoleColorOrNullWithPlatformCheck(IPen pen)
         {
             if (pen is not
-                {
-                    Brush: FourBitColorBrush consoleColorBrush,
-                    Thickness: 1,
-                    DashStyle: null or { Dashes: { Count: 0 } },
-                    LineCap: PenLineCap.Flat,
-                    LineJoin: PenLineJoin.Miter
-                })
+            {
+                Brush: FourBitColorBrush consoleColorBrush,
+                Thickness: 1,
+                DashStyle: null or { Dashes: { Count: 0 } },
+                LineCap: PenLineCap.Flat,
+                LineJoin: PenLineJoin.Miter
+            })
             {
                 ConsoloniaPlatform.RaiseNotSupported(6);
                 return null;

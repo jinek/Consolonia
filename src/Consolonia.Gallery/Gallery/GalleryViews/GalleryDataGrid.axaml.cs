@@ -11,6 +11,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml;
 using Consolonia.Core.Drawing;
 using JetBrains.Annotations;
+
 // ReSharper disable UnusedMember.Global
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -88,7 +89,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 string reversedLeft = new(left.Reverse().ToArray());
                 string reversedRight = new(right.Reverse().ToArray());
                 return string.Compare(reversedLeft, reversedRight, StringComparison.Ordinal);
-
             }
         }
     }
@@ -630,8 +630,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         private readonly Dictionary<string, List<string>> _errorLookup = new();
         private readonly string _firstName;
-        private bool _isBanned;
         private readonly string _lastName;
+        private bool _isBanned;
 
         public string FirstName
         {

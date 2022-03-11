@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
+
 // ReSharper disable MemberCanBeProtected.Global
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog

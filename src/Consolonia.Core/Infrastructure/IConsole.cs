@@ -1,6 +1,7 @@
 using System;
 using Avalonia.Input;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMemberInSuper.Global
 

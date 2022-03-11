@@ -17,6 +17,8 @@ namespace Consolonia.Core.Drawing
 
         private readonly ConsoleWindow _consoleWindow;
 
+        private PixelBuffer _bufferBuffer;
+
         private (ConsoleColor background, ConsoleColor foreground, char character)?[,] _cache;
 
         internal RenderTarget(ConsoleWindow consoleWindow)
@@ -32,8 +34,6 @@ namespace Consolonia.Core.Drawing
                 .Single())
         {
         }
-
-        private PixelBuffer _bufferBuffer;
 
         public void Dispose()
         {
@@ -115,7 +115,7 @@ namespace Consolonia.Core.Drawing
                 }
 
                 if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                        rect.ContainsAligned(new Point(x, y)))) continue;
+                    rect.ContainsAligned(new Point(x, y)))) continue;
                 if (pixel.Background.Mode != PixelBackgroundMode.Colored)
                     throw new InvalidOperationException(
                         "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");

@@ -37,7 +37,7 @@
                         TabStripPlacement="{Binding TabPlacement}">
                 <TabControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Header}"/>
+                        <TextBlock Text="{Binding Header}" />
                     </DataTemplate>
                 </TabControl.ItemTemplate>
                 <TabControl.ContentTemplate>
@@ -48,8 +48,8 @@
                 <TabControl.Styles>
                     <Style Selector="TabItem">
                         <Setter Property="IsEnabled"
-                                Value="{Binding IsEnabled}" 
-                                d:DataContext="{d:DesignInstance TabItem}"/>
+                                Value="{Binding IsEnabled}"
+                                d:DataContext="{d:DesignInstance TabItem}" />
                     </Style>
                 </TabControl.Styles>
             </TabControl>

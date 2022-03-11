@@ -159,17 +159,19 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public double DesktopScaling { get; } = 1d;
+
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: get from _console if supported
         public PixelPoint Position { get; }
         public Action<PixelPoint> PositionChanged { get; set; }
         public Action Deactivated { get; set; }
         public Action Activated { get; set; }
-        
+
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: get from _console if supported
         public IPlatformHandle Handle { get; }
+
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public Size MaxAutoSizeHint { get; }
-        
+
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public IScreenImpl Screen { get; }
 
@@ -250,13 +252,17 @@ namespace Consolonia.Core.Infrastructure
         public Action<WindowState> WindowStateChanged { get; set; }
         public Action GotInputWhenDisabled { get; set; }
         public Func<bool> Closing { get; set; }
+
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public bool IsClientAreaExtendedToDecorations { get; }
         public Action<bool> ExtendClientAreaToDecorationsChanged { get; set; }
+
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public bool NeedsManagedDecorations { get; }
+
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public Thickness ExtendedMargins { get; }
+
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public Thickness OffScreenMargin { get; }
 
@@ -301,7 +307,10 @@ namespace Consolonia.Core.Infrastructure
                 }
                 catch (Exception exception)
                 {
-                    ThreadPool.QueueUserWorkItem(_ => throw new InvalidOperationException("Exception happened while reading the input. Copy of inner exception is raised in unobserved task", exception));
+                    ThreadPool.QueueUserWorkItem(_ =>
+                        throw new InvalidOperationException(
+                            "Exception happened while reading the input. Copy of inner exception is raised in unobserved task",
+                            exception));
                     throw;
                 }
             });

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Consolonia.Core.Styles
