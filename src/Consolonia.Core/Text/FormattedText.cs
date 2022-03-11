@@ -4,13 +4,15 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Consolonia.Core.InternalHelpers;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Consolonia.Core.Text
 {
-    // todo: Copypaste of avalonia skia. Probably must be simplified or re-used from skia
+    // todo: Copy-paste of avalonia skia. Probably must be simplified or re-used from skia
     internal class FormattedText : IFormattedTextImpl
     {
-        private const float MaxLineWidth = 10000; //todo: copied from avalonia, magicnumber
+        private const float MaxLineWidth = 10000; //todo: copied from avalonia, magic number
         private readonly List<FormattedTextLine> _lines = new();
         private readonly List<Rect> _rects = new();
         private readonly TextAlignment _textAlignment;
@@ -437,7 +439,7 @@ namespace Consolonia.Core.Text
             public float Width;
         }
 
-        internal struct FBrushRange
+        internal readonly struct FBrushRange
         {
             public FBrushRange(int startIndex, int length)
             {

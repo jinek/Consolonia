@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Consolonia.Core.Styles
 {
-    // Copypaste from FluentTheme from Avalonia
+    // Copy-paste from FluentTheme from Avalonia
     public abstract class ResourceIncludeBase : IResourceProvider, IStyle
     {
         private readonly Uri _baseUri;

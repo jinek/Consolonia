@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Avalonia.Data.Converters;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Consolonia.Gallery.Gallery
 {

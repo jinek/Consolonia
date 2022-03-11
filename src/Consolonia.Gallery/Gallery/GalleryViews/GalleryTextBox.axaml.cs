@@ -1,9 +1,11 @@
 using Avalonia.Controls;
 using Avalonia.Input.TextInput;
 using Avalonia.Markup.Xaml;
+using JetBrains.Annotations;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
+    [UsedImplicitly]
     [GalleryOrder(80)]
     public class GalleryTextBox : UserControl
     {

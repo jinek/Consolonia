@@ -3,9 +3,11 @@ using System.Collections;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using JetBrains.Annotations;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
+    [UsedImplicitly]
     [GalleryOrder(50)]
     public class GalleryComboBox : UserControl
     {

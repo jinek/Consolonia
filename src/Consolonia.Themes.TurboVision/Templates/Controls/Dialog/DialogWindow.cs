@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
+// ReSharper disable MemberCanBeProtected.Global
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 {
@@ -51,10 +52,12 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             set => SetValue(IsCloseButtonVisibleProperty, value);
         }
 
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
+        // ReSharper disable once MemberCanBePrivate.Global
         public bool CancelOnEscape { get; set; } = true;
 
         // ReSharper disable once UnusedMember.Global Used by template
-        public void CloseClick(object _)
+        public void CloseClick()
         {
             if (CancelOnEscape)
                 CloseDialog();
@@ -77,6 +80,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             dialogHost.OpenInternal(this);
         }
 
+        // ReSharper disable once VirtualMemberNeverOverridden.Global overriden in other packages, why resharper suggests this?
         public virtual void CloseDialog()
         {
             DialogHost dialogHost = GetDialogHost(this);

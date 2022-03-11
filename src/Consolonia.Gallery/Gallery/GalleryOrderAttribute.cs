@@ -1,8 +1,10 @@
 using System;
 using System.Reflection;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Consolonia.Gallery.Gallery
 {
+    [AttributeUsage(AttributeTargets.Class)]
     public class GalleryOrderAttribute : Attribute
     {
         public GalleryOrderAttribute(int order)

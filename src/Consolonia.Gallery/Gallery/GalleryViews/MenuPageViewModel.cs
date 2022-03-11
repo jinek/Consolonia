@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -63,8 +64,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         public Control View { get; set; }
 
-        public IReadOnlyList<MenuItemViewModel> MenuItems { get; set; }
-        public IReadOnlyList<MenuItemViewModel> RecentItems { get; set; }
+        public IReadOnlyList<MenuItemViewModel> MenuItems { get; }
+        public IReadOnlyList<MenuItemViewModel> RecentItems { get; }
         public MiniCommand OpenCommand { get; }
         public MiniCommand SaveCommand { get; }
         public MiniCommand OpenRecentCommand { get; }

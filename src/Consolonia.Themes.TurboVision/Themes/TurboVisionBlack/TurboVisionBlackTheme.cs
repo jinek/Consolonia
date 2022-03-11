@@ -1,8 +1,10 @@
 using System;
 using Consolonia.Core.Styles;
+using JetBrains.Annotations;
 
 namespace Consolonia.Themes.TurboVision.Themes.TurboVisionBlack
 {
+    [UsedImplicitly]
     public class TurboVisionBlackTheme : ResourceIncludeBase
     {
         public TurboVisionBlackTheme(Uri baseUri) : base(baseUri)

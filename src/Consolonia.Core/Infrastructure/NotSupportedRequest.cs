@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Consolonia.Core.Infrastructure
 {

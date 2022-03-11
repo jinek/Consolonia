@@ -10,12 +10,16 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml;
 using Consolonia.Core.Drawing;
+using JetBrains.Annotations;
+// ReSharper disable UnusedMember.Global
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable StringLiteralTypo
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
+    [UsedImplicitly]
     public class GalleryDataGrid : UserControl
     {
         public GalleryDataGrid()
@@ -65,6 +69,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             addButton.Click += (_, _) => collectionView3.AddNew();
         }
 
+        // ReSharper disable once MemberCanBeMadeStatic.Local
         private void Dg1_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = e.Row.GetIndex() + 1;
@@ -79,14 +84,11 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             public int Compare(object x, object y)
             {
-                if (x is string left && y is string right)
-                {
-                    string reversedLeft = new(left.Reverse().ToArray());
-                    string reversedRight = new(right.Reverse().ToArray());
-                    return string.Compare(reversedLeft, reversedRight, StringComparison.Ordinal);
-                }
+                if (x is not string left || y is not string right) return Comparer.Default.Compare(x, y);
+                string reversedLeft = new(left.Reverse().ToArray());
+                string reversedRight = new(right.Reverse().ToArray());
+                return string.Compare(reversedLeft, reversedRight, StringComparison.Ordinal);
 
-                return Comparer.Default.Compare(x, y);
             }
         }
     }
@@ -672,9 +674,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         public IEnumerable GetErrors(string propertyName)
         {
-            if (_errorLookup.TryGetValue(propertyName, out var errorList))
-                return errorList;
-            return null;
+            return _errorLookup.TryGetValue(propertyName, out var errorList) ? errorList : null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
