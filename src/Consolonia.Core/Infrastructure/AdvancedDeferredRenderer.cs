@@ -11,7 +11,9 @@ namespace Consolonia.Core.Infrastructure
         private readonly IVisual _root;
         public ConsoleWindow RenderRoot;
 
-        public AdvancedDeferredRenderer(IRenderRoot root, IRenderLoop renderLoop, ISceneBuilder sceneBuilder = null, IDispatcher dispatcher = null, IDeferredRendererLock rendererLock = null) : base(root, renderLoop, sceneBuilder, dispatcher, rendererLock)
+        public AdvancedDeferredRenderer(IRenderRoot root, IRenderLoop renderLoop, ISceneBuilder sceneBuilder = null,
+            IDispatcher dispatcher = null, IDeferredRendererLock rendererLock = null) : base(root, renderLoop,
+            sceneBuilder, dispatcher, rendererLock)
         {
             _root = root;
         }
@@ -39,10 +41,7 @@ namespace Consolonia.Core.Infrastructure
                         var trb = visual.TransformedBounds.Value;
                         var trBounds = trb.Bounds.TransformToAABB(trb.Transform);
 
-                        if (trBounds != bounds)
-                        {
-                            RenderRoot?.Invalidate(trBounds);
-                        }
+                        if (trBounds != bounds) RenderRoot?.Invalidate(trBounds);
                     }
 
                     RenderRoot?.Invalidate(bounds);

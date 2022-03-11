@@ -9,13 +9,13 @@ namespace Consolonia.Gallery.Gallery
 {
     internal class GalleryItem
     {
-        public Type Type { get; }
-
         public GalleryItem(string name, Type type)
         {
             Type = type;
             Name = name;
         }
+
+        public Type Type { get; }
 
         public string Name { get; }
 

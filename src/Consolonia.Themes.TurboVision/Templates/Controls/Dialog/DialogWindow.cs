@@ -9,23 +9,18 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 {
     public class DialogWindow : UserControl
     {
-        private IDisposable _disposable2;
-
         public static readonly DirectProperty<DialogWindow, Size> ContentSizeProperty =
             AvaloniaProperty.RegisterDirect<DialogWindow, Size>(nameof(ContentSize), window => window.ContentSize);
 
+        public static readonly StyledProperty<string> TitleProperty = Window.TitleProperty.AddOwner<DialogWindow>();
+
+        public static readonly StyledProperty<bool> IsCloseButtonVisibleProperty =
+            AvaloniaProperty.Register<DialogWindow, bool>(nameof(IsCloseButtonVisible), true);
+
         private Size _contentSize = Size.Empty;
+        private IDisposable _disposable2;
 
-        public Size ContentSize
-        {
-            get => _contentSize;
-            private set => SetAndRaise(ContentSizeProperty, ref _contentSize, value);
-        }
-
-        public DialogWindow()
-        {
-            KeyDown += InputElement_OnKeyDown;
-        }
+        private TaskCompletionSource _taskCompletionSource;
 
         static DialogWindow()
         {
@@ -33,16 +28,22 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             ContentProperty.Changed.AddClassHandler<DialogWindow>((x, e) => x.ContentChanged2(e));
         }
 
-        public static readonly StyledProperty<string> TitleProperty = Window.TitleProperty.AddOwner<DialogWindow>();
+        public DialogWindow()
+        {
+            KeyDown += InputElement_OnKeyDown;
+        }
+
+        public Size ContentSize
+        {
+            get => _contentSize;
+            private set => SetAndRaise(ContentSizeProperty, ref _contentSize, value);
+        }
 
         public string Title
         {
             get => GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
         }
-
-        public static readonly StyledProperty<bool> IsCloseButtonVisibleProperty =
-            AvaloniaProperty.Register<DialogWindow, bool>(nameof(IsCloseButtonVisible), true);
 
         public bool IsCloseButtonVisible
         {
@@ -82,8 +83,6 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             dialogHost.PopInternal(this);
             _taskCompletionSource.SetResult();
         }
-
-        private TaskCompletionSource _taskCompletionSource;
 
         public Task ShowDialogAsync(IControl parent)
         {

@@ -13,6 +13,7 @@ namespace Consolonia.Themes.TurboVision.Themes.TurboVisionDark
         {
         }
 
-        protected override Uri Uri => new(@"avares://Consolonia.Themes.TurboVision/Themes/TurboVisionDark/TurboVisionDark.axaml");
+        protected override Uri Uri =>
+            new(@"avares://Consolonia.Themes.TurboVision/Themes/TurboVisionDark/TurboVisionDark.axaml");
     }
 }

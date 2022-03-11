@@ -17,7 +17,7 @@ namespace Consolonia.Core.Dummy
 
         public Point GetPosition(IVisual relativeTo)
         {
-            return new();
+            return new Point();
         }
 
         public IInputElement Captured => null;

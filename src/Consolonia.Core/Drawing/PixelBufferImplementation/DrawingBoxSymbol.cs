@@ -3,7 +3,7 @@ using System;
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     /// <summary>
-    /// https://en.wikipedia.org/wiki/Box-drawing_character
+    ///     https://en.wikipedia.org/wiki/Box-drawing_character
     /// </summary>
     public struct DrawingBoxSymbol : ISymbol
     {
@@ -15,7 +15,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         private byte _upRightDownLeft;
 
         /// <summary>
-        /// https://en.wikipedia.org/wiki/Code_page_437
+        ///     https://en.wikipedia.org/wiki/Code_page_437
         /// </summary>
         char ISymbol.GetCharacter()
         {

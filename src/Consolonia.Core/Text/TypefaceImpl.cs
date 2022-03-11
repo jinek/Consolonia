@@ -37,11 +37,13 @@ namespace Consolonia.Core.Text
         }
 
         /// <summary>
-        /// https://docs.microsoft.com/en-us/typography/opentype/spec/ttch01#funits-and-the-em-square
+        ///     https://docs.microsoft.com/en-us/typography/opentype/spec/ttch01#funits-and-the-em-square
         /// </summary>
         public short DesignEmHeight => 1;
 
-        public int Ascent => -1;//var height = (GlyphTypeface.Descent - GlyphTypeface.Ascent + GlyphTypeface.LineGap) * Scale;
+        public int Ascent =>
+            -1; //var height = (GlyphTypeface.Descent - GlyphTypeface.Ascent + GlyphTypeface.LineGap) * Scale;
+
         public int Descent => 0;
         public int LineGap => 0;
         public int UnderlinePosition => 0;

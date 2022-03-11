@@ -19,8 +19,15 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             y = Y;
         }
 
-        public static explicit operator PixelBufferCoordinate((ushort x, ushort y) val) => new(val.x, val.y);
-        public static explicit operator PixelBufferCoordinate(Point point) => new((ushort)point.X, (ushort)point.Y);
+        public static explicit operator PixelBufferCoordinate((ushort x, ushort y) val)
+        {
+            return new(val.x, val.y);
+        }
+
+        public static explicit operator PixelBufferCoordinate(Point point)
+        {
+            return new((ushort)point.X, (ushort)point.Y);
+        }
 
         public PixelBufferCoordinate WithXpp()
         {

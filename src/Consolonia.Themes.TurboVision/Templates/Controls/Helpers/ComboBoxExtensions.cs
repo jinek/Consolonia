@@ -39,27 +39,23 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 {
                     itemsPresenter.AttachedToVisualTree += ItemContainerGeneratorOnMaterialized;
 
-                    IDisposable disposable1 = comboBox.GetPropertyChangedObservable(ComboBox.IsFocusedProperty)
+                    IDisposable disposable1 = comboBox.GetPropertyChangedObservable(InputElement.IsFocusedProperty)
                         .Subscribe(eventArgs =>
                         {
                             if (!(bool)eventArgs.NewValue && !itemsPresenter.IsKeyboardFocusWithin)
-                            {
                                 Dispatcher.UIThread.Post(() => { comboBox.IsDropDownOpen = false; });
-                            }
                         });
 
                     IDisposable disposable2 = itemsPresenter
-                        .GetPropertyChangedObservable(ItemsPresenter.IsKeyboardFocusWithinProperty)
+                        .GetPropertyChangedObservable(InputElement.IsKeyboardFocusWithinProperty)
                         .Subscribe(eventArgs =>
                         {
                             if (!(bool)eventArgs.NewValue && !comboBox.IsKeyboardFocusWithin)
-                            {
                                 Dispatcher.UIThread.Post(() =>
                                 {
                                     comboBox.IsDropDownOpen = false;
                                     comboBox.Focus();
                                 });
-                            }
                         });
 
                     itemsPresenter.SetValue(DisposablesProperty, new[] { disposable1, disposable2 });

@@ -37,7 +37,7 @@ namespace Consolonia.Core
             using var lifetime = new ClassicDesktopStyleApplicationLifetime
             {
                 /*Args = args,*/
-                ShutdownMode = ShutdownMode.OnMainWindowClose,
+                ShutdownMode = ShutdownMode.OnMainWindowClose
             };
 
             app.SetupWithLifetime(lifetime);

@@ -3,6 +3,6 @@
              xmlns:turboVisionDark="clr-namespace:Consolonia.Themes.TurboVision.Themes.TurboVisionDark;assembly=Consolonia.Themes.TurboVision"
              x:Class="Example.App">
     <Application.Styles>
-        <turboVisionDark:TurboVisionBlackTheme/>
+        <turboVisionDark:TurboVisionBlackTheme />
     </Application.Styles>
 </Application>

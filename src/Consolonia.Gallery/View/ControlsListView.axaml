@@ -3,7 +3,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery"
-        xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
         mc:Ignorable="d"
         d:DesignWidth="800"
         d:DesignHeight="450"
@@ -24,6 +23,6 @@
         </DataGrid>
         <Border Child="{Binding ElementName=grid,Path=SelectedItem, Converter={StaticResource GalleryItemConverter}}"
                 BorderThickness="1"
-                BorderBrush="{DynamicResource ThemeBorderBrush}"/>
+                BorderBrush="{DynamicResource ThemeBorderBrush}" />
     </DockPanel>
 </Window>

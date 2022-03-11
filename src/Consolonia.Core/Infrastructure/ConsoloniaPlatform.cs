@@ -14,6 +14,22 @@ namespace Consolonia.Core.Infrastructure
 {
     public class ConsoloniaPlatform : IWindowingPlatform
     {
+        public IWindowImpl CreateWindow()
+        {
+            return new ConsoleWindow();
+        }
+
+        public IWindowImpl CreateEmbeddableWindow()
+        {
+            RaiseNotSupported(13);
+            return null;
+        }
+
+        public ITrayIconImpl CreateTrayIcon()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Initialize()
         {
             NotSupported += InternalIgnore;
@@ -32,22 +48,6 @@ namespace Consolonia.Core.Infrastructure
                 //.Bind<IPlatformSettings>().ToConstant(new PlatformSettingsStub())
                 //.Bind<ISystemDialogImpl>().ToConstant(new GtkSystemDialog())
                 .Bind<IMountedVolumeInfoProvider>().ToConstant(new LinuxMountedVolumeInfoProvider());
-        }
-
-        public IWindowImpl CreateWindow()
-        {
-            return new ConsoleWindow();
-        }
-
-        public IWindowImpl CreateEmbeddableWindow()
-        {
-            RaiseNotSupported(13);
-            return null;
-        }
-
-        public ITrayIconImpl CreateTrayIcon()
-        {
-            throw new NotImplementedException();
         }
 
         [DebuggerStepThrough]

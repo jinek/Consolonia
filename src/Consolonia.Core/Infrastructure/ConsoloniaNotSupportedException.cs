@@ -6,8 +6,6 @@ namespace Consolonia.Core.Infrastructure
     [Serializable]
     public class ConsoloniaNotSupportedException : Exception
     {
-        public NotSupportedRequest Request { get; }
-
         internal ConsoloniaNotSupportedException(NotSupportedRequest request)
         {
             Request = request;
@@ -18,5 +16,7 @@ namespace Consolonia.Core.Infrastructure
             StreamingContext context) : base(info, context)
         {
         }
+
+        public NotSupportedRequest Request { get; }
     }
 }

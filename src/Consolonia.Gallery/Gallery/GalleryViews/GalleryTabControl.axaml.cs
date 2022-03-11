@@ -1,4 +1,3 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
@@ -17,21 +16,21 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     new TabItemViewModel
                     {
                         Header = "Arch",
-                        Text = "This is the first templated tab page.",
+                        Text = "This is the first templated tab page."
                     },
                     new TabItemViewModel
                     {
                         Header = "Leaf",
-                        Text = "This is the second templated tab page.",
+                        Text = "This is the second templated tab page."
                     },
                     new TabItemViewModel
                     {
                         Header = "Disabled",
                         Text = "You should not see this.",
-                        IsEnabled = false,
-                    },
+                        IsEnabled = false
+                    }
                 },
-                TabPlacement = Dock.Top,
+                TabPlacement = Dock.Top
             };
         }
 
@@ -48,8 +47,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             public Dock TabPlacement
             {
-                get { return _tabPlacement; }
-                set { this.RaiseAndSetIfChanged(ref _tabPlacement, value); }
+                get => _tabPlacement;
+                set => RaiseAndSetIfChanged(ref _tabPlacement, value);
             }
         }
 

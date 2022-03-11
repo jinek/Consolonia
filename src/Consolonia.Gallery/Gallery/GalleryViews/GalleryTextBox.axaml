@@ -30,7 +30,7 @@
         <TextBox IsReadOnly="True"
                  Text="This is read only" />
         <TextBox Watermark="ReadOnly watermark"
-                 IsReadOnly="True"/>
+                 IsReadOnly="True" />
         <TextBox IsEnabled="False"
                  Text="This is disabled" />
         <TextBox IsEnabled="False"

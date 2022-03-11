@@ -22,7 +22,6 @@ namespace Consolonia.Core.Dummy
 
         public void Save(Stream outputStream)
         {
-
         }
     }
 }

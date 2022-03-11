@@ -29,7 +29,7 @@ namespace Example.Views
                 Id = i.ToString(),
                 Title = TheItem.Titles[rnd.Next(TheItem.Titles.Length)],
                 Genre = TheItem.Genres[rnd.Next(TheItem.Genres.Length)],
-                IsListed = i % 2 == 0,
+                IsListed = i % 2 == 0
             }).ToArray());
 
             SetSelectedAsync();

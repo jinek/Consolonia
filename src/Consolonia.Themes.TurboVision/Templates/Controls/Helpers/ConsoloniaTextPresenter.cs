@@ -11,10 +11,10 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
     public class ConsoloniaTextPresenter : TextPresenter, ICaptureTimerStartStop
     {
-        private bool _caretBlinking;
-
         private static readonly FieldInfo _tickTimerField =
             typeof(TextPresenter).GetField("_caretTimer", BindingFlags.NonPublic | BindingFlags.Instance)!;
+
+        private bool _caretBlinking;
 
         static ConsoloniaTextPresenter()
         {
@@ -33,6 +33,16 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             CaretBrush = new MoveConsoleCaretToPositionBrush();
         }
 
+        public void CaptureTimerStart()
+        {
+            _caretBlinking = true;
+        }
+
+        public void CaptureTimerStop()
+        {
+            _caretBlinking = false;
+        }
+
         public override void Render(DrawingContext context)
         {
             base.Render(context);
@@ -48,16 +58,6 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             return ((Point, Point))typeof(TextPresenter)
                 .GetMethod(nameof(GetCaretPoints), BindingFlags.Instance | BindingFlags.NonPublic)
                 .Invoke(this, null);
-        }
-
-        public void CaptureTimerStart()
-        {
-            _caretBlinking = true;
-        }
-
-        public void CaptureTimerStop()
-        {
-            _caretBlinking = false;
         }
 
         protected override Size MeasureOverride(Size availableSize)

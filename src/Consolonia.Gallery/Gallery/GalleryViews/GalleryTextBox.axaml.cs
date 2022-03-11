@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input.TextInput;
 using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
@@ -14,13 +15,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            TextBox textBox = this.Find<TextBox>("numericWatermark");
+            var textBox = this.Find<TextBox>("numericWatermark");
             if (textBox != null)
                 textBox
-                    .TextInputOptionsQuery += (_, a) =>
-                {
-                    a.ContentType = Avalonia.Input.TextInput.TextInputContentType.Number;
-                };
+                    .TextInputOptionsQuery += (_, a) => { a.ContentType = TextInputContentType.Number; };
         }
     }
 }

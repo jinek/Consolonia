@@ -7,14 +7,14 @@
                                 ContentTemplate="{TemplateBinding ErrorTemplate}"
                                 DataContext="{TemplateBinding Owner}"
                                 Content="{Binding (DataValidationErrors.Errors)}"
-                                IsVisible="{Binding (DataValidationErrors.HasErrors)}"/>
+                                IsVisible="{Binding (DataValidationErrors.HasErrors)}" />
                 <ContentPresenter Name="PART_ContentPresenter"
                                   Background="{TemplateBinding Background}"
                                   BorderBrush="{TemplateBinding BorderBrush}"
                                   BorderThickness="{TemplateBinding BorderThickness}"
                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                   Content="{TemplateBinding Content}"
-                                  Padding="{TemplateBinding Padding}"/>
+                                  Padding="{TemplateBinding Padding}" />
             </DockPanel>
         </ControlTemplate>
     </Setter>

@@ -32,7 +32,7 @@
                                VerticalAlignment="Stretch"
                                StrokeThickness="1"
                                Width="1"
-                               Stroke="{TemplateBinding BorderBrush}"/>
+                               Stroke="{TemplateBinding BorderBrush}" />
                 </Grid>
             </ControlTemplate>
         </Setter>
@@ -49,34 +49,34 @@
                 Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="Padding"
                 Value="1,1,0,0" />
-        
+
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid ColumnDefinitions="*,Auto" IsHitTestVisible="False">
+                <Grid ColumnDefinitions="*,Auto"
+                      IsHitTestVisible="False">
 
                     <Grid ColumnDefinitions="*,Auto"
                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                           Margin="{TemplateBinding Padding}">
                         <ContentPresenter Content="{TemplateBinding Content}"
-                                          Height="1"/>
+                                          Height="1" />
 
                         <TextBlock Name="SortIcon"
                                    Grid.Column="1"
                                    Foreground="{TemplateBinding Foreground}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                   Margin="0"/>
+                                   Margin="0" />
 
                     </Grid>
 
                     <Border Name="VerticalSeparator"
-                               Grid.Column="1"
-                               Width="1"
-                               VerticalAlignment="Stretch"
-                               BorderThickness="1"
-                               BorderBrush="{TemplateBinding BorderBrush}"
-                               IsVisible="{TemplateBinding AreSeparatorsVisible}">
-                    </Border>
+                            Grid.Column="1"
+                            Width="1"
+                            VerticalAlignment="Stretch"
+                            BorderThickness="1"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            IsVisible="{TemplateBinding AreSeparatorsVisible}" />
                 </Grid>
             </ControlTemplate>
         </Setter>
@@ -117,22 +117,21 @@
                                Grid.ColumnSpan="2"
                                Height="1"
                                Fill="{DynamicResource ThemeChooserBackgroundBrush}" />
-                    
+
                     <Rectangle Name="FocusRectangle"
                                Grid.RowSpan="2"
                                Grid.ColumnSpan="2"
                                Height="1"
                                Fill="{DynamicResource ThemeActionBackgroundBrush}"
-                               IsVisible="{Binding ElementName=FocusControl, Path=IsCaretShown}">
-                        
-                    </Rectangle>
+                               IsVisible="{Binding ElementName=FocusControl, Path=IsCaretShown}" />
 
 
                     <DataGridRowHeader Name="PART_RowHeader"
                                        Grid.RowSpan="3"
                                        DataGridFrozenGrid.IsFrozen="True" />
 
-                    <helpers:CaretControl Grid.Column="1" x:Name="FocusControl">
+                    <helpers:CaretControl Grid.Column="1"
+                                          x:Name="FocusControl">
                         <helpers:CaretControl.IsCaretShown>
                             <MultiBinding Converter="{x:Static BoolConverters.And}">
                                 <Binding RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=DataGrid}"
@@ -140,7 +139,7 @@
                                 <Binding RelativeSource="{RelativeSource Self}"
                                          Path="(helpers:DataGridExtensions.IsSelected)" />
                             </MultiBinding>
-                            
+
                         </helpers:CaretControl.IsCaretShown>
                         <DataGridCellsPresenter Name="PART_CellsPresenter"
                                                 DataGridFrozenGrid.IsFrozen="True" />
@@ -167,9 +166,10 @@
         <Setter Property="IsVisible"
                 Value="True" />
     </Style>
-   
+
     <Style Selector="DataGridRow:selected /template/ helpers|CaretControl">
-        <Setter Property="(helpers:DataGridExtensions.IsSelected)" Value="True"/>
+        <Setter Property="(helpers:DataGridExtensions.IsSelected)"
+                Value="True" />
     </Style>
 
     <!--<Style Selector="DataGridRow:selected">
@@ -194,8 +194,8 @@
                                        Fill="{DynamicResource ThemeErrorBrush}"
                                        Stretch="Fill" />
                             <Rectangle x:Name="BackgroundRectangle"
-                                       Stretch="Fill" 
-                                       Fill="{TemplateBinding Background}"/>
+                                       Stretch="Fill"
+                                       Fill="{TemplateBinding Background}" />
                         </Grid>
                     </Border>
                     <Rectangle x:Name="HorizontalSeparator"
@@ -263,7 +263,8 @@
   </Style>-->
 
     <Style Selector="DataGrid">
-        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="Focusable"
+                Value="True" />
         <Setter Property="RowBackground">
             <Setter.Value>
                 <drawing:FourBitColorBrush Mode="Transparent" />
@@ -298,11 +299,12 @@
                         <Border BorderThickness="{TemplateBinding BorderThickness}"
                                 BorderBrush="{TemplateBinding BorderBrush}" />
                         <Grid ColumnDefinitions="Auto,*,Auto"
-                              RowDefinitions="3,0,*,Auto,Auto,1" Margin="1,0">
+                              RowDefinitions="3,0,*,Auto,Auto,1"
+                              Margin="1,0">
 
                             <DataGridColumnHeader Name="PART_TopLeftCornerHeader"
-                                                  Background="{TemplateBinding Background}" 
-                                                  Margin="0,1"/>
+                                                  Background="{TemplateBinding Background}"
+                                                  Margin="0,1" />
 
                             <Border Grid.Row="0"
                                     VerticalAlignment="Bottom"
@@ -332,7 +334,7 @@
                             <DataGridColumnHeadersPresenter Name="PART_ColumnHeadersPresenter"
                                                             Grid.Column="1"
                                                             VerticalAlignment="Stretch"
-                                                            Grid.RowSpan="6"/>
+                                                            Grid.RowSpan="6" />
                             <!--<Rectangle Name="BottomLeftCorner"
                                        Fill="{DynamicResource ThemeAccentForegroundBrush}"
                                        Grid.Row="3"

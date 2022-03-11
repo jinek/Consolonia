@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using MiniMvvm;
@@ -7,7 +8,6 @@ namespace ControlCatalog.ViewModels
 {
     public class MenuPageViewModel
     {
-        public Control View { get; set; }
         public MenuPageViewModel()
         {
             OpenCommand = MiniCommand.CreateFromTask(Open);
@@ -27,7 +27,7 @@ namespace ControlCatalog.ViewModels
                     Header = "File2.txt",
                     Command = OpenRecentCommand,
                     CommandParameter = @"c:\foo\File2.txt"
-                },
+                }
             };
 
             RecentItems = recentItems;
@@ -45,7 +45,7 @@ namespace ControlCatalog.ViewModels
                         {
                             Header = "Recent",
                             Items = recentItems
-                        },
+                        }
                     }
                 },
                 new MenuItemViewModel
@@ -54,11 +54,13 @@ namespace ControlCatalog.ViewModels
                     Items = new[]
                     {
                         new MenuItemViewModel { Header = "_Copy" },
-                        new MenuItemViewModel { Header = "_Paste" },
+                        new MenuItemViewModel { Header = "_Paste" }
                     }
                 }
             };
         }
+
+        public Control View { get; set; }
 
         public IReadOnlyList<MenuItemViewModel> MenuItems { get; set; }
         public IReadOnlyList<MenuItemViewModel> RecentItems { get; set; }
@@ -87,12 +89,12 @@ namespace ControlCatalog.ViewModels
 
         public void Save()
         {
-            System.Diagnostics.Debug.WriteLine("Save");
+            Debug.WriteLine("Save");
         }
 
         public void OpenRecent(string path)
         {
-            System.Diagnostics.Debug.WriteLine($"Open recent: {path}");
+            Debug.WriteLine($"Open recent: {path}");
         }
     }
 }

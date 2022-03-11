@@ -24,7 +24,10 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 var scrollViewer = (ScrollViewer)args.Sender;
                 var grid = (Grid)scrollViewer.GetTemplateChildren()
                     .SingleOrDefault(control => control.Name == @"PART_Root");
-                if (grid != null) Apply();
+                if (grid != null)
+                {
+                    Apply();
+                }
                 else
                 {
                     void OnScrollViewerOnTemplateApplied(object sender, TemplateAppliedEventArgs eventArgs)
@@ -49,13 +52,9 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             {
                 var scrollViewer = (ScrollViewer)args.Sender;
                 if (args.NewValue.Value)
-                {
                     scrollViewer.KeyDown += ScrollViewerOnKeyDown;
-                }
                 else
-                {
                     scrollViewer.KeyDown -= ScrollViewerOnKeyDown;
-                }
             });
         }
 

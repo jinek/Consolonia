@@ -12,9 +12,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 case ConsoleColor.Black: return color;
                 case ConsoleColor.White: return ConsoleColor.Gray;
                 default:
-                    var name = Enum.GetName(color);
+                    string name = Enum.GetName(color);
                     const string dark = "Dark";
-                    return !name.Contains(dark, StringComparison.Ordinal) ? Enum.Parse<ConsoleColor>(dark + name) : ConsoleColor.Black;
+                    return !name.Contains(dark, StringComparison.Ordinal)
+                        ? Enum.Parse<ConsoleColor>(dark + name)
+                        : ConsoleColor.Black;
             }
         }
 

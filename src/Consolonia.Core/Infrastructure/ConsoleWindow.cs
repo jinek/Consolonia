@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -27,14 +26,6 @@ namespace Consolonia.Core.Infrastructure
             _console = AvaloniaLocator.Current.GetService<IConsole>();
             _console.Resized += OnConsoleOnResized;
             _console.KeyPress += ConsoleOnKeyPress;
-        }
-
-        private void OnConsoleOnResized()
-        {
-            PixelBufferSize pixelBufferSize = _console.Size;
-            var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
-            Resized(size, PlatformResizeReason.Unspecified);
-            //todo; Invalidate(new Rect(size));
         }
 
         public void Dispose()
@@ -256,6 +247,14 @@ namespace Consolonia.Core.Infrastructure
         public bool NeedsManagedDecorations { get; }
         public Thickness ExtendedMargins { get; }
         public Thickness OffScreenMargin { get; }
+
+        private void OnConsoleOnResized()
+        {
+            PixelBufferSize pixelBufferSize = _console.Size;
+            var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
+            Resized(size, PlatformResizeReason.Unspecified);
+            //todo; Invalidate(new Rect(size));
+        }
 
         private void ConsoleOnKeyPress(Key key, char keyChar, RawInputModifiers rawInputModifiers)
         {

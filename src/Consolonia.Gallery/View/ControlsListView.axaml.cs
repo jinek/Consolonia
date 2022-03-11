@@ -12,12 +12,6 @@ namespace Consolonia.Gallery.View
     {
         private readonly IEnumerable<GalleryItem> _items;
 
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
         public ControlsListView()
         {
             InitializeComponent();
@@ -39,6 +33,7 @@ namespace Consolonia.Gallery.View
                     grid.SelectedIndex = 0;
                     return;
                 }
+
                 string itemToSelectName = commandLineArgs[1];
                 GalleryItem itemToSelect;
                 try
@@ -46,10 +41,8 @@ namespace Consolonia.Gallery.View
                     itemToSelect = _items.SingleOrDefault(item =>
                         string.Equals(item.Name, itemToSelectName, StringComparison.CurrentCultureIgnoreCase));
                     if (itemToSelect == null)
-                    {
                         throw new ArgumentOutOfRangeException(
                             $"No item with name {itemToSelectName} found. List of possible item names: {string.Join(", ", GalleryItem.Enumerated.Select(item => item.Name))}");
-                    }
                 }
                 catch (InvalidOperationException)
                 {
@@ -60,6 +53,12 @@ namespace Consolonia.Gallery.View
                 grid.SelectedItem = itemToSelect;
                 grid.Focus();
             }
+        }
+
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
         }
     }
 }

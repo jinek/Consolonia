@@ -3,6 +3,6 @@
         xmlns:dialog="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Dialog">
     <Style Selector=":is(dialog|DialogWindow)">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeBackgroundBrush}"/>
+                Value="{DynamicResource ThemeBackgroundBrush}" />
     </Style>
 </Styles>

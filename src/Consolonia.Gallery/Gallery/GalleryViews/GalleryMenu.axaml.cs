@@ -1,5 +1,4 @@
 using System;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ControlCatalog.ViewModels;
@@ -8,6 +7,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public class GalleryMenu : UserControl
     {
+        private MenuPageViewModel _model;
+
         public GalleryMenu()
         {
             InitializeComponent();
@@ -19,7 +20,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             AvaloniaXamlLoader.Load(this);
         }
 
-        private MenuPageViewModel _model;
         protected override void OnDataContextChanged(EventArgs e)
         {
             if (_model != null)

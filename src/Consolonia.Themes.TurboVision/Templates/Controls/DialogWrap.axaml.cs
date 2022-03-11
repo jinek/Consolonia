@@ -11,9 +11,9 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
 {
     internal class DialogWrap : UserControl
     {
-        private Window _parentWindow;
-        private IDisposable _disposable;
         private DialogWindow _dialogWindow;
+        private IDisposable _disposable;
+        private Window _parentWindow;
 
         public DialogWrap()
         {
@@ -21,7 +21,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
             AttachedToVisualTree += (sender, args) =>
             {
                 _parentWindow = this.FindAncestorOfType<Window>();
-                _disposable = _parentWindow.GetPropertyChangedObservable(Window.ClientSizeProperty).Subscribe(args =>
+                _disposable = _parentWindow.GetPropertyChangedObservable(TopLevel.ClientSizeProperty).Subscribe(args =>
                 {
                     var newSize = (Size)args.NewValue;
 
@@ -31,6 +31,14 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
             };
             DetachedFromLogicalTree += (sender, args) => { _disposable.Dispose(); };
         }
+
+        internal ContentPresenter ContentPresenter => this.Get<ContentPresenter>("ContentPresenter");
+
+        /// <summary>
+        ///     Focused element when new dialog shown
+        ///     This is focus to restore when dialog closed
+        /// </summary>
+        internal IInputElement HadFocusOn { get; set; }
 
         private void SetNewSize(Size newSize)
         {
@@ -55,14 +63,6 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
             _dialogWindow = dialogWindow;
             ContentPresenter.Content = dialogWindow;
         }
-
-        internal ContentPresenter ContentPresenter => this.Get<ContentPresenter>("ContentPresenter");
-
-        /// <summary>
-        ///     Focused element when new dialog shown
-        ///     This is focus to restore when dialog closed 
-        /// </summary>
-        internal IInputElement HadFocusOn { get; set; }
 
         private void CloseDialog()
         {

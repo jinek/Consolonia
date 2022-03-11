@@ -14,7 +14,7 @@
                         <Panel>
                             <helpers:SymbolsControl Text="░"
                                                     Fill="True"
-                                                    Foreground="{TemplateBinding BorderBrush}"/>
+                                                    Foreground="{TemplateBinding BorderBrush}" />
                             <Border Name="PART_Indicator"
                                     Background="{TemplateBinding BorderBrush}"
                                     IsVisible="{Binding !IsIndeterminate, RelativeSource={RelativeSource TemplatedParent}}">

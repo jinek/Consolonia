@@ -12,7 +12,7 @@
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryComboBox">
     <StackPanel Orientation="Vertical"
                 Spacing="1">
-        <StackPanel.Styles>            
+        <StackPanel.Styles>
             <Style Selector="ComboBox">
                 <Setter Property="HorizontalAlignment"
                         Value="Left" />
@@ -26,11 +26,12 @@
             <ComboBoxItem>Inline Item 3</ComboBoxItem>
             <ComboBoxItem>Inline Item 4</ComboBoxItem>
         </ComboBox>
-        
-        <ComboBox PlaceholderText="Disabled" IsEnabled="False">
+
+        <ComboBox PlaceholderText="Disabled"
+                  IsEnabled="False">
             <ComboBoxItem>Can't be choosen</ComboBoxItem>
         </ComboBox>
-        
+
         <ComboBox>
             <ComboBox.Items>
                 <collections:ArrayList>
@@ -50,11 +51,12 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <ComboBox SelectedIndex="0"> 
+        <ComboBox SelectedIndex="0">
             <ComboBoxItem>
-                <Panel >
-                    <Rectangle Fill="{drawing:FourBitColorBrush Red}"/>
-                    <TextBlock Text="Still item" Margin="1"/>
+                <Panel>
+                    <Rectangle Fill="{drawing:FourBitColorBrush Red}" />
+                    <TextBlock Text="Still item"
+                               Margin="1" />
                 </Panel>
             </ComboBoxItem>
             <ComboBoxItem>
@@ -62,10 +64,11 @@
                                         Foreground="{drawing:FourBitColorBrush DarkMagenta}" />
             </ComboBoxItem>
             <ComboBoxItem>
-                <TextBox Text="TextBox" Focusable="True"/>
+                <TextBox Text="TextBox"
+                         Focusable="True" />
             </ComboBoxItem>
         </ComboBox>
-        
+
         <ComboBox x:Name="varsComboBox">
             <ComboBox.ItemTemplate>
                 <DataTemplate>

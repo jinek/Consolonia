@@ -9,7 +9,6 @@ using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.VisualTree;
-using VisualExtensions = Avalonia.VisualTree.VisualExtensions;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 {
@@ -20,6 +19,8 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 
         internal static readonly AttachedProperty<DialogHost> DialogHostProperty =
             AvaloniaProperty.RegisterAttached<Button, DialogHost>("DialogHost", typeof(DialogHost));
+
+        private readonly Stack<OverlayPopupHost> _dialogs = new();
 
         private readonly Window _window;
 
@@ -36,8 +37,6 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         {
             _window = window;
         }
-
-        private readonly Stack<OverlayPopupHost> _dialogs = new();
 
         public void OpenInternal(DialogWindow dialogWindow)
         {
@@ -65,7 +64,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         private ContentPresenter GetFirstContentPresenter()
         {
             ContentPresenter firstContentPresenter = _window.GetTemplateChildren()
-                .Select(control => VisualExtensions.FindDescendantOfType<ContentPresenter>(control))
+                .Select(control => control.FindDescendantOfType<ContentPresenter>())
                 .First(d => d.Name == "PART_ContentPresenter");
             return firstContentPresenter;
         }
