@@ -636,7 +636,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public string FirstName
         {
             get => _firstName;
-            set
+            init
             {
                 _firstName = value;
                 SetError(nameof(FirstName), string.IsNullOrWhiteSpace(value) ? "First Name Required" : null);
@@ -648,7 +648,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public string LastName
         {
             get => _lastName;
-            set
+            init
             {
                 _lastName = value;
                 SetError(nameof(LastName), string.IsNullOrWhiteSpace(value) ? "Last Name Required" : null);
@@ -660,7 +660,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public bool IsBanned
         {
             get => _isBanned;
-            set
+            init
             {
                 _isBanned = value;
 

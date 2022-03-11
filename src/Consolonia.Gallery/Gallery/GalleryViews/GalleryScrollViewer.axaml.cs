@@ -30,9 +30,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     public class ScrollViewerPageViewModel : ViewModelBase
     {
-        private bool _allowAutoHide;
-        private ScrollBarVisibility _horizontalScrollVisibility;
-        private ScrollBarVisibility _verticalScrollVisibility;
+        private readonly bool _allowAutoHide;
+        private readonly ScrollBarVisibility _horizontalScrollVisibility;
+        private readonly ScrollBarVisibility _verticalScrollVisibility;
 
         public ScrollViewerPageViewModel()
         {
@@ -52,19 +52,19 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public bool AllowAutoHide
         {
             get => _allowAutoHide;
-            set => RaiseAndSetIfChanged(ref _allowAutoHide, value);
+            init => RaiseAndSetIfChanged(ref _allowAutoHide, value);
         }
 
         public ScrollBarVisibility HorizontalScrollVisibility
         {
             get => _horizontalScrollVisibility;
-            set => RaiseAndSetIfChanged(ref _horizontalScrollVisibility, value);
+            init => RaiseAndSetIfChanged(ref _horizontalScrollVisibility, value);
         }
 
         public ScrollBarVisibility VerticalScrollVisibility
         {
             get => _verticalScrollVisibility;
-            set => RaiseAndSetIfChanged(ref _verticalScrollVisibility, value);
+            init => RaiseAndSetIfChanged(ref _verticalScrollVisibility, value);
         }
 
         public List<ScrollBarVisibility> AvailableVisibility { get; }
