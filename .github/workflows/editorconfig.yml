@@ -26,10 +26,11 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: dotnet-format
-        run: | 
-          dotnet tool install -g dotnet-format
-          dotnet-format Consolonia.sln
+      - name: resharper-tools
+        run: |
+          dotnet tool install -g JetBrains.ReSharper.GlobalTools
+          jb inspectcode Consolonia.sln -o=resharperOutput.Html
+          jb cleanupcode Consolonia.sln
         working-directory: ./src
 
       - name: Commit files
