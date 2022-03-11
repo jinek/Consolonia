@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -57,6 +58,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         public string Header { get; set; }
         public string Text { get; set; }
-        public bool IsEnabled { get; set; } = true;
+        public bool IsEnabled { get; init; } = true;
     }
 }

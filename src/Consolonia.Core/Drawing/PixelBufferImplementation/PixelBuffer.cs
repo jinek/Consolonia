@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
+// ReSharper disable UnusedMember.Global
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -41,7 +42,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             // ReSharper disable once MemberCanBePrivate.Global
             set => _buffer[point.X, point.Y] = value;
         }
-
+        
         public int Length => _buffer.Length;
         public Rect Size => new(0, 0, Width, Height);
 

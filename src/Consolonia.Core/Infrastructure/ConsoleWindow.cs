@@ -11,12 +11,13 @@ using Avalonia.Rendering;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Dummy;
+using JetBrains.Annotations;
 
 namespace Consolonia.Core.Infrastructure
 {
     internal class ConsoleWindow : IWindowImpl
     {
-        private readonly IConsole _console;
+        [NotNull] private readonly IConsole _console;
         private readonly IKeyboardDevice _myKeyboardDevice;
         internal readonly List<Rect> InvalidatedRects = new(50);
         private IInputRoot _inputRoot;

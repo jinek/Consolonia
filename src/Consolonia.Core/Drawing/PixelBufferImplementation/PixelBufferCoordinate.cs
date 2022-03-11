@@ -1,4 +1,5 @@
 using Avalonia;
+// ReSharper disable UnusedMember.Global
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {

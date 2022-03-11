@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Windows.Input;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {

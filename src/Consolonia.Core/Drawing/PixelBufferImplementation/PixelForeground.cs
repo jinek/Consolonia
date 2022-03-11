@@ -2,7 +2,7 @@ using System;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    public struct PixelForeground
+    public readonly struct PixelForeground
     {
         public PixelForeground(ISymbol symbol, ConsoleColor color = ConsoleColor.White)
         {
@@ -10,7 +10,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Color = color;
         }
 
-        public ISymbol Symbol { get; } //now wokring with 16 bit unicode only for simplicity //todo: reference here
+        public ISymbol Symbol { get; } //now working with 16 bit unicode only for simplicity //todo: reference here
         public ConsoleColor Color { get; }
 
         public PixelForeground Shade()
