@@ -37,6 +37,11 @@ jobs:
         with:
           solutionPath: ./src/Consolonia.sln
 
+      - name: install-resharper
+        run: |
+          dotnet tool install -g JetBrains.ReSharper.GlobalTools
+        continue-on-error: true # todo: need to check whether has changes
+
       - name: resharper-tools
         run: |
           dotnet tool install -g JetBrains.ReSharper.GlobalTools          
