@@ -24,12 +24,20 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 5.0.x
+          
+      - name: Restore
+        run: dotnet restore
+        working-directory: ./src
+        
+      - name: Inspect code
+        uses: muno92/resharper_inspectcode@1.4.0
+        with:
+          solutionPath: ./src/Consolonia.sln
 
       - name: resharper-tools
         run: |
-          dotnet tool install -g JetBrains.ReSharper.GlobalTools
-          jb inspectcode Consolonia.sln -o=resharperOutput.Html
+          dotnet tool install -g JetBrains.ReSharper.GlobalTools          
           jb cleanupcode Consolonia.sln
         working-directory: ./src
 
