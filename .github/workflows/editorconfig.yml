@@ -43,8 +43,7 @@ jobs:
         continue-on-error: true # todo: need to check whether has changes
 
       - name: resharper-tools
-        run: |
-          dotnet tool install -g JetBrains.ReSharper.GlobalTools          
+        run: |                    
           jb cleanupcode Consolonia.sln
         working-directory: ./src
 
