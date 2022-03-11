@@ -6,8 +6,8 @@ namespace MiniMvvm
 {
     public sealed class MiniCommand<T> : MiniCommand, ICommand
     {
-        private readonly Action<T> _cb;
         private readonly Func<T, Task> _acb;
+        private readonly Action<T> _cb;
         private bool _busy;
 
         public MiniCommand(Action<T> cb)
