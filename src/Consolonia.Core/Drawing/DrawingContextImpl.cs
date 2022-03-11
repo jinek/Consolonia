@@ -19,13 +19,13 @@ namespace Consolonia.Core.Drawing
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly IConsole _console;
         private readonly ConsoleWindow _consoleWindow;
-        private readonly PixelBufferImplementation.PixelBuffer _pixelBuffer;
+        private readonly PixelBuffer _pixelBuffer;
         private readonly IVisualBrushRenderer _visualBrushRenderer;
         private Matrix _postTransform = Matrix.Identity;
         private Matrix _transform;
 
         public DrawingContextImpl(ConsoleWindow consoleWindow, IVisualBrushRenderer visualBrushRenderer,
-            PixelBufferImplementation.PixelBuffer pixelBuffer)
+            PixelBuffer pixelBuffer)
         {
             _consoleWindow = consoleWindow;
             _visualBrushRenderer = visualBrushRenderer;
@@ -150,18 +150,18 @@ namespace Consolonia.Core.Drawing
 
                     (double x, double y) = r2.TopLeft;
                     for (int i = 0; i < r2.Width + (pen?.Thickness ?? 0); i++)
-                        for (int j = 0; j < r2.Height + (pen?.Thickness ?? 0); j++)
+                    for (int j = 0; j < r2.Height + (pen?.Thickness ?? 0); j++)
+                    {
+                        int px = (int)(x + i);
+                        int py = (int)(y + j);
+                        _currentClip.ExecuteWithClipping(new Point(px, py), () =>
                         {
-                            int px = (int)(x + i);
-                            int py = (int)(y + j);
-                            _currentClip.ExecuteWithClipping(new Point(px, py), () =>
-                            {
-                                _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                                    (pixel, bb) => pixel.Blend(
-                                        new Pixel(
-                                            new PixelBackground(bb.Mode, bb.Color))), backgroundBrush);
-                            });
-                        }
+                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                (pixel, bb) => pixel.Blend(
+                                    new Pixel(
+                                        new PixelBackground(bb.Mode, bb.Color))), backgroundBrush);
+                        });
+                    }
                 }
             }
 
@@ -317,10 +317,8 @@ namespace Consolonia.Core.Drawing
 
             if (pen.Brush is MoveConsoleCaretToPositionBrush)
             {
-                _currentClip.ExecuteWithClipping(head, () =>
-                {
-                    _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true)));
-                });
+                _currentClip.ExecuteWithClipping(head,
+                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
 
                 return;
             }
@@ -347,7 +345,8 @@ namespace Consolonia.Core.Drawing
                     _currentClip.ExecuteWithClipping(head, () =>
                     {
                         _pixelBuffer.Set((PixelBufferCoordinate)head,
-                            (Pixel pixel, (byte, ConsoleColor) mcC) => pixel.Blend(new Pixel(mcC.Item1, mcC.Item2)), (marker, consoleColor));
+                            (Pixel pixel, (byte, ConsoleColor) mcC) => pixel.Blend(new Pixel(mcC.Item1, mcC.Item2)),
+                            (marker, consoleColor));
                     });
                     head = line.Vertical
                         ? head.WithY(head.Y + 1)
