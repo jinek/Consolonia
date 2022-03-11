@@ -13,11 +13,9 @@ namespace Consolonia.Core.Infrastructure
     {
         public new IDisposable StartTimer(DispatcherPriority priority, TimeSpan interval, Action tick)
         {
-            if (tick.Target is DispatcherTimer dispatcherTimer &&
-                dispatcherTimer.Tag is ICaptureTimerStartStop captureTimerStartStop)
-                return new ConsoloniaTextPresenterPointerBlinkFakeTimer(captureTimerStartStop);
-
-            return base.StartTimer(priority, interval, tick);
+            return tick.Target is DispatcherTimer { Tag: ICaptureTimerStartStop captureTimerStartStop }
+                ? new ConsoloniaTextPresenterPointerBlinkFakeTimer(captureTimerStartStop)
+                : base.StartTimer(priority, interval, tick);
         }
 
         private class ConsoloniaTextPresenterPointerBlinkFakeTimer : IDisposable

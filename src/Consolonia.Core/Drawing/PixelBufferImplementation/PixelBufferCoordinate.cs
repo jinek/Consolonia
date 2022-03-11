@@ -1,4 +1,5 @@
 using Avalonia;
+
 // ReSharper disable UnusedMember.Global
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
@@ -22,17 +23,20 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static explicit operator PixelBufferCoordinate((ushort x, ushort y) val)
         {
-            return new PixelBufferCoordinate(val.x, val.y);
+            // ReSharper disable once ArrangeObjectCreationWhenTypeNotEvident
+            return new(val.x, val.y);
         }
 
         public static explicit operator PixelBufferCoordinate(Point point)
         {
-            return new PixelBufferCoordinate((ushort)point.X, (ushort)point.Y);
+            // ReSharper disable once ArrangeObjectCreationWhenTypeNotEvident
+            return new((ushort)point.X, (ushort)point.Y);
         }
 
         public PixelBufferCoordinate WithXpp()
         {
-            return new PixelBufferCoordinate((ushort)(X + 1), Y);
+            // ReSharper disable once ArrangeObjectCreationWhenTypeNotEvident resharper behaves differently
+            return new((ushort)(X + 1), Y);
         }
 
         public static PixelBufferCoordinate ToPixelBufferCoordinate((ushort x, ushort y) val)

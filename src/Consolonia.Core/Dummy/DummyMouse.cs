@@ -17,7 +17,8 @@ namespace Consolonia.Core.Dummy
 
         public Point GetPosition(IVisual relativeTo)
         {
-            return new Point();
+            // ReSharper disable once ArrangeObjectCreationWhenTypeNotEvident todo: why resharper suggests this only on github action?
+            return new();
         }
 
         public IInputElement Captured => null;

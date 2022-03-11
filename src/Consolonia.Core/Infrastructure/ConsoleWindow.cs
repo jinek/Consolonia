@@ -25,7 +25,7 @@ namespace Consolonia.Core.Infrastructure
         public ConsoleWindow()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
-            _console = AvaloniaLocator.Current.GetService<IConsole>()!;
+            _console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
             _console.Resized += OnConsoleOnResized;
             _console.KeyPress += ConsoleOnKeyPress;
         }
