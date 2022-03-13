@@ -1,10 +1,7 @@
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
-using Avalonia.ReactiveUI;
-
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
@@ -18,7 +15,7 @@ namespace Consolonia.Core
         {
             StartConsolonia<TApp>(new DefaultNetConsole(), args);
         }
-        
+
         public static void StartConsolonia<TApp>(IConsole console, params string[] args) where TApp : Application, new()
         {
             ClassicDesktopStyleApplicationLifetime lifetime = BuildLifetime<TApp>(console, args);

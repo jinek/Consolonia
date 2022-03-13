@@ -7,7 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Consolonia.Core;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 using NUnit.Framework;
 
 namespace Consolonia.TestsCore
@@ -39,16 +39,15 @@ namespace Consolonia.TestsCore
                 Dispatcher.UIThread.UpdateServicesExtension();
                 setup = true;
                 _lifetime.Start(Args);
-                
+
                 // Resetting static of AppBuilderBase
                 typeof(AppBuilderBase<AppBuilder>).GetField("s_setupWasAlreadyCalled",
                         BindingFlags.Static | BindingFlags.NonPublic)
                     .SetValue(null, false);
-                
             }).ContinueWith(_ => { ThreadPool.QueueUserWorkItem(_ => throw new NotImplementedException()); },
                 TaskContinuationOptions.OnlyOnFaulted);
 
-            while (!setup) /*todo: replace by semaphore/WaitHandler*/;
+            while (!setup) /*todo: replace by semaphore/WaitHandler*/ ;
 
             // Waiting Main Window To appear
             CancellationToken cancellationToken = new CancellationTokenSource(60000 /*todo: magic number*/).Token;

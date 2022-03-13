@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Threading;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.TestsCore

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Avalonia.Input;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Gallery;
 using Consolonia.TestsCore;
 using NUnit.Framework;
