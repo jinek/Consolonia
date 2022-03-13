@@ -8,7 +8,7 @@ using Avalonia.Input;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
-    internal class ScrollViewerExtensions : AvaloniaObject
+    internal static class ScrollViewerExtensions
     {
         public static readonly AttachedProperty<bool> ScrollOnArrowsProperty =
             AvaloniaProperty.RegisterAttached<ScrollViewer, bool>("ScrollOnArrows", typeof(ScrollViewerExtensions));
@@ -22,47 +22,53 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             ScrollBarsWidthProperty.Changed.Subscribe(args =>
             {
                 var scrollViewer = (ScrollViewer)args.Sender;
-                var grid = (Grid)scrollViewer.GetTemplateChildren().SingleOrDefault(control => control.Name == @"PART_Root");
-                if (grid != null) Apply();
+                var grid = (Grid)scrollViewer.GetTemplateChildren()
+                    .SingleOrDefault(control => control.Name == @"PART_Root");
+                if (grid != null)
+                {
+                    Apply();
+                }
                 else
                 {
                     void OnScrollViewerOnTemplateApplied(object sender, TemplateAppliedEventArgs eventArgs)
                     {
                         scrollViewer.TemplateApplied -= OnScrollViewerOnTemplateApplied;
-                        grid = (Grid)scrollViewer.GetTemplateChildren().SingleOrDefault(control => control.Name == @"PART_Root");
+                        grid = (Grid)scrollViewer.GetTemplateChildren()
+                            .SingleOrDefault(control => control.Name == @"PART_Root");
                         Apply();
                     }
 
                     scrollViewer.TemplateApplied += OnScrollViewerOnTemplateApplied;
                 }
+
                 void Apply()
                 {
                     grid.RowDefinitions[1].Height = args.NewValue.Value;
                     grid.ColumnDefinitions[1].Width = args.NewValue.Value;
                 }
             });
-            
+
             ScrollOnArrowsProperty.Changed.Subscribe(args =>
             {
                 var scrollViewer = (ScrollViewer)args.Sender;
                 if (args.NewValue.Value)
-                {
                     scrollViewer.KeyDown += ScrollViewerOnKeyDown;
-                }
                 else
-                {
                     scrollViewer.KeyDown -= ScrollViewerOnKeyDown;
-                }
             });
         }
 
-        public GridLength ScrollBarsWidth
+        public static void SetScrollBarsWidth(Control element, GridLength value)
         {
-            get => GetValue(ScrollBarsWidthProperty);
-            set => SetValue(ScrollOnArrowsProperty, value);
+            element.SetValue(ScrollBarsWidthProperty, value);
         }
 
-        private static void ScrollViewerOnKeyDown(object? sender, KeyEventArgs e)
+        public static GridLength GetScrollBarsWidth(Control element)
+        {
+            return element.GetValue(ScrollBarsWidthProperty);
+        }
+
+        private static void ScrollViewerOnKeyDown(object sender, KeyEventArgs e)
         {
             var scrollViewer = (ScrollViewer)sender;
             if (!scrollViewer.Focusable)

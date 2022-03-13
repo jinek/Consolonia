@@ -10,10 +10,10 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
     {
         public static readonly AttachedProperty<TimeSpan> DelayPressProperty =
             AvaloniaProperty.RegisterAttached<Button, TimeSpan>("IsDelayPress", typeof(ButtonExtensions));
-        
+
         public static readonly AttachedProperty<bool> ShadowProperty =
             AvaloniaProperty.RegisterAttached<Button, bool>("ShadowPress", typeof(ButtonExtensions));
-            
+
         static ButtonExtensions()
         {
             Button.ClickEvent.Raised.Subscribe(async tuple =>
@@ -28,7 +28,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 
                 PseudolassesExtensions.Set(button.Classes, ":clickdelayed", true);
 
-                await Task.Delay(timeout); //todo: magic number
+                await Task.Delay(timeout).ConfigureAwait(true); //todo: magic number
 
                 PseudolassesExtensions.Set(button.Classes, ":clickdelayed", false);
             });

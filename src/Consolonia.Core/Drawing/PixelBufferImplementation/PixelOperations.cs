@@ -1,6 +1,8 @@
-﻿using System;
+using System;
 
-namespace Consolonia.Core.Drawing.PixelBuffer
+// ReSharper disable UnusedMember.Global
+
+namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     internal static class PixelOperations
     {
@@ -12,9 +14,11 @@ namespace Consolonia.Core.Drawing.PixelBuffer
                 case ConsoleColor.Black: return color;
                 case ConsoleColor.White: return ConsoleColor.Gray;
                 default:
-                    var name = Enum.GetName(color);
+                    string name = Enum.GetName(color) ?? throw new NotImplementedException();
                     const string dark = "Dark";
-                    return !name.Contains(dark) ? Enum.Parse<ConsoleColor>(dark + name) : ConsoleColor.Black;
+                    return !name.Contains(dark, StringComparison.Ordinal)
+                        ? Enum.Parse<ConsoleColor>(dark + name)
+                        : ConsoleColor.Black;
             }
         }
 

@@ -1,21 +1,25 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Consolonia.Core.InternalHelpers;
+
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Consolonia.Core.Text
 {
-    // todo: Copypaste of avalonia skia. Probably must be simplified or re-used from skia
+    // todo: Copy-paste of avalonia skia. Probably must be simplified or re-used from skia
     internal class FormattedText : IFormattedTextImpl
     {
-        private const float MAX_LINE_WIDTH = 10000; //todo: copied from avalonia, magicnumber
+        private const float MaxLineWidth = 10000; //todo: copied from avalonia, magic number
         private readonly List<FormattedTextLine> _lines = new();
         private readonly List<Rect> _rects = new();
         private readonly TextAlignment _textAlignment;
         private readonly TextWrapping _wrapping;
 
-        public FormattedText(string? text, TextAlignment textAlignment,
+        public FormattedText(string text, TextAlignment textAlignment,
             TextWrapping wrapping, Size constraint, IReadOnlyList<FormattedTextStyleSpan> spans)
         {
             Text = text ?? string.Empty;
@@ -193,9 +197,9 @@ namespace Consolonia.Core.Text
 
                 if (_wrapping == TextWrapping.Wrap)
                 {
-                    constraint = widthConstraint <= 0 ? MAX_LINE_WIDTH : widthConstraint;
-                    if (constraint > MAX_LINE_WIDTH)
-                        constraint = MAX_LINE_WIDTH;
+                    constraint = widthConstraint <= 0 ? MaxLineWidth : widthConstraint;
+                    if (constraint > MaxLineWidth)
+                        constraint = MaxLineWidth;
                 }
 
                 int measured = LineBreak(Text, curOff, length, constraint, out int trailingnumber);
@@ -275,14 +279,14 @@ namespace Consolonia.Core.Text
             out int trailingCount)
         {
             int lengthBreak;
-            if (maxWidth == -1)
+            if (maxWidth.IsNearlyEqual(-1))
                 lengthBreak = stop - textIndex;
             else
                 lengthBreak = (int)maxWidth;
 
             //Check for white space or line breakers before the lengthBreak
             int index = textIndex;
-            int word_start = textIndex;
+            int wordStart = textIndex;
             bool prevBreak = true;
 
             trailingCount = 0;
@@ -293,7 +297,7 @@ namespace Consolonia.Core.Text
                 char currChar = textInput[index++];
                 bool currBreak = IsBreakChar(currChar);
 
-                if (!currBreak && prevBreak) word_start = prevText;
+                if (!currBreak && prevBreak) wordStart = prevText;
 
                 prevBreak = currBreak;
 
@@ -309,13 +313,13 @@ namespace Consolonia.Core.Text
                     else
                     {
                         // backup until a whitespace (or 1 char)
-                        if (word_start == textIndex)
+                        if (wordStart == textIndex)
                         {
                             if (prevText > textIndex) index = prevText;
                         }
                         else
                         {
-                            index = word_start;
+                            index = wordStart;
                         }
                     }
 
@@ -436,7 +440,7 @@ namespace Consolonia.Core.Text
             public float Width;
         }
 
-        internal struct FBrushRange
+        internal readonly struct FBrushRange
         {
             public FBrushRange(int startIndex, int length)
             {

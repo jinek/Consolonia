@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.Presenters;
@@ -11,26 +11,36 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
     public class ConsoloniaTextPresenter : TextPresenter, ICaptureTimerStartStop
     {
-        private bool _caretBlinking;
-
-        private static readonly FieldInfo _tickTimerField =
+        private static readonly FieldInfo TickTimerField =
             typeof(TextPresenter).GetField("_caretTimer", BindingFlags.NonPublic | BindingFlags.Instance)!;
+
+        private bool _caretBlinking;
 
         static ConsoloniaTextPresenter()
         {
             CaretBrushProperty.Changed.Subscribe(static args =>
             {
-                if (args.NewValue.Value is not MoveConsoleCaretToPositionBrush consoleCaretBrush)
+                if (args.NewValue.Value is not MoveConsoleCaretToPositionBrush)
                     throw new NotSupportedException();
             });
         }
 
         public ConsoloniaTextPresenter()
         {
-            var caretTickTimer = (DispatcherTimer)_tickTimerField.GetValue(this);
-            caretTickTimer.Tag = this;
+            var caretTickTimer = (DispatcherTimer)TickTimerField.GetValue(this);
+            caretTickTimer!.Tag = this;
 
             CaretBrush = new MoveConsoleCaretToPositionBrush();
+        }
+
+        public void CaptureTimerStart()
+        {
+            _caretBlinking = true;
+        }
+
+        public void CaptureTimerStop()
+        {
+            _caretBlinking = false;
         }
 
         public override void Render(DrawingContext context)
@@ -46,18 +56,8 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         private (Point, Point) GetCaretPoints()
         {
             return ((Point, Point))typeof(TextPresenter)
-                .GetMethod(nameof(GetCaretPoints), BindingFlags.Instance | BindingFlags.NonPublic)
-                .Invoke(this, null);
-        }
-
-        public void CaptureTimerStart()
-        {
-            _caretBlinking = true;
-        }
-
-        public void CaptureTimerStop()
-        {
-            _caretBlinking = false;
+                .GetMethod(nameof(GetCaretPoints), BindingFlags.Instance | BindingFlags.NonPublic)!
+                .Invoke(this, null)!;
         }
 
         protected override Size MeasureOverride(Size availableSize)

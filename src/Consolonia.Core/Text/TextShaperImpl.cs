@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using Avalonia;
@@ -27,8 +27,7 @@ namespace Consolonia.Core.Text
                 glyphAdvances,
                 new ReadOnlySlice<Vector>(null),
                 text,
-                glyphClusters,
-                0 /*todo: must be 1 for right to left*/);
+                glyphClusters /*todo: must be 1 for right to left*/);
         }
     }
 }

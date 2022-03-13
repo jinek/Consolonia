@@ -6,17 +6,20 @@ using System.Text;
 using Avalonia;
 using Avalonia.Platform;
 using Avalonia.Rendering;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
     internal class RenderTarget : IDrawingContextLayerImpl
     {
-        internal PixelBuffer.PixelBuffer _bufferBuffer { get; private set; }
+        private readonly IConsole _console;
 
         private readonly ConsoleWindow _consoleWindow;
-        private readonly IConsole _console;
+
+        private PixelBuffer _bufferBuffer;
+
+        private (ConsoleColor background, ConsoleColor foreground, char character)?[,] _cache;
 
         internal RenderTarget(ConsoleWindow consoleWindow)
         {
@@ -25,29 +28,6 @@ namespace Consolonia.Core.Drawing
             consoleWindow.Resized += OnResized;
             InitializeBuffer(_consoleWindow.ClientSize);
         }
-
-        private void OnResized(Size size, PlatformResizeReason platformResizeReason)
-        {
-            InitializeBuffer(size);
-        }
-
-        private void InitializeBuffer(Size size)
-        {
-            ushort width = (ushort)size.Width;
-            ushort height = (ushort)size.Height;
-
-            _bufferBuffer =
-                new PixelBuffer.PixelBuffer(width, height);
-
-            InitializeCache(width, height);
-        }
-
-        private void InitializeCache(ushort width, ushort height)
-        {
-            _cache = new (ConsoleColor background, ConsoleColor foreground, char character)?[width, height];
-        }
-
-        private (ConsoleColor background, ConsoleColor foreground, char character)?[,] _cache;
 
         public RenderTarget(IEnumerable<object> surfaces)
             : this(surfaces.OfType<ConsoleWindow>()
@@ -92,9 +72,30 @@ namespace Consolonia.Core.Drawing
 
         public bool CanBlit => true;
 
+        private void OnResized(Size size, PlatformResizeReason platformResizeReason)
+        {
+            InitializeBuffer(size);
+        }
+
+        private void InitializeBuffer(Size size)
+        {
+            ushort width = (ushort)size.Width;
+            ushort height = (ushort)size.Height;
+
+            _bufferBuffer =
+                new PixelBuffer(width, height);
+
+            InitializeCache(width, height);
+        }
+
+        private void InitializeCache(ushort width, ushort height)
+        {
+            _cache = new (ConsoleColor background, ConsoleColor foreground, char character)?[width, height];
+        }
+
         private void RenderToDevice()
         {
-            PixelBuffer.PixelBuffer pixelBuffer = _bufferBuffer;
+            PixelBuffer pixelBuffer = _bufferBuffer;
 
             _console.CaretVisible = false;
             PixelBufferCoordinate? caretPosition = null;
@@ -114,7 +115,7 @@ namespace Consolonia.Core.Drawing
                 }
 
                 if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                        rect.ContainsAligned(new Point(x, y)))) continue;
+                    rect.ContainsAligned(new Point(x, y)))) continue;
                 if (pixel.Background.Mode != PixelBackgroundMode.Colored)
                     throw new InvalidOperationException(
                         "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");
@@ -172,7 +173,8 @@ namespace Consolonia.Core.Drawing
         }
 
         private struct FlushingBuffer
-        {//todo: move class out
+        {
+            //todo: move class out
             private readonly IConsole _console;
             private readonly StringBuilder _stringBuilder;
             private ConsoleColor _lastBackgroundColor;
@@ -196,9 +198,7 @@ namespace Consolonia.Core.Drawing
                 if (!bufferPoint.Equals(_currentBufferPoint) /*todo: performance*/ ||
                     _lastForegroundColor != foregroundColor ||
                     _lastBackgroundColor != backgroundColor)
-                {
                     Flush();
-                }
 
                 if (_stringBuilder.Length == 0)
                 {

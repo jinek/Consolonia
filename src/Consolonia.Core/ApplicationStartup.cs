@@ -3,8 +3,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
-using Avalonia.ReactiveUI;
-
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
@@ -34,13 +32,12 @@ namespace Consolonia.Core
                     "Consolonia");
 
             AppBuilder app = usePlatformDetect
-                .LogToTrace()
-                .UseReactiveUI();
+                .LogToTrace();
 
-            var lifetime = new ClassicDesktopStyleApplicationLifetime
+            using var lifetime = new ClassicDesktopStyleApplicationLifetime
             {
                 /*Args = args,*/
-                ShutdownMode = ShutdownMode.OnMainWindowClose,
+                ShutdownMode = ShutdownMode.OnMainWindowClose
             };
 
             app.SetupWithLifetime(lifetime);

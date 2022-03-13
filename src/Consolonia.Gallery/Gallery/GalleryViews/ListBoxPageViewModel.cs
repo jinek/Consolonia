@@ -1,31 +1,32 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Controls.Selection;
-using Consolonia.Gallery.Gallery.GalleryViews;
-using MiniMvvm;
 using ReactiveUI;
 
-namespace ControlCatalog.ViewModels
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMember.Global
+
+namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public class ListBoxPageViewModel : ViewModelBase
     {
-        private bool _multiple;
-        private bool _toggle;
         private bool _alwaysSelected;
         private bool _autoScrollToSelectedItem = true;
         private int _counter;
-        private IObservable<SelectionMode> _selectionMode;
+        private bool _multiple;
+        private bool _toggle;
 
         public ListBoxPageViewModel()
         {
-            Items = new ObservableCollection<string>(Enumerable.Range(1, 10000).Select(i => GenerateItem()));
-            
+            Items = new ObservableCollection<string>(Enumerable.Range(1, 10000).Select(_ => GenerateItem()));
+
             Selection = new SelectionModel<string>();
             Selection.Select(1);
 
-            _selectionMode = this.WhenAnyValue(
+            SelectionMode = this.WhenAnyValue(
                 x => x.Multiple,
                 x => x.Toggle,
                 x => x.AlwaysSelected,
@@ -40,10 +41,7 @@ namespace ControlCatalog.ViewModels
             {
                 var items = Selection.SelectedItems.ToList();
 
-                foreach (var item in items)
-                {
-                    Items.Remove(item);
-                }
+                foreach (string item in items) Items.Remove(item);
             });
 
             SelectRandomItemCommand = MiniCommand.Create(() =>
@@ -60,36 +58,39 @@ namespace ControlCatalog.ViewModels
 
         public ObservableCollection<string> Items { get; }
         public SelectionModel<string> Selection { get; }
-        public IObservable<SelectionMode> SelectionMode => _selectionMode;
+        public IObservable<SelectionMode> SelectionMode { get; }
 
         public bool Multiple
         {
             get => _multiple;
-            set => this.RaiseAndSetIfChanged(ref _multiple, value);
+            set => RaiseAndSetIfChanged(ref _multiple, value);
         }
 
         public bool Toggle
         {
             get => _toggle;
-            set => this.RaiseAndSetIfChanged(ref _toggle, value);
+            set => RaiseAndSetIfChanged(ref _toggle, value);
         }
 
         public bool AlwaysSelected
         {
             get => _alwaysSelected;
-            set => this.RaiseAndSetIfChanged(ref _alwaysSelected, value);
+            set => RaiseAndSetIfChanged(ref _alwaysSelected, value);
         }
 
         public bool AutoScrollToSelectedItem
         {
             get => _autoScrollToSelectedItem;
-            set => this.RaiseAndSetIfChanged(ref _autoScrollToSelectedItem, value);
+            set => RaiseAndSetIfChanged(ref _autoScrollToSelectedItem, value);
         }
 
         public MiniCommand AddItemCommand { get; }
         public MiniCommand RemoveItemCommand { get; }
         public MiniCommand SelectRandomItemCommand { get; }
 
-        private string GenerateItem() => $"Item {_counter++.ToString()}";
+        private string GenerateItem()
+        {
+            return $"Item {_counter++.ToString()}";
+        }
     }
 }

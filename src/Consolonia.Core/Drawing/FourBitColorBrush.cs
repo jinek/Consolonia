@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Avalonia;
 using Avalonia.Media;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 namespace Consolonia.Core.Drawing
 {
@@ -19,6 +19,7 @@ namespace Consolonia.Core.Drawing
             AffectsRender<FourBitColorBrush>(ModeProperty);
         }
 
+        // ReSharper disable once UnusedMember.Global
         public FourBitColorBrush(ConsoleColor consoleColor, PixelBackgroundMode mode) : this(consoleColor)
         {
             Mode = mode;

@@ -1,15 +1,22 @@
-<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
     <Style Selector="ListBox">
-        <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="0"/>
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Padding"
+                Value="0" />
         <!--<Setter Property="Focusable" Value="True"/>-->
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+                Value="Auto" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                <Border Name="border"
+                        BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
                     <ScrollViewer Name="PART_ScrollViewer"
                                   Background="{TemplateBinding Background}"
@@ -18,9 +25,8 @@
                                   Margin="0,0,-1,-1">
                         <ScrollViewer.Styles>
                             <Style Selector="ScrollViewer">
-                                <Setter
-                                    Property="(helpers:ScrollViewerExtensions.ScrollBarsWidth)"
-                                    Value="1" />
+                                <Setter Property="(helpers:ScrollViewerExtensions.ScrollBarsWidth)"
+                                        Value="1" />
                             </Style>
                         </ScrollViewer.Styles>
                         <ItemsPresenter Name="PART_ItemsPresenter"
@@ -28,13 +34,14 @@
                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                         ItemTemplate="{TemplateBinding ItemTemplate}"
                                         Margin="{TemplateBinding Padding}"
-                                        VirtualizationMode="{TemplateBinding VirtualizationMode}"/>
+                                        VirtualizationMode="{TemplateBinding VirtualizationMode}" />
                     </ScrollViewer>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
     <Style Selector="ListBox:disabled">
-        <Setter Property="Foreground" Value="{DynamicResource ThemeNoDisturbBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
     </Style>
 </Styles>

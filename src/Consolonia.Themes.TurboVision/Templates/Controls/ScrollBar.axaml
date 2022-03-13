@@ -1,129 +1,135 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
-  <Style Selector="ScrollBar">
-    <Setter Property="Cursor" Value="Arrow" />
-    <Setter Property="Background"
-            Value="{DynamicResource ThemeChooserBackgroundBrush}" />
-    <Setter Property="BorderBrush"
-            Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
-    <Setter Property="Foreground"
-            Value="{DynamicResource ThemeChooserBackgroundBrush}" />
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border Background="{TemplateBinding BorderBrush}">
-          <Grid RowDefinitions="Auto,*,Auto">
-            <Border Grid.Row="1"
-                    BorderThickness="0"
-                    Background="{TemplateBinding Background}">
-              <helpers:SymbolsControl Fill="True"
-                                      Width="1"
-                                      Text="░"
-                                      Foreground="{TemplateBinding BorderBrush}" />
-            </Border>
-            <helpers:SymbolsControl HorizontalAlignment="Center"
-                                    Classes="repeat"
-                                    Grid.Row="0"                       
-                                    Foreground="{TemplateBinding Foreground}"
-                                    Text="▲"/>
-            <Track Grid.Row="1"
-                   Minimum="{TemplateBinding Minimum}"
-                   Maximum="{TemplateBinding Maximum}"
-                   Value="{TemplateBinding Value, Mode=TwoWay}"
-                   ViewportSize="{TemplateBinding ViewportSize}"
-                   Orientation="{TemplateBinding Orientation}"
-                   IsDirectionReversed="True">
-              <Thumb Name="thumb"/>
-            </Track>
-            <helpers:SymbolsControl HorizontalAlignment="Center"
-                                    Foreground="{TemplateBinding Foreground}"
-                                    Classes="repeat"
-                                    Grid.Row="2"
-                                    Focusable="False"
-                                    MinHeight="1"
-                                    Text="▼"/>
-          </Grid>
-        </Border>
-      </ControlTemplate>
-    </Setter>
-  </Style>
-  <Style Selector="ScrollBar:horizontal">
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border Background="{TemplateBinding BorderBrush}">
-          <Grid ColumnDefinitions="Auto,*,Auto">
-            <Border Grid.Column="1"
-                    BorderThickness="0"
-                    Background="{TemplateBinding Background}">
-              <helpers:SymbolsControl Fill="True"
-                                      Height="1"
-                                      Text="░"
-                                      Foreground="{TemplateBinding BorderBrush}" />
-            </Border>
-            <helpers:SymbolsControl HorizontalAlignment="Center"
-                                    Classes="repeat"
-                                    Grid.Column="0"                       
-                                    Foreground="{TemplateBinding Foreground}"
-                                    Text="◄"/>
-            <Track Grid.Column="1"
-                   Minimum="{TemplateBinding Minimum}"
-                   Maximum="{TemplateBinding Maximum}"
-                   Value="{TemplateBinding Value, Mode=TwoWay}"
-                   ViewportSize="{TemplateBinding ViewportSize}"
-                   Orientation="{TemplateBinding Orientation}">
-              <Thumb Name="thumb"/>
-            </Track>
-            <helpers:SymbolsControl HorizontalAlignment="Center"
-                                    Classes="repeat"
-                                    Grid.Column="2"                       
-                                    Foreground="{TemplateBinding Foreground}"
-                                    Text="►"/>
-          </Grid>
-        </Border>
-      </ControlTemplate>
-    </Setter>
-  </Style>
-  <Style Selector="ScrollBar /template/ Thumb#thumb">
-    <Setter Property="Foreground" Value="{DynamicResource ThemeChooserBackgroundBrush}"/>
-    <Setter Property="Background" Value="{DynamicResource ThemeSelectionBackgroundBrush}"/>
-    <Setter Property="Tag" Value="│"/>
-    <Setter Property="Width" Value="1"/>
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate>
-          <Panel Background="{TemplateBinding Background}">
-            <helpers:SymbolsControl Foreground="{TemplateBinding Foreground}"
-                                    Fill="True"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    Text="{TemplateBinding Tag}"
-                                    Margin="{TemplateBinding Padding}"/>
-          </Panel>
-          
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  </Style>
-  <Style Selector="ScrollBar:horizontal /template/ Thumb#thumb">
-    <Setter Property="Tag"
-            Value="─" />
-    <Setter Property="Height" Value="1"/>
-    <Setter Property="Width" Value="NaN"/>
-    <Setter Property="Padding" Value="1,0"/>
-  </Style>
-  <!--<Style Selector="ScrollBar /template/ Thumb#thumb:pointerover">
+    <Style Selector="ScrollBar">
+        <Setter Property="Cursor"
+                Value="Arrow" />
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding BorderBrush}">
+                    <Grid RowDefinitions="Auto,*,Auto">
+                        <Border Grid.Row="1"
+                                BorderThickness="0"
+                                Background="{TemplateBinding Background}">
+                            <helpers:SymbolsControl Fill="True"
+                                                    Width="1"
+                                                    Text="░"
+                                                    Foreground="{TemplateBinding BorderBrush}" />
+                        </Border>
+                        <helpers:SymbolsControl HorizontalAlignment="Center"
+                                                Grid.Row="0"
+                                                Foreground="{TemplateBinding Foreground}"
+                                                Text="▲" />
+                        <Track Grid.Row="1"
+                               Minimum="{TemplateBinding Minimum}"
+                               Maximum="{TemplateBinding Maximum}"
+                               Value="{TemplateBinding Value, Mode=TwoWay}"
+                               ViewportSize="{TemplateBinding ViewportSize}"
+                               Orientation="{TemplateBinding Orientation}"
+                               IsDirectionReversed="True">
+                            <Thumb Name="thumb" />
+                        </Track>
+                        <helpers:SymbolsControl HorizontalAlignment="Center"
+                                                Foreground="{TemplateBinding Foreground}"
+                                                Grid.Row="2"
+                                                Focusable="False"
+                                                MinHeight="1"
+                                                Text="▼" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="ScrollBar:horizontal">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding BorderBrush}">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Border Grid.Column="1"
+                                BorderThickness="0"
+                                Background="{TemplateBinding Background}">
+                            <helpers:SymbolsControl Fill="True"
+                                                    Height="1"
+                                                    Text="░"
+                                                    Foreground="{TemplateBinding BorderBrush}" />
+                        </Border>
+                        <helpers:SymbolsControl HorizontalAlignment="Center"
+                                                Grid.Column="0"
+                                                Foreground="{TemplateBinding Foreground}"
+                                                Text="◄" />
+                        <Track Grid.Column="1"
+                               Minimum="{TemplateBinding Minimum}"
+                               Maximum="{TemplateBinding Maximum}"
+                               Value="{TemplateBinding Value, Mode=TwoWay}"
+                               ViewportSize="{TemplateBinding ViewportSize}"
+                               Orientation="{TemplateBinding Orientation}">
+                            <Thumb Name="thumb" />
+                        </Track>
+                        <helpers:SymbolsControl HorizontalAlignment="Center"
+                                                Grid.Column="2"
+                                                Foreground="{TemplateBinding Foreground}"
+                                                Text="►" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="ScrollBar /template/ Thumb#thumb">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
+        <Setter Property="Tag"
+                Value="│" />
+        <Setter Property="Width"
+                Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Panel Background="{TemplateBinding Background}">
+                        <helpers:SymbolsControl Foreground="{TemplateBinding Foreground}"
+                                                Fill="True"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                Text="{TemplateBinding Tag}"
+                                                Margin="{TemplateBinding Padding}" />
+                    </Panel>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style Selector="ScrollBar:horizontal /template/ Thumb#thumb">
+        <Setter Property="Tag"
+                Value="─" />
+        <Setter Property="Height"
+                Value="1" />
+        <Setter Property="Width"
+                Value="NaN" />
+        <Setter Property="Padding"
+                Value="1,0" />
+    </Style>
+    <!--<Style Selector="ScrollBar /template/ Thumb#thumb:pointerover">
     <Setter Property="Background" Value="{DynamicResource ThemeControlHighBrush}"/>
   </Style>
   <Style Selector="ScrollBar /template/ Thumb#thumb:pressed">
     <Setter Property="Background" Value="{DynamicResource ThemeControlVeryHighBrush}"/>
   </Style>-->
-  <Style Selector="ScrollBar:vertical">
-    <Setter Property="Width" Value="1" />
-  </Style>
-  <Style Selector="ScrollBar:horizontal">
-    <Setter Property="Height" Value="1" />
-  </Style>
-  <!--<Style Selector="ScrollBar /template/ RepeatButton.repeat">
+    <Style Selector="ScrollBar:vertical">
+        <Setter Property="Width"
+                Value="1" />
+    </Style>
+    <Style Selector="ScrollBar:horizontal">
+        <Setter Property="Height"
+                Value="1" />
+    </Style>
+    <!--<Style Selector="ScrollBar /template/ RepeatButton.repeat">
     <Setter Property="Padding" Value="2" />
     <Setter Property="BorderThickness" Value="0" />
   </Style>
@@ -135,7 +141,7 @@
     </Setter>
   </Style>-->
 
-  <!--<Style Selector="ScrollBar /template/ RepeatButton > Path">
+    <!--<Style Selector="ScrollBar /template/ RepeatButton > Path">
     <Setter Property="Fill" Value="{DynamicResource ThemeForegroundLowBrush}" />
   </Style>
 

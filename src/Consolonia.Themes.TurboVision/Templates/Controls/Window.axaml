@@ -9,7 +9,7 @@
     <Setter Property="FontSize"
             Value="{DynamicResource FontSizeNormal}" />
     <Setter Property="(dialog:DialogHost.IsDialogHost)"
-            Value="True"/>
+            Value="True" />
     <Setter Property="Template">
         <ControlTemplate>
             <Panel>

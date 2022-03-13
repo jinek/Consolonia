@@ -9,7 +9,7 @@
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="(helpers:ButtonExtensions.Shadow)"
-                Value="True"/>
+                Value="True" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Center" />
         <Setter Property="VerticalContentAlignment"
@@ -50,7 +50,7 @@
                             </helpers:CaretControl>
                         </Grid>
                     </Border>
-                    
+
                     <!--Shadow-->
                     <helpers:SymbolsControl Fill="True"
                                             Margin="1,0,1,0"
@@ -68,7 +68,7 @@
                                             VerticalAlignment="Stretch"
                                             Fill="True"
                                             HorizontalAlignment="Right"
-                                            Foreground="{DynamicResource ThemePseudoShadeBrush}"/>
+                                            Foreground="{DynamicResource ThemePseudoShadeBrush}" />
                     <helpers:SymbolsControl Margin="0,0,0,0"
                                             Text="▄"
                                             Width="1"
@@ -77,7 +77,7 @@
                                             Classes="shaded"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Top"
-                                            Foreground="{DynamicResource ThemePseudoShadeBrush}"/>
+                                            Foreground="{DynamicResource ThemePseudoShadeBrush}" />
                     <helpers:SymbolsControl Margin="0,0,0,0"
                                             Text="▀"
                                             Width="1"
@@ -86,7 +86,7 @@
                                             IsVisible="{TemplateBinding (helpers:ButtonExtensions.Shadow)}"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Bottom"
-                                            Foreground="{DynamicResource ThemePseudoShadeBrush}"/>
+                                            Foreground="{DynamicResource ThemePseudoShadeBrush}" />
                 </Panel>
 
             </ControlTemplate>
@@ -112,20 +112,20 @@
         <Setter Property="Padding"
                 Value="1,0" />
     </Style>-->
-        <Style Selector="Button:clickdelayed /template/ helpers|SymbolsControl.shaded">
-                <Setter Property="IsVisible"
-                        Value="False" />
-        </Style>
-    
+    <Style Selector="Button:clickdelayed /template/ helpers|SymbolsControl.shaded">
+        <Setter Property="IsVisible"
+                Value="False" />
+    </Style>
+
     <Style Selector="Button /template/ Border#InternalBorder">
         <Setter Property="Margin"
                 Value="0,0,1,1" />
     </Style>
-    
+
     <Style Selector="Button:clickdelayed /template/ Border#InternalBorder">
         <Setter Property="Margin"
                 Value="1,0,1,1" />
     </Style>
-    
-    
+
+
 </Styles>

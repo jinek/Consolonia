@@ -4,8 +4,5 @@ namespace Consolonia.Core.Infrastructure
 {
     internal class ConsoleKeyboardDevice : KeyboardDevice
     {
-        public ConsoleKeyboardDevice()
-        {
-        }
     }
 }

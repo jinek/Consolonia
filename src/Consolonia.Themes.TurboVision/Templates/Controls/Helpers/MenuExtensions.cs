@@ -26,40 +26,34 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 if (args.NewValue.Value)
                 {
                     visual.AttachedToVisualTree += OnAttachedToVisualTree;
-                    IDisposable disposable = visual.GetPropertyChangedObservable(Control.IsKeyboardFocusWithinProperty)
+                    IDisposable disposable = visual
+                        .GetPropertyChangedObservable(InputElement.IsKeyboardFocusWithinProperty)
                         .Subscribe(eventArgs =>
                         {
-                            if (!(bool)eventArgs.NewValue)
-                            {
+                            if (!(bool)eventArgs.NewValue!)
                                 Dispatcher.UIThread.Post(() =>
                                 {
-                                    var focusedControl = (Control)FocusManager.Instance.Current;
+                                    var focusedControl = (Control)FocusManager.Instance!.Current;
                                     var menuItems = visual.GetLogicalAncestors().OfType<MenuItem>();
 
                                     var focusedTree = focusedControl.GetLogicalAncestors();
 
                                     foreach (MenuItem menuItem in menuItems.Where(item => !focusedTree.Contains(item))
                                         .ToArray())
-                                    {
                                         menuItem.Close();
-                                    }
                                 });
-                            }
                         });
                     visual.SetValue(DisposablesProperty, new[] { disposable });
                 }
                 else
                 {
                     visual.AttachedToVisualTree -= OnAttachedToVisualTree;
-                    foreach (IDisposable disposable in visual.GetValue(DisposablesProperty))
-                    {
-                        disposable.Dispose();
-                    }
+                    foreach (IDisposable disposable in visual.GetValue(DisposablesProperty)) disposable.Dispose();
                 }
             });
         }
 
-        private static void OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
+        private static void OnAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
             Dispatcher.UIThread.Post(() =>
             {

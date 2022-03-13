@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
@@ -8,8 +8,9 @@ using Avalonia.Rendering;
 using Avalonia.Rendering.SceneGraph;
 using Avalonia.Utilities;
 using Avalonia.Visuals.Media.Imaging;
-using Consolonia.Core.Drawing.PixelBuffer;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
+using Consolonia.Core.InternalHelpers;
 using FormattedText = Consolonia.Core.Text.FormattedText;
 
 namespace Consolonia.Core.Drawing
@@ -17,24 +18,22 @@ namespace Consolonia.Core.Drawing
     internal class DrawingContextImpl : IDrawingContextImpl
     {
         private readonly Stack<Rect> _clipStack = new(100);
-        private readonly IConsole _console;
         private readonly ConsoleWindow _consoleWindow;
-        private readonly PixelBuffer.PixelBuffer _pixelBuffer;
+        private readonly PixelBuffer _pixelBuffer;
         private readonly IVisualBrushRenderer _visualBrushRenderer;
         private Matrix _postTransform = Matrix.Identity;
         private Matrix _transform;
 
         public DrawingContextImpl(ConsoleWindow consoleWindow, IVisualBrushRenderer visualBrushRenderer,
-            PixelBuffer.PixelBuffer pixelBuffer)
+            PixelBuffer pixelBuffer)
         {
             _consoleWindow = consoleWindow;
             _visualBrushRenderer = visualBrushRenderer;
             _pixelBuffer = pixelBuffer;
             _clipStack.Push(pixelBuffer.Size);
-            _console = AvaloniaLocator.Current.GetService<IConsole>();
         }
 
-        private Rect _currentClip => _clipStack.Peek();
+        private Rect CurrentClip => _clipStack.Peek();
 
         public void Dispose()
         {
@@ -59,10 +58,9 @@ namespace Consolonia.Core.Drawing
             Rect destRect,
             BitmapInterpolationMode bitmapInterpolationMode = BitmapInterpolationMode.Default)
         {
-            return;
-
-            //todo: when need this?
-            Rect clip = _currentClip.Intersect(destRect);
+            /*
+            //  prototype
+             Rect clip = _currentClip.Intersect(destRect);
             for (int x = 0; x < sourceRect.Width; x++)
             for (int y = 0; y < sourceRect.Height; y++)
             {
@@ -79,7 +77,7 @@ namespace Consolonia.Core.Drawing
                                 (ushort)(y + sourceRect.Top))]);
                     });
                 });
-            }
+            }*/
         }
 
         public void DrawBitmap(IRef<IBitmapImpl> source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
@@ -155,12 +153,12 @@ namespace Consolonia.Core.Drawing
                     {
                         int px = (int)(x + i);
                         int py = (int)(y + j);
-                        _currentClip.ExecuteWithClipping(new Point(px, py), () =>
+                        CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                         {
                             _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
                                 (pixel, bb) => pixel.Blend(
                                     new Pixel(
-                                        new PixelBackground(bb.Mode, bb.Color))),backgroundBrush);
+                                        new PixelBackground(bb.Mode, bb.Color))), backgroundBrush);
                         });
                     }
                 }
@@ -195,8 +193,8 @@ namespace Consolonia.Core.Drawing
 
         public void DrawGlyphRun(IBrush foreground, GlyphRun glyphRun)
         {
-            if (glyphRun.FontRenderingEmSize == 0) return;
-            if (glyphRun.FontRenderingEmSize != 1)
+            if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
+            if (!glyphRun.FontRenderingEmSize.IsNearlyEqual(1))
             {
                 ConsoloniaPlatform.RaiseNotSupported(3);
                 return;
@@ -215,7 +213,7 @@ namespace Consolonia.Core.Drawing
         public void PushClip(Rect clip)
         {
             clip = new Rect(clip.Position.Transform(Transform), clip.BottomRight.Transform(Transform));
-            _clipStack.Push(_currentClip.Intersect(clip));
+            _clipStack.Push(CurrentClip.Intersect(clip));
         }
 
         public void PushClip(RoundedRect clip)
@@ -230,7 +228,7 @@ namespace Consolonia.Core.Drawing
 
         public void PushOpacity(double opacity)
         {
-            if (opacity == 1) return;
+            if (opacity.IsNearlyEqual(1)) return;
             ConsoloniaPlatform.RaiseNotSupported(7);
         }
 
@@ -300,7 +298,7 @@ namespace Consolonia.Core.Drawing
 
             if (consoleColorBrush.Mode == PixelBackgroundMode.Transparent)
                 return null;
-            
+
             ConsoloniaPlatform.RaiseNotSupported(8);
 
             return null;
@@ -318,11 +316,9 @@ namespace Consolonia.Core.Drawing
 
             if (pen.Brush is MoveConsoleCaretToPositionBrush)
             {
-                _currentClip.ExecuteWithClipping(head, () =>
-                {
-                    _pixelBuffer.Set((PixelBufferCoordinate)head,pixel => pixel.Blend(new Pixel(true)));
-                });
-                
+                CurrentClip.ExecuteWithClipping(head,
+                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
+
                 return;
             }
 
@@ -345,10 +341,12 @@ namespace Consolonia.Core.Drawing
             {
                 for (int i = 0; i < count; i++)
                 {
-                    _currentClip.ExecuteWithClipping(head, () =>
+                    CurrentClip.ExecuteWithClipping(head, () =>
                     {
+                        // ReSharper disable once AccessToModifiedClosure todo: pass as a parameter
                         _pixelBuffer.Set((PixelBufferCoordinate)head,
-                            (Pixel pixel, (byte, ConsoleColor) mcC) => pixel.Blend(new Pixel(mcC.Item1, mcC.Item2)),(marker, consoleColor));
+                            (Pixel pixel, (byte, ConsoleColor) mcC) => pixel.Blend(new Pixel(mcC.Item1, mcC.Item2)),
+                            (marker, consoleColor));
                     });
                     head = line.Vertical
                         ? head.WithY(head.Y + 1)
@@ -374,13 +372,14 @@ namespace Consolonia.Core.Drawing
             for (int i = 0; i < str.Length; i++)
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(i, 0));
-                _currentClip.ExecuteWithClipping(characterPoint, () =>
+                CurrentClip.ExecuteWithClipping(characterPoint, () =>
                 {
                     ConsoleColor foregroundColor = consoleColorBrush.Color;
                     if (additionalBrushes != null)
                     {
                         (FormattedText.FBrushRange _, IBrush brush) = additionalBrushes.FirstOrDefault(pair =>
                         {
+                            // ReSharper disable once AccessToModifiedClosure //todo: pass as a parameter
                             int globalIndex = i + startIndex;
                             (FormattedText.FBrushRange key, _) = pair;
                             return key.StartIndex <= globalIndex && globalIndex < key.EndIndex;
@@ -398,10 +397,11 @@ namespace Consolonia.Core.Drawing
                         }
                     }
 
+                    // ReSharper disable once AccessToModifiedClosure //todo: pass as a parameter
                     var consolePixel = new Pixel(str[i], foregroundColor);
 
                     _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                        (oldPixel,cp) => oldPixel.Blend(cp),consolePixel);
+                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
                 });
             }
         }
