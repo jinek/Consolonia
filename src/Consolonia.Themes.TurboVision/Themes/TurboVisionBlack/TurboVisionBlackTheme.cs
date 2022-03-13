@@ -1,8 +1,10 @@
 using System;
 using Consolonia.Core.Styles;
+using JetBrains.Annotations;
 
-namespace Consolonia.Themes.TurboVision.Themes.TurboVisionDark
+namespace Consolonia.Themes.TurboVision.Themes.TurboVisionBlack
 {
+    [UsedImplicitly]
     public class TurboVisionBlackTheme : ResourceIncludeBase
     {
         public TurboVisionBlackTheme(Uri baseUri) : base(baseUri)
@@ -13,6 +15,7 @@ namespace Consolonia.Themes.TurboVision.Themes.TurboVisionDark
         {
         }
 
-        protected override Uri Uri => new(@"avares://Consolonia.Themes.TurboVision/Themes/TurboVisionBlack/TurboVisionBlack.axaml");
+        protected override Uri Uri =>
+            new(@"avares://Consolonia.Themes.TurboVision/Themes/TurboVisionBlack/TurboVisionBlack.axaml");
     }
 }

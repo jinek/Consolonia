@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using MiniMvvm;
 
-namespace ControlCatalog.ViewModels
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public class MenuPageViewModel
     {
-        public Control View { get; set; }
         public MenuPageViewModel()
         {
             OpenCommand = MiniCommand.CreateFromTask(Open);
@@ -27,7 +30,7 @@ namespace ControlCatalog.ViewModels
                     Header = "File2.txt",
                     Command = OpenRecentCommand,
                     CommandParameter = @"c:\foo\File2.txt"
-                },
+                }
             };
 
             RecentItems = recentItems;
@@ -45,7 +48,7 @@ namespace ControlCatalog.ViewModels
                         {
                             Header = "Recent",
                             Items = recentItems
-                        },
+                        }
                     }
                 },
                 new MenuItemViewModel
@@ -54,20 +57,23 @@ namespace ControlCatalog.ViewModels
                     Items = new[]
                     {
                         new MenuItemViewModel { Header = "_Copy" },
-                        new MenuItemViewModel { Header = "_Paste" },
+                        new MenuItemViewModel { Header = "_Paste" }
                     }
                 }
             };
         }
 
-        public IReadOnlyList<MenuItemViewModel> MenuItems { get; set; }
-        public IReadOnlyList<MenuItemViewModel> RecentItems { get; set; }
+        public Control View { get; set; }
+
+        public IReadOnlyList<MenuItemViewModel> MenuItems { get; }
+        public IReadOnlyList<MenuItemViewModel> RecentItems { get; }
         public MiniCommand OpenCommand { get; }
         public MiniCommand SaveCommand { get; }
         public MiniCommand OpenRecentCommand { get; }
 
-        public async Task Open()
+        public Task Open()
         {
+            return Task.CompletedTask;
             /*todo: dialog does not work
              var window = View?.GetVisualRoot() as Window;
             if (window == null)
@@ -86,12 +92,12 @@ namespace ControlCatalog.ViewModels
 
         public void Save()
         {
-            System.Diagnostics.Debug.WriteLine("Save");
+            Debug.WriteLine("Save");
         }
 
         public void OpenRecent(string path)
         {
-            System.Diagnostics.Debug.WriteLine($"Open recent: {path}");
+            Debug.WriteLine($"Open recent: {path}");
         }
     }
 }

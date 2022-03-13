@@ -9,7 +9,8 @@
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryTextBlock">
     <UserControl.Styles>
         <Style Selector="StackPanel">
-            <Setter Property="Spacing" Value="1"/>
+            <Setter Property="Spacing"
+                    Value="1" />
         </Style>
     </UserControl.Styles>
     <!--Examples from Avalonia https://github.com/AvaloniaUI/Avalonia/blob/master/samples/ControlCatalog/Pages/TextBlockPage.xaml-->
@@ -17,10 +18,10 @@
         <TextBlock Text="This is TextBlock" />
         <TextBlock Text="This is colored TextBlock">
             <TextBlock.Background>
-                <drawing:FourBitColorBrush Color="Blue"/>
+                <drawing:FourBitColorBrush Color="Blue" />
             </TextBlock.Background>
             <TextBlock.Foreground>
-                <drawing:FourBitColorBrush Color="DarkRed"/>
+                <drawing:FourBitColorBrush Color="DarkRed" />
             </TextBlock.Foreground>
         </TextBlock>
         <Grid ColumnDefinitions="* *">
@@ -40,9 +41,8 @@
                            TextAlignment="Right" />
             </StackPanel>
         </Grid>
-        <TextBlock
-            TextWrapping="Wrap"
-            Text="Multiline TextBlock with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
+        <TextBlock TextWrapping="Wrap"
+                   Text="Multiline TextBlock with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
     </StackPanel>
 
 </UserControl>

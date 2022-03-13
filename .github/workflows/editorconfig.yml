@@ -1,0 +1,63 @@
+name: Code Inspections
+
+concurrency: build_checks_deploy
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # from https://github.com/marketplace/actions/dotnet-format
+    steps:
+      - name: Get branch info # todo: is this needed?
+        id: comment-branch
+        uses: xt0rted/pull-request-comment-branch@v1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.comment-branch.outputs.ref }}
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+          
+      - name: Restore
+        run: dotnet restore
+        working-directory: ./src
+        
+      - name: Inspect code
+        uses: muno92/resharper_inspectcode@1.4.0
+        with:
+          solutionPath: ./src/Consolonia.sln
+
+      - name: install-resharper
+        run: |
+          dotnet tool install -g JetBrains.ReSharper.GlobalTools
+        continue-on-error: true # todo: need to check whether has changes
+
+      - name: resharper-cleanup
+        run: |                    
+          jb cleanupcode Consolonia.sln
+        working-directory: ./src
+
+      - name: Commit files
+        continue-on-error: true # todo: need to check whether has changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -a -m 'Automated JetBrains cleanup
+
+          Co-authored-by: ${{ github.event.comment.user.login }} <${{ github.event.comment.user.id }}+${{ github.event.comment.user.login }}@users.noreply.github.com>'
+          
+      - name: Push changes        
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          branch: ${{ steps.comment-branch.outputs.ref }}
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}

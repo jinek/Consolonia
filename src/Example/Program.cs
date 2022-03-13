@@ -1,4 +1,4 @@
-﻿using Consolonia.Core;
+using Consolonia.Core;
 
 namespace Example
 {

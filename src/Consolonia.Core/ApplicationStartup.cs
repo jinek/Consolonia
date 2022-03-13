@@ -47,8 +47,7 @@ namespace Consolonia.Core
                     "Consolonia");
 
             AppBuilder app = usePlatformDetect
-                .LogToTrace()
-                .UseReactiveUI();
+                .LogToTrace();
 
             var lifetime = new ClassicDesktopStyleApplicationLifetime
             {

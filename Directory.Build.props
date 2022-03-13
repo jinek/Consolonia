@@ -1,13 +1,11 @@
 ﻿<Project>
     <PropertyGroup>
+        <!--todo: add mono-->
         <TargetFramework>net5.0</TargetFramework>
-        <RootNamespace>$(MSBuildProjectName)</RootNamespace>
-        <!--todo: enable nullable-->
         <Nullable>disable</Nullable>
     </PropertyGroup>
     <PropertyGroup>
         <VersionPrefix>0.10.12</VersionPrefix>
-        <VersionSuffix></VersionSuffix>
         <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
         <Description>Text User Interface implementation of Avalonia UI (GUI Framework)</Description>
         <Copyright>Copyright © Evgeny Gorbovoy 2021 - 2022</Copyright>

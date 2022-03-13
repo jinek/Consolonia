@@ -53,11 +53,11 @@
                             <StackPanel HorizontalAlignment="Center"
                                         VerticalAlignment="Top"
                                         Margin="{TemplateBinding Margin}"
-                                        ZIndex="10" 
+                                        ZIndex="10"
                                         Orientation="Horizontal">
-                                <helpers:SymbolsControl Text=" "/>
+                                <helpers:SymbolsControl Text=" " />
                                 <TextBlock Text="{TemplateBinding Title}" />
-                                <helpers:SymbolsControl Text=" "/>
+                                <helpers:SymbolsControl Text=" " />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal"
                                         ZIndex="10"

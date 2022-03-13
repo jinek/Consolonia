@@ -1,22 +1,22 @@
-﻿namespace Consolonia.Core.Drawing.PixelBuffer
+namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public readonly struct SimpleSymbol : ISymbol
     {
         public SimpleSymbol(char character)
         {
-            Character = character;
+            _character = character;
         }
 
-        private readonly char Character;
+        private readonly char _character;
 
         char ISymbol.GetCharacter()
         {
-            return Character;
+            return _character;
         }
 
         public bool IsWhiteSpace()
         {
-            return Character == char.MinValue;
+            return _character == char.MinValue;
         }
 
         public ISymbol Blend(ref ISymbol symbolAbove)

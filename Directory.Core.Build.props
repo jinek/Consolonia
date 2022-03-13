@@ -1,0 +1,13 @@
+<Project>
+    <PropertyGroup>
+        <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+        <IsPackable>true</IsPackable>
+        <!--todo: enable nullable-->
+        <Nullable>disable</Nullable>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+        <AnalysisLevel>5.0</AnalysisLevel>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+</Project>

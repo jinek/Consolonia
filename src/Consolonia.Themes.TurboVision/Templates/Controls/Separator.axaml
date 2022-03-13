@@ -15,7 +15,8 @@
     </Style>
 
     <Style Selector="MenuItem > Separator, ContextMenu > Separator">
-        <Setter Property="Foreground" Value="{DynamicResource ThemeNoDisturbBrush}"/>
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="Margin"

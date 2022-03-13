@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.Platform;
@@ -14,6 +14,22 @@ namespace Consolonia.Core.Infrastructure
 {
     public class ConsoloniaPlatform : IWindowingPlatform
     {
+        public IWindowImpl CreateWindow()
+        {
+            return new ConsoleWindow();
+        }
+
+        public IWindowImpl CreateEmbeddableWindow()
+        {
+            RaiseNotSupported(13);
+            return null;
+        }
+
+        public ITrayIconImpl CreateTrayIcon()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Initialize(IConsole console)
         {
             NotSupported += InternalIgnore;
@@ -34,31 +50,15 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IMountedVolumeInfoProvider>().ToConstant(new LinuxMountedVolumeInfoProvider());
         }
 
-        public IWindowImpl CreateWindow()
-        {
-            return new ConsoleWindow();
-        }
-
-        public IWindowImpl CreateEmbeddableWindow()
-        {
-            RaiseNotSupported(13);
-            return null;
-        }
-
-        public ITrayIconImpl? CreateTrayIcon()
-        {
-            throw new NotImplementedException();
-        }
-
         [DebuggerStepThrough]
         internal static void RaiseNotSupported(int errorCode, params object[] information)
         {
-            var notSupportedRequest = new NotSupportedRequest { ErrorCode = errorCode, Information = information };
+            var notSupportedRequest = new NotSupportedRequest(errorCode, information);
             NotSupported?.Invoke(notSupportedRequest);
             notSupportedRequest.CheckHandled();
         }
 
-        public static event Action<NotSupportedRequest>? NotSupported;
+        public static event Action<NotSupportedRequest> NotSupported;
 
         private static void InternalIgnore(NotSupportedRequest notSupportedRequest)
         {

@@ -5,28 +5,24 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 
+// ReSharper disable MemberCanBeProtected.Global
+
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 {
     public class DialogWindow : UserControl
     {
-        private Window _parentWindow;
-        private IDisposable _disposable2;
-
         public static readonly DirectProperty<DialogWindow, Size> ContentSizeProperty =
             AvaloniaProperty.RegisterDirect<DialogWindow, Size>(nameof(ContentSize), window => window.ContentSize);
 
+        public static readonly StyledProperty<string> TitleProperty = Window.TitleProperty.AddOwner<DialogWindow>();
+
+        public static readonly StyledProperty<bool> IsCloseButtonVisibleProperty =
+            AvaloniaProperty.Register<DialogWindow, bool>(nameof(IsCloseButtonVisible), true);
+
         private Size _contentSize = Size.Empty;
+        private IDisposable _disposable2;
 
-        public Size ContentSize
-        {
-            get => _contentSize;
-            private set => SetAndRaise(ContentSizeProperty, ref _contentSize, value);
-        }
-
-        public DialogWindow()
-        {
-            KeyDown += InputElement_OnKeyDown;
-        }
+        private TaskCompletionSource _taskCompletionSource;
 
         static DialogWindow()
         {
@@ -34,7 +30,16 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             ContentProperty.Changed.AddClassHandler<DialogWindow>((x, e) => x.ContentChanged2(e));
         }
 
-        public static readonly StyledProperty<string> TitleProperty = Window.TitleProperty.AddOwner<DialogWindow>();
+        public DialogWindow()
+        {
+            KeyDown += InputElement_OnKeyDown;
+        }
+
+        public Size ContentSize
+        {
+            get => _contentSize;
+            private set => SetAndRaise(ContentSizeProperty, ref _contentSize, value);
+        }
 
         public string Title
         {
@@ -42,21 +47,20 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             set => SetValue(TitleProperty, value);
         }
 
-        public static readonly StyledProperty<bool> IsCloseButtonVisibleProperty =
-            AvaloniaProperty.Register<DialogWindow, bool>(nameof(IsCloseButtonVisible), true);
-
         public bool IsCloseButtonVisible
         {
             get => GetValue(IsCloseButtonVisibleProperty);
             set => SetValue(IsCloseButtonVisibleProperty, value);
         }
 
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
+        // ReSharper disable once MemberCanBePrivate.Global
         public bool CancelOnEscape { get; set; } = true;
 
         // ReSharper disable once UnusedMember.Global Used by template
-        public void CloseClick(object _)
+        public void CloseClick()
         {
-            if(CancelOnEscape)
+            if (CancelOnEscape)
                 CloseDialog();
         }
 
@@ -64,9 +68,9 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         {
             var control = (IControl)args.NewValue;
             _disposable2?.Dispose();
-            _disposable2 = control?.GetPropertyChangedObservable(BoundsProperty).Subscribe(args =>
+            _disposable2 = control?.GetPropertyChangedObservable(BoundsProperty).Subscribe(args2 =>
             {
-                var rect = (Rect)args.NewValue;
+                var rect = (Rect)args2.NewValue!;
                 ContentSize = rect.Size;
             });
         }
@@ -77,14 +81,13 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             dialogHost.OpenInternal(this);
         }
 
+        // ReSharper disable once VirtualMemberNeverOverridden.Global overriden in other packages, why resharper suggests this?
         public virtual void CloseDialog()
         {
             DialogHost dialogHost = GetDialogHost(this);
             dialogHost.PopInternal(this);
             _taskCompletionSource.SetResult();
         }
-
-        private TaskCompletionSource _taskCompletionSource;
 
         public Task ShowDialogAsync(IControl parent)
         {
@@ -102,8 +105,8 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             DialogHost dialogHost = window.GetValue(DialogHost.DialogHostProperty);
             return dialogHost;
         }
-        
-        private void InputElement_OnKeyDown(object? sender, KeyEventArgs e)
+
+        private void InputElement_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (!CancelOnEscape) return;
             if (e.Key is not (Key.Cancel or Key.Escape)) return;

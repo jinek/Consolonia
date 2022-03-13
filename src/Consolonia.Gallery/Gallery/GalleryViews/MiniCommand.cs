@@ -2,14 +2,14 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace MiniMvvm
+namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public sealed class MiniCommand<T> : MiniCommand, ICommand
+    public sealed class MiniCommand<T> : MiniCommand
     {
+        private readonly Func<T, Task> _acb;
         private readonly Action<T> _cb;
         private bool _busy;
-        private Func<T, Task> _acb;
-        
+
         public MiniCommand(Action<T> cb)
         {
             _cb = cb;
@@ -30,13 +30,17 @@ namespace MiniMvvm
             }
         }
 
-        
+
         public override event EventHandler CanExecuteChanged;
-        public override bool CanExecute(object parameter) => !_busy;
+
+        public override bool CanExecute(object parameter)
+        {
+            return !_busy;
+        }
 
         public override async void Execute(object parameter)
         {
-            if(Busy)
+            if (Busy)
                 return;
             try
             {
@@ -52,15 +56,26 @@ namespace MiniMvvm
             }
         }
     }
-    
+
     public abstract class MiniCommand : ICommand
     {
-        public static MiniCommand Create(Action cb) => new MiniCommand<object>(_ => cb());
-        public static MiniCommand Create<TArg>(Action<TArg> cb) => new MiniCommand<TArg>(cb);
-        public static MiniCommand CreateFromTask(Func<Task> cb) => new MiniCommand<object>(_ => cb());
-        
         public abstract bool CanExecute(object parameter);
         public abstract void Execute(object parameter);
         public abstract event EventHandler CanExecuteChanged;
+
+        public static MiniCommand Create(Action cb)
+        {
+            return new MiniCommand<object>(_ => cb());
+        }
+
+        public static MiniCommand Create<TArg>(Action<TArg> cb)
+        {
+            return new MiniCommand<TArg>(cb);
+        }
+
+        public static MiniCommand CreateFromTask(Func<Task> cb)
+        {
+            return new MiniCommand<object>(_ => cb());
+        }
     }
 }

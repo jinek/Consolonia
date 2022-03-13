@@ -1,4 +1,4 @@
-﻿namespace Consolonia.Core.Drawing.PixelBuffer
+namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public enum PixelBackgroundMode : byte
     {

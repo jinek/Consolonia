@@ -1,8 +1,11 @@
 using Avalonia.Controls;
+using Avalonia.Input.TextInput;
 using Avalonia.Markup.Xaml;
+using JetBrains.Annotations;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
+    [UsedImplicitly]
     [GalleryOrder(80)]
     public class GalleryTextBox : UserControl
     {
@@ -14,13 +17,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            TextBox? textBox = this.Find<TextBox>("numericWatermark");
+            var textBox = this.Find<TextBox>("NumericWatermark");
             if (textBox != null)
                 textBox
-                    .TextInputOptionsQuery += (_, a) =>
-                {
-                    a.ContentType = Avalonia.Input.TextInput.TextInputContentType.Number;
-                };
+                    .TextInputOptionsQuery += (_, a) => { a.ContentType = TextInputContentType.Number; };
         }
     }
 }

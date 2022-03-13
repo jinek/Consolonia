@@ -1,5 +1,7 @@
 name: General Build
 
+concurrency: build_checks_deploy
+
 on:
   push:
     branches: [ main ]

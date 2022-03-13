@@ -1,18 +1,21 @@
-﻿using System;
+using System;
 
-namespace Consolonia.Core.Drawing.PixelBuffer
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
+
+namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public readonly struct Pixel
     {
-        public readonly PixelForeground Foreground;
-        public readonly PixelBackground Background;
-        public readonly bool IsCaret;
+        public PixelForeground Foreground { get; }
+        public PixelBackground Background { get; }
+        public bool IsCaret { get; }
 
         public Pixel(bool isCaret) : this(PixelBackgroundMode.Transparent)
         {
             IsCaret = isCaret;
         }
-        
+
         public Pixel(char character, ConsoleColor foregroundColor) : this(new SimpleSymbol(character),
             foregroundColor)
         {
@@ -43,7 +46,7 @@ namespace Consolonia.Core.Drawing.PixelBuffer
         {
         }
 
-        public Pixel(PixelForeground foreground, PixelBackground background, bool isCaret=false)
+        public Pixel(PixelForeground foreground, PixelBackground background, bool isCaret = false)
         {
             Foreground = foreground;
             Background = background;
@@ -55,7 +58,7 @@ namespace Consolonia.Core.Drawing.PixelBuffer
             PixelForeground newForeground;
             PixelBackground newBackground;
             bool newIsCaret;
-            
+
             switch (pixelAbove.Background.Mode)
             {
                 case PixelBackgroundMode.Colored:

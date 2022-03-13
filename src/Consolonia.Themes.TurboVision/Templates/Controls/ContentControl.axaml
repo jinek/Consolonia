@@ -1,4 +1,5 @@
-<Style xmlns="https://github.com/avaloniaui" Selector="ContentControl">
+<Style xmlns="https://github.com/avaloniaui"
+       Selector="ContentControl">
     <Setter Property="Template">
         <ControlTemplate>
             <ContentPresenter Name="PART_ContentPresenter"
@@ -9,7 +10,7 @@
                               Content="{TemplateBinding Content}"
                               Padding="{TemplateBinding Padding}"
                               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
         </ControlTemplate>
     </Setter>
 </Style>

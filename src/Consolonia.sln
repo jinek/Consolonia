@@ -4,9 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Core", "Consolonia.Core\Consolonia.Core.csproj", "{9ED11926-949D-4D5A-8EA7-41CAB1229C47}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18168988-BF89-4EE5-8F64-1FAFB68462A2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{18168988-BF89-4EE5-8F64-1FAFB68462A2}"
 ProjectSection(SolutionItems) = preProject
 	readme.md = readme.md
+	.editorconfig = .editorconfig
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Gallery", "Consolonia.Gallery\Consolonia.Gallery.csproj", "{70643248-718D-46F8-8775-E1674787B195}"
@@ -14,8 +15,22 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Themes.TurboVision", "Consolonia.Themes.TurboVision\Consolonia.Themes.TurboVision.csproj", "{850A3EF5-2E1F-4876-B3DE-D5C99FDFC135}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{476E1582-855A-4BEB-BA7D-55302428EE62}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RepoRoot", "RepoRoot", "{09FEC8F0-8390-4E31-9C89-9174697FF341}"
 	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
 		..\Directory.Build.props = ..\Directory.Build.props
+		..\Directory.Core.Build.props = ..\Directory.Core.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{A8CC5246-0D48-4418-B3E8-AC82ADB269E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{7B64DD09-94E2-47DE-8490-189B9B406A5A}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\general_build.yml = ..\.github\workflows\general_build.yml
+		..\.github\workflows\editorconfig.yml = ..\.github\workflows\editorconfig.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F756B909-46C5-43FF-8322-86EC36B51841}"
@@ -58,5 +73,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4C915339-CE21-4E48-A97E-7F3A02AEF1FA} = {F756B909-46C5-43FF-8322-86EC36B51841}
 		{1AE0207B-BF59-4473-97E1-79FEB7FA1AD5} = {F756B909-46C5-43FF-8322-86EC36B51841}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A8CC5246-0D48-4418-B3E8-AC82ADB269E9} = {09FEC8F0-8390-4E31-9C89-9174697FF341}
+		{7B64DD09-94E2-47DE-8490-189B9B406A5A} = {A8CC5246-0D48-4418-B3E8-AC82ADB269E9}
 	EndGlobalSection
 EndGlobal

@@ -3,9 +3,11 @@ using System.Collections;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using JetBrains.Annotations;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
+    [UsedImplicitly]
     [GalleryOrder(50)]
     public class GalleryComboBox : UserControl
     {
@@ -18,13 +20,13 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             AvaloniaXamlLoader.Load(this);
 
-            var fontComboBox = this.Find<ComboBox>("varsComboBox");
-            
+            var fontComboBox = this.Find<ComboBox>("VarsComboBox");
+
             fontComboBox.Items = Environment.GetEnvironmentVariables()
                 .Cast<DictionaryEntry>()
                 .Select(environmentVariable => environmentVariable.Key + "=" + environmentVariable.Value).ToList();
 
-                fontComboBox.SelectedIndex = 0;
+            fontComboBox.SelectedIndex = 0;
         }
     }
 }

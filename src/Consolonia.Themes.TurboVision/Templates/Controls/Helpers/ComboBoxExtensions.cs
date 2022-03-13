@@ -24,7 +24,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         {
             OpenOnEnterProperty.Changed.AddClassHandler<ComboBox>((box, args) =>
             {
-                if ((bool)args.NewValue)
+                if ((bool)args.NewValue!)
                     box.KeyDown += BoxOnKeyDown;
                 else
                     box.KeyDown -= BoxOnKeyDown;
@@ -39,27 +39,23 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 {
                     itemsPresenter.AttachedToVisualTree += ItemContainerGeneratorOnMaterialized;
 
-                    IDisposable disposable1 = comboBox.GetPropertyChangedObservable(ComboBox.IsFocusedProperty)
+                    IDisposable disposable1 = comboBox.GetPropertyChangedObservable(InputElement.IsFocusedProperty)
                         .Subscribe(eventArgs =>
                         {
-                            if (!(bool)eventArgs.NewValue && !itemsPresenter.IsKeyboardFocusWithin)
-                            {
+                            if (!(bool)eventArgs.NewValue! && !itemsPresenter.IsKeyboardFocusWithin)
                                 Dispatcher.UIThread.Post(() => { comboBox.IsDropDownOpen = false; });
-                            }
                         });
 
                     IDisposable disposable2 = itemsPresenter
-                        .GetPropertyChangedObservable(ItemsPresenter.IsKeyboardFocusWithinProperty)
+                        .GetPropertyChangedObservable(InputElement.IsKeyboardFocusWithinProperty)
                         .Subscribe(eventArgs =>
                         {
-                            if (!(bool)eventArgs.NewValue && !comboBox.IsKeyboardFocusWithin)
-                            {
+                            if (!(bool)eventArgs.NewValue! && !comboBox.IsKeyboardFocusWithin)
                                 Dispatcher.UIThread.Post(() =>
                                 {
                                     comboBox.IsDropDownOpen = false;
                                     comboBox.Focus();
                                 });
-                            }
                         });
 
                     itemsPresenter.SetValue(DisposablesProperty, new[] { disposable1, disposable2 });
@@ -73,14 +69,14 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     itemsPresenter.AttachedToVisualTree -= ItemContainerGeneratorOnMaterialized;
                 }
 
-                static void ItemContainerGeneratorOnMaterialized(object? sender,
+                static void ItemContainerGeneratorOnMaterialized(object sender,
                     VisualTreeAttachmentEventArgs visualTreeAttachmentEventArgs)
                 {
                     var comboBox = ((ItemsPresenter)sender).FindLogicalAncestorOfType<ComboBox>();
                     Dispatcher.UIThread.Post(() =>
                     {
                         typeof(ComboBox).GetMethod("TryFocusSelectedItem",
-                                BindingFlags.Instance | BindingFlags.NonPublic)
+                                BindingFlags.Instance | BindingFlags.NonPublic)!
                             .Invoke(comboBox, null);
                     });
                 }
@@ -88,7 +84,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 
             FocusOnOpenProperty.Changed.AddClassHandler<ComboBox>((box, args) =>
             {
-                if ((bool)args.NewValue)
+                if ((bool)args.NewValue!)
                     box.KeyDown += BoxOnKeyDown;
                 else
                     box.KeyDown -= BoxOnKeyDown;
