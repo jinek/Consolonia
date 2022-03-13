@@ -25,7 +25,7 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration release
       - name: Test
-        run: dotnet test --configuration release
+        run: dotnet test # --configuration release todo: release get stuck and never finishes
       - name: Pack
         run: dotnet pack --configuration release -o ./packages --version-suffix alpha-${{ github.run_number }} # https://stackoverflow.com/a/60067489/2362847
       - name: Push
