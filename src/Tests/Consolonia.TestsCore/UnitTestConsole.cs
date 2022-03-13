@@ -54,7 +54,9 @@ namespace Consolonia.TestsCore
                         new PixelBackground(PixelBackgroundMode.Colored, backgroundColor)));
         }
 
+        #pragma warning disable CS0067
         public event Action Resized;
+        #pragma warning restore CS0067
         public event Action<Key, char, RawInputModifiers> KeyPress;
 
         public async Task StringInput(string input)
@@ -67,7 +69,7 @@ namespace Consolonia.TestsCore
                 KeyPress?.Invoke(key, c, RawInputModifiers.None);
             }
 
-            await WaitDispatched();
+            await WaitDispatched().ConfigureAwait(true);
         }
 
         public async Task WaitDispatched()
@@ -79,24 +81,24 @@ namespace Consolonia.TestsCore
                         noDirtyRegions = ((ConsoleWindow)_lifetime.MainWindow.PlatformImpl)
                             .InvalidatedRects.Count == 0;
                     },
-                    DispatcherPriority.ContextIdle);
+                    DispatcherPriority.ContextIdle).ConfigureAwait(true);
         }
 
         public async Task KeyInput(params Key[] keys)
         {
-            foreach (Key key in keys) await KeyInput(key);
+            foreach (Key key in keys) await KeyInput(key).ConfigureAwait(true);
         }
 
         public async Task KeyInput(int repeat, Key key, RawInputModifiers modifiers = RawInputModifiers.None)
         {
-            foreach (int _ in Enumerable.Range(0, repeat)) await KeyInput(key, modifiers);
+            foreach (int _ in Enumerable.Range(0, repeat)) await KeyInput(key, modifiers).ConfigureAwait(true);
         }
 
         public async Task KeyInput(Key key, RawInputModifiers modifiers = RawInputModifiers.None)
         {
             KeyPress(key, char.MinValue /*will be skipped as control character*/, modifiers);
 
-            await WaitDispatched();
+            await WaitDispatched().ConfigureAwait(true);
         }
 
         internal string PrintBuffer()

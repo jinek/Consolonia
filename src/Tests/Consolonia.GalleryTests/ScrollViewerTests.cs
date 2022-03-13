@@ -5,7 +5,7 @@ using Consolonia.TestsCore;
 
 namespace Consolonia.GalleryTests
 {
-    internal class ScrollViewerTests : GalleryTestsBase
+    internal class ScrollViewerTests : GalleryTestsBaseBase
     {
         protected override async Task PerformSingleTest()
         {

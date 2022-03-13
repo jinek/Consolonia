@@ -5,7 +5,7 @@ using Consolonia.TestsCore;
 
 namespace Consolonia.GalleryTests
 {
-    internal class ListBoxTests : GalleryTestsBase
+    internal class ListBoxTests : GalleryTestsBaseBase
     {
         protected override async Task PerformSingleTest()
         {

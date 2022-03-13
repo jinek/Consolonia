@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Consolonia.GalleryTests
 {
     [TestFixture]
-    internal class ButtonTests : GalleryTestsBase
+    internal class ButtonTests : GalleryTestsBaseBase
     {
         protected override async Task PerformSingleTest()
         {

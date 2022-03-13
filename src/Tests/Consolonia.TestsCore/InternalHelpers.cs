@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Reflection;
 using Avalonia.Threading;
 
@@ -9,7 +10,7 @@ namespace Consolonia.TestsCore
         {
             typeof(Dispatcher).InvokeMember("UpdateServices",
                 BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.InvokeMethod, null,
-                dispatcher, null);
+                dispatcher, null,CultureInfo.InvariantCulture);
         }
     }
 }

@@ -4,7 +4,7 @@ using Consolonia.TestsCore;
 
 namespace Consolonia.GalleryTests
 {
-    internal class TextBlockTests : GalleryTestsBase
+    internal class TextBlockTests : GalleryTestsBaseBase
     {
         protected override Task PerformSingleTest()
         {

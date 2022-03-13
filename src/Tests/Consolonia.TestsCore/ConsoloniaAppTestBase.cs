@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,26 +13,31 @@ using NUnit.Framework;
 
 namespace Consolonia.TestsCore
 {
-    public abstract class ConsoloniaAppTest<TApp> where TApp : Application, new()
+#pragma warning disable CA1001 // we are relying on TearDown by NUnit
+    public abstract class ConsoloniaAppTestBase<TApp> where TApp : Application, new()
+#pragma warning restore CA1001
     {
         private readonly PixelBufferSize _size;
         private ClassicDesktopStyleApplicationLifetime _lifetime;
         private IDisposable _scope;
-        protected UnitTestConsole UITest;
+        protected UnitTestConsole UITest { get; private set; }
 
-        protected ConsoloniaAppTest(PixelBufferSize size)
+        protected ConsoloniaAppTestBase(PixelBufferSize size)
         {
             _size = size;
         }
 
+#pragma warning disable CA1819 // todo: provite a solution
         protected string[] Args { get; init; }
+#pragma warning restore CA1819
 
         [SetUp]
         public async Task Setup()
         {
             UITest = new UnitTestConsole(_size);
             bool setup = false;
-            Task.Run(() =>
+            
+            ThreadPool.QueueUserWorkItem(_ =>
             {
                 _scope = AvaloniaLocator.EnterScope();
                 _lifetime = ApplicationStartup.BuildLifetime<TApp>(UITest, Args);
@@ -42,10 +48,9 @@ namespace Consolonia.TestsCore
 
                 // Resetting static of AppBuilderBase
                 typeof(AppBuilderBase<AppBuilder>).GetField("s_setupWasAlreadyCalled",
-                        BindingFlags.Static | BindingFlags.NonPublic)
+                        BindingFlags.Static | BindingFlags.NonPublic)!
                     .SetValue(null, false);
-            }).ContinueWith(_ => { ThreadPool.QueueUserWorkItem(_ => throw new NotImplementedException()); },
-                TaskContinuationOptions.OnlyOnFaulted);
+            });
 
             while (!setup) /*todo: replace by semaphore/WaitHandler*/ ;
 
@@ -59,20 +64,20 @@ namespace Consolonia.TestsCore
                     {
                         Window mainWindow = _lifetime?.MainWindow;
                         return mainWindow != null;
-                    });
+                    }).ConfigureAwait(false);
                     if (windowFound)
                         return;
                 }
-            }, cancellationToken);
+            }, cancellationToken).ConfigureAwait(true);
 
             // Waiting all jobs to finish
-            await UITest.WaitDispatched();
+            await UITest.WaitDispatched().ConfigureAwait(true);
         }
 
         [TearDown]
         public async Task TearDown()
         {
-            await Dispatcher.UIThread.InvokeAsync(() => { _lifetime.Shutdown(); });
+            await Dispatcher.UIThread.InvokeAsync(() => { _lifetime.Shutdown(); }).ConfigureAwait(true);;
 
             _lifetime.Dispose();
             _lifetime = null;
