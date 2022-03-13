@@ -24,6 +24,8 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore --configuration release
+      - name: Test
+        run: dotnet test --configuration release
       - name: Pack
         run: dotnet pack --configuration release -o ./packages --version-suffix alpha-${{ github.run_number }} # https://stackoverflow.com/a/60067489/2362847
       - name: Push

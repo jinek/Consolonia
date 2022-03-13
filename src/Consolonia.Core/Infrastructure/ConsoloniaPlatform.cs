@@ -14,13 +14,13 @@ namespace Consolonia.Core.Infrastructure
 {
     public class ConsoloniaPlatform : IWindowingPlatform
     {
-        public void Initialize()
+        public void Initialize(IConsole console)
         {
             NotSupported += InternalIgnore;
-
+            
             AvaloniaLocator.CurrentMutable.BindToSelf(this)
                 .Bind<IWindowingPlatform>().ToConstant(this)
-                .Bind<IConsole>().ToConstant(new DefaultNetConsole())
+                .Bind<IConsole>().ToConstant(console)
                 .Bind<IPlatformThreadingInterface>().ToSingleton<ConsoloniaPlatformThreadingInterface>()
                 .Bind<IRenderTimer>().ToConstant(new UiThreadRenderTimer(120))
                 .Bind<IRenderLoop>().ToConstant(new RenderLoop())

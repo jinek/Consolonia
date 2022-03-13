@@ -14,10 +14,23 @@ namespace Consolonia.Core
 {
     public static class ApplicationStartup
     {
-        public static void StartConsolonia<TApp>() where TApp : Application, new()
+        public static void StartConsolonia<TApp>(params string[] args) where TApp : Application, new()
+        {
+            StartConsolonia<TApp>(new DefaultNetConsole(), args);
+        }
+        
+        public static void StartConsolonia<TApp>(IConsole console, params string[] args) where TApp : Application, new()
+        {
+            ClassicDesktopStyleApplicationLifetime lifetime = BuildLifetime<TApp>(console, args);
+
+            lifetime.Start(args);
+        }
+
+        public static ClassicDesktopStyleApplicationLifetime BuildLifetime<TApp>(IConsole console, string[] args)
+            where TApp : Application, new()
         {
             AppBuilder usePlatformDetect = AppBuilder.Configure<TApp>()
-                .UseWindowingSubsystem(() => new ConsoloniaPlatform().Initialize())
+                .UseWindowingSubsystem(() => new ConsoloniaPlatform().Initialize(console))
                 .UseRenderingSubsystem(() =>
                     {
                         var platformRenderInterface =
@@ -39,13 +52,12 @@ namespace Consolonia.Core
 
             var lifetime = new ClassicDesktopStyleApplicationLifetime
             {
-                /*Args = args,*/
-                ShutdownMode = ShutdownMode.OnMainWindowClose,
+                Args = args,
+                ShutdownMode = ShutdownMode.OnMainWindowClose
             };
 
             app.SetupWithLifetime(lifetime);
-
-            lifetime.Start(Array.Empty<string>());
+            return lifetime;
         }
     }
 }

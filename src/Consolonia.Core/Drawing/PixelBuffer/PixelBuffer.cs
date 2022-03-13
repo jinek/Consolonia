@@ -29,8 +29,8 @@ namespace Consolonia.Core.Drawing.PixelBuffer
 
         public void ForeachReadonly(Action<PixelBufferCoordinate, Pixel> action)
         {
-            for (ushort i = 0; i < Width; i++)
             for (ushort j = 0; j < Height; j++)
+            for (ushort i = 0; i < Width; i++)
             {
                 Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
                 action(new PixelBufferCoordinate(i, j), pixel);

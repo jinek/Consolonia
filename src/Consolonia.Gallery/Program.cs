@@ -8,7 +8,7 @@ namespace Consolonia.Gallery
         {
             if (args.Length > 1) throw new NotSupportedException();
             
-            Core.ApplicationStartup.StartConsolonia<App>();
+            Core.ApplicationStartup.StartConsolonia<App>(args);
         }
     }
 }
