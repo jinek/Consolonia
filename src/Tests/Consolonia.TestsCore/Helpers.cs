@@ -9,7 +9,7 @@ namespace Consolonia.TestsCore
     {
         public static async Task AssertHasText(this UnitTestConsole unitTestConsole, params string[] regexesToSearch)
         {
-            foreach (string regexString in regexesToSearch) await unitTestConsole.AssertHasText(new[] { regexString });
+            foreach (string regexString in regexesToSearch) await unitTestConsole.AssertHasText(regexString);
         }
 
         public static async Task AssertHasText(this UnitTestConsole unitTestConsole, string regexToSearch)
