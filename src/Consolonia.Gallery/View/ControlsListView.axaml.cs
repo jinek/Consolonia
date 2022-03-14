@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Consolonia.Gallery.Gallery;
 
@@ -25,7 +26,8 @@ namespace Consolonia.Gallery.View
 
             void TrySetupSelected()
             {
-                string[] commandLineArgs = Environment.GetCommandLineArgs();
+                string[] commandLineArgs =
+                    ((ClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!.Args!;
 
                 if (commandLineArgs.Length != 2)
                 {

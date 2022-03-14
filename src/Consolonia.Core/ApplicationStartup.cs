@@ -1,4 +1,3 @@
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -8,14 +7,29 @@ using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.Text;
 
+// ReSharper disable MemberCanBePrivate.Global
+
 namespace Consolonia.Core
 {
     public static class ApplicationStartup
     {
-        public static void StartConsolonia<TApp>() where TApp : Application, new()
+        public static void StartConsolonia<TApp>(params string[] args) where TApp : Application, new()
+        {
+            StartConsolonia<TApp>(new DefaultNetConsole(), args);
+        }
+
+        public static void StartConsolonia<TApp>(IConsole console, params string[] args) where TApp : Application, new()
+        {
+            ClassicDesktopStyleApplicationLifetime lifetime = BuildLifetime<TApp>(console, args);
+
+            lifetime.Start(args);
+        }
+
+        public static ClassicDesktopStyleApplicationLifetime BuildLifetime<TApp>(IConsole console, string[] args)
+            where TApp : Application, new()
         {
             AppBuilder usePlatformDetect = AppBuilder.Configure<TApp>()
-                .UseWindowingSubsystem(() => new ConsoloniaPlatform().Initialize())
+                .UseWindowingSubsystem(() => new ConsoloniaPlatform().Initialize(console))
                 .UseRenderingSubsystem(() =>
                     {
                         var platformRenderInterface =
@@ -34,15 +48,14 @@ namespace Consolonia.Core
             AppBuilder app = usePlatformDetect
                 .LogToTrace();
 
-            using var lifetime = new ClassicDesktopStyleApplicationLifetime
+            var lifetime = new ClassicDesktopStyleApplicationLifetime
             {
-                /*Args = args,*/
+                Args = args,
                 ShutdownMode = ShutdownMode.OnMainWindowClose
             };
 
             app.SetupWithLifetime(lifetime);
-
-            lifetime.Start(Array.Empty<string>());
+            return lifetime;
         }
     }
 }

@@ -10,5 +10,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         private PixelBufferCoordinate RightBottom { get; }
         public ushort Width => RightBottom.X;
         public ushort Height => RightBottom.Y;
+
+        public bool IsEmpty => Width == 0 && Height == 0;
     }
 }

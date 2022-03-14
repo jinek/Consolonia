@@ -9,11 +9,16 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         private static readonly Random Random = new();
 
-        public SomeDialogWindow()
+        public SomeDialogWindow(double width, double height)
         {
             InitializeComponent();
-            Width = 10 + Random.Next(20);
-            Height = 10 + Random.Next(10);
+            Width = width;
+            Height = height;
+        }
+
+        // ReSharper disable once MemberCanBePrivate.Global Can be used by constructor
+        public SomeDialogWindow() : this(10 + Random.Next(20), Random.Next(10))
+        {
         }
 
         private void InitializeComponent()

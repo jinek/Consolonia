@@ -22,7 +22,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private async void Button_OnClick(object _, RoutedEventArgs e)
             // ReSharper restore UnusedParameter.Local
         {
-            await new SomeDialogWindow().ShowDialogAsync(this);
+            await new SomeDialogWindow(50, 15).ShowDialogAsync(this);
         }
     }
 }
