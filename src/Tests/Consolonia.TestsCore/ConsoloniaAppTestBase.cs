@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +12,7 @@ using NUnit.Framework;
 
 namespace Consolonia.TestsCore
 {
+    [NonParallelizable/*todo: switch to semaphore like https://stackoverflow.com/a/6427425/2362847 to allow other tests to execute in parallel*/]
 #pragma warning disable CA1001 // we are relying on TearDown by NUnit
     public abstract class ConsoloniaAppTestBase<TApp> where TApp : Application, new()
 #pragma warning restore CA1001
@@ -21,13 +21,14 @@ namespace Consolonia.TestsCore
         private ClassicDesktopStyleApplicationLifetime _lifetime;
         private IDisposable _scope;
         protected UnitTestConsole UITest { get; private set; }
+        private TaskCompletionSource _disposeTaskCompletionSource;
 
         protected ConsoloniaAppTestBase(PixelBufferSize size)
         {
             _size = size;
         }
 
-#pragma warning disable CA1819 // todo: provite a solution
+#pragma warning disable CA1819 // todo: provide a solution
         protected string[] Args { get; init; }
 #pragma warning restore CA1819
 
@@ -35,24 +36,26 @@ namespace Consolonia.TestsCore
         public async Task Setup()
         {
             UITest = new UnitTestConsole(_size);
-            bool setup = false;
+            var setupTaskSource = new TaskCompletionSource();
             
             ThreadPool.QueueUserWorkItem(_ =>
             {
+                _disposeTaskCompletionSource = new TaskCompletionSource();
                 _scope = AvaloniaLocator.EnterScope();
                 _lifetime = ApplicationStartup.BuildLifetime<TApp>(UITest, Args);
                 UITest.SetupLifetime(_lifetime);
                 Dispatcher.UIThread.UpdateServicesExtension();
-                setup = true;
+                setupTaskSource.SetResult();
                 _lifetime.Start(Args);
 
                 // Resetting static of AppBuilderBase
                 typeof(AppBuilderBase<AppBuilder>).GetField("s_setupWasAlreadyCalled",
                         BindingFlags.Static | BindingFlags.NonPublic)!
                     .SetValue(null, false);
+                _disposeTaskCompletionSource.SetResult();
             });
 
-            while (!setup) /*todo: replace by semaphore/WaitHandler*/ ;
+            await setupTaskSource.Task.ConfigureAwait(true);
 
             // Waiting Main Window To appear
             CancellationToken cancellationToken = new CancellationTokenSource(60000 /*todo: magic number*/).Token;
@@ -77,7 +80,7 @@ namespace Consolonia.TestsCore
         [TearDown]
         public async Task TearDown()
         {
-            await Dispatcher.UIThread.InvokeAsync(() => { _lifetime.Shutdown(); }).ConfigureAwait(true);;
+            await Dispatcher.UIThread.InvokeAsync(() => { _lifetime.Shutdown(); }).ConfigureAwait(true);
 
             _lifetime.Dispose();
             _lifetime = null;
@@ -86,6 +89,7 @@ namespace Consolonia.TestsCore
             Dispatcher.UIThread.UpdateServicesExtension();
             UITest.Dispose();
             UITest = null;
+            await _disposeTaskCompletionSource.Task.ConfigureAwait(true);
         }
     }
 }

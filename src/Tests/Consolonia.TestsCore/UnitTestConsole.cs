@@ -22,6 +22,7 @@ namespace Consolonia.TestsCore
             PixelBuffer = new PixelBuffer(size.Width, size.Height);
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public PixelBuffer PixelBuffer { get; }
 
         public void Dispose()
@@ -50,6 +51,7 @@ namespace Consolonia.TestsCore
 
             for (int i = 0; i < str.Length; i++)
                 PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
+                    // ReSharper disable once AccessToModifiedClosure we are sure about inline execution
                     new Pixel(new PixelForeground(new SimpleSymbol(str[i]), foregroundColor),
                         new PixelBackground(PixelBackgroundMode.Colored, backgroundColor)));
         }
@@ -96,7 +98,7 @@ namespace Consolonia.TestsCore
 
         public async Task KeyInput(Key key, RawInputModifiers modifiers = RawInputModifiers.None)
         {
-            KeyPress(key, char.MinValue /*will be skipped as control character*/, modifiers);
+            KeyPress?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers);
 
             await WaitDispatched().ConfigureAwait(true);
         }
