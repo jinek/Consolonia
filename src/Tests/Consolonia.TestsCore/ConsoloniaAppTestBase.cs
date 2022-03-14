@@ -80,7 +80,11 @@ namespace Consolonia.TestsCore
         [TearDown]
         public async Task TearDown()
         {
-            await Dispatcher.UIThread.InvokeAsync(() => { _lifetime.Shutdown(); }).ConfigureAwait(true);
+            ClassicDesktopStyleApplicationLifetime lifetime = _lifetime;
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                lifetime.Shutdown();
+            }).ConfigureAwait(true);
 
             _lifetime.Dispose();
             _lifetime = null;

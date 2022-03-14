@@ -26,7 +26,7 @@ namespace Consolonia.Gallery.View
 
             void TrySetupSelected()
             {
-                string[] commandLineArgs = ((ClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).Args;
+                string[] commandLineArgs = ((ClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!.Args!;
 
                 if (commandLineArgs.Length != 2)
                 {
