@@ -10,7 +10,7 @@ namespace Consolonia.TestsCore
         {
             typeof(Dispatcher).InvokeMember("UpdateServices",
                 BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.InvokeMethod, null,
-                dispatcher, null,CultureInfo.InvariantCulture);
+                dispatcher, null, CultureInfo.InvariantCulture);
         }
     }
 }

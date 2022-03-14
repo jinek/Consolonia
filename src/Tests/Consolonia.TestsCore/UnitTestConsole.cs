@@ -56,9 +56,9 @@ namespace Consolonia.TestsCore
                         new PixelBackground(PixelBackgroundMode.Colored, backgroundColor)));
         }
 
-        #pragma warning disable CS0067
+#pragma warning disable CS0067
         public event Action Resized;
-        #pragma warning restore CS0067
+#pragma warning restore CS0067
         public event Action<Key, char, RawInputModifiers> KeyPress;
 
         public async Task StringInput(string input)

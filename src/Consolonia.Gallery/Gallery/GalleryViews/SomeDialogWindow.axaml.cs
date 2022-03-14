@@ -15,11 +15,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Width = width;
             Height = height;
         }
-        
-        // ReSharper disable once MemberCanBePrivate.Global Can be used by constructor
-        public SomeDialogWindow() : this(10 + Random.Next(20),Random.Next(10))
-        {
 
+        // ReSharper disable once MemberCanBePrivate.Global Can be used by constructor
+        public SomeDialogWindow() : this(10 + Random.Next(20), Random.Next(10))
+        {
         }
 
         private void InitializeComponent()

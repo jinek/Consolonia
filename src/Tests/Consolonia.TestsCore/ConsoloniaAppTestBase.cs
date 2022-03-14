@@ -12,21 +12,22 @@ using NUnit.Framework;
 
 namespace Consolonia.TestsCore
 {
-    [NonParallelizable/*todo: switch to semaphore like https://stackoverflow.com/a/6427425/2362847 to allow other tests to execute in parallel*/]
+    [NonParallelizable /*todo: switch to semaphore like https://stackoverflow.com/a/6427425/2362847 to allow other tests to execute in parallel*/]
 #pragma warning disable CA1001 // we are relying on TearDown by NUnit
     public abstract class ConsoloniaAppTestBase<TApp> where TApp : Application, new()
 #pragma warning restore CA1001
     {
         private readonly PixelBufferSize _size;
+        private TaskCompletionSource _disposeTaskCompletionSource;
         private ClassicDesktopStyleApplicationLifetime _lifetime;
         private IDisposable _scope;
-        protected UnitTestConsole UITest { get; private set; }
-        private TaskCompletionSource _disposeTaskCompletionSource;
 
         protected ConsoloniaAppTestBase(PixelBufferSize size)
         {
             _size = size;
         }
+
+        protected UnitTestConsole UITest { get; private set; }
 
 #pragma warning disable CA1819 // todo: provide a solution
         protected string[] Args { get; init; }
@@ -37,7 +38,7 @@ namespace Consolonia.TestsCore
         {
             UITest = new UnitTestConsole(_size);
             var setupTaskSource = new TaskCompletionSource();
-            
+
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 _disposeTaskCompletionSource = new TaskCompletionSource();
@@ -81,10 +82,7 @@ namespace Consolonia.TestsCore
         public async Task TearDown()
         {
             ClassicDesktopStyleApplicationLifetime lifetime = _lifetime;
-            await Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                lifetime.Shutdown();
-            }).ConfigureAwait(true);
+            await Dispatcher.UIThread.InvokeAsync(() => { lifetime.Shutdown(); }).ConfigureAwait(true);
 
             _lifetime.Dispose();
             _lifetime = null;

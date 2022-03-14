@@ -6,6 +6,7 @@ using Consolonia.Core.Drawing;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.Text;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Consolonia.Core

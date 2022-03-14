@@ -33,7 +33,7 @@ namespace Consolonia.Core.Infrastructure
         public void Initialize(IConsole console)
         {
             NotSupported += InternalIgnore;
-            
+
             AvaloniaLocator.CurrentMutable.BindToSelf(this)
                 .Bind<IWindowingPlatform>().ToConstant(this)
                 .Bind<IConsole>().ToConstant(console)
