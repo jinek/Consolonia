@@ -3,10 +3,12 @@ using Avalonia.Input;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Gallery;
 using Consolonia.TestsCore;
+using JetBrains.Annotations;
 using NUnit.Framework;
 
 namespace Consolonia.GalleryTests.Base
 {
+    [UsedImplicitly]
     internal abstract class GalleryTestsBaseBase : ConsoloniaAppTestBase<App>
     {
         protected GalleryTestsBaseBase(PixelBufferSize size = default) : base(size.IsEmpty
