@@ -1,9 +1,11 @@
 using System.Threading.Tasks;
 using Consolonia.GalleryTests.Base;
 using Consolonia.TestsCore;
+using NUnit.Framework;
 
 namespace Consolonia.GalleryTests
 {
+    [TestFixture]
     internal class TextBlockTests : GalleryTestsBaseBase
     {
         protected override Task PerformSingleTest()

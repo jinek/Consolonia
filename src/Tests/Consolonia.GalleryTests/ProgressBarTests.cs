@@ -5,6 +5,7 @@ using NUnit.Framework;
 
 namespace Consolonia.GalleryTests
 {
+    [TestFixture]
     [Ignore(
         "ProgressBar has annimation, thus application becomes never idle, thus hard to determine input, layout and other jobs are done")] //todo:
     internal class ProgressBarTests : GalleryTestsBaseBase

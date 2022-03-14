@@ -2,9 +2,11 @@ using System.Threading.Tasks;
 using Avalonia.Input;
 using Consolonia.GalleryTests.Base;
 using Consolonia.TestsCore;
+using NUnit.Framework;
 
 namespace Consolonia.GalleryTests
 {
+    [TestFixture]
     internal class CheckBoxTests : GalleryTestsBaseBase
     {
         protected override async Task PerformSingleTest()

@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace Consolonia.GalleryTests.Base
 {
-    [UsedImplicitly]
     internal abstract class GalleryTestsBaseBase : ConsoloniaAppTestBase<App>
     {
         protected GalleryTestsBaseBase(PixelBufferSize size = default) : base(size.IsEmpty
