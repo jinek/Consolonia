@@ -139,7 +139,7 @@ namespace Consolonia.Core.Drawing
                     }
                 }
 
-                if (character is char.MinValue or '\r' or '\n')
+                if (char.IsControl(character))
                     character = ' '; // some terminals does not print \0
 
                 ConsoleColor backgroundColor = pixel.Background.Color;
