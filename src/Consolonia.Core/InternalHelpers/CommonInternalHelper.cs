@@ -16,7 +16,7 @@ namespace Consolonia.Core.InternalHelpers
 
         public static string GetStyledPropertyName([CallerMemberName] string propertyFullName = null)
         {
-            return propertyFullName[..^8];
+            return propertyFullName![..^8];
         }
     }
 }
