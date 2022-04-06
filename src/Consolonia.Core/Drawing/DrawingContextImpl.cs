@@ -278,7 +278,7 @@ namespace Consolonia.Core.Drawing
             set => _transform = value * _postTransform;
         }
 
-        private static ConsoleColor? ExtractConsoleColorOrNullWithPlatformCheck(IPen pen,out LineStyle? lineStyle)
+        private static ConsoleColor? ExtractConsoleColorOrNullWithPlatformCheck(IPen pen, out LineStyle? lineStyle)
         {
             lineStyle = null;
             if (pen is not
@@ -333,7 +333,8 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            var extractConsoleColorCheckPlatformSupported = ExtractConsoleColorOrNullWithPlatformCheck(pen, out var lineStyle);
+            var extractConsoleColorCheckPlatformSupported =
+                ExtractConsoleColorOrNullWithPlatformCheck(pen, out var lineStyle);
             if (extractConsoleColorCheckPlatformSupported == null)
                 return;
 
@@ -356,7 +357,8 @@ namespace Consolonia.Core.Drawing
                     {
                         // ReSharper disable once AccessToModifiedClosure todo: pass as a parameter
                         _pixelBuffer.Set((PixelBufferCoordinate)head,
-                            (pixel, mcC) => pixel.Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(mcC.pattern,
+                            (pixel, mcC) => pixel.Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(
+                                mcC.pattern,
                                 lineStyle ?? LineStyle.SingleLine), mcC.consoleColor)),
                             (pattern, consoleColor));
                     });

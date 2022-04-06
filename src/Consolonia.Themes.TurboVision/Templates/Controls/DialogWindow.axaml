@@ -8,7 +8,7 @@
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderBrush}"/>
+                Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="Margin"
@@ -44,8 +44,9 @@
                             <Border BorderThickness="{TemplateBinding BorderThickness}"
                                     Margin="{TemplateBinding Margin}">
                                 <Border.BorderBrush>
-                                    <drawing:LineBrush Brush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                                       LineStyle="DoubleLine" />
+                                    <drawing:LineBrush
+                                        Brush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                        LineStyle="DoubleLine" />
                                 </Border.BorderBrush>
                                 <Control
                                     Width="{Binding Path=ContentSize.Width, RelativeSource={RelativeSource TemplatedParent}}"
@@ -58,9 +59,11 @@
                                         Margin="{TemplateBinding Margin}"
                                         ZIndex="10"
                                         Orientation="Horizontal">
-                                <helpers:SymbolsControl Text="╡" Foreground="{TemplateBinding BorderBrush}"/>
+                                <helpers:SymbolsControl Text="╡"
+                                                        Foreground="{TemplateBinding BorderBrush}" />
                                 <TextBlock Text="{TemplateBinding Title}" />
-                                <helpers:SymbolsControl Text="╞" Foreground="{TemplateBinding BorderBrush}"/>
+                                <helpers:SymbolsControl Text="╞"
+                                                        Foreground="{TemplateBinding BorderBrush}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal"
                                         ZIndex="10"
