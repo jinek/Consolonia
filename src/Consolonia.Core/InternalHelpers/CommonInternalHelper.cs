@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Consolonia.Core.InternalHelpers
 {
     internal static class CommonInternalHelper
@@ -10,6 +12,11 @@ namespace Consolonia.Core.InternalHelpers
         public static bool IsNearlyEqual(this float value, float compareTo)
         {
             return value.CompareTo(compareTo) == 0;
+        }
+
+        public static string GetStyledPropertyName([CallerMemberName] string propertyFullName = null)
+        {
+            return propertyFullName[..^8];
         }
     }
 }

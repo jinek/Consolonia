@@ -278,11 +278,12 @@ namespace Consolonia.Core.Drawing
             set => _transform = value * _postTransform;
         }
 
-        private static ConsoleColor? ExtractConsoleColorOrNullWithPlatformCheck(IPen pen)
+        private static ConsoleColor? ExtractConsoleColorOrNullWithPlatformCheck(IPen pen,out LineStyle? lineStyle)
         {
+            lineStyle = null;
             if (pen is not
             {
-                Brush: FourBitColorBrush consoleColorBrush,
+                Brush: FourBitColorBrush or LineBrush { Brush: FourBitColorBrush },
                 Thickness: 1,
                 DashStyle: null or { Dashes: { Count: 0 } },
                 LineCap: PenLineCap.Flat,
@@ -293,15 +294,25 @@ namespace Consolonia.Core.Drawing
                 return null;
             }
 
-            if (consoleColorBrush.Mode == PixelBackgroundMode.Colored)
-                return consoleColorBrush.Color;
+            if (pen.Brush is not FourBitColorBrush consoleColorBrush)
+            {
+                var lineBrush = (LineBrush)pen.Brush;
+                consoleColorBrush = (FourBitColorBrush)lineBrush.Brush;
+                lineStyle = lineBrush.LineStyle;
+            }
 
-            if (consoleColorBrush.Mode == PixelBackgroundMode.Transparent)
-                return null;
-
-            ConsoloniaPlatform.RaiseNotSupported(8);
-
-            return null;
+            switch (consoleColorBrush.Mode)
+            {
+                case PixelBackgroundMode.Colored:
+                    return consoleColorBrush.Color;
+                case PixelBackgroundMode.Transparent:
+                    return null;
+                case PixelBackgroundMode.Shaded:
+                    ConsoloniaPlatform.RaiseNotSupported(8);
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(pen));
+            }
         }
 
         private void DrawLineInternal(IPen pen, Line line)
@@ -322,19 +333,19 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            var extractConsoleColorCheckPlatformSupported = ExtractConsoleColorOrNullWithPlatformCheck(pen);
+            var extractConsoleColorCheckPlatformSupported = ExtractConsoleColorOrNullWithPlatformCheck(pen, out var lineStyle);
             if (extractConsoleColorCheckPlatformSupported == null)
                 return;
 
             var consoleColor = (ConsoleColor)extractConsoleColorCheckPlatformSupported;
 
-            byte marker = (byte)(line.Vertical ? 0b0010 : 0b0100);
+            byte pattern = (byte)(line.Vertical ? 0b0010 : 0b0100);
             DrawPixelAndMoveHead(1); //beginning
 
-            marker = (byte)(line.Vertical ? 0b1010 : 0b0101);
+            pattern = (byte)(line.Vertical ? 0b1010 : 0b0101);
             DrawPixelAndMoveHead(line.Length - 1); //line
 
-            marker = (byte)(line.Vertical ? 0b1000 : 0b0001);
+            pattern = (byte)(line.Vertical ? 0b1000 : 0b0001);
             DrawPixelAndMoveHead(1); //ending 
 
             void DrawPixelAndMoveHead(int count)
@@ -345,8 +356,9 @@ namespace Consolonia.Core.Drawing
                     {
                         // ReSharper disable once AccessToModifiedClosure todo: pass as a parameter
                         _pixelBuffer.Set((PixelBufferCoordinate)head,
-                            (Pixel pixel, (byte, ConsoleColor) mcC) => pixel.Blend(new Pixel(mcC.Item1, mcC.Item2)),
-                            (marker, consoleColor));
+                            (pixel, mcC) => pixel.Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(mcC.pattern,
+                                lineStyle ?? LineStyle.SingleLine), mcC.consoleColor)),
+                            (pattern, consoleColor));
                     });
                     head = line.Vertical
                         ? head.WithY(head.Y + 1)
