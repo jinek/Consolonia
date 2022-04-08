@@ -46,10 +46,16 @@
             </Border.Styles>
         </Border>
 
-        <Border BorderBrush="{drawing:FourBitColorBrush Blue}"
-                BorderThickness="1"
+        <Border BorderThickness="1"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right">
+            <Border.BorderBrush>
+                <drawing:LineBrush LineStyle="Bold">
+                    <drawing:LineBrush.Brush>
+                        <drawing:FourBitColorBrush Color="Blue" />
+                    </drawing:LineBrush.Brush>
+                </drawing:LineBrush>
+            </Border.BorderBrush>
             <Border.Styles>
                 <Style Selector="Border">
                     <Style.Animations>
@@ -83,10 +89,16 @@
         </Border>
 
 
-        <Border BorderBrush="{drawing:FourBitColorBrush Blue}"
-                BorderThickness="1"
+        <Border BorderThickness="1"
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Right">
+            <Border.BorderBrush>
+                <drawing:LineBrush LineStyle="DoubleLine">
+                    <drawing:LineBrush.Brush>
+                        <drawing:FourBitColorBrush Color="Blue" />
+                    </drawing:LineBrush.Brush>
+                </drawing:LineBrush>
+            </Border.BorderBrush>
             <Border.Styles>
                 <Style Selector="Border">
                     <Style.Animations>
