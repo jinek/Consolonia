@@ -16,7 +16,9 @@ jobs:
         uses: xt0rted/pull-request-comment-branch@v1
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Trust My Directory
+        run: export GIT_CEILING_DIRECTORIES=/__w # only work before git v2.35.2
+        
       - name: Checkout repo
         uses: actions/checkout@v2
         with:
