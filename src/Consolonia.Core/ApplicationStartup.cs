@@ -31,7 +31,7 @@ namespace Consolonia.Core
         {
             throw new NotImplementedException();
         }
-        
+
         public static TAppBuilder UseStandardConsole<TAppBuilder>(this TAppBuilder builder)
             where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
         {

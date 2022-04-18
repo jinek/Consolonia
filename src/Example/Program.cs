@@ -12,7 +12,6 @@ namespace Example
                 .UseStandardConsole()
                 .LogToTrace()
                 .StartWithConsoleLifetime(null);
-            
         }
     }
 }
