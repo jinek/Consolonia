@@ -24,6 +24,8 @@ namespace Consolonia.Core
             lifetime.Start(args);
         }
 
+        // ReSharper disable once UnusedParameter.Global
+        // ReSharper disable once UnusedMember.Global
         public static TAppBuilder UseAutoDetectTerminal<TAppBuilder>(this TAppBuilder builder)
             where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
         {
