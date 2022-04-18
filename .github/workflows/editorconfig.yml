@@ -16,9 +16,7 @@ jobs:
         uses: xt0rted/pull-request-comment-branch@v1
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Trust My Directory
-        run: export GIT_CEILING_DIRECTORIES=/__w # only work before git v2.35.2
-        
+
       - name: Checkout repo
         uses: actions/checkout@v2
         with:
@@ -59,7 +57,7 @@ jobs:
           Co-authored-by: ${{ github.event.comment.user.login }} <${{ github.event.comment.user.id }}+${{ github.event.comment.user.login }}@users.noreply.github.com>'
           
       - name: Push changes        
-        uses: ad-m/github-push-action@v0.5.0
+        uses: ad-m/github-push-action@master
         with:
           branch: ${{ steps.comment-branch.outputs.ref }}
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
