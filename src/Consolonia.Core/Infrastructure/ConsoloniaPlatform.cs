@@ -42,6 +42,7 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IRenderLoop>().ToConstant(new RenderLoop())
                 .Bind<PlatformHotkeyConfiguration>().ToConstant(new PlatformHotkeyConfiguration(KeyModifiers.Control))
                 .Bind<IKeyboardDevice>().ToConstant(new ConsoleKeyboardDevice())
+                .Bind<IMouseDevice>().ToConstant(new MouseDevice())
                 .Bind<IFontManagerImpl>().ToConstant(new FontManagerImpl())
                 .Bind<ITextShaperImpl>().ToConstant(new TextShaperImpl())
                 .Bind<ICursorFactory>().ToConstant(new DummyCursorFactory())

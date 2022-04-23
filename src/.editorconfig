@@ -64,6 +64,7 @@ dotnet_diagnostic.bc42356.severity = warning
 dotnet_diagnostic.bc42358.severity = warning
 dotnet_diagnostic.bc42504.severity = warning
 dotnet_diagnostic.bc42505.severity = warning
+dotnet_diagnostic.ca1030.severity = none # todo: how to raise an event from inheritor?
 dotnet_diagnostic.ca1031.severity = error # not re-throwing the exception brings security treat
 dotnet_diagnostic.ca1815.severity = none # don't use Equal for fast checks - it does boxing/unboxing
 dotnet_diagnostic.ca1032.severity = none # whatever constructors can be added upon requirements

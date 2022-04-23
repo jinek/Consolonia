@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -21,21 +22,69 @@ namespace Consolonia.Core.Infrastructure
         private readonly IKeyboardDevice _myKeyboardDevice;
         internal readonly List<Rect> InvalidatedRects = new(50);
         private IInputRoot _inputRoot;
+        private readonly IMouseDevice _mouseDevice;
 
         public ConsoleWindow()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
+            _mouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             _console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
             _console.Resized += OnConsoleOnResized;
-            _console.KeyPress += ConsoleOnKeyPress;
+            _console.KeyEvent += ConsoleOnKeyEvent;
+            _console.MouseEvent += ConsoleOnMouseEvent;
+            _console.FocusEvent += ConsoleOnFocusEvent;
+        }
+
+        private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta, RawInputModifiers modifiers)
+        {
+            ulong timestamp = (ulong)Stopwatch.GetTimestamp();
+            Dispatcher.UIThread.Post(() =>
+            {
+             
+                switch (type)
+                {
+                    case RawPointerEventType.Move:
+                    case RawPointerEventType.LeftButtonDown:
+                    case RawPointerEventType.LeftButtonUp:
+                    case RawPointerEventType.RightButtonUp:
+                    case RawPointerEventType.RightButtonDown:
+                    case RawPointerEventType.MiddleButtonDown:
+                    case RawPointerEventType.XButton1Down:
+                    case RawPointerEventType.XButton2Down:
+                    case RawPointerEventType.NonClientLeftButtonDown:
+                    case RawPointerEventType.MiddleButtonUp:
+                    case RawPointerEventType.XButton1Up:
+                    case RawPointerEventType.XButton2Up:
+                        Input(new RawPointerEventArgs(MouseDevice, timestamp, _inputRoot,
+                            type, point,
+                            modifiers));
+                        break;
+                    case RawPointerEventType.Wheel:
+                        Input(new RawMouseWheelEventArgs(MouseDevice, timestamp, _inputRoot, point,
+                            (Vector)wheelDelta, modifiers));
+                        break;
+                }
+            });
         }
 
         public void Dispose()
         {
             Closed?.Invoke();
             _console.Resized -= OnConsoleOnResized;
-            _console.KeyPress -= ConsoleOnKeyPress;
+            _console.KeyEvent -= ConsoleOnKeyEvent;
+            _console.MouseEvent -= ConsoleOnMouseEvent;
+            _console.FocusEvent -= ConsoleOnFocusEvent;
             _console.Dispose();
+        }
+
+        private void ConsoleOnFocusEvent(bool focused)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (focused)
+                    Activated?.Invoke();
+                else Deactivated?.Invoke();
+            });
         }
 
         public IRenderer CreateRenderer(IRenderRoot root)
@@ -89,12 +138,12 @@ namespace Consolonia.Core.Infrastructure
 
         public PixelPoint PointToScreen(Point point)
         {
-            throw new NotImplementedException();
+            return new PixelPoint((int)point.X,(int)point.Y);
         }
 
         public void SetCursor(ICursorImpl cursor)
         {
-            throw new NotImplementedException();
+            //todo: check whether we can work with cursors
         }
 
         public IPopupImpl CreatePopup()
@@ -131,7 +180,7 @@ namespace Consolonia.Core.Infrastructure
 
         public Action Closed { get; set; }
         public Action LostFocus { get; set; }
-        public IMouseDevice MouseDevice => new DummyMouse();
+        public IMouseDevice MouseDevice => _mouseDevice;
 
         public WindowTransparencyLevel TransparencyLevel => WindowTransparencyLevel.None;
 
@@ -177,7 +226,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTitle(string title)
         {
-            Console.Title = title;
+            _console.SetTitle(title);
         }
 
         public void SetParent(IWindowImpl parent)
@@ -268,52 +317,50 @@ namespace Consolonia.Core.Infrastructure
 
         private void OnConsoleOnResized()
         {
-            PixelBufferSize pixelBufferSize = _console.Size;
-            var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
-            Resized(size, PlatformResizeReason.Unspecified);
-            //todo; Invalidate(new Rect(size));
+            Dispatcher.UIThread.Post(() =>
+            {
+                PixelBufferSize pixelBufferSize = _console.Size;
+                var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
+                Resized(size, PlatformResizeReason.Unspecified);
+                //todo; Invalidate(new Rect(size));
+            });
         }
 
-        private void ConsoleOnKeyPress(Key key, char keyChar, RawInputModifiers rawInputModifiers)
+        private async void ConsoleOnKeyEvent(Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down, ulong timeStamp)
         {
-            Dispatcher.UIThread.Post(async () =>
+            if (!down)
             {
-                try
+                Dispatcher.UIThread.Post(() =>
                 {
-                    bool handled = false;
-                    if (!char.IsControl(keyChar))
-                    {
-                        var rawTextInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice,
-                            (ulong)DateTime.Now.Ticks,
-                            _inputRoot,
-                            keyChar.ToString());
-                        Input(rawTextInputEventArgs);
-                        if (rawTextInputEventArgs.Handled)
-                            handled = true;
-                    }
-
-                    if (handled) return;
-                    await Task.Yield();
-
-                    Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
-                        RawKeyEventType.KeyDown, key,
-                        rawInputModifiers));
-
-                    await Task.Yield();
-
-                    Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
+                    Input(new RawKeyEventArgs(_myKeyboardDevice, timeStamp, _inputRoot,
                         RawKeyEventType.KeyUp, key,
                         rawInputModifiers));
-                }
-                catch (Exception exception)
+                }, DispatcherPriority.Input);
+            }
+            else
+            {
+                bool handled = false;
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    ThreadPool.QueueUserWorkItem(_ =>
-                        throw new InvalidOperationException(
-                            "Exception happened while reading the input. Copy of inner exception is raised in unobserved task",
-                            exception));
-                    throw;
+                    var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp,
+                        _inputRoot,
+                        RawKeyEventType.KeyDown, key,
+                        rawInputModifiers);
+                    Input(rawInputEventArgs);
+                    handled = rawInputEventArgs.Handled;
+                }, DispatcherPriority.Input).ConfigureAwait(true);
+
+                if (!handled && !char.IsControl(keyChar))
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        Input(new RawTextInputEventArgs(_myKeyboardDevice,
+                            timeStamp,
+                            _inputRoot,
+                            keyChar.ToString()));
+                    }, DispatcherPriority.Input);
                 }
-            });
+            }
         }
     }
 }

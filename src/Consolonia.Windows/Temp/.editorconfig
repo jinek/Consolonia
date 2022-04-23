@@ -1,0 +1,7 @@
+root = true
+
+[*.cs]
+
+# Disable all .NET analyzers
+dotnet_analyzer_diagnostic.severity = none
+dotnet_diagnostic.severity = none 
