@@ -63,7 +63,9 @@ namespace Consolonia.Windows
         /// </summary>
         public static IEnumerable<T> GetFlags<T>(T en) where T : struct, Enum
         {
+#pragma warning disable CA2248
             return Enum.GetValues<T>().Where(member => en.HasFlag(member));
+#pragma warning restore CA2248
         }
 
         private void StartEventLoop()
@@ -129,7 +131,6 @@ namespace Consolonia.Windows
                             point,
                             null,
                             inputModifiers);
-                        Debug.WriteLine($"Mouse {pointerEventType} {point} {inputModifiers}");
                     }
 
                     //todo: refactor: code clone
@@ -142,7 +143,6 @@ namespace Consolonia.Windows
                             point,
                             null,
                             inputModifiers);
-                        Debug.WriteLine($"Mouse {rawPointerEventType} {point} {inputModifiers}");
                     }
 
                     _mouseButtonsState = incomeMouseState;

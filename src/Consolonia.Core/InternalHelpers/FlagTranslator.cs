@@ -16,7 +16,9 @@ namespace Consolonia.Core.InternalHelpers
         {
             TOutput output = default;
             foreach ((TInput inFlag, TOutput outFlag) in _mapping)
+#pragma warning disable CA2248
                 if (input.HasFlag(inFlag))
+#pragma warning restore CA2248
                     output = (TOutput)(object)((int)(object)output | (int)(object)outFlag);
 
             return output;

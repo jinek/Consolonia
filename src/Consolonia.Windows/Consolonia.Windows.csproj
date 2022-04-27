@@ -2,6 +2,13 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
     <ItemGroup>
       <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
-    </ItemGroup>    
+    </ItemGroup>
+    
+    <PropertyGroup>
+        <!-- todo: Treat as errors -->
+        <WarningsAsErrors>false</WarningsAsErrors>
+        <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+        <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    </PropertyGroup>
 
 </Project>
