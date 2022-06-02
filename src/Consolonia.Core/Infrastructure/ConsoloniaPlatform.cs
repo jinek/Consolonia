@@ -9,6 +9,7 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Consolonia.Core.Dummy;
+using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -30,20 +31,21 @@ namespace Consolonia.Core.Infrastructure
             throw new NotImplementedException();
         }
 
-        public void Initialize(IConsole console)
+        public void Initialize()
         {
             NotSupported += InternalIgnore;
 
             AvaloniaLocator.CurrentMutable.BindToSelf(this)
                 .Bind<IWindowingPlatform>().ToConstant(this)
-                .Bind<IConsole>().ToConstant(console)
                 .Bind<IPlatformThreadingInterface>().ToSingleton<ConsoloniaPlatformThreadingInterface>()
                 .Bind<IRenderTimer>().ToConstant(new UiThreadRenderTimer(120))
                 .Bind<IRenderLoop>().ToConstant(new RenderLoop())
                 .Bind<PlatformHotkeyConfiguration>().ToConstant(new PlatformHotkeyConfiguration(KeyModifiers.Control))
                 .Bind<IKeyboardDevice>().ToConstant(new ConsoleKeyboardDevice())
-                /*.Bind<IFontManagerImpl>().ToConstant(new FontManagerImpl()) overriden by skiia in program.cs*/
+                .Bind<IFontManagerImpl>().ToConstant(new FontManagerImpl())
+                .Bind<ITextShaperImpl>().ToConstant(new TextShaperImpl())
                 .Bind<ICursorFactory>().ToConstant(new DummyCursorFactory())
+                .Bind<IPlatformIconLoader>().ToConstant(new DummyIconLoader())
                 //.Bind<IClipboard>().ToConstant(new X11Clipboard(this))
                 //.Bind<IPlatformSettings>().ToConstant(new PlatformSettingsStub())
                 //.Bind<ISystemDialogImpl>().ToConstant(new GtkSystemDialog())

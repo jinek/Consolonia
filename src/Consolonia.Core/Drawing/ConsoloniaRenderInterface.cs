@@ -9,11 +9,11 @@ using FormattedText = Consolonia.Core.Text.FormattedText;
 
 namespace Consolonia.Core.Drawing
 {
-    internal class RenderInterface : IPlatformRenderInterface
+    internal class ConsoloniaRenderInterface : IPlatformRenderInterface
     {
         private readonly IPlatformRenderInterface _platformRenderInterface;
 
-        public RenderInterface(IPlatformRenderInterface platformRenderInterface)
+        public ConsoloniaRenderInterface(IPlatformRenderInterface platformRenderInterface)
         {
             _platformRenderInterface = platformRenderInterface;
         }
