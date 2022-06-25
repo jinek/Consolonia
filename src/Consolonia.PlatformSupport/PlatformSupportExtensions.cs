@@ -1,6 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-
-using System;
+﻿using System;
 using Avalonia.Controls;
 using Consolonia.Core;
 using Consolonia.Core.Infrastructure;

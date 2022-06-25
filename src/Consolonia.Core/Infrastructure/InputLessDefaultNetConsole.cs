@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
@@ -28,6 +29,15 @@ namespace Consolonia.Core.Infrastructure
                 Console.CursorVisible = value;
                 _caretVisible = value;
             }
+        }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        protected bool CheckActualizeTheSize()
+        {
+            if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
+            ActualizeTheSize();
+            return true;
+
         }
 
         protected void ActualizeTheSize()
@@ -117,6 +127,18 @@ namespace Consolonia.Core.Infrastructure
         protected void RaiseFocusEvent(bool focused)
         {
             FocusEvent?.Invoke(focused);
+        }
+
+        protected void StartSizeCheckTimerAsync(uint slowInterval=1500)
+        {
+            Task.Run(async () =>
+            {
+                while (!Disposed)
+                {
+                    int timeout = (int)(CheckActualizeTheSize() ? 1 : slowInterval);
+                    await Task.Delay(timeout).ConfigureAwait(false);
+                }
+            });
         }
     }
 }

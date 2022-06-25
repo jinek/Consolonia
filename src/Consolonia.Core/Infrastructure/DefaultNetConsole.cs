@@ -62,34 +62,11 @@ namespace Consolonia.Core.Infrastructure
 
         public static Key ConvertToKey(ConsoleKey consoleKey)
         {
-            Key key;
-            if (!KeyMapping.TryGetValue(consoleKey, out key))
-                if (!Enum.TryParse(consoleKey.ToString(), out key))
-                    throw new NotImplementedException();
+            if (KeyMapping.TryGetValue(consoleKey, out Key key)) return key;
+            
+            if (!Enum.TryParse(consoleKey.ToString(), out key))
+                throw new NotImplementedException();
             return key;
-        }
-
-        private void StartSizeCheckTimerAsync()
-        {
-            Task.Run(async () =>
-            {
-                while (!Disposed)
-                {
-                    int timeout;
-                    if (Size.Width != Console.WindowWidth || Size.Height != Console.WindowHeight)
-                    {
-                        ActualizeTheSize();
-
-                        timeout = 1; //todo: magic numbers. probably need to rely on fps instead
-                    }
-                    else
-                    {
-                        timeout = 1000;
-                    }
-
-                    await Task.Delay(timeout).ConfigureAwait(false);
-                }
-            });
         }
     }
 }

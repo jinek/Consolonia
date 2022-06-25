@@ -26,11 +26,13 @@ namespace Consolonia.PlatformSupport
     {
         public CursesConsole()
         {
+            StartSizeCheckTimerAsync(2500);
             StartEventLoop();
         }
 
         private void StartEventLoop()
         {
+            //todo: cleanup
             Curses.initscr();
             Curses.noecho();
             Curses.cbreak();
