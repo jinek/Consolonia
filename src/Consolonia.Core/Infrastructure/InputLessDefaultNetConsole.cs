@@ -9,16 +9,18 @@ namespace Consolonia.Core.Infrastructure
 {
     public class InputLessDefaultNetConsole : IConsole
     {
+        private bool _caretVisible;
+        private ConsoleColor _headBackground;
+        private PixelBufferCoordinate _headBufferPoint;
+        private ConsoleColor _headForeground;
+
         protected InputLessDefaultNetConsole()
         {
             Console.CursorVisible = false;
             ActualizeTheSize();
         }
 
-        private bool _caretVisible;
-        private ConsoleColor _headBackground;
-        private PixelBufferCoordinate _headBufferPoint;
-        private ConsoleColor _headForeground;
+        protected bool Disposed { get; private set; }
 
         public bool CaretVisible
         {
@@ -29,22 +31,6 @@ namespace Consolonia.Core.Infrastructure
                 Console.CursorVisible = value;
                 _caretVisible = value;
             }
-        }
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected bool CheckActualizeTheSize()
-        {
-            if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
-            ActualizeTheSize();
-            return true;
-
-        }
-
-        protected void ActualizeTheSize()
-        {
-            Console.Clear();
-            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
-            Resized?.Invoke();
         }
 
         public PixelBufferSize Size { get; private set; }
@@ -98,7 +84,29 @@ namespace Consolonia.Core.Infrastructure
         public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
         public event Action<bool> FocusEvent;
 
-        protected void RaiseMouseEvent(RawPointerEventType eventType, Point point, Vector? wheelDelta, RawInputModifiers modifiers)
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        protected bool CheckActualizeTheSize()
+        {
+            if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
+            ActualizeTheSize();
+            return true;
+        }
+
+        protected void ActualizeTheSize()
+        {
+            Console.Clear();
+            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+            Resized?.Invoke();
+        }
+
+        protected void RaiseMouseEvent(RawPointerEventType eventType, Point point, Vector? wheelDelta,
+            RawInputModifiers modifiers)
         {
             MouseEvent?.Invoke(eventType, point, wheelDelta, modifiers);
         }
@@ -106,22 +114,11 @@ namespace Consolonia.Core.Infrastructure
         protected void RaiseKeyPress(Key key, char character, RawInputModifiers modifiers, bool down, ulong timeStamp)
         {
             KeyEvent?.Invoke(key, character, modifiers, down, timeStamp);
-            
         }
-        protected bool Disposed { get; private set; }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                Disposed = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            if (disposing) Disposed = true;
         }
 
         protected void RaiseFocusEvent(bool focused)
@@ -129,7 +126,7 @@ namespace Consolonia.Core.Infrastructure
             FocusEvent?.Invoke(focused);
         }
 
-        protected void StartSizeCheckTimerAsync(uint slowInterval=1500)
+        protected void StartSizeCheckTimerAsync(uint slowInterval = 1500)
         {
             Task.Run(async () =>
             {

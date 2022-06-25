@@ -8,6 +8,7 @@ using Avalonia.Input.Raw;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Terminal.Gui;
+using Point = Avalonia.Point;
 
 // ReSharper disable UnusedMember.Local
 #pragma warning disable CS0649
@@ -93,7 +94,7 @@ namespace Consolonia.PlatformSupport
 
         private bool HandleMouseInput(WindowsConsole.MouseEventRecord mouseEvent)
         {
-            var point = new Avalonia.Point(mouseEvent.MousePosition.X,
+            var point = new Point(mouseEvent.MousePosition.X,
                 mouseEvent.MousePosition.Y);
             int incomeMouseState = (int)mouseEvent.ButtonState;
             RawInputModifiers inputModifiers =
@@ -113,20 +114,18 @@ namespace Consolonia.PlatformSupport
                 case default(WindowsConsole.EventFlags):
                     int xor = _mouseButtonsState ^ incomeMouseState;
                     foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor &
-                                 incomeMouseState)).GetFlags()
-                             .Select(MouseButtonFlagTranslator.Translate))
+                                incomeMouseState)).GetFlags()
+                            .Select(MouseButtonFlagTranslator.Translate))
                         //todo: вернуть mouse gesture на элементы
-                    {
                         RaiseMouseEvent(pointerEventType,
                             point,
                             null,
                             inputModifiers);
-                    }
 
                     //todo: refactor: code clone
                     foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor &
-                                 _mouseButtonsState)).GetFlags()
-                             .Select(MouseButtonFlagTranslator.Translate))
+                            _mouseButtonsState)).GetFlags()
+                        .Select(MouseButtonFlagTranslator.Translate))
                     {
                         RawPointerEventType rawPointerEventType = pointerEventType + 1;
                         RaiseMouseEvent(rawPointerEventType,

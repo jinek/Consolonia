@@ -64,13 +64,6 @@ namespace Consolonia.TestsCore
                         new PixelBackground(PixelBackgroundMode.Colored, backgroundColor)));
         }
 
-#pragma warning disable CS0067
-        public event Action Resized;
-        public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
-        public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
-        public event Action<bool> FocusEvent;
-#pragma warning restore CS0067
-        
 
         public async Task StringInput(string input)
         {
@@ -116,7 +109,8 @@ namespace Consolonia.TestsCore
             ulong timestamp = (ulong)Stopwatch.GetTimestamp();
             KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, true, timestamp);
             await Task.Yield();
-            KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, false, timestamp+1);
+            KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, false,
+                timestamp + 1);
             await Task.Yield();
 
             await WaitDispatched().ConfigureAwait(true);
@@ -145,5 +139,12 @@ namespace Consolonia.TestsCore
         {
             _lifetime = lifetime;
         }
+
+#pragma warning disable CS0067
+        public event Action Resized;
+        public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
+        public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
+        public event Action<bool> FocusEvent;
+#pragma warning restore CS0067
     }
 }

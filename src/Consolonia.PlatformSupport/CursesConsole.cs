@@ -23,6 +23,79 @@ namespace Consolonia.PlatformSupport
 {
     public class CursesConsole : InputLessDefaultNetConsole
     {
+        private static readonly FlagTranslator<Key, RawInputModifiers>
+            KeyModifiersFlagTranslator = new(new[]
+            {
+                (Key.ShiftMask, RawInputModifiers.Shift),
+                (Key.AltMask, RawInputModifiers.Alt),
+                (Key.CtrlMask, RawInputModifiers.Control),
+                (Key.BackTab, RawInputModifiers.Shift)
+            });
+
+        private static readonly FlagTranslator<Key, ConsoleKey>
+            KeyFlagTranslator = new(new[]
+            {
+                (Key.BackTab, ConsoleKey.Tab),
+                (Key.Backspace, ConsoleKey.Backspace),
+                (Key.CursorDown, ConsoleKey.DownArrow),
+                (Key.CursorLeft, ConsoleKey.LeftArrow),
+                (Key.CursorRight, ConsoleKey.RightArrow),
+                (Key.CursorUp, ConsoleKey.UpArrow),
+                (Key.DeleteChar, ConsoleKey.Delete),
+                (Key.Delete, ConsoleKey.Delete),
+                (Key.End, ConsoleKey.End),
+                (Key.Enter, ConsoleKey.Enter),
+                (Key.Esc, ConsoleKey.Escape),
+                (Key.F1, ConsoleKey.F1),
+                (Key.F2, ConsoleKey.F2),
+                (Key.F3, ConsoleKey.F3),
+                (Key.F4, ConsoleKey.F4),
+                (Key.F5, ConsoleKey.F5),
+                (Key.F6, ConsoleKey.F6),
+                (Key.F7, ConsoleKey.F7),
+                (Key.F8, ConsoleKey.F8),
+                (Key.F9, ConsoleKey.F9),
+                (Key.F10, ConsoleKey.F10),
+                (Key.F11, ConsoleKey.F11),
+                (Key.F12, ConsoleKey.F12),
+                (Key.Home, ConsoleKey.Home),
+                (Key.InsertChar, ConsoleKey.Insert),
+                (Key.PageDown, ConsoleKey.PageDown),
+                (Key.PageUp, ConsoleKey.PageUp),
+                (Key.Space, ConsoleKey.Spacebar),
+                (Key.Tab, ConsoleKey.Tab)
+            });
+
+        private static readonly FlagTranslator<Curses.Event, RawInputModifiers>
+            MouseModifiersFlagTranslator = new(new[]
+            {
+                (Curses.Event.ButtonAlt, RawInputModifiers.Alt),
+                (Curses.Event.ButtonCtrl, RawInputModifiers.Control),
+                (Curses.Event.ButtonShift, RawInputModifiers.Shift)
+            });
+
+        private static readonly FlagTranslator<Curses.Event, RawPointerEventType>
+            MouseEventFlagTranslator = new(new[]
+            {
+                (Curses.Event.Button1Pressed, RawPointerEventType.LeftButtonDown),
+                (Curses.Event.Button1Clicked, RawPointerEventType.LeftButtonDown),
+                (Curses.Event.Button1Released, RawPointerEventType.LeftButtonUp),
+                (Curses.Event.Button2Pressed, RawPointerEventType.RightButtonDown),
+                (Curses.Event.Button2Clicked, RawPointerEventType.RightButtonDown),
+                (Curses.Event.Button2Released, RawPointerEventType.RightButtonUp),
+                (Curses.Event.Button3Pressed, RawPointerEventType.MiddleButtonDown),
+                (Curses.Event.Button3Clicked, RawPointerEventType.MiddleButtonDown),
+                (Curses.Event.Button3Released, RawPointerEventType.MiddleButtonUp),
+                (Curses.Event.Button4Pressed, RawPointerEventType.XButton1Down),
+                (Curses.Event.Button4Clicked, RawPointerEventType.XButton1Down),
+                (Curses.Event.Button4Released, RawPointerEventType.XButton1Up),
+                (Curses.Event.ReportMousePosition, RawPointerEventType.Move),
+                (Curses.Event.ButtonWheeledDown, RawPointerEventType.Wheel),
+                (Curses.Event.ButtonWheeledUp, RawPointerEventType.Wheel)
+            });
+
+        private KeyModifiers _keyModifiers;
+
         public CursesConsole()
         {
             StartSizeCheckTimerAsync(2500);
@@ -37,27 +110,22 @@ namespace Consolonia.PlatformSupport
             Curses.cbreak();
             Curses.doupdate();
             Curses.raw();
-            Curses.Window.Standard.keypad(true);            
+            Curses.Window.Standard.keypad(true);
             Curses.mousemask(
                 Curses.Event.AllEvents | Curses.Event.ReportMousePosition,
                 out Curses.Event _);
             Console.Out.Write("\x1b[?1003h");
             Console.Out.Flush();
-            
+
             Task _ = Task.Run(() =>
             {
-                while (!Disposed)
-                {
-                    ProcessInput();
-                }
+                while (!Disposed) ProcessInput();
             });
         }
 
-        private KeyModifiers _keyModifiers;
-
         ///this is copied from CursesDriver.cs -> ProcessInput
         private void ProcessInput()
-        {            
+        {
             int code = Curses.get_wch(out int wch);
             if (code == Curses.ERR)
                 return;
@@ -122,10 +190,7 @@ namespace Consolonia.PlatformSupport
 
                     code = Curses.get_wch(out int wch2);
 
-                    if (code == Curses.KEY_CODE_YES)
-                    {
-                        k = Key.AltMask | MapCursesKey(wch);
-                    }
+                    if (code == Curses.KEY_CODE_YES) k = Key.AltMask | MapCursesKey(wch);
 
                     if (code == 0)
                     {
@@ -134,21 +199,13 @@ namespace Consolonia.PlatformSupport
                         // The ESC-number handling, debatable.
                         // Simulates the AltMask itself by pressing Alt + Space.
                         if (wch2 == (int)Key.Space)
-                        {
                             k = Key.AltMask;
-                        }
                         else if (wch2 - (int)Key.Space >= (uint)Key.A && wch2 - (int)Key.Space <= (uint)Key.Z)
-                        {
                             k = (Key)((uint)Key.AltMask + (wch2 - (int)Key.Space));
-                        }
                         else if (wch2 >= (uint)Key.A - 64 && wch2 <= (uint)Key.Z - 64)
-                        {
                             k = (Key)((uint)(Key.AltMask | Key.CtrlMask) + (wch2 + 64));
-                        }
                         else if (wch2 >= (uint)Key.D0 && wch2 <= (uint)Key.D9)
-                        {
                             k = (Key)((uint)Key.AltMask + (uint)Key.D0 + (wch2 - (uint)Key.D0));
-                        }
                         else
                             switch (wch2)
                             {
@@ -249,10 +306,7 @@ namespace Consolonia.PlatformSupport
                                 default:
                                 {
                                     // Unfortunately there are no way to differentiate Ctrl+Alt+alfa and Ctrl+Shift+Alt+alfa.
-                                    if (((Key)wch2 & Key.CtrlMask) != 0)
-                                    {
-                                        _keyModifiers.Ctrl = true;
-                                    }
+                                    if (((Key)wch2 & Key.CtrlMask) != 0) _keyModifiers.Ctrl = true;
 
                                     if (wch2 == 0)
                                     {
@@ -302,10 +356,7 @@ namespace Consolonia.PlatformSupport
                     }
                     else if (wch >= (uint)Key.A - 64 && wch <= (uint)Key.Z - 64)
                     {
-                        if ((Key)(wch + 64) != Key.J)
-                        {
-                            k = Key.CtrlMask | (Key)(wch + 64);
-                        }
+                        if ((Key)(wch + 64) != Key.J) k = Key.CtrlMask | (Key)(wch + 64);
                     }
                     else if (wch >= (uint)Key.A && wch <= (uint)Key.Z)
                     {
@@ -317,49 +368,6 @@ namespace Consolonia.PlatformSupport
                 }
             }
         }
-
-        private static readonly FlagTranslator<Key, RawInputModifiers>
-            KeyModifiersFlagTranslator = new(new[]
-            {
-                (Key.ShiftMask, RawInputModifiers.Shift),
-                (Key.AltMask, RawInputModifiers.Alt),
-                (Key.CtrlMask, RawInputModifiers.Control),
-                (Key.BackTab, RawInputModifiers.Shift)
-            });
-
-        private static readonly FlagTranslator<Key, ConsoleKey>
-            KeyFlagTranslator = new(new[]
-            {
-                (Key.BackTab, ConsoleKey.Tab),
-                (Key.Backspace, ConsoleKey.Backspace),
-                (Key.CursorDown, ConsoleKey.DownArrow),
-                (Key.CursorLeft, ConsoleKey.LeftArrow),
-                (Key.CursorRight, ConsoleKey.RightArrow),
-                (Key.CursorUp, ConsoleKey.UpArrow),
-                (Key.DeleteChar, ConsoleKey.Delete),
-                (Key.Delete, ConsoleKey.Delete),
-                (Key.End, ConsoleKey.End),
-                (Key.Enter, ConsoleKey.Enter),
-                (Key.Esc, ConsoleKey.Escape),
-                (Key.F1, ConsoleKey.F1),
-                (Key.F2, ConsoleKey.F2),
-                (Key.F3, ConsoleKey.F3),
-                (Key.F4, ConsoleKey.F4),
-                (Key.F5, ConsoleKey.F5),
-                (Key.F6, ConsoleKey.F6),
-                (Key.F7, ConsoleKey.F7),
-                (Key.F8, ConsoleKey.F8),
-                (Key.F9, ConsoleKey.F9),
-                (Key.F10, ConsoleKey.F10),
-                (Key.F11, ConsoleKey.F11),
-                (Key.F12, ConsoleKey.F12),
-                (Key.Home, ConsoleKey.Home),
-                (Key.InsertChar, ConsoleKey.Insert),
-                (Key.PageDown, ConsoleKey.PageDown),
-                (Key.PageUp, ConsoleKey.PageUp),
-                (Key.Space, ConsoleKey.Spacebar),
-                (Key.Tab, ConsoleKey.Tab)
-            });
 
 
         private void RaiseKeyPressInternal(Key key)
@@ -396,34 +404,6 @@ namespace Consolonia.PlatformSupport
                 character, modifiers, false, (ulong)Stopwatch.GetTimestamp());
         }
 
-        private static readonly FlagTranslator<Curses.Event, RawInputModifiers>
-            MouseModifiersFlagTranslator = new(new[]
-            {
-                (Curses.Event.ButtonAlt, RawInputModifiers.Alt),
-                (Curses.Event.ButtonCtrl, RawInputModifiers.Control),
-                (Curses.Event.ButtonShift, RawInputModifiers.Shift)
-            });
-
-        private static readonly FlagTranslator<Curses.Event, RawPointerEventType>
-            MouseEventFlagTranslator = new(new[]
-            {
-                (Curses.Event.Button1Pressed, RawPointerEventType.LeftButtonDown),
-                (Curses.Event.Button1Clicked, RawPointerEventType.LeftButtonDown),
-                (Curses.Event.Button1Released, RawPointerEventType.LeftButtonUp),
-                (Curses.Event.Button2Pressed, RawPointerEventType.RightButtonDown),
-                (Curses.Event.Button2Clicked, RawPointerEventType.RightButtonDown),
-                (Curses.Event.Button2Released, RawPointerEventType.RightButtonUp),
-                (Curses.Event.Button3Pressed, RawPointerEventType.MiddleButtonDown),
-                (Curses.Event.Button3Clicked, RawPointerEventType.MiddleButtonDown),
-                (Curses.Event.Button3Released, RawPointerEventType.MiddleButtonUp),
-                (Curses.Event.Button4Pressed, RawPointerEventType.XButton1Down),
-                (Curses.Event.Button4Clicked, RawPointerEventType.XButton1Down),
-                (Curses.Event.Button4Released, RawPointerEventType.XButton1Up),
-                (Curses.Event.ReportMousePosition, RawPointerEventType.Move),
-                (Curses.Event.ButtonWheeledDown, RawPointerEventType.Wheel),
-                (Curses.Event.ButtonWheeledUp, RawPointerEventType.Wheel)
-            });
-
         private void HandleMouseInput(Curses.MouseEvent ev)
         {
             const double velocity = 1 / 12D;
@@ -450,7 +430,7 @@ namespace Consolonia.PlatformSupport
             }
         }
 
-        static Key MapCursesKey(int cursesKey)
+        private static Key MapCursesKey(int cursesKey)
         {
             switch (cursesKey)
             {
@@ -525,6 +505,6 @@ namespace Consolonia.PlatformSupport
                 case Curses.AltCtrlKeyEnd: return Key.End | Key.AltMask | Key.CtrlMask;
                 default: return Key.Unknown;
             }
-        }        
+        }
     }
 }

@@ -20,7 +20,13 @@ namespace Consolonia.Core.Infrastructure
             { ConsoleKey.DownArrow, Key.Down },
             { ConsoleKey.Backspace, Key.Back }
         };
-        
+
+        private static readonly FlagTranslator<ConsoleModifiers, RawInputModifiers> ModifiersFlagsTranslator = new(new[]
+        {
+            (ConsoleModifiers.Control, RawInputModifiers.Control),
+            (ConsoleModifiers.Shift, RawInputModifiers.Shift), (ConsoleModifiers.Alt, RawInputModifiers.Alt)
+        });
+
         public DefaultNetConsole()
         {
             StartSizeCheckTimerAsync();
@@ -33,12 +39,6 @@ namespace Consolonia.Core.Infrastructure
             RaiseFocusEvent(false);
         }
 
-        private static readonly FlagTranslator<ConsoleModifiers, RawInputModifiers> ModifiersFlagsTranslator = new(new[]
-            {
-                (ConsoleModifiers.Control, RawInputModifiers.Control),
-                (ConsoleModifiers.Shift, RawInputModifiers.Shift), (ConsoleModifiers.Alt, RawInputModifiers.Alt)
-            });
-
         private void StartInputReading()
         {
             ThreadPool.QueueUserWorkItem(_ =>
@@ -46,14 +46,16 @@ namespace Consolonia.Core.Infrastructure
                 while (!Disposed)
                 {
                     ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
-                    
+
                     Key key = ConvertToKey(consoleKeyInfo.Key);
-                    
+
                     RawInputModifiers rawInputModifiers = ModifiersFlagsTranslator.Translate(consoleKeyInfo.Modifiers);
 
-                    RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,(ulong)Stopwatch.GetTimestamp());
+                    RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
+                        (ulong)Stopwatch.GetTimestamp());
                     Thread.Yield();
-                    RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,(ulong)Stopwatch.GetTimestamp());
+                    RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
+                        (ulong)Stopwatch.GetTimestamp());
                     Thread.Yield();
                 }
             });
@@ -62,7 +64,7 @@ namespace Consolonia.Core.Infrastructure
         public static Key ConvertToKey(ConsoleKey consoleKey)
         {
             if (KeyMapping.TryGetValue(consoleKey, out Key key)) return key;
-            
+
             if (!Enum.TryParse(consoleKey.ToString(), out key))
                 throw new NotImplementedException();
             return key;

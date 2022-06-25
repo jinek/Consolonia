@@ -31,38 +31,6 @@ namespace Consolonia.Core.Infrastructure
             _console.FocusEvent += ConsoleOnFocusEvent;
         }
 
-        private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta, RawInputModifiers modifiers)
-        {
-            ulong timestamp = (ulong)Stopwatch.GetTimestamp();
-            Dispatcher.UIThread.Post(() =>
-            {
-             
-                switch (type)
-                {
-                    case RawPointerEventType.Move:
-                    case RawPointerEventType.LeftButtonDown:
-                    case RawPointerEventType.LeftButtonUp:
-                    case RawPointerEventType.RightButtonUp:
-                    case RawPointerEventType.RightButtonDown:
-                    case RawPointerEventType.MiddleButtonDown:
-                    case RawPointerEventType.XButton1Down:
-                    case RawPointerEventType.XButton2Down:
-                    case RawPointerEventType.NonClientLeftButtonDown:
-                    case RawPointerEventType.MiddleButtonUp:
-                    case RawPointerEventType.XButton1Up:
-                    case RawPointerEventType.XButton2Up:
-                        Input(new RawPointerEventArgs(MouseDevice, timestamp, _inputRoot,
-                            type, point,
-                            modifiers));
-                        break;
-                    case RawPointerEventType.Wheel:
-                        Input(new RawMouseWheelEventArgs(MouseDevice, timestamp, _inputRoot, point,
-                            (Vector)wheelDelta!, modifiers));
-                        break;
-                }
-            });
-        }
-
         public void Dispose()
         {
             Closed?.Invoke();
@@ -71,16 +39,6 @@ namespace Consolonia.Core.Infrastructure
             _console.MouseEvent -= ConsoleOnMouseEvent;
             _console.FocusEvent -= ConsoleOnFocusEvent;
             _console.Dispose();
-        }
-
-        private void ConsoleOnFocusEvent(bool focused)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                if (focused)
-                    Activated?.Invoke();
-                else Deactivated?.Invoke();
-            });
         }
 
         public IRenderer CreateRenderer(IRenderRoot root)
@@ -135,7 +93,7 @@ namespace Consolonia.Core.Infrastructure
         public PixelPoint PointToScreen(Point point)
         {
             // ReSharper disable once ArrangeObjectCreationWhenTypeNotEvident //todo: should we avoid suggesting type specification
-            return new((int)point.X,(int)point.Y);
+            return new((int)point.X, (int)point.Y);
         }
 
         public void SetCursor(ICursorImpl cursor)
@@ -312,6 +270,48 @@ namespace Consolonia.Core.Infrastructure
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public Thickness OffScreenMargin { get; }
 
+        private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,
+            RawInputModifiers modifiers)
+        {
+            ulong timestamp = (ulong)Stopwatch.GetTimestamp();
+            Dispatcher.UIThread.Post(() =>
+            {
+                switch (type)
+                {
+                    case RawPointerEventType.Move:
+                    case RawPointerEventType.LeftButtonDown:
+                    case RawPointerEventType.LeftButtonUp:
+                    case RawPointerEventType.RightButtonUp:
+                    case RawPointerEventType.RightButtonDown:
+                    case RawPointerEventType.MiddleButtonDown:
+                    case RawPointerEventType.XButton1Down:
+                    case RawPointerEventType.XButton2Down:
+                    case RawPointerEventType.NonClientLeftButtonDown:
+                    case RawPointerEventType.MiddleButtonUp:
+                    case RawPointerEventType.XButton1Up:
+                    case RawPointerEventType.XButton2Up:
+                        Input(new RawPointerEventArgs(MouseDevice, timestamp, _inputRoot,
+                            type, point,
+                            modifiers));
+                        break;
+                    case RawPointerEventType.Wheel:
+                        Input(new RawMouseWheelEventArgs(MouseDevice, timestamp, _inputRoot, point,
+                            (Vector)wheelDelta!, modifiers));
+                        break;
+                }
+            });
+        }
+
+        private void ConsoleOnFocusEvent(bool focused)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (focused)
+                    Activated?.Invoke();
+                else Deactivated?.Invoke();
+            });
+        }
+
         private void OnConsoleOnResized()
         {
             Dispatcher.UIThread.Post(() =>
@@ -323,7 +323,8 @@ namespace Consolonia.Core.Infrastructure
             });
         }
 
-        private async void ConsoleOnKeyEvent(Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down, ulong timeStamp)
+        private async void ConsoleOnKeyEvent(Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down,
+            ulong timeStamp)
         {
             if (!down)
             {
@@ -348,7 +349,6 @@ namespace Consolonia.Core.Infrastructure
                 }, DispatcherPriority.Input).ConfigureAwait(true);
 
                 if (!handled && !char.IsControl(keyChar))
-                {
                     Dispatcher.UIThread.Post(() =>
                     {
                         Input(new RawTextInputEventArgs(_myKeyboardDevice,
@@ -356,7 +356,6 @@ namespace Consolonia.Core.Infrastructure
                             _inputRoot,
                             keyChar.ToString()));
                     }, DispatcherPriority.Input);
-                }
             }
         }
     }

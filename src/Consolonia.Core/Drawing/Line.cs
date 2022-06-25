@@ -51,7 +51,7 @@ namespace Consolonia.Core.Drawing
 
         public bool StrokeContains(IPen pen, Point point)
         {
-            return false;//todo: why is this called when hit test is false?
+            return false; //todo: why is this called when hit test is false?
         }
 
         public ITransformedGeometryImpl WithTransform(Matrix transform)

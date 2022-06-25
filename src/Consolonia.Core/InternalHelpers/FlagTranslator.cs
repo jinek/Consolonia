@@ -25,12 +25,12 @@ namespace Consolonia.Core.InternalHelpers
                     if (input.Equals(inFlag))
                         return outFlag;
                 }
-                else if (input.HasFlag(inFlag)) 
+                else if (input.HasFlag(inFlag))
+                {
                     output = (TOutput)(object)((int)(output as object)! | (int)(object)outFlag);
+                }
 
             return output;
-
-            
         }
     }
 }
