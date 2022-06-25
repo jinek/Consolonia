@@ -1,6 +1,5 @@
 using Avalonia;
 using Consolonia.Core;
-using Consolonia.PlatformSupport;
 
 namespace Example
 {
