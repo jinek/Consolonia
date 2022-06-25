@@ -1,7 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-        <PackageReference Include="NStack.Core" Version="0.16.0" />
-    </ItemGroup>
     <PropertyGroup>        
         <WarningsAsErrors>false</WarningsAsErrors>
         <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>

@@ -3,7 +3,6 @@
     
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
-        <ProjectReference Include="..\Consolonia.GuiCS\Consolonia.GuiCS.csproj" />
-        
+        <ProjectReference Include="..\Consolonia.GuiCS\Consolonia.GuiCS.csproj" />        
     </ItemGroup>
 </Project>
