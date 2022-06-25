@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Consolonia.Windows
+namespace Consolonia.PlatformSupport
 {
     internal static class Helpers
     {

@@ -10,9 +10,7 @@ namespace Example
         {
             return AppBuilder.Configure<App>()
                 .UseConsolonia()
-                //.UseStandardConsole()
-                .UseAutoDetectedConsole()
-                //.UseConsole(new CursesConsole())
+                .UseStandardConsole()
                 .LogToTrace()
                 .StartWithConsoleLifetime(null);
         }

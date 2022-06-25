@@ -15,7 +15,6 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
-using Consolonia.Windows;
 using Unix.Terminal;
 using Key = Terminal.Gui.Key;
 using KeyModifiers = Terminal.Gui.KeyModifiers;
@@ -169,7 +168,7 @@ namespace Consolonia.PlatformSupport
                                         c[^1] = wch2;
                                     }
 
-                                    switch (c[0])
+                                    switch (c![0])
                                     {
                                         case 49 when c[1] == 59 && c[2] == 55 && c[3] >= 80 && c[3] <= 83:
                                             // Ctrl+Alt+(F1 - F4)

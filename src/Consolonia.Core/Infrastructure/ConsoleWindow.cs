@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -11,7 +9,6 @@ using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Dummy;
 using JetBrains.Annotations;
 
 namespace Consolonia.Core.Infrastructure
@@ -22,12 +19,11 @@ namespace Consolonia.Core.Infrastructure
         private readonly IKeyboardDevice _myKeyboardDevice;
         internal readonly List<Rect> InvalidatedRects = new(50);
         private IInputRoot _inputRoot;
-        private readonly IMouseDevice _mouseDevice;
 
         public ConsoleWindow()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
-            _mouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
+            MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             _console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
             _console.Resized += OnConsoleOnResized;
             _console.KeyEvent += ConsoleOnKeyEvent;
@@ -61,7 +57,7 @@ namespace Consolonia.Core.Infrastructure
                         break;
                     case RawPointerEventType.Wheel:
                         Input(new RawMouseWheelEventArgs(MouseDevice, timestamp, _inputRoot, point,
-                            (Vector)wheelDelta, modifiers));
+                            (Vector)wheelDelta!, modifiers));
                         break;
                 }
             });
@@ -138,7 +134,8 @@ namespace Consolonia.Core.Infrastructure
 
         public PixelPoint PointToScreen(Point point)
         {
-            return new PixelPoint((int)point.X,(int)point.Y);
+            // ReSharper disable once ArrangeObjectCreationWhenTypeNotEvident //todo: should we avoid suggesting type specification
+            return new((int)point.X,(int)point.Y);
         }
 
         public void SetCursor(ICursorImpl cursor)
@@ -180,7 +177,7 @@ namespace Consolonia.Core.Infrastructure
 
         public Action Closed { get; set; }
         public Action LostFocus { get; set; }
-        public IMouseDevice MouseDevice => _mouseDevice;
+        public IMouseDevice MouseDevice { get; }
 
         public WindowTransparencyLevel TransparencyLevel => WindowTransparencyLevel.None;
 

@@ -1,10 +1,10 @@
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Infrastructure;
+// ReSharper disable UnusedMember.Global //todo: how to disable it for public methods?
 
 // ReSharper disable MemberCanBePrivate.Global
 

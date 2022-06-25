@@ -12,7 +12,7 @@ using Terminal.Gui;
 // ReSharper disable UnusedMember.Local
 #pragma warning disable CS0649
 
-namespace Consolonia.Windows
+namespace Consolonia.PlatformSupport
 {
     public class Win32Console : InputLessDefaultNetConsole
     {
@@ -67,6 +67,7 @@ namespace Consolonia.Windows
                     if (!readConsoleInput.Any())
                         throw new NotImplementedException();
                     foreach (WindowsConsole.InputRecord inputRecord in readConsoleInput)
+                        // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
                         switch (inputRecord.EventType)
                         {
                             case WindowsConsole.EventType.WindowBufferSize:

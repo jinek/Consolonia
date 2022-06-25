@@ -1,5 +1,4 @@
 ﻿using System;
-using Avalonia.Input;
 
 namespace Consolonia.Core.InternalHelpers
 {
@@ -27,7 +26,7 @@ namespace Consolonia.Core.InternalHelpers
                         return outFlag;
                 }
                 else if (input.HasFlag(inFlag)) 
-                    output = (TOutput)(object)((int)(object)output | (int)(object)outFlag);
+                    output = (TOutput)(object)((int)(output as object)! | (int)(object)outFlag);
 
             return output;
 

@@ -2,7 +2,6 @@
 using Avalonia.Controls;
 using Consolonia.Core;
 using Consolonia.Core.Infrastructure;
-using Consolonia.Windows;
 
 #pragma warning disable IDE0161
 namespace Consolonia.PlatformSupport
