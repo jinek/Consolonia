@@ -36,6 +36,7 @@ jobs:
         uses: muno92/resharper_inspectcode@1.4.0
         with:
           solutionPath: ./src/Consolonia.sln
+          exclude: "**Consolonia.GuiCS\**.*"
 
       - name: install-resharper
         run: |
