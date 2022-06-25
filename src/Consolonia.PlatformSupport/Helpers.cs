@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Consolonia.Windows
 {
-    static internal class Helpers
+    internal static class Helpers
     {
         /// <summary>
         ///     From https://stackoverflow.com/a/66275102/2362847

@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
+using Terminal.Gui;
 
 // ReSharper disable UnusedMember.Local
 #pragma warning disable CS0649
 
 namespace Consolonia.Windows
 {
-    public class WinConsole : InputLessDefaultNetConsole
+    public class Win32Console : InputLessDefaultNetConsole
     {
         private static readonly FlagTranslator<WindowsConsole.ControlKeyState, RawInputModifiers>
             ModifiersFlagTranslator = new(new[]
@@ -51,7 +50,7 @@ namespace Consolonia.Windows
 
         private int _mouseButtonsState;
 
-        public WinConsole()
+        public Win32Console()
         {
             _windowsConsole = new WindowsConsole();
 
@@ -112,8 +111,9 @@ namespace Consolonia.Windows
                     break;
                 case default(WindowsConsole.EventFlags):
                     int xor = _mouseButtonsState ^ incomeMouseState;
-                    foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor & incomeMouseState)).GetFlags()
-                                 .Select(MouseButtonFlagTranslator.Translate))
+                    foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor &
+                                 incomeMouseState)).GetFlags()
+                             .Select(MouseButtonFlagTranslator.Translate))
                         //todo: вернуть mouse gesture на элементы
                     {
                         RaiseMouseEvent(pointerEventType,
@@ -123,8 +123,9 @@ namespace Consolonia.Windows
                     }
 
                     //todo: refactor: code clone
-                    foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor & _mouseButtonsState)).GetFlags()
-                                 .Select(MouseButtonFlagTranslator.Translate))
+                    foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor &
+                                 _mouseButtonsState)).GetFlags()
+                             .Select(MouseButtonFlagTranslator.Translate))
                     {
                         RawPointerEventType rawPointerEventType = pointerEventType + 1;
                         RaiseMouseEvent(rawPointerEventType,

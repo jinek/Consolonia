@@ -1,14 +1,20 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-// ReSharper disable UseStringInterpolation
-// ReSharper disable BuiltInTypeReferenceStyleForMemberAccess
+//
+// System.Drawing.Size.cs
+//
+// Author:
+//   Mike Kestner (mkestner@speakeasy.net)
+//
+// Copyright (C) 2001 Mike Kestner
+// Copyright (C) 2004 Novell, Inc. http://www.novell.com
+//
 
-namespace Consolonia.Windows
-{
-    	[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates")]
-        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider")]
-        [SuppressMessage("Design", "CA1066:Implement IEquatable when overriding Object.Equals")]
-        public struct Size
+using System;
+
+namespace Terminal.Gui {
+	/// <summary>
+	/// Stores an ordered pair of integers, which specify a Height and Width.
+	/// </summary>
+	public struct Size
 	{
 		int width, height;
 
@@ -242,5 +248,4 @@ namespace Consolonia.Windows
 		}
 
 	}
-
 }

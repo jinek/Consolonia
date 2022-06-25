@@ -3,6 +3,9 @@
     <ItemGroup>
       <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Curses" />
+    </ItemGroup>
     
     <PropertyGroup>
         <!-- todo: Treat as errors -->

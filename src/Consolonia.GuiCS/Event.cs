@@ -1,3 +1,4 @@
+// cut by Evgeny Gorbovoy
 //
 // Evemts.cs: Events, Key mappings
 //
@@ -64,7 +65,7 @@ namespace Terminal.Gui {
 		/// indicate special characters like Alt-key combinations or special keys on the
 		/// keyboard like function keys, arrows keys and so on.
 		/// </summary>
-		CharMask = 0b11111111111111111111,
+		CharMask = 0xfffff,
 
 		/// <summary>
 		/// If the <see cref="SpecialMask"/> is set, then the value is that of the special mask,
@@ -734,7 +735,12 @@ namespace Terminal.Gui {
 		/// </summary>
 		public int OfY;
 
-        /// <summary>
+		/// <summary>
+		/// The current view at the location for the mouse event.
+		/// </summary>
+		// public View View;
+
+		/// <summary>
 		/// Returns a <see cref="T:System.String"/> that represents the current <see cref="MouseEvent"/>.
 		/// </summary>
 		/// <returns>A <see cref="T:System.String"/> that represents the current <see cref="MouseEvent"/>.</returns>

@@ -1,6 +1,15 @@
-﻿namespace Consolonia.Windows
+﻿// Evgeny Gorbovoy: cut from ConsoleDriver.cs
+//
+// ConsoleDriver.cs: Definition for the Console Driver API
+//
+// Authors:
+//   Miguel de Icaza (miguel@gnome.org)
+//
+// Define this to enable diagnostics drawing for Window Frames
+
+namespace Terminal.Gui
 {
-    	/// <summary>
+	/// <summary>
 	/// Cursors Visibility that are displayed
 	/// </summary>
 	// 
@@ -11,10 +20,8 @@
 	//     CC stand for the CONSOLE_CURSOR_INFO.bVisible parameter value to be used under Windows
 	//     DD stand for the CONSOLE_CURSOR_INFO.dwSize parameter value to be used under Windows
 	//
-#pragma warning disable CA1008
-        public enum CursorVisibility {
-#pragma warning restore CA1008
-	        /// <summary>
+	public enum CursorVisibility {
+		/// <summary>
 		///	Cursor caret has default
 		/// </summary>
 		/// <remarks>Works under Xterm-like terminal otherwise this is equivalent to <see ref="Underscore"/>. This default directly depends of the XTerm user configuration settings so it could be Block, I-Beam, Underline with possible blinking.</remarks>
@@ -59,5 +66,4 @@
 		/// <remarks>Works under Xterm-like terminal otherwise this is equivalent to <see ref="Block"/></remarks>
 		BoxFix = 0x02020164,
 	}
-
-}
+}	

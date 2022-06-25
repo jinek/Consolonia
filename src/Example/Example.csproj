@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
+    <ProjectReference Include="..\Consolonia.PlatformSupport\Consolonia.PlatformSupport.csproj" />
     <ProjectReference Include="..\Consolonia.Themes.TurboVision\Consolonia.Themes.TurboVision.csproj" />
     <ProjectReference Include="..\Consolonia.Windows\Consolonia.Windows.csproj" />
   </ItemGroup>

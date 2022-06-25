@@ -1,7 +1,6 @@
 using Avalonia;
 using Consolonia.Core;
-using Consolonia.Windows;
-using Consolonia.Windows.Curses;
+using Consolonia.PlatformSupport;
 
 namespace Example
 {
@@ -12,7 +11,8 @@ namespace Example
             return AppBuilder.Configure<App>()
                 .UseConsolonia()
                 //.UseStandardConsole()
-                .UseConsole(new CursesConsole())
+                .UseAutoDetectedConsole()
+                //.UseConsole(new CursesConsole())
                 .LogToTrace()
                 .StartWithConsoleLifetime(null);
         }

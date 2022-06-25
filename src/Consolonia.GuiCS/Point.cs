@@ -1,20 +1,23 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-// ReSharper disable UseStringInterpolation
+//
+// System.Drawing.Point.cs
+//
+// Author:
+//   Mike Kestner (mkestner@speakeasy.net)
+//
+// Copyright (C) 2001 Mike Kestner
+// Copyright (C) 2004 Novell, Inc.  http://www.novell.com 
+//
 
-namespace Consolonia.Windows
+using System;
+using System.Globalization;
+
+namespace Terminal.Gui
 {
-    	/// <summary>
+	/// <summary>
 	/// Represents an ordered pair of integer x- and y-coordinates that defines a point in a two-dimensional plane.
 	/// </summary>
-#pragma warning disable CA1066
-        [SuppressMessage("Design", "CA1051:Do not declare visible instance fields")]
-        [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates")]
-        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider")]
-        public struct Point
-#pragma warning restore CA1066
-        {
+	public struct Point
+	{
 		/// <summary>
 		/// Gets or sets the x-coordinate of this Point.
 		/// </summary>
@@ -252,5 +255,4 @@ namespace Consolonia.Windows
 		}
 
 	}
-
 }
