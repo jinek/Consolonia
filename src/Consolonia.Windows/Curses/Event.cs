@@ -64,7 +64,7 @@ namespace Terminal.Gui {
 		/// indicate special characters like Alt-key combinations or special keys on the
 		/// keyboard like function keys, arrows keys and so on.
 		/// </summary>
-		CharMask = 0xfffff,
+		CharMask = 0b11111111111111111111,
 
 		/// <summary>
 		/// If the <see cref="SpecialMask"/> is set, then the value is that of the special mask,

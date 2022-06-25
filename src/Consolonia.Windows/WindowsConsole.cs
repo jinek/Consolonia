@@ -58,16 +58,6 @@ namespace Consolonia.Windows
             StartEventLoop();
         }
 
-        /// <summary>
-        ///     From https://stackoverflow.com/a/66275102/2362847
-        /// </summary>
-        public static IEnumerable<T> GetFlags<T>(T en) where T : struct, Enum
-        {
-#pragma warning disable CA2248
-            return Enum.GetValues<T>().Where(member => en.HasFlag(member));
-#pragma warning restore CA2248
-        }
-
         private void StartEventLoop()
         {
             Task.Run(() =>
@@ -122,8 +112,7 @@ namespace Consolonia.Windows
                     break;
                 case default(WindowsConsole.EventFlags):
                     int xor = _mouseButtonsState ^ incomeMouseState;
-                    foreach (RawPointerEventType pointerEventType in GetFlags(
-                                     (WindowsConsole.ButtonState)(xor & incomeMouseState))
+                    foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor & incomeMouseState)).GetFlags()
                                  .Select(MouseButtonFlagTranslator.Translate))
                         //todo: вернуть mouse gesture на элементы
                     {
@@ -134,8 +123,7 @@ namespace Consolonia.Windows
                     }
 
                     //todo: refactor: code clone
-                    foreach (RawPointerEventType pointerEventType in GetFlags(
-                                     (WindowsConsole.ButtonState)(xor & _mouseButtonsState))
+                    foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor & _mouseButtonsState)).GetFlags()
                                  .Select(MouseButtonFlagTranslator.Translate))
                     {
                         RawPointerEventType rawPointerEventType = pointerEventType + 1;
