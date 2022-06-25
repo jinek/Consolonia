@@ -162,9 +162,11 @@ namespace Consolonia.PlatformSupport
                                     {
                                         code = Curses.get_wch(out wch2);
                                         if (wch2 <= 0) continue;
-#pragma warning disable CA1508 // todo: check why this
-                                        Array.Resize(ref c, c == null ? 1 : c.Length + 1);
-#pragma warning restore CA1508
+                                        int length = 1;
+                                        if (c != null)
+                                            length += c.Length;
+                                        Array.Resize(ref c, length);
+
                                         c[^1] = wch2;
                                     }
 
