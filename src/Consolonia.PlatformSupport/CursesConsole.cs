@@ -114,8 +114,8 @@ namespace Consolonia.PlatformSupport
             Curses.mousemask(
                 Curses.Event.AllEvents | Curses.Event.ReportMousePosition,
                 out Curses.Event _);
-            Console.Out.Write("\x1b[?1003h");
-            Console.Out.Flush();
+            /*Console.Out.Write("\x1b[?1003h");
+            Console.Out.Flush();*/
 
             Task _ = Task.Run(() =>
             {
