@@ -29,13 +29,13 @@ namespace Consolonia.Gallery.View
                 string[] commandLineArgs =
                     ((ClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!.Args!;
 
-                if (commandLineArgs.Length != 2)
+                if (commandLineArgs.Length is not 1 or 2)
                 {
                     grid.SelectedIndex = 0;
                     return;
                 }
 
-                string itemToSelectName = commandLineArgs[1];
+                string itemToSelectName = commandLineArgs.Last();
                 GalleryItem itemToSelect;
                 try
                 {
