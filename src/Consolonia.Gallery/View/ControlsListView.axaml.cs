@@ -29,7 +29,7 @@ namespace Consolonia.Gallery.View
                 string[] commandLineArgs =
                     ((ClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!.Args!;
 
-                if (commandLineArgs.Length is not 1 or 2)
+                if (commandLineArgs.Length is not 1 and not 2)
                 {
                     grid.SelectedIndex = 0;
                     return;

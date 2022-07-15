@@ -119,7 +119,8 @@
                   <Grid Name="YearView"
                         Grid.Row="1"
                         Grid.ColumnSpan="3"
-                        IsVisible="False">
+                        IsVisible="False"
+                        Margin="0,1">
                       <Grid.RowDefinitions>
                           <RowDefinition Height="Auto" />
                           <RowDefinition Height="Auto" />

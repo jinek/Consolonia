@@ -14,9 +14,9 @@
         <Setter Property="VerticalContentAlignment"
                 Value="Center" />
         <Setter Property="MinWidth"
-                Value="2" />
+                Value="4" />
         <Setter Property="Margin"
-                Value="0,0,1,0" />
+                Value="1,1,1,0" />
         <Setter Property="Focusable"
                 Value="False" />
         <Setter Property="Template">
