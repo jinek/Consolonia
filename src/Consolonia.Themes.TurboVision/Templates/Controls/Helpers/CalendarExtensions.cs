@@ -27,9 +27,10 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         {
             var calendar = (Calendar)sender;
             if ((e.Key != Key.Back || e.KeyModifiers != KeyModifiers.None) && e.Key != Key.OemMinus) return;
-            
-            if (calendar.DisplayMode < CalendarMode.Decade)
-                calendar.DisplayMode++;
+
+            if (calendar.DisplayMode >= CalendarMode.Decade) return;
+            calendar.DisplayMode++;
+            e.Handled = true;
         }
     }
 }

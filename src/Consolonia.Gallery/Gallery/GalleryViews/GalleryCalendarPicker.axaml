@@ -1,0 +1,59 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:galleryViews="clr-namespace:Consolonia.Gallery.Gallery.GalleryViews"
+             mc:Ignorable="d"
+             x:DataType="galleryViews:GalleryCalendarPickerDataContext"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryCalendarPicker">
+    <UserControl.Styles>
+        <Style Selector="CalendarDatePicker">
+            <Setter Property="Margin"
+                    Value="0,0,0,1"/>
+        </Style>
+    </UserControl.Styles>
+    <StackPanel Orientation="Vertical" Spacing="1">
+        <TextBlock>A control for selecting dates with a calendar drop-down</TextBlock>
+        
+        <StackPanel Orientation="Horizontal"
+                    Margin="0,1,0,0"
+                    HorizontalAlignment="Center"
+                    Spacing="1">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="SelectedDateFormat: Short"/>
+                <CalendarDatePicker Name="DatePicker1"
+                                    SelectedDateFormat="Short"
+                                    DisplayDate="2022-02-16"
+                                    SelectedDate="2022-02-16"/>
+
+                <TextBlock Text="SelectedDateFormat: Long"/>
+                <CalendarDatePicker Name="DatePicker2"
+                                    SelectedDateFormat="Long"/>
+
+                <TextBlock Text="SelectedDateFormat: Custom"/>
+                <CalendarDatePicker Name="DatePicker3"
+                                    SelectedDateFormat="Custom"
+                                    CustomDateFormatString="ddd, MMM d"/>
+
+                <TextBlock Text="Blackout Dates"/>
+                <CalendarDatePicker Name="DatePicker4"/>
+
+                <TextBlock Text="Watermark"/>
+                <CalendarDatePicker Watermark="Watermark"/>
+                <TextBlock Text="Floating Watermark"/>
+                <CalendarDatePicker Name="DatePicker5"
+                                    Watermark="Floating Watermark"
+                                    UseFloatingWatermark="True"/>
+                
+                <TextBlock Text="Disabled"/>
+                <CalendarDatePicker IsEnabled="False"/>
+        
+                <TextBlock Text="Validation Example (Not supported)"/>
+                <CalendarDatePicker SelectedDate="{CompiledBinding ValidatedDateExample, Mode=TwoWay}"/>
+            </StackPanel>
+
+        </StackPanel> 
+    </StackPanel>
+</UserControl>
