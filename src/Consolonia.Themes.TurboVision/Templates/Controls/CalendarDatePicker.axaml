@@ -18,7 +18,7 @@
                 Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="BorderThickness"
                 Value="1" />
-        
+
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid ColumnDefinitions="*,Auto">
@@ -45,7 +45,7 @@
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center" />
                     </ToggleButton>
-                    
+
                     <!--<Button Name="PART_Button"
                             Grid.Column="1"
                             Classes="CalendarDropDown"

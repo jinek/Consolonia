@@ -40,7 +40,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private DateTime? _validatedDateExample;
 
         /// <summary>
-        ///    A required DateTime which should demonstrate validation for the DateTimePicker
+        ///     A required DateTime which should demonstrate validation for the DateTimePicker
         /// </summary>
         [Required]
         public DateTime? ValidatedDateExample

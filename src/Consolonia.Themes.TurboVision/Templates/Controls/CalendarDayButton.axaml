@@ -30,8 +30,8 @@
                                Fill="{DynamicResource ThemeChooserBackgroundBrush}" />
 
                     <Rectangle Name="FocusVisual"
-                               Fill="{DynamicResource ThemeActionBackgroundBrush}"/>
-                    
+                               Fill="{DynamicResource ThemeActionBackgroundBrush}" />
+
                     <Rectangle Name="Background"
                                Fill="{DynamicResource ThemeSelectionBackgroundBrush}" />
 

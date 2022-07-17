@@ -15,7 +15,7 @@ namespace Consolonia.Gallery
             // we want tests and UI to be executed with same culture
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
-        
+
         public App()
         {
             Styles.Add(new TurboVisionTheme(new Uri("avares://Consolonia.Gallery")));

@@ -11,49 +11,50 @@
     <UserControl.Styles>
         <Style Selector="CalendarDatePicker">
             <Setter Property="Margin"
-                    Value="0,0,0,1"/>
+                    Value="0,0,0,1" />
         </Style>
     </UserControl.Styles>
-    <StackPanel Orientation="Vertical" Spacing="1">
+    <StackPanel Orientation="Vertical"
+                Spacing="1">
         <TextBlock>A control for selecting dates with a calendar drop-down</TextBlock>
-        
+
         <StackPanel Orientation="Horizontal"
                     Margin="0,1,0,0"
                     HorizontalAlignment="Center"
                     Spacing="1">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="SelectedDateFormat: Short"/>
+                <TextBlock Text="SelectedDateFormat: Short" />
                 <CalendarDatePicker Name="DatePicker1"
                                     SelectedDateFormat="Short"
                                     DisplayDate="2022-02-16"
-                                    SelectedDate="2022-02-16"/>
+                                    SelectedDate="2022-02-16" />
 
-                <TextBlock Text="SelectedDateFormat: Long"/>
+                <TextBlock Text="SelectedDateFormat: Long" />
                 <CalendarDatePicker Name="DatePicker2"
-                                    SelectedDateFormat="Long"/>
+                                    SelectedDateFormat="Long" />
 
-                <TextBlock Text="SelectedDateFormat: Custom"/>
+                <TextBlock Text="SelectedDateFormat: Custom" />
                 <CalendarDatePicker Name="DatePicker3"
                                     SelectedDateFormat="Custom"
-                                    CustomDateFormatString="ddd, MMM d"/>
+                                    CustomDateFormatString="ddd, MMM d" />
 
-                <TextBlock Text="Blackout Dates"/>
-                <CalendarDatePicker Name="DatePicker4"/>
+                <TextBlock Text="Blackout Dates" />
+                <CalendarDatePicker Name="DatePicker4" />
 
-                <TextBlock Text="Watermark"/>
-                <CalendarDatePicker Watermark="Watermark"/>
-                <TextBlock Text="Floating Watermark"/>
+                <TextBlock Text="Watermark" />
+                <CalendarDatePicker Watermark="Watermark" />
+                <TextBlock Text="Floating Watermark" />
                 <CalendarDatePicker Name="DatePicker5"
                                     Watermark="Floating Watermark"
-                                    UseFloatingWatermark="True"/>
-                
-                <TextBlock Text="Disabled"/>
-                <CalendarDatePicker IsEnabled="False"/>
-        
-                <TextBlock Text="Validation Example (Not supported)"/>
-                <CalendarDatePicker SelectedDate="{CompiledBinding ValidatedDateExample, Mode=TwoWay}"/>
+                                    UseFloatingWatermark="True" />
+
+                <TextBlock Text="Disabled" />
+                <CalendarDatePicker IsEnabled="False" />
+
+                <TextBlock Text="Validation Example (Not supported)" />
+                <CalendarDatePicker SelectedDate="{CompiledBinding ValidatedDateExample, Mode=TwoWay}" />
             </StackPanel>
 
-        </StackPanel> 
+        </StackPanel>
     </StackPanel>
 </UserControl>

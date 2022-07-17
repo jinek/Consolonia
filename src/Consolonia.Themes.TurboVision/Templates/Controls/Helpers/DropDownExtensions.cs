@@ -11,8 +11,10 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
     {
         private static readonly AttachedProperty<IDisposable[]> DisposablesProperty =
             AvaloniaProperty.RegisterAttached<Control, IDisposable[]>("Disposables", typeof(DropDownExtensions));
-        
-        public static void ProcessFocusOnOpen<TElementType, TParentControl>(AvaloniaPropertyChangedEventArgs<bool> args, AvaloniaProperty<bool> dropDownProperty, EventHandler<VisualTreeAttachmentEventArgs> focusDropDownAction, Action<TParentControl> focusParentAction)
+
+        public static void ProcessFocusOnOpen<TElementType, TParentControl>(AvaloniaPropertyChangedEventArgs<bool> args,
+            AvaloniaProperty<bool> dropDownProperty, EventHandler<VisualTreeAttachmentEventArgs> focusDropDownAction,
+            Action<TParentControl> focusParentAction)
             where TElementType : Control where TParentControl : Control
         {
             var dropDownControl = (TElementType)args.Sender;
@@ -26,10 +28,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     .Subscribe(eventArgs =>
                     {
                         if (!(bool)eventArgs.NewValue! && !dropDownControl.IsKeyboardFocusWithin)
-                            Dispatcher.UIThread.Post(() =>
-                            {
-                                parentControl.SetValue(dropDownProperty, false);
-                            });
+                            Dispatcher.UIThread.Post(() => { parentControl.SetValue(dropDownProperty, false); });
                     });
 
                 IDisposable disposable2 = dropDownControl
@@ -52,7 +51,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 foreach (IDisposable disposable in disposables)
                     disposable.Dispose();
 
-                    
+
                 dropDownControl.AttachedToVisualTree -= focusDropDownAction;
             }
         }

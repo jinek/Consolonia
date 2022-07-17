@@ -6,43 +6,47 @@
              d:DesignWidth="800"
              d:DesignHeight="450"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryCalendar">
-    <StackPanel Orientation="Vertical" Spacing="1">
+    <StackPanel Orientation="Vertical"
+                Spacing="1">
         <TextBlock>A calendar control for selecting dates</TextBlock>
 
         <WrapPanel MaxWidth="150"
                    HorizontalAlignment="Center">
             <WrapPanel.Styles>
                 <Style Selector="StackPanel">
-                    <Setter Property="Margin" Value="1" />
+                    <Setter Property="Margin"
+                            Value="1" />
                 </Style>
             </WrapPanel.Styles>
             <StackPanel>
-                <TextBlock Text="SelectionMode: None"/>
-                <Calendar SelectionMode="None"/>
+                <TextBlock Text="SelectionMode: None" />
+                <Calendar SelectionMode="None" />
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="SelectionMode: SingleDate"/>
-                <Calendar SelectionMode="SingleDate" SelectedDate="2022-04-26" DisplayDate="2022-04-26"/>
+                <TextBlock Text="SelectionMode: SingleDate" />
+                <Calendar SelectionMode="SingleDate"
+                          SelectedDate="2022-04-26"
+                          DisplayDate="2022-04-26" />
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="Disabled"/>
+                <TextBlock Text="Disabled" />
                 <Calendar IsEnabled="False" />
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="SelectionMode: SingleRange"/>
+                <TextBlock Text="SelectionMode: SingleRange" />
                 <Calendar SelectionMode="SingleRange" />
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="SelectionMode: MultipleRange"/>
+                <TextBlock Text="SelectionMode: MultipleRange" />
                 <Calendar SelectionMode="MultipleRange" />
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="DisplayDates"/>
+                <TextBlock Text="DisplayDates" />
                 <Calendar Name="DisplayDatesCalendar"
                           SelectionMode="SingleDate" />
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="BlackoutDates"/>
+                <TextBlock Text="BlackoutDates" />
                 <Calendar Name="BlackoutDatesCalendar"
                           SelectionMode="SingleDate" />
             </StackPanel>

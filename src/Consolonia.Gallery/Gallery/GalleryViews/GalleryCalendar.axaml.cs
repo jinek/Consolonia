@@ -12,7 +12,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public GalleryCalendar()
         {
             InitializeComponent();
-            DateTime today = DateTime.Today; 
+            DateTime today = DateTime.Today;
             var cal1 = this.Get<Calendar>("DisplayDatesCalendar");
             cal1.DisplayDateStart = today.AddDays(-25);
             cal1.DisplayDateEnd = today.AddDays(25);
