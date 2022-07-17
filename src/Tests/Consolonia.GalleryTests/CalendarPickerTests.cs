@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Consolonia.GalleryTests.Base;
@@ -12,6 +14,9 @@ namespace Consolonia.GalleryTests
     {
         protected override async Task PerformSingleTest()
         {
+            Console.WriteLine(Thread.CurrentThread.CurrentUICulture);
+            Trace.WriteLine(Thread.CurrentThread.CurrentUICulture);
+            
             await UITest.AssertHasText("2/16/2022");
             
             await UITest.KeyInput(Key.Left, Key.Delete);
