@@ -7,8 +7,6 @@
 
 <Styles xmlns="https://github.com/avaloniaui">
     <Style Selector="CalendarDayButton">
-        <Setter Property="Background"
-                Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Center" />
         <Setter Property="VerticalContentAlignment"
@@ -108,7 +106,6 @@
         <Setter Property="IsVisible"
                 Value="True" />
     </Style>
-
 
     <Style Selector="CalendarDayButton:inactive /template/ ContentControl#Content">
         <Setter Property="Foreground"

@@ -57,20 +57,27 @@
                     <Popup Name="PART_Popup"
                            PlacementTarget="{TemplateBinding}"
                            StaysOpen="False">
-                        <Calendar Name="PART_Calendar"
-                                  FirstDayOfWeek="{TemplateBinding FirstDayOfWeek}"
-                                  IsTodayHighlighted="{TemplateBinding IsTodayHighlighted}"
-                                  SelectedDate="{TemplateBinding SelectedDate, Mode=TwoWay}"
-                                  DisplayDate="{TemplateBinding DisplayDate}"
-                                  DisplayDateStart="{TemplateBinding DisplayDateStart}"
-                                  DisplayDateEnd="{TemplateBinding DisplayDateEnd}">
-                            <Calendar.Styles>
-                                <Style Selector="Calendar">
-                                    <Setter Property="(helpers:CalendarDatePickerExtensions.FocusOnOpen)"
-                                            Value="True" />
-                                </Style>
-                            </Calendar.Styles>
-                        </Calendar>
+                        <Panel>
+                            <Border Background="{DynamicResource ThemeShadeBrush}"
+                                    Margin="2,1,0,0" />
+
+                            <Calendar Name="PART_Calendar"
+                                      Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                      Margin="0,0,2,1"
+                                      FirstDayOfWeek="{TemplateBinding FirstDayOfWeek}"
+                                      IsTodayHighlighted="{TemplateBinding IsTodayHighlighted}"
+                                      SelectedDate="{TemplateBinding SelectedDate, Mode=TwoWay}"
+                                      DisplayDate="{TemplateBinding DisplayDate}"
+                                      DisplayDateStart="{TemplateBinding DisplayDateStart}"
+                                      DisplayDateEnd="{TemplateBinding DisplayDateEnd}">
+                                <Calendar.Styles>
+                                    <Style Selector="Calendar">
+                                        <Setter Property="(helpers:CalendarDatePickerExtensions.FocusOnOpen)"
+                                                Value="True" />
+                                    </Style>
+                                </Calendar.Styles>
+                            </Calendar>
+                        </Panel>
                     </Popup>
                 </Grid>
             </ControlTemplate>

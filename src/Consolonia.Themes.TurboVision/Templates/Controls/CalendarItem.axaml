@@ -39,6 +39,7 @@
                           <Setter Property="Margin" Value="0,0,-1,-1"/>
                       </Style>
                       <Style Selector="Button.CalendarHeader:pressed  /template/ ContentPresenter">
+                          <!--todo: needs some color may be-->
                           <Setter Property="Background" Value="{drawing:FourBitColorBrush Mode=Transparent}"/>
                       </Style>
 
@@ -59,12 +60,13 @@
                       </Style>
                   </Grid.Styles>
 
-                  <Rectangle Grid.ColumnSpan="3"
-                             Fill="{TemplateBinding HeaderBackground}"
+                  <!--<Rectangle Grid.ColumnSpan="3"
+                             Fill="{drawing:FourBitColorBrush Green}"
                              Stretch="Fill"
                              VerticalAlignment="Top"
                              Height="1"
                              Margin="0"/>
+todo: while it's not needed it also does not work when set in the style-->
 
                   <Button Name="PreviousButton"
                           Classes="CalendarHeader CalendarNavigation"
@@ -87,9 +89,7 @@
                           IsVisible="False"
                           HorizontalAlignment="Right" 
                           Content="&gt;"
-                          Margin="0,0,1,-1">
-
-                  </Button>
+                          Margin="0,0,1,-1"/> 
 
                   <Grid Name="MonthView"
                         Grid.Row="1"

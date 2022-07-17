@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Consolonia.Gallery.View;
@@ -8,6 +10,12 @@ namespace Consolonia.Gallery
 {
     internal class App : Application
     {
+        static App()
+        {
+            // we want tests and UI to be executed with same culture
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        }
+        
         public App()
         {
             Styles.Add(new TurboVisionTheme(new Uri("avares://Consolonia.Gallery")));
