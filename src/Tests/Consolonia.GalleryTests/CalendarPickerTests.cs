@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Input;
@@ -14,8 +15,7 @@ namespace Consolonia.GalleryTests
     {
         protected override async Task PerformSingleTest()
         {
-            Console.WriteLine(Thread.CurrentThread.CurrentUICulture);
-            Trace.WriteLine(Thread.CurrentThread.CurrentUICulture);
+            Assert.Fail($"For thread is {Thread.CurrentThread.CurrentUICulture} {CultureInfo.CurrentCulture} {CultureInfo.CurrentUICulture}");
             
             await UITest.AssertHasText("2/16/2022");
             
