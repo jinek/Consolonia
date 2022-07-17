@@ -2,14 +2,15 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using JetBrains.Annotations;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public partial class GalleryCalendarPicker : UserControl
+    [GalleryOrder(35)]
+    [UsedImplicitly]
+    public class GalleryCalendarPicker : UserControl
     {
         public GalleryCalendarPicker()
         {
@@ -25,7 +26,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             dp3.SelectedDate = DateTime.Today.AddDays(20);
             dp5.SelectedDate = DateTime.Today;
 
-            dp4.TemplateApplied += (s, e) => { dp4.BlackoutDates?.AddDatesInPast(); };
+            dp4.TemplateApplied += (_, _) => { dp4.BlackoutDates?.AddDatesInPast(); };
         }
 
         private void InitializeComponent()

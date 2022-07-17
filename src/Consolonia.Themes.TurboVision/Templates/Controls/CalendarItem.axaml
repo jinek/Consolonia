@@ -79,12 +79,14 @@ todo: while it's not needed it also does not work when set in the style-->
                 
                   <Button Name="HeaderButton"
                           Classes="CalendarHeader"
+                          Grid.Row="0"
                           Grid.Column="1"
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center" />
 
                   <Button Name="NextButton"
                           Classes="CalendarHeader CalendarNavigation"
+                          Grid.Row="0"
                           Grid.Column="2"
                           IsVisible="False"
                           HorizontalAlignment="Right" 
@@ -94,6 +96,7 @@ todo: while it's not needed it also does not work when set in the style-->
                   <Grid Name="MonthView"
                         Grid.Row="1"
                         Grid.ColumnSpan="3"
+                        Grid.Column="0"
                         IsVisible="False"
                         HorizontalAlignment="Center">
                       <Grid.RowDefinitions>
@@ -119,6 +122,7 @@ todo: while it's not needed it also does not work when set in the style-->
                   <Grid Name="YearView"
                         Grid.Row="1"
                         Grid.ColumnSpan="3"
+                        Grid.Column="0"
                         IsVisible="False"
                         Margin="0,1">
                       <Grid.RowDefinitions>

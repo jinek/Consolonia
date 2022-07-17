@@ -7,8 +7,6 @@
 
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:sys="clr-namespace:System;assembly=netstandard"
-        xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
         xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
     <Style Selector="CalendarDatePicker">
 
@@ -54,9 +52,10 @@
                             ClipToBounds="False"
                             Focusable="False" />-->
 
-                    <Popup Name="PART_Popup"
+                    <Popup Grid.Column="0"
+                           Name="PART_Popup"
                            PlacementTarget="{TemplateBinding}"
-                           StaysOpen="False">
+                           IsLightDismissEnabled="True">
                         <Panel>
                             <Border Background="{DynamicResource ThemeShadeBrush}"
                                     Margin="2,1,0,0" />

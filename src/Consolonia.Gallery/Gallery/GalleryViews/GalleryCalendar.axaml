@@ -7,7 +7,7 @@
              d:DesignHeight="450"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryCalendar">
     <StackPanel Orientation="Vertical" Spacing="1">
-        <TextBlock Classes="h2">A calendar control for selecting dates</TextBlock>
+        <TextBlock>A calendar control for selecting dates</TextBlock>
 
         <WrapPanel MaxWidth="150"
                    HorizontalAlignment="Center">
