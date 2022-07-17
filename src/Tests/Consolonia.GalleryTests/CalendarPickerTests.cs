@@ -15,10 +15,7 @@ namespace Consolonia.GalleryTests
     {
         protected override async Task PerformSingleTest()
         {
-            Assert.Fail($"For thread is {Thread.CurrentThread.CurrentUICulture} {CultureInfo.CurrentCulture} {CultureInfo.CurrentUICulture}");
-            
             await UITest.AssertHasText("2/16/2022");
-            
             await UITest.KeyInput(Key.Left, Key.Delete);
             await UITest.StringInput("1");
             await UITest.KeyInput(Key.Enter);

@@ -149,9 +149,8 @@
     </Setter>
     <Setter Property="DayTitleTemplate">
       <Template>
-        <TextBlock 
-                   Margin="0,1,0,0"
-                   HorizontalAlignment="Center"
+        <TextBlock Margin="0,1,0,0"
+                   HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Text="{Binding}" />
       </Template>
