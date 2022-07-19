@@ -1,7 +1,7 @@
 # Contributing Guide
 
 ## Preparation
-To compile and debug the application it's necessary to install [dotnet 5 sdk](https://dotnet.microsoft.com/en-us/download/dotnet/5.0). It's possible to use any compliant tools for coding and debugging.
+To compile and debug the application it's necessary to install [dotnet 5 sdk](https://dotnet.microsoft.com/en-us/download/dotnet/6.0). It's possible to use any compliant tools for coding and debugging.
 
 ## Tickets And Discussions
 Feel free to open a [ticket](https://github.com/jinek/Consolonia/issues) or a [discussion](https://github.com/jinek/Consolonia/discussions) in case you have issues, need help, or just have some ideas.

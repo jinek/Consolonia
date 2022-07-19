@@ -6,7 +6,7 @@
         <Nullable>disable</Nullable>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-        <AnalysisLevel>5.0</AnalysisLevel>
+        <AnalysisLevel>6.0</AnalysisLevel>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
