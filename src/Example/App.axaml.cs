@@ -1,11 +1,11 @@
-using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Consolonia.Core.Infrastructure;
 using Example.Views;
 
 namespace Example
 {
-    public class App : Application
+    public class App : ConsoloniaApplication
     {
         public override void Initialize()
         {
