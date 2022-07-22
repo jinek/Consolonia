@@ -57,9 +57,11 @@ namespace Consolonia.Core.Infrastructure
                     });
 
                 focusableElements?.inputElement.Focus();
-
             }
-            else base.Move(element, direction, keyModifiers);
+            else
+            {
+                base.Move(element, direction, keyModifiers);
+            }
 
             (Point, Point) GetOriginalPoint(Rect valueClip)
             {
@@ -71,7 +73,6 @@ namespace Consolonia.Core.Infrastructure
                     NavigationDirection.Up => (valueClip.TopRight, valueClip.TopLeft),
                     NavigationDirection.Down => (valueClip.BottomRight, valueClip.BottomLeft)
                 };
-
             }
 
             (Point, Point) GetTargetPoint(Rect clip)
