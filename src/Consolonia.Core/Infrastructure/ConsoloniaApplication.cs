@@ -1,14 +1,15 @@
 using Avalonia;
 using Avalonia.Input;
 
-namespace Consolonia.Core.Infrastructure;
-
-public class ConsoloniaApplication : Application
+namespace Consolonia.Core.Infrastructure
 {
-    public override void RegisterServices()
+    public class ConsoloniaApplication : Application
     {
-        var keyboardNavigationHandler = AvaloniaLocator.Current.GetService<IKeyboardNavigationHandler>();
-        base.RegisterServices();
-        AvaloniaLocator.CurrentMutable.Bind<IKeyboardNavigationHandler>().ToConstant(keyboardNavigationHandler);
+        public override void RegisterServices()
+        {
+            var keyboardNavigationHandler = AvaloniaLocator.Current.GetService<IKeyboardNavigationHandler>();
+            base.RegisterServices();
+            AvaloniaLocator.CurrentMutable.Bind<IKeyboardNavigationHandler>().ToConstant(keyboardNavigationHandler);
+        }
     }
 }
