@@ -1,10 +1,11 @@
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Infrastructure;
+
+// ReSharper disable UnusedMember.Global //todo: how to disable it for public methods?
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -22,14 +23,6 @@ namespace Consolonia.Core
             ClassicDesktopStyleApplicationLifetime lifetime = BuildLifetime<TApp>(console, args);
 
             lifetime.Start(args);
-        }
-
-        // ReSharper disable once UnusedParameter.Global
-        // ReSharper disable once UnusedMember.Global
-        public static TAppBuilder UseAutoDetectTerminal<TAppBuilder>(this TAppBuilder builder)
-            where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
-        {
-            throw new NotImplementedException();
         }
 
         public static TAppBuilder UseStandardConsole<TAppBuilder>(this TAppBuilder builder)

@@ -8,6 +8,6 @@
         <AnalysisMode>AllEnabledByDefault</AnalysisMode>
         <AnalysisLevel>6.0</AnalysisLevel>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <TreatWarningsAsErrors Condition=" '$(Configuration)' == 'RELEASE' ">true</TreatWarningsAsErrors>
     </PropertyGroup>
 </Project>

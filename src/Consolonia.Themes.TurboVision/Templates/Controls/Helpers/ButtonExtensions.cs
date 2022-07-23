@@ -8,6 +8,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
     public static class ButtonExtensions
     {
+        //todo: names don't match
         public static readonly AttachedProperty<TimeSpan> DelayPressProperty =
             AvaloniaProperty.RegisterAttached<Button, TimeSpan>("IsDelayPress", typeof(ButtonExtensions));
 
