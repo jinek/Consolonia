@@ -1,9 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
+using Avalonia.Input.Raw;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -33,6 +36,11 @@ namespace Consolonia.TestsCore
         PixelBufferSize IConsole.Size => _size;
         bool IConsole.CaretVisible { get; set; }
 
+        public void SetTitle(string title)
+        {
+            Console.WriteLine($"Title changed to {title}");
+        }
+
         void IConsole.SetCaretPosition(PixelBufferCoordinate bufferPoint)
         {
             _fakeCaretPosition = bufferPoint;
@@ -56,19 +64,19 @@ namespace Consolonia.TestsCore
                         new PixelBackground(PixelBackgroundMode.Colored, backgroundColor)));
         }
 
-#pragma warning disable CS0067
-        public event Action Resized;
-#pragma warning restore CS0067
-        public event Action<Key, char, RawInputModifiers> KeyPress;
 
         public async Task StringInput(string input)
         {
             foreach (char c in input)
             {
-                if (!Enum.TryParse(c.ToString(), true, out Key key))
-                    throw new InvalidOperationException(
-                        $"Character {(int)c} can not be converted to {typeof(Key).FullName}");
-                KeyPress?.Invoke(key, c, RawInputModifiers.None);
+                const Key key = Key.None;
+                ulong timestamp = (ulong)Stopwatch.GetTimestamp();
+                // todo: check why Yield is not enough: https://github.com/jinek/Consolonia/runs/7055199426?check_suite_focus=true
+                const ulong interval = 50;
+                KeyEvent?.Invoke(key, c, RawInputModifiers.None, true, timestamp);
+                await Task.Delay((int)interval).ConfigureAwait(false);
+                KeyEvent?.Invoke(key, c, RawInputModifiers.None, false, timestamp + interval);
+                await Task.Delay((int)interval).ConfigureAwait(false);
             }
 
             await WaitDispatched().ConfigureAwait(true);
@@ -98,7 +106,12 @@ namespace Consolonia.TestsCore
 
         public async Task KeyInput(Key key, RawInputModifiers modifiers = RawInputModifiers.None)
         {
-            KeyPress?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers);
+            ulong timestamp = (ulong)Stopwatch.GetTimestamp();
+            KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, true, timestamp);
+            await Task.Yield();
+            KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, false,
+                timestamp + 1);
+            await Task.Yield();
 
             await WaitDispatched().ConfigureAwait(true);
         }
@@ -126,5 +139,12 @@ namespace Consolonia.TestsCore
         {
             _lifetime = lifetime;
         }
+
+#pragma warning disable CS0067
+        public event Action Resized;
+        public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
+        public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
+        public event Action<bool> FocusEvent;
+#pragma warning restore CS0067
     }
 }
