@@ -25,6 +25,7 @@ Build TUI applications using XAML, data bindings, animation, styling, and other 
 | _Beta_            | _Coming..._                                                         |
 | _Release_         | _Coming..._                                                         |
 
-Check this application (built using Consolonia): https://github.com/jinek/ToolUI
 
-Solution contains one more readme file with coding information.
+## Applications using Consolonia
+* Dotnet tools management application: https://github.com/jinek/ToolUI
+* [Repository directory Consolonia.Gallery](src/Consolonia.Gallery) hosts application running showcase presenting currently implemented controls

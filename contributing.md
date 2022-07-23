@@ -1,4 +1,5 @@
 # Contributing Guide
+[src/readme.md](src/readme.md) contains links to some most important source code files.
 
 ## Preparation
 To compile and debug the application it's necessary to install [dotnet 5 sdk](https://dotnet.microsoft.com/en-us/download/dotnet/5.0). It's possible to use any compliant tools for coding and debugging.
