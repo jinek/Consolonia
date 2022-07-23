@@ -27,6 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RepoRoot", "RepoRoot", "{09
 		..\README.md = ..\README.md
 		..\Directory.Build.props = ..\Directory.Build.props
 		..\Directory.Core.Build.props = ..\Directory.Core.Build.props
+		..\contributing.md = ..\contributing.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{A8CC5246-0D48-4418-B3E8-AC82ADB269E9}"

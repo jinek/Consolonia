@@ -10,7 +10,7 @@ In case of a bug, first try to check whether issue exist in [AvaloniaUI](https:/
 
 ## Code Style
 Projects are setup to utilize [dotnet analyzers](https://docs.microsoft.com/en-us/dotnet/framework/code-analyzers).
-All warning are considered as errors.
+All warning are considered as errors (for `RELEASE` configuration only), thus, check there are no warnings when compiling `DEBUG` configuration.
 Formatting and styling is set by editorconfig.yml which can be recognized by [JetBrains Resharper or Rider](https://www.jetbrains.com/resharper/). If you don't have one, just make a pull request and check build statuses. It does automatic formatting and checks the style.
 Also feel free to propose additional analyzers or changes to existing ones.
 
