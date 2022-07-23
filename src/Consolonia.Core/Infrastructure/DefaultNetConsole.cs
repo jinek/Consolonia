@@ -11,6 +11,16 @@ namespace Consolonia.Core.Infrastructure
     {
         private static readonly Dictionary<ConsoleKey, Key> KeyMapping = new()
         {
+            { ConsoleKey.Applications, Key.Apps },
+            { ConsoleKey.Attention, Key.Attn },
+            { ConsoleKey.LaunchApp1, Key.LaunchApplication1 },
+            { ConsoleKey.LaunchApp2, Key.LaunchApplication2 },
+            { ConsoleKey.MediaNext, Key.MediaNextTrack },
+            { ConsoleKey.MediaPrevious, Key.MediaPreviousTrack },
+            { ConsoleKey.MediaStop, Key.MediaStop },
+            { ConsoleKey.MediaPlay, Key.MediaPlayPause },
+            { ConsoleKey.LaunchMediaSelect, Key.SelectMedia },
+            { ConsoleKey.EraseEndOfFile, Key.EraseEof },
             { ConsoleKey.LeftWindows, Key.LWin },
             { ConsoleKey.RightWindows, Key.RWin },
             { ConsoleKey.Spacebar, Key.Space },
