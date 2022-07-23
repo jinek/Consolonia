@@ -1,14 +1,14 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
 using Consolonia.Themes.TurboVision.Templates;
 
 namespace Consolonia.Gallery
 {
-    internal class App : Application
+    internal class App : ConsoloniaApplication
     {
         static App()
         {

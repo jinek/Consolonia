@@ -47,6 +47,7 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IMouseDevice>().ToConstant(new MouseDevice())
                 .Bind<ICursorFactory>().ToConstant(new DummyCursorFactory())
                 .Bind<IPlatformIconLoader>().ToConstant(new DummyIconLoader())
+                .Bind<IKeyboardNavigationHandler>().ToTransient<ArrowsAndKeyboardNavigationHandler>()
                 //.Bind<IClipboard>().ToConstant(new X11Clipboard(this))
                 //.Bind<IPlatformSettings>().ToConstant(new PlatformSettingsStub())
                 //.Bind<ISystemDialogImpl>().ToConstant(new GtkSystemDialog())

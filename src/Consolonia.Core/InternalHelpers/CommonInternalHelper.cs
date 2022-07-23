@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 
 namespace Consolonia.Core.InternalHelpers
@@ -17,6 +18,13 @@ namespace Consolonia.Core.InternalHelpers
         public static string GetStyledPropertyName([CallerMemberName] string propertyFullName = null)
         {
             return propertyFullName![..^8];
+        }
+
+        public static T NotNull<T>(this T? t) where T : struct
+        {
+            if (t == null)
+                throw new InvalidOperationException("Value is not expected to be null");
+            return t.Value;
         }
     }
 }
