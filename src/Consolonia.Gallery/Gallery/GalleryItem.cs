@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using Avalonia.Controls;
 using Avalonia.Data.Converters;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -30,7 +31,8 @@ namespace Consolonia.Gallery.Gallery
                     .GetTypes()
                     .Where(type =>
                         type.Namespace == "Consolonia.Gallery.Gallery.GalleryViews" &&
-                        type.Name.StartsWith(galleryPrefix))
+                        type.Name.StartsWith(galleryPrefix) &&
+                        type.IsAssignableTo(typeof(UserControl)))
                     .OrderBy(GalleryOrderAttribute.GetOrder)
                     .Select(type => new GalleryItem(type.Name[galleryPrefix.Length..], type));
             }

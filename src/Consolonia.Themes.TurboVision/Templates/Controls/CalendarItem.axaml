@@ -1,0 +1,182 @@
+<!--
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+-->
+
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
+    <Style Selector="CalendarItem">
+        <Setter Property="HorizontalAlignment"
+                Value="Center" />
+        <Setter Property="Padding"
+                Value="1,0,0,0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Border BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}">
+
+                        <Grid Margin="{TemplateBinding Padding}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.Styles>
+                                <Style Selector="Button.CalendarHeader">
+                                    <Setter Property="Background"
+                                            Value="{drawing:FourBitColorBrush Mode=Transparent}" />
+                                    <Setter Property="BorderThickness"
+                                            Value="0" />
+                                    <Setter Property="(helpers:ButtonExtensions.Shadow)"
+                                            Value="False" />
+                                    <Setter Property="Margin"
+                                            Value="0,0,-1,-1" />
+                                </Style>
+                                <Style Selector="Button.CalendarHeader:pressed  /template/ ContentPresenter">
+                                    <!--todo: needs some color may be-->
+                                    <Setter Property="Background"
+                                            Value="{drawing:FourBitColorBrush Mode=Transparent}" />
+                                </Style>
+
+                                <Style Selector="Button.CalendarNavigation">
+                                    <!--<Setter Property="Height" Value="1"/>
+                          <Setter Property="Width" Value="1"/>-->
+                                    <Setter Property="Padding"
+                                            Value="0" />
+                                </Style>
+                                <Style Selector="Button.CalendarNavigation > TextBlock">
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource ThemeForegroundBrush}" />
+                                </Style>
+                                <Style Selector="Button.CalendarNavigation:pointerover > TextBlock">
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+                                </Style>
+
+                                <Style Selector="Button#HeaderButton:pointerover">
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+                                </Style>
+                            </Grid.Styles>
+
+                            <!--<Rectangle Grid.ColumnSpan="3"
+                             Fill="{drawing:FourBitColorBrush Green}"
+                             Stretch="Fill"
+                             VerticalAlignment="Top"
+                             Height="1"
+                             Margin="0"/>
+todo: while it's not needed it also does not work when set in the style-->
+
+                            <Button Name="PreviousButton"
+                                    Classes="CalendarHeader CalendarNavigation"
+                                    IsVisible="False"
+                                    HorizontalAlignment="Left"
+                                    Content="&lt;"
+                                    Margin="1,0,-1,-1" />
+
+                            <Button Name="HeaderButton"
+                                    Classes="CalendarHeader"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center" />
+
+                            <Button Name="NextButton"
+                                    Classes="CalendarHeader CalendarNavigation"
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    IsVisible="False"
+                                    HorizontalAlignment="Right"
+                                    Content="&gt;"
+                                    Margin="0,0,1,-1" />
+
+                            <Grid Name="MonthView"
+                                  Grid.Row="1"
+                                  Grid.ColumnSpan="3"
+                                  Grid.Column="0"
+                                  IsVisible="False"
+                                  HorizontalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+
+                            <Grid Name="YearView"
+                                  Grid.Row="1"
+                                  Grid.ColumnSpan="3"
+                                  Grid.Column="0"
+                                  IsVisible="False"
+                                  Margin="0,1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+
+                        </Grid>
+
+                    </Border>
+
+
+                    <Rectangle Name="DisabledVisual"
+                               Stretch="Fill"
+                               Fill="{DynamicResource ThemeShadeBrush}"
+                               Margin="0,0,0,0" />
+
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        <Setter Property="DayTitleTemplate">
+            <Template>
+                <TextBlock Margin="0,1,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Text="{Binding}" />
+            </Template>
+
+        </Setter>
+    </Style>
+
+    <Style Selector="CalendarItem /template/ Rectangle#DisabledVisual">
+        <Setter Property="IsVisible"
+                Value="False" />
+    </Style>
+    <Style Selector="CalendarItem:calendardisabled /template/ Rectangle#DisabledVisual">
+        <Setter Property="IsVisible"
+                Value="True" />
+    </Style>
+
+</Styles>
