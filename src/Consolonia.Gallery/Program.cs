@@ -1,5 +1,7 @@
 using System;
+using Avalonia;
 using Consolonia.Core;
+using Consolonia.PlatformSupport;
 
 namespace Consolonia.Gallery
 {
@@ -10,7 +12,12 @@ namespace Consolonia.Gallery
         {
             if (args.Length > 1) throw new NotSupportedException();
 
-            ApplicationStartup.StartConsolonia<App>(args);
+            AppBuilder.Configure<App>()
+                .UseConsolonia()
+                .UseAutoDetectedConsole()
+                //.UseConsole(new CursesConsole())
+                .LogToTrace()
+                .StartWithConsoleLifetime(args);
         }
     }
 }

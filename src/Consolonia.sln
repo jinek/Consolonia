@@ -15,6 +15,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Themes.TurboVision", "Consolonia.Themes.TurboVision\Consolonia.Themes.TurboVision.csproj", "{850A3EF5-2E1F-4876-B3DE-D5C99FDFC135}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{476E1582-855A-4BEB-BA7D-55302428EE62}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RepoRoot", "RepoRoot", "{09FEC8F0-8390-4E31-9C89-9174697FF341}"
 	ProjectSection(SolutionItems) = preProject
@@ -39,6 +43,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.TestsCore", "Tests\Consolonia.TestsCore\Consolonia.TestsCore.csproj", "{4C915339-CE21-4E48-A97E-7F3A02AEF1FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.GalleryTests", "Tests\Consolonia.GalleryTests\Consolonia.GalleryTests.csproj", "{1AE0207B-BF59-4473-97E1-79FEB7FA1AD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.PlatformSupport", "Consolonia.PlatformSupport\Consolonia.PlatformSupport.csproj", "{175F6648-971A-4840-B2C1-0B745CF688EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.GuiCS", "Consolonia.GuiCS\Consolonia.GuiCS.csproj", "{66A9B063-A27E-4B8B-974A-C02CD838C274}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +78,14 @@ Global
 		{1AE0207B-BF59-4473-97E1-79FEB7FA1AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AE0207B-BF59-4473-97E1-79FEB7FA1AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AE0207B-BF59-4473-97E1-79FEB7FA1AD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{175F6648-971A-4840-B2C1-0B745CF688EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{175F6648-971A-4840-B2C1-0B745CF688EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{175F6648-971A-4840-B2C1-0B745CF688EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{175F6648-971A-4840-B2C1-0B745CF688EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66A9B063-A27E-4B8B-974A-C02CD838C274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66A9B063-A27E-4B8B-974A-C02CD838C274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66A9B063-A27E-4B8B-974A-C02CD838C274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66A9B063-A27E-4B8B-974A-C02CD838C274}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4C915339-CE21-4E48-A97E-7F3A02AEF1FA} = {F756B909-46C5-43FF-8322-86EC36B51841}

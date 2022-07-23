@@ -92,7 +92,6 @@
                                                     ItemTemplate="{TemplateBinding ItemTemplate}"
                                                     VirtualizationMode="{TemplateBinding VirtualizationMode}">
                                         <ItemsPresenter.Styles>
-                                            <!--todo: How to set this property directly on the control-->
                                             <Style Selector="ItemsPresenter">
                                                 <Setter Property="(helpers:ComboBoxExtensions.FocusOnOpen)"
                                                         Value="true" />

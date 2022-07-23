@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -10,7 +9,6 @@ using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Dummy;
 using JetBrains.Annotations;
 
 namespace Consolonia.Core.Infrastructure
@@ -25,16 +23,21 @@ namespace Consolonia.Core.Infrastructure
         public ConsoleWindow()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
+            MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             _console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
             _console.Resized += OnConsoleOnResized;
-            _console.KeyPress += ConsoleOnKeyPress;
+            _console.KeyEvent += ConsoleOnKeyEvent;
+            _console.MouseEvent += ConsoleOnMouseEvent;
+            _console.FocusEvent += ConsoleOnFocusEvent;
         }
 
         public void Dispose()
         {
             Closed?.Invoke();
             _console.Resized -= OnConsoleOnResized;
-            _console.KeyPress -= ConsoleOnKeyPress;
+            _console.KeyEvent -= ConsoleOnKeyEvent;
+            _console.MouseEvent -= ConsoleOnMouseEvent;
+            _console.FocusEvent -= ConsoleOnFocusEvent;
             _console.Dispose();
         }
 
@@ -89,12 +92,13 @@ namespace Consolonia.Core.Infrastructure
 
         public PixelPoint PointToScreen(Point point)
         {
-            throw new NotImplementedException();
+            // ReSharper disable once ArrangeObjectCreationWhenTypeNotEvident //todo: should we avoid suggesting type specification
+            return new((int)point.X, (int)point.Y);
         }
 
         public void SetCursor(ICursorImpl cursor)
         {
-            throw new NotImplementedException();
+            //todo: check whether we can work with cursors
         }
 
         public IPopupImpl CreatePopup()
@@ -131,7 +135,7 @@ namespace Consolonia.Core.Infrastructure
 
         public Action Closed { get; set; }
         public Action LostFocus { get; set; }
-        public IMouseDevice MouseDevice => new DummyMouse();
+        public IMouseDevice MouseDevice { get; }
 
         public WindowTransparencyLevel TransparencyLevel => WindowTransparencyLevel.None;
 
@@ -177,7 +181,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTitle(string title)
         {
-            Console.Title = title;
+            _console.SetTitle(title);
         }
 
         public void SetParent(IWindowImpl parent)
@@ -266,54 +270,93 @@ namespace Consolonia.Core.Infrastructure
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public Thickness OffScreenMargin { get; }
 
-        private void OnConsoleOnResized()
+        private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,
+            RawInputModifiers modifiers)
         {
-            PixelBufferSize pixelBufferSize = _console.Size;
-            var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
-            Resized(size, PlatformResizeReason.Unspecified);
-            //todo; Invalidate(new Rect(size));
-        }
-
-        private void ConsoleOnKeyPress(Key key, char keyChar, RawInputModifiers rawInputModifiers)
-        {
-            Dispatcher.UIThread.Post(async () =>
+            ulong timestamp = (ulong)Stopwatch.GetTimestamp();
+            Dispatcher.UIThread.Post(() =>
             {
-                try
+                switch (type)
                 {
-                    bool handled = false;
-                    if (!char.IsControl(keyChar))
-                    {
-                        var rawTextInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice,
-                            (ulong)DateTime.Now.Ticks,
-                            _inputRoot,
-                            keyChar.ToString());
-                        Input(rawTextInputEventArgs);
-                        if (rawTextInputEventArgs.Handled)
-                            handled = true;
-                    }
-
-                    if (handled) return;
-                    await Task.Yield();
-
-                    Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
-                        RawKeyEventType.KeyDown, key,
-                        rawInputModifiers));
-
-                    await Task.Yield();
-
-                    Input(new RawKeyEventArgs(_myKeyboardDevice, (ulong)DateTime.Now.Ticks, _inputRoot,
-                        RawKeyEventType.KeyUp, key,
-                        rawInputModifiers));
-                }
-                catch (Exception exception)
-                {
-                    ThreadPool.QueueUserWorkItem(_ =>
-                        throw new InvalidOperationException(
-                            "Exception happened while reading the input. Copy of inner exception is raised in unobserved task",
-                            exception));
-                    throw;
+                    case RawPointerEventType.Move:
+                    case RawPointerEventType.LeftButtonDown:
+                    case RawPointerEventType.LeftButtonUp:
+                    case RawPointerEventType.RightButtonUp:
+                    case RawPointerEventType.RightButtonDown:
+                    case RawPointerEventType.MiddleButtonDown:
+                    case RawPointerEventType.XButton1Down:
+                    case RawPointerEventType.XButton2Down:
+                    case RawPointerEventType.NonClientLeftButtonDown:
+                    case RawPointerEventType.MiddleButtonUp:
+                    case RawPointerEventType.XButton1Up:
+                    case RawPointerEventType.XButton2Up:
+                        Input(new RawPointerEventArgs(MouseDevice, timestamp, _inputRoot,
+                            type, point,
+                            modifiers));
+                        break;
+                    case RawPointerEventType.Wheel:
+                        Input(new RawMouseWheelEventArgs(MouseDevice, timestamp, _inputRoot, point,
+                            (Vector)wheelDelta!, modifiers));
+                        break;
                 }
             });
+        }
+
+        private void ConsoleOnFocusEvent(bool focused)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (focused)
+                    Activated?.Invoke();
+                else Deactivated?.Invoke();
+            });
+        }
+
+        private void OnConsoleOnResized()
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                PixelBufferSize pixelBufferSize = _console.Size;
+                var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
+                Resized(size, PlatformResizeReason.Unspecified);
+                //todo; Invalidate(new Rect(size));
+            });
+        }
+
+        private async void ConsoleOnKeyEvent(Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down,
+            ulong timeStamp)
+        {
+            if (!down)
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    Input(new RawKeyEventArgs(_myKeyboardDevice, timeStamp, _inputRoot,
+                        RawKeyEventType.KeyUp, key,
+                        rawInputModifiers));
+                }, DispatcherPriority.Input);
+            }
+            else
+            {
+                bool handled = false;
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp,
+                        _inputRoot,
+                        RawKeyEventType.KeyDown, key,
+                        rawInputModifiers);
+                    Input(rawInputEventArgs);
+                    handled = rawInputEventArgs.Handled;
+                }, DispatcherPriority.Input).ConfigureAwait(true);
+
+                if (!handled && !char.IsControl(keyChar))
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        Input(new RawTextInputEventArgs(_myKeyboardDevice,
+                            timeStamp,
+                            _inputRoot,
+                            keyChar.ToString()));
+                    }, DispatcherPriority.Input);
+            }
         }
     }
 }

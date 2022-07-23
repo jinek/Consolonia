@@ -32,9 +32,11 @@ namespace Consolonia.GalleryTests
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Delete);
             await UITest.AssertHasText(@"Floating Watermark");
-            await UITest.StringInput("asd54321");
+
+            const string checkText = "asd3333";
+            await UITest.StringInput(checkText);
             await UITest.AssertHasText(@"Floating Watermark");
-            await UITest.AssertHasText(@"asd54321");
+            await UITest.AssertHasText(checkText);
         }
     }
 }
