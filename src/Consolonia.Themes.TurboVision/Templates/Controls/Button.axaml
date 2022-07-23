@@ -43,6 +43,7 @@
                                                   BorderBrush="{TemplateBinding BorderBrush}"
                                                   BorderThickness="{TemplateBinding BorderThickness}"
                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                  RecognizesAccessKey="True"
                                                   Content="{TemplateBinding Content}"
                                                   HorizontalContentAlignment="Stretch"
                                                   VerticalContentAlignment="Stretch"

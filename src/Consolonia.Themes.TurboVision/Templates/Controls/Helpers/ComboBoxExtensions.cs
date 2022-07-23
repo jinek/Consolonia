@@ -17,59 +17,23 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         public static readonly AttachedProperty<bool> FocusOnOpenProperty =
             AvaloniaProperty.RegisterAttached<ItemsPresenter, bool>("FocusOnOpen", typeof(ComboBoxExtensions));
 
-        private static readonly AttachedProperty<IDisposable[]> DisposablesProperty =
-            AvaloniaProperty.RegisterAttached<ItemsPresenter, IDisposable[]>("Disposables", typeof(ComboBoxExtensions));
-
         static ComboBoxExtensions()
         {
             OpenOnEnterProperty.Changed.AddClassHandler<ComboBox>((box, args) =>
             {
                 if ((bool)args.NewValue!)
-                    box.KeyDown += BoxOnKeyDown;
+                    box.KeyDown += ComboBoxOnKeyDown;
                 else
-                    box.KeyDown -= BoxOnKeyDown;
+                    box.KeyDown -= ComboBoxOnKeyDown;
             });
 
             FocusOnOpenProperty.Changed.Subscribe(args =>
             {
-                var itemsPresenter = (ItemsPresenter)args.Sender;
-                var comboBox = itemsPresenter.FindLogicalAncestorOfType<ComboBox>();
+                DropDownExtensions.ProcessFocusOnOpen<ItemsPresenter, ComboBox>(args, ComboBox.IsDropDownOpenProperty,
+                    FocusOnDropDown,
+                    comboBox => comboBox.Focus());
 
-                if (args.NewValue.Value)
-                {
-                    itemsPresenter.AttachedToVisualTree += ItemContainerGeneratorOnMaterialized;
-
-                    IDisposable disposable1 = comboBox.GetPropertyChangedObservable(InputElement.IsFocusedProperty)
-                        .Subscribe(eventArgs =>
-                        {
-                            if (!(bool)eventArgs.NewValue! && !itemsPresenter.IsKeyboardFocusWithin)
-                                Dispatcher.UIThread.Post(() => { comboBox.IsDropDownOpen = false; });
-                        });
-
-                    IDisposable disposable2 = itemsPresenter
-                        .GetPropertyChangedObservable(InputElement.IsKeyboardFocusWithinProperty)
-                        .Subscribe(eventArgs =>
-                        {
-                            if (!(bool)eventArgs.NewValue! && !comboBox.IsKeyboardFocusWithin)
-                                Dispatcher.UIThread.Post(() =>
-                                {
-                                    comboBox.IsDropDownOpen = false;
-                                    comboBox.Focus();
-                                });
-                        });
-
-                    itemsPresenter.SetValue(DisposablesProperty, new[] { disposable1, disposable2 });
-                }
-                else
-                {
-                    var disposables = itemsPresenter.GetValue(DisposablesProperty);
-                    foreach (IDisposable disposable in disposables)
-                        disposable.Dispose();
-
-                    itemsPresenter.AttachedToVisualTree -= ItemContainerGeneratorOnMaterialized;
-                }
-
-                static void ItemContainerGeneratorOnMaterialized(object sender,
+                static void FocusOnDropDown(object sender,
                     VisualTreeAttachmentEventArgs visualTreeAttachmentEventArgs)
                 {
                     var comboBox = ((ItemsPresenter)sender).FindLogicalAncestorOfType<ComboBox>();
@@ -82,16 +46,16 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 }
             });
 
-            FocusOnOpenProperty.Changed.AddClassHandler<ComboBox>((box, args) =>
+            FocusOnOpenProperty.Changed.AddClassHandler<ComboBox>((comboBox, args) =>
             {
                 if ((bool)args.NewValue!)
-                    box.KeyDown += BoxOnKeyDown;
+                    comboBox.KeyDown += ComboBoxOnKeyDown;
                 else
-                    box.KeyDown -= BoxOnKeyDown;
+                    comboBox.KeyDown -= ComboBoxOnKeyDown;
             });
         }
 
-        private static void BoxOnKeyDown(object sender, KeyEventArgs e)
+        private static void ComboBoxOnKeyDown(object sender, KeyEventArgs e)
         {
             var comboBox = (ComboBox)sender;
             if (e.Key != Key.Enter || comboBox.IsDropDownOpen) return;

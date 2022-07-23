@@ -32,4 +32,9 @@
     <StyleInclude Source="/Templates/Controls/ProgressBar.axaml" />
     <StyleInclude Source="/Templates/Controls/FlyoutPresenter.axaml" />
     <StyleInclude Source="/Templates/Controls/MenuFlyoutPresenter.axaml" />
+    <StyleInclude Source="/Templates/Controls/Calendar.axaml" />
+    <StyleInclude Source="/Templates/Controls/CalendarItem.axaml" />
+    <StyleInclude Source="/Templates/Controls/CalendarButton.axaml" />
+    <StyleInclude Source="/Templates/Controls/CalendarDatePicker.axaml" />
+    <StyleInclude Source="/Templates/Controls/CalendarDayButton.axaml" />
 </Styles>
