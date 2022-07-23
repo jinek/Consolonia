@@ -44,6 +44,7 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IKeyboardDevice>().ToConstant(new ConsoleKeyboardDevice())
                 .Bind<IFontManagerImpl>().ToConstant(new FontManagerImpl())
                 .Bind<ITextShaperImpl>().ToConstant(new TextShaperImpl())
+                .Bind<IMouseDevice>().ToConstant(new MouseDevice())
                 .Bind<ICursorFactory>().ToConstant(new DummyCursorFactory())
                 .Bind<IPlatformIconLoader>().ToConstant(new DummyIconLoader())
                 //.Bind<IClipboard>().ToConstant(new X11Clipboard(this))
