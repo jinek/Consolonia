@@ -15,7 +15,7 @@ Build TUI applications using XAML, data bindings, animation, styling, and other 
 | Basic Controls    | Text, Buttons, Lists, ProgressBar, Calendar, Menu, etc..            |
 | DataGrid          | _No editing, no grouping_                                           |
 | Drivers           | System.Console, gui.cs (_experimental_)                             |
-| Mouse Support     | V                                                                   |
+| Mouse Support     | On Linux/Windows/MacOS                                              |
 | Themes            | TurboVision like (light/dark/black)<br/>_Coming: htop style_        |
 | UI Automation     | Basic tests support                                                 |
 | _Charts_          | _Coming..._                                                         |
