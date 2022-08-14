@@ -123,7 +123,7 @@ namespace Consolonia.Core.Drawing
                 if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
                     break;
 
-                char character = default;
+                char character;
                 try
                 {
                     character = pixel.Foreground.Symbol.GetCharacter();
@@ -137,9 +137,13 @@ namespace Consolonia.Core.Drawing
                         character = '░';
                         pixel = new Pixel(new PixelForeground(), new PixelBackground(PixelBackgroundMode.Colored));
                     }
+                    else
+                    {
+                        throw;
+                    }
                 }
 
-                if (char.IsControl(character))
+                if (char.IsControl(character) /*|| character is '保' or '哥'*/)
                     character = ' '; // some terminals does not print \0
 
                 ConsoleColor backgroundColor = pixel.Background.Color;

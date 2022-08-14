@@ -60,7 +60,7 @@ namespace Consolonia.Core
             AppBuilder consoloniaAppBuilder = AppBuilder.Configure<TApp>()
                 .UseConsole(console)
                 .UseConsolonia()
-                .LogToTrace();
+                .LogToException();
 
             return CreateLifetime(consoloniaAppBuilder, args);
         }

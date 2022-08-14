@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Consolonia.Core;
+using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
 
 namespace Consolonia.Gallery
@@ -15,8 +16,7 @@ namespace Consolonia.Gallery
             AppBuilder.Configure<App>()
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
-                //.UseConsole(new CursesConsole())
-                .LogToTrace()
+                .LogToException()
                 .StartWithConsoleLifetime(args);
         }
     }

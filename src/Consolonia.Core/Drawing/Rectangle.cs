@@ -25,7 +25,7 @@ namespace Consolonia.Core.Drawing
 
         public bool FillContains(Point point)
         {
-            return _rect.Contains(point);
+            return _rect.ContainsAligned(point);
         }
 
         public IGeometryImpl Intersect(IGeometryImpl geometry)
@@ -35,7 +35,14 @@ namespace Consolonia.Core.Drawing
 
         public bool StrokeContains(IPen pen, Point point)
         {
-            throw new NotImplementedException();
+            if (pen.Thickness == 0)
+                return false;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (pen.Thickness != 1)
+                throw new NotImplementedException();
+            if (!FillContains(point))
+                return false;
+            return !_rect.Deflate(1).ContainsAligned(point);
         }
 
         public ITransformedGeometryImpl WithTransform(Matrix transform)
