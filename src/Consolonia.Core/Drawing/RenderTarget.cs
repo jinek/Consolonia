@@ -123,7 +123,7 @@ namespace Consolonia.Core.Drawing
                 if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
                     break;
 
-                char character = default;
+                char character;
                 try
                 {
                     character = pixel.Foreground.Symbol.GetCharacter();

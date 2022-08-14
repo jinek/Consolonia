@@ -37,6 +37,7 @@ namespace Consolonia.Core.Drawing
         {
             if (pen.Thickness == 0)
                 return false;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (pen.Thickness != 1)
                 throw new NotImplementedException();
             if (!FillContains(point))

@@ -2,23 +2,27 @@ using System;
 using System.Runtime.Serialization;
 using JetBrains.Annotations;
 
-namespace Consolonia.Core.Infrastructure;
-
-public class ConsoloniaException : ApplicationException
+namespace Consolonia.Core.Infrastructure
+    // ReSharper disable once ArrangeNamespaceBody
 {
-    public ConsoloniaException()
+    [UsedImplicitly]
+    public class ConsoloniaException : ApplicationException
     {
-    }
+        public ConsoloniaException()
+        {
+        }
 
-    protected ConsoloniaException([NotNull] SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-    }
+        protected ConsoloniaException([NotNull] SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
 
-    public ConsoloniaException([CanBeNull] string message) : base(message)
-    {
-    }
+        public ConsoloniaException([CanBeNull] string message) : base(message)
+        {
+        }
 
-    public ConsoloniaException([CanBeNull] string message, [CanBeNull] Exception innerException) : base(message, innerException)
-    {
+        public ConsoloniaException([CanBeNull] string message, [CanBeNull] Exception innerException) : base(message,
+            innerException)
+        {
+        }
     }
 }
