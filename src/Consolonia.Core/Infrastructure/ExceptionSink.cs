@@ -23,7 +23,8 @@ namespace Consolonia.Core.Infrastructure
             Log(level, area, source, messageTemplate, new object[] { propertyValue0 });
         }
 
-        public void Log<T0, T1>(LogEventLevel level, string area, object source, string messageTemplate, T0 propertyValue0,
+        public void Log<T0, T1>(LogEventLevel level, string area, object source, string messageTemplate,
+            T0 propertyValue0,
             T1 propertyValue1)
         {
             Log(level, area, source, messageTemplate, new object[] { propertyValue0, propertyValue1 });

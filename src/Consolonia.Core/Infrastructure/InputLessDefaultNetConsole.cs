@@ -77,15 +77,15 @@ namespace Consolonia.Core.Infrastructure
             if (!str.IsNormalized(NormalizationForm.FormKC))
                 str = str.Normalize(NormalizationForm.FormKC);
 
-            if (str.Any(c => ConsoleText.IsWideChar(c) && char.IsLetterOrDigit(c)/*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
+            if (str.Any(
+                c => ConsoleText.IsWideChar(c) &&
+                     char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
             {
                 StringBuilder stringBuilder = new();
                 foreach (char c in str)
-                {
                     stringBuilder.Append(ConsoleText.IsWideChar(c) && char.IsLetterOrDigit(c)
-                        ? '?'//todo: support wide characters
-                        : c); 
-                }
+                        ? '?' //todo: support wide characters
+                        : c);
 
                 str = stringBuilder.ToString();
             }

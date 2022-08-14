@@ -137,9 +137,12 @@ namespace Consolonia.Core.Drawing
                         character = '░';
                         pixel = new Pixel(new PixelForeground(), new PixelBackground(PixelBackgroundMode.Colored));
                     }
-                    else throw;
+                    else
+                    {
+                        throw;
+                    }
                 }
-                
+
                 if (char.IsControl(character) /*|| character is '保' or '哥'*/)
                     character = ' '; // some terminals does not print \0
 
