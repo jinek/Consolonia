@@ -5,12 +5,12 @@
         <Nullable>disable</Nullable>
     </PropertyGroup>
     <PropertyGroup>
-        <VersionPrefix>0.10.12</VersionPrefix>
+        <VersionPrefix>0.10.18</VersionPrefix>
         <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
         <Description>Text User Interface implementation of Avalonia UI (GUI Framework)</Description>
         <Copyright>Copyright © Evgeny Gorbovoy 2021 - 2022</Copyright>
     </PropertyGroup>
     <PropertyGroup>
-        <AvaloniaVersion>0.10.12</AvaloniaVersion>
+        <AvaloniaVersion>0.10.18</AvaloniaVersion>
     </PropertyGroup>
 </Project>
