@@ -150,7 +150,7 @@ namespace Consolonia.PlatformSupport
                     eventType = RawPointerEventType.Move;
                     break;
                 default:
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException(mouseEvent.EventFlags.ToString());
             }
 
             for (short i = 0; i < repeat; i++)
