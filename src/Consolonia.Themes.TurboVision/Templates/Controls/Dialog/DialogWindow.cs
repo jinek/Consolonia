@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 
@@ -20,14 +23,13 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             AvaloniaProperty.Register<DialogWindow, bool>(nameof(IsCloseButtonVisible), true);
 
         private Size _contentSize = Size.Empty;
-        private IDisposable _disposable2;
+        private ContentPresenter _partContentPresenter;
 
         private TaskCompletionSource _taskCompletionSource;
 
         static DialogWindow()
         {
             TitleProperty.OverrideDefaultValue<DialogWindow>(string.Empty);
-            ContentProperty.Changed.AddClassHandler<DialogWindow>((x, e) => x.ContentChanged2(e));
         }
 
         public DialogWindow()
@@ -64,15 +66,20 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
                 CloseDialog();
         }
 
-        private void ContentChanged2(AvaloniaPropertyChangedEventArgs args)
+        [Obsolete("Avalonia is deprecating this")]
+        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
-            var control = (IControl)args.NewValue;
-            _disposable2?.Dispose();
-            _disposable2 = control?.GetPropertyChangedObservable(BoundsProperty).Subscribe(args2 =>
-            {
-                var rect = (Rect)args2.NewValue!;
-                ContentSize = rect.Size;
-            });
+            base.OnTemplateApplied(e);
+            _partContentPresenter = (ContentPresenter)e.NameScope.Find("PART_ContentPresenter");
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            Size arrangeOverride = base.ArrangeOverride(finalSize);
+            IVisual firstVisualChild = _partContentPresenter?.GetVisualChildren().FirstOrDefault();
+            if (firstVisualChild != null)
+                ContentSize = firstVisualChild.Bounds.Size;
+            return arrangeOverride;
         }
 
         private void ShowDialogInternal(IControl parent)
