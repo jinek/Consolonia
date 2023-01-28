@@ -23,9 +23,9 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             AvaloniaProperty.Register<DialogWindow, bool>(nameof(IsCloseButtonVisible), true);
 
         private Size _contentSize = Size.Empty;
+        private ContentPresenter _partContentPresenter;
 
         private TaskCompletionSource _taskCompletionSource;
-        private ContentPresenter _partContentPresenter;
 
         static DialogWindow()
         {
@@ -77,7 +77,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         {
             Size arrangeOverride = base.ArrangeOverride(finalSize);
             IVisual firstVisualChild = _partContentPresenter?.GetVisualChildren().FirstOrDefault();
-            if (firstVisualChild != null) 
+            if (firstVisualChild != null)
                 ContentSize = firstVisualChild.Bounds.Size;
             return arrangeOverride;
         }
