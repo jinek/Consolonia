@@ -1,7 +1,4 @@
-![standwithukrain](https://user-images.githubusercontent.com/10516222/163942305-7a69576e-1263-409d-a5db-f844cde3d8b5.jpg)
-
 # Consolonia UI
-
 
 TUI (Text User Interface) (GUI Framework) implementation for [Avalonia UI](https://github.com/AvaloniaUI)
 
