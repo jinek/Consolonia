@@ -63,7 +63,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             
             dialogWindow.AttachedToVisualTree += DialogAttachedToVisualTree;
         
-            static void DialogAttachedToVisualTree(object? sender, EventArgs e)
+            static void DialogAttachedToVisualTree(object sender, EventArgs e)
             {
                 var dialogWindow = (DialogWindow)sender!;
                 dialogWindow.AttachedToVisualTree -= DialogAttachedToVisualTree; 
