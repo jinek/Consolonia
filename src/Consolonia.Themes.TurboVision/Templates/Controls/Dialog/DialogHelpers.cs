@@ -54,11 +54,21 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             if (_dialogs.TryPeek(out OverlayPopupHost previousDialog))
             {
                 previousDialog.IsEnabled = false;
-                ((DialogWrap)previousDialog.Content).HadFocusOn = FocusManager.Instance!.Current;
             }
+            
+            dialogWrap.HadFocusOn = FocusManager.Instance!.Current;
 
             _dialogs.Push(popupHost);
             popupHost.Show();
+            
+            dialogWindow.AttachedToVisualTree += DialogAttachedToVisualTree;
+        
+            static void DialogAttachedToVisualTree(object? sender, EventArgs e)
+            {
+                var dialogWindow = (DialogWindow)sender!;
+                dialogWindow.AttachedToVisualTree -= DialogAttachedToVisualTree; 
+                FocusManager.Instance!.Focus(dialogWindow);
+            }
         }
 
         private ContentPresenter GetFirstContentPresenter()
@@ -72,7 +82,8 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         public void PopInternal(DialogWindow dialogWindow)
         {
             OverlayPopupHost overlayPopupHost = _dialogs.Pop();
-            if (!Equals(((DialogWrap)overlayPopupHost.Content).ContentPresenter.Content, dialogWindow))
+            var dialogWrap = (DialogWrap)overlayPopupHost.Content;
+            if (!Equals(dialogWrap.ContentPresenter.Content, dialogWindow))
                 throw new InvalidOperationException("Dialog is not topmost. Close private dialogs first");
             overlayPopupHost.Hide();
 
@@ -80,15 +91,16 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             {
                 previousDialog.IsEnabled = true;
                 previousDialog.Focus();
-                FocusManager.Instance!.Focus(((DialogWrap)previousDialog.Content).HadFocusOn);
             }
-
+            
             if (_dialogs.Count == 0)
             {
                 ContentPresenter firstContentPresenter = GetFirstContentPresenter();
                 firstContentPresenter.IsEnabled = true;
                 firstContentPresenter.Focus();
             }
+            
+            FocusManager.Instance!.Focus(dialogWrap.HadFocusOn);
         }
     }
 }
