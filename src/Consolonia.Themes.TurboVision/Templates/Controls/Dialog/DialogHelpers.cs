@@ -51,22 +51,19 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             popupHost.SetChild(dialogWrap);
             GetFirstContentPresenter().IsEnabled = false;
 
-            if (_dialogs.TryPeek(out OverlayPopupHost previousDialog))
-            {
-                previousDialog.IsEnabled = false;
-            }
-            
+            if (_dialogs.TryPeek(out OverlayPopupHost previousDialog)) previousDialog.IsEnabled = false;
+
             dialogWrap.HadFocusOn = FocusManager.Instance!.Current;
 
             _dialogs.Push(popupHost);
             popupHost.Show();
-            
+
             dialogWindow.AttachedToVisualTree += DialogAttachedToVisualTree;
-        
+
             static void DialogAttachedToVisualTree(object sender, EventArgs e)
             {
                 var dialogWindow = (DialogWindow)sender!;
-                dialogWindow.AttachedToVisualTree -= DialogAttachedToVisualTree; 
+                dialogWindow.AttachedToVisualTree -= DialogAttachedToVisualTree;
                 FocusManager.Instance!.Focus(dialogWindow);
             }
         }
@@ -92,14 +89,14 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
                 previousDialog.IsEnabled = true;
                 previousDialog.Focus();
             }
-            
+
             if (_dialogs.Count == 0)
             {
                 ContentPresenter firstContentPresenter = GetFirstContentPresenter();
                 firstContentPresenter.IsEnabled = true;
                 firstContentPresenter.Focus();
             }
-            
+
             FocusManager.Instance!.Focus(dialogWrap.HadFocusOn);
         }
     }
