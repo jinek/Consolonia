@@ -63,7 +63,9 @@ namespace Consolonia.PlatformSupport
                 (Key.PageDown, ConsoleKey.PageDown),
                 (Key.PageUp, ConsoleKey.PageUp),
                 (Key.Space, ConsoleKey.Spacebar),
-                (Key.Tab, ConsoleKey.Tab)
+                (Key.Tab, ConsoleKey.Tab),
+                // Proposed by ChatGPT, I've found supporting source: https://devblogs.microsoft.com/dotnet/console-readkey-improvements-in-net-7/   
+                (Key.Unknown, ConsoleKey.NoName)
             });
 
         private static readonly FlagTranslator<Curses.Event, RawInputModifiers>
