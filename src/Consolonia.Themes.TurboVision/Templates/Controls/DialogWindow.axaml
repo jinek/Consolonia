@@ -5,6 +5,9 @@
         xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
 
     <Style Selector=":is(dialog|DialogWindow)">
+        <Style.Resources>
+            <Thickness x:Key="ConsoloniaDialogWindowBorderMargin">1,0</Thickness>
+        </Style.Resources>
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="BorderBrush"
@@ -12,7 +15,7 @@
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="Margin"
-                Value="1,0" />
+                Value="0" />
         <Setter Property="Padding"
                 Value="0" />
         <Setter Property="IsCloseButtonVisible"
@@ -28,7 +31,7 @@
                                 VerticalAlignment="Bottom">
                             <Border BorderBrush="{drawing:FourBitColorBrush Mode=Transparent}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
-                                    Margin="{TemplateBinding Margin}">
+                                    Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}">
                                 <Control
                                     Width="{Binding Path=ContentSize.Width, RelativeSource={RelativeSource TemplatedParent}}"
                                     Height="{Binding Path=ContentSize.Height, RelativeSource={RelativeSource TemplatedParent}}"
@@ -42,7 +45,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center">
                             <Border BorderThickness="{TemplateBinding BorderThickness}"
-                                    Margin="{TemplateBinding Margin}">
+                                    Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}">
                                 <Border.BorderBrush>
                                     <drawing:LineBrush
                                         Brush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
@@ -56,19 +59,19 @@
                             </Border>
                             <StackPanel HorizontalAlignment="Center"
                                         VerticalAlignment="Top"
-                                        Margin="{TemplateBinding Margin}"
+                                        Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
                                         ZIndex="10"
                                         Orientation="Horizontal">
-                                <helpers:SymbolsControl Text="╡"
+                                <helpers:SymbolsControl Text=" "
                                                         Foreground="{TemplateBinding BorderBrush}" />
                                 <TextBlock Text="{TemplateBinding Title}" />
-                                <helpers:SymbolsControl Text="╞"
+                                <helpers:SymbolsControl Text=" "
                                                         Foreground="{TemplateBinding BorderBrush}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal"
                                         ZIndex="10"
                                         VerticalAlignment="Top"
-                                        Margin="{TemplateBinding Margin}"
+                                        Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
                                         IsVisible="{TemplateBinding IsCloseButtonVisible}">
                                 <Button Content="x"
                                         Background="{x:Null}"
@@ -89,7 +92,7 @@
                         <!--Content-->
                         <Panel Margin="2,1,2,1">
                             <ContentPresenter Name="PART_ContentPresenter"
-                                              Margin="{TemplateBinding Margin}"
+                                              Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
                                               Padding="{TemplateBinding Padding}"
                                               BorderThickness="{TemplateBinding BorderThickness}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
