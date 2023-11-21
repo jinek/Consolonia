@@ -8,7 +8,7 @@ namespace Consolonia.Core.Infrastructure
     public class ConsoloniaLifetime : ClassicDesktopStyleApplicationLifetime
     {
         /// <summary>
-        /// returned task indicates that console is successfully paused
+        ///     returned task indicates that console is successfully paused
         /// </summary>
         public Task DisconnectFromConsoleAsync(CancellationToken cancellationToken)
         {
@@ -17,25 +17,19 @@ namespace Consolonia.Core.Infrastructure
 
             var mainWindowPlatformImpl = (ConsoleWindow)MainWindow.PlatformImpl;
             IConsole console = mainWindowPlatformImpl.Console;
-        
+
             Task pauseTask = taskToWaitFor.Task;
-        
+
             console.PauseIO(pauseTask);
 
             pauseTask.ContinueWith(_ =>
             {
                 mainWindowPlatformImpl.Console.ClearOutput();
 
-                Dispatcher.UIThread.Post(() =>
-                {
-                    MainWindow.InvalidateVisual();
-                });
+                Dispatcher.UIThread.Post(() => { MainWindow.InvalidateVisual(); });
             }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
 
-            return Dispatcher.UIThread.InvokeAsync(() =>
-            {
-            
-            });
+            return Dispatcher.UIThread.InvokeAsync(() => { });
         }
     }
 }
