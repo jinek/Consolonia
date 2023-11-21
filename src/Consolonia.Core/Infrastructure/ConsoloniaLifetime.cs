@@ -1,41 +1,41 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 
-namespace Consolonia.Core.Infrastructure;
-
-public class ConsoloniaLifetime : ClassicDesktopStyleApplicationLifetime
+namespace Consolonia.Core.Infrastructure
 {
-    /// <summary>
-    /// returned task indicates that console is successfully paused
-    /// </summary>
-    public Task DisconnectFromConsoleAsync(CancellationToken cancellationToken)
+    public class ConsoloniaLifetime : ClassicDesktopStyleApplicationLifetime
     {
-        var taskToWaitFor = new TaskCompletionSource();
-        cancellationToken.Register(() => taskToWaitFor.SetResult());
-
-        var mainWindowPlatformImpl = (ConsoleWindow)MainWindow.PlatformImpl;
-        IConsole console = mainWindowPlatformImpl.Console;
-        
-        Task pauseTask = taskToWaitFor.Task;
-        
-        console.PauseIO(pauseTask);
-
-        pauseTask.ContinueWith(_ =>
+        /// <summary>
+        /// returned task indicates that console is successfully paused
+        /// </summary>
+        public Task DisconnectFromConsoleAsync(CancellationToken cancellationToken)
         {
-            mainWindowPlatformImpl.Console.ClearOutput();
+            var taskToWaitFor = new TaskCompletionSource();
+            cancellationToken.Register(() => taskToWaitFor.SetResult());
 
-            Dispatcher.UIThread.Post(() =>
+            var mainWindowPlatformImpl = (ConsoleWindow)MainWindow.PlatformImpl;
+            IConsole console = mainWindowPlatformImpl.Console;
+        
+            Task pauseTask = taskToWaitFor.Task;
+        
+            console.PauseIO(pauseTask);
+
+            pauseTask.ContinueWith(_ =>
             {
-                MainWindow.InvalidateVisual();
-            });
-        }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
+                mainWindowPlatformImpl.Console.ClearOutput();
 
-        return Dispatcher.UIThread.InvokeAsync(() =>
-        {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    MainWindow.InvalidateVisual();
+                });
+            }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
+
+            return Dispatcher.UIThread.InvokeAsync(() =>
+            {
             
-        });
+            });
+        }
     }
 }
