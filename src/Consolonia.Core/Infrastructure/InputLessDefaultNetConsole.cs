@@ -166,7 +166,10 @@ namespace Consolonia.Core.Infrastructure
             {
                 while (!Disposed)
                 {
-                    PauseTask?.Wait();
+                    Task pauseTask = PauseTask;
+                    if(pauseTask!=null)
+                        await pauseTask.ConfigureAwait(false);
+                    
                     int timeout = (int)(CheckActualizeTheSize() ? 1 : slowInterval);
                     await Task.Delay(timeout).ConfigureAwait(false);
                 }
