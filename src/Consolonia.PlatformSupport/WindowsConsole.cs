@@ -63,7 +63,7 @@ namespace Consolonia.PlatformSupport
         #region chatGPT
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct INPUT_RECORD
+        private struct INPUT_RECORD
         {
             public ushort EventType;
             public UnionRecord Event;
@@ -80,20 +80,26 @@ namespace Consolonia.PlatformSupport
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct KEY_EVENT_RECORD
+        internal struct KEY_EVENT_RECORD
         {
+#pragma warning disable IDE1006
             public bool bKeyDown;
+#pragma warning restore IDE1006
             // Other fields omitted for brevity
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct FOCUS_EVENT_RECORD
+        private struct FOCUS_EVENT_RECORD
         {
+#pragma warning disable IDE1006
             public bool bSetFocus;
+#pragma warning restore IDE1006
         }
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern bool WriteConsoleInput(
+#pragma warning disable CA5392
+        private static extern bool WriteConsoleInput(
+#pragma warning restore CA5392
             IntPtr hConsoleInput,
             INPUT_RECORD[] lpBuffer,
             uint nLength,
