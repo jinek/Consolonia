@@ -62,8 +62,8 @@ namespace Consolonia.PlatformSupport
 
         #region chatGPT
 
-        // Resharper disable MemberCanBePrivate.Local
-        // Resharper disable FieldCanBeMadeReadOnly.Local
+        // Resharper disable MemberCanBePrivate
+        // Resharper disable FieldCanBeMadeReadOnly
         // ReSharper disable InconsistentNaming
         [StructLayout(LayoutKind.Sequential)]
         private struct INPUT_RECORD
@@ -107,8 +107,8 @@ namespace Consolonia.PlatformSupport
             INPUT_RECORD[] lpBuffer,
             uint nLength,
             out uint lpNumberOfEventsWritten);
-        // Resharper restore MemberCanBePrivate.Local
-        // Resharper restore FieldCanBeMadeReadOnly.Local
+        // Resharper restore MemberCanBePrivate
+        // Resharper restore FieldCanBeMadeReadOnly
 // ReSharper restore InconsistentNaming
         #endregion
         
