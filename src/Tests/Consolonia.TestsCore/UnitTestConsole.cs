@@ -64,6 +64,17 @@ namespace Consolonia.TestsCore
                         new PixelBackground(PixelBackgroundMode.Colored, backgroundColor)));
         }
 
+        public void PauseIO(Task task)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void ClearOutput()
+        {
+            // screen of the unit test console is always clear, we are writing only to the buffer
+            Resized?.Invoke();
+        }
+
 
         public async Task StringInput(string input)
         {

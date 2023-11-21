@@ -15,8 +15,8 @@ namespace Consolonia.Core.Infrastructure
 {
     internal class ConsoleWindow : IWindowImpl
     {
-        [NotNull] private readonly IConsole _console;
         private readonly IKeyboardDevice _myKeyboardDevice;
+        [NotNull] internal readonly IConsole Console;
         internal readonly List<Rect> InvalidatedRects = new(50);
         private IInputRoot _inputRoot;
 
@@ -24,21 +24,21 @@ namespace Consolonia.Core.Infrastructure
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
-            _console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
-            _console.Resized += OnConsoleOnResized;
-            _console.KeyEvent += ConsoleOnKeyEvent;
-            _console.MouseEvent += ConsoleOnMouseEvent;
-            _console.FocusEvent += ConsoleOnFocusEvent;
+            Console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
+            Console.Resized += OnConsoleOnResized;
+            Console.KeyEvent += ConsoleOnKeyEvent;
+            Console.MouseEvent += ConsoleOnMouseEvent;
+            Console.FocusEvent += ConsoleOnFocusEvent;
         }
 
         public void Dispose()
         {
             Closed?.Invoke();
-            _console.Resized -= OnConsoleOnResized;
-            _console.KeyEvent -= ConsoleOnKeyEvent;
-            _console.MouseEvent -= ConsoleOnMouseEvent;
-            _console.FocusEvent -= ConsoleOnFocusEvent;
-            _console.Dispose();
+            Console.Resized -= OnConsoleOnResized;
+            Console.KeyEvent -= ConsoleOnKeyEvent;
+            Console.MouseEvent -= ConsoleOnMouseEvent;
+            Console.FocusEvent -= ConsoleOnFocusEvent;
+            Console.Dispose();
         }
 
         public IRenderer CreateRenderer(IRenderRoot root)
@@ -114,7 +114,7 @@ namespace Consolonia.Core.Infrastructure
         {
             get
             {
-                PixelBufferSize pixelBufferSize = _console.Size;
+                PixelBufferSize pixelBufferSize = Console.Size;
                 return new Size(pixelBufferSize.Width, pixelBufferSize.Height);
             }
         }
@@ -181,7 +181,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTitle(string title)
         {
-            _console.SetTitle(title);
+            Console.SetTitle(title);
         }
 
         public void SetParent(IWindowImpl parent)
@@ -316,7 +316,7 @@ namespace Consolonia.Core.Infrastructure
         {
             Dispatcher.UIThread.Post(() =>
             {
-                PixelBufferSize pixelBufferSize = _console.Size;
+                PixelBufferSize pixelBufferSize = Console.Size;
                 var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
                 Resized(size, PlatformResizeReason.Unspecified);
                 //todo; Invalidate(new Rect(size));

@@ -68,7 +68,7 @@ namespace Consolonia.Core
         private static ClassicDesktopStyleApplicationLifetime CreateLifetime<T>(T builder, string[] args)
             where T : AppBuilderBase<T>, new()
         {
-            var lifetime = new ClassicDesktopStyleApplicationLifetime
+            var lifetime = new ConsoloniaLifetime
             {
                 Args = args,
                 ShutdownMode = ShutdownMode.OnMainWindowClose

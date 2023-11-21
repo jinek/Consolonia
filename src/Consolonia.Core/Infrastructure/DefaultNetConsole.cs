@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Input;
 using Consolonia.Core.InternalHelpers;
 
@@ -49,13 +51,32 @@ namespace Consolonia.Core.Infrastructure
             RaiseFocusEvent(false);
         }
 
+        public override void PauseIO(Task task)
+        {
+            base.PauseIO(task);
+
+            TextReader defaultIn = Console.In;
+            Console.SetIn(new StringReader(string.Empty));
+            Console.SetIn(defaultIn);
+        }
+
         private void StartInputReading()
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 while (!Disposed)
                 {
-                    ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
+                    PauseTask?.Wait();
+
+                    ConsoleKeyInfo consoleKeyInfo;
+                    try
+                    {
+                        consoleKeyInfo = Console.ReadKey(true);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        continue;
+                    }
 
                     Key key = ConvertToKey(consoleKeyInfo.Key);
 

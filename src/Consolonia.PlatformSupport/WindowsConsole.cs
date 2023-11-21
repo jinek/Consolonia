@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
@@ -58,12 +60,34 @@ namespace Consolonia.PlatformSupport
             StartEventLoop();
         }
 
+        public override void PauseIO(Task task)
+        {
+            base.PauseIO(task);
+
+            var inputRecords = new INPUT_RECORD[1];
+
+            // Create a focus event
+            inputRecords[0].EventType = 0x0010; // FOCUS_EVENT
+            inputRecords[0].Event.FocusEvent = new FOCUS_EVENT_RECORD
+            {
+                bSetFocus = true
+            };
+
+            if (!WriteConsoleInput(_windowsConsole.InputHandle, inputRecords, 1, out uint _))
+            {
+                // Handle error
+                int error = Marshal.GetLastWin32Error();
+                throw new Win32Exception(error, $"Error writing console input: {error}");
+            }
+        }
+
         private void StartEventLoop()
         {
             Task.Run(() =>
             {
                 while (!Disposed /*inject ThreadAbortException*/)
                 {
+                    PauseTask?.Wait();
                     var readConsoleInput = _windowsConsole.ReadConsoleInput();
                     if (!readConsoleInput.Any())
                         throw new NotImplementedException();
@@ -72,7 +96,7 @@ namespace Consolonia.PlatformSupport
                         switch (inputRecord.EventType)
                         {
                             case WindowsConsole.EventType.WindowBufferSize:
-                                ActualizeTheSize();
+                                ActualizeSize();
                                 break;
                             case WindowsConsole.EventType.Focus:
                                 WindowsConsole.FocusEventRecord focusEvent = inputRecord.FocusEvent;
@@ -179,5 +203,61 @@ namespace Consolonia.PlatformSupport
             RaiseKeyPress(DefaultNetConsole.ConvertToKey((ConsoleKey)keyEvent.wVirtualKeyCode),
                 character, modifiers, keyEvent.bKeyDown, (ulong)Stopwatch.GetTimestamp());
         }
+
+        #region chatGPT
+
+        // Resharper disable MemberCanBePrivate.Global
+        // Resharper disable MemberCanBePrivate.Local
+        // Resharper disable FieldCanBeMadeReadOnly.Global
+        // Resharper disable FieldCanBeMadeReadOnly.Local
+        // ReSharper disable InconsistentNaming
+        [StructLayout(LayoutKind.Sequential)]
+        private struct INPUT_RECORD
+        {
+            public ushort EventType;
+            public UnionRecord Event;
+
+            [StructLayout(LayoutKind.Explicit)]
+            public struct UnionRecord
+            {
+                [FieldOffset(0)] public KEY_EVENT_RECORD KeyEvent;
+
+                [FieldOffset(0)] public FOCUS_EVENT_RECORD FocusEvent;
+                // Other event types omitted for brevity
+            }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct KEY_EVENT_RECORD
+        {
+#pragma warning disable IDE1006
+            public bool bKeyDown;
+#pragma warning restore IDE1006
+            // Other fields omitted for brevity
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct FOCUS_EVENT_RECORD
+        {
+#pragma warning disable IDE1006
+            public bool bSetFocus;
+#pragma warning restore IDE1006
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+#pragma warning disable CA5392
+        private static extern bool WriteConsoleInput(
+#pragma warning restore CA5392
+            IntPtr hConsoleInput,
+            INPUT_RECORD[] lpBuffer,
+            uint nLength,
+            out uint lpNumberOfEventsWritten);
+        // Resharper restore MemberCanBePrivate.Global
+        // Resharper restore MemberCanBePrivate.Local
+        // Resharper restore FieldCanBeMadeReadOnly.Global
+        // Resharper restore FieldCanBeMadeReadOnly.Local
+// ReSharper restore InconsistentNaming
+
+        #endregion
     }
 }
