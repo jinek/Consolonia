@@ -301,6 +301,7 @@ namespace Unix.Terminal {
 		static public int getch () => methods.getch ();
 		static public int get_wch (out int sequence) => methods.get_wch (out sequence);
 		static public int ungetch (int ch) => methods.ungetch (ch);
+		static public int unget_wch (int ch) => methods.unget_wch (ch);
 		static public int mvgetch (int y, int x) => methods.mvgetch (y, x);
 		static public bool has_colors () => methods.has_colors ();
 		static public int start_color () => methods.start_color ();
@@ -444,6 +445,7 @@ namespace Unix.Terminal {
 		public readonly Delegates.getch getch;
 		public readonly Delegates.get_wch get_wch;
 		public readonly Delegates.ungetch ungetch;
+		public readonly Delegates.ungetch unget_wch;
 		public readonly Delegates.mvgetch mvgetch;
 		public readonly Delegates.has_colors has_colors;
 		public readonly Delegates.start_color start_color;
@@ -517,6 +519,7 @@ namespace Unix.Terminal {
 			getch = lib.GetNativeMethodDelegate<Delegates.getch> ("getch");
 			get_wch = lib.GetNativeMethodDelegate<Delegates.get_wch> ("get_wch");
 			ungetch = lib.GetNativeMethodDelegate<Delegates.ungetch> ("ungetch");
+			unget_wch = lib.GetNativeMethodDelegate<Delegates.ungetch> ("unget_wch");
 			mvgetch = lib.GetNativeMethodDelegate<Delegates.mvgetch> ("mvgetch");
 			has_colors = lib.GetNativeMethodDelegate<Delegates.has_colors> ("has_colors");
 			start_color = lib.GetNativeMethodDelegate<Delegates.start_color> ("start_color");

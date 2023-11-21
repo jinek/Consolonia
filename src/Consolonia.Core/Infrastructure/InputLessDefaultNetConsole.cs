@@ -20,7 +20,7 @@ namespace Consolonia.Core.Infrastructure
         protected InputLessDefaultNetConsole()
         {
             Console.CursorVisible = false;
-            ActualizeTheSize();
+            ActualizeSize();
         }
 
         protected bool Disposed { get; private set; }
@@ -67,6 +67,7 @@ namespace Consolonia.Core.Infrastructure
         public void Print(PixelBufferCoordinate bufferPoint, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
             string str)
         {
+            PauseTask?.Wait();
             SetCaretPosition(bufferPoint);
 
             if (_headBackground != backgroundColor)
@@ -102,6 +103,14 @@ namespace Consolonia.Core.Infrastructure
         public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
         public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
         public event Action<bool> FocusEvent;
+        
+        public virtual void PauseIO(Task task)
+        {
+            task.ContinueWith(_ => { PauseTask = null; }, TaskScheduler.Default);
+            PauseTask = task;
+        }
+
+        protected Task PauseTask { get; private set; }
 
         public void Dispose()
         {
@@ -113,14 +122,20 @@ namespace Consolonia.Core.Infrastructure
         protected bool CheckActualizeTheSize()
         {
             if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
-            ActualizeTheSize();
+            ActualizeSize();
             return true;
         }
 
-        protected void ActualizeTheSize()
+        protected void ActualizeSize()
         {
-            Console.Clear();
             Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+            Resized?.Invoke();
+        }
+
+        public void ClearOutput()
+        {
+            // this is hack, but somehow it does not work when just calling ActualizeSize with same size
+            Size = new PixelBufferSize(1, 1);
             Resized?.Invoke();
         }
 
@@ -151,6 +166,7 @@ namespace Consolonia.Core.Infrastructure
             {
                 while (!Disposed)
                 {
+                    PauseTask?.Wait();
                     int timeout = (int)(CheckActualizeTheSize() ? 1 : slowInterval);
                     await Task.Delay(timeout).ConfigureAwait(false);
                 }

@@ -121,8 +121,18 @@ namespace Consolonia.PlatformSupport
 
             Task _ = Task.Run(() =>
             {
-                while (!Disposed) ProcessInput();
+                while (!Disposed)
+                {
+                    PauseTask?.Wait();
+                    ProcessInput();
+                }
             });
+        }
+
+        public override void PauseIO(Task task)
+        {
+            base.PauseIO(task);
+            Curses.unget_wch((int)Key.Unknown);
         }
 
         ///this is copied from CursesDriver.cs -> ProcessInput

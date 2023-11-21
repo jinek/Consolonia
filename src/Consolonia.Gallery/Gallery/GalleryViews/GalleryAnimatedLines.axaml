@@ -7,129 +7,135 @@
              d:DesignWidth="800"
              d:DesignHeight="450"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryAnimatedLines">
-    <Panel Width="40"
-           Height="30"
-           Background="{drawing:FourBitColorBrush Gray}">
-        <Border BorderBrush="{drawing:FourBitColorBrush Blue}"
-                BorderThickness="1"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Left">
-            <Border.Styles>
-                <Style Selector="Border">
-                    <Style.Animations>
-                        <Animation Duration="0:0:5"
-                                   IterationCount="INFINITE"
-                                   PlaybackDirection="Alternate">
-                            <KeyFrame Cue="0%">
-                                <Setter Property="Width"
-                                        Value="5" />
-                            </KeyFrame>
-                            <KeyFrame Cue="100%">
-                                <Setter Property="Width"
-                                        Value="25" />
-                            </KeyFrame>
-                        </Animation>
-                        <Animation Duration="0:0:3"
-                                   IterationCount="INFINITE"
-                                   PlaybackDirection="Alternate">
-                            <KeyFrame Cue="0%">
-                                <Setter Property="Height"
-                                        Value="30" />
-                            </KeyFrame>
-                            <KeyFrame Cue="100%">
-                                <Setter Property="Height"
-                                        Value="4" />
-                            </KeyFrame>
-                        </Animation>
-                    </Style.Animations>
-                </Style>
-            </Border.Styles>
-        </Border>
+    <Panel>
+        <Panel Width="40"
+               Height="30"
+               Background="{drawing:FourBitColorBrush Gray}">
+            <Border BorderBrush="{drawing:FourBitColorBrush Blue}"
+                    BorderThickness="1"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Left">
+                <Border.Styles>
+                    <Style Selector="Border">
+                        <Style.Animations>
+                            <Animation Duration="0:0:5"
+                                       IterationCount="INFINITE"
+                                       PlaybackDirection="Alternate">
+                                <KeyFrame Cue="0%">
+                                    <Setter Property="Width"
+                                            Value="5" />
+                                </KeyFrame>
+                                <KeyFrame Cue="100%">
+                                    <Setter Property="Width"
+                                            Value="25" />
+                                </KeyFrame>
+                            </Animation>
+                            <Animation Duration="0:0:3"
+                                       IterationCount="INFINITE"
+                                       PlaybackDirection="Alternate">
+                                <KeyFrame Cue="0%">
+                                    <Setter Property="Height"
+                                            Value="30" />
+                                </KeyFrame>
+                                <KeyFrame Cue="100%">
+                                    <Setter Property="Height"
+                                            Value="4" />
+                                </KeyFrame>
+                            </Animation>
+                        </Style.Animations>
+                    </Style>
+                </Border.Styles>
+            </Border>
 
-        <Border BorderThickness="1"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Right">
-            <Border.BorderBrush>
-                <drawing:LineBrush LineStyle="Bold">
-                    <drawing:LineBrush.Brush>
-                        <drawing:FourBitColorBrush Color="Blue" />
-                    </drawing:LineBrush.Brush>
-                </drawing:LineBrush>
-            </Border.BorderBrush>
-            <Border.Styles>
-                <Style Selector="Border">
-                    <Style.Animations>
-                        <Animation Duration="0:0:2"
-                                   IterationCount="INFINITE"
-                                   PlaybackDirection="Alternate">
-                            <KeyFrame Cue="0%">
-                                <Setter Property="Width"
-                                        Value="2" />
-                            </KeyFrame>
-                            <KeyFrame Cue="100%">
-                                <Setter Property="Width"
-                                        Value="40" />
-                            </KeyFrame>
-                        </Animation>
-                        <Animation Duration="0:0:3.5"
-                                   IterationCount="INFINITE"
-                                   PlaybackDirection="Alternate">
-                            <KeyFrame Cue="0%">
-                                <Setter Property="Height"
-                                        Value="2" />
-                            </KeyFrame>
-                            <KeyFrame Cue="100%">
-                                <Setter Property="Height"
-                                        Value="10" />
-                            </KeyFrame>
-                        </Animation>
-                    </Style.Animations>
-                </Style>
-            </Border.Styles>
-        </Border>
+            <Border BorderThickness="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Bold">
+                        <drawing:LineBrush.Brush>
+                            <drawing:FourBitColorBrush Color="Blue" />
+                        </drawing:LineBrush.Brush>
+                    </drawing:LineBrush>
+                </Border.BorderBrush>
+                <Border.Styles>
+                    <Style Selector="Border">
+                        <Style.Animations>
+                            <Animation Duration="0:0:2"
+                                       IterationCount="INFINITE"
+                                       PlaybackDirection="Alternate">
+                                <KeyFrame Cue="0%">
+                                    <Setter Property="Width"
+                                            Value="2" />
+                                </KeyFrame>
+                                <KeyFrame Cue="100%">
+                                    <Setter Property="Width"
+                                            Value="40" />
+                                </KeyFrame>
+                            </Animation>
+                            <Animation Duration="0:0:3.5"
+                                       IterationCount="INFINITE"
+                                       PlaybackDirection="Alternate">
+                                <KeyFrame Cue="0%">
+                                    <Setter Property="Height"
+                                            Value="2" />
+                                </KeyFrame>
+                                <KeyFrame Cue="100%">
+                                    <Setter Property="Height"
+                                            Value="10" />
+                                </KeyFrame>
+                            </Animation>
+                        </Style.Animations>
+                    </Style>
+                </Border.Styles>
+            </Border>
 
 
-        <Border BorderThickness="1"
-                VerticalAlignment="Bottom"
-                HorizontalAlignment="Right">
-            <Border.BorderBrush>
-                <drawing:LineBrush LineStyle="DoubleLine">
-                    <drawing:LineBrush.Brush>
-                        <drawing:FourBitColorBrush Color="Blue" />
-                    </drawing:LineBrush.Brush>
-                </drawing:LineBrush>
-            </Border.BorderBrush>
-            <Border.Styles>
-                <Style Selector="Border">
-                    <Style.Animations>
-                        <Animation Duration="0:0:7.4"
-                                   IterationCount="INFINITE"
-                                   PlaybackDirection="Alternate">
-                            <KeyFrame Cue="0%">
-                                <Setter Property="Width"
-                                        Value="4" />
-                            </KeyFrame>
-                            <KeyFrame Cue="100%">
-                                <Setter Property="Width"
-                                        Value="38" />
-                            </KeyFrame>
-                        </Animation>
-                        <Animation Duration="0:0:5.5"
-                                   IterationCount="INFINITE"
-                                   PlaybackDirection="Alternate">
-                            <KeyFrame Cue="0%">
-                                <Setter Property="Height"
-                                        Value="12" />
-                            </KeyFrame>
-                            <KeyFrame Cue="100%">
-                                <Setter Property="Height"
-                                        Value="22" />
-                            </KeyFrame>
-                        </Animation>
-                    </Style.Animations>
-                </Style>
-            </Border.Styles>
-        </Border>
+            <Border BorderThickness="1"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="DoubleLine">
+                        <drawing:LineBrush.Brush>
+                            <drawing:FourBitColorBrush Color="Blue" />
+                        </drawing:LineBrush.Brush>
+                    </drawing:LineBrush>
+                </Border.BorderBrush>
+                <Border.Styles>
+                    <Style Selector="Border">
+                        <Style.Animations>
+                            <Animation Duration="0:0:7.4"
+                                       IterationCount="INFINITE"
+                                       PlaybackDirection="Alternate">
+                                <KeyFrame Cue="0%">
+                                    <Setter Property="Width"
+                                            Value="4" />
+                                </KeyFrame>
+                                <KeyFrame Cue="100%">
+                                    <Setter Property="Width"
+                                            Value="38" />
+                                </KeyFrame>
+                            </Animation>
+                            <Animation Duration="0:0:5.5"
+                                       IterationCount="INFINITE"
+                                       PlaybackDirection="Alternate">
+                                <KeyFrame Cue="0%">
+                                    <Setter Property="Height"
+                                            Value="12" />
+                                </KeyFrame>
+                                <KeyFrame Cue="100%">
+                                    <Setter Property="Height"
+                                            Value="22" />
+                                </KeyFrame>
+                            </Animation>
+                        </Style.Animations>
+                    </Style>
+                </Border.Styles>
+            </Border>
+        </Panel>
 
+        <Button Content="Pause IO for 5 seconds"
+                Click="PauseButton_OnClick"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top" />
     </Panel>
 </UserControl>

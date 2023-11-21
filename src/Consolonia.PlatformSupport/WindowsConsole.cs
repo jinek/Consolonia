@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
@@ -58,12 +60,75 @@ namespace Consolonia.PlatformSupport
             StartEventLoop();
         }
 
+        #region chatGPT
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct INPUT_RECORD
+        {
+            public ushort EventType;
+            public UnionRecord Event;
+
+            [StructLayout(LayoutKind.Explicit)]
+            public struct UnionRecord
+            {
+                [FieldOffset(0)]
+                public KEY_EVENT_RECORD KeyEvent;
+                [FieldOffset(0)]
+                public FOCUS_EVENT_RECORD FocusEvent;
+                // Other event types omitted for brevity
+            }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct KEY_EVENT_RECORD
+        {
+            public bool bKeyDown;
+            // Other fields omitted for brevity
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct FOCUS_EVENT_RECORD
+        {
+            public bool bSetFocus;
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern bool WriteConsoleInput(
+            IntPtr hConsoleInput,
+            INPUT_RECORD[] lpBuffer,
+            uint nLength,
+            out uint lpNumberOfEventsWritten);
+
+        #endregion
+        
+        public override void PauseIO(Task task)
+        {
+            base.PauseIO(task);
+            
+            var inputRecords = new INPUT_RECORD[1];
+
+            // Create a focus event
+            inputRecords[0].EventType = 0x0010; // FOCUS_EVENT
+            inputRecords[0].Event.FocusEvent = new FOCUS_EVENT_RECORD
+            {
+                bSetFocus = true
+            };
+
+            if (!WriteConsoleInput(_windowsConsole.InputHandle, inputRecords, 1, out uint eventsWritten))
+            {
+                // Handle error
+                int error = Marshal.GetLastWin32Error();
+                throw new Win32Exception(error, $"Error writing console input: {error}");
+            }
+        }
+
         private void StartEventLoop()
         {
             Task.Run(() =>
             {
                 while (!Disposed /*inject ThreadAbortException*/)
                 {
+                    PauseTask?.Wait();
                     var readConsoleInput = _windowsConsole.ReadConsoleInput();
                     if (!readConsoleInput.Any())
                         throw new NotImplementedException();
@@ -72,7 +137,7 @@ namespace Consolonia.PlatformSupport
                         switch (inputRecord.EventType)
                         {
                             case WindowsConsole.EventType.WindowBufferSize:
-                                ActualizeTheSize();
+                                ActualizeSize();
                                 break;
                             case WindowsConsole.EventType.Focus:
                                 WindowsConsole.FocusEventRecord focusEvent = inputRecord.FocusEvent;
