@@ -62,6 +62,7 @@ namespace Consolonia.PlatformSupport
 
         #region chatGPT
 
+        // ReSharper disable InconsistentNaming
         [StructLayout(LayoutKind.Sequential)]
         private struct INPUT_RECORD
         {
@@ -104,7 +105,7 @@ namespace Consolonia.PlatformSupport
             INPUT_RECORD[] lpBuffer,
             uint nLength,
             out uint lpNumberOfEventsWritten);
-
+// ReSharper restore InconsistentNaming
         #endregion
         
         public override void PauseIO(Task task)
@@ -120,7 +121,7 @@ namespace Consolonia.PlatformSupport
                 bSetFocus = true
             };
 
-            if (!WriteConsoleInput(_windowsConsole.InputHandle, inputRecords, 1, out uint eventsWritten))
+            if (!WriteConsoleInput(_windowsConsole.InputHandle, inputRecords, 1, out uint _))
             {
                 // Handle error
                 int error = Marshal.GetLastWin32Error();
