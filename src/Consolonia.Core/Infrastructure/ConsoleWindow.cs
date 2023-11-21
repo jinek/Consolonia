@@ -15,8 +15,8 @@ namespace Consolonia.Core.Infrastructure
 {
     internal class ConsoleWindow : IWindowImpl
     {
-        [NotNull] internal readonly IConsole Console;
         private readonly IKeyboardDevice _myKeyboardDevice;
+        [NotNull] internal readonly IConsole Console;
         internal readonly List<Rect> InvalidatedRects = new(50);
         private IInputRoot _inputRoot;
 

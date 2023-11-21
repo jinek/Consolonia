@@ -25,6 +25,8 @@ namespace Consolonia.Core.Infrastructure
 
         protected bool Disposed { get; private set; }
 
+        protected Task PauseTask { get; private set; }
+
         public bool CaretVisible
         {
             get => _caretVisible;
@@ -103,19 +105,24 @@ namespace Consolonia.Core.Infrastructure
         public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
         public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
         public event Action<bool> FocusEvent;
-        
+
         public virtual void PauseIO(Task task)
         {
             task.ContinueWith(_ => { PauseTask = null; }, TaskScheduler.Default);
             PauseTask = task;
         }
 
-        protected Task PauseTask { get; private set; }
-
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void ClearOutput()
+        {
+            // this is hack, but somehow it does not work when just calling ActualizeSize with same size
+            Size = new PixelBufferSize(1, 1);
+            Resized?.Invoke();
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
@@ -129,13 +136,6 @@ namespace Consolonia.Core.Infrastructure
         protected void ActualizeSize()
         {
             Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
-            Resized?.Invoke();
-        }
-
-        public void ClearOutput()
-        {
-            // this is hack, but somehow it does not work when just calling ActualizeSize with same size
-            Size = new PixelBufferSize(1, 1);
             Resized?.Invoke();
         }
 
@@ -167,9 +167,9 @@ namespace Consolonia.Core.Infrastructure
                 while (!Disposed)
                 {
                     Task pauseTask = PauseTask;
-                    if(pauseTask!=null)
+                    if (pauseTask != null)
                         await pauseTask.ConfigureAwait(false);
-                    
+
                     int timeout = (int)(CheckActualizeTheSize() ? 1 : slowInterval);
                     await Task.Delay(timeout).ConfigureAwait(false);
                 }
