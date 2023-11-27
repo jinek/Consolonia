@@ -65,7 +65,18 @@ namespace Consolonia.PlatformSupport
                 (Key.Space, ConsoleKey.Spacebar),
                 (Key.Tab, ConsoleKey.Tab),
                 // Proposed by ChatGPT, I've found supporting source: https://devblogs.microsoft.com/dotnet/console-readkey-improvements-in-net-7/   
-                (Key.Unknown, ConsoleKey.NoName)
+                (Key.Unknown, ConsoleKey.NoName),
+                ((Key)46,ConsoleKey.OemPeriod),
+                // rest is by chatGPT
+                ((Key)44,ConsoleKey.OemComma),
+                ((Key)59, ConsoleKey.Oem1),
+                ((Key)47, ConsoleKey.Oem2), // Oem2 usually represents the '/' key
+                ((Key)92, ConsoleKey.Oem5), // Oem5 usually represents the '\\' key
+                ((Key)61, ConsoleKey.OemPlus), // OemPlus might be used for both '=' and '+'
+                ((Key)45, ConsoleKey.OemMinus),
+                ((Key)91, ConsoleKey.Oem4), // '[' key
+                ((Key)93, ConsoleKey.Oem6), // ']' key
+                ((Key)39, ConsoleKey.Oem7) // '\'' key
             });
 
         private static readonly FlagTranslator<Curses.Event, RawInputModifiers>
@@ -389,6 +400,10 @@ namespace Consolonia.PlatformSupport
             char character;
             ConsoleKey consoleKey =
                 KeyFlagTranslator.Translate(key & ~Key.CtrlMask & ~Key.ShiftMask & ~Key.AltMask, true);
+            
+            if (consoleKey == ConsoleKey.NoName) 
+                return;
+            
             if (consoleKey == default)
             {
                 bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
