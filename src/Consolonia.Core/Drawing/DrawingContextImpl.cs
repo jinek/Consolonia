@@ -7,7 +7,6 @@ using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Rendering.SceneGraph;
 using Avalonia.Utilities;
-using Avalonia.Visuals.Media.Imaging;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;

@@ -384,6 +384,8 @@ namespace Consolonia.PlatformSupport
 
         private void RaiseKeyPressInternal(Key key)
         {
+            if (key == Key.Unknown)
+                return;
             int keyValue = (int)key;
             RawInputModifiers modifiers = KeyModifiersFlagTranslator.Translate(key);
             char character;

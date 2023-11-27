@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -8,6 +9,7 @@ using Avalonia.Input.Raw;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Threading;
+using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using JetBrains.Annotations;
 
@@ -41,20 +43,10 @@ namespace Consolonia.Core.Infrastructure
             Console.Dispose();
         }
 
-        public IRenderer CreateRenderer(IRenderRoot root)
-        {
-            /*return new X11ImmediateRendererProxy(root, AvaloniaLocator.Current.GetService<IRenderLoop>())
-                { DrawDirtyRects = false, DrawFps = false };*/
-            return new AdvancedDeferredRenderer(root, AvaloniaLocator.Current.GetService<IRenderLoop>())
-            {
-                RenderRoot = this
-                //                RenderOnlyOnRenderThread = true
-            };
-        }
-
+        
         public void Invalidate(Rect rect)
         {
-            if (rect.IsEmpty) return;
+            if (rect.IsEmpty()) return;
             InvalidatedRects.Add(rect);
 
 

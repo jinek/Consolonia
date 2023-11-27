@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using Avalonia.Visuals.Media.Imaging;
 using FormattedText = Consolonia.Core.Text.FormattedText;
 
 namespace Consolonia.Core.Drawing
@@ -52,6 +53,21 @@ namespace Consolonia.Core.Drawing
         {
             throw new NotImplementedException();
             //return _platformRenderInterface.CreateStreamGeometry();
+        }
+
+        public IGeometryImpl CreateGeometryGroup(FillRule fillRule, IReadOnlyList<IGeometryImpl> children)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometryImpl CreateCombinedGeometry(GeometryCombineMode combineMode, IGeometryImpl g1, IGeometryImpl g2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometryImpl BuildGlyphRunGeometry(GlyphRun glyphRun)
+        {
+            throw new NotImplementedException();
         }
 
         public IGeometryImpl CreateGeometryGroup(FillRule fillRule, IReadOnlyList<Geometry> children)
@@ -143,6 +159,22 @@ namespace Consolonia.Core.Drawing
             int stride)
         {
             return _platformRenderInterface.LoadBitmap(format, alphaFormat, data, size, dpi, stride);
+        }
+
+        public IGlyphRunImpl CreateGlyphRun(IGlyphTypeface glyphTypeface, double fontRenderingEmSize, IReadOnlyList<GlyphInfo> glyphInfos,
+            Point baselineOrigin)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPlatformRenderInterfaceContext CreateBackendContext(IPlatformGraphicsContext graphicsApiContext)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsSupportedBitmapPixelFormat(PixelFormat format)
+        {
+            throw new NotImplementedException();
         }
 
         public IGlyphRunImpl CreateGlyphRun(GlyphRun glyphRun, out double width)
