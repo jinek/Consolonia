@@ -98,27 +98,27 @@ namespace Unix.Terminal {
 			cols_ptr = get_ptr ("COLS");
 		}
 
-		static public Window initscr ()
-		{
-			setlocale (LC_ALL, "");
-			FindNCurses ();
+			static public Window initscr ()
+			{
+				setlocale (LC_ALL, "");
+				FindNCurses ();
 
-			// Prevents the terminal from being locked after exiting.
-			reset_shell_mode ();
+				// Prevents the terminal from being locked after exiting.
+				reset_shell_mode ();
 
-			main_window = new Window (methods.initscr ());
-			try {
-				console_sharp_get_dims (out lines, out cols);
-			} catch (DllNotFoundException) {
-				endwin ();
-				Console.Error.WriteLine ("Unable to find the @MONO_CURSES@ native library\n" +
-							 "this is different than the managed mono-curses.dll\n\n" +
-							 "Typically you need to install to a LD_LIBRARY_PATH directory\n" +
-							 "or DYLD_LIBRARY_PATH directory or run /sbin/ldconfig");
-				Environment.Exit (1);
+				main_window = new Window (methods.initscr ());
+				try {
+					console_sharp_get_dims (out lines, out cols);
+				} catch (DllNotFoundException) {
+					endwin ();
+					Console.Error.WriteLine ("Unable to find the @MONO_CURSES@ native library\n" +
+								 "this is different than the managed mono-curses.dll\n\n" +
+								 "Typically you need to install to a LD_LIBRARY_PATH directory\n" +
+								 "or DYLD_LIBRARY_PATH directory or run /sbin/ldconfig");
+					Environment.Exit (1);
+				}
+				return main_window;
 			}
-			return main_window;
-		}
 
 		public static int Lines {
 			get {
