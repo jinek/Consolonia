@@ -381,11 +381,13 @@ namespace Consolonia.Core.Drawing
             if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
 
             Point whereToDraw = origin.Transform(Transform);
+            int currentXPosition = 0;
 
             //todo: support surrogates
             for (int i = 0; i < str.Length; i++)
             {
-                Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(i, 0));
+                Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
+                // ReSharper disable AccessToModifiedClosure
                 CurrentClip.ExecuteWithClipping(characterPoint, () =>
                 {
                     ConsoleColor foregroundColor = consoleColorBrush.Color;
@@ -411,12 +413,48 @@ namespace Consolonia.Core.Drawing
                         }
                     }
 
-                    // ReSharper disable once AccessToModifiedClosure //todo: pass as a parameter
-                    var consolePixel = new Pixel(str[i], foregroundColor);
+                    char character = str[i];
 
-                    _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                    switch (character)
+                    {
+                        case '\t':
+                        {
+                            const int tabSize = 8;
+                            var consolePixel = new Pixel(' ', foregroundColor);
+                            for (int j = 0; j < tabSize; j++)
+                            {
+                                Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
+                                CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                                {
+                                    _pixelBuffer.Set((PixelBufferCoordinate)characterPoint.WithX(characterPoint.X + j),
+                                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                                });
+                            }
+
+
+                            currentXPosition += tabSize - 1;
+                        }
+                            break;
+                        case '\n':
+                        {
+                            /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
+                             var consolePixel =  new Pixel(' ', foregroundColor); 
+                            
+                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
+                        }
+                            break;
+                        default:
+                        {
+                            var consolePixel = new Pixel(character, foregroundColor);
+
+                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                        }
+                            break;
+                    }
                 });
+                // ReSharper restore AccessToModifiedClosure
             }
         }
     }
