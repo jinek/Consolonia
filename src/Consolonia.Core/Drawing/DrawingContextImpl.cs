@@ -424,7 +424,7 @@ namespace Consolonia.Core.Drawing
                                 Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
                                 CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
                                 {
-                                    _pixelBuffer.Set((PixelBufferCoordinate)characterPoint.WithX(characterPoint.X + j),
+                                    _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
                                         (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
                                 });
                             }
