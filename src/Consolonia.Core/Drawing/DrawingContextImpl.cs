@@ -387,35 +387,33 @@ namespace Consolonia.Core.Drawing
             for (int i = 0; i < str.Length; i++)
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
-                // ReSharper disable AccessToModifiedClosure
-                CurrentClip.ExecuteWithClipping(characterPoint, () =>
+                ConsoleColor foregroundColor = consoleColorBrush.Color;
+                
+                if (additionalBrushes != null)
                 {
-                    ConsoleColor foregroundColor = consoleColorBrush.Color;
-                    if (additionalBrushes != null)
+                    (FormattedText.FBrushRange _, IBrush brush) = additionalBrushes.FirstOrDefault(pair =>
                     {
-                        (FormattedText.FBrushRange _, IBrush brush) = additionalBrushes.FirstOrDefault(pair =>
-                        {
-                            // ReSharper disable once AccessToModifiedClosure //todo: pass as a parameter
-                            int globalIndex = i + startIndex;
-                            (FormattedText.FBrushRange key, _) = pair;
-                            return key.StartIndex <= globalIndex && globalIndex < key.EndIndex;
-                        });
+                        // ReSharper disable once AccessToModifiedClosure //todo: pass as a parameter
+                        int globalIndex = i + startIndex;
+                        (FormattedText.FBrushRange key, _) = pair;
+                        return key.StartIndex <= globalIndex && globalIndex < key.EndIndex;
+                    });
 
-                        if (brush != null)
+                    if (brush != null)
+                    {
+                        if (brush is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } additionalBrush)
                         {
-                            if (brush is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } additionalBrush)
-                            {
-                                ConsoloniaPlatform.RaiseNotSupported(11);
-                                return;
-                            }
-
-                            foregroundColor = additionalBrush.Color;
+                            ConsoloniaPlatform.RaiseNotSupported(11);
+                            return;
                         }
+
+                        foregroundColor = additionalBrush.Color;
                     }
+                }
 
-                    char character = str[i];
+                char character = str[i];
 
-                    switch (character)
+                switch (character)
                     {
                         case '\t':
                         {
@@ -430,8 +428,7 @@ namespace Consolonia.Core.Drawing
                                         (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
                                 });
                             }
-
-
+                            
                             currentXPosition += tabSize - 1;
                         }
                             break;
@@ -444,17 +441,21 @@ namespace Consolonia.Core.Drawing
                                 (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
                         }
                             break;
+                        case '\u200B':
+                            currentXPosition--;
+                            break;
                         default:
                         {
                             var consolePixel = new Pixel(character, foregroundColor);
-
-                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                            CurrentClip.ExecuteWithClipping(characterPoint, () =>
+                                {
+                                    _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                                }
+                            );
                         }
                             break;
                     }
-                });
-                // ReSharper restore AccessToModifiedClosure
             }
         }
     }
