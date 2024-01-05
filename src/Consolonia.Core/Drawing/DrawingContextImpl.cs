@@ -422,13 +422,11 @@ namespace Consolonia.Core.Drawing
                             const int tabSize = 8;
                             var consolePixel = new Pixel(' ', foregroundColor);
                             for (int j = 0; j < tabSize; j++)
-                            {
                                 _pixelBuffer.Set((PixelBufferCoordinate)characterPoint.WithX(characterPoint.X + j),
                                     (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                            }
 
-                            
-                            currentXPosition+= tabSize - 1;
+
+                            currentXPosition += tabSize - 1;
                         }
                             break;
                         case '\n':
