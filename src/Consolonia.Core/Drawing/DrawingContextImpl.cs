@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
@@ -381,11 +382,12 @@ namespace Consolonia.Core.Drawing
             if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
 
             Point whereToDraw = origin.Transform(Transform);
+            int currentXPosition = 0;
 
             //todo: support surrogates
             for (int i = 0; i < str.Length; i++)
             {
-                Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(i, 0));
+                Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
                 CurrentClip.ExecuteWithClipping(characterPoint, () =>
                 {
                     ConsoleColor foregroundColor = consoleColorBrush.Color;
@@ -411,11 +413,40 @@ namespace Consolonia.Core.Drawing
                         }
                     }
 
-                    // ReSharper disable once AccessToModifiedClosure //todo: pass as a parameter
-                    var consolePixel = new Pixel(str[i], foregroundColor);
+                    char character = str[i];
 
-                    _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                    switch (character)
+                    {
+                        case '\t':
+                        {
+                            var consolePixel = new Pixel(' ', foregroundColor);
+                            for (int j = 0; j < 8; j++)
+                            {
+                                _pixelBuffer.Set((PixelBufferCoordinate)characterPoint.WithX(characterPoint.X + j),
+                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                                currentXPosition++;
+                            }
+
+                            currentXPosition--;
+                        }
+                            break;
+                        case '\n':
+                        {
+                            /*var consolePixel =  new Pixel(' ', foregroundColor); 
+                            
+                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
+                        }
+                            break;
+                        default:
+                        {
+                            var consolePixel = new Pixel(character, foregroundColor);
+
+                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                        }
+                            break;
+                    }
                 });
             }
         }
