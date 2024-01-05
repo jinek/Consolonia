@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
@@ -388,6 +387,7 @@ namespace Consolonia.Core.Drawing
             for (int i = 0; i < str.Length; i++)
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
+                // ReSharper disable AccessToModifiedClosure
                 CurrentClip.ExecuteWithClipping(characterPoint, () =>
                 {
                     ConsoleColor foregroundColor = consoleColorBrush.Color;
@@ -419,20 +419,22 @@ namespace Consolonia.Core.Drawing
                     {
                         case '\t':
                         {
+                            const int tabSize = 8;
                             var consolePixel = new Pixel(' ', foregroundColor);
-                            for (int j = 0; j < 8; j++)
+                            for (int j = 0; j < tabSize; j++)
                             {
                                 _pixelBuffer.Set((PixelBufferCoordinate)characterPoint.WithX(characterPoint.X + j),
                                     (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                                currentXPosition++;
                             }
 
-                            currentXPosition--;
+                            
+                            currentXPosition+= tabSize - 1;
                         }
                             break;
                         case '\n':
                         {
-                            /*var consolePixel =  new Pixel(' ', foregroundColor); 
+                            /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
+                             var consolePixel =  new Pixel(' ', foregroundColor); 
                             
                             _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
                                 (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
@@ -448,6 +450,7 @@ namespace Consolonia.Core.Drawing
                             break;
                     }
                 });
+                // ReSharper restore AccessToModifiedClosure
             }
         }
     }
