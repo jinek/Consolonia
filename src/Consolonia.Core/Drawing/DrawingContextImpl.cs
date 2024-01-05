@@ -387,74 +387,75 @@ namespace Consolonia.Core.Drawing
             for (int i = 0; i < str.Length; i++)
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
-                // ReSharper disable AccessToModifiedClosure
-                CurrentClip.ExecuteWithClipping(characterPoint, () =>
+                ConsoleColor foregroundColor = consoleColorBrush.Color;
+
+                if (additionalBrushes != null)
                 {
-                    ConsoleColor foregroundColor = consoleColorBrush.Color;
-                    if (additionalBrushes != null)
+                    (FormattedText.FBrushRange _, IBrush brush) = additionalBrushes.FirstOrDefault(pair =>
                     {
-                        (FormattedText.FBrushRange _, IBrush brush) = additionalBrushes.FirstOrDefault(pair =>
-                        {
-                            // ReSharper disable once AccessToModifiedClosure //todo: pass as a parameter
-                            int globalIndex = i + startIndex;
-                            (FormattedText.FBrushRange key, _) = pair;
-                            return key.StartIndex <= globalIndex && globalIndex < key.EndIndex;
-                        });
+                        // ReSharper disable once AccessToModifiedClosure //todo: pass as a parameter
+                        int globalIndex = i + startIndex;
+                        (FormattedText.FBrushRange key, _) = pair;
+                        return key.StartIndex <= globalIndex && globalIndex < key.EndIndex;
+                    });
 
-                        if (brush != null)
-                        {
-                            if (brush is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } additionalBrush)
-                            {
-                                ConsoloniaPlatform.RaiseNotSupported(11);
-                                return;
-                            }
-
-                            foregroundColor = additionalBrush.Color;
-                        }
-                    }
-
-                    char character = str[i];
-
-                    switch (character)
+                    if (brush != null)
                     {
-                        case '\t':
+                        if (brush is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } additionalBrush)
                         {
-                            const int tabSize = 8;
-                            var consolePixel = new Pixel(' ', foregroundColor);
-                            for (int j = 0; j < tabSize; j++)
-                            {
-                                Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
-                                CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
-                                {
-                                    _pixelBuffer.Set((PixelBufferCoordinate)characterPoint.WithX(characterPoint.X + j),
-                                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                                });
-                            }
-
-
-                            currentXPosition += tabSize - 1;
+                            ConsoloniaPlatform.RaiseNotSupported(11);
+                            return;
                         }
-                            break;
-                        case '\n':
-                        {
-                            /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
-                             var consolePixel =  new Pixel(' ', foregroundColor); 
-                            
-                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
-                        }
-                            break;
-                        default:
-                        {
-                            var consolePixel = new Pixel(character, foregroundColor);
 
-                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                        }
-                            break;
+                        foregroundColor = additionalBrush.Color;
                     }
-                });
-                // ReSharper restore AccessToModifiedClosure
+                }
+
+                char character = str[i];
+
+                switch (character)
+                {
+                    case '\t':
+                    {
+                        const int tabSize = 8;
+                        var consolePixel = new Pixel(' ', foregroundColor);
+                        for (int j = 0; j < tabSize; j++)
+                        {
+                            Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
+                            CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                            {
+                                _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
+                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                            });
+                        }
+
+                        currentXPosition += tabSize - 1;
+                    }
+                        break;
+                    case '\n':
+                    {
+                        /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
+                         var consolePixel =  new Pixel(' ', foregroundColor); 
+                        
+                        _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
+                    }
+                        break;
+                    case '\u200B':
+                        currentXPosition--;
+                        break;
+                    default:
+                    {
+                        var consolePixel = new Pixel(character, foregroundColor);
+                        CurrentClip.ExecuteWithClipping(characterPoint, () =>
+                            {
+                                _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                            }
+                        );
+                    }
+                        break;
+                }
             }
         }
     }
