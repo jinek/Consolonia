@@ -2,22 +2,17 @@ using System;
 using Avalonia;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Avalonia.Styling;
 
 namespace Consolonia.Core.Drawing
 {
-    public class FourBitColorBrush : Brush
+    public class FourBitColorBrush : AvaloniaObject, IBrush
     {
         public static readonly StyledProperty<ConsoleColor> ColorProperty =
             AvaloniaProperty.Register<FourBitColorBrush, ConsoleColor>(nameof(Color));
 
         public static readonly StyledProperty<PixelBackgroundMode> ModeProperty =
             AvaloniaProperty.Register<FourBitColorBrush, PixelBackgroundMode>(nameof(Mode));
-
-        static FourBitColorBrush()
-        {
-            AffectsRender<FourBitColorBrush>(ColorProperty);
-            AffectsRender<FourBitColorBrush>(ModeProperty);
-        }
 
         // ReSharper disable once UnusedMember.Global
         public FourBitColorBrush(ConsoleColor consoleColor, PixelBackgroundMode mode) : this(consoleColor)
@@ -53,11 +48,8 @@ namespace Consolonia.Core.Drawing
             return this;
         }
 
-
-        public override IBrush ToImmutable()
-        {
-            //todo: implement immutable
-            return new FourBitColorBrush { Color = Color, Mode = Mode };
-        }
+        public double Opacity { get; }
+        public ITransform Transform { get; }
+        public RelativePoint TransformOrigin { get; }
     }
 }

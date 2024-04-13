@@ -11,6 +11,7 @@ using Consolonia.Core.InternalHelpers;
 namespace Consolonia.Core.Text
 {
     // todo: Copy-paste of avalonia skia. Probably must be simplified or re-used from skia
+    /*todo: left for reference
     internal class FormattedText : IFormattedTextImpl
     {
         private const float MaxLineWidth = 10000; //todo: copied from avalonia, magic number
@@ -466,4 +467,5 @@ namespace Consolonia.Core.Text
             }
         }
     }
+*/
 }

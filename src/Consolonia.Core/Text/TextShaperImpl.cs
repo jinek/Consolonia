@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Avalonia.Utilities;
 
@@ -10,8 +11,8 @@ namespace Consolonia.Core.Text
 {
     internal class TextShaperImpl : ITextShaperImpl
     {
-        public GlyphRun ShapeText(ReadOnlySlice<char> text, Typeface typeface, double fontRenderingEmSize,
-            CultureInfo culture)
+
+        public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
             //todo: check defaults (but can draw with font size = 0 in theory)
             var glyphIndices = new ReadOnlySlice<ushort>(text.Select(c => (ushort)c).ToArray());
@@ -20,7 +21,7 @@ namespace Consolonia.Core.Text
             var glyphClusters =
                 new ReadOnlySlice<ushort>(new ReadOnlyMemory<ushort>(text.Select((_, i) => (ushort)i).ToArray()));
 
-            return new GlyphRun(
+            return new ShapedBuffer(
                 new GlyphTypeface(typeface),
                 fontRenderingEmSize,
                 glyphIndices,

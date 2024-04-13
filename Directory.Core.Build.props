@@ -10,4 +10,7 @@
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <TreatWarningsAsErrors Condition=" '$(Configuration)' == 'RELEASE' ">true</TreatWarningsAsErrors>
     </PropertyGroup>
+    <PropertyGroup>
+        <AvaloniaAccessUnstablePrivateApis>true</AvaloniaAccessUnstablePrivateApis>
+    </PropertyGroup>
 </Project>

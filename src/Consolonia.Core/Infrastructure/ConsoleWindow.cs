@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Platform;
-using Avalonia.Rendering;
+using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using JetBrains.Annotations;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -41,20 +41,10 @@ namespace Consolonia.Core.Infrastructure
             Console.Dispose();
         }
 
-        public IRenderer CreateRenderer(IRenderRoot root)
-        {
-            /*return new X11ImmediateRendererProxy(root, AvaloniaLocator.Current.GetService<IRenderLoop>())
-                { DrawDirtyRects = false, DrawFps = false };*/
-            return new AdvancedDeferredRenderer(root, AvaloniaLocator.Current.GetService<IRenderLoop>())
-            {
-                RenderRoot = this
-                //                RenderOnlyOnRenderThread = true
-            };
-        }
+        
 
         public void Invalidate(Rect rect)
-        {
-            if (rect.IsEmpty) return;
+        {//todo: seems is not used anymore
             InvalidatedRects.Add(rect);
 
 
@@ -106,6 +96,16 @@ namespace Consolonia.Core.Infrastructure
             return null; // when returning null top window overlay layer will be used
         }
 
+        public void SetTransparencyLevelHint(IReadOnlyList<WindowTransparencyLevel> transparencyLevels)
+        {
+            throw new NotImplementedException("Consider this");
+        }
+
+        public void SetFrameThemeVariant(PlatformThemeVariant themeVariant)
+        {
+            throw new NotImplementedException("Consider this. Probably NotSupportedException can be enough");
+        }
+
         public void SetTransparencyLevelHint(WindowTransparencyLevel transparencyLevel)
         {
         }
@@ -127,12 +127,14 @@ namespace Consolonia.Core.Infrastructure
         public Action<RawInputEventArgs> Input { get; set; }
 
         public Action<Rect> Paint { get; set; }
-        public Action<Size, PlatformResizeReason> Resized { get; set; }
+        public Action<Size, WindowResizeReason> Resized { get; set; }
+
 
         public Action<double> ScalingChanged { get; set; }
 
         public Action<WindowTransparencyLevel> TransparencyLevelChanged { get; set; }
 
+        public Compositor Compositor { get; }
         public Action Closed { get; set; }
         public Action LostFocus { get; set; }
         public IMouseDevice MouseDevice { get; }
@@ -222,10 +224,11 @@ namespace Consolonia.Core.Infrastructure
             throw new NotImplementedException();
         }
 
-        public void Resize(Size clientSize, PlatformResizeReason reason = PlatformResizeReason.Application)
+        public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
-            Resized(clientSize, reason);
+            throw new NotImplementedException("Consider this");
         }
+
 
         public void Move(PixelPoint point)
         {
@@ -255,7 +258,7 @@ namespace Consolonia.Core.Infrastructure
         public WindowState WindowState { get; set; }
         public Action<WindowState> WindowStateChanged { get; set; }
         public Action GotInputWhenDisabled { get; set; }
-        public Func<bool> Closing { get; set; }
+        public Func<WindowCloseReason, bool> Closing { get; set; }
 
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public bool IsClientAreaExtendedToDecorations { get; }
@@ -318,7 +321,7 @@ namespace Consolonia.Core.Infrastructure
             {
                 PixelBufferSize pixelBufferSize = Console.Size;
                 var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
-                Resized(size, PlatformResizeReason.Unspecified);
+                //todo: Resized(size, PlatformResizeReason.Unspecified);
                 //todo; Invalidate(new Rect(size));
             });
         }
@@ -346,7 +349,7 @@ namespace Consolonia.Core.Infrastructure
                         rawInputModifiers);
                     Input(rawInputEventArgs);
                     handled = rawInputEventArgs.Handled;
-                }, DispatcherPriority.Input).ConfigureAwait(true);
+                }, DispatcherPriority.Input).GetTask().ConfigureAwait(true);
 
                 if (!handled && !char.IsControl(keyChar))
                     Dispatcher.UIThread.Post(() =>
@@ -357,6 +360,11 @@ namespace Consolonia.Core.Infrastructure
                             keyChar.ToString()));
                     }, DispatcherPriority.Input);
             }
+        }
+
+        public object TryGetFeature(Type featureType)
+        {
+            throw new NotImplementedException("Consider this");
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Logging;
 
@@ -59,7 +60,7 @@ namespace Consolonia.Core.Infrastructure
 
     public static class ExceptionSinkExtensions
     {
-        public static T LogToException<T>(this T builder) where T : AppBuilderBase<T>, new()
+        public static AppBuilder LogToException(this AppBuilder builder)
         {
             Logger.Sink = new ExceptionSink();
             return builder;

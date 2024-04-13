@@ -6,6 +6,7 @@ using Avalonia.VisualTree;
 
 namespace Consolonia.Core.Infrastructure
 {
+    /* todo: this is left from previous versions for reference. Must be deleted
     internal class AdvancedDeferredRenderer : DeferredRenderer, IRenderer
     {
         private readonly IVisual _root;
@@ -51,4 +52,5 @@ namespace Consolonia.Core.Infrastructure
             // ReSharper restore InvertIf
         }
     }
+*/
 }

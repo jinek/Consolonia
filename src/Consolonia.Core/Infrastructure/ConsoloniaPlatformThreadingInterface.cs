@@ -8,8 +8,8 @@ namespace Consolonia.Core.Infrastructure
     /// <summary>
     ///     Implements special <see cref="StartTimer" />
     /// </summary>
-    internal class ConsoloniaPlatformThreadingInterface : InternalPlatformThreadingInterface,
-        IPlatformThreadingInterface
+    internal class ConsoloniaPlatformThreadingInterface : /*todo: this class does not exist anymore: InternalPlatformThreadingInterface,
+    neither I can remember the purpose of this class. Seems it was used to blink the cursor,*/ IPlatformThreadingInterface
     {
         public new IDisposable StartTimer(DispatcherPriority priority, TimeSpan interval, Action tick)
         {
@@ -17,6 +17,14 @@ namespace Consolonia.Core.Infrastructure
                 ? new ConsoloniaTextPresenterPointerBlinkFakeTimer(captureTimerStartStop)
                 : base.StartTimer(priority, interval, tick);
         }
+
+        public void Signal(DispatcherPriority priority)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CurrentThreadIsLoopThread { get; }
+        public event Action<DispatcherPriority?> Signaled;
 
         private class ConsoloniaTextPresenterPointerBlinkFakeTimer : IDisposable
         {

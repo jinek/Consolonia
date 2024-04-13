@@ -8,6 +8,7 @@ using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Infrastructure
 {
+    /* todo: left for reference, we need to reconsider how to implement focus navigation in new Avalonia
     public class ArrowsAndKeyboardNavigationHandler : KeyboardNavigationHandler, IKeyboardNavigationHandler
     {
         public new void Move(IInputElement element, NavigationDirection direction,
@@ -135,4 +136,5 @@ namespace Consolonia.Core.Infrastructure
             e.Handled = true;
         }
     }
+*/
 }

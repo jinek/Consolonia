@@ -55,6 +55,16 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
+        public void Save(string fileName, int? quality = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Save(Stream stream, int? quality = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public Vector Dpi { get; } = Vector.One;
         public PixelSize PixelSize { get; } = new(1, 1);
         public int Version => 0;
@@ -72,7 +82,7 @@ namespace Consolonia.Core.Drawing
 
         public bool CanBlit => true;
 
-        private void OnResized(Size size, PlatformResizeReason platformResizeReason)
+        private void OnResized(Size size)
         {
             InitializeBuffer(size);
         }
@@ -225,5 +235,12 @@ namespace Consolonia.Core.Drawing
                 _stringBuilder.Clear();
             }
         }
+
+        public IDrawingContextImpl CreateDrawingContext()
+        {
+            throw new NotImplementedException("Similar was in another class in previous version");
+        }
+
+        public bool IsCorrupted { get; }
     }
 }

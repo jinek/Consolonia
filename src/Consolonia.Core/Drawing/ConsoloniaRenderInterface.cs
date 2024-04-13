@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using Avalonia.Visuals.Media.Imaging;
-using FormattedText = Consolonia.Core.Text.FormattedText;
 
 namespace Consolonia.Core.Drawing
 {
@@ -18,7 +18,7 @@ namespace Consolonia.Core.Drawing
             _platformRenderInterface = platformRenderInterface;
         }
 
-        public IFormattedTextImpl CreateFormattedText(
+        /*public IFormattedTextImpl CreateFormattedText(
             string text,
             Typeface typeface,
             double fontSize,
@@ -29,7 +29,7 @@ namespace Consolonia.Core.Drawing
         {
             return new FormattedText(text, textAlignment, wrapping, constraint, spans);
             //return _platformRenderInterface.CreateFormattedText(text, typeface, fontSize, textAlignment, wrapping, constraint, spans);
-        }
+        }*/
 
         public IGeometryImpl CreateEllipseGeometry(Rect rect)
         {
@@ -52,6 +52,21 @@ namespace Consolonia.Core.Drawing
         {
             throw new NotImplementedException();
             //return _platformRenderInterface.CreateStreamGeometry();
+        }
+
+        public IGeometryImpl CreateGeometryGroup(FillRule fillRule, IReadOnlyList<IGeometryImpl> children)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometryImpl CreateCombinedGeometry(GeometryCombineMode combineMode, IGeometryImpl g1, IGeometryImpl g2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometryImpl BuildGlyphRunGeometry(GlyphRun glyphRun)
+        {
+            throw new NotImplementedException();
         }
 
         public IGeometryImpl CreateGeometryGroup(FillRule fillRule, IReadOnlyList<Geometry> children)
@@ -92,6 +107,12 @@ namespace Consolonia.Core.Drawing
             return _platformRenderInterface.LoadBitmap(stream);
         }
 
+        IWriteableBitmapImpl IPlatformRenderInterface.LoadWriteableBitmapToHeight(Stream stream, int height,
+            BitmapInterpolationMode interpolationMode)
+        {
+            return LoadWriteableBitmapToHeight(stream, height, interpolationMode);
+        }
+
         public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
             BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
         {
@@ -112,6 +133,22 @@ namespace Consolonia.Core.Drawing
         public IWriteableBitmapImpl LoadWriteableBitmap(Stream stream)
         {
             throw new NotImplementedException();
+        }
+
+        IBitmapImpl IPlatformRenderInterface.LoadBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode)
+        {
+            return LoadBitmapToWidth(stream, width, interpolationMode);
+        }
+
+        IBitmapImpl IPlatformRenderInterface.LoadBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode)
+        {
+            return LoadBitmapToHeight(stream, height, interpolationMode);
+        }
+
+        IBitmapImpl IPlatformRenderInterface.ResizeBitmap(IBitmapImpl bitmapImpl, PixelSize destinationSize,
+            BitmapInterpolationMode interpolationMode)
+        {
+            return ResizeBitmap(bitmapImpl, destinationSize, interpolationMode);
         }
 
         public IBitmapImpl LoadBitmapToWidth(Stream stream, int width,
@@ -145,9 +182,20 @@ namespace Consolonia.Core.Drawing
             return _platformRenderInterface.LoadBitmap(format, alphaFormat, data, size, dpi, stride);
         }
 
-        public IGlyphRunImpl CreateGlyphRun(GlyphRun glyphRun, out double width)
+        public IGlyphRunImpl CreateGlyphRun(IGlyphTypeface glyphTypeface, double fontRenderingEmSize, IReadOnlyList<GlyphInfo> glyphInfos,
+            Point baselineOrigin)
         {
-            return _platformRenderInterface.CreateGlyphRun(glyphRun, out width);
+            throw new NotImplementedException("Probably this is instead of CreateFormattedText");
+        }
+
+        public IPlatformRenderInterfaceContext CreateBackendContext(IPlatformGraphicsContext graphicsApiContext)
+        {
+            return _platformRenderInterface.CreateBackendContext(graphicsApiContext);
+        }
+
+        public bool IsSupportedBitmapPixelFormat(PixelFormat format)
+        {
+            throw new NotImplementedException();
         }
 
         public bool SupportsIndividualRoundRects => false;

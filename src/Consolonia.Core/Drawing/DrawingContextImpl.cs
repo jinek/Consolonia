@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Rendering;
 using Avalonia.Rendering.SceneGraph;
 using Avalonia.Utilities;
-using Avalonia.Visuals.Media.Imaging;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
-using FormattedText = Consolonia.Core.Text.FormattedText;
 
 namespace Consolonia.Core.Drawing
 {
@@ -51,36 +49,32 @@ namespace Consolonia.Core.Drawing
                 new Pixel(new PixelBackground()));*/
         }
 
-        public void DrawBitmap(
-            IRef<IBitmapImpl> source,
-            double opacity,
-            Rect sourceRect,
-            Rect destRect,
-            BitmapInterpolationMode bitmapInterpolationMode = BitmapInterpolationMode.Default)
+        public void DrawBitmap(IBitmapImpl source, double opacity, Rect sourceRect, Rect destRect)
         {
+            throw new NotImplementedException();
             /*
-            //  prototype
-             Rect clip = _currentClip.Intersect(destRect);
-            for (int x = 0; x < sourceRect.Width; x++)
-            for (int y = 0; y < sourceRect.Height; y++)
-            {
-                var myRenderTarget = (RenderTarget)source.Item;
+           //  prototype
+            Rect clip = _currentClip.Intersect(destRect);
+           for (int x = 0; x < sourceRect.Width; x++)
+           for (int y = 0; y < sourceRect.Height; y++)
+           {
+               var myRenderTarget = (RenderTarget)source.Item;
 
-                int left = (int)(x + destRect.Left);
-                int top = (int)(y + destRect.Top);
-                clip.ExecuteWithClipping(new Point(left, top), () =>
-                {
-                    _pixelBuffer.Set(new PixelBufferCoordinate((ushort)left, (ushort)top), destPixel =>
-                    {
-                        return destPixel.Blend(
-                            myRenderTarget._bufferBuffer[new PixelBufferCoordinate((ushort)(x + sourceRect.Left),
-                                (ushort)(y + sourceRect.Top))]);
-                    });
-                });
-            }*/
+               int left = (int)(x + destRect.Left);
+               int top = (int)(y + destRect.Top);
+               clip.ExecuteWithClipping(new Point(left, top), () =>
+               {
+                   _pixelBuffer.Set(new PixelBufferCoordinate((ushort)left, (ushort)top), destPixel =>
+                   {
+                       return destPixel.Blend(
+                           myRenderTarget._bufferBuffer[new PixelBufferCoordinate((ushort)(x + sourceRect.Left),
+                               (ushort)(y + sourceRect.Top))]);
+                   });
+               });
+           }*/
         }
 
-        public void DrawBitmap(IRef<IBitmapImpl> source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
+        public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
         {
             throw new NotImplementedException();
         }
@@ -123,7 +117,7 @@ namespace Consolonia.Core.Drawing
 
             if (brush is not null)
             {
-                if (brush is IVisualBrush visualBrush)
+                if (brush is VisualBrush visualBrush)
                 {
                     try
                     {
@@ -177,6 +171,7 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
+        /*
         public void DrawText(IBrush foreground, Point origin, IFormattedTextImpl text)
         {
             var formattedText = (FormattedText)text;
@@ -190,8 +185,9 @@ namespace Consolonia.Core.Drawing
                     formattedText.ForegroundBrushes.Any() ? formattedText.ForegroundBrushes : null);
             }
         }
+        */
 
-        public void DrawGlyphRun(IBrush foreground, GlyphRun glyphRun)
+        public void DrawGlyphRun(IBrush foreground, IGlyphRunImpl glyphRun)
         {
             if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
             if (!glyphRun.FontRenderingEmSize.IsNearlyEqual(1))
@@ -226,8 +222,9 @@ namespace Consolonia.Core.Drawing
             _clipStack.Pop();
         }
 
-        public void PushOpacity(double opacity)
+        public void PushOpacity(double opacity, Rect? bounds)
         {
+            throw new NotImplementedException("how bounds work?");
             if (opacity.IsNearlyEqual(1)) return;
             ConsoloniaPlatform.RaiseNotSupported(7);
         }
@@ -256,6 +253,23 @@ namespace Consolonia.Core.Drawing
         {
             PopClip();
         }
+
+        public void PushRenderOptions(RenderOptions renderOptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PopRenderOptions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetFeature(Type t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RenderOptions RenderOptions { get; set; }
 
         public void PushBitmapBlendMode(BitmapBlendingMode blendingMode)
         {
