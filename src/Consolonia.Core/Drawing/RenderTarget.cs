@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -38,11 +39,6 @@ namespace Consolonia.Core.Drawing
         public void Dispose()
         {
             _consoleWindow.Resized -= OnResized;
-        }
-
-        public IDrawingContextImpl CreateDrawingContext(IVisualBrushRenderer visualBrushRenderer)
-        {
-            return new DrawingContextImpl(_consoleWindow, visualBrushRenderer, _bufferBuffer);
         }
 
         public void Save(string fileName)
@@ -82,8 +78,10 @@ namespace Consolonia.Core.Drawing
 
         public bool CanBlit => true;
 
-        private void OnResized(Size size)
+
+        private void OnResized(Size size, WindowResizeReason reason)
         {
+            // todo: should we check the reason?
             InitializeBuffer(size);
         }
 
@@ -125,7 +123,7 @@ namespace Consolonia.Core.Drawing
                 }
 
                 if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                    rect.ContainsAligned(new Point(x, y)))) continue;
+                    rect.ContainsExclusive(new Point(x, y)))) continue;
                 if (pixel.Background.Mode != PixelBackgroundMode.Colored)
                     throw new InvalidOperationException(
                         "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");
@@ -238,7 +236,7 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextImpl CreateDrawingContext()
         {
-            throw new NotImplementedException("Similar was in another class in previous version");
+            return new DrawingContextImpl(_consoleWindow, _bufferBuffer);
         }
 
         public bool IsCorrupted { get; }

@@ -87,10 +87,7 @@
                                         </Style>
                                     </ScrollViewer.Styles>
                                     <ItemsPresenter Name="PART_ItemsPresenter"
-                                                    Items="{TemplateBinding Items}"
-                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                    ItemTemplate="{TemplateBinding ItemTemplate}"
-                                                    VirtualizationMode="{TemplateBinding VirtualizationMode}">
+                                                    ItemsPanel="{TemplateBinding ItemsPanel}">
                                         <ItemsPresenter.Styles>
                                             <Style Selector="ItemsPresenter">
                                                 <Setter Property="(helpers:ComboBoxExtensions.FocusOnOpen)"

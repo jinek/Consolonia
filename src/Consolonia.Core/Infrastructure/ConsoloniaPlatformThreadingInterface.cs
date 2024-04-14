@@ -13,9 +13,10 @@ namespace Consolonia.Core.Infrastructure
     {
         public new IDisposable StartTimer(DispatcherPriority priority, TimeSpan interval, Action tick)
         {
-            return tick.Target is DispatcherTimer { Tag: ICaptureTimerStartStop captureTimerStartStop }
+            throw new NotImplementedException();
+            /*return tick.Target is DispatcherTimer { Tag: ICaptureTimerStartStop captureTimerStartStop }
                 ? new ConsoloniaTextPresenterPointerBlinkFakeTimer(captureTimerStartStop)
-                : base.StartTimer(priority, interval, tick);
+                : base.StartTimer(priority, interval, tick);*/
         }
 
         public void Signal(DispatcherPriority priority)

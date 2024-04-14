@@ -1,4 +1,5 @@
 ﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Consolonia.Core;
 using Consolonia.Core.Infrastructure;
@@ -9,8 +10,7 @@ namespace Consolonia.PlatformSupport
 {
     public static class PlatformSupportExtensions
     {
-        public static TAppBuilder UseAutoDetectedConsole<TAppBuilder>(this TAppBuilder builder)
-            where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
+        public static AppBuilder UseAutoDetectedConsole(this AppBuilder builder)
         {
             IConsole console = Environment.OSVersion.Platform switch
             {

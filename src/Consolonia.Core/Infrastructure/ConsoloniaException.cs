@@ -1,11 +1,9 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
-using JetBrains.Annotations;
 
 namespace Consolonia.Core.Infrastructure
-    // ReSharper disable once ArrangeNamespaceBody
 {
-    [UsedImplicitly]
     public class ConsoloniaException : ApplicationException
     {
         public ConsoloniaException()
@@ -16,11 +14,11 @@ namespace Consolonia.Core.Infrastructure
         {
         }
 
-        public ConsoloniaException([CanBeNull] string message) : base(message)
+        public ConsoloniaException(string message) : base(message)
         {
         }
 
-        public ConsoloniaException([CanBeNull] string message, [CanBeNull] Exception innerException) : base(message,
+        public ConsoloniaException(string message, Exception innerException) : base(message,
             innerException)
         {
         }

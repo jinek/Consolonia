@@ -7,8 +7,8 @@ namespace Consolonia.Core.Drawing
 {
     public class LineBrush : Animatable, IBrush
     {
-        public static readonly StyledProperty<Brush> BrushProperty =
-            AvaloniaProperty.Register<LineBrush, Brush>(CommonInternalHelper.GetStyledPropertyName());
+        public static readonly StyledProperty<FourBitColorBrush> BrushProperty =
+            AvaloniaProperty.Register<LineBrush, FourBitColorBrush>(CommonInternalHelper.GetStyledPropertyName());
 
         public static readonly StyledProperty<LineStyle> LineStyleProperty =
             AvaloniaProperty.Register<LineBrush, LineStyle>(CommonInternalHelper.GetStyledPropertyName());
@@ -17,7 +17,7 @@ namespace Consolonia.Core.Drawing
         {
         }
 
-        public Brush Brush
+        public FourBitColorBrush Brush
         {
             get => GetValue(BrushProperty);
             set => SetValue(BrushProperty, value);

@@ -18,15 +18,12 @@ namespace Consolonia.Core.Drawing
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
         private readonly PixelBuffer _pixelBuffer;
-        private readonly IVisualBrushRenderer _visualBrushRenderer;
         private Matrix _postTransform = Matrix.Identity;
         private Matrix _transform;
 
-        public DrawingContextImpl(ConsoleWindow consoleWindow, IVisualBrushRenderer visualBrushRenderer,
-            PixelBuffer pixelBuffer)
+        public DrawingContextImpl(ConsoleWindow consoleWindow, PixelBuffer pixelBuffer)
         {
             _consoleWindow = consoleWindow;
-            _visualBrushRenderer = visualBrushRenderer;
             _pixelBuffer = pixelBuffer;
             _clipStack.Push(pixelBuffer.Size);
         }
@@ -112,11 +109,12 @@ namespace Consolonia.Core.Drawing
 
             if (boxShadows.Count > 0) throw new NotImplementedException();
 
-            if (rect.Rect.IsEmpty) return;
+            if (rect.Rect.IsEmpty()) return;
             Rect r = rect.Rect;
 
             if (brush is not null)
             {
+                /*todo: is it now handled automatically? left for reference
                 if (brush is VisualBrush visualBrush)
                 {
                     try
@@ -131,6 +129,7 @@ namespace Consolonia.Core.Drawing
 
                     return;
                 }
+                */
 
                 if (brush is not FourBitColorBrush backgroundBrush)
                 {
@@ -189,7 +188,8 @@ namespace Consolonia.Core.Drawing
 
         public void DrawGlyphRun(IBrush foreground, IGlyphRunImpl glyphRun)
         {
-            if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
+            throw new NotImplementedException("GlyphIndices now does not exist. What is actual type of glyphRun?");
+            /*if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
             if (!glyphRun.FontRenderingEmSize.IsNearlyEqual(1))
             {
                 ConsoloniaPlatform.RaiseNotSupported(3);
@@ -198,7 +198,7 @@ namespace Consolonia.Core.Drawing
 
             string charactersDoDraw =
                 string.Concat(glyphRun.GlyphIndices.Select(us => (char)us).ToArray());
-            DrawStringInternal(foreground, charactersDoDraw);
+            DrawStringInternal(foreground, charactersDoDraw);*/
         }
 
         public IDrawingContextLayerImpl CreateLayer(Size size)
@@ -383,6 +383,7 @@ namespace Consolonia.Core.Drawing
             }
         }
 
+        /* todo: left for reference
         private void DrawStringInternal(IBrush foreground, string str, Point origin = new(), int startIndex = 0,
             List<KeyValuePair<FormattedText.FBrushRange, IBrush>> additionalBrushes = null)
         {
@@ -452,7 +453,7 @@ namespace Consolonia.Core.Drawing
                          var consolePixel =  new Pixel(' ', foregroundColor); 
                         
                         _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
+                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);#1#
                     }
                         break;
                     case '\u200B':
@@ -472,5 +473,6 @@ namespace Consolonia.Core.Drawing
                 }
             }
         }
+    */
     }
 }

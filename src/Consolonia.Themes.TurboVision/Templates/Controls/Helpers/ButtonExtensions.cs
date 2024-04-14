@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Reactive;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
@@ -17,7 +18,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 
         static ButtonExtensions()
         {
-            Button.ClickEvent.Raised.Subscribe(async tuple =>
+            Button.ClickEvent.Raised.Subscribe(new AnonymousObserver<(object, RoutedEventArgs)>(async tuple =>
             {
                 (object sender, RoutedEventArgs e) = tuple;
                 if (sender != e.Source) return;
@@ -32,7 +33,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 await Task.Delay(timeout).ConfigureAwait(true); //todo: magic number
 
                 PseudolassesExtensions.Set(button.Classes, ":clickdelayed", false);
-            });
+            }));
         }
     }
 }

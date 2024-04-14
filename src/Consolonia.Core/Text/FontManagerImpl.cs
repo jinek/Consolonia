@@ -12,9 +12,14 @@ namespace Consolonia.Core.Text
     /// </summary>
     internal class FontManagerImpl : IFontManagerImpl
     {
-        public string GetDefaultFontFamilyName()
+        public static string GetTheOnlyFontFamilyName()
         {
             return "ConsoleDefault(F7D6533C-AC9D-4C4A-884F-7719A9B5DC0C)";
+        }
+
+        public string GetDefaultFontFamilyName()
+        {
+            return GetTheOnlyFontFamilyName();
         }
 
         string[] IFontManagerImpl.GetInstalledFontFamilyNames(bool checkForUpdates)

@@ -22,7 +22,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         public static readonly StyledProperty<bool> IsCloseButtonVisibleProperty =
             AvaloniaProperty.Register<DialogWindow, bool>(nameof(IsCloseButtonVisible), true);
 
-        private Size _contentSize = Size.Empty;
+        private Size _contentSize;
         private ContentPresenter _partContentPresenter;
 
         private TaskCompletionSource _taskCompletionSource;
@@ -66,23 +66,22 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
                 CloseDialog();
         }
 
-        [Obsolete("Avalonia is deprecating this")]
-        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-            base.OnTemplateApplied(e);
-            _partContentPresenter = (ContentPresenter)e.NameScope.Find("PART_ContentPresenter");
+            base.OnApplyTemplate(e);
+            _partContentPresenter = this.FindControl<ContentPresenter>("PART_ContentPresenter");
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
             Size arrangeOverride = base.ArrangeOverride(finalSize);
-            IVisual firstVisualChild = _partContentPresenter?.GetVisualChildren().FirstOrDefault();
+            Visual firstVisualChild = _partContentPresenter?.GetVisualChildren().FirstOrDefault();
             if (firstVisualChild != null)
                 ContentSize = firstVisualChild.Bounds.Size;
             return arrangeOverride;
         }
 
-        private void ShowDialogInternal(IControl parent)
+        private void ShowDialogInternal(Control parent)
         {
             DialogHost dialogHost = GetDialogHost(parent);
             dialogHost.OpenInternal(this);
@@ -96,7 +95,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             _taskCompletionSource.SetResult();
         }
 
-        public Task ShowDialogAsync(IControl parent)
+        public Task ShowDialogAsync(Control parent)
         {
             if (_taskCompletionSource != null)
                 throw new NotImplementedException();
@@ -106,7 +105,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             return _taskCompletionSource.Task;
         }
 
-        private static DialogHost GetDialogHost(IControl parent)
+        private static DialogHost GetDialogHost(Control parent)
         {
             var window = parent.FindAncestorOfType<Window>(true);
             DialogHost dialogHost = window.GetValue(DialogHost.DialogHostProperty);

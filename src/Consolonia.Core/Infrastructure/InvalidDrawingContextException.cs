@@ -1,7 +1,4 @@
 using System;
-using JetBrains.Annotations;
-
-// ReSharper disable UnusedMember.Global
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -11,11 +8,11 @@ namespace Consolonia.Core.Infrastructure
         {
         }
 
-        public InvalidDrawingContextException([CanBeNull] string message) : base(message)
+        public InvalidDrawingContextException(string message) : base(message)
         {
         }
 
-        public InvalidDrawingContextException([CanBeNull] string message, [CanBeNull] Exception innerException) : base(
+        public InvalidDrawingContextException(string message, Exception innerException) : base(
             message, innerException)
         {
         }

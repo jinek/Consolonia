@@ -4,12 +4,13 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Reactive;
 using Avalonia.VisualTree;
 using Consolonia.Themes.TurboVision.Templates.Controls.Dialog;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls
 {
-    internal class DialogWrap : UserControl
+    internal partial class DialogWrap : UserControl
     {
         private IDisposable _disposable;
 
@@ -19,18 +20,17 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
             AttachedToVisualTree += (_, _) =>
             {
                 var parentWindow = this.FindAncestorOfType<Window>();
-                _disposable = parentWindow.GetPropertyChangedObservable(TopLevel.ClientSizeProperty).Subscribe(args =>
-                {
-                    var newSize = (Size)args.NewValue!;
+                _disposable = parentWindow.GetPropertyChangedObservable(TopLevel.ClientSizeProperty).Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(
+                    args =>
+                    {
+                        var newSize = (Size)args.NewValue!;
 
-                    SetNewSize(newSize);
-                });
+                        SetNewSize(newSize);
+                    }));
                 SetNewSize(parentWindow.ClientSize);
             };
             DetachedFromLogicalTree += (_, _) => { _disposable.Dispose(); };
         }
-
-        internal ContentPresenter ContentPresenter => this.Get<ContentPresenter>("ContentPresenter");
 
         /// <summary>
         ///     Focused element when new dialog shown

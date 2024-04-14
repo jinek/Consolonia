@@ -29,7 +29,7 @@ namespace Consolonia.Core.Infrastructure
                 Dispatcher.UIThread.Post(() => { MainWindow.InvalidateVisual(); });
             }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
 
-            return Dispatcher.UIThread.InvokeAsync(() => { });
+            return Dispatcher.UIThread.InvokeAsync(() => { }).GetTask();
         }
     }
 }

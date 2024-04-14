@@ -17,14 +17,13 @@
                       RowDefinitions="*,Auto"
                       ColumnDefinitions="*,Auto">
                     <ScrollContentPresenter Name="PART_ContentPresenter"
+                                            Padding="{TemplateBinding Padding}"
+                                            HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                            VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                            HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                            VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
                                             Background="{TemplateBinding Background}"
-                                            CanHorizontallyScroll="{TemplateBinding CanHorizontallyScroll}"
-                                            CanVerticallyScroll="{TemplateBinding CanVerticallyScroll}"
-                                            Content="{TemplateBinding Content}"
-                                            Extent="{TemplateBinding Extent, Mode=TwoWay}"
-                                            Margin="{TemplateBinding Padding}"
-                                            Offset="{TemplateBinding Offset, Mode=TwoWay}"
-                                            Viewport="{TemplateBinding Viewport, Mode=TwoWay}" />
+                                            ScrollViewer.IsScrollInertiaEnabled="False" />
                     <ScrollBar Name="horizontalScrollBar"
                                Orientation="Horizontal"
                                LargeChange="{Binding LargeChange.Width, RelativeSource={RelativeSource TemplatedParent}}"
@@ -110,13 +109,12 @@
                                                 Foreground="{TemplateBinding Foreground}" />
                     </RepeatButton>
                     <ScrollContentPresenter Name="PART_ContentPresenter"
-                                            CanHorizontallyScroll="{TemplateBinding CanHorizontallyScroll}"
-                                            CanVerticallyScroll="{TemplateBinding CanVerticallyScroll}"
-                                            Content="{TemplateBinding Content}"
-                                            Extent="{TemplateBinding Extent, Mode=TwoWay}"
-                                            Margin="{TemplateBinding Padding}"
-                                            Offset="{TemplateBinding Offset, Mode=TwoWay}"
-                                            Viewport="{TemplateBinding Viewport, Mode=TwoWay}" />
+                                            Padding="{TemplateBinding Padding}"
+                                            HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                            VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                            HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                            VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+                                            ScrollViewer.IsScrollInertiaEnabled="False" />
                 </DockPanel>
             </ControlTemplate>
         </Setter>

@@ -9,17 +9,25 @@ namespace Consolonia.Core.Drawing
         // ReSharper disable once UnusedMethodReturnValue.Global Can be used later
         public static bool ExecuteWithClipping(this Rect rect, Point place, Action action)
         {
-            if (!ContainsAligned(rect, place)) return false;
+            if (!rect.ContainsExclusive(place)) return false;
 
             action();
             return true;
         }
 
+        /// <summary>
+        /// use <see cref="Rect.ContainsExclusive"/>
+        /// </summary>
+        [Obsolete("Use Rect.ContainsExclusive instead", true)]
         public static bool ContainsAligned(this Rect rect, Point p)
         {
-            (double x, double y) = p;
-            return x >= rect.X && x < rect.X + rect.Width &&
-                   y >= rect.Y && y < rect.Y + rect.Height;
+            throw new NotImplementedException("Remove this method");
+        }
+
+        public static bool IsEmpty(this Rect rect)
+        {
+            //todo: check if this implementation serves our needs. Avalonia uses == 0
+            return rect.Width <= 0 || rect.Height <= 0;
         }
 
         public static bool IsTranslateOnly(this Matrix transform)

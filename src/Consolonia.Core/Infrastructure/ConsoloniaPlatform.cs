@@ -39,7 +39,7 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IWindowingPlatform>().ToConstant(this)
                 .Bind<IPlatformThreadingInterface>().ToSingleton<ConsoloniaPlatformThreadingInterface>()
                 .Bind<IRenderTimer>().ToConstant(new UiThreadRenderTimer(120))
-                .Bind<IRenderLoop>().ToConstant(new RenderLoop())
+                /*.Bind<IRenderLoop>().ToConstant(new RenderLoop()) todo: is internal now*/
                 .Bind<PlatformHotkeyConfiguration>().ToConstant(new PlatformHotkeyConfiguration(KeyModifiers.Control))
                 .Bind<IKeyboardDevice>().ToConstant(new ConsoleKeyboardDevice())
                 .Bind<IFontManagerImpl>().ToConstant(new FontManagerImpl())
@@ -47,11 +47,11 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IMouseDevice>().ToConstant(new MouseDevice())
                 .Bind<ICursorFactory>().ToConstant(new DummyCursorFactory())
                 .Bind<IPlatformIconLoader>().ToConstant(new DummyIconLoader())
-                .Bind<IKeyboardNavigationHandler>().ToTransient<ArrowsAndKeyboardNavigationHandler>()
+                /*.Bind<IKeyboardNavigationHandler>().ToTransient<ArrowsAndKeyboardNavigationHandler>() todo: implement this navigation*/
                 //.Bind<IClipboard>().ToConstant(new X11Clipboard(this))
                 //.Bind<IPlatformSettings>().ToConstant(new PlatformSettingsStub())
                 //.Bind<ISystemDialogImpl>().ToConstant(new GtkSystemDialog())
-                .Bind<IMountedVolumeInfoProvider>().ToConstant(new LinuxMountedVolumeInfoProvider());
+                /*.Bind<IMountedVolumeInfoProvider>().ToConstant(new LinuxMountedVolumeInfoProvider())*/;
         }
 
         [DebuggerStepThrough]

@@ -25,7 +25,7 @@ namespace Consolonia.Core.Drawing
 
         public bool FillContains(Point point)
         {
-            return _rect.ContainsAligned(point);
+            return _rect.ContainsExclusive(point);
         }
 
         public IGeometryImpl Intersect(IGeometryImpl geometry)
@@ -42,7 +42,7 @@ namespace Consolonia.Core.Drawing
                 throw new NotImplementedException();
             if (!FillContains(point))
                 return false;
-            return !_rect.Deflate(1).ContainsAligned(point);
+            return !_rect.Deflate(1).ContainsExclusive(point);
         }
 
         public ITransformedGeometryImpl WithTransform(Matrix transform)

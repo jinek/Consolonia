@@ -68,7 +68,7 @@ namespace Consolonia.TestsCore
                     {
                         Window mainWindow = _lifetime?.MainWindow;
                         return mainWindow != null;
-                    }).ConfigureAwait(false);
+                    }).GetTask().ConfigureAwait(false);
                     if (windowFound)
                         return;
                 }

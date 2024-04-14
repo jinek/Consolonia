@@ -3,6 +3,7 @@ using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.Presenters;
 using Avalonia.Media;
+using Avalonia.Reactive;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Infrastructure;
@@ -18,11 +19,14 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 
         static ConsoloniaTextPresenter()
         {
-            CaretBrushProperty.Changed.Subscribe(static args =>
-            {
-                if (args.NewValue.Value is not MoveConsoleCaretToPositionBrush)
-                    throw new NotSupportedException();
-            });
+            CaretBrushProperty.Changed
+                .Subscribe(
+                    new AnonymousObserver<AvaloniaPropertyChangedEventArgs<IBrush>>(
+                        args =>
+                        {
+                            if (args.NewValue.Value is not MoveConsoleCaretToPositionBrush)
+                                throw new NotSupportedException();
+                        }));
         }
 
         public ConsoloniaTextPresenter()
@@ -43,7 +47,9 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             _caretBlinking = false;
         }
 
-        public override void Render(DrawingContext context)
+        /* todo: what does not work without of this?
+         
+         public override void Render(DrawingContext context)
         {
             base.Render(context);
             if (SelectionStart == SelectionEnd || !_caretBlinking) return;
@@ -51,7 +57,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             context.DrawLine(
                 new Pen(CaretBrush),
                 p1, p2);
-        }
+        }*/
 
         private (Point, Point) GetCaretPoints()
         {

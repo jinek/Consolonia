@@ -1,10 +1,8 @@
 using System;
 using Consolonia.Core.Styles;
-using JetBrains.Annotations;
 
 namespace Consolonia.Themes.TurboVision.Templates
 {
-    [UsedImplicitly /*Why resharper suggests this?*/]
     public class TurboVisionTheme : ResourceIncludeBase
     {
         public TurboVisionTheme(Uri baseUri) : base(baseUri)
