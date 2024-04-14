@@ -5,7 +5,7 @@ using Consolonia.Themes.TurboVision.Templates.Controls.Dialog;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public class SomeDialogWindow : DialogWindow
+    public partial class SomeDialogWindow : DialogWindow
     {
         private static readonly Random Random = new();
 

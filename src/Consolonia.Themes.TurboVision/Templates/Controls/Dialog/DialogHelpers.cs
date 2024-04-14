@@ -9,6 +9,7 @@ using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.VisualTree;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 {
@@ -26,7 +27,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 
         static DialogHost()
         {
-            IsDialogHostProperty.Changed.Subscribe(args =>
+            IsDialogHostProperty.Changed.SubscribeAction(args =>
             {
                 args.Sender.SetValue(DialogHostProperty,
                     args.NewValue.Value ? new DialogHost((Window)args.Sender) : null);
@@ -53,7 +54,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 
             if (_dialogs.TryPeek(out OverlayPopupHost previousDialog)) previousDialog.IsEnabled = false;
 
-            dialogWrap.HadFocusOn = FocusManager.Instance!.Current;
+            dialogWrap.HadFocusOn = AvaloniaLocator.Current.GetRequiredService<IFocusManager>().GetFocusedElement();
 
             _dialogs.Push(popupHost);
             popupHost.Show();
@@ -64,7 +65,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             {
                 var dialogWindow = (DialogWindow)sender!;
                 dialogWindow.AttachedToVisualTree -= DialogAttachedToVisualTree;
-                FocusManager.Instance!.Focus(dialogWindow);
+                dialogWindow.Focus();
             }
         }
 
@@ -97,7 +98,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
                 firstContentPresenter.Focus();
             }
 
-            FocusManager.Instance!.Focus(dialogWrap.HadFocusOn);
+            dialogWrap.HadFocusOn.Focus();
         }
     }
 }

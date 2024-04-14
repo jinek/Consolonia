@@ -5,8 +5,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
+using Avalonia.Reactive;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
@@ -20,7 +22,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 
         static MenuExtensions()
         {
-            FocusOnLoadProperty.Changed.Subscribe(args =>
+            FocusOnLoadProperty.Changed.SubscribeAction(args =>
             {
                 var visual = (Visual)args.Sender;
                 if (args.NewValue.Value)
@@ -28,21 +30,21 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     visual.AttachedToVisualTree += OnAttachedToVisualTree;
                     IDisposable disposable = visual
                         .GetPropertyChangedObservable(InputElement.IsKeyboardFocusWithinProperty)
-                        .Subscribe(eventArgs =>
+                        .Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(eventArgs =>
                         {
                             if (!(bool)eventArgs.NewValue!)
                                 Dispatcher.UIThread.Post(() =>
                                 {
-                                    var focusedControl = (Control)FocusManager.Instance!.Current;
+                                    var focusedControl = (Control)AvaloniaLocator.Current.GetRequiredService<IFocusManager>()!.GetFocusedElement();
                                     var menuItems = visual.GetLogicalAncestors().OfType<MenuItem>();
 
                                     var focusedTree = focusedControl.GetLogicalAncestors();
 
                                     foreach (MenuItem menuItem in menuItems.Where(item => !focusedTree.Contains(item))
-                                        .ToArray())
+                                                 .ToArray())
                                         menuItem.Close();
                                 });
-                        });
+                        }));
                     visual.SetValue(DisposablesProperty, new[] { disposable });
                 }
                 else

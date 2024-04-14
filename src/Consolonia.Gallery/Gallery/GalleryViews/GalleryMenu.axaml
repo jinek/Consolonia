@@ -1,11 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
-             d:DesignHeight="450"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryMenu">
     <StackPanel Orientation="Horizontal"
                 Margin="1"
@@ -58,12 +53,12 @@
             <TextBlock Margin="1 2">
                 Dyanamically generated
             </TextBlock>
-            <Menu Items="{Binding MenuItems}">
+            <Menu ItemsSource="{Binding MenuItems}">
                 <Menu.Styles>
                     <Style Selector="MenuItem">
                         <Setter Property="Header"
                                 Value="{Binding Header}" />
-                        <Setter Property="Items"
+                        <Setter Property="ItemsSource"
                                 Value="{Binding Items}" />
                         <Setter Property="Command"
                                 Value="{Binding Command}" />
@@ -91,7 +86,7 @@
                     <MenuItem Header="Execu_te Script..." />
                     <Separator />
                     <MenuItem Header="_Recent"
-                              Items="{Binding RecentItems}">
+                              ItemsSource="{Binding RecentItems}">
                         <MenuItem.Styles>
                             <Style Selector="MenuItem">
                                 <Setter Property="Header"

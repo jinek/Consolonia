@@ -9,7 +9,7 @@ using Consolonia.Gallery.Gallery;
 
 namespace Consolonia.Gallery.View
 {
-    public class ControlsListView : Window
+    public partial class ControlsListView : Window
     {
         public ControlsListView()
         {
@@ -20,7 +20,7 @@ namespace Consolonia.Gallery.View
             var grid = this.FindControl<DataGrid>("Grid");
 
             IEnumerable<GalleryItem> items;
-            grid.Items = items = GalleryItem.Enumerated.ToArray();
+            grid.ItemsSource = items = GalleryItem.Enumerated.ToArray();
 
             TrySetupSelected();
 

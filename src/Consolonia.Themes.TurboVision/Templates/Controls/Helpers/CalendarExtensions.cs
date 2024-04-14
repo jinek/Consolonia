@@ -2,6 +2,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Reactive;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
@@ -12,7 +14,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 
         static CalendarExtensions()
         {
-            ZoomOutOnKeyProperty.Changed.Subscribe(args =>
+            ZoomOutOnKeyProperty.Changed.SubscribeAction(args =>
             {
                 var calendar = (Calendar)args.Sender;
 

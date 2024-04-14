@@ -102,7 +102,7 @@ namespace Consolonia.TestsCore
                         noDirtyRegions = ((ConsoleWindow)_lifetime.MainWindow.PlatformImpl)
                             .InvalidatedRects.Count == 0;
                     },
-                    DispatcherPriority.ContextIdle).ConfigureAwait(true);
+                    DispatcherPriority.ContextIdle).GetTask().ConfigureAwait(true);
         }
 
         public async Task KeyInput(params Key[] keys)

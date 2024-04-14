@@ -40,7 +40,7 @@ namespace Consolonia.TestsCore
 
                 var regex = new Regex(regexToSearch);
                 found = regex.IsMatch(printBuffer);
-            }).ConfigureAwait(true);
+            }).GetTask().ConfigureAwait(true);
 
 
             return (found, printBuffer);

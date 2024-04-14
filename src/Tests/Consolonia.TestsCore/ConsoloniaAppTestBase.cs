@@ -50,7 +50,7 @@ namespace Consolonia.TestsCore
                 _lifetime.Start(Args);
 
                 // Resetting static of AppBuilderBase
-                typeof(AppBuilderBase<AppBuilder>).GetField("s_setupWasAlreadyCalled",
+                typeof(AppBuilder).GetField("s_setupWasAlreadyCalled",
                         BindingFlags.Static | BindingFlags.NonPublic)!
                     .SetValue(null, false);
                 _disposeTaskCompletionSource.SetResult();
@@ -82,7 +82,7 @@ namespace Consolonia.TestsCore
         public async Task TearDown()
         {
             ClassicDesktopStyleApplicationLifetime lifetime = _lifetime;
-            await Dispatcher.UIThread.InvokeAsync(() => { lifetime.Shutdown(); }).ConfigureAwait(true);
+            await Dispatcher.UIThread.InvokeAsync(() => { lifetime.Shutdown(); }).GetTask().ConfigureAwait(true);
 
             _lifetime.Dispose();
             _lifetime = null;

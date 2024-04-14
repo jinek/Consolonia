@@ -1,13 +1,22 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
-using Avalonia.Utilities;
+using Consolonia.Core.Text;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
+    /// <summary>
+    /// Represents a control that displays symbols.
+    /// This control has two modes of operation depending on the Fill property. 
+    /// If the Fill property is false, it just draw <see cref="Text"/> 
+    /// If the Fill property is true, the symbol (Text[0]) is repeated and fills the control.
+    /// </summary>
     public class SymbolsControl : Control
     {
         /// <summary>
@@ -17,12 +26,13 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             TextBlock.ForegroundProperty.AddOwner<SymbolsControl>();
 
         public static readonly DirectProperty<SymbolsControl, string> TextProperty =
-            TextBlock.TextProperty.AddOwnerWithDataValidation<SymbolsControl>(
+            AvaloniaProperty.RegisterDirect<SymbolsControl, string>(
+                nameof(Text),
                 o => o.Text,
                 (o, v) => o.Text = v,
-                defaultBindingMode: BindingMode.TwoWay,
-                enableDataValidation: true);
-
+                TextBlock.TextProperty.GetDefaultValue(typeof(TextBlock)),
+                BindingMode.TwoWay);
+        
         private static readonly StyledProperty<bool> FillProperty =
             AvaloniaProperty.Register<SymbolsControl, bool>("Fill");
 
@@ -58,9 +68,15 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             set
             {
                 _text = value;
-                _shapedText = TextShaper.Current.ShapeText(
+                _shapedText = new GlyphRun(new GlyphTypefaceImpl(),
+                    1,
+                    (_text ?? string.Empty).AsMemory(),
+                    (IReadOnlyList<GlyphInfo>)default,
+                    default(Point));
+
+                /*left for reference: TextShaper.Current.ShapeText(
                     new ReadOnlySlice<char>((Text ?? string.Empty).ToCharArray()),
-                    Typeface.Default, 1, null);
+                    Typeface.Default, 1, null);*/
             }
         }
 
@@ -73,15 +89,20 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             else
             {
                 var formattedText = new FormattedText(
-                    string.Concat(Enumerable.Repeat(Text?[0] ?? ' ', (int)Bounds.Width)),
-                    Typeface.Default, 1, TextAlignment.Left, TextWrapping.NoWrap, Bounds.Size);
-                for (int y = 0; y < Bounds.Height; y++) context.DrawText(Foreground, new Point(0, y), formattedText);
+                    string.Concat(
+                        Enumerable.Repeat(
+                            Text?[0] ?? ' ', (int)Bounds.Width)),
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    Typeface.Default, 1, Foreground);
+                for (int y = 0; y < Bounds.Height; y++)
+                    context.DrawText(formattedText, new Point(0, y));
             }
         }
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            return !Fill ? _shapedText?.Size ?? Size.Empty : Size.Empty;
+            return !Fill ? _shapedText?.Bounds.Size ?? default : default;
         }
     }
 }

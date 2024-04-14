@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
@@ -27,7 +28,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     calendarDatePicker.KeyUp -= CalendarOnKeyUp;
             });
 
-            FocusOnOpenProperty.Changed.Subscribe(args =>
+            FocusOnOpenProperty.Changed.SubscribeAction(args =>
             {
                 DropDownExtensions.ProcessFocusOnOpen<Calendar, CalendarDatePicker>(args,
                     CalendarDatePicker.IsDropDownOpenProperty,

@@ -5,7 +5,7 @@ using Example.Views;
 
 namespace Example
 {
-    public class App : ConsoloniaApplication
+    public partial class App : ConsoloniaApplication
     {
         public override void Initialize()
         {

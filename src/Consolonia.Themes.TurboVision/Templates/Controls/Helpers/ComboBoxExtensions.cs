@@ -6,6 +6,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.Threading;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
@@ -27,7 +28,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     box.KeyDown -= ComboBoxOnKeyDown;
             });
 
-            FocusOnOpenProperty.Changed.Subscribe(args =>
+            FocusOnOpenProperty.Changed.SubscribeAction(args =>
             {
                 DropDownExtensions.ProcessFocusOnOpen<ItemsPresenter, ComboBox>(args, ComboBox.IsDropDownOpenProperty,
                     FocusOnDropDown,

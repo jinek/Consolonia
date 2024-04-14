@@ -5,7 +5,7 @@ using Avalonia.Platform;
 
 namespace Consolonia.Core.Text
 {
-    internal class GlyphTypefaceImpl : IGlyphTypeface
+    public class GlyphTypefaceImpl : IGlyphTypeface//todo: rename
     {
         public void Dispose()
         {
