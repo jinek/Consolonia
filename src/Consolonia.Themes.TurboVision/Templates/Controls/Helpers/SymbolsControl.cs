@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using Avalonia;
@@ -73,7 +74,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 _shapedText = new GlyphRun(new GlyphTypefaceImpl(),
                     1,
                     (_text ?? string.Empty).AsMemory(),
-                    (IReadOnlyList<GlyphInfo>)default/*todo: add glyph infos here, they are used for measure*/,
+                    Enumerable.Repeat(new GlyphInfo(), _text?.Length ?? 0).ToImmutableList(),
                     default(Point));
 
                 /*left for reference: TextShaper.Current.ShapeText(

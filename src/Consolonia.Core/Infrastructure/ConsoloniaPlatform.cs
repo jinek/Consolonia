@@ -8,6 +8,7 @@ using Avalonia.Input.Platform;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Rendering;
+using Avalonia.Threading;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Text;
 
@@ -39,6 +40,7 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IWindowingPlatform>().ToConstant(this)
                 /*todo: need replacement? .Bind<IPlatformThreadingInterface>().ToSingleton<ConsoloniaPlatformThreadingInterface>()*/
                 .Bind<IRenderTimer>().ToConstant(new UiThreadRenderTimer(120))
+                .Bind<IDispatcherImpl>().ToConstant(new ManagedDispatcherImpl(null))
                 /*.Bind<IRenderLoop>().ToConstant(new RenderLoop()) todo: is internal now*/
                 .Bind<PlatformHotkeyConfiguration>().ToConstant(new PlatformHotkeyConfiguration(KeyModifiers.Control))
                 .Bind<IKeyboardDevice>().ToConstant(new ConsoleKeyboardDevice())
