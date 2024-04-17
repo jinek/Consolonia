@@ -24,7 +24,7 @@ namespace Consolonia.Core.Text
 
         string[] IFontManagerImpl.GetInstalledFontFamilyNames(bool checkForUpdates)
         {
-            throw new NotImplementedException();
+            return new []{GetTheOnlyFontFamilyName()};
         }
 
         public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch,
@@ -36,7 +36,9 @@ namespace Consolonia.Core.Text
         public bool TryCreateGlyphTypeface(string familyName, FontStyle style, FontWeight weight, FontStretch stretch,
             out IGlyphTypeface glyphTypeface)
         {
-            throw new NotImplementedException();
+            //todo: check font is ours the only
+            glyphTypeface = new GlyphTypefaceImpl();
+            return true;
         }
 
         public bool TryCreateGlyphTypeface(Stream stream, out IGlyphTypeface glyphTypeface)

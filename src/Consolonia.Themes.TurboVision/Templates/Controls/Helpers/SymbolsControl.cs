@@ -32,9 +32,9 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 (o, v) => o.Text = v,
                 TextBlock.TextProperty.GetDefaultValue(typeof(TextBlock)),
                 BindingMode.TwoWay);
-        
-        private static readonly StyledProperty<bool> FillProperty =
-            AvaloniaProperty.Register<SymbolsControl, bool>("Fill");
+
+        public static readonly StyledProperty<bool> FillProperty =
+            AvaloniaProperty.Register<SymbolsControl, bool>(nameof(Fill));
 
         private GlyphRun _shapedText;
 
@@ -68,10 +68,12 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             set
             {
                 _text = value;
+                /*_text.Select(@char => new GlyphInfo())*/
+                
                 _shapedText = new GlyphRun(new GlyphTypefaceImpl(),
                     1,
                     (_text ?? string.Empty).AsMemory(),
-                    (IReadOnlyList<GlyphInfo>)default,
+                    (IReadOnlyList<GlyphInfo>)default/*todo: add glyph infos here, they are used for measure*/,
                     default(Point));
 
                 /*left for reference: TextShaper.Current.ShapeText(

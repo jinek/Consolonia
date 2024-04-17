@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Avalonia.Controls.Platform;
 using Avalonia.Platform;
 using Avalonia.Threading;
@@ -8,15 +9,39 @@ namespace Consolonia.Core.Infrastructure
     /// <summary>
     ///     Implements special <see cref="StartTimer" />
     /// </summary>
-    internal class ConsoloniaPlatformThreadingInterface : /*todo: this class does not exist anymore: InternalPlatformThreadingInterface,
-    neither I can remember the purpose of this class. Seems it was used to blink the cursor,*/ IPlatformThreadingInterface
+    internal class ConsoloniaPlatformThreadingInterface : IPlatformThreadingInterface
     {
-        public new IDisposable StartTimer(DispatcherPriority priority, TimeSpan interval, Action tick)
+        private int _timersCount;
+        private class InternalPlatformThreadingInterface : IDisposable
         {
-            throw new NotImplementedException();
-            /*return tick.Target is DispatcherTimer { Tag: ICaptureTimerStartStop captureTimerStartStop }
+            private readonly ConsoloniaPlatformThreadingInterface _consoloniaPlatformThreadingInterface;
+
+            public InternalPlatformThreadingInterface(ConsoloniaPlatformThreadingInterface consoloniaPlatformThreadingInterface, ManagedDispatcherImpl managedDispatcherImpl, DispatcherPriority priority, TimeSpan interval, Action tick)
+            {
+                _consoloniaPlatformThreadingInterface = consoloniaPlatformThreadingInterface;
+                if (Interlocked.Increment(ref _consoloniaPlatformThreadingInterface._timersCount) > 1)
+                {
+                    throw new InvalidProgramException(
+                        "We are expecting only one timer to be active at a time. Implement several timers");
+                }
+
+                throw new NotImplementedException();
+                /*managedDispatcherImpl.UpdateTimer(priority, interval, tick);*/
+            }
+
+            public void Dispose()
+            {
+                _consoloniaPlatformThreadingInterface._timersCount--;
+            }
+        }
+        
+        public IDisposable StartTimer(DispatcherPriority priority, TimeSpan interval, Action tick)
+        {
+            _managedDispatcherImpl ??= new ManagedDispatcherImpl(null); // todo: threading
+
+            return tick.Target is DispatcherTimer { Tag: ICaptureTimerStartStop captureTimerStartStop }
                 ? new ConsoloniaTextPresenterPointerBlinkFakeTimer(captureTimerStartStop)
-                : base.StartTimer(priority, interval, tick);*/
+                : new InternalPlatformThreadingInterface(this, _managedDispatcherImpl,priority, interval, tick) /*base.StartTimer(priority, interval, tick)*/;
         }
 
         public void Signal(DispatcherPriority priority)
@@ -24,7 +49,12 @@ namespace Consolonia.Core.Infrastructure
             throw new NotImplementedException();
         }
 
-        public bool CurrentThreadIsLoopThread { get; }
+        public bool CurrentThreadIsLoopThread => CurrentThreadIsLoopThreadInternal;
+#pragma warning disable CA1802
+        // ReSharper disable once ThreadStaticFieldHasInitializer
+        [ThreadStatic] private static readonly bool CurrentThreadIsLoopThreadInternal = true;
+        private ManagedDispatcherImpl? _managedDispatcherImpl = null;
+#pragma warning restore CA1802
         public event Action<DispatcherPriority?> Signaled;
 
         private class ConsoloniaTextPresenterPointerBlinkFakeTimer : IDisposable

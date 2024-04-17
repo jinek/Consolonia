@@ -6,6 +6,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
+using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Drawing
 {
@@ -185,7 +186,7 @@ namespace Consolonia.Core.Drawing
         public IGlyphRunImpl CreateGlyphRun(IGlyphTypeface glyphTypeface, double fontRenderingEmSize, IReadOnlyList<GlyphInfo> glyphInfos,
             Point baselineOrigin)
         {
-            throw new NotImplementedException("Probably this is instead of CreateFormattedText");
+            return new GlyphRunImpl(glyphTypeface,glyphInfos,baselineOrigin);
         }
 
         public IPlatformRenderInterfaceContext CreateBackendContext(IPlatformGraphicsContext graphicsApiContext)

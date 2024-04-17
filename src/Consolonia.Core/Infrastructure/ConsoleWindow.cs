@@ -134,7 +134,7 @@ namespace Consolonia.Core.Infrastructure
 
         public Action<WindowTransparencyLevel> TransparencyLevelChanged { get; set; }
 
-        public Compositor Compositor { get; }
+        public Compositor Compositor { get; } = new(null);
         public Action Closed { get; set; }
         public Action LostFocus { get; set; }
         public IMouseDevice MouseDevice { get; }
@@ -226,7 +226,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
-            throw new NotImplementedException("Consider this");
+            //todo: can we deny resizing?
         }
 
 
@@ -364,6 +364,8 @@ namespace Consolonia.Core.Infrastructure
 
         public object TryGetFeature(Type featureType)
         {
+            if (featureType == typeof(ISystemNavigationManagerImpl))
+                return null;
             throw new NotImplementedException("Consider this");
         }
     }

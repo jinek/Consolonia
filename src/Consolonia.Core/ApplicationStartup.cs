@@ -38,6 +38,7 @@ namespace Consolonia.Core
         public static AppBuilder UseConsolonia(this AppBuilder builder)
         {
             return builder
+                .UseStandardRuntimePlatformSubsystem()
                 .UseWindowingSubsystem(() => new ConsoloniaPlatform().Initialize(), nameof(ConsoloniaPlatform))
                 .UseRenderingSubsystem(() =>
                 {

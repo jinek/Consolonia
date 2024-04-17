@@ -37,7 +37,7 @@ namespace Consolonia.Core.Infrastructure
 
             AvaloniaLocator.CurrentMutable.BindToSelf(this)
                 .Bind<IWindowingPlatform>().ToConstant(this)
-                .Bind<IPlatformThreadingInterface>().ToSingleton<ConsoloniaPlatformThreadingInterface>()
+                /*todo: need replacement? .Bind<IPlatformThreadingInterface>().ToSingleton<ConsoloniaPlatformThreadingInterface>()*/
                 .Bind<IRenderTimer>().ToConstant(new UiThreadRenderTimer(120))
                 /*.Bind<IRenderLoop>().ToConstant(new RenderLoop()) todo: is internal now*/
                 .Bind<PlatformHotkeyConfiguration>().ToConstant(new PlatformHotkeyConfiguration(KeyModifiers.Control))
