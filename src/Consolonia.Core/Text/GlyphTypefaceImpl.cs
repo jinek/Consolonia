@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace Consolonia.Core.Text
 {
@@ -65,7 +66,7 @@ namespace Consolonia.Core.Text
         public FontWeight Weight => FontWeight.Normal;
         public FontStyle Style => FontStyle.Normal;
         public FontStretch Stretch => FontStretch.Normal;
-        public int GlyphCount => sizeof(char);
+        public int GlyphCount => char.MaxValue;
 
         public FontMetrics Metrics { get; } = new()
         {
