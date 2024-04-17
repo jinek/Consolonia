@@ -122,8 +122,9 @@ namespace Consolonia.Core.Drawing
                     caretPosition = new PixelBufferCoordinate(x, y);
                 }
 
-                if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                    rect.ContainsExclusive(new Point(x, y)))) continue;
+                /* todo: There is not IWindowImpl.Invalidate anymore.
+                 if (!_consoleWindow.InvalidatedRects.Any(rect =>
+                    rect.ContainsExclusive(new Point(x, y)))) continue;*/
                 if (pixel.Background.Mode != PixelBackgroundMode.Colored)
                     throw new InvalidOperationException(
                         "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");
