@@ -9,7 +9,7 @@ using Avalonia.Styling;
 namespace Consolonia.Core.Drawing
 {
     [TypeConverter(typeof(FourBitBrushConverter))]
-    public class FourBitColorBrush : AvaloniaObject, IBrush
+    public class FourBitColorBrush : AvaloniaObject, IImmutableBrush
     {
         public static readonly StyledProperty<ConsoleColor> ColorProperty =
             AvaloniaProperty.Register<FourBitColorBrush, ConsoleColor>(nameof(Color));

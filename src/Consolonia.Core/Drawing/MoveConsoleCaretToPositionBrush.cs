@@ -3,7 +3,7 @@ using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing
 {
-    public class MoveConsoleCaretToPositionBrush : IBrush
+    public class MoveConsoleCaretToPositionBrush : IImmutableBrush
     {
         //todo: Search for B75ABC91-2CDD-4557-9201-16AC483C8D7B
         public double Opacity => 1;

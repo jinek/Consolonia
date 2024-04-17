@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
@@ -24,6 +25,7 @@ namespace Consolonia.Core.Text
             _glyphInfos = glyphInfos;
             GlyphTypeface = glyphTypeface;
             BaselineOrigin = baselineOrigin;
+            GlyphIndices = glyphInfos.Select(info => info.GlyphIndex).ToArray();
         }
 
         public void Dispose()
@@ -41,5 +43,6 @@ namespace Consolonia.Core.Text
         public double FontRenderingEmSize => 1;
         public Point BaselineOrigin { get; }
         public Rect Bounds { get; }
+        public ushort[] GlyphIndices { get; }
     }
 }

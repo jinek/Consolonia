@@ -10,6 +10,7 @@ using Avalonia.Utilities;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
+using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Drawing
 {
@@ -188,8 +189,12 @@ namespace Consolonia.Core.Drawing
 
         public void DrawGlyphRun(IBrush foreground, IGlyphRunImpl glyphRun)
         {
-            throw new NotImplementedException("GlyphIndices now does not exist. What is actual type of glyphRun?");
-            /*if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
+            if (glyphRun is not GlyphRunImpl glyphRunImpl)
+            {
+                ConsoloniaPlatform.RaiseNotSupported(17, glyphRun);
+                throw new InvalidProgramException();
+            }
+            if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
             if (!glyphRun.FontRenderingEmSize.IsNearlyEqual(1))
             {
                 ConsoloniaPlatform.RaiseNotSupported(3);
@@ -197,8 +202,8 @@ namespace Consolonia.Core.Drawing
             }
 
             string charactersDoDraw =
-                string.Concat(glyphRun.GlyphIndices.Select(us => (char)us).ToArray());
-            DrawStringInternal(foreground, charactersDoDraw);*/
+                string.Concat(glyphRunImpl.GlyphIndices.Select(us => (char)us).ToArray());
+            DrawStringInternal(foreground, charactersDoDraw);
         }
 
         public IDrawingContextLayerImpl CreateLayer(Size size)
@@ -382,10 +387,9 @@ namespace Consolonia.Core.Drawing
                 }
             }
         }
-
-        /* todo: left for reference
-        private void DrawStringInternal(IBrush foreground, string str, Point origin = new(), int startIndex = 0,
-            List<KeyValuePair<FormattedText.FBrushRange, IBrush>> additionalBrushes = null)
+         
+        private void DrawStringInternal(IBrush foreground, string str, Point origin = new(), int startIndex = 0/*,todo:
+            List<KeyValuePair<FormattedText.FBrushRange, IBrush>> additionalBrushes = null*/)
         {
             if (foreground is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
             {
@@ -404,6 +408,7 @@ namespace Consolonia.Core.Drawing
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
                 ConsoleColor foregroundColor = consoleColorBrush.Color;
 
+                /*todo:
                 if (additionalBrushes != null)
                 {
                     (FormattedText.FBrushRange _, IBrush brush) = additionalBrushes.FirstOrDefault(pair =>
@@ -425,6 +430,7 @@ namespace Consolonia.Core.Drawing
                         foregroundColor = additionalBrush.Color;
                     }
                 }
+                */
 
                 char character = str[i];
 
@@ -453,7 +459,7 @@ namespace Consolonia.Core.Drawing
                          var consolePixel =  new Pixel(' ', foregroundColor); 
                         
                         _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);#1#
+                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
                     }
                         break;
                     case '\u200B':
@@ -473,6 +479,5 @@ namespace Consolonia.Core.Drawing
                 }
             }
         }
-    */
     }
 }

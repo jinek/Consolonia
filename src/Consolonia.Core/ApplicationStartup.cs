@@ -47,10 +47,10 @@ namespace Consolonia.Core
                 .UseWindowingSubsystem(() => new ConsoloniaPlatform().Initialize(), nameof(ConsoloniaPlatform))
                 .UseRenderingSubsystem(() =>
                 {
-                    var platformRenderInterface =
-                        AvaloniaLocator.CurrentMutable.GetService<IPlatformRenderInterface>();
+                    /*var platformRenderInterface =
+                        AvaloniaLocator.CurrentMutable.GetRequiredService<IPlatformRenderInterface>();*/
 
-                    var consoloniaRenderInterface = new ConsoloniaRenderInterface(platformRenderInterface);
+                    var consoloniaRenderInterface = new ConsoloniaRenderInterface();
 
                     AvaloniaLocator.CurrentMutable
                         .Bind<IPlatformRenderInterface>().ToConstant(consoloniaRenderInterface);
