@@ -6,7 +6,6 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using Consolonia.Core.Drawing;
 using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Drawing
@@ -213,24 +212,4 @@ namespace Consolonia.Core.Drawing
 
         public PixelFormat DefaultPixelFormat => throw new NotImplementedException();
     }
-}
-
-public class ConsoloniaPlatformRenderInterfaceContext : IPlatformRenderInterfaceContext
-{
-    public object TryGetFeature(Type featureType)
-    {
-        throw new NotImplementedException();
-        /*return _graphicsApiContext.TryGetFeature(featureType);*/
-    }
-
-    public void Dispose()
-    {
-    }
-
-    public IRenderTarget CreateRenderTarget(IEnumerable<object> surfaces)
-    {
-        return new RenderTarget(surfaces);
-    }
-
-    public bool IsLost => false;
 }

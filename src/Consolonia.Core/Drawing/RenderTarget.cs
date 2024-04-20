@@ -65,7 +65,7 @@ namespace Consolonia.Core.Drawing
         public PixelSize PixelSize { get; } = new(1, 1);
         public int Version => 0;
 
-        public void Blit(IDrawingContextImpl context)
+        void IDrawingContextLayerImpl.Blit(IDrawingContextImpl context)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        public bool CanBlit => true;
+        bool IDrawingContextLayerImpl.CanBlit => true;
 
 
         private void OnResized(Size size, WindowResizeReason reason)
@@ -121,7 +121,7 @@ namespace Consolonia.Core.Drawing
                         throw new InvalidOperationException("Caret is already shown");
                     caretPosition = new PixelBufferCoordinate(x, y);
                 }
-
+                
                 /* todo: There is not IWindowImpl.Invalidate anymore.
                  if (!_consoleWindow.InvalidatedRects.Any(rect =>
                     rect.ContainsExclusive(new Point(x, y)))) continue;*/

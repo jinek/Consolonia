@@ -47,6 +47,7 @@ namespace Consolonia.Core.Infrastructure
         {//todo: seems is not used anymore
             InvalidatedRects.Add(rect);
 
+            Paint(rect);
 
             /*
              This is the code for drawing invalid rectangles
@@ -179,7 +180,7 @@ namespace Consolonia.Core.Infrastructure
         public Size MaxAutoSizeHint { get; }
 
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
-        public IScreenImpl Screen { get; }
+        public IScreenImpl Screen => null;
 
         public void SetTitle(string title)
         {
@@ -321,8 +322,8 @@ namespace Consolonia.Core.Infrastructure
             {
                 PixelBufferSize pixelBufferSize = Console.Size;
                 var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
-                //todo: Resized(size, PlatformResizeReason.Unspecified);
-                //todo; Invalidate(new Rect(size));
+                Resized(size, WindowResizeReason.Unspecified);
+                Invalidate(new Rect(size));
             });
         }
 
