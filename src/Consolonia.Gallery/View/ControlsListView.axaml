@@ -7,6 +7,7 @@
         <gallery:GalleryItemConverter x:Key="GalleryItemConverter" />
     </Window.Resources>
     <DockPanel>
+        <Button DockPanel.Dock="Top" HorizontalAlignment="Center" Content="Click me"/>
         <DataGrid x:Name="Grid"
                   SelectedIndex="0"
                   SelectionMode="Single"

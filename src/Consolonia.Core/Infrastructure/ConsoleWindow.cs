@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Input.TextInput;
 using Avalonia.Platform;
 using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
@@ -13,7 +15,7 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 namespace Consolonia.Core.Infrastructure
 {
-    internal class ConsoleWindow : IWindowImpl
+    internal class ConsoleWindow : IWindowImpl, ITextInputMethodImpl
     {
         private readonly IKeyboardDevice _myKeyboardDevice;
         [NotNull] internal readonly IConsole Console;
@@ -40,14 +42,12 @@ namespace Consolonia.Core.Infrastructure
             Console.FocusEvent -= ConsoleOnFocusEvent;
             Console.Dispose();
         }
-
         
-
         public void Invalidate(Rect rect)
         {//todo: seems is not used anymore
             InvalidatedRects.Add(rect);
 
-            Paint(rect);
+            Paint?.Invoke(rect);
 
             /*
              This is the code for drawing invalid rectangles
@@ -367,7 +367,31 @@ namespace Consolonia.Core.Infrastructure
         {
             if (featureType == typeof(ISystemNavigationManagerImpl))
                 return null;
+            if (featureType == typeof(ITextInputMethodImpl))
+            {
+                return null;
+            }
             throw new NotImplementedException("Consider this");
+        }
+
+        public void SetClient(TextInputMethodClient client)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetCursorRect(Rect rect)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetOptions(TextInputOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Reset()
+        {
+            throw new NotImplementedException();
         }
     }
 }
