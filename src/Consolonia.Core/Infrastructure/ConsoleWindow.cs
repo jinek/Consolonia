@@ -15,7 +15,7 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 namespace Consolonia.Core.Infrastructure
 {
-    internal class ConsoleWindow : IWindowImpl, ITextInputMethodImpl
+    internal class ConsoleWindow : IWindowImpl
     {
         private readonly IKeyboardDevice _myKeyboardDevice;
         [NotNull] internal readonly IConsole Console;
@@ -372,26 +372,6 @@ namespace Consolonia.Core.Infrastructure
                 return null;
             }
             throw new NotImplementedException("Consider this");
-        }
-
-        public void SetClient(TextInputMethodClient client)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetCursorRect(Rect rect)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetOptions(TextInputOptions options)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Reset()
-        {
-            throw new NotImplementedException();
         }
     }
 }
