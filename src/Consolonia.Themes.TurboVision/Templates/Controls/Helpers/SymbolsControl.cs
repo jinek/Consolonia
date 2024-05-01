@@ -69,17 +69,12 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             set
             {
                 _text = value;
-                /*_text.Select(@char => new GlyphInfo())*/
                 
                 _shapedText = new GlyphRun(new GlyphTypefaceImpl(),
                     1,
                     (_text ?? string.Empty).AsMemory(),
-                    Enumerable.Repeat(new GlyphInfo(), _text?.Length ?? 0).ToImmutableList(),
+                    _text.Select(c => new GlyphInfo(c, 0, 0)).ToImmutableArray(),
                     default(Point));
-
-                /*left for reference: TextShaper.Current.ShapeText(
-                    new ReadOnlySlice<char>((Text ?? string.Empty).ToCharArray()),
-                    Typeface.Default, 1, null);*/
             }
         }
 

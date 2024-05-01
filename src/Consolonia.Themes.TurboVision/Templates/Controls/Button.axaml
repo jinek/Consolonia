@@ -52,7 +52,9 @@
                         </Grid>
                     </Border>
 
-                    <!--Shadow-->
+                    <!--Shadows-->
+                    
+                    <!--Shadow under-->
                     <helpers:SymbolsControl Fill="True"
                                             Margin="1,0,1,0"
                                             Text="▀"
@@ -61,7 +63,9 @@
                                             IsVisible="{TemplateBinding (helpers:ButtonExtensions.Shadow)}"
                                             VerticalAlignment="Bottom"
                                             Foreground="{DynamicResource ThemePseudoShadeBrush}" />
-                    <helpers:SymbolsControl Margin="0,0,0,0"
+                    
+                    <!--Right shadow-->
+                    <helpers:SymbolsControl Margin="0,1,0,1"
                                             Text="█"
                                             Width="1"
                                             Classes="shaded"
@@ -70,6 +74,7 @@
                                             Fill="True"
                                             HorizontalAlignment="Right"
                                             Foreground="{DynamicResource ThemePseudoShadeBrush}" />
+                    <!--Right shadow top half-->
                     <helpers:SymbolsControl Margin="0,0,0,0"
                                             Text="▄"
                                             Width="1"
@@ -79,6 +84,7 @@
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Top"
                                             Foreground="{DynamicResource ThemePseudoShadeBrush}" />
+                    <!--Right shadow bottom half-->
                     <helpers:SymbolsControl Margin="0,0,0,0"
                                             Text="▀"
                                             Width="1"
