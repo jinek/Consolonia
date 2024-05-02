@@ -77,22 +77,14 @@ namespace Consolonia.Core.Infrastructure
             if (_headForeground != foregroundColor)
                 _headForeground = Console.ForegroundColor = foregroundColor;
 
-            /* todo: we can not do normalization from now on because of character 8230 '…', it renders to 3 symbols
-             thus, we either need to avoid normalization here or consider why normalization is needed at all.
-             if (!str.IsNormalized(NormalizationForm.FormKC))
-                str = str.Normalize(NormalizationForm.FormKC);*/
+            if (!str.IsNormalized(NormalizationForm.FormKC))
+                throw new NotSupportedException("Is not supposed to be rendered");
 
             if (str.Any(
                 c => ConsoleText.IsWideChar(c) &&
                      char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
             {
-                StringBuilder stringBuilder = new();
-                foreach (char c in str)
-                    stringBuilder.Append(ConsoleText.IsWideChar(c) && char.IsLetterOrDigit(c)
-                        ? '?' //todo: support wide characters
-                        : c);
-
-                str = stringBuilder.ToString();
+                throw new NotSupportedException("Is not supposed to be rendered");
             }
 
             Console.Write(str);

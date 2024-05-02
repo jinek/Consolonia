@@ -73,7 +73,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 _shapedText = new GlyphRun(new GlyphTypefaceImpl(),
                     1,
                     (_text ?? string.Empty).AsMemory(),
-                    _text.Select((c, index) => new GlyphInfo(c, index, 1)).ToImmutableArray(),
+                    TextShaperImpl.Convert(_text).ToImmutableArray(),
                     default(Point));
             }
         }
