@@ -77,8 +77,10 @@ namespace Consolonia.Core.Infrastructure
             if (_headForeground != foregroundColor)
                 _headForeground = Console.ForegroundColor = foregroundColor;
 
-            if (!str.IsNormalized(NormalizationForm.FormKC))
-                str = str.Normalize(NormalizationForm.FormKC);
+            /* todo: we can not do normalization from now on because of character 8230 '…', it renders to 3 symbols
+             thus, we either need to avoid normalization here or consider why normalization is needed at all.
+             if (!str.IsNormalized(NormalizationForm.FormKC))
+                str = str.Normalize(NormalizationForm.FormKC);*/
 
             if (str.Any(
                 c => ConsoleText.IsWideChar(c) &&

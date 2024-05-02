@@ -12,7 +12,7 @@ namespace Consolonia.Core.Text
                 new GlyphTypefaceImpl(), 1, 0 /*todo: must be 1 for right to left?*/);
             for (int i = 0; i < glyphInfos.Length; i++)
             {
-                glyphInfos[i] = new GlyphInfo(text.Span[i], 0, 1);
+                glyphInfos[i] = new GlyphInfo(text.Span[i], i, 1);
             }
             return glyphInfos;
         }
