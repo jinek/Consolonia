@@ -20,7 +20,7 @@ namespace Consolonia.Core.Drawing
         private readonly ConsoleWindow _consoleWindow;
         private readonly PixelBuffer _pixelBuffer;
         private Matrix _postTransform = Matrix.Identity;
-        private Matrix _transform;
+        private Matrix _transform = Matrix.Identity;
 
         public DrawingContextImpl(ConsoleWindow consoleWindow, PixelBuffer pixelBuffer)
         {

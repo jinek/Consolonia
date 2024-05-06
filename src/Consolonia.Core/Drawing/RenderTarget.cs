@@ -127,7 +127,7 @@ namespace Consolonia.Core.Drawing
                     rect.ContainsExclusive(new Point(x, y)))) continue;*/
                 if (pixel.Background.Mode != PixelBackgroundMode.Colored)
                     throw new InvalidOperationException(
-                        "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");
+                        "All pixels in the buffer must have exact console color before rendering");
 
                 if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
                     break;

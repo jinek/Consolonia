@@ -67,23 +67,6 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
-        public IGeometryImpl CreateGeometryGroup(FillRule fillRule, IReadOnlyList<Geometry> children)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IGeometryImpl CreateCombinedGeometry(GeometryCombineMode combineMode, Geometry g1, Geometry g2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRenderTarget CreateRenderTarget(IEnumerable<object> surfaces)
-        {
-            return new RenderTarget(surfaces);
-
-            //return _platformRenderInterface.CreateRenderTarget(surfaces);
-        }
-
         public IRenderTargetBitmapImpl CreateRenderTargetBitmap(PixelSize size, Vector dpi)
         {
             throw new NotImplementedException();
