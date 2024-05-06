@@ -51,6 +51,7 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IMouseDevice>().ToConstant(new MouseDevice())
                 .Bind<ICursorFactory>().ToConstant(new DummyCursorFactory())
                 .Bind<IPlatformIconLoader>().ToConstant(new DummyIconLoader())
+                .Bind<IPlatformSettings>().ToSingleton<ConsoloniaPlatformSettings>()
                 /*.Bind<IKeyboardNavigationHandler>().ToTransient<ArrowsAndKeyboardNavigationHandler>() todo: implement this navigation*/
                 //.Bind<IClipboard>().ToConstant(new X11Clipboard(this))
                 //.Bind<IPlatformSettings>().ToConstant(new PlatformSettingsStub())
@@ -80,5 +81,10 @@ namespace Consolonia.Core.Infrastructure
                     break;
             }
         }
+    }
+
+    public class ConsoloniaPlatformSettings : DefaultPlatformSettings
+    {
+        //todo:
     }
 }

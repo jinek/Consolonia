@@ -104,7 +104,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetFrameThemeVariant(PlatformThemeVariant themeVariant)
         {
-            throw new NotImplementedException("Consider this. Probably NotSupportedException can be enough");
+            //todo:
         }
 
         public void SetTransparencyLevelHint(WindowTransparencyLevel transparencyLevel)
