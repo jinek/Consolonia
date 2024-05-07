@@ -45,14 +45,13 @@
             <Border BorderThickness="1"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right">
-                <!--todo: this does not compile
                 <Border.BorderBrush>
                     <drawing:LineBrush LineStyle="Bold">
                         <drawing:LineBrush.Brush>
                             <drawing:FourBitColorBrush Color="Blue" />
                         </drawing:LineBrush.Brush>
                     </drawing:LineBrush>
-                </Border.BorderBrush>-->
+                </Border.BorderBrush>
                 <Border.Styles>
                     <Style Selector="Border">
                         <Style.Animations>
@@ -89,7 +88,6 @@
             <Border BorderThickness="1"
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Right">
-                <!-- todo: does not compile at all
                 <Border.BorderBrush>
                     <drawing:LineBrush LineStyle="DoubleLine">
                         <drawing:LineBrush.Brush>
@@ -97,7 +95,6 @@
                         </drawing:LineBrush.Brush>
                     </drawing:LineBrush>
                 </Border.BorderBrush>
-                -->
                 <Border.Styles>
                     <Style Selector="Border">
                         <Style.Animations>

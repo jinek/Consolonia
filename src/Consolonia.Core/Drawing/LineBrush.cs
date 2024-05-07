@@ -5,10 +5,10 @@ using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Drawing
 {
-    public class LineBrush : Animatable, IBrush
-    {
-        public static readonly StyledProperty<FourBitColorBrush> BrushProperty =
-            AvaloniaProperty.Register<LineBrush, FourBitColorBrush>(CommonInternalHelper.GetStyledPropertyName());
+    public class LineBrush : Animatable, IImmutableBrush
+    {//todo: we don't really implement immutable brush
+        public static readonly StyledProperty<IBrush> BrushProperty =
+            AvaloniaProperty.Register<LineBrush, IBrush>(CommonInternalHelper.GetStyledPropertyName());
 
         public static readonly StyledProperty<LineStyle> LineStyleProperty =
             AvaloniaProperty.Register<LineBrush, LineStyle>(CommonInternalHelper.GetStyledPropertyName());
@@ -17,7 +17,7 @@ namespace Consolonia.Core.Drawing
         {
         }
 
-        public FourBitColorBrush Brush
+        public IBrush Brush
         {
             get => GetValue(BrushProperty);
             set => SetValue(BrushProperty, value);
