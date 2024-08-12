@@ -12,10 +12,12 @@ namespace Consolonia.Core.Text
     {
         public GlyphRunImpl(IGlyphTypeface glyphTypeface, IReadOnlyList<GlyphInfo> glyphInfos, Point baselineOrigin)
         {
+            FontRenderingEmSize = glyphTypeface.Metrics.DesignEmHeight;
             GlyphTypeface = glyphTypeface;
             BaselineOrigin = baselineOrigin;
             GlyphIndices = glyphInfos.Select(info => info.GlyphIndex).ToArray();
-            Bounds = new Rect(baselineOrigin, new Size(glyphInfos.Sum(info => info.GlyphAdvance), FontRenderingEmSize));
+            Bounds = new Rect(baselineOrigin + new Point(0, glyphTypeface.Metrics.Ascent),
+                new Size(glyphInfos.Sum(info => info.GlyphAdvance), FontRenderingEmSize));
         }
 
         public void Dispose()
@@ -30,7 +32,7 @@ namespace Consolonia.Core.Text
 
         public IGlyphTypeface GlyphTypeface { get; }
 
-        public double FontRenderingEmSize => 1;
+        public double FontRenderingEmSize { get; }
         public Point BaselineOrigin { get; }
         public Rect Bounds { get; }
         public ushort[] GlyphIndices { get; }

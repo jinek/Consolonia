@@ -74,7 +74,7 @@ namespace Consolonia.Core.Text
             ///     https://docs.microsoft.com/en-us/typography/opentype/spec/ttch01#funits-and-the-em-square
             /// </summary>
             DesignEmHeight = 1,
-            Ascent = -1, //var height = (GlyphTypeface.Descent - GlyphTypeface.Ascent + GlyphTypeface.LineGap) * Scale;
+            Ascent = -1, //var height = (GlyphTypeface.Descent - GlyphTypeface.Ascent + GlyphTypeface.LineGap) * Scale; //todo: need to consult Avalonia guys
             Descent = 0,
             LineGap = 0,
             UnderlinePosition = 0,
