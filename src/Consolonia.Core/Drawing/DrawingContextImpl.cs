@@ -115,6 +115,8 @@ namespace Consolonia.Core.Drawing
 
             if (brush is not null)
             {
+                if (brush is VisualBrush visualBrush)
+                    throw new NotImplementedException();
                 /*todo: is it now handled automatically? left for reference
                 if (brush is VisualBrush visualBrush)
                 {
@@ -236,6 +238,7 @@ namespace Consolonia.Core.Drawing
 
         public void PopOpacity()
         {
+            throw new NotImplementedException();
         }
 
         public void PushOpacityMask(IBrush mask, Rect bounds)
