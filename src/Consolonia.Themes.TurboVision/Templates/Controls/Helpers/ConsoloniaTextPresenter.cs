@@ -68,6 +68,9 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             //todo: check if optimizations possible here
             TextLayout textLayout = base.CreateTextLayout();
 
+            if (TextWrapping != TextWrapping.NoWrap)//todo: ass seen this layout trick does not work when text is wrapping
+                return textLayout;
+
             {
                 object metrics = typeof(TextLayout)
                     .GetField("_metrics", BindingFlags.Instance | BindingFlags.NonPublic)!

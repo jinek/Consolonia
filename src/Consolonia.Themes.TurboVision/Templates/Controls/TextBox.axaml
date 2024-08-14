@@ -51,6 +51,19 @@
                                               IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
                                               VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
                                     <Panel>
+                                        <helpers:ConsoloniaTextPresenter Name="PART_TextPresenter"
+                                                                         Margin="{TemplateBinding Padding}"
+                                                                         CaretIndex="{TemplateBinding CaretIndex}"
+                                                                         PasswordChar="{TemplateBinding PasswordChar}"
+                                                                         RevealPassword="{TemplateBinding RevealPassword}"
+                                                                         SelectionBrush="{TemplateBinding SelectionBrush}"
+                                                                         SelectionEnd="{TemplateBinding SelectionEnd}"
+                                                                         SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                                                         SelectionStart="{TemplateBinding SelectionStart}"
+                                                                         Text="{TemplateBinding Text, Mode=TwoWay}"
+                                                                         TextAlignment="{TemplateBinding TextAlignment}"
+                                                                         TextWrapping="{TemplateBinding TextWrapping}"
+                                                                         TextBlock.Foreground="{TemplateBinding Foreground}"/>
                                         <TextBlock Name="watermark"
                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -65,19 +78,6 @@
                                                 </MultiBinding>
                                             </TextBlock.IsVisible>
                                         </TextBlock>
-                                        <helpers:ConsoloniaTextPresenter Name="PART_TextPresenter"
-                                                                         Margin="{TemplateBinding Padding}"
-                                                                         CaretIndex="{TemplateBinding CaretIndex}"
-                                                                         PasswordChar="{TemplateBinding PasswordChar}"
-                                                                         RevealPassword="{TemplateBinding RevealPassword}"
-                                                                         SelectionBrush="{TemplateBinding SelectionBrush}"
-                                                                         SelectionEnd="{TemplateBinding SelectionEnd}"
-                                                                         SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
-                                                                         SelectionStart="{TemplateBinding SelectionStart}"
-                                                                         Text="{TemplateBinding Text, Mode=TwoWay}"
-                                                                         TextAlignment="{TemplateBinding TextAlignment}"
-                                                                         TextWrapping="{TemplateBinding TextWrapping}"
-                                                                         TextBlock.Foreground="{TemplateBinding Foreground}"/>
                                     </Panel>
                                 </ScrollViewer>
                                 <ContentPresenter Grid.Column="2"
