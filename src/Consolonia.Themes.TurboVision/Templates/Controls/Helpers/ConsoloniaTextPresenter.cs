@@ -1,24 +1,44 @@
 using System;
 using System.Reflection;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting;
 using Avalonia.Reactive;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing;
-using Consolonia.Core.Infrastructure;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
-    public class ConsoloniaTextPresenter : TextPresenter, ICaptureTimerStartStop
+    public class ConsoloniaTextPresenter : TextPresenter
     {
         private static readonly FieldInfo TickTimerField =
             typeof(TextPresenter).GetField("_caretTimer", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
-        private bool _caretBlinking;
-
         static ConsoloniaTextPresenter()
         {
+            CaretIndexProperty.Changed
+                .SubscribeAction(args =>
+                {
+                    if (args.Sender is not TextPresenter textPresenter)
+                        return;
+
+                    // once avalonia moved the caret we then moving it additionally to scroll outside of the boundaries
+                    
+                    int caretIndex = args.NewValue.Value;
+
+                    Dispatcher.UIThread.Post(
+                        () =>
+                        {
+                            Rect hitTestTextPosition = textPresenter.TextLayout.HitTestTextPosition(caretIndex);
+                            textPresenter.BringIntoView(new Rect(hitTestTextPosition.X, hitTestTextPosition.Y, 1, 1));
+                        },
+                        DispatcherPriority
+                            .UiThreadRender /*Must be lower than DispatcherPriority.AfterRender which is used by TextPresenter*/);
+                });
+
             CaretBrushProperty.Changed
                 .Subscribe(
                     new AnonymousObserver<AvaloniaPropertyChangedEventArgs<IBrush>>(
@@ -31,45 +51,52 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 
         public ConsoloniaTextPresenter()
         {
+            // we need to disable blinking caret, our terminal caret blinks itself once shown
             var caretTickTimer = (DispatcherTimer)TickTimerField.GetValue(this);
-            caretTickTimer!.Tag = this;
+            caretTickTimer.Interval =
+                TimeSpan.FromMilliseconds(int
+                    .MaxValue); //see DispatcherTimer.Interval, since we can not disable it, setting it to longest interval possible
+            caretTickTimer.Tick += (_, _) => throw new NotImplementedException("How to disable timer completely?");
 
             CaretBrush = new MoveConsoleCaretToPositionBrush();
         }
 
-        public void CaptureTimerStart()
+        protected override TextLayout CreateTextLayout()
         {
-            _caretBlinking = true;
-        }
+            // adding one more character space to accomodate the caret: https://github.com/AvaloniaUI/Avalonia/commit/bfae67dbdbe1d9058443065e425f71bdb855e547#r145302445
 
-        public void CaptureTimerStop()
-        {
-            _caretBlinking = false;
-        }
+            //todo: check if optimizations possible here
+            TextLayout textLayout = base.CreateTextLayout();
 
-        /* todo: what does not work without of this?
-         
-         public override void Render(DrawingContext context)
-        {
-            base.Render(context);
-            if (SelectionStart == SelectionEnd || !_caretBlinking) return;
-            (Point p1, Point p2) = GetCaretPoints();
-            context.DrawLine(
-                new Pen(CaretBrush),
-                p1, p2);
-        }*/
+            {
+                object metrics = typeof(TextLayout)
+                    .GetField("_metrics", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(textLayout)!;
 
-        private (Point, Point) GetCaretPoints()
-        {
-            return ((Point, Point))typeof(TextPresenter)
-                .GetMethod(nameof(GetCaretPoints), BindingFlags.Instance | BindingFlags.NonPublic)!
-                .Invoke(this, null)!;
-        }
+                FieldInfo widthIncludingTrailingWhitespaceField = metrics.GetType()
+                    .GetField("WidthIncludingTrailingWhitespace", BindingFlags.Instance | BindingFlags.Public)!;
+                double w = (double)widthIncludingTrailingWhitespaceField.GetValue(metrics)!;
+                widthIncludingTrailingWhitespaceField.SetValue(metrics, w + 1);
+            }
 
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            Size measureOverride = base.MeasureOverride(availableSize);
-            return measureOverride.WithWidth(measureOverride.Width + 1);
+            foreach (TextLine textLayoutTextLine in textLayout.TextLines)
+            {
+                FieldInfo textLineMetricsField = textLayoutTextLine.GetType()
+                    .GetField("_textLineMetrics", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
+                object textLineMetrics = textLineMetricsField.GetValue(textLayoutTextLine);
+
+                PropertyInfo widthIncludingTrailingWhitespaceProperty = textLineMetrics.GetType()
+                    .GetProperty("WidthIncludingTrailingWhitespace", BindingFlags.Instance | BindingFlags.Public);
+
+                double w = (double)widthIncludingTrailingWhitespaceProperty.GetValue(textLineMetrics)!;
+                widthIncludingTrailingWhitespaceProperty.SetValue(textLineMetrics, w + 1);
+
+
+                textLineMetricsField.SetValue(textLayoutTextLine, textLineMetrics);
+            }
+
+            return textLayout;
         }
     }
 }
