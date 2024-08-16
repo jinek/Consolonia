@@ -1,17 +1,34 @@
 using System;
 using System.Linq;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Rendering;
 using Avalonia.VisualTree;
 using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Infrastructure
 {
-    /* todo: left for reference, we need to reconsider how to implement focus navigation in new Avalonia
-    public class ArrowsAndKeyboardNavigationHandler : KeyboardNavigationHandler, IKeyboardNavigationHandler
+    public class ArrowsAndKeyboardNavigationHandler : IKeyboardNavigationHandler
     {
-        public new void Move(IInputElement element, NavigationDirection direction,
+        //todo: check XTFocus https://github.com/jinek/Consolonia/issues/105#issuecomment-2089015880
+        private IInputRoot _owner;
+
+        private readonly IKeyboardNavigationHandler _keyboardNavigationHandler;
+
+        public ArrowsAndKeyboardNavigationHandler(IKeyboardNavigationHandler keyboardNavigationHandler)
+        {
+            _keyboardNavigationHandler = keyboardNavigationHandler;
+        }
+
+        public void SetOwner(IInputRoot owner)
+        {
+            _keyboardNavigationHandler.SetOwner(owner);
+
+            _owner = owner;
+            _owner.AddHandler(InputElement.KeyDownEvent, OnKeyDown);
+        }
+
+        public void Move(IInputElement element, NavigationDirection direction,
             KeyModifiers keyModifiers = KeyModifiers.None)
         {
             if (direction is NavigationDirection.Right or
@@ -19,8 +36,9 @@ namespace Consolonia.Core.Infrastructure
                 NavigationDirection.Down or
                 NavigationDirection.Up)
             {
-                IRenderRoot visualRoot = element.GetVisualRoot();
-                (Point p1, Point p2) = GetOriginalPoint(element.TransformedBounds.NotNull().Clip);
+                var elementCast = (InputElement)element;
+                Visual visualRoot = (Visual)elementCast.GetVisualRoot();
+                (Point p1, Point p2) = GetOriginalPoint(elementCast.GetTransformedBounds().NotNull().Clip);
                 Point originalPoint = p1 / 2 + p2 / 2;
 
                 var focusableElements = visualRoot.GetVisualDescendants()
@@ -34,7 +52,7 @@ namespace Consolonia.Core.Infrastructure
                     .Select(inputElement =>
                     {
                         (Point firstTargetPoint, Point secondTargetPoint) =
-                            GetTargetPoint(inputElement.TransformedBounds.NotNull().Clip);
+                            GetTargetPoint(inputElement.GetTransformedBounds().NotNull().Clip);
                         return new
                         {
                             vector =
@@ -61,7 +79,7 @@ namespace Consolonia.Core.Infrastructure
             }
             else
             {
-                base.Move(element, direction, keyModifiers);
+                _keyboardNavigationHandler.Move(element, direction, keyModifiers);
             }
 
             (Point, Point) GetOriginalPoint(Rect valueClip)
@@ -100,12 +118,12 @@ namespace Consolonia.Core.Infrastructure
             }
         }
 
-        protected override void OnKeyDown(object sender, KeyEventArgs e)
+        private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            base.OnKeyDown(sender, e);
-
             if (e.Handled) return;
-            IInputElement current = FocusManager.Instance?.Current;
+
+            //see FocusManager.GetFocusManager
+            IInputElement current = TopLevel.GetTopLevel((Visual)sender)!.FocusManager!.GetFocusedElement();
 
             if (e.KeyModifiers != KeyModifiers.None)
                 return;
@@ -136,5 +154,4 @@ namespace Consolonia.Core.Infrastructure
             e.Handled = true;
         }
     }
-*/
 }
