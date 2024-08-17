@@ -134,6 +134,14 @@ namespace Consolonia.Core.Drawing
                 }
                 */
 
+                if (brush is ISceneBrush sceneBrush)
+                {
+                    ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
+                    sceneBrushContent.Render(this, Matrix.Identity/*todo: check identity always work*/);
+
+                    return;
+                }
+
                 if (brush is not FourBitColorBrush backgroundBrush)
                 {
                     ConsoloniaPlatform.RaiseNotSupported(9, brush, pen, rect, boxShadows);
@@ -221,7 +229,10 @@ namespace Consolonia.Core.Drawing
 
         public void PushClip(RoundedRect clip)
         {
-            ConsoloniaPlatform.RaiseNotSupported(2);
+            if(clip.IsRounded)
+                ConsoloniaPlatform.RaiseNotSupported(2);
+            
+            PushClip(clip.Rect);
         }
 
         public void PopClip()
