@@ -29,11 +29,9 @@
 
         <ComboBox>
             <ComboBox.Items>
-                <collections:ArrayList>
-                    <system:String>Hello</system:String>
-                    <x:Null />
-                    <system:String>World</system:String>
-                </collections:ArrayList>
+                <system:String>Hello</system:String>
+                <x:Null />
+                <system:String>World</system:String>
             </ComboBox.Items>
             <ComboBox.ItemTemplate>
                 <DataTemplate>
