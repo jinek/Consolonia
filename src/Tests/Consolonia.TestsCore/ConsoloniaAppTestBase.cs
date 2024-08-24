@@ -45,7 +45,6 @@ namespace Consolonia.TestsCore
                 _scope = AvaloniaLocator.EnterScope();
                 _lifetime = ApplicationStartup.BuildLifetime<TApp>(UITest, Args);
                 UITest.SetupLifetime(_lifetime);
-                Dispatcher.UIThread.UpdateServicesExtension();
                 setupTaskSource.SetResult();
                 _lifetime.Start(Args);
 
@@ -88,7 +87,6 @@ namespace Consolonia.TestsCore
             _lifetime = null;
             _scope.Dispose();
             _scope = null;
-            Dispatcher.UIThread.UpdateServicesExtension();
             UITest.Dispose();
             UITest = null;
             await _disposeTaskCompletionSource.Task.ConfigureAwait(true);
