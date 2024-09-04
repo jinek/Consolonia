@@ -14,12 +14,13 @@ namespace Consolonia.TestsCore
 {
     [NonParallelizable /*todo: switch to semaphore like https://stackoverflow.com/a/6427425/2362847 to allow other tests to execute in parallel*/]
 #pragma warning disable CA1001 // we are relying on TearDown by NUnit
-    public abstract class ConsoloniaAppTestBase<TApp> where TApp : Application, new()
+    public abstract class ConsoloniaAppTestBase<TApp>
+        where TApp : Application, new()
 #pragma warning restore CA1001
     {
         private readonly PixelBufferSize _size;
-        private TaskCompletionSource _disposeTaskCompletionSource;
-        private ClassicDesktopStyleApplicationLifetime _lifetime;
+        private static TaskCompletionSource _disposeTaskCompletionSource; // todo: tests now rely on static
+        private static ClassicDesktopStyleApplicationLifetime _lifetime;
         private IDisposable _scope;
 
         protected ConsoloniaAppTestBase(PixelBufferSize size)
@@ -27,15 +28,20 @@ namespace Consolonia.TestsCore
             _size = size;
         }
 
-        protected UnitTestConsole UITest { get; private set; }
+        protected static UnitTestConsole UITest { get; private set; }
 
 #pragma warning disable CA1819 // todo: provide a solution
         protected string[] Args { get; init; }
 #pragma warning restore CA1819
 
-        [SetUp]
-        public async Task Setup()
+        [OneTimeSetUp]
+        public async Task GlobalSetup()
         {
+            if (UITest != null)
+                return;
+
+            AppDomain.CurrentDomain.ProcessExit += GlobalTearDown;
+            
             UITest = new UnitTestConsole(_size);
             var setupTaskSource = new TaskCompletionSource();
 
@@ -74,12 +80,13 @@ namespace Consolonia.TestsCore
             }, cancellationToken).ConfigureAwait(true);
 
             // Waiting all jobs to finish
-            await UITest.WaitDispatched().ConfigureAwait(true);
+            await UITest.WaitRendered().ConfigureAwait(true);
         }
 
-        [TearDown]
-        public async Task TearDown()
+        private async void GlobalTearDown(object sender, EventArgs eventArgs)
         {
+            AppDomain.CurrentDomain.ProcessExit -= GlobalTearDown;
+            
             ClassicDesktopStyleApplicationLifetime lifetime = _lifetime;
             await Dispatcher.UIThread.InvokeAsync(() => { lifetime.Shutdown(); }).GetTask().ConfigureAwait(true);
 
