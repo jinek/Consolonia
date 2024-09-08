@@ -67,7 +67,7 @@
                                                     Grid.Column="4" />
                             <Popup Grid.Column="0"
                                    Name="PART_Popup"
-                                   PlacementMode="Right"
+                                   Placement="BottomEdgeAlignedLeft"
                                    IsLightDismissEnabled="False"
                                    IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
                                 <Panel>
@@ -102,9 +102,7 @@
     <Style Selector="MenuItem:separator">
         <Setter Property="Template">
             <ControlTemplate>
-                <Separator Background="{DynamicResource ThemeErrorBrush}"
-                           Margin="1,0"
-                           Height="1" />
+                <Separator />
             </ControlTemplate>
         </Setter>
     </Style>
