@@ -28,4 +28,6 @@
                                Color="Black" />
     <drawing:FourBitColorBrush x:Key="ThemeErrorBrush"
                                Color="Red" />
+    <drawing:FourBitColorBrush x:Key="ThemeTransparentBrush"
+                               Mode="Transparent"/>
 </ResourceDictionary>
