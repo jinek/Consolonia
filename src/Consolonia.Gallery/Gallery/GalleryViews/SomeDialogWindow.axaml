@@ -26,6 +26,7 @@ _____/          :--'
 Bill Ames
 </TextBlock>
         <Button Content="One More"
+                Name="Button"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Click="OneMore_Clicked" />

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -12,6 +13,7 @@ using Avalonia.VisualTree;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 {
+    [TemplatePart("PART_ContentPresenter", typeof(ContentPresenter))]
     public class DialogWindow : UserControl
     {
         public static readonly DirectProperty<DialogWindow, Size> ContentSizeProperty =
@@ -69,7 +71,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             base.OnApplyTemplate(e);
-            _partContentPresenter = this.FindControl<ContentPresenter>("PART_ContentPresenter");
+            _partContentPresenter = e.NameScope.Find<ContentPresenter>("PART_ContentPresenter");
         }
 
         protected override Size ArrangeOverride(Size finalSize)

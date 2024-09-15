@@ -7,7 +7,7 @@
                 Margin="1"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Click="Button_OnClick" />
+                Click="Button_OnClick"/>
         <TextBlock xml:space="preserve"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"

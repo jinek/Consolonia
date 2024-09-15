@@ -7,7 +7,9 @@
         <Border Background="{drawing1:FourBitColorBrush Mode=Shaded}"
                 IsVisible="{Binding RelativeSource={RelativeSource Self}, Path=IsEffectivelyEnabled}" />
 
-        <ContentPresenter x:Name="ContentPresenter"
+        <!-- ReSharper disable once UnusedMember.Local Used for manual search-->
+        <ContentPresenter Name="ContentPresenter"
+                          x:FieldModifier="private"                          
                           HorizontalContentAlignment="Stretch"
                           VerticalContentAlignment="Stretch"
                           HorizontalAlignment="Stretch"

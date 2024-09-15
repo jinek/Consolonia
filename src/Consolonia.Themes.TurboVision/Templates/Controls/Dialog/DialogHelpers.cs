@@ -41,6 +41,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 
         public void OpenInternal(DialogWindow dialogWindow)
         {
+            IInputElement focusedElement = _window.FocusManager!/*todo: low: Why can be null?*/.GetFocusedElement();
             var overlayLayer = OverlayLayer.GetOverlayLayer(_window);
             var popupHost = new OverlayPopupHost(overlayLayer);
 
@@ -54,7 +55,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 
             if (_dialogs.TryPeek(out OverlayPopupHost previousDialog)) previousDialog.IsEnabled = false;
 
-            dialogWrap.HadFocusOn = AvaloniaLocator.Current.GetRequiredService<IFocusManager>().GetFocusedElement();
+            dialogWrap.HadFocusOn = focusedElement;
 
             _dialogs.Push(popupHost);
             popupHost.Show();
@@ -81,7 +82,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         {
             OverlayPopupHost overlayPopupHost = _dialogs.Pop();
             var dialogWrap = (DialogWrap)overlayPopupHost.Content;
-            if (!Equals(dialogWrap.ContentPresenter.Content, dialogWindow))
+            if (!Equals(dialogWrap.FoundContentPresenter.Content, dialogWindow))
                 throw new InvalidOperationException("Dialog is not topmost. Close private dialogs first");
             overlayPopupHost.Hide();
 
