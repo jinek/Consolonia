@@ -2,6 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
     <Style Selector="TextBox">
+        <Style.Resources>
+            <helpers:BooleanAndConverter x:Key="BooleanAndConverter"/>
+            <helpers:AreIntegersEqualConverter x:Key="AreIntegersEqualConverter"/>
+        </Style.Resources>
         <Setter Property="Background"
                 Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
         <Setter Property="Foreground"
@@ -51,19 +55,22 @@
                                               IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
                                               VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
                                     <Panel>
-                                        <helpers:ConsoloniaTextPresenter Name="PART_TextPresenter"
-                                                                         Margin="{TemplateBinding Padding}"
-                                                                         CaretIndex="{TemplateBinding CaretIndex}"
-                                                                         PasswordChar="{TemplateBinding PasswordChar}"
-                                                                         RevealPassword="{TemplateBinding RevealPassword}"
-                                                                         SelectionBrush="{TemplateBinding SelectionBrush}"
-                                                                         SelectionEnd="{TemplateBinding SelectionEnd}"
-                                                                         SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
-                                                                         SelectionStart="{TemplateBinding SelectionStart}"
-                                                                         Text="{TemplateBinding Text, Mode=TwoWay}"
-                                                                         TextAlignment="{TemplateBinding TextAlignment}"
-                                                                         TextWrapping="{TemplateBinding TextWrapping}"
-                                                                         TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                                        <!--I don't understand why 1 is not sufficient as a padding for caret of width 1-->
+                                        <Panel Margin="0,0,2,0">
+                                            <helpers:ConsoloniaTextPresenter Name="PART_TextPresenter"
+                                                                             Margin="{TemplateBinding Padding}"
+                                                                             CaretIndex="{TemplateBinding CaretIndex}"
+                                                                             PasswordChar="{TemplateBinding PasswordChar}"
+                                                                             RevealPassword="{TemplateBinding RevealPassword}"
+                                                                             SelectionBrush="{TemplateBinding SelectionBrush}"
+                                                                             SelectionEnd="{TemplateBinding SelectionEnd}"
+                                                                             SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                                                             SelectionStart="{TemplateBinding SelectionStart}"
+                                                                             Text="{TemplateBinding Text, Mode=TwoWay}"
+                                                                             TextAlignment="{TemplateBinding TextAlignment}"
+                                                                             TextWrapping="{TemplateBinding TextWrapping}"
+                                                                             TextBlock.Foreground="{TemplateBinding Foreground}" />
+                                            </Panel>
                                         <TextBlock Name="watermark"
                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -78,6 +85,20 @@
                                                 </MultiBinding>
                                             </TextBlock.IsVisible>
                                         </TextBlock>
+                                        <helpers:TextBoxCaret>
+                                            <helpers:TextBoxCaret.Active>
+                                                <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                                    <TemplateBinding Property="IsFocused"/>
+                                                    <MultiBinding Converter="{StaticResource AreIntegersEqualConverter}">
+                                                        <Binding ElementName="PART_TextPresenter" Path="SelectionStart"/>
+                                                        <Binding ElementName="PART_TextPresenter" Path="SelectionEnd"/>
+                                                    </MultiBinding>
+                                                </MultiBinding>
+                                            </helpers:TextBoxCaret.Active>
+                                            <helpers:TextBoxCaret.Position>
+                                                <Binding ElementName="PART_TextPresenter" Path="CaretPosition" />
+                                            </helpers:TextBoxCaret.Position>
+                                        </helpers:TextBoxCaret>
                                     </Panel>
                                 </ScrollViewer>
                                 <ContentPresenter Grid.Column="2"

@@ -4,35 +4,47 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Media;
-using Avalonia.Media.TextFormatting;
 using Avalonia.Reactive;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
     public class ConsoloniaTextPresenter : TextPresenter
     {
+        public static readonly StyledProperty<Point> CaretPositionProperty =
+            AvaloniaProperty.Register<ConsoloniaTextPresenter, Point>(nameof(CaretPosition));
+
         private static readonly FieldInfo TickTimerField =
             typeof(TextPresenter).GetField("_caretTimer", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
         static ConsoloniaTextPresenter()
         {
+            SelectionEndProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<int>>(args =>
+            {
+                if (args.Sender is not ConsoloniaTextPresenter textPresenter)
+                    return;
+
+                textPresenter.UpdateCaretPosition(null);
+            }));
+
             CaretIndexProperty.Changed
                 .SubscribeAction(args =>
                 {
-                    if (args.Sender is not TextPresenter textPresenter)
+                    if (args.Sender is not ConsoloniaTextPresenter textPresenter)
                         return;
 
                     // once avalonia moved the caret we then moving it additionally to scroll outside of the boundaries
-                    
+
                     int caretIndex = args.NewValue.Value;
+
+                    Rect hitTestTextPosition = textPresenter.UpdateCaretPosition(caretIndex);
 
                     Dispatcher.UIThread.Post(
                         () =>
                         {
-                            Rect hitTestTextPosition = textPresenter.TextLayout.HitTestTextPosition(caretIndex);
                             textPresenter.BringIntoView(new Rect(hitTestTextPosition.X, hitTestTextPosition.Y, 1, 1));
                         },
                         DispatcherPriority
@@ -44,7 +56,10 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     new AnonymousObserver<AvaloniaPropertyChangedEventArgs<IBrush>>(
                         args =>
                         {
-                            if (args.NewValue.Value is not MoveConsoleCaretToPositionBrush)
+                            if (args.NewValue.Value is not FourBitColorBrush
+                                {
+                                    Color: ConsoleColor.Black, Mode: PixelBackgroundMode.Transparent
+                                })
                                 throw new NotSupportedException();
                         }));
         }
@@ -58,48 +73,23 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     .MaxValue); //see DispatcherTimer.Interval, since we can not disable it, setting it to longest interval possible
             caretTickTimer.Tick += (_, _) => throw new NotImplementedException("How to disable timer completely?");
 
-            CaretBrush = new MoveConsoleCaretToPositionBrush();
+            CaretBrush =
+                new FourBitColorBrush(ConsoleColor.Black, PixelBackgroundMode.Transparent); // we want to draw own caret
         }
 
-        protected override TextLayout CreateTextLayout()
+        public Point CaretPosition
         {
-            // adding one more character space to accomodate the caret: https://github.com/AvaloniaUI/Avalonia/commit/bfae67dbdbe1d9058443065e425f71bdb855e547#r145302445
+            get => GetValue(CaretPositionProperty);
+            private set => SetValue(CaretPositionProperty, value);
+        }
 
-            //todo: check if optimizations possible here
-            TextLayout textLayout = base.CreateTextLayout();
+        private Rect UpdateCaretPosition(int? caretIndex)
+        {
+            caretIndex ??= CaretIndex;
 
-            if (TextWrapping != TextWrapping.NoWrap)//todo: ass seen this layout trick does not work when text is wrapping
-                return textLayout;
-
-            {
-                object metrics = typeof(TextLayout)
-                    .GetField("_metrics", BindingFlags.Instance | BindingFlags.NonPublic)!
-                    .GetValue(textLayout)!;
-
-                FieldInfo widthIncludingTrailingWhitespaceField = metrics.GetType()
-                    .GetField("WidthIncludingTrailingWhitespace", BindingFlags.Instance | BindingFlags.Public)!;
-                double w = (double)widthIncludingTrailingWhitespaceField.GetValue(metrics)!;
-                widthIncludingTrailingWhitespaceField.SetValue(metrics, w + 1);
-            }
-
-            foreach (TextLine textLayoutTextLine in textLayout.TextLines)
-            {
-                FieldInfo textLineMetricsField = textLayoutTextLine.GetType()
-                    .GetField("_textLineMetrics", BindingFlags.Instance | BindingFlags.NonPublic)!;
-
-                object textLineMetrics = textLineMetricsField.GetValue(textLayoutTextLine);
-
-                PropertyInfo widthIncludingTrailingWhitespaceProperty = textLineMetrics.GetType()
-                    .GetProperty("WidthIncludingTrailingWhitespace", BindingFlags.Instance | BindingFlags.Public);
-
-                double w = (double)widthIncludingTrailingWhitespaceProperty.GetValue(textLineMetrics)!;
-                widthIncludingTrailingWhitespaceProperty.SetValue(textLineMetrics, w + 1);
-
-
-                textLineMetricsField.SetValue(textLayoutTextLine, textLineMetrics);
-            }
-
-            return textLayout;
+            Rect hitTestTextPosition = TextLayout.HitTestTextPosition(caretIndex.Value);
+            CaretPosition = new Point(hitTestTextPosition.X, hitTestTextPosition.Y);
+            return hitTestTextPosition;
         }
     }
 }
