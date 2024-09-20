@@ -279,10 +279,6 @@
                 <drawing:FourBitColorBrush Mode="Transparent" />
             </Setter.Value>
         </Setter>
-        <!-- todo:  sees grid does not have alternatingRowBackground anymore?
-        <Setter Property="AlternatingRowBackground"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-        -->
         <Setter Property="HeadersVisibility"
                 Value="Column" />
         <Setter Property="HorizontalScrollBarVisibility"
