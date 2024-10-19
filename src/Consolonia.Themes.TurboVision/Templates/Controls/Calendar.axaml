@@ -1,10 +1,3 @@
-<!--
-// (c) Copyright Microsoft Corporation.
-// This source is subject to the Microsoft Public License (Ms-PL).
-// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
-// All other rights reserved.
--->
-
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
     <Style Selector="Calendar">
@@ -22,11 +15,11 @@
                 Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <StackPanel Name="Root"
+                <StackPanel Name="PART_Root"
                             HorizontalAlignment="Center"
                             ClipToBounds="True">
 
-                    <CalendarItem Name="CalendarItem"
+                    <CalendarItem Name="PART_CalendarItem"
                                   Background="{TemplateBinding Background}"
                                   BorderBrush="{TemplateBinding BorderBrush}"
                                   BorderThickness="{TemplateBinding BorderThickness}"
