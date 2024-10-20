@@ -166,22 +166,6 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
-        /*
-        public void DrawText(IBrush foreground, Point origin, IFormattedTextImpl text)
-        {
-            var formattedText = (FormattedText)text;
-
-            for (int row = 0; row < formattedText.SkiaLines.Count; row++)
-            {
-                FormattedText.AvaloniaFormattedTextLine line = formattedText.SkiaLines[row];
-                float x = formattedText.TransformX((float)origin.X, line.Width);
-                string subString = text.Text.Substring(line.Start, line.Length);
-                DrawStringInternal(foreground, subString, new Point(x, origin.Y + row), line.Start,
-                    formattedText.ForegroundBrushes.Any() ? formattedText.ForegroundBrushes : null);
-            }
-        }
-        */
-
         public void DrawGlyphRun(IBrush foreground, IGlyphRunImpl glyphRun)
         {
             if (glyphRun is not GlyphRunImpl glyphRunImpl)
@@ -386,8 +370,7 @@ namespace Consolonia.Core.Drawing
             }
         }
          
-        private void DrawStringInternal(IBrush foreground, string str, Point origin = new(), int startIndex = 0/*,todo:
-            List<KeyValuePair<FormattedText.FBrushRange, IBrush>> additionalBrushes = null*/)
+        private void DrawStringInternal(IBrush foreground, string str, Point origin = new())
         {
             if (foreground is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
             {
@@ -401,36 +384,12 @@ namespace Consolonia.Core.Drawing
             int currentXPosition = 0;
 
             //todo: support surrogates
-            for (int i = 0; i < str.Length; i++)
+            foreach (char c in str)
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
                 ConsoleColor foregroundColor = consoleColorBrush.Color;
-
-                /*todo:
-                if (additionalBrushes != null)
-                {
-                    (FormattedText.FBrushRange _, IBrush brush) = additionalBrushes.FirstOrDefault(pair =>
-                    {
-                        // ReSharper disable once AccessToModifiedClosure //todo: pass as a parameter
-                        int globalIndex = i + startIndex;
-                        (FormattedText.FBrushRange key, _) = pair;
-                        return key.StartIndex <= globalIndex && globalIndex < key.EndIndex;
-                    });
-
-                    if (brush != null)
-                    {
-                        if (brush is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } additionalBrush)
-                        {
-                            ConsoloniaPlatform.RaiseNotSupported(11);
-                            return;
-                        }
-
-                        foregroundColor = additionalBrush.Color;
-                    }
-                }
-                */
-
-                char character = str[i];
+                
+                char character = c;
 
                 switch (character)
                 {

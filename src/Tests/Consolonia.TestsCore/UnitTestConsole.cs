@@ -16,7 +16,7 @@ namespace Consolonia.TestsCore
 {
     public sealed class UnitTestConsole : IConsole
     {
-        private PixelBufferSize _size;
+        private readonly PixelBufferSize _size;
         private PixelBufferCoordinate _fakeCaretPosition;
         private ClassicDesktopStyleApplicationLifetime _lifetime;
 
@@ -27,7 +27,7 @@ namespace Consolonia.TestsCore
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
-        public PixelBuffer PixelBuffer { get; private set; }
+        public PixelBuffer PixelBuffer { get; }
 
         public void Dispose()
         {
@@ -142,7 +142,10 @@ namespace Consolonia.TestsCore
                 {
                     if (i == PixelBuffer.Width - 1 && j == PixelBuffer.Height - 1)
                         break;
-                    stringBuilder.Append(PixelBuffer[new PixelBufferCoordinate(i, j)].Foreground.Symbol.GetCharacter());
+                    Pixel pixel = PixelBuffer[new PixelBufferCoordinate(i, j)];
+                    char character = pixel.IsCaret ? 'Ꮖ' : pixel.Foreground.Symbol.GetCharacter();
+                    //todo: check why cursor is not drawing
+                    stringBuilder.Append(character);
                 }
 
                 stringBuilder.AppendLine();
