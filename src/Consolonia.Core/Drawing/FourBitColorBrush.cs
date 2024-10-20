@@ -4,7 +4,6 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Avalonia.Styling;
 
 namespace Consolonia.Core.Drawing
 {
@@ -51,9 +50,9 @@ namespace Consolonia.Core.Drawing
             return this;
         }
 
-        public double Opacity { get; }
-        public ITransform Transform { get; }
-        public RelativePoint TransformOrigin { get; }
+        public double Opacity => 0;
+        public ITransform Transform => null;
+        public RelativePoint TransformOrigin => RelativePoint.TopLeft;
     }
 
     public class FourBitBrushConverter : TypeConverter 
@@ -68,7 +67,7 @@ namespace Consolonia.Core.Drawing
         {
             if (value is string s)
             {
-                return Enum.TryParse<ConsoleColor>(s, out ConsoleColor result) 
+                return Enum.TryParse(s, out ConsoleColor result) 
                     ? result 
                     : null;
             }
