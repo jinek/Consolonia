@@ -12,23 +12,6 @@ namespace Consolonia.Core.Drawing
 {
     internal class ConsoloniaRenderInterface : IPlatformRenderInterface
     {
-        public ConsoloniaRenderInterface()
-        {
-        }
-
-        /*public IFormattedTextImpl CreateFormattedText(
-            string text,
-            Typeface typeface,
-            double fontSize,
-            TextAlignment textAlignment,
-            TextWrapping wrapping,
-            Size constraint,
-            IReadOnlyList<FormattedTextStyleSpan> spans)
-        {
-            return new FormattedText(text, textAlignment, wrapping, constraint, spans);
-            //return _platformRenderInterface.CreateFormattedText(text, typeface, fontSize, textAlignment, wrapping, constraint, spans);
-        }*/
-
         public IGeometryImpl CreateEllipseGeometry(Rect rect)
         {
             throw new NotImplementedException();
@@ -37,19 +20,16 @@ namespace Consolonia.Core.Drawing
         public IGeometryImpl CreateLineGeometry(Point p1, Point p2)
         {
             return Line.CreateMyLine(p1, p2);
-            //return _platformRenderInterface.CreateLineGeometry(p1, p2);
         }
 
         public IGeometryImpl CreateRectangleGeometry(Rect rect)
         {
             return new Rectangle(rect);
-            //return _platformRenderInterface.CreateRectangleGeometry(rect);
         }
 
         public IStreamGeometryImpl CreateStreamGeometry()
         {
             throw new NotImplementedException();
-            //return _platformRenderInterface.CreateStreamGeometry();
         }
 
         public IGeometryImpl CreateGeometryGroup(FillRule fillRule, IReadOnlyList<IGeometryImpl> children)
@@ -70,41 +50,31 @@ namespace Consolonia.Core.Drawing
         public IRenderTargetBitmapImpl CreateRenderTargetBitmap(PixelSize size, Vector dpi)
         {
             throw new NotImplementedException();
-            //return _platformRenderInterface.CreateRenderTargetBitmap(size, dpi);
         }
 
         public IWriteableBitmapImpl CreateWriteableBitmap(PixelSize size, Vector dpi, PixelFormat format,
             AlphaFormat alphaFormat)
         {
             throw new NotImplementedException();
-            //return _platformRenderInterface.CreateWriteableBitmap(size, dpi, format, alphaFormat);
         }
 
         public IBitmapImpl LoadBitmap(string fileName)
         {
             throw new NotImplementedException();
-            //return _platformRenderInterface.LoadBitmap(fileName);
         }
 
         public IBitmapImpl LoadBitmap(Stream stream)
         {
             throw new NotImplementedException();
-            //return _platformRenderInterface.LoadBitmap(stream);
         }
 
         IWriteableBitmapImpl IPlatformRenderInterface.LoadWriteableBitmapToHeight(Stream stream, int height,
             BitmapInterpolationMode interpolationMode)
         {
-            return LoadWriteableBitmapToHeight(stream, height, interpolationMode);
-        }
-
-        public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
-            BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
-        {
             throw new NotImplementedException();
         }
 
-        public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
+        public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
             BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
         {
             throw new NotImplementedException();
@@ -122,43 +92,20 @@ namespace Consolonia.Core.Drawing
 
         IBitmapImpl IPlatformRenderInterface.LoadBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode)
         {
-            return LoadBitmapToWidth(stream, width, interpolationMode);
+            throw new NotImplementedException();
         }
 
         IBitmapImpl IPlatformRenderInterface.LoadBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode)
         {
-            return LoadBitmapToHeight(stream, height, interpolationMode);
+            throw new NotImplementedException();
         }
 
         IBitmapImpl IPlatformRenderInterface.ResizeBitmap(IBitmapImpl bitmapImpl, PixelSize destinationSize,
             BitmapInterpolationMode interpolationMode)
         {
-            return ResizeBitmap(bitmapImpl, destinationSize, interpolationMode);
-        }
-
-        public IBitmapImpl LoadBitmapToWidth(Stream stream, int width,
-            BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
-        {
             throw new NotImplementedException();
-            //return _platformRenderInterface.LoadBitmapToWidth(stream, width, interpolationMode);
         }
-
-        public IBitmapImpl LoadBitmapToHeight(Stream stream, int height,
-            BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
-        {
-            throw new NotImplementedException();
-            //return _platformRenderInterface.LoadBitmapToHeight(stream, height, interpolationMode);
-        }
-
-        public IBitmapImpl ResizeBitmap(
-            IBitmapImpl bitmapImpl,
-            PixelSize destinationSize,
-            BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
-        {
-            throw new NotImplementedException();
-            //return _platformRenderInterface.ResizeBitmap(bitmapImpl, destinationSize, interpolationMode);
-        }
-
+        
         public IBitmapImpl LoadBitmap(
             PixelFormat format,
             AlphaFormat alphaFormat,
@@ -168,7 +115,6 @@ namespace Consolonia.Core.Drawing
             int stride)
         {
             throw new NotImplementedException();
-            //return _platformRenderInterface.LoadBitmap(format, alphaFormat, data, size, dpi, stride);
         }
 
         public IGlyphRunImpl CreateGlyphRun(IGlyphTypeface glyphTypeface, double fontRenderingEmSize, IReadOnlyList<GlyphInfo> glyphInfos,

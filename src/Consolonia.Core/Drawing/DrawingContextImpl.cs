@@ -6,7 +6,6 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Rendering.SceneGraph;
-using Avalonia.Utilities;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
@@ -19,7 +18,7 @@ namespace Consolonia.Core.Drawing
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
         private readonly PixelBuffer _pixelBuffer;
-        private Matrix _postTransform = Matrix.Identity;
+        private readonly Matrix _postTransform = Matrix.Identity;
         private Matrix _transform = Matrix.Identity;
 
         public DrawingContextImpl(ConsoleWindow consoleWindow, PixelBuffer pixelBuffer)
@@ -115,31 +114,17 @@ namespace Consolonia.Core.Drawing
 
             if (brush is not null)
             {
-                if (brush is VisualBrush visualBrush)
-                    throw new NotImplementedException();
-                /*todo: is it now handled automatically? left for reference
-                if (brush is VisualBrush visualBrush)
+                switch (brush)
                 {
-                    try
+                    case VisualBrush:
+                        throw new NotImplementedException();
+                    case ISceneBrush sceneBrush:
                     {
-                        _postTransform = Transform;
-                        _visualBrushRenderer.RenderVisualBrush(this, visualBrush);
+                        ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent()!;
+                        sceneBrushContent.Render(this, Matrix.Identity);
+
+                        return;
                     }
-                    finally
-                    {
-                        _postTransform = Matrix.Identity;
-                    }
-
-                    return;
-                }
-                */
-
-                if (brush is ISceneBrush sceneBrush)
-                {
-                    ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
-                    sceneBrushContent.Render(this, Matrix.Identity/*todo: check identity always work*/);
-
-                    return;
                 }
 
                 if (brush is not FourBitColorBrush backgroundBrush)
