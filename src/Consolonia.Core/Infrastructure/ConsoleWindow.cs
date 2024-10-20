@@ -106,11 +106,7 @@ namespace Consolonia.Core.Infrastructure
         {
             //todo:
         }
-
-        public void SetTransparencyLevelHint(WindowTransparencyLevel transparencyLevel)
-        {
-        }
-
+        
         public Size ClientSize
         {
             get
@@ -334,9 +330,12 @@ namespace Consolonia.Core.Infrastructure
             {
                 Dispatcher.UIThread.Post(() =>
                 {
-                    Input(new RawKeyEventArgs(_myKeyboardDevice, timeStamp, _inputRoot,
+#pragma warning disable CS0618 // Type or member is obsolete // todo: change to correct constructor, CFA20A9A-3A24-4187-9CA3-9DF0081124EE 
+                    var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp, _inputRoot,
                         RawKeyEventType.KeyUp, key,
-                        rawInputModifiers));
+                        rawInputModifiers);
+#pragma warning restore CS0618 // Type or member is obsolete
+                    Input!(rawInputEventArgs);
                 }, DispatcherPriority.Input);
             }
             else
@@ -344,10 +343,12 @@ namespace Consolonia.Core.Infrastructure
                 bool handled = false;
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
+#pragma warning disable CS0618 // Type or member is obsolete //todo: CFA20A9A-3A24-4187-9CA3-9DF0081124EE
                     var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp,
                         _inputRoot,
                         RawKeyEventType.KeyDown, key,
                         rawInputModifiers);
+#pragma warning restore CS0618 // Type or member is obsolete
                     Input(rawInputEventArgs);
                     handled = rawInputEventArgs.Handled;
                 }, DispatcherPriority.Input).GetTask().ConfigureAwait(true);

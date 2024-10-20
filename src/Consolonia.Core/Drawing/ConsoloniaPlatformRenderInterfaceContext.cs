@@ -1,24 +1,25 @@
 using System;
 using System.Collections.Generic;
 using Avalonia.Platform;
-using Consolonia.Core.Drawing;
 
-public class ConsoloniaPlatformRenderInterfaceContext : IPlatformRenderInterfaceContext
+namespace Consolonia.Core.Drawing
 {
-    public object TryGetFeature(Type featureType)
+    internal sealed class ConsoloniaPlatformRenderInterfaceContext : IPlatformRenderInterfaceContext
     {
-        throw new NotImplementedException();
-        /*return _graphicsApiContext.TryGetFeature(featureType);*/
-    }
+        public object TryGetFeature(Type featureType)
+        {
+            throw new NotImplementedException();
+        }
 
-    public void Dispose()
-    {
-    }
+        public void Dispose()
+        {
+        }
 
-    public IRenderTarget CreateRenderTarget(IEnumerable<object> surfaces)
-    {
-        return new RenderTarget(surfaces);
-    }
+        public IRenderTarget CreateRenderTarget(IEnumerable<object> surfaces)
+        {
+            return new RenderTarget(surfaces);
+        }
 
-    public bool IsLost => false;
+        public bool IsLost => false;
+    }
 }

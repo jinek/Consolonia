@@ -9,6 +9,7 @@ using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Consolonia.Core.Text;
+using TextShaper = Consolonia.Core.Text.TextShaper;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
@@ -18,7 +19,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
     /// If the Fill property is false, it just draw <see cref="Text"/> 
     /// If the Fill property is true, the symbol (Text[0]) is repeated and fills the control.
     /// </summary>
-    public class SymbolsControl : Control
+    public sealed class SymbolsControl : Control, IDisposable
     {
         /// <summary>
         ///     Defines the <see cref="Foreground" /> property.
@@ -38,7 +39,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             AvaloniaProperty.Register<SymbolsControl, bool>(nameof(Fill));
 
         private GlyphRun _shapedText;
-
+        
         private string _text;
 
         static SymbolsControl()
@@ -70,10 +71,10 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             {
                 _text = value;
                 
-                _shapedText = new GlyphRun(new GlyphTypefaceImpl(),
+                _shapedText = new GlyphRun(new GlyphTypeface(),
                     1,
                     (_text ?? string.Empty).AsMemory(),
-                    TextShaperImpl.Convert(_text ?? string.Empty).ToImmutableArray(),
+                    TextShaper.Convert(_text ?? string.Empty).ToImmutableArray(),
                     default(Point));
             }
         }
@@ -101,6 +102,11 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         protected override Size MeasureOverride(Size availableSize)
         {
             return !Fill ? _shapedText?.Bounds.Size ?? default : default;
+        }
+
+        public void Dispose()
+        {
+            _shapedText?.Dispose();
         }
     }
 }

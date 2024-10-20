@@ -6,7 +6,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace Consolonia.Core.Text
 {
-    public class GlyphTypefaceImpl : IGlyphTypeface//todo: rename
+    public sealed class GlyphTypeface : IGlyphTypeface
     {
         public void Dispose()
         {

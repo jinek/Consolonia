@@ -180,7 +180,7 @@ namespace Consolonia.Core.Drawing
         public IPlatformRenderInterfaceContext CreateBackendContext(IPlatformGraphicsContext graphicsApiContext)
         {
             if (graphicsApiContext != null)
-                throw new NotImplementedException();
+                throw new NotImplementedException("Investigate this cases");
             return new ConsoloniaPlatformRenderInterfaceContext();
         }
 

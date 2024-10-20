@@ -242,7 +242,6 @@ namespace Consolonia.Core.Drawing
 
         public void PushOpacity(double opacity, Rect? bounds)
         {
-            throw new NotImplementedException("how bounds work?");
             if (opacity.IsNearlyEqual(1)) return;
             ConsoloniaPlatform.RaiseNotSupported(7);
         }

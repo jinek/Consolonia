@@ -37,7 +37,7 @@ namespace Consolonia.Core.Text
             out IGlyphTypeface glyphTypeface)
         {
             //todo: check font is ours the only
-            glyphTypeface = new GlyphTypefaceImpl();
+            glyphTypeface = new GlyphTypeface();
             return true;
         }
 
