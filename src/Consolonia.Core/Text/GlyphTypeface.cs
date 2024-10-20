@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
 using Avalonia.Media;
-using Avalonia.Platform;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace Consolonia.Core.Text
 {
@@ -70,9 +68,7 @@ namespace Consolonia.Core.Text
 
         public FontMetrics Metrics { get; } = new()
         {
-            /// <summary>
-            ///     https://docs.microsoft.com/en-us/typography/opentype/spec/ttch01#funits-and-the-em-square
-            /// </summary>
+            // https://docs.microsoft.com/en-us/typography/opentype/spec/ttch01#funits-and-the-em-square
             DesignEmHeight = 1,
             Ascent = -1, //var height = (GlyphTypeface.Descent - GlyphTypeface.Ascent + GlyphTypeface.LineGap) * Scale; //todo: need to consult Avalonia guys
             Descent = 0,

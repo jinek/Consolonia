@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Consolonia.Core.Styles;
 
 namespace Consolonia.Themes.TurboVision.Themes.TurboVisionDark
 {
+    // ReSharper disable once UnusedType.Global
     public class TurboVisionDarkTheme : ResourceIncludeBase
     {
         public TurboVisionDarkTheme(Uri baseUri) : base(baseUri)

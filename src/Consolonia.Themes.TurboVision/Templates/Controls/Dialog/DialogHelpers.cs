@@ -43,7 +43,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         {
             IInputElement focusedElement = _window.FocusManager!/*todo: low: Why can be null?*/.GetFocusedElement();
             var overlayLayer = OverlayLayer.GetOverlayLayer(_window);
-            var popupHost = new OverlayPopupHost(overlayLayer);
+            var popupHost = new OverlayPopupHost(overlayLayer!);
 
             popupHost.ConfigurePosition(_window, PlacementMode.AnchorAndGravity,
                 new Point(), PopupAnchor.TopLeft, PopupGravity.BottomRight);
@@ -74,14 +74,14 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         {
             ContentPresenter firstContentPresenter = _window.GetTemplateChildren()
                 .Select(control => control.FindDescendantOfType<ContentPresenter>())
-                .First(d => d.Name == "PART_ContentPresenter");
+                .First(d => d!.Name == "PART_ContentPresenter");
             return firstContentPresenter;
         }
 
         public void PopInternal(DialogWindow dialogWindow)
         {
             OverlayPopupHost overlayPopupHost = _dialogs.Pop();
-            var dialogWrap = (DialogWrap)overlayPopupHost.Content;
+            var dialogWrap = (DialogWrap)overlayPopupHost.Content!;
             if (!Equals(dialogWrap.FoundContentPresenter.Content, dialogWindow))
                 throw new InvalidOperationException("Dialog is not topmost. Close private dialogs first");
             overlayPopupHost.Hide();

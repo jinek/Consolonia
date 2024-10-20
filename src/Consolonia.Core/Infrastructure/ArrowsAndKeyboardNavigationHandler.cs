@@ -37,7 +37,7 @@ namespace Consolonia.Core.Infrastructure
                 NavigationDirection.Up)
             {
                 var elementCast = (InputElement)element;
-                Visual visualRoot = (Visual)elementCast.GetVisualRoot();
+                var visualRoot = (Visual)elementCast.GetVisualRoot()!;
                 (Point p1, Point p2) = GetOriginalPoint(elementCast.GetTransformedBounds().NotNull().Clip);
                 Point originalPoint = p1 / 2 + p2 / 2;
 
@@ -68,7 +68,7 @@ namespace Consolonia.Core.Infrastructure
                         Point vector = arg.vector;
                         return IsInCone(vector);
                     })
-                    // selecting closest one
+                    // selecting the closest one
                     .MinBy(arg =>
                     {
                         Point coordinates = arg.vector;

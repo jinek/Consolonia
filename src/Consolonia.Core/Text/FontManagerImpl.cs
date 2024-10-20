@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using Avalonia.Media;
@@ -45,22 +44,5 @@ namespace Consolonia.Core.Text
         {
             throw new NotImplementedException();
         }
-
-        public IEnumerable<string> GetInstalledFontFamilyNames(bool checkForUpdates = false)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool TryMatchCharacter(
-            int codepoint,
-            FontStyle fontStyle,
-            FontWeight fontWeight,
-            FontFamily fontFamily,
-            CultureInfo culture,
-            out Typeface typeface)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

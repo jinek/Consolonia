@@ -1,8 +1,6 @@
-﻿using System;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Reactive;
 using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers

@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Consolonia.Core.Infrastructure
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class InvalidDrawingContextException : ApplicationException
     {
         public InvalidDrawingContextException()

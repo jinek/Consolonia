@@ -5,7 +5,6 @@ using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.Reactive;
 using Avalonia.Threading;
-using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
@@ -20,7 +19,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             where TElementType : Control where TParentControl : Control
         {
             var dropDownControl = (TElementType)args.Sender;
-            var parentControl = dropDownControl.FindLogicalAncestorOfType<TParentControl>();
+            var parentControl = dropDownControl.FindLogicalAncestorOfType<TParentControl>()!;
 
             if (args.NewValue.Value)
             {

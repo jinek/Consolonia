@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Logging;
 
 namespace Consolonia.Core.Infrastructure
@@ -19,6 +18,7 @@ namespace Consolonia.Core.Infrastructure
             Log(level, area, source, messageTemplate, Array.Empty<object>());
         }
 
+        // ReSharper disable UnusedMember.Global
         public void Log<T0>(LogEventLevel level, string area, object source, string messageTemplate, T0 propertyValue0)
         {
             Log(level, area, source, messageTemplate, new object[] { propertyValue0 });
@@ -66,4 +66,5 @@ namespace Consolonia.Core.Infrastructure
             return builder;
         }
     }
+    // ReSharper restore UnusedMember.Global
 }

@@ -6,7 +6,9 @@ namespace Consolonia.Core.Infrastructure
 {
     public class ConsoloniaException : ApplicationException
     {
+        // ReSharper disable UnusedMember.Global
         public ConsoloniaException()
+
         {
         }
 
@@ -22,5 +24,6 @@ namespace Consolonia.Core.Infrastructure
             innerException)
         {
         }
+        // ReSharper restore UnusedMember.Global
     }
 }

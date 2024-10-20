@@ -1,17 +1,12 @@
-using System;
 using System.Runtime.CompilerServices;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.InternalHelpers
 {
     internal static class CommonInternalHelper
     {
         public static bool IsNearlyEqual(this double value, double compareTo)
-        {
-            return value.CompareTo(compareTo) == 0;
-        }
-
-        public static bool IsNearlyEqual(this float value, float compareTo)
-        {
+        {//todo: strange implementation for this name
             return value.CompareTo(compareTo) == 0;
         }
 
@@ -23,7 +18,7 @@ namespace Consolonia.Core.InternalHelpers
         public static T NotNull<T>(this T? t) where T : struct
         {
             if (t == null)
-                throw new InvalidOperationException("Value is not expected to be null");
+                throw new ConsoloniaException("Value is not expected to be null");
             return t.Value;
         }
     }

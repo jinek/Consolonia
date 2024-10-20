@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Example.Views
 {
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class TheItem
     {
         public static readonly string[] Titles =

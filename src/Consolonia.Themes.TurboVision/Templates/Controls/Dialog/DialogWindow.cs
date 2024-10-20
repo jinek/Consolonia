@@ -109,7 +109,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 
         private static DialogHost GetDialogHost(Control parent)
         {
-            var window = parent.FindAncestorOfType<Window>(true);
+            var window = parent.FindAncestorOfType<Window>(true)!;
             DialogHost dialogHost = window.GetValue(DialogHost.DialogHostProperty);
             return dialogHost;
         }

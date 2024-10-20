@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
@@ -7,7 +6,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Media;
-using Avalonia.Media.TextFormatting;
 using Consolonia.Core.Text;
 using TextShaper = Consolonia.Core.Text.TextShaper;
 
@@ -16,7 +14,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
     /// <summary>
     /// Represents a control that displays symbols.
     /// This control has two modes of operation depending on the Fill property. 
-    /// If the Fill property is false, it just draw <see cref="Text"/> 
+    /// If the Fill property is false, it just draws <see cref="Text"/> 
     /// If the Fill property is true, the symbol (Text[0]) is repeated and fills the control.
     /// </summary>
     public sealed class SymbolsControl : Control, IDisposable

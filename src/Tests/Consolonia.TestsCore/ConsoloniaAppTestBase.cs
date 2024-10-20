@@ -19,8 +19,11 @@ namespace Consolonia.TestsCore
 #pragma warning restore CA1001
     {
         private readonly PixelBufferSize _size;
+        // ReSharper disable StaticMemberInGenericType
         private static TaskCompletionSource _disposeTaskCompletionSource; // todo: tests now rely on static
         private static ClassicDesktopStyleApplicationLifetime _lifetime;
+        protected static UnitTestConsole UITest { get; private set; }
+        // ReSharper restore StaticMemberInGenericType
         private IDisposable _scope;
 
         protected ConsoloniaAppTestBase(PixelBufferSize size)
@@ -28,7 +31,7 @@ namespace Consolonia.TestsCore
             _size = size;
         }
 
-        protected static UnitTestConsole UITest { get; private set; }
+        
 
 #pragma warning disable CA1819 // todo: provide a solution
         protected string[] Args { get; init; }

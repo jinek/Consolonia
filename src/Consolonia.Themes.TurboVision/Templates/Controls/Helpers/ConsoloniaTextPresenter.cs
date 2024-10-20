@@ -14,6 +14,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
     public class ConsoloniaTextPresenter : TextPresenter
     {
+        // ReSharper disable once MemberCanBePrivate.Global
         public static readonly StyledProperty<Point> CaretPositionProperty =
             AvaloniaProperty.Register<ConsoloniaTextPresenter, Point>(nameof(CaretPosition));
 
@@ -36,7 +37,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     if (args.Sender is not ConsoloniaTextPresenter textPresenter)
                         return;
 
-                    // once avalonia moved the caret we then moving it additionally to scroll outside of the boundaries
+                    // once avalonia moved the caret we then moving it additionally to scroll outside the boundaries
 
                     int caretIndex = args.NewValue.Value;
 
@@ -54,6 +55,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             CaretBrushProperty.Changed
                 .Subscribe(
                     new AnonymousObserver<AvaloniaPropertyChangedEventArgs<IBrush>>(
+                        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local //todo: what does this mean?
                         args =>
                         {
                             if (args.NewValue.Value is not FourBitColorBrush
@@ -67,10 +69,10 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         public ConsoloniaTextPresenter()
         {
             // we need to disable blinking caret, our terminal caret blinks itself once shown
-            var caretTickTimer = (DispatcherTimer)TickTimerField.GetValue(this);
+            var caretTickTimer = (DispatcherTimer)TickTimerField.GetValue(this)!;
             caretTickTimer.Interval =
                 TimeSpan.FromMilliseconds(int
-                    .MaxValue); //see DispatcherTimer.Interval, since we can not disable it, setting it to longest interval possible
+                    .MaxValue); //see DispatcherTimer.Interval, since we can not disable it, setting it to the longest interval possible
             caretTickTimer.Tick += (_, _) => throw new NotImplementedException("How to disable timer completely?");
 
             CaretBrush =

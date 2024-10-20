@@ -6,7 +6,6 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
-using Avalonia.Rendering;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
@@ -39,16 +38,6 @@ namespace Consolonia.Core.Drawing
         public void Dispose()
         {
             _consoleWindow.Resized -= OnResized;
-        }
-
-        public void Save(string fileName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save(Stream stream)
-        {
-            throw new NotImplementedException();
         }
 
         public void Save(string fileName, int? quality = null)
@@ -153,7 +142,7 @@ namespace Consolonia.Core.Drawing
                 }
 
                 if (char.IsControl(character) /*|| character is '保' or '哥'*/)
-                    character = ' '; // some terminals does not print \0
+                    character = ' '; // some terminals do not print \0
 
                 ConsoleColor backgroundColor = pixel.Background.Color;
                 ConsoleColor foregroundColor = pixel.Foreground.Color;
@@ -181,8 +170,6 @@ namespace Consolonia.Core.Drawing
             {
                 _console.CaretVisible = false;
             }
-
-            _consoleWindow.InvalidatedRects.Clear();
         }
 
         private struct FlushingBuffer
@@ -240,6 +227,6 @@ namespace Consolonia.Core.Drawing
             return new DrawingContextImpl(_consoleWindow, _bufferBuffer);
         }
 
-        public bool IsCorrupted { get; }
+        public bool IsCorrupted => false;
     }
 }

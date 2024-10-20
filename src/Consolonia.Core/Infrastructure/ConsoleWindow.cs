@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -19,7 +18,6 @@ namespace Consolonia.Core.Infrastructure
     {
         private readonly IKeyboardDevice _myKeyboardDevice;
         [NotNull] internal readonly IConsole Console;
-        internal readonly List<Rect> InvalidatedRects = new(50);
         private IInputRoot _inputRoot;
 
         public ConsoleWindow()
@@ -43,34 +41,6 @@ namespace Consolonia.Core.Infrastructure
             Console.Dispose();
         }
         
-        public void Invalidate(Rect rect)
-        {//todo: seems is not used anymore
-            InvalidatedRects.Add(rect);
-
-            Paint?.Invoke(rect);
-
-            /*
-             This is the code for drawing invalid rectangles
-             var _console = AvaloniaLocator.Current.GetService<IConsole>();
-            using (_console.StoreCaret())
-            {
-                for (int y = (int)rect.Y; y < rect.Bottom; y++)
-                {
-                    if (y < Console.WindowHeight - 2)
-                    {
-                        Console.SetCursorPosition((int)rect.X, y);
-                        Console.BackgroundColor = ConsoleColor.Magenta;
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-
-                        Console.WriteLine(string.Concat(Enumerable.Range(0, (int)rect.Width).Select(i => ' ')));
-                    }
-                }
-            }*/
-            //Paint(new Rect(0, 0, ClientSize.Width, ClientSize.Height));
-
-            //Paint(new Rect(rect.Left, rect.Top, rect.Width, rect.Height));
-        }
-
         public void SetInputRoot(IInputRoot inputRoot)
         {
             _inputRoot = inputRoot;
@@ -134,7 +104,7 @@ namespace Consolonia.Core.Infrastructure
         public Compositor Compositor { get; } = new(null);
         public Action Closed { get; set; }
         public Action LostFocus { get; set; }
-        public IMouseDevice MouseDevice { get; }
+        private IMouseDevice MouseDevice { get; }
 
         public WindowTransparencyLevel TransparencyLevel => WindowTransparencyLevel.None;
 
@@ -319,7 +289,6 @@ namespace Consolonia.Core.Infrastructure
                 PixelBufferSize pixelBufferSize = Console.Size;
                 var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
                 Resized(size, WindowResizeReason.Unspecified);
-                Invalidate(new Rect(size));
             });
         }
 

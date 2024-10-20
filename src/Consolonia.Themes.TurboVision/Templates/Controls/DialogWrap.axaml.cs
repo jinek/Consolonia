@@ -22,7 +22,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
             
             AttachedToVisualTree += (_, _) =>
             {
-                var parentWindow = this.FindAncestorOfType<Window>();
+                var parentWindow = this.FindAncestorOfType<Window>()!;
                 _disposable = parentWindow.GetPropertyChangedObservable(TopLevel.ClientSizeProperty).Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(
                     args =>
                     {
@@ -62,7 +62,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
         private void CloseDialog()
 #pragma warning restore IDE0051
         {
-            ((DialogWindow)FoundContentPresenter.Content).CloseDialog();
+            ((DialogWindow)FoundContentPresenter.Content!).CloseDialog();
         }
     }
 }

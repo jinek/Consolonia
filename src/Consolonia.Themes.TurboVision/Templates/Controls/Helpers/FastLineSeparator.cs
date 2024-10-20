@@ -8,7 +8,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
     public class FastLineSeparator : Control
     {
         public static readonly StyledProperty<Orientation> OrientationProperty =
-            AvaloniaProperty.Register<FastLineSeparator, Orientation>(nameof(Orientation), Orientation.Horizontal);
+            AvaloniaProperty.Register<FastLineSeparator, Orientation>(nameof(Orientation));
 
         public Orientation Orientation
         {
@@ -51,17 +51,16 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             {
                 // Draw a horizontal line across the control's width
                 var startPoint = new Point(0, Bounds.Height / 2);
-                var endPoint = new Point(Bounds.Width-1, Bounds.Height / 2);
+                var endPoint = new Point(Bounds.Width - 1, Bounds.Height / 2);
                 context.DrawLine(pen, startPoint, endPoint);
             }
             else
             {
                 // Draw a vertical line across the control's height
                 var startPoint = new Point(Bounds.Width / 2, 0);
-                var endPoint = new Point(Bounds.Width / 2, Bounds.Height-1);
+                var endPoint = new Point(Bounds.Width / 2, Bounds.Height - 1);
                 context.DrawLine(pen, startPoint, endPoint);
             }
         }
-
     }
 }

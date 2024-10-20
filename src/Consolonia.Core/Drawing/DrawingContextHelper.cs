@@ -15,15 +15,6 @@ namespace Consolonia.Core.Drawing
             return true;
         }
 
-        /// <summary>
-        /// use <see cref="Rect.ContainsExclusive"/>
-        /// </summary>
-        [Obsolete("Use Rect.ContainsExclusive instead", true)]
-        public static bool ContainsAligned(this Rect rect, Point p)
-        {
-            throw new NotImplementedException("Remove this method");
-        }
-
         public static bool IsEmpty(this Rect rect)
         {
             //todo: check if this implementation serves our needs. Avalonia uses == 0
@@ -40,7 +31,7 @@ namespace Consolonia.Core.Drawing
 
         public static bool NoRotation(this Matrix transform)
         {
-            return transform.M12 == 0 && transform.M21 == 0;
+            return transform is { M12: 0, M21: 0 };
         }
     }
 }

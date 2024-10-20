@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Rendering.SceneGraph;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
@@ -257,21 +255,6 @@ namespace Consolonia.Core.Drawing
         }
 
         public RenderOptions RenderOptions { get; set; }
-
-        public void PushBitmapBlendMode(BitmapBlendingMode blendingMode)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void PopBitmapBlendMode()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Custom(ICustomDrawOperation custom)
-        {
-            throw new NotImplementedException();
-        }
 
         public Matrix Transform
         {

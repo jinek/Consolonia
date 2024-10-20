@@ -1,6 +1,5 @@
 ﻿using System;
 using Avalonia;
-using Avalonia.Controls;
 using Consolonia.Core;
 using Consolonia.Core.Infrastructure;
 
