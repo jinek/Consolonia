@@ -11,6 +11,7 @@
         <TreatWarningsAsErrors Condition=" '$(Configuration)' == 'RELEASE' ">true</TreatWarningsAsErrors>
     </PropertyGroup>
     <PropertyGroup>
-        <AvaloniaAccessUnstablePrivateApis>true</AvaloniaAccessUnstablePrivateApis>
+        <AvaloniaAccessUnstablePrivateApis>true</AvaloniaAccessUnstablePrivateApis>        
+        <Avalonia_I_Want_To_Use_Private_Apis_In_Nuget_Package_And_Promise_To_Pin_The_Exact_Avalonia_Version_In_Package_Dependency>true</Avalonia_I_Want_To_Use_Private_Apis_In_Nuget_Package_And_Promise_To_Pin_The_Exact_Avalonia_Version_In_Package_Dependency>
     </PropertyGroup>
 </Project>
