@@ -50,7 +50,7 @@ namespace Consolonia.Core.Drawing
             return this;
         }
 
-        public double Opacity => 0;
+        public double Opacity => 1;
         public ITransform Transform => null;
         public RelativePoint TransformOrigin => RelativePoint.TopLeft;
     }

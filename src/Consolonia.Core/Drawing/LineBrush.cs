@@ -6,7 +6,8 @@ using Consolonia.Core.InternalHelpers;
 namespace Consolonia.Core.Drawing
 {
     public class LineBrush : Animatable, IImmutableBrush
-    {//todo: we don't really implement immutable brush
+    {
+        //todo: we don't really implement immutable brush
         public static readonly StyledProperty<IBrush> BrushProperty =
             AvaloniaProperty.Register<LineBrush, IBrush>(CommonInternalHelper.GetStyledPropertyName());
 
@@ -30,8 +31,8 @@ namespace Consolonia.Core.Drawing
         }
 
         //todo: how did it work without following 3 items? How should it work now, check avalonia. Search for B75ABC91-2CDD-4557-9201-16AC483C8D7B
-        public double Opacity { get; }
-        public ITransform Transform { get; }
-        public RelativePoint TransformOrigin { get; }
+        public double Opacity => 1;
+        public ITransform Transform => null;
+        public RelativePoint TransformOrigin => RelativePoint.TopLeft;
     }
 }

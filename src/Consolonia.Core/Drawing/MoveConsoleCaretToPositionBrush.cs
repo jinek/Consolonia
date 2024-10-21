@@ -7,7 +7,7 @@ namespace Consolonia.Core.Drawing
     {
         //todo: Search for B75ABC91-2CDD-4557-9201-16AC483C8D7B
         public double Opacity => 1;
-        public ITransform Transform { get; }
-        public RelativePoint TransformOrigin { get; }
+        public ITransform Transform => null;
+        public RelativePoint TransformOrigin => RelativePoint.TopLeft;
     }
 }

@@ -37,7 +37,7 @@ namespace Consolonia.GalleryTests.Base
             {
                 var controlsListView = (ControlsListView)((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!
                     .MainWindow!;
-                controlsListView.ChangeTo(Args);
+                controlsListView!.ChangeTo(Args);
             });
 
             await UITest.WaitRendered();

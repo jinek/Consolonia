@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Consolonia.Core.Styles;
 
 namespace Consolonia.Themes.TurboVision.Themes.TurboVisionDark

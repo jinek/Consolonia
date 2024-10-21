@@ -99,7 +99,7 @@ namespace Consolonia.TestsCore
             await Dispatcher.UIThread.InvokeAsync(async () =>
             {
                 Window mainWindow = _lifetime.MainWindow!;
-                mainWindow.InvalidateVisual();
+                mainWindow!.InvalidateVisual();
                 await mainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Rendered
                     .ConfigureAwait(true);
                 await mainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Processed

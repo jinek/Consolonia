@@ -82,7 +82,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         {
             OverlayPopupHost overlayPopupHost = _dialogs.Pop();
             var dialogWrap = (DialogWrap)overlayPopupHost.Content!;
-            if (!Equals(dialogWrap.FoundContentPresenter.Content, dialogWindow))
+            if (!Equals(dialogWrap!.FoundContentPresenter.Content, dialogWindow!))
                 throw new InvalidOperationException("Dialog is not topmost. Close private dialogs first");
             overlayPopupHost.Hide();
 

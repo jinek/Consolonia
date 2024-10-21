@@ -25,7 +25,7 @@ namespace Consolonia.Core.Infrastructure
             _keyboardNavigationHandler.SetOwner(owner);
 
             _owner = owner;
-            _owner.AddHandler(InputElement.KeyDownEvent, OnKeyDown);
+            _owner.AddHandler(InputElement.KeyDownEvent, (Delegate)OnKeyDown);
         }
 
         public void Move(IInputElement element, NavigationDirection direction,
@@ -75,7 +75,7 @@ namespace Consolonia.Core.Infrastructure
                         return coordinates.X * coordinates.X + coordinates.Y * coordinates.Y;
                     });
 
-                focusableElements?.inputElement.Focus();
+                focusableElements?.inputElement?.Focus();
             }
             else
             {

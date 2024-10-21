@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -10,6 +11,7 @@ using Consolonia.Themes.TurboVision.Templates.Controls.Dialog;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls
 {
+    [SuppressMessage("Resharper", "PartialTypeWithSinglePart")]
     internal partial class DialogWrap : UserControl
     {
         public readonly ContentPresenter FoundContentPresenter;
@@ -62,7 +64,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
         private void CloseDialog()
 #pragma warning restore IDE0051
         {
-            ((DialogWindow)FoundContentPresenter.Content!).CloseDialog();
+            ((DialogWindow)FoundContentPresenter!.Content!)!.CloseDialog();
         }
     }
 }

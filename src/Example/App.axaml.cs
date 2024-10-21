@@ -5,6 +5,7 @@ using Example.Views;
 
 namespace Example
 {
+    // ReSharper disable once PartialTypeWithSinglePart
     public partial class App : ConsoloniaApplication
     {
         public override void Initialize()
