@@ -83,7 +83,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             return arrangeOverride;
         }
 
-        private void ShowDialogInternal(Control parent)
+        private void ShowDialogInternal(Visual parent)
         {
             DialogHost dialogHost = GetDialogHost(parent);
             dialogHost.OpenInternal(this);

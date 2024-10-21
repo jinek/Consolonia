@@ -34,6 +34,7 @@ namespace Consolonia.Core.Styles
         {
             get
             {
+                // ReSharper disable once InvertIf
                 if (_loaded == null)
                 {
                     _isLoading = true;

@@ -131,7 +131,7 @@ namespace Consolonia.Core.Infrastructure
             throw new NotImplementedException();
         }
 
-        public double DesktopScaling { get; } = 1d;
+        public double DesktopScaling => 1d;
 
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: get from _console if supported
         public PixelPoint Position { get; }
@@ -246,6 +246,7 @@ namespace Consolonia.Core.Infrastructure
             ulong timestamp = (ulong)Stopwatch.GetTimestamp();
             Dispatcher.UIThread.Post(() =>
             {
+                // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
                 switch (type)
                 {
                     case RawPointerEventType.Move:

@@ -28,6 +28,7 @@ namespace Consolonia.Core.Text
             if (!str.IsNormalized(NormalizationForm.FormKC))
                 str = str.Normalize(NormalizationForm.FormKC);
 
+            // ReSharper disable once InvertIf
             if (str.Any(
                     c => ConsoleText.IsWideChar(c) &&
                          char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))

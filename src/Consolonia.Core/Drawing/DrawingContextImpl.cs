@@ -370,10 +370,8 @@ namespace Consolonia.Core.Drawing
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
                 ConsoleColor foregroundColor = consoleColorBrush.Color;
-                
-                char character = c;
 
-                switch (character)
+                switch (c)
                 {
                     case '\t':
                     {
@@ -406,7 +404,7 @@ namespace Consolonia.Core.Drawing
                         break;
                     default:
                     {
-                        var consolePixel = new Pixel(character, foregroundColor);
+                        var consolePixel = new Pixel(c, foregroundColor);
                         CurrentClip.ExecuteWithClipping(characterPoint, () =>
                             {
                                 _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,

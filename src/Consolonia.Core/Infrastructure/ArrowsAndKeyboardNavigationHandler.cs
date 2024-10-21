@@ -71,8 +71,8 @@ namespace Consolonia.Core.Infrastructure
                     // selecting the closest one
                     .MinBy(arg =>
                     {
-                        Point coordinates = arg.vector;
-                        return coordinates.X * coordinates.X + coordinates.Y * coordinates.Y;
+                        (double x, double y) = arg.vector;
+                        return x * x + y * y;
                     });
 
                 focusableElements?.inputElement?.Focus();

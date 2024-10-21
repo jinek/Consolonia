@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -7,7 +8,7 @@ namespace Consolonia.Core.Infrastructure
 {
     public sealed class NotSupportedRequest
     {
-        public NotSupportedRequest(int errorCode, object[] information)
+        public NotSupportedRequest(int errorCode, IList<object> information)
         {
             ErrorCode = errorCode;
             Information = new ReadOnlyCollection<object>(information);
