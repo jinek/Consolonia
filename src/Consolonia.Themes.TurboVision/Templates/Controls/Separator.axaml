@@ -7,7 +7,7 @@
             <ControlTemplate>
                 <Border BorderBrush="{TemplateBinding Foreground}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        Height="2" 
+                        Height="2"
                         Margin="-1,0"
                         Background="{TemplateBinding Background}"
                         HorizontalAlignment="Stretch" />

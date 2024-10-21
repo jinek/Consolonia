@@ -3,7 +3,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public partial class GalleryRadioButton : UserControl
+    public class GalleryRadioButton : UserControl
     {
         public GalleryRadioButton()
         {

@@ -35,13 +35,15 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                             if (!(bool)eventArgs.NewValue!)
                                 Dispatcher.UIThread.Post(() =>
                                 {
-                                    var focusedControl = (Control)AvaloniaLocator.Current.GetRequiredService<IFocusManager>()!.GetFocusedElement();
+                                    var focusedControl =
+                                        (Control)AvaloniaLocator.Current.GetRequiredService<IFocusManager>()!
+                                            .GetFocusedElement();
                                     var menuItems = visual.GetLogicalAncestors().OfType<MenuItem>();
 
                                     var focusedTree = focusedControl!.GetLogicalAncestors();
 
                                     foreach (MenuItem menuItem in menuItems.Where(item => !focusedTree.Contains(item))
-                                                 .ToArray())
+                                        .ToArray())
                                         menuItem.Close();
                                 });
                         }));

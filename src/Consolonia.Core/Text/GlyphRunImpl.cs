@@ -20,9 +20,10 @@ namespace Consolonia.Core.Text
                 new Size(glyphInfos.Sum(info => info.GlyphAdvance), FontRenderingEmSize));
         }
 
+        public ushort[] GlyphIndices { get; }
+
         public void Dispose()
         {
-            
         }
 
         public IReadOnlyList<float> GetIntersections(float lowerLimit, float upperLimit)
@@ -35,6 +36,5 @@ namespace Consolonia.Core.Text
         public double FontRenderingEmSize { get; }
         public Point BaselineOrigin { get; }
         public Rect Bounds { get; }
-        public ushort[] GlyphIndices { get; }
     }
 }

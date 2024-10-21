@@ -9,7 +9,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Example.Views
 {
-    public partial class DataGridTestWindow : Window
+    public class DataGridTestWindow : Window
     {
         private readonly ObservableCollection<TheItem> _items;
 

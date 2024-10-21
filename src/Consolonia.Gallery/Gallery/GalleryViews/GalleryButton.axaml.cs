@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     [GalleryOrder(30)]
-    public partial class GalleryButton : UserControl
+    public class GalleryButton : UserControl
     {
         public GalleryButton()
         {

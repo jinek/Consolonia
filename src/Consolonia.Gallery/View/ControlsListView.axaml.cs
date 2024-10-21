@@ -9,11 +9,11 @@ using Consolonia.Gallery.Gallery;
 
 namespace Consolonia.Gallery.View
 {
-    public partial class ControlsListView : Window
+    public class ControlsListView : Window
     {
         private readonly DataGrid _grid;
-        private string[] _commandLineArgs;
         private readonly IEnumerable<GalleryItem> _items;
+        private string[] _commandLineArgs;
 
         public ControlsListView()
         {
@@ -22,10 +22,11 @@ namespace Consolonia.Gallery.View
             this.AttachDevTools();
 #endif
             _grid = this.FindControl<DataGrid>("Grid");
-            
+
             _grid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
 
-            _commandLineArgs = ((ClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!.Args!;
+            _commandLineArgs =
+                ((ClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!.Args!;
             TrySetupSelected();
         }
 

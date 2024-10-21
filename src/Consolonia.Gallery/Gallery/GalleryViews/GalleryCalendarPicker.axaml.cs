@@ -8,7 +8,7 @@ using Avalonia.Markup.Xaml;
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     [GalleryOrder(35)]
-    public partial class GalleryCalendarPicker : UserControl
+    public class GalleryCalendarPicker : UserControl
     {
         public GalleryCalendarPicker()
         {
@@ -53,7 +53,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

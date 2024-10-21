@@ -12,7 +12,7 @@
                         VerticalAlignment="{TemplateBinding VerticalAlignment}">
                     <DockPanel>
                         <ItemsPresenter Name="PART_ItemsPresenter"
-                                            ItemsPanel="{TemplateBinding ItemsPanel}"/>
+                                        ItemsPanel="{TemplateBinding ItemsPanel}" />
                         <ContentPresenter BorderBrush="{TemplateBinding BorderBrush}"
                                           BorderThickness="{TemplateBinding BorderThickness}"
                                           Name="PART_SelectedContentHost"

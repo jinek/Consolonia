@@ -67,6 +67,13 @@ namespace Consolonia.Core.Drawing
 
         bool IDrawingContextLayerImpl.CanBlit => true;
 
+        public IDrawingContextImpl CreateDrawingContext()
+        {
+            return new DrawingContextImpl(_consoleWindow, _bufferBuffer);
+        }
+
+        public bool IsCorrupted => false;
+
 
         private void OnResized(Size size, WindowResizeReason reason)
         {
@@ -110,7 +117,7 @@ namespace Consolonia.Core.Drawing
                         throw new InvalidOperationException("Caret is already shown");
                     caretPosition = new PixelBufferCoordinate(x, y);
                 }
-                
+
                 /* todo: There is not IWindowImpl.Invalidate anymore.
                  if (!_consoleWindow.InvalidatedRects.Any(rect =>
                     rect.ContainsExclusive(new Point(x, y)))) continue;*/
@@ -221,12 +228,5 @@ namespace Consolonia.Core.Drawing
                 _stringBuilder.Clear();
             }
         }
-
-        public IDrawingContextImpl CreateDrawingContext()
-        {
-            return new DrawingContextImpl(_consoleWindow, _bufferBuffer);
-        }
-
-        public bool IsCorrupted => false;
     }
 }

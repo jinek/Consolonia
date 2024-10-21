@@ -11,7 +11,8 @@ using Consolonia.Themes.TurboVision.Templates.Controls.Dialog;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls
 {
-    [SuppressMessage("Usage", "PartialTypeWithSinglePart", Justification = "Partial class required for XAML code generation.")]
+    [SuppressMessage("Usage", "PartialTypeWithSinglePart",
+        Justification = "Partial class required for XAML code generation.")]
     // ReSharper disable once PartialTypeWithSinglePart
     internal partial class DialogWrap : UserControl
     {
@@ -22,17 +23,18 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
         {
             InitializeComponent();
             FoundContentPresenter = this.FindNameScope()?.Find<ContentPresenter>("ContentPresenter");
-            
+
             AttachedToVisualTree += (_, _) =>
             {
                 var parentWindow = this.FindAncestorOfType<Window>();
-                _disposable = parentWindow!.GetPropertyChangedObservable(TopLevel.ClientSizeProperty).Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(
-                    args =>
-                    {
-                        var newSize = (Size)args.NewValue!;
+                _disposable = parentWindow!.GetPropertyChangedObservable(TopLevel.ClientSizeProperty).Subscribe(
+                    new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(
+                        args =>
+                        {
+                            var newSize = (Size)args.NewValue!;
 
-                        SetNewSize(newSize);
-                    }));
+                            SetNewSize(newSize);
+                        }));
                 SetNewSize(parentWindow!.ClientSize);
             };
             DetachedFromLogicalTree += (_, _) => { _disposable.Dispose(); };

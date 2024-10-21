@@ -3,8 +3,8 @@
         xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
     <Style Selector="TextBox">
         <Style.Resources>
-            <helpers:BooleanAndConverter x:Key="BooleanAndConverter"/>
-            <helpers:AreIntegersEqualConverter x:Key="AreIntegersEqualConverter"/>
+            <helpers:BooleanAndConverter x:Key="BooleanAndConverter" />
+            <helpers:AreIntegersEqualConverter x:Key="AreIntegersEqualConverter" />
         </Style.Resources>
         <Setter Property="Background"
                 Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
@@ -70,7 +70,7 @@
                                                                              TextAlignment="{TemplateBinding TextAlignment}"
                                                                              TextWrapping="{TemplateBinding TextWrapping}"
                                                                              TextBlock.Foreground="{TemplateBinding Foreground}" />
-                                            </Panel>
+                                        </Panel>
                                         <TextBlock Name="watermark"
                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -80,23 +80,31 @@
                                                    TextWrapping="{TemplateBinding TextWrapping}">
                                             <TextBlock.IsVisible>
                                                 <MultiBinding Converter="{x:Static BoolConverters.And}">
-                                                    <Binding ElementName="PART_TextPresenter" Path="PreeditText" Converter="{x:Static StringConverters.IsNullOrEmpty}"/>
-                                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Text" Converter="{x:Static StringConverters.IsNullOrEmpty}"/>
+                                                    <Binding ElementName="PART_TextPresenter"
+                                                             Path="PreeditText"
+                                                             Converter="{x:Static StringConverters.IsNullOrEmpty}" />
+                                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                                             Path="Text"
+                                                             Converter="{x:Static StringConverters.IsNullOrEmpty}" />
                                                 </MultiBinding>
                                             </TextBlock.IsVisible>
                                         </TextBlock>
                                         <helpers:TextBoxCaret>
                                             <helpers:TextBoxCaret.Active>
                                                 <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                                    <TemplateBinding Property="IsFocused"/>
-                                                    <MultiBinding Converter="{StaticResource AreIntegersEqualConverter}">
-                                                        <Binding ElementName="PART_TextPresenter" Path="SelectionStart"/>
-                                                        <Binding ElementName="PART_TextPresenter" Path="SelectionEnd"/>
+                                                    <TemplateBinding Property="IsFocused" />
+                                                    <MultiBinding
+                                                        Converter="{StaticResource AreIntegersEqualConverter}">
+                                                        <Binding ElementName="PART_TextPresenter"
+                                                                 Path="SelectionStart" />
+                                                        <Binding ElementName="PART_TextPresenter"
+                                                                 Path="SelectionEnd" />
                                                     </MultiBinding>
                                                 </MultiBinding>
                                             </helpers:TextBoxCaret.Active>
                                             <helpers:TextBoxCaret.Position>
-                                                <Binding ElementName="PART_TextPresenter" Path="CaretPosition" />
+                                                <Binding ElementName="PART_TextPresenter"
+                                                         Path="CaretPosition" />
                                             </helpers:TextBoxCaret.Position>
                                         </helpers:TextBoxCaret>
                                     </Panel>

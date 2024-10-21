@@ -59,9 +59,9 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                         args =>
                         {
                             if (args.NewValue.Value is not FourBitColorBrush
-                                {
-                                    Color: ConsoleColor.Black, Mode: PixelBackgroundMode.Transparent
-                                })
+                            {
+                                Color: ConsoleColor.Black, Mode: PixelBackgroundMode.Transparent
+                            })
                                 throw new NotSupportedException();
                         }));
         }

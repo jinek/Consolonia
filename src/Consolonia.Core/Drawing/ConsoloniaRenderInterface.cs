@@ -90,12 +90,14 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
-        IBitmapImpl IPlatformRenderInterface.LoadBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode)
+        IBitmapImpl IPlatformRenderInterface.LoadBitmapToWidth(Stream stream, int width,
+            BitmapInterpolationMode interpolationMode)
         {
             throw new NotImplementedException();
         }
 
-        IBitmapImpl IPlatformRenderInterface.LoadBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode)
+        IBitmapImpl IPlatformRenderInterface.LoadBitmapToHeight(Stream stream, int height,
+            BitmapInterpolationMode interpolationMode)
         {
             throw new NotImplementedException();
         }
@@ -105,7 +107,7 @@ namespace Consolonia.Core.Drawing
         {
             throw new NotImplementedException();
         }
-        
+
         public IBitmapImpl LoadBitmap(
             PixelFormat format,
             AlphaFormat alphaFormat,
@@ -117,10 +119,11 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
-        public IGlyphRunImpl CreateGlyphRun(IGlyphTypeface glyphTypeface, double fontRenderingEmSize, IReadOnlyList<GlyphInfo> glyphInfos,
+        public IGlyphRunImpl CreateGlyphRun(IGlyphTypeface glyphTypeface, double fontRenderingEmSize,
+            IReadOnlyList<GlyphInfo> glyphInfos,
             Point baselineOrigin)
         {
-            return new GlyphRunImpl(glyphTypeface,glyphInfos,baselineOrigin);
+            return new GlyphRunImpl(glyphTypeface, glyphInfos, baselineOrigin);
         }
 
         public IPlatformRenderInterfaceContext CreateBackendContext(IPlatformGraphicsContext graphicsApiContext)
