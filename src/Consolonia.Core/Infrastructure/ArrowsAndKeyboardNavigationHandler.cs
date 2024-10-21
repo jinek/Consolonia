@@ -23,9 +23,9 @@ namespace Consolonia.Core.Infrastructure
         public void SetOwner(IInputRoot owner)
         {
             _keyboardNavigationHandler.SetOwner(owner);
-
+            //todo: should we RemoveHandler here?
             _owner = owner;
-            _owner.AddHandler(InputElement.KeyDownEvent, (Delegate)OnKeyDown);
+            _owner.AddHandler(InputElement.KeyDownEvent, new EventHandler<KeyEventArgs>(OnKeyDown));
         }
 
         public void Move(IInputElement element, NavigationDirection direction,
