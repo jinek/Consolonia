@@ -23,7 +23,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static explicit operator PixelBufferCoordinate((ushort x, ushort y) val)
         {
-            return new PixelBufferCoordinate(val.x, val.y);
+            // ReSharper disable once ArrangeObjectCreationWhenTypeNotEvident
+            return new(val.x, val.y);
         }
 
         public static explicit operator PixelBufferCoordinate(Point point)
