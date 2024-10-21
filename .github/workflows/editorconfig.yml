@@ -34,10 +34,11 @@ jobs:
         working-directory: ./src
         
       - name: Inspect code
-        uses: muno92/resharper_inspectcode@1.4.0
+        uses: muno92/resharper_inspectcode@1.12.0
         with:
           solutionPath: ./src/Consolonia.sln
           exclude: "**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*;**Example/**.*"
+          version: '2021.1.5'
 
       - name: install-resharper
         run: |

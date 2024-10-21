@@ -118,9 +118,8 @@ namespace Consolonia.Core.Drawing
                         throw new NotImplementedException();
                     case ISceneBrush sceneBrush:
                     {
-                        ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent()!;
-                        sceneBrushContent.Render(this, Matrix.Identity);
-
+                        ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
+                        sceneBrushContent!.Render(this, Matrix.Identity);
                         return;
                     }
                 }
