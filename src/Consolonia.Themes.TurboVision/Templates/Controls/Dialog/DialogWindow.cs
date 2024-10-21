@@ -107,10 +107,10 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             return _taskCompletionSource.Task;
         }
 
-        private static DialogHost GetDialogHost(Control parent)
+        private static DialogHost GetDialogHost(Visual parent)
         {
-            var window = parent.FindAncestorOfType<Window>(true)!;
-            DialogHost dialogHost = window.GetValue(DialogHost.DialogHostProperty);
+            var window = parent.FindAncestorOfType<Window>(true);
+            DialogHost dialogHost = window!.GetValue(DialogHost.DialogHostProperty);
             return dialogHost;
         }
 

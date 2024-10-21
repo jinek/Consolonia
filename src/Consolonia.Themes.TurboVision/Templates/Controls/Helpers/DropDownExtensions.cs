@@ -19,28 +19,28 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             where TElementType : Control where TParentControl : Control
         {
             var dropDownControl = (TElementType)args.Sender;
-            var parentControl = dropDownControl.FindLogicalAncestorOfType<TParentControl>()!;
+            var parentControl = dropDownControl.FindLogicalAncestorOfType<TParentControl>();
 
             if (args.NewValue.Value)
             {
                 dropDownControl.AttachedToVisualTree += focusDropDownAction;
 
-                IDisposable disposable1 = parentControl.GetPropertyChangedObservable(InputElement.IsFocusedProperty)
+                IDisposable disposable1 = parentControl!.GetPropertyChangedObservable(InputElement.IsFocusedProperty)
                     .Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(eventArgs =>
                     {
                         if (!(bool)eventArgs.NewValue! && !dropDownControl.IsKeyboardFocusWithin)
-                            Dispatcher.UIThread.Post(() => { parentControl.SetValue(dropDownProperty, false); });
+                            Dispatcher.UIThread.Post(() => { parentControl!.SetValue(dropDownProperty, false); });
                     }));
 
                 IDisposable disposable2 = dropDownControl
                     .GetPropertyChangedObservable(InputElement.IsKeyboardFocusWithinProperty)
                     .Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(eventArgs =>
                     {
-                        if (!(bool)eventArgs.NewValue! && !parentControl.IsKeyboardFocusWithin)
+                        if (!(bool)eventArgs.NewValue! && !parentControl!.IsKeyboardFocusWithin)
                             Dispatcher.UIThread.Post(() =>
                             {
-                                parentControl.SetValue(dropDownProperty, false);
-                                focusParentAction(parentControl);
+                                parentControl!.SetValue(dropDownProperty, false);
+                                focusParentAction(parentControl!);
                             });
                     }));
 

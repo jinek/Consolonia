@@ -69,11 +69,11 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         public ConsoloniaTextPresenter()
         {
             // we need to disable blinking caret, our terminal caret blinks itself once shown
-            var caretTickTimer = (DispatcherTimer)TickTimerField.GetValue(this)!;
-            caretTickTimer.Interval =
+            var caretTickTimer = (DispatcherTimer)TickTimerField.GetValue(this);
+            caretTickTimer!.Interval =
                 TimeSpan.FromMilliseconds(int
                     .MaxValue); //see DispatcherTimer.Interval, since we can not disable it, setting it to the longest interval possible
-            caretTickTimer.Tick += (_, _) => throw new NotImplementedException("How to disable timer completely?");
+            caretTickTimer!.Tick += (_, _) => throw new NotImplementedException("How to disable timer completely?");
 
             CaretBrush =
                 new FourBitColorBrush(ConsoleColor.Black, PixelBackgroundMode.Transparent); // we want to draw own caret

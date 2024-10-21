@@ -37,11 +37,11 @@ namespace Consolonia.Core.Infrastructure
                 NavigationDirection.Up)
             {
                 var elementCast = (InputElement)element;
-                var visualRoot = (Visual)elementCast.GetVisualRoot()!;
+                var visualRoot = (Visual)elementCast.GetVisualRoot();
                 (Point p1, Point p2) = GetOriginalPoint(elementCast.GetTransformedBounds().NotNull().Clip);
                 Point originalPoint = p1 / 2 + p2 / 2;
 
-                var focusableElements = visualRoot.GetVisualDescendants()
+                var focusableElements = visualRoot!.GetVisualDescendants()
                     .OfType<InputElement>()
                     // only focusable
                     .Where(inputElement => inputElement.Focusable && inputElement.IsEffectivelyEnabled &&
