@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Platform;
-using Avalonia.Rendering;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
@@ -40,17 +40,12 @@ namespace Consolonia.Core.Drawing
             _consoleWindow.Resized -= OnResized;
         }
 
-        public IDrawingContextImpl CreateDrawingContext(IVisualBrushRenderer visualBrushRenderer)
-        {
-            return new DrawingContextImpl(_consoleWindow, visualBrushRenderer, _bufferBuffer);
-        }
-
-        public void Save(string fileName)
+        public void Save(string fileName, int? quality = null)
         {
             throw new NotImplementedException();
         }
 
-        public void Save(Stream stream)
+        public void Save(Stream stream, int? quality = null)
         {
             throw new NotImplementedException();
         }
@@ -59,7 +54,7 @@ namespace Consolonia.Core.Drawing
         public PixelSize PixelSize { get; } = new(1, 1);
         public int Version => 0;
 
-        public void Blit(IDrawingContextImpl context)
+        void IDrawingContextLayerImpl.Blit(IDrawingContextImpl context)
         {
             try
             {
@@ -70,10 +65,19 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        public bool CanBlit => true;
+        bool IDrawingContextLayerImpl.CanBlit => true;
 
-        private void OnResized(Size size, PlatformResizeReason platformResizeReason)
+        public IDrawingContextImpl CreateDrawingContext()
         {
+            return new DrawingContextImpl(_consoleWindow, _bufferBuffer);
+        }
+
+        public bool IsCorrupted => false;
+
+
+        private void OnResized(Size size, WindowResizeReason reason)
+        {
+            // todo: should we check the reason?
             InitializeBuffer(size);
         }
 
@@ -114,11 +118,12 @@ namespace Consolonia.Core.Drawing
                     caretPosition = new PixelBufferCoordinate(x, y);
                 }
 
-                if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                    rect.ContainsAligned(new Point(x, y)))) continue;
+                /* todo: There is not IWindowImpl.Invalidate anymore.
+                 if (!_consoleWindow.InvalidatedRects.Any(rect =>
+                    rect.ContainsExclusive(new Point(x, y)))) continue;*/
                 if (pixel.Background.Mode != PixelBackgroundMode.Colored)
                     throw new InvalidOperationException(
-                        "Buffer has not been rendered. All operations over buffer must finished with the buffer to be not transparent");
+                        "All pixels in the buffer must have exact console color before rendering");
 
                 if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
                     break;
@@ -144,7 +149,7 @@ namespace Consolonia.Core.Drawing
                 }
 
                 if (char.IsControl(character) /*|| character is '保' or '哥'*/)
-                    character = ' '; // some terminals does not print \0
+                    character = ' '; // some terminals do not print \0
 
                 ConsoleColor backgroundColor = pixel.Background.Color;
                 ConsoleColor foregroundColor = pixel.Foreground.Color;
@@ -172,8 +177,6 @@ namespace Consolonia.Core.Drawing
             {
                 _console.CaretVisible = false;
             }
-
-            _consoleWindow.InvalidatedRects.Clear();
         }
 
         private struct FlushingBuffer

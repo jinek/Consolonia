@@ -1,23 +1,24 @@
 ﻿using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Media;
 using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Drawing
 {
-    public class LineBrush : Brush
+    public class LineBrush : Animatable, IImmutableBrush
     {
-        public static readonly StyledProperty<Brush> BrushProperty =
-            AvaloniaProperty.Register<LineBrush, Brush>(CommonInternalHelper.GetStyledPropertyName());
+        //todo: we don't really implement immutable brush
+        public static readonly StyledProperty<IBrush> BrushProperty =
+            AvaloniaProperty.Register<LineBrush, IBrush>(CommonInternalHelper.GetStyledPropertyName());
 
         public static readonly StyledProperty<LineStyle> LineStyleProperty =
             AvaloniaProperty.Register<LineBrush, LineStyle>(CommonInternalHelper.GetStyledPropertyName());
 
         static LineBrush()
         {
-            AffectsRender<LineBrush>(BrushProperty, LineStyleProperty);
         }
 
-        public Brush Brush
+        public IBrush Brush
         {
             get => GetValue(BrushProperty);
             set => SetValue(BrushProperty, value);
@@ -29,13 +30,9 @@ namespace Consolonia.Core.Drawing
             set => SetValue(LineStyleProperty, value);
         }
 
-        public override IBrush ToImmutable()
-        {
-            return new LineBrush
-            {
-                Brush = Brush,
-                LineStyle = LineStyle
-            };
-        }
+        //todo: how did it work without following 3 items? How should it work now, check avalonia. Search for B75ABC91-2CDD-4557-9201-16AC483C8D7B
+        public double Opacity => 1;
+        public ITransform Transform => null;
+        public RelativePoint TransformOrigin => RelativePoint.TopLeft;
     }
 }

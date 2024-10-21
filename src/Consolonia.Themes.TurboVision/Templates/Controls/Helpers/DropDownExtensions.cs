@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
+using Avalonia.Reactive;
 using Avalonia.Threading;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
@@ -24,24 +25,24 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             {
                 dropDownControl.AttachedToVisualTree += focusDropDownAction;
 
-                IDisposable disposable1 = parentControl.GetPropertyChangedObservable(InputElement.IsFocusedProperty)
-                    .Subscribe(eventArgs =>
+                IDisposable disposable1 = parentControl!.GetPropertyChangedObservable(InputElement.IsFocusedProperty)
+                    .Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(eventArgs =>
                     {
                         if (!(bool)eventArgs.NewValue! && !dropDownControl.IsKeyboardFocusWithin)
-                            Dispatcher.UIThread.Post(() => { parentControl.SetValue(dropDownProperty, false); });
-                    });
+                            Dispatcher.UIThread.Post(() => { parentControl!.SetValue(dropDownProperty, false); });
+                    }));
 
                 IDisposable disposable2 = dropDownControl
                     .GetPropertyChangedObservable(InputElement.IsKeyboardFocusWithinProperty)
-                    .Subscribe(eventArgs =>
+                    .Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(eventArgs =>
                     {
-                        if (!(bool)eventArgs.NewValue! && !parentControl.IsKeyboardFocusWithin)
+                        if (!(bool)eventArgs.NewValue! && !parentControl!.IsKeyboardFocusWithin)
                             Dispatcher.UIThread.Post(() =>
                             {
-                                parentControl.SetValue(dropDownProperty, false);
-                                focusParentAction(parentControl);
+                                parentControl!.SetValue(dropDownProperty, false);
+                                focusParentAction(parentControl!);
                             });
-                    });
+                    }));
 
                 dropDownControl.SetValue(DisposablesProperty, new[] { disposable1, disposable2 });
             }

@@ -15,8 +15,8 @@ namespace Consolonia.Core.Infrastructure
             var taskToWaitFor = new TaskCompletionSource();
             cancellationToken.Register(() => taskToWaitFor.SetResult());
 
-            var mainWindowPlatformImpl = (ConsoleWindow)MainWindow.PlatformImpl;
-            IConsole console = mainWindowPlatformImpl.Console;
+            var mainWindowPlatformImpl = (ConsoleWindow)MainWindow!.PlatformImpl;
+            IConsole console = mainWindowPlatformImpl!.Console;
 
             Task pauseTask = taskToWaitFor.Task;
 
@@ -29,7 +29,7 @@ namespace Consolonia.Core.Infrastructure
                 Dispatcher.UIThread.Post(() => { MainWindow.InvalidateVisual(); });
             }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
 
-            return Dispatcher.UIThread.InvokeAsync(() => { });
+            return Dispatcher.UIThread.InvokeAsync(() => { }).GetTask();
         }
     }
 }

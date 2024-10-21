@@ -95,6 +95,7 @@ namespace Consolonia.Core.Drawing
         public static Line CreateMyLine(Point p1, Point p2)
         {
             (double x, double y) = p2 - p1;
+            // ReSharper disable once InvertIf
             if (p1.X > p2.X || p1.Y > p2.Y)
             {
                 p1 = p2;

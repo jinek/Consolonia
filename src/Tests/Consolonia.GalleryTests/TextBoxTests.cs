@@ -11,6 +11,7 @@ namespace Consolonia.GalleryTests
     {
         protected override async Task PerformSingleTest()
         {
+            await UITest.KeyInput(Key.Right);
             await UITest.AssertHasText(@"elit\. ");
             await UITest.KeyInput(Key.Right);
             await UITest.StringInput("asd");
@@ -18,7 +19,7 @@ namespace Consolonia.GalleryTests
             await UITest.AssertHasText(@"t, consectetur adipiscing elit\.asd");
             await UITest.KeyInput(Key.Home);
             await UITest.KeyInput(7, Key.Right, RawInputModifiers.Control);
-            await UITest.AssertHasText(@"ipsum dolor sit amet, consectetur a");
+            await UITest.AssertHasText(@"ipsum dolor sit amet, consectetur ");
 
             //readonly
             await UITest.KeyInput(Key.Tab);

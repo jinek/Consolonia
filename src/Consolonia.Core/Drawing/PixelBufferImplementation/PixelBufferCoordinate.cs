@@ -48,5 +48,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             return (PixelBufferCoordinate)point;
         }
+
+        public bool Equals(PixelBufferCoordinate secondPoint)
+        {
+            return X == secondPoint.X && Y == secondPoint.Y;
+        }
     }
 }

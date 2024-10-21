@@ -1,10 +1,10 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Consolonia.Core.Styles;
-using JetBrains.Annotations;
 
 namespace Consolonia.Themes.TurboVision.Themes.TurboVisionBlack
 {
-    [UsedImplicitly]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class TurboVisionBlackTheme : ResourceIncludeBase
     {
         public TurboVisionBlackTheme(Uri baseUri) : base(baseUri)

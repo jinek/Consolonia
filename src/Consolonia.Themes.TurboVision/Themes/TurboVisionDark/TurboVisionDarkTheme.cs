@@ -1,10 +1,9 @@
 using System;
 using Consolonia.Core.Styles;
-using JetBrains.Annotations;
 
 namespace Consolonia.Themes.TurboVision.Themes.TurboVisionDark
 {
-    [UsedImplicitly]
+    // ReSharper disable once UnusedType.Global
     public class TurboVisionDarkTheme : ResourceIncludeBase
     {
         public TurboVisionDarkTheme(Uri baseUri) : base(baseUri)

@@ -76,21 +76,11 @@
                                     BorderThickness="1"
                                     Margin="0,0,2,1"
                                     Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
-                                <ScrollViewer Margin="0,0,-1,-0.6"
-                                              HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                              VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                                    <ScrollViewer.Styles>
-                                        <!--Magic numbers. Adjusted manually, I don't have a clue why -1 vs 1 does not work. Have to set -0.6 vs 1.1-->
-                                        <Style Selector="ScrollViewer">
-                                            <Setter Property="(helpers:ScrollViewerExtensions.ScrollBarsWidth)"
-                                                    Value="1.1" />
-                                        </Style>
-                                    </ScrollViewer.Styles>
+                                <ScrollViewer
+                                    HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                    VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                                     <ItemsPresenter Name="PART_ItemsPresenter"
-                                                    Items="{TemplateBinding Items}"
-                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                    ItemTemplate="{TemplateBinding ItemTemplate}"
-                                                    VirtualizationMode="{TemplateBinding VirtualizationMode}">
+                                                    ItemsPanel="{TemplateBinding ItemsPanel}">
                                         <ItemsPresenter.Styles>
                                             <Style Selector="ItemsPresenter">
                                                 <Setter Property="(helpers:ComboBoxExtensions.FocusOnOpen)"

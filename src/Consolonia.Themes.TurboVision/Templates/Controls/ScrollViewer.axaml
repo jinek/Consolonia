@@ -11,39 +11,38 @@
                 Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="(helpers:ScrollViewerExtensions.ScrollBarsWidth)"
                 Value="Auto" />
+        <Setter Property="HorizontalSnapPointsType"
+                Value="None" />
+        <Setter Property="VerticalSnapPointsType"
+                Value="None" />
+
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid x:Name="PART_Root"
                       RowDefinitions="*,Auto"
                       ColumnDefinitions="*,Auto">
                     <ScrollContentPresenter Name="PART_ContentPresenter"
+                                            Padding="{TemplateBinding Padding}"
+                                            HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                            VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                            HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                            VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
                                             Background="{TemplateBinding Background}"
-                                            CanHorizontallyScroll="{TemplateBinding CanHorizontallyScroll}"
-                                            CanVerticallyScroll="{TemplateBinding CanVerticallyScroll}"
-                                            Content="{TemplateBinding Content}"
-                                            Extent="{TemplateBinding Extent, Mode=TwoWay}"
-                                            Margin="{TemplateBinding Padding}"
-                                            Offset="{TemplateBinding Offset, Mode=TwoWay}"
-                                            Viewport="{TemplateBinding Viewport, Mode=TwoWay}" />
-                    <ScrollBar Name="horizontalScrollBar"
+                                            ScrollViewer.IsScrollInertiaEnabled="True">
+                        <ScrollContentPresenter.GestureRecognizers>
+                            <ScrollGestureRecognizer
+                                CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
+                                CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
+                                IsScrollInertiaEnabled="{Binding (ScrollViewer.IsScrollInertiaEnabled), ElementName=PART_ContentPresenter}" />
+                        </ScrollContentPresenter.GestureRecognizers>
+                    </ScrollContentPresenter>
+                    <ScrollBar Name="PART_HorizontalScrollBar"
                                Orientation="Horizontal"
-                               LargeChange="{Binding LargeChange.Width, RelativeSource={RelativeSource TemplatedParent}}"
-                               SmallChange="{Binding SmallChange.Width, RelativeSource={RelativeSource TemplatedParent}}"
-                               Maximum="{TemplateBinding HorizontalScrollBarMaximum}"
-                               Value="{TemplateBinding HorizontalScrollBarValue, Mode=TwoWay}"
-                               ViewportSize="{TemplateBinding HorizontalScrollBarViewportSize}"
-                               Visibility="{TemplateBinding HorizontalScrollBarVisibility}"
                                Grid.Row="1"
                                Grid.Column="0"
                                Focusable="False" />
-                    <ScrollBar Name="verticalScrollBar"
+                    <ScrollBar Name="PART_VerticalScrollBar"
                                Orientation="Vertical"
-                               LargeChange="{Binding LargeChange.Height, RelativeSource={RelativeSource TemplatedParent}}"
-                               SmallChange="{Binding SmallChange.Height, RelativeSource={RelativeSource TemplatedParent}}"
-                               Maximum="{TemplateBinding VerticalScrollBarMaximum}"
-                               Value="{TemplateBinding VerticalScrollBarValue, Mode=TwoWay}"
-                               ViewportSize="{TemplateBinding VerticalScrollBarViewportSize}"
-                               Visibility="{TemplateBinding VerticalScrollBarVisibility}"
                                Grid.Row="0"
                                Grid.Column="1"
                                Focusable="False" />
@@ -110,13 +109,12 @@
                                                 Foreground="{TemplateBinding Foreground}" />
                     </RepeatButton>
                     <ScrollContentPresenter Name="PART_ContentPresenter"
-                                            CanHorizontallyScroll="{TemplateBinding CanHorizontallyScroll}"
-                                            CanVerticallyScroll="{TemplateBinding CanVerticallyScroll}"
-                                            Content="{TemplateBinding Content}"
-                                            Extent="{TemplateBinding Extent, Mode=TwoWay}"
-                                            Margin="{TemplateBinding Padding}"
-                                            Offset="{TemplateBinding Offset, Mode=TwoWay}"
-                                            Viewport="{TemplateBinding Viewport, Mode=TwoWay}" />
+                                            Padding="{TemplateBinding Padding}"
+                                            HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                            VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                            HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                            VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+                                            ScrollViewer.IsScrollInertiaEnabled="False" />
                 </DockPanel>
             </ControlTemplate>
         </Setter>

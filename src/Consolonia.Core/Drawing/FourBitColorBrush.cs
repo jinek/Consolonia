@@ -1,23 +1,20 @@
 using System;
+using System.ComponentModel;
+using System.Globalization;
 using Avalonia;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 namespace Consolonia.Core.Drawing
 {
-    public class FourBitColorBrush : Brush
+    [TypeConverter(typeof(FourBitBrushConverter))]
+    public class FourBitColorBrush : AvaloniaObject, IImmutableBrush
     {
         public static readonly StyledProperty<ConsoleColor> ColorProperty =
             AvaloniaProperty.Register<FourBitColorBrush, ConsoleColor>(nameof(Color));
 
         public static readonly StyledProperty<PixelBackgroundMode> ModeProperty =
             AvaloniaProperty.Register<FourBitColorBrush, PixelBackgroundMode>(nameof(Mode));
-
-        static FourBitColorBrush()
-        {
-            AffectsRender<FourBitColorBrush>(ColorProperty);
-            AffectsRender<FourBitColorBrush>(ModeProperty);
-        }
 
         // ReSharper disable once UnusedMember.Global
         public FourBitColorBrush(ConsoleColor consoleColor, PixelBackgroundMode mode) : this(consoleColor)
@@ -46,18 +43,34 @@ namespace Consolonia.Core.Drawing
             set => SetValue(ColorProperty, value);
         }
 
+        public double Opacity => 1;
+        public ITransform Transform => null;
+        public RelativePoint TransformOrigin => RelativePoint.TopLeft;
+
         // ReSharper disable once UnusedMember.Global used by Avalonia
         // ReSharper disable once UnusedParameter.Global
-        public Brush ProvideValue(IServiceProvider _)
+        public IBrush ProvideValue(IServiceProvider _)
         {
             return this;
         }
+    }
 
-
-        public override IBrush ToImmutable()
+    public class FourBitBrushConverter : TypeConverter
+    {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            //todo: implement immutable
-            return new FourBitColorBrush { Color = Color, Mode = Mode };
+            return sourceType == typeof(string);
+        }
+
+        public override object ConvertFrom(
+            ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
+            if (value is string s)
+                return Enum.TryParse(s, out ConsoleColor result)
+                    ? result
+                    : null;
+
+            return null;
         }
     }
 }

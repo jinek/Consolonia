@@ -25,29 +25,24 @@ namespace Consolonia.Core
             lifetime.Start(args);
         }
 
-        public static TAppBuilder UseStandardConsole<TAppBuilder>(this TAppBuilder builder)
-            where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
+        public static AppBuilder UseStandardConsole(this AppBuilder builder)
         {
             return builder.UseConsole(new DefaultNetConsole());
         }
 
-        public static TAppBuilder UseConsole<TAppBuilder>(this TAppBuilder builder, IConsole console)
-            where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
+        public static AppBuilder UseConsole(this AppBuilder builder, IConsole console)
         {
             return builder.With(console);
         }
 
-        public static TAppBuilder UseConsolonia<TAppBuilder>(this TAppBuilder builder)
-            where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
+        public static AppBuilder UseConsolonia(this AppBuilder builder)
         {
             return builder
+                .UseStandardRuntimePlatformSubsystem()
                 .UseWindowingSubsystem(() => new ConsoloniaPlatform().Initialize(), nameof(ConsoloniaPlatform))
                 .UseRenderingSubsystem(() =>
                 {
-                    var platformRenderInterface =
-                        AvaloniaLocator.CurrentMutable.GetService<IPlatformRenderInterface>();
-
-                    var consoloniaRenderInterface = new ConsoloniaRenderInterface(platformRenderInterface);
+                    var consoloniaRenderInterface = new ConsoloniaRenderInterface();
 
                     AvaloniaLocator.CurrentMutable
                         .Bind<IPlatformRenderInterface>().ToConstant(consoloniaRenderInterface);
@@ -65,8 +60,7 @@ namespace Consolonia.Core
             return CreateLifetime(consoloniaAppBuilder, args);
         }
 
-        private static ClassicDesktopStyleApplicationLifetime CreateLifetime<T>(T builder, string[] args)
-            where T : AppBuilderBase<T>, new()
+        private static ClassicDesktopStyleApplicationLifetime CreateLifetime(AppBuilder builder, string[] args)
         {
             var lifetime = new ConsoloniaLifetime
             {
@@ -77,9 +71,8 @@ namespace Consolonia.Core
             return lifetime;
         }
 
-        public static int StartWithConsoleLifetime<T>(
-            this T builder, string[] args)
-            where T : AppBuilderBase<T>, new()
+        public static int StartWithConsoleLifetime(
+            this AppBuilder builder, string[] args)
         {
             ClassicDesktopStyleApplicationLifetime lifetime = CreateLifetime(builder, args);
             return lifetime.Start(args);

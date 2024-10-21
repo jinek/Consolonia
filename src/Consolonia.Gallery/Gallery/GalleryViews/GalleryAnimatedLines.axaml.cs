@@ -5,11 +5,10 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Consolonia.Core.Infrastructure;
-using JetBrains.Annotations;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    [UsedImplicitly]
+    // ReSharper disable once UnusedType.Global
     public class GalleryAnimatedLines : UserControl
     {
         public GalleryAnimatedLines()

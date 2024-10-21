@@ -20,7 +20,7 @@
     </Setter>
     <Setter Property="ErrorTemplate">
         <DataTemplate>
-            <ItemsControl Items="{Binding}"
+            <ItemsControl ItemsSource="{Binding}"
                           Foreground="{DynamicResource ThemeErrorBrush}" />
         </DataTemplate>
     </Setter>

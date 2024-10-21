@@ -67,7 +67,7 @@
                                                     Grid.Column="4" />
                             <Popup Grid.Column="0"
                                    Name="PART_Popup"
-                                   PlacementMode="Right"
+                                   Placement="BottomEdgeAlignedLeft"
                                    IsLightDismissEnabled="False"
                                    IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
                                 <Panel>
@@ -79,9 +79,7 @@
                                             BorderThickness="{TemplateBinding BorderThickness}">
                                         <ScrollViewer>
                                             <ItemsPresenter Name="PART_ItemsPresenter"
-                                                            Items="{TemplateBinding Items}"
                                                             ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                            ItemTemplate="{TemplateBinding ItemTemplate}"
                                                             Grid.IsSharedSizeScope="True">
                                                 <ItemsPresenter.Styles>
                                                     <Style Selector="ItemsPresenter">
@@ -104,9 +102,7 @@
     <Style Selector="MenuItem:separator">
         <Setter Property="Template">
             <ControlTemplate>
-                <Separator Background="{DynamicResource ThemeErrorBrush}"
-                           Margin="1,0"
-                           Height="1" />
+                <Separator />
             </ControlTemplate>
         </Setter>
     </Style>
@@ -144,9 +140,7 @@
                                         BorderThickness="{TemplateBinding BorderThickness}">
                                     <ScrollViewer>
                                         <ItemsPresenter Name="PART_ItemsPresenter"
-                                                        Items="{TemplateBinding Items}"
                                                         ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                        ItemTemplate="{TemplateBinding ItemTemplate}"
                                                         Grid.IsSharedSizeScope="True">
                                             <ItemsPresenter.Styles>
                                                 <Style Selector="ItemsPresenter">

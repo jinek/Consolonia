@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
@@ -90,19 +91,22 @@ namespace Consolonia.TestsCore
                 await Task.Delay((int)interval).ConfigureAwait(false);
             }
 
-            await WaitDispatched().ConfigureAwait(true);
+            await WaitRendered().ConfigureAwait(true);
         }
 
-        public async Task WaitDispatched()
+        public async Task WaitRendered()
         {
-            bool noDirtyRegions = false;
-            while (!noDirtyRegions)
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                    {
-                        noDirtyRegions = ((ConsoleWindow)_lifetime.MainWindow.PlatformImpl)
-                            .InvalidatedRects.Count == 0;
-                    },
-                    DispatcherPriority.ContextIdle).ConfigureAwait(true);
+            await Dispatcher.UIThread.InvokeAsync(async () =>
+            {
+                Window mainWindow = _lifetime.MainWindow!;
+                mainWindow!.InvalidateVisual();
+                await mainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Rendered
+                    .ConfigureAwait(true);
+                await mainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Processed
+                    .ConfigureAwait(true);
+            }, DispatcherPriority.Render).ConfigureAwait(true);
+
+            await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
         }
 
         public async Task KeyInput(params Key[] keys)
@@ -124,7 +128,7 @@ namespace Consolonia.TestsCore
                 timestamp + 1);
             await Task.Yield();
 
-            await WaitDispatched().ConfigureAwait(true);
+            await WaitRendered().ConfigureAwait(true);
         }
 
         internal string PrintBuffer()
@@ -137,7 +141,10 @@ namespace Consolonia.TestsCore
                 {
                     if (i == PixelBuffer.Width - 1 && j == PixelBuffer.Height - 1)
                         break;
-                    stringBuilder.Append(PixelBuffer[new PixelBufferCoordinate(i, j)].Foreground.Symbol.GetCharacter());
+                    Pixel pixel = PixelBuffer[new PixelBufferCoordinate(i, j)];
+                    char character = pixel.IsCaret ? 'Ꮖ' : pixel.Foreground.Symbol.GetCharacter();
+                    //todo: check why cursor is not drawing
+                    stringBuilder.Append(character);
                 }
 
                 stringBuilder.AppendLine();

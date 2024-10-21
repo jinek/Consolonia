@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Input.TextInput;
 using Avalonia.Platform;
-using Avalonia.Rendering;
+using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using JetBrains.Annotations;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -17,7 +18,6 @@ namespace Consolonia.Core.Infrastructure
     {
         private readonly IKeyboardDevice _myKeyboardDevice;
         [NotNull] internal readonly IConsole Console;
-        internal readonly List<Rect> InvalidatedRects = new(50);
         private IInputRoot _inputRoot;
 
         public ConsoleWindow()
@@ -31,6 +31,8 @@ namespace Consolonia.Core.Infrastructure
             Console.FocusEvent += ConsoleOnFocusEvent;
         }
 
+        private IMouseDevice MouseDevice { get; }
+
         public void Dispose()
         {
             Closed?.Invoke();
@@ -39,45 +41,6 @@ namespace Consolonia.Core.Infrastructure
             Console.MouseEvent -= ConsoleOnMouseEvent;
             Console.FocusEvent -= ConsoleOnFocusEvent;
             Console.Dispose();
-        }
-
-        public IRenderer CreateRenderer(IRenderRoot root)
-        {
-            /*return new X11ImmediateRendererProxy(root, AvaloniaLocator.Current.GetService<IRenderLoop>())
-                { DrawDirtyRects = false, DrawFps = false };*/
-            return new AdvancedDeferredRenderer(root, AvaloniaLocator.Current.GetService<IRenderLoop>())
-            {
-                RenderRoot = this
-                //                RenderOnlyOnRenderThread = true
-            };
-        }
-
-        public void Invalidate(Rect rect)
-        {
-            if (rect.IsEmpty) return;
-            InvalidatedRects.Add(rect);
-
-
-            /*
-             This is the code for drawing invalid rectangles
-             var _console = AvaloniaLocator.Current.GetService<IConsole>();
-            using (_console.StoreCaret())
-            {
-                for (int y = (int)rect.Y; y < rect.Bottom; y++)
-                {
-                    if (y < Console.WindowHeight - 2)
-                    {
-                        Console.SetCursorPosition((int)rect.X, y);
-                        Console.BackgroundColor = ConsoleColor.Magenta;
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-
-                        Console.WriteLine(string.Concat(Enumerable.Range(0, (int)rect.Width).Select(i => ' ')));
-                    }
-                }
-            }*/
-            //Paint(new Rect(0, 0, ClientSize.Width, ClientSize.Height));
-
-            //Paint(new Rect(rect.Left, rect.Top, rect.Width, rect.Height));
         }
 
         public void SetInputRoot(IInputRoot inputRoot)
@@ -106,8 +69,14 @@ namespace Consolonia.Core.Infrastructure
             return null; // when returning null top window overlay layer will be used
         }
 
-        public void SetTransparencyLevelHint(WindowTransparencyLevel transparencyLevel)
+        public void SetTransparencyLevelHint(IReadOnlyList<WindowTransparencyLevel> transparencyLevels)
         {
+            throw new NotImplementedException("Consider this");
+        }
+
+        public void SetFrameThemeVariant(PlatformThemeVariant themeVariant)
+        {
+            //todo:
         }
 
         public Size ClientSize
@@ -127,15 +96,16 @@ namespace Consolonia.Core.Infrastructure
         public Action<RawInputEventArgs> Input { get; set; }
 
         public Action<Rect> Paint { get; set; }
-        public Action<Size, PlatformResizeReason> Resized { get; set; }
+        public Action<Size, WindowResizeReason> Resized { get; set; }
+
 
         public Action<double> ScalingChanged { get; set; }
 
         public Action<WindowTransparencyLevel> TransparencyLevelChanged { get; set; }
 
+        public Compositor Compositor { get; } = new(null);
         public Action Closed { get; set; }
         public Action LostFocus { get; set; }
-        public IMouseDevice MouseDevice { get; }
 
         public WindowTransparencyLevel TransparencyLevel => WindowTransparencyLevel.None;
 
@@ -162,7 +132,7 @@ namespace Consolonia.Core.Infrastructure
             throw new NotImplementedException();
         }
 
-        public double DesktopScaling { get; } = 1d;
+        public double DesktopScaling => 1d;
 
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: get from _console if supported
         public PixelPoint Position { get; }
@@ -177,7 +147,7 @@ namespace Consolonia.Core.Infrastructure
         public Size MaxAutoSizeHint { get; }
 
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
-        public IScreenImpl Screen { get; }
+        public IScreenImpl Screen => null;
 
         public void SetTitle(string title)
         {
@@ -222,10 +192,11 @@ namespace Consolonia.Core.Infrastructure
             throw new NotImplementedException();
         }
 
-        public void Resize(Size clientSize, PlatformResizeReason reason = PlatformResizeReason.Application)
+        public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
-            Resized(clientSize, reason);
+            //todo: can we deny resizing?
         }
+
 
         public void Move(PixelPoint point)
         {
@@ -255,7 +226,7 @@ namespace Consolonia.Core.Infrastructure
         public WindowState WindowState { get; set; }
         public Action<WindowState> WindowStateChanged { get; set; }
         public Action GotInputWhenDisabled { get; set; }
-        public Func<bool> Closing { get; set; }
+        public Func<WindowCloseReason, bool> Closing { get; set; }
 
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public bool IsClientAreaExtendedToDecorations { get; }
@@ -270,12 +241,21 @@ namespace Consolonia.Core.Infrastructure
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public Thickness OffScreenMargin { get; }
 
+        public object TryGetFeature(Type featureType)
+        {
+            if (featureType == typeof(ISystemNavigationManagerImpl))
+                return null;
+            if (featureType == typeof(ITextInputMethodImpl)) return null;
+            throw new NotImplementedException("Consider this");
+        }
+
         private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,
             RawInputModifiers modifiers)
         {
             ulong timestamp = (ulong)Stopwatch.GetTimestamp();
             Dispatcher.UIThread.Post(() =>
             {
+                // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
                 switch (type)
                 {
                     case RawPointerEventType.Move:
@@ -318,8 +298,7 @@ namespace Consolonia.Core.Infrastructure
             {
                 PixelBufferSize pixelBufferSize = Console.Size;
                 var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
-                Resized(size, PlatformResizeReason.Unspecified);
-                //todo; Invalidate(new Rect(size));
+                Resized(size, WindowResizeReason.Unspecified);
             });
         }
 
@@ -330,9 +309,12 @@ namespace Consolonia.Core.Infrastructure
             {
                 Dispatcher.UIThread.Post(() =>
                 {
-                    Input(new RawKeyEventArgs(_myKeyboardDevice, timeStamp, _inputRoot,
+#pragma warning disable CS0618 // Type or member is obsolete // todo: change to correct constructor, CFA20A9A-3A24-4187-9CA3-9DF0081124EE 
+                    var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp, _inputRoot,
                         RawKeyEventType.KeyUp, key,
-                        rawInputModifiers));
+                        rawInputModifiers);
+#pragma warning restore CS0618 // Type or member is obsolete
+                    Input!(rawInputEventArgs);
                 }, DispatcherPriority.Input);
             }
             else
@@ -340,13 +322,15 @@ namespace Consolonia.Core.Infrastructure
                 bool handled = false;
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
+#pragma warning disable CS0618 // Type or member is obsolete //todo: CFA20A9A-3A24-4187-9CA3-9DF0081124EE
                     var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp,
                         _inputRoot,
                         RawKeyEventType.KeyDown, key,
                         rawInputModifiers);
+#pragma warning restore CS0618 // Type or member is obsolete
                     Input(rawInputEventArgs);
                     handled = rawInputEventArgs.Handled;
-                }, DispatcherPriority.Input).ConfigureAwait(true);
+                }, DispatcherPriority.Input).GetTask().ConfigureAwait(true);
 
                 if (!handled && !char.IsControl(keyChar))
                     Dispatcher.UIThread.Post(() =>

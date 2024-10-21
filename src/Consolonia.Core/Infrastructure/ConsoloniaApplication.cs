@@ -7,9 +7,10 @@ namespace Consolonia.Core.Infrastructure
     {
         public override void RegisterServices()
         {
-            var keyboardNavigationHandler = AvaloniaLocator.Current.GetService<IKeyboardNavigationHandler>();
             base.RegisterServices();
-            AvaloniaLocator.CurrentMutable.Bind<IKeyboardNavigationHandler>().ToConstant(keyboardNavigationHandler);
+            var keyboardNavigationHandler = AvaloniaLocator.Current.GetRequiredService<IKeyboardNavigationHandler>();
+            AvaloniaLocator.CurrentMutable.Bind<IKeyboardNavigationHandler>()
+                .ToConstant(new ArrowsAndKeyboardNavigationHandler(keyboardNavigationHandler));
         }
     }
 }

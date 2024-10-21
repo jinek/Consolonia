@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Consolonia.TestsCore
 {
-    public static class Helpers
+    public static class TestHelpers
     {
         public static async Task AssertHasText(this UnitTestConsole unitTestConsole, params string[] regexesToSearch)
         {
@@ -40,7 +40,7 @@ namespace Consolonia.TestsCore
 
                 var regex = new Regex(regexToSearch);
                 found = regex.IsMatch(printBuffer);
-            }).ConfigureAwait(true);
+            }).GetTask().ConfigureAwait(true);
 
 
             return (found, printBuffer);

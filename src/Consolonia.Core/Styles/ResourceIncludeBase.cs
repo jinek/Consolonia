@@ -34,6 +34,7 @@ namespace Consolonia.Core.Styles
         {
             get
             {
+                // ReSharper disable once InvertIf
                 if (_loaded == null)
                 {
                     _isLoading = true;
@@ -46,9 +47,10 @@ namespace Consolonia.Core.Styles
             }
         }
 
-        public bool TryGetResource(object key, out object value)
+        public bool TryGetResource(object key, ThemeVariant theme, out object value)
         {
-            if (!_isLoading && Loaded is IResourceProvider p) return p.TryGetResource(key, out value);
+            if (!_isLoading && Loaded is IResourceProvider p)
+                return p.TryGetResource(key, theme, out value);
 
             value = null;
             return false;
@@ -80,10 +82,11 @@ namespace Consolonia.Core.Styles
             }
         }
 
-        public SelectorMatchResult TryAttach(IStyleable target, IStyleHost host)
+        /*todo: remove
+         public SelectorMatchResult TryAttach(IStyleable target, IStyleHost host)
         {
             return Loaded.TryAttach(target, host);
-        }
+        }*/
 
         public IReadOnlyList<IStyle> Children => _loaded ?? Array.Empty<IStyle>();
     }

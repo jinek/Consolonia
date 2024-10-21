@@ -73,6 +73,7 @@ namespace Consolonia.PlatformSupport
                 bSetFocus = true
             };
 
+            // ReSharper disable once InvertIf
             if (!WriteConsoleInput(_windowsConsole.InputHandle, inputRecords, 1, out uint _))
             {
                 // Handle error

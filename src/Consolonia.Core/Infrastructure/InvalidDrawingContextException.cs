@@ -1,21 +1,20 @@
 using System;
-using JetBrains.Annotations;
-
-// ReSharper disable UnusedMember.Global
+using System.Diagnostics.CodeAnalysis;
 
 namespace Consolonia.Core.Infrastructure
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class InvalidDrawingContextException : ApplicationException
     {
         public InvalidDrawingContextException()
         {
         }
 
-        public InvalidDrawingContextException([CanBeNull] string message) : base(message)
+        public InvalidDrawingContextException(string message) : base(message)
         {
         }
 
-        public InvalidDrawingContextException([CanBeNull] string message, [CanBeNull] Exception innerException) : base(
+        public InvalidDrawingContextException(string message, Exception innerException) : base(
             message, innerException)
         {
         }
