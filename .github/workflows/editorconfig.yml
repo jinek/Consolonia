@@ -38,7 +38,7 @@ jobs:
         with:
           solutionPath: ./src/Consolonia.sln
           exclude: "**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*;**Example/**.*"
-          version: '2021.1.5'
+          version: '2024.2.6'
 
       - name: install-resharper
         run: |
@@ -47,7 +47,7 @@ jobs:
 
       - name: resharper-cleanup
         run: |                    
-          jb cleanupcode Consolonia.sln --exclude="**Consolonia.GuiCS\**.*"
+          jb cleanupcode Consolonia.sln --exclude="**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*;**Example/**.*"
         working-directory: ./src
 
       - name: Commit files
