@@ -35,9 +35,7 @@ namespace Consolonia.GalleryTests.Base
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                var controlsListView =
-                    (ControlsListView)
-                    ((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!
+                var controlsListView = (ControlsListView)((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!
                     .MainWindow!;
                 controlsListView!.ChangeTo(Args);
             });

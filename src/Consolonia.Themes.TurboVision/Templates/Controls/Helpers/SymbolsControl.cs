@@ -7,14 +7,15 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Media;
 using Consolonia.Core.Text;
+using TextShaper = Consolonia.Core.Text.TextShaper;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
     /// <summary>
-    ///     Represents a control that displays symbols.
-    ///     This control has two modes of operation depending on the Fill property.
-    ///     If the Fill property is false, it just draws <see cref="Text" />
-    ///     If the Fill property is true, the symbol (Text[0]) is repeated and fills the control.
+    /// Represents a control that displays symbols.
+    /// This control has two modes of operation depending on the Fill property. 
+    /// If the Fill property is false, it just draws <see cref="Text"/> 
+    /// If the Fill property is true, the symbol (Text[0]) is repeated and fills the control.
     /// </summary>
     public sealed class SymbolsControl : Control, IDisposable
     {
@@ -36,7 +37,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             AvaloniaProperty.Register<SymbolsControl, bool>(nameof(Fill));
 
         private GlyphRun _shapedText;
-
+        
         private string _text;
 
         static SymbolsControl()
@@ -67,18 +68,13 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             set
             {
                 _text = value;
-
+                
                 _shapedText = new GlyphRun(new GlyphTypeface(),
                     1,
                     (_text ?? string.Empty).AsMemory(),
                     TextShaper.Convert(_text ?? string.Empty).ToImmutableArray(),
                     default(Point));
             }
-        }
-
-        public void Dispose()
-        {
-            _shapedText?.Dispose();
         }
 
         public override void Render(DrawingContext context)
@@ -104,6 +100,11 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         protected override Size MeasureOverride(Size availableSize)
         {
             return !Fill ? _shapedText?.Bounds.Size ?? default : default;
+        }
+
+        public void Dispose()
+        {
+            _shapedText?.Dispose();
         }
     }
 }

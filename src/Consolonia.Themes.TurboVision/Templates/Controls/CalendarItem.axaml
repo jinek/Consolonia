@@ -94,7 +94,8 @@ todo: while it's not needed it also does not work when set in the style-->
                                   IsVisible="False"
                                   HorizontalAlignment="Center"
                                   RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
-                                  ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" />
+                                  ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            </Grid>
 
                             <Grid Name="PART_YearView"
                                   Grid.Row="1"
@@ -103,7 +104,8 @@ todo: while it's not needed it also does not work when set in the style-->
                                   IsVisible="False"
                                   Margin="0,1"
                                   RowDefinitions="Auto,Auto,Auto"
-                                  ColumnDefinitions="Auto,Auto,Auto,Auto" />
+                                  ColumnDefinitions="Auto,Auto,Auto,Auto">
+                            </Grid>
 
                         </Grid>
 

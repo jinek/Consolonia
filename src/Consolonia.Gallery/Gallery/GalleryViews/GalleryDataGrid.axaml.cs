@@ -19,7 +19,7 @@ using Consolonia.Core.Drawing;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public class GalleryDataGrid : UserControl
+    public partial class GalleryDataGrid : UserControl
     {
         public GalleryDataGrid()
         {

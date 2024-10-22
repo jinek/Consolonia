@@ -16,7 +16,9 @@ namespace Consolonia.Core.Infrastructure
         public void Log(LogEventLevel level, string area, object source, string messageTemplate)
         {
             Log(level, area, source, messageTemplate, Array.Empty<object>());
-        } // ReSharper disable UnusedMember.Global
+        }
+
+        // ReSharper disable UnusedMember.Global
         public void Log<T0>(LogEventLevel level, string area, object source, string messageTemplate, T0 propertyValue0)
         {
             Log(level, area, source, messageTemplate, new object[] { propertyValue0 });

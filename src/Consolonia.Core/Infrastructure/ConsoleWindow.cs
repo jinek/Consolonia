@@ -31,8 +31,6 @@ namespace Consolonia.Core.Infrastructure
             Console.FocusEvent += ConsoleOnFocusEvent;
         }
 
-        private IMouseDevice MouseDevice { get; }
-
         public void Dispose()
         {
             Closed?.Invoke();
@@ -42,7 +40,7 @@ namespace Consolonia.Core.Infrastructure
             Console.FocusEvent -= ConsoleOnFocusEvent;
             Console.Dispose();
         }
-
+        
         public void SetInputRoot(IInputRoot inputRoot)
         {
             _inputRoot = inputRoot;
@@ -78,7 +76,7 @@ namespace Consolonia.Core.Infrastructure
         {
             //todo:
         }
-
+        
         public Size ClientSize
         {
             get
@@ -106,6 +104,7 @@ namespace Consolonia.Core.Infrastructure
         public Compositor Compositor { get; } = new(null);
         public Action Closed { get; set; }
         public Action LostFocus { get; set; }
+        private IMouseDevice MouseDevice { get; }
 
         public WindowTransparencyLevel TransparencyLevel => WindowTransparencyLevel.None;
 
@@ -241,14 +240,6 @@ namespace Consolonia.Core.Infrastructure
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public Thickness OffScreenMargin { get; }
 
-        public object TryGetFeature(Type featureType)
-        {
-            if (featureType == typeof(ISystemNavigationManagerImpl))
-                return null;
-            if (featureType == typeof(ITextInputMethodImpl)) return null;
-            throw new NotImplementedException("Consider this");
-        }
-
         private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,
             RawInputModifiers modifiers)
         {
@@ -341,6 +332,17 @@ namespace Consolonia.Core.Infrastructure
                             keyChar.ToString()));
                     }, DispatcherPriority.Input);
             }
+        }
+
+        public object TryGetFeature(Type featureType)
+        {
+            if (featureType == typeof(ISystemNavigationManagerImpl))
+                return null;
+            if (featureType == typeof(ITextInputMethodImpl))
+            {
+                return null;
+            }
+            throw new NotImplementedException("Consider this");
         }
     }
 }

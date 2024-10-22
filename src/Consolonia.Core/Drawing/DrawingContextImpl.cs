@@ -170,7 +170,6 @@ namespace Consolonia.Core.Drawing
                 ConsoloniaPlatform.RaiseNotSupported(17, glyphRun);
                 throw new InvalidProgramException();
             }
-
             if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
             if (!glyphRun.FontRenderingEmSize.IsNearlyEqual(1))
             {
@@ -196,9 +195,9 @@ namespace Consolonia.Core.Drawing
 
         public void PushClip(RoundedRect clip)
         {
-            if (clip.IsRounded)
+            if(clip.IsRounded)
                 ConsoloniaPlatform.RaiseNotSupported(2);
-
+            
             PushClip(clip.Rect);
         }
 
@@ -352,7 +351,7 @@ namespace Consolonia.Core.Drawing
                 }
             }
         }
-
+         
         private void DrawStringInternal(IBrush foreground, string str, Point origin = new())
         {
             if (foreground is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)

@@ -41,7 +41,7 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IRenderTimer>().ToConstant(new UiThreadRenderTimer(120))
                 .Bind<IDispatcherImpl>().ToConstant(new ManagedDispatcherImpl(null))
                 /*.Bind<IRenderTimer>().ToConstant(new SleepLoopRenderTimer(120))*/
-                /*SleepLoopRenderTimer : IRenderTimer*/
+            /*SleepLoopRenderTimer : IRenderTimer*/
                 /*.Bind<IRenderLoop>().ToConstant(new RenderLoop()) todo: is internal now*/
                 .Bind<PlatformHotkeyConfiguration>().ToConstant(new PlatformHotkeyConfiguration(KeyModifiers.Control))
                 .Bind<IKeyboardDevice>().ToConstant(new ConsoleKeyboardDevice())

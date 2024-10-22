@@ -19,6 +19,11 @@ namespace Consolonia.TestsCore
 #pragma warning restore CA1001
     {
         private readonly PixelBufferSize _size;
+        // ReSharper disable StaticMemberInGenericType
+        private static TaskCompletionSource _disposeTaskCompletionSource; // todo: tests now rely on static
+        private static ClassicDesktopStyleApplicationLifetime _lifetime;
+        protected static UnitTestConsole UITest { get; private set; }
+        // ReSharper restore StaticMemberInGenericType
         private IDisposable _scope;
 
         protected ConsoloniaAppTestBase(PixelBufferSize size)
@@ -26,6 +31,7 @@ namespace Consolonia.TestsCore
             _size = size;
         }
 
+        
 
 #pragma warning disable CA1819 // todo: provide a solution
         protected string[] Args { get; init; }
@@ -38,7 +44,7 @@ namespace Consolonia.TestsCore
                 return;
 
             AppDomain.CurrentDomain.ProcessExit += GlobalTearDown;
-
+            
             UITest = new UnitTestConsole(_size);
             var setupTaskSource = new TaskCompletionSource();
 
@@ -83,7 +89,7 @@ namespace Consolonia.TestsCore
         private async void GlobalTearDown(object sender, EventArgs eventArgs)
         {
             AppDomain.CurrentDomain.ProcessExit -= GlobalTearDown;
-
+            
             ClassicDesktopStyleApplicationLifetime lifetime = _lifetime;
             await Dispatcher.UIThread.InvokeAsync(() => { lifetime.Shutdown(); }).GetTask().ConfigureAwait(true);
 
@@ -95,12 +101,5 @@ namespace Consolonia.TestsCore
             UITest = null;
             await _disposeTaskCompletionSource.Task.ConfigureAwait(true);
         }
-
-        // ReSharper disable StaticMemberInGenericType
-        private static TaskCompletionSource _disposeTaskCompletionSource; // todo: tests now rely on static
-        private static ClassicDesktopStyleApplicationLifetime _lifetime;
-
-        protected static UnitTestConsole UITest { get; private set; }
-        // ReSharper restore StaticMemberInGenericType
     }
 }

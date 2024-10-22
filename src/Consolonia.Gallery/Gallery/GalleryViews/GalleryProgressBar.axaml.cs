@@ -3,7 +3,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public class GalleryProgressBar : UserControl
+    public partial class GalleryProgressBar : UserControl
     {
         public GalleryProgressBar()
         {

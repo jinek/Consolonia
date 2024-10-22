@@ -7,7 +7,7 @@
                     BorderThickness="{TemplateBinding BorderThickness}"
                     Padding="{TemplateBinding Padding}">
                 <ItemsPresenter Name="PART_ItemsPresenter"
-                                ItemsPanel="{TemplateBinding ItemsPanel}" />
+                                ItemsPanel="{TemplateBinding ItemsPanel}"/>
             </Border>
         </ControlTemplate>
     </Setter>

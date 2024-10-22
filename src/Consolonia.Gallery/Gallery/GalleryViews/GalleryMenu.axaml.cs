@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public class GalleryMenu : UserControl
+    public partial class GalleryMenu : UserControl
     {
         private MenuPageViewModel _model;
 

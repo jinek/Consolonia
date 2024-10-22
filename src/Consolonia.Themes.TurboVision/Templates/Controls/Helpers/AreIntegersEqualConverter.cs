@@ -14,8 +14,12 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             int first = ints.FirstOrDefault();
 
             for (int i = 1; i < values.Count; i++)
+            {
                 if (ints[i] != first)
+                {
                     return false;
+                }
+            }
 
             return true;
         }

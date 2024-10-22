@@ -53,7 +53,7 @@
                     </Border>
 
                     <!--Shadows-->
-
+                    
                     <!--Shadow under-->
                     <helpers:SymbolsControl Fill="True"
                                             Margin="1,0,1,0"
@@ -63,7 +63,7 @@
                                             IsVisible="{TemplateBinding (helpers:ButtonExtensions.Shadow)}"
                                             VerticalAlignment="Bottom"
                                             Foreground="{DynamicResource ThemePseudoShadeBrush}" />
-
+                    
                     <!--Right shadow-->
                     <helpers:SymbolsControl Margin="0,1,0,1"
                                             Text="█"

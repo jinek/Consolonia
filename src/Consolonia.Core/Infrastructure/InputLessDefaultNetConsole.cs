@@ -83,7 +83,9 @@ namespace Consolonia.Core.Infrastructure
             if (str.Any(
                 c => ConsoleText.IsWideChar(c) &&
                      char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
+            {
                 throw new NotSupportedException("Is not supposed to be rendered");
+            }
 
             Console.Write(str);
 

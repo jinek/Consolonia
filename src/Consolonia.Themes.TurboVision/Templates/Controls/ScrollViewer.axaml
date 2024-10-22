@@ -11,11 +11,9 @@
                 Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="(helpers:ScrollViewerExtensions.ScrollBarsWidth)"
                 Value="Auto" />
-        <Setter Property="HorizontalSnapPointsType"
-                Value="None" />
-        <Setter Property="VerticalSnapPointsType"
-                Value="None" />
-
+        <Setter Property="HorizontalSnapPointsType" Value="None"/>
+        <Setter Property="VerticalSnapPointsType" Value="None"/>
+        
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid x:Name="PART_Root"

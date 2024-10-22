@@ -43,7 +43,7 @@
                     <Style Selector="TabItem">
                         <Setter Property="IsEnabled"
                                 Value="{Binding IsEnabled}"
-                                x:DataType="TabItem" />
+                                x:DataType="TabItem"/>
                     </Style>
                 </TabControl.Styles>
             </TabControl>

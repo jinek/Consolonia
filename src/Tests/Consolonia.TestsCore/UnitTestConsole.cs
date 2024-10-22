@@ -104,6 +104,7 @@ namespace Consolonia.TestsCore
                     .ConfigureAwait(true);
                 await mainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Processed
                     .ConfigureAwait(true);
+
             }, DispatcherPriority.Render).ConfigureAwait(true);
 
             await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);

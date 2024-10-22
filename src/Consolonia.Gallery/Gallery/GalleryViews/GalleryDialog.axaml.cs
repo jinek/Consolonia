@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public class GalleryDialog : UserControl
+    public partial class GalleryDialog : UserControl
     {
         public GalleryDialog()
         {

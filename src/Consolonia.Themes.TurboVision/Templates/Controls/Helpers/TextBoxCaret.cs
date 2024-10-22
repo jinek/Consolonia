@@ -9,12 +9,6 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
     public class TextBoxCaret : Control
     {
-        public static readonly StyledProperty<bool> ActiveProperty =
-            AvaloniaProperty.Register<TextBoxCaret, bool>(nameof(Active));
-
-        public static readonly StyledProperty<Point> PositionProperty =
-            AvaloniaProperty.Register<TextBoxCaret, Point>(nameof(Position));
-
         public TextBoxCaret()
         {
             PositionProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<Point>>(args =>
@@ -31,6 +25,12 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             IsTabStop = false;
             Focusable = false;
         }
+
+        public static readonly StyledProperty<bool> ActiveProperty =
+            AvaloniaProperty.Register<TextBoxCaret, bool>(nameof(Active));
+
+        public static readonly StyledProperty<Point> PositionProperty =
+            AvaloniaProperty.Register<TextBoxCaret, Point>(nameof(Position));
 
         public bool Active
         {

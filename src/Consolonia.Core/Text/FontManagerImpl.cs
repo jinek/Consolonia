@@ -11,6 +11,11 @@ namespace Consolonia.Core.Text
     /// </summary>
     internal class FontManagerImpl : IFontManagerImpl
     {
+        public static string GetTheOnlyFontFamilyName()
+        {
+            return "ConsoleDefault(F7D6533C-AC9D-4C4A-884F-7719A9B5DC0C)";
+        }
+
         public string GetDefaultFontFamilyName()
         {
             return GetTheOnlyFontFamilyName();
@@ -18,11 +23,10 @@ namespace Consolonia.Core.Text
 
         string[] IFontManagerImpl.GetInstalledFontFamilyNames(bool checkForUpdates)
         {
-            return new[] { GetTheOnlyFontFamilyName() };
+            return new []{GetTheOnlyFontFamilyName()};
         }
 
-        public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight,
-            FontStretch fontStretch,
+        public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch,
             CultureInfo culture, out Typeface typeface)
         {
             throw new NotImplementedException();
@@ -39,11 +43,6 @@ namespace Consolonia.Core.Text
         public bool TryCreateGlyphTypeface(Stream stream, out IGlyphTypeface glyphTypeface)
         {
             throw new NotImplementedException();
-        }
-
-        public static string GetTheOnlyFontFamilyName()
-        {
-            return "ConsoleDefault(F7D6533C-AC9D-4C4A-884F-7719A9B5DC0C)";
         }
     }
 }

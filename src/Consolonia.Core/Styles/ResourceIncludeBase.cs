@@ -46,12 +46,11 @@ namespace Consolonia.Core.Styles
                 return _loaded[0];
             }
         }
-
         public bool TryGetResource(object key, ThemeVariant theme, out object value)
         {
             if (!_isLoading && Loaded is IResourceProvider p)
                 return p.TryGetResource(key, theme, out value);
-
+            
             value = null;
             return false;
         }

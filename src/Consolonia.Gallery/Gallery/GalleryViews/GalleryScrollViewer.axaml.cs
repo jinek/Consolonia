@@ -1,8 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 
 // ReSharper disable UnusedMember.Global
@@ -12,7 +16,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public class GalleryScrollViewer : UserControl
+    public partial class GalleryScrollViewer : UserControl
     {
         public GalleryScrollViewer()
         {

@@ -5,7 +5,7 @@ using Avalonia.Markup.Xaml;
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     [GalleryOrder(30)]
-    public class GalleryCalendar : UserControl
+    public partial class GalleryCalendar : UserControl
     {
         public GalleryCalendar()
         {

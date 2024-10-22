@@ -9,7 +9,7 @@ using Consolonia.Core.Infrastructure;
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     // ReSharper disable once UnusedType.Global
-    public class GalleryAnimatedLines : UserControl
+    public partial class GalleryAnimatedLines : UserControl
     {
         public GalleryAnimatedLines()
         {

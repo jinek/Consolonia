@@ -33,8 +33,7 @@
                 <Border.BorderBrush>
                     <drawing:FourBitColorBrush Color="DarkGray" />
                 </Border.BorderBrush>
-                <Grid ColumnDefinitions="Auto *"
-                      x:DataType="views:TheItem">
+                <Grid ColumnDefinitions="Auto *" x:DataType="views:TheItem">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />

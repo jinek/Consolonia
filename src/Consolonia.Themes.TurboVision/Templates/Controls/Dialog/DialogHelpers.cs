@@ -41,7 +41,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 
         public void OpenInternal(DialogWindow dialogWindow)
         {
-            IInputElement focusedElement = _window.FocusManager! /*todo: low: Why can be null?*/.GetFocusedElement();
+            IInputElement focusedElement = _window.FocusManager!/*todo: low: Why can be null?*/.GetFocusedElement();
             var overlayLayer = OverlayLayer.GetOverlayLayer(_window);
             var popupHost = new OverlayPopupHost(overlayLayer!);
 

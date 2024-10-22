@@ -43,19 +43,19 @@ namespace Consolonia.Core.Drawing
             set => SetValue(ColorProperty, value);
         }
 
-        public double Opacity => 1;
-        public ITransform Transform => null;
-        public RelativePoint TransformOrigin => RelativePoint.TopLeft;
-
         // ReSharper disable once UnusedMember.Global used by Avalonia
         // ReSharper disable once UnusedParameter.Global
         public IBrush ProvideValue(IServiceProvider _)
         {
             return this;
         }
+
+        public double Opacity => 1;
+        public ITransform Transform => null;
+        public RelativePoint TransformOrigin => RelativePoint.TopLeft;
     }
 
-    public class FourBitBrushConverter : TypeConverter
+    public class FourBitBrushConverter : TypeConverter 
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
@@ -66,11 +66,15 @@ namespace Consolonia.Core.Drawing
             ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value is string s)
-                return Enum.TryParse(s, out ConsoleColor result)
-                    ? result
+            {
+                return Enum.TryParse(s, out ConsoleColor result) 
+                    ? result 
                     : null;
-
+            }
+    
             return null;
         }
     }
+    
+    
 }
