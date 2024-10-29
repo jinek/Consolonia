@@ -61,6 +61,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
             popupHost.Show();
 
             dialogWindow.AttachedToVisualTree += DialogAttachedToVisualTree;
+            return;
 
             static void DialogAttachedToVisualTree(object sender, EventArgs e)
             {

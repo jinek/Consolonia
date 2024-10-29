@@ -331,6 +331,7 @@ namespace Consolonia.Core.Drawing
 
             pattern = (byte)(line.Vertical ? 0b1000 : 0b0001);
             DrawPixelAndMoveHead(1); //ending 
+            return;
 
             void DrawPixelAndMoveHead(int count)
             {

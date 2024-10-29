@@ -82,6 +82,8 @@ namespace Consolonia.Core.Infrastructure
                 _keyboardNavigationHandler.Move(element, direction, keyModifiers);
             }
 
+            return;
+
             (Point, Point) GetOriginalPoint(Rect valueClip)
             {
 #pragma warning disable CS8509

@@ -12,7 +12,7 @@ namespace Consolonia.GalleryTests
     {
         protected override async Task PerformSingleTest()
         {
-            await UITest.AssertHasText(@"5%", @"50%");
+            await UITest.AssertHasText("5%", "50%");
         }
     }
 }

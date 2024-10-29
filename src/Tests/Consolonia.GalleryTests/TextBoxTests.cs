@@ -19,24 +19,24 @@ namespace Consolonia.GalleryTests
             await UITest.AssertHasText(@"t, consectetur adipiscing elit\.asd");
             await UITest.KeyInput(Key.Home);
             await UITest.KeyInput(7, Key.Right, RawInputModifiers.Control);
-            await UITest.AssertHasText(@"ipsum dolor sit amet, consectetur ");
+            await UITest.AssertHasText("ipsum dolor sit amet, consectetur ");
 
             //readonly
             await UITest.KeyInput(Key.Tab);
             await UITest.StringInput("asdf");
-            await UITest.AssertHasText(@"This is read only");
-            await UITest.AssertHasText(@"ReadOnly watermark");
-            await UITest.AssertHasText(@"This is disabled");
-            await UITest.AssertHasText(@"This is disabled watermark");
+            await UITest.AssertHasText("This is read only");
+            await UITest.AssertHasText("ReadOnly watermark");
+            await UITest.AssertHasText("This is disabled");
+            await UITest.AssertHasText("This is disabled watermark");
 
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Delete);
-            await UITest.AssertHasText(@"Floating Watermark");
+            await UITest.AssertHasText("Floating Watermark");
 
             const string checkText = "asd3333";
             await UITest.StringInput(checkText);
-            await UITest.AssertHasText(@"Floating Watermark");
+            await UITest.AssertHasText("Floating Watermark");
             await UITest.AssertHasText(checkText);
         }
     }

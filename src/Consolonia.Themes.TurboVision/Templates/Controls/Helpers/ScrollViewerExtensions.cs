@@ -41,6 +41,8 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     scrollViewer.TemplateApplied += OnScrollViewerOnTemplateApplied;
                 }
 
+                return;
+
                 void Apply()
                 {
                     grid.RowDefinitions[1].Height = args.NewValue.Value;
