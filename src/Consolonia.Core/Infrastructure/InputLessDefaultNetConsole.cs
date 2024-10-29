@@ -83,11 +83,11 @@ namespace Consolonia.Core.Infrastructure
             }
 
             if (weight == FontWeight.Normal)
-                foreground = Color.FromRgb((byte)(foreground.R * .9), (byte)(foreground.G * .85), (byte)(foreground.B * .85));
+                foreground = foreground.Shade(background);
             else if ((int)weight < (int)FontWeight.Normal)
-                foreground = Color.FromRgb((byte)(foreground.R * .7), (byte)(foreground.G * .7), (byte)(foreground.B * .7));
+                foreground = foreground.Shade(background).Shade(background);
             else if ((int)weight > (int)FontWeight.Normal)
-                foreground = Color.FromRgb((byte)(foreground.R), (byte)(foreground.G), (byte)(foreground.B));
+                foreground = foreground.Brighten(background);
 
             Console.Write(Crayon.Output.Rgb(foreground.R, foreground.G, foreground.B)
                          .Background.Rgb(background.R, background.G, background.B)
