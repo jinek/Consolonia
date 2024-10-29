@@ -7,7 +7,7 @@
         <ControlTemplate>
             <Panel>
                 <Panel.Background>
-                    <drawing:FourBitColorBrush Mode="Transparent" />
+                    <drawing:ConsoleColorBrush Mode="Transparent" />
                 </Panel.Background>
                 <!--<Border Name="PART_TransparencyFallback" IsHitTestVisible="False" Tag="thth">
                     <Border.Background>

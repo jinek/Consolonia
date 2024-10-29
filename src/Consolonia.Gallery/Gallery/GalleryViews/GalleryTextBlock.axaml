@@ -11,18 +11,11 @@
     <!--Examples from Avalonia https://github.com/AvaloniaUI/Avalonia/blob/master/samples/ControlCatalog/Pages/TextBlockPage.xaml-->
     <StackPanel Orientation="Vertical">
         <TextBlock Text="This is TextBlock" />
-        <TextBlock Text="This is colored TextBlock">
-            <TextBlock.Background>
-                <drawing:FourBitColorBrush Color="Blue" />
-            </TextBlock.Background>
-            <TextBlock.Foreground>
-                <drawing:FourBitColorBrush Color="DarkRed" />
-            </TextBlock.Foreground>
-        </TextBlock>
+        <TextBlock Text="This is colored TextBlock" Background="DarkMagenta" Foreground="Yellow"/>
         <Grid ColumnDefinitions="* *">
             <StackPanel Orientation="Vertical">
                 <StackPanel.Background>
-                    <drawing:FourBitColorBrush Color="DarkGray" />
+                    <drawing:ConsoleColorBrush Color="DarkGray" />
                 </StackPanel.Background>
                 <TextBlock TextTrimming="CharacterEllipsis"
                            Text="Text trimming with character ellipsis. Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
@@ -34,12 +27,15 @@
                            TextAlignment="Center" />
                 <TextBlock Text="Right aligned text"
                            TextAlignment="Right" />
+
+                <TextBlock Text="Underline text" TextDecorations="Underline" />
+                <TextBlock Text="Bold text" FontWeight="Bold" />
             </StackPanel>
         </Grid>
         <TextBlock TextWrapping="Wrap"
                    Text="Multiline TextBlock with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
         <TextBlock TextWrapping="Wrap"
                    Text="Special characters: Élève naïve: “𝔉𝔞𝔫𝔠𝔶” ligatures like ﬀ, ﬁ, and ﬂ; numbers ½, ¼; symbols like @, #, and €; emoji 😊; and math symbols Ω, ∑, √…"/>
-    </StackPanel>
+ </StackPanel>
 
 </UserControl>

@@ -1,4 +1,7 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+using Avalonia.Media;
+using Consolonia.Core.Text;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -8,7 +11,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     public readonly struct Pixel
     {
         public PixelForeground Foreground { get; }
+
         public PixelBackground Background { get; }
+
         public bool IsCaret { get; }
 
         public Pixel(bool isCaret) : this(PixelBackgroundMode.Transparent)
@@ -16,23 +21,23 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             IsCaret = isCaret;
         }
 
-        public Pixel(char character, ConsoleColor foregroundColor) : this(new SimpleSymbol(character),
-            foregroundColor)
+        public Pixel(char character, Color foregroundColor, FontStyle style = FontStyle.Normal, FontWeight weight = FontWeight.Normal) : 
+            this(new SimpleSymbol(character), foregroundColor, style, weight)
         {
         }
 
-        public Pixel(byte drawingBoxSymbol, ConsoleColor foregroundColor) : this(
-            new DrawingBoxSymbol(drawingBoxSymbol), foregroundColor)
+        public Pixel(byte drawingBoxSymbol, Color foregroundColor) : this(
+            new DrawingBoxSymbol(drawingBoxSymbol), foregroundColor, FontStyle.Normal, FontWeight.Normal)
         {
         }
 
-        public Pixel(ISymbol symbol, ConsoleColor foregroundColor) : this(
-            new PixelForeground(symbol, foregroundColor),
+        public Pixel(ISymbol symbol, Color foregroundColor, FontStyle style = FontStyle.Normal, FontWeight weight = FontWeight.Normal) : this(
+            new PixelForeground(symbol, weight, style, foregroundColor),
             new PixelBackground(PixelBackgroundMode.Transparent))
         {
         }
 
-        public Pixel(ConsoleColor backgroundColor) : this(
+        public Pixel(Color backgroundColor, IGlyphTypeface typeface = null) : this(
             new PixelBackground(PixelBackgroundMode.Colored, backgroundColor))
         {
         }
@@ -83,5 +88,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             return (Foreground.Shade(), Background.Shade());
         }
+
     }
 }

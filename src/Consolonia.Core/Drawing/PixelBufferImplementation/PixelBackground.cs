@@ -1,21 +1,23 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public readonly struct PixelBackground
     {
-        public PixelBackground(PixelBackgroundMode mode, ConsoleColor color = ConsoleColor.Black)
+        public PixelBackground(PixelBackgroundMode mode, Color? color = null)
         {
-            Color = color;
+            Color = color ?? Colors.Black;
             Mode = mode;
         }
 
-        public ConsoleColor Color { get; }
+        public Color Color { get; }
         public PixelBackgroundMode Mode { get; }
 
         public PixelBackground Shade()
         {
-            ConsoleColor newColor = Color;
+            Color newColor = Color;
             PixelBackgroundMode newMode = Mode;
             switch (Mode)
             {
@@ -27,7 +29,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     break;
                 case PixelBackgroundMode.Shaded:
                     newMode = PixelBackgroundMode.Colored;
-                    newColor = ConsoleColor.Black;
+                    newColor = Colors.Black;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -35,5 +37,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             return new PixelBackground(newMode, newColor);
         }
+
     }
 }

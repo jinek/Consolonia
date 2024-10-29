@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -19,7 +20,7 @@ namespace Consolonia.Core.Drawing
 
         private PixelBuffer _bufferBuffer;
 
-        private (ConsoleColor background, ConsoleColor foreground, char character)?[,] _cache;
+        private (Color background, Color foreground, FontWeight weight, FontStyle style, char character)?[,] _cache;
 
         internal RenderTarget(ConsoleWindow consoleWindow)
         {
@@ -87,7 +88,7 @@ namespace Consolonia.Core.Drawing
 
         private void InitializeCache(ushort width, ushort height)
         {
-            _cache = new (ConsoleColor background, ConsoleColor foreground, char character)?[width, height];
+            _cache = new (Color background, Color foreground, FontWeight weight, FontStyle style,  char character)?[width, height];
         }
 
         private void RenderToDevice()
@@ -126,7 +127,7 @@ namespace Consolonia.Core.Drawing
                     {
                         // buffer re-initialized after resizing
                         character = '░';
-                        pixel = new Pixel(new PixelForeground(), new PixelBackground(PixelBackgroundMode.Colored));
+                        pixel = new Pixel(new PixelForeground(new SimpleSymbol(character)), new PixelBackground(PixelBackgroundMode.Colored));
                     }
                     else
                     {
@@ -136,19 +137,18 @@ namespace Consolonia.Core.Drawing
                     if (char.IsControl(character) /*|| character is '保' or '哥'*/)
                         character = ' '; // some terminals do not print \0
 
-                    ConsoleColor backgroundColor = pixel.Background.Color;
-                    ConsoleColor foregroundColor = pixel.Foreground.Color;
+                    Color backgroundColor = pixel.Background.Color;
+                    Color foregroundColor = pixel.Foreground.Color;
 
                     //todo: indexOutOfRange during resize
-                    if (_cache[x, y] == (backgroundColor, foregroundColor, character))
+                    if (_cache[x, y] == (backgroundColor, foregroundColor, pixel.Foreground.Weight, pixel.Foreground.Style, character))
                         continue;
 
-                    _cache[x, y] = (backgroundColor, foregroundColor, character);
+                    _cache[x, y] = (backgroundColor, foregroundColor, pixel.Foreground.Weight, pixel.Foreground.Style, character);
 
-                    flushingBuffer.WriteCharacter(new PixelBufferCoordinate(x, y),
-                        backgroundColor,
-                        foregroundColor,
-                        character);
+                    flushingBuffer.WriteCharacter(new PixelBufferCoordinate(x, y), 
+                        character, 
+                        pixel);
                 }
 
             flushingBuffer.Flush();
@@ -169,8 +169,10 @@ namespace Consolonia.Core.Drawing
             //todo: move class out
             private readonly IConsole _console;
             private readonly StringBuilder _stringBuilder;
-            private ConsoleColor _lastBackgroundColor;
-            private ConsoleColor _lastForegroundColor;
+            private Color _lastBackgroundColor;
+            private Color _lastForegroundColor;
+            private FontStyle _lastStyle = FontStyle.Normal;
+            private FontWeight _lastWeight = FontWeight.Normal;
             private PixelBufferCoordinate _currentBufferPoint;
             private PixelBufferCoordinate _lastBufferPointStart;
 
@@ -183,19 +185,22 @@ namespace Consolonia.Core.Drawing
 
             public void WriteCharacter(
                 PixelBufferCoordinate bufferPoint,
-                ConsoleColor backgroundColor,
-                ConsoleColor foregroundColor,
-                char character)
+                char character,
+                Pixel pixel)
             {
                 if (!bufferPoint.Equals(_currentBufferPoint) /*todo: performance*/ ||
-                    _lastForegroundColor != foregroundColor ||
-                    _lastBackgroundColor != backgroundColor)
+                    _lastForegroundColor != pixel.Foreground.Color ||
+                    _lastBackgroundColor != pixel.Background.Color ||
+                    _lastWeight != pixel.Foreground.Weight ||
+                    _lastStyle != pixel.Foreground.Style )
                     Flush();
 
                 if (_stringBuilder.Length == 0)
                 {
-                    _lastBackgroundColor = backgroundColor;
-                    _lastForegroundColor = foregroundColor;
+                    _lastBackgroundColor = pixel.Background.Color;
+                    _lastForegroundColor = pixel.Foreground.Color;
+                    _lastStyle = pixel.Foreground.Style;
+                    _lastWeight = pixel.Foreground.Weight;
                     _lastBufferPointStart = _currentBufferPoint = bufferPoint;
                 }
 
@@ -208,8 +213,7 @@ namespace Consolonia.Core.Drawing
                 if (_stringBuilder.Length == 0)
                     return;
 
-                _console.Print(_lastBufferPointStart, _lastBackgroundColor, _lastForegroundColor,
-                    _stringBuilder.ToString());
+                _console.Print(_lastBufferPointStart, _lastBackgroundColor, _lastForegroundColor, _lastStyle, _lastWeight, _stringBuilder.ToString());
                 _stringBuilder.Clear();
             }
         }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 // ReSharper disable UnusedMember.Global
@@ -19,8 +20,7 @@ namespace Consolonia.Core.Infrastructure
         void SetCaretPosition(PixelBufferCoordinate bufferPoint);
         PixelBufferCoordinate GetCaretPosition();
 
-        void Print(PixelBufferCoordinate bufferPoint, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
-            string str);
+        void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style, FontWeight weight, string str);
 
 
         event Action Resized;

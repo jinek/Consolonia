@@ -4,30 +4,30 @@
                     xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
     <!--https://www.mikrocontroller.net/attachment/483578/Turbo_Vision.gif-->
     <system:Double x:Key="FontSizeNormal">1</system:Double>
-    <drawing:FourBitColorBrush x:Key="ThemeForegroundBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemeForegroundBrush"
                                Color="Black" />
-    <drawing:FourBitColorBrush x:Key="ThemeBackgroundBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemeBackgroundBrush"
                                Color="Gray" />
-    <drawing:FourBitColorBrush x:Key="ThemeChooserBackgroundBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemeChooserBackgroundBrush"
                                Color="Cyan" />
-    <drawing:FourBitColorBrush x:Key="ThemeActionBackgroundBrush"
-                               Color="Green" />
-    <drawing:FourBitColorBrush x:Key="ThemeSelectionBackgroundBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemeActionBackgroundBrush"
+                               Color="ForestGreen" />
+    <drawing:ConsoleColorBrush x:Key="ThemeSelectionBackgroundBrush"
                                Color="DarkBlue" />
-    <drawing:FourBitColorBrush x:Key="ThemeSelectionForegroundBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemeSelectionForegroundBrush"
                                Color="White" />
-    <drawing:FourBitColorBrush x:Key="ThemeAlternativeBackgroundBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemeAlternativeBackgroundBrush"
                                Color="White" />
-    <drawing:FourBitColorBrush x:Key="ThemeBorderBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemeBorderBrush"
                                Color="DarkGray" />
-    <drawing:FourBitColorBrush x:Key="ThemeNoDisturbBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemeNoDisturbBrush"
                                Color="DarkGray" />
-    <drawing:FourBitColorBrush x:Key="ThemeShadeBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemeShadeBrush"
                                Mode="Shaded" />
-    <drawing:FourBitColorBrush x:Key="ThemePseudoShadeBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemePseudoShadeBrush"
                                Color="Black" />
-    <drawing:FourBitColorBrush x:Key="ThemeErrorBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemeErrorBrush"
                                Color="Red" />
-    <drawing:FourBitColorBrush x:Key="ThemeTransparentBrush"
+    <drawing:ConsoleColorBrush x:Key="ThemeTransparentBrush"
                                Mode="Transparent"/>
 </ResourceDictionary>

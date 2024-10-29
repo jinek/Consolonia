@@ -11,8 +11,8 @@
             </Style>
         </StackPanel.Styles>
         <Button>Standard _XAML Button</Button>
-        <Button Foreground="{drawing:FourBitColorBrush DarkYellow}">Foreground</Button>
-        <Button Background="{drawing:FourBitColorBrush Yellow}">Background</Button>
+        <Button Foreground="DarkGoldenrod">Foreground</Button>
+        <Button Background="Yellow">Background</Button>
         <Button IsEnabled="False">Disabled</Button>
         <RepeatButton Name="RepeatButton">
             <TextBlock Name="RepeatButtonTextBlock"

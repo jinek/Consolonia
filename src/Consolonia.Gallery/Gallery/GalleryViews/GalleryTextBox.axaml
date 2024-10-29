@@ -57,8 +57,8 @@
         <TextBox Text="Custom selection brush"
                  SelectionStart="5"
                  SelectionEnd="22"
-                 SelectionBrush="{drawing:FourBitColorBrush Magenta}"
-                 SelectionForegroundBrush="{drawing:FourBitColorBrush Yellow}" />
+                 SelectionBrush="Magenta"
+                 SelectionForegroundBrush="Yellow" />
 
         <TextBox AcceptsReturn="True"
                  TextWrapping="Wrap"

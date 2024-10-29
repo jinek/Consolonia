@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Media;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -52,17 +53,15 @@ namespace Consolonia.TestsCore
             return _fakeCaretPosition;
         }
 
-        void IConsole.Print(PixelBufferCoordinate bufferPoint, ConsoleColor backgroundColor,
-            ConsoleColor foregroundColor,
-            string str)
+        void IConsole.Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style, FontWeight weight, string str)
         {
             (ushort x, ushort y) = bufferPoint;
 
             for (int i = 0; i < str.Length; i++)
                 PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
                     // ReSharper disable once AccessToModifiedClosure we are sure about inline execution
-                    new Pixel(new PixelForeground(new SimpleSymbol(str[i]), foregroundColor),
-                        new PixelBackground(PixelBackgroundMode.Colored, backgroundColor)));
+                    new Pixel(new PixelForeground(new SimpleSymbol(str[i]), color: foreground),
+                        new PixelBackground(PixelBackgroundMode.Colored, background)));
         }
 
         public void PauseIO(Task task)

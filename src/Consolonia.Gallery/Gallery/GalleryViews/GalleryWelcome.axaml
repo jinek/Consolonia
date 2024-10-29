@@ -1,5 +1,5 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryWelcome">
-    Welcome to Avalonia!
+    <TextBlock FontWeight="Bold"  >Welcome to Avalonia!</TextBlock>
 </UserControl>

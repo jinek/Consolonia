@@ -14,7 +14,7 @@ namespace Consolonia.Core.Text
             var glyphInfos = Convert(text.Span.ToString());
             
             var shapedBuffer = new ShapedBuffer(text, glyphInfos.Length,
-                new GlyphTypeface(), 1, 0 /*todo: must be 1 for right to left?*/);
+                options.Typeface ?? new GlyphTypeface(), 1, 0 /*todo: must be 1 for right to left?*/);
             
             for (int i = 0; i < shapedBuffer.Length; i++)
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -117,17 +118,24 @@ namespace Consolonia.Core.Drawing
                     case VisualBrush:
                         throw new NotImplementedException();
                     case ISceneBrush sceneBrush:
-                    {
-                        ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
-                        sceneBrushContent!.Render(this, Matrix.Identity);
-                        return;
-                    }
+                        {
+                            ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
+                            sceneBrushContent!.Render(this, Matrix.Identity);
+                            return;
+                        }
                 }
 
-                if (brush is not FourBitColorBrush backgroundBrush)
+                if (brush is not ConsoleColorBrush backgroundBrush)
                 {
-                    ConsoloniaPlatform.RaiseNotSupported(9, brush, pen, rect, boxShadows);
-                    return;
+                    if (brush is ISolidColorBrush br)
+                    {
+                        backgroundBrush = new ConsoleColorBrush(br.Color, PixelBackgroundMode.Colored);
+                    }
+                    else
+                    {
+                        ConsoloniaPlatform.RaiseNotSupported(9, brush, pen, rect, boxShadows);
+                        return;
+                    }
                 }
 
                 {
@@ -135,18 +143,18 @@ namespace Consolonia.Core.Drawing
 
                     (double x, double y) = r2.TopLeft;
                     for (int i = 0; i < r2.Width + (pen?.Thickness ?? 0); i++)
-                    for (int j = 0; j < r2.Height + (pen?.Thickness ?? 0); j++)
-                    {
-                        int px = (int)(x + i);
-                        int py = (int)(y + j);
-                        CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                        for (int j = 0; j < r2.Height + (pen?.Thickness ?? 0); j++)
                         {
-                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                                (pixel, bb) => pixel.Blend(
-                                    new Pixel(
-                                        new PixelBackground(bb.Mode, bb.Color))), backgroundBrush);
-                        });
-                    }
+                            int px = (int)(x + i);
+                            int py = (int)(y + j);
+                            CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                            {
+                                _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                    (pixel, bb) => pixel.Blend(
+                                        new Pixel(
+                                            new PixelBackground(bb.Mode, bb.Color))), backgroundBrush);
+                            });
+                        }
                 }
             }
 
@@ -179,7 +187,7 @@ namespace Consolonia.Core.Drawing
 
             string charactersDoDraw =
                 string.Concat(glyphRunImpl.GlyphIndices.Select(us => (char)us).ToArray());
-            DrawStringInternal(foreground, charactersDoDraw);
+            DrawStringInternal(foreground, charactersDoDraw, glyphRun.GlyphTypeface);
         }
 
         public IDrawingContextLayerImpl CreateLayer(Size size)
@@ -195,9 +203,9 @@ namespace Consolonia.Core.Drawing
 
         public void PushClip(RoundedRect clip)
         {
-            if(clip.IsRounded)
+            if (clip.IsRounded)
                 ConsoloniaPlatform.RaiseNotSupported(2);
-            
+
             PushClip(clip.Rect);
         }
 
@@ -261,27 +269,45 @@ namespace Consolonia.Core.Drawing
             set => _transform = value * _postTransform;
         }
 
-        private static ConsoleColor? ExtractConsoleColorOrNullWithPlatformCheck(IPen pen, out LineStyle? lineStyle)
+        private static Color? ExtractColorOrNullWithPlatformCheck(IPen pen, out LineStyle? lineStyle)
         {
             lineStyle = null;
             if (pen is not
-            {
-                Brush: FourBitColorBrush or LineBrush { Brush: FourBitColorBrush },
-                Thickness: 1,
-                DashStyle: null or { Dashes: { Count: 0 } },
-                LineCap: PenLineCap.Flat,
-                LineJoin: PenLineJoin.Miter
-            })
+                {
+                    Brush: ConsoleColorBrush or LineBrush or ImmutablePen or ImmutableSolidColorBrush,
+                    Thickness: 1,
+                    DashStyle: null or { Dashes: { Count: 0 } },
+                    LineCap: PenLineCap.Flat,
+                    LineJoin: PenLineJoin.Miter
+                })
             {
                 ConsoloniaPlatform.RaiseNotSupported(6);
                 return null;
             }
 
-            if (pen.Brush is not FourBitColorBrush consoleColorBrush)
+            var brush = pen.Brush;
+            ConsoleColorBrush consoleColorBrush;
+            if (brush is ConsoleColorBrush)
+                consoleColorBrush = brush as ConsoleColorBrush;
+            else if (brush is LineBrush lineBrush)
             {
-                var lineBrush = (LineBrush)pen.Brush;
-                consoleColorBrush = (FourBitColorBrush)lineBrush.Brush;
                 lineStyle = lineBrush.LineStyle;
+                if (lineBrush.Brush is ConsoleColorBrush)
+                    consoleColorBrush = lineBrush.Brush as ConsoleColorBrush;
+                else if (lineBrush.Brush is ISolidColorBrush br)
+                    consoleColorBrush = new ConsoleColorBrush(br.Color, PixelBackgroundMode.Colored);
+                else
+                {
+                    ConsoloniaPlatform.RaiseNotSupported(6);
+                    return null;
+                }
+            }
+            else if (brush is ISolidColorBrush br2)
+                consoleColorBrush = new ConsoleColorBrush(br2.Color, PixelBackgroundMode.Colored);
+            else
+            {
+                ConsoloniaPlatform.RaiseNotSupported(6);
+                return null;
             }
 
             switch (consoleColorBrush.Mode)
@@ -316,12 +342,12 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            var extractConsoleColorCheckPlatformSupported =
-                ExtractConsoleColorOrNullWithPlatformCheck(pen, out var lineStyle);
-            if (extractConsoleColorCheckPlatformSupported == null)
+            var extractColorCheckPlatformSupported =
+                ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
+            if (extractColorCheckPlatformSupported == null)
                 return;
 
-            var consoleColor = (ConsoleColor)extractConsoleColorCheckPlatformSupported;
+            var consoleColor = (Color)extractColorCheckPlatformSupported;
 
             byte pattern = (byte)(line.Vertical ? 0b0010 : 0b0100);
             DrawPixelAndMoveHead(1); //beginning
@@ -351,13 +377,20 @@ namespace Consolonia.Core.Drawing
                 }
             }
         }
-         
-        private void DrawStringInternal(IBrush foreground, string str, Point origin = new())
+
+        private void DrawStringInternal(IBrush foreground, string str, IGlyphTypeface typeface, Point origin = new())
         {
-            if (foreground is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
+            if (foreground is not ConsoleColorBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
             {
-                ConsoloniaPlatform.RaiseNotSupported(4);
-                return;
+                if (foreground is ISolidColorBrush solidBrush)
+                {
+                    consoleColorBrush = new ConsoleColorBrush(solidBrush.Color, PixelBackgroundMode.Colored);
+                }
+                else
+                {
+                    ConsoloniaPlatform.RaiseNotSupported(4);
+                    return;
+                }
             }
 
             if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
@@ -369,49 +402,49 @@ namespace Consolonia.Core.Drawing
             foreach (char c in str)
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
-                ConsoleColor foregroundColor = consoleColorBrush.Color;
+                Color foregroundColor = consoleColorBrush.Color;
 
                 switch (c)
                 {
                     case '\t':
-                    {
-                        const int tabSize = 8;
-                        var consolePixel = new Pixel(' ', foregroundColor);
-                        for (int j = 0; j < tabSize; j++)
                         {
-                            Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
-                            CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                            const int tabSize = 8;
+                            var consolePixel = new Pixel(' ', foregroundColor);
+                            for (int j = 0; j < tabSize; j++)
                             {
-                                _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
-                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                            });
-                        }
+                                Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
+                                CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                                {
+                                    _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
+                                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                                });
+                            }
 
-                        currentXPosition += tabSize - 1;
-                    }
+                            currentXPosition += tabSize - 1;
+                        }
                         break;
                     case '\n':
-                    {
-                        /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
-                         var consolePixel =  new Pixel(' ', foregroundColor); 
-                        
-                        _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
-                    }
+                        {
+                            /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
+                             var consolePixel =  new Pixel(' ', foregroundColor); 
+
+                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
+                        }
                         break;
                     case '\u200B':
                         currentXPosition--;
                         break;
                     default:
-                    {
-                        var consolePixel = new Pixel(c, foregroundColor);
-                        CurrentClip.ExecuteWithClipping(characterPoint, () =>
-                            {
-                                _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                            }
-                        );
-                    }
+                        {
+                            var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
+                            CurrentClip.ExecuteWithClipping(characterPoint, () =>
+                                {
+                                    _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                                }
+                            );
+                        }
                         break;
                 }
             }

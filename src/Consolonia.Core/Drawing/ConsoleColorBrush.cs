@@ -7,27 +7,27 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 namespace Consolonia.Core.Drawing
 {
-    [TypeConverter(typeof(FourBitBrushConverter))]
-    public class FourBitColorBrush : AvaloniaObject, IImmutableBrush
+    [TypeConverter(typeof(ConsoleColorBrushConverter))]
+    public class ConsoleColorBrush : AvaloniaObject, IImmutableBrush
     {
-        public static readonly StyledProperty<ConsoleColor> ColorProperty =
-            AvaloniaProperty.Register<FourBitColorBrush, ConsoleColor>(nameof(Color));
+        public static readonly StyledProperty<Color> ColorProperty =
+            AvaloniaProperty.Register<ConsoleColorBrush, Color>(nameof(Color));
 
         public static readonly StyledProperty<PixelBackgroundMode> ModeProperty =
-            AvaloniaProperty.Register<FourBitColorBrush, PixelBackgroundMode>(nameof(Mode));
+            AvaloniaProperty.Register<ConsoleColorBrush, PixelBackgroundMode>(nameof(Mode));
 
         // ReSharper disable once UnusedMember.Global
-        public FourBitColorBrush(ConsoleColor consoleColor, PixelBackgroundMode mode) : this(consoleColor)
+        public ConsoleColorBrush(Color color, PixelBackgroundMode mode) : this(color)
         {
             Mode = mode;
         }
 
-        public FourBitColorBrush(ConsoleColor consoleColor)
+        public ConsoleColorBrush(Color color)
         {
-            Color = consoleColor;
+            Color = color;
         }
 
-        public FourBitColorBrush()
+        public ConsoleColorBrush()
         {
         }
 
@@ -37,7 +37,7 @@ namespace Consolonia.Core.Drawing
             set => SetValue(ModeProperty, value);
         }
 
-        public ConsoleColor Color
+        public Color Color
         {
             get => GetValue(ColorProperty);
             set => SetValue(ColorProperty, value);
@@ -55,7 +55,7 @@ namespace Consolonia.Core.Drawing
         public RelativePoint TransformOrigin => RelativePoint.TopLeft;
     }
 
-    public class FourBitBrushConverter : TypeConverter 
+    public class ConsoleColorBrushConverter : TypeConverter 
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
@@ -67,7 +67,7 @@ namespace Consolonia.Core.Drawing
         {
             if (value is string s)
             {
-                return Enum.TryParse(s, out ConsoleColor result) 
+                return Enum.TryParse(s, out Color result) 
                     ? result 
                     : null;
             }

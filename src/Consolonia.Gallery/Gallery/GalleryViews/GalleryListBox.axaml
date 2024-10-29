@@ -6,11 +6,11 @@
         <DockPanel.Styles>
             <Style Selector="ListBox ListBoxItem:nth-child3">
                 <Setter Property="Foreground"
-                        Value="{drawing:FourBitColorBrush Red}" />
+                        Value="Red" />
             </Style>
             <Style Selector="ListBox ListBoxItem:nth-last-child4">
                 <Setter Property="Foreground"
-                        Value="{drawing:FourBitColorBrush Blue}" />
+                        Value="Blue" />
             </Style>
         </DockPanel.Styles>
         <StackPanel DockPanel.Dock="Top"

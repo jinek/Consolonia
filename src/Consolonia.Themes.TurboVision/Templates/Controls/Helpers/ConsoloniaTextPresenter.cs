@@ -58,10 +58,19 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local //todo: what does this mean?
                         args =>
                         {
-                            if (args.NewValue.Value is not FourBitColorBrush
+                            if (args.NewValue.Value is not ConsoleColorBrush brush)
+                            {
+                                if (args.NewValue.Value is ISolidColorBrush br)
                                 {
-                                    Color: ConsoleColor.Black, Mode: PixelBackgroundMode.Transparent
-                                })
+                                    brush = new ConsoleColorBrush(br.Color, PixelBackgroundMode.Transparent);
+                                }
+                                else
+                                {
+                                    throw new NotSupportedException();
+                                }
+                            }
+
+                            if (brush.Color != Colors.Black || brush.Mode != PixelBackgroundMode.Transparent)
                                 throw new NotSupportedException();
                         }));
         }
@@ -76,7 +85,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             caretTickTimer!.Tick += (_, _) => throw new NotImplementedException("How to disable timer completely?");
 
             CaretBrush =
-                new FourBitColorBrush(ConsoleColor.Black, PixelBackgroundMode.Transparent); // we want to draw own caret
+                new ConsoleColorBrush(Colors.Black, PixelBackgroundMode.Transparent); // we want to draw own caret
         }
 
         public Point CaretPosition

@@ -28,11 +28,8 @@
                        Margin="4,0,0,0" />
         </Grid>
         <Grid Grid.Column="1">
-            <Border BorderThickness="1"
+            <Border BorderThickness="1" BorderBrush="DarkGray"
                     DataContext="{Binding ElementName=Grid, Path=SelectedItem}">
-                <Border.BorderBrush>
-                    <drawing:FourBitColorBrush Color="DarkGray" />
-                </Border.BorderBrush>
                 <Grid ColumnDefinitions="Auto *" x:DataType="views:TheItem">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -48,7 +45,7 @@
                             <Style Selector="TextBlock">
                                 <Setter Property="Foreground">
                                     <Setter.Value>
-                                        <drawing:FourBitColorBrush Color="Gray" />
+                                        <drawing:ConsoleColorBrush Color="Gray" />
                                     </Setter.Value>
                                 </Setter>
                             </Style>

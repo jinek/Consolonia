@@ -61,8 +61,8 @@ namespace Consolonia.Core.Text
         }
 
         public string FamilyName { get; } = FontManagerImpl.GetTheOnlyFontFamilyName();
-        public FontWeight Weight => FontWeight.Normal;
-        public FontStyle Style => FontStyle.Normal;
+        public FontWeight Weight { get; set; } = FontWeight.Normal;
+        public FontStyle Style { get; set; } = FontStyle.Normal;
         public FontStretch Stretch => FontStretch.Normal;
         public int GlyphCount => char.MaxValue;
 

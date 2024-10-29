@@ -1,34 +1,47 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public readonly struct PixelForeground
     {
-        public PixelForeground(ISymbol symbol, ConsoleColor color = ConsoleColor.White)
+        public PixelForeground(ISymbol symbol, FontWeight weight = FontWeight.Normal, FontStyle style = FontStyle.Normal, Color? color = null)
         {
-            Symbol = symbol;
-            Color = color;
+            ArgumentNullException.ThrowIfNull(symbol);
+            Symbol = symbol ?? new SimpleSymbol('░');
+            Color = color ?? Colors.White;
+            Weight = weight;
+            Style = style;
         }
 
         public ISymbol Symbol { get; } //now working with 16 bit unicode only for simplicity //todo: reference here
-        public ConsoleColor Color { get; }
+
+        public Color Color { get; }
+
+        public FontWeight Weight { get; }
+
+        public FontStyle Style { get; }
 
         public PixelForeground Shade()
         {
-            ConsoleColor newColor = Color.Shade();
-            return new PixelForeground(Symbol, newColor);
+            Color newColor = Color.Shade();
+            return new PixelForeground(Symbol, Weight, Style, newColor);
         }
 
         public PixelForeground Blend(PixelForeground pixelAboveForeground)
         {
             //todo: check default(char) is there
             ISymbol symbolAbove = pixelAboveForeground.Symbol;
+            ArgumentNullException.ThrowIfNull(symbolAbove);
 
             if (symbolAbove.IsWhiteSpace()) return this;
 
-            ConsoleColor newColor = pixelAboveForeground.Color;
             ISymbol newSymbol = Symbol.Blend(ref symbolAbove);
-            return new PixelForeground(newSymbol, newColor);
+
+            return new PixelForeground(newSymbol, pixelAboveForeground.Weight, pixelAboveForeground.Style, pixelAboveForeground.Color);
         }
+
+
     }
 }

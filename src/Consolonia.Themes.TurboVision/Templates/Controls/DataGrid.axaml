@@ -276,7 +276,7 @@
                 Value="True" />
         <Setter Property="RowBackground">
             <Setter.Value>
-                <drawing:FourBitColorBrush Mode="Transparent" />
+                <drawing:ConsoleColorBrush Mode="Transparent" />
             </Setter.Value>
         </Setter>
         <Setter Property="HeadersVisibility"

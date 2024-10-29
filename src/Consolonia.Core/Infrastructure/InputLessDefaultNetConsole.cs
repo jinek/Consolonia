@@ -1,10 +1,13 @@
-﻿using System;
+using System;
+using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using NullLib.ConsoleEx;
 
@@ -13,9 +16,7 @@ namespace Consolonia.Core.Infrastructure
     public class InputLessDefaultNetConsole : IConsole
     {
         private bool _caretVisible;
-        private ConsoleColor _headBackground;
         private PixelBufferCoordinate _headBufferPoint;
-        private ConsoleColor _headForeground;
 
         protected InputLessDefaultNetConsole()
         {
@@ -66,16 +67,10 @@ namespace Consolonia.Core.Infrastructure
             return _headBufferPoint;
         }
 
-        public void Print(PixelBufferCoordinate bufferPoint, ConsoleColor backgroundColor, ConsoleColor foregroundColor,
-            string str)
+        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style, FontWeight weight, string str)
         {
             PauseTask?.Wait();
             SetCaretPosition(bufferPoint);
-
-            if (_headBackground != backgroundColor)
-                _headBackground = Console.BackgroundColor = backgroundColor;
-            if (_headForeground != foregroundColor)
-                _headForeground = Console.ForegroundColor = foregroundColor;
 
             if (!str.IsNormalized(NormalizationForm.FormKC))
                 throw new NotSupportedException("Is not supposed to be rendered");
@@ -87,7 +82,17 @@ namespace Consolonia.Core.Infrastructure
                 throw new NotSupportedException("Is not supposed to be rendered");
             }
 
-            Console.Write(str);
+            if (weight == FontWeight.Normal)
+                foreground = Color.FromRgb((byte)(foreground.R * .9), (byte)(foreground.G * .85), (byte)(foreground.B * .85));
+            else if ((int)weight < (int)FontWeight.Normal)
+                foreground = Color.FromRgb((byte)(foreground.R * .7), (byte)(foreground.G * .7), (byte)(foreground.B * .7));
+            else if ((int)weight > (int)FontWeight.Normal)
+                foreground = Color.FromRgb((byte)(foreground.R), (byte)(foreground.G), (byte)(foreground.B));
+
+            Console.Write(Crayon.Output.Rgb(foreground.R, foreground.G, foreground.B)
+                         .Background.Rgb(background.R, background.G, background.B)
+                         .Text(str));
+
 
             if (_headBufferPoint.X < Size.Width - str.Length)
                 _headBufferPoint =

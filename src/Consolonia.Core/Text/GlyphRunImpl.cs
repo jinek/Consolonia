@@ -27,7 +27,7 @@ namespace Consolonia.Core.Text
 
         public IReadOnlyList<float> GetIntersections(float lowerLimit, float upperLimit)
         {
-            throw new NotImplementedException();
+            return new List<float>(); // throw new NotImplementedException();
         }
 
         public IGlyphTypeface GlyphTypeface { get; }

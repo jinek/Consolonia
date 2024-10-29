@@ -1,3 +1,5 @@
+using System;
+
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public readonly struct SimpleSymbol : ISymbol
