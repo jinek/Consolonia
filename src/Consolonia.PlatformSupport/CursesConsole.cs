@@ -354,20 +354,16 @@ namespace Consolonia.PlatformSupport
                                     break;
                                 }
                             }
-
-                        RaiseKeyPressInternal(k);
                     }
                     else
                     {
                         k = Key.Esc;
-                        RaiseKeyPressInternal(k);
                     }
 
                     break;
                 }
                 case Curses.KeyTab:
                     k = MapCursesKey(wch);
-                    RaiseKeyPressInternal(k);
                     break;
                 default:
                 {
@@ -386,10 +382,11 @@ namespace Consolonia.PlatformSupport
                         _keyModifiers.Shift = true;
                     }
 
-                    RaiseKeyPressInternal(k);
                     break;
                 }
             }
+
+            RaiseKeyPressInternal(k);
         }
 
 

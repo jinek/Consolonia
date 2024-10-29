@@ -268,7 +268,7 @@ namespace Consolonia.Core.Drawing
             {
                 Brush: FourBitColorBrush or LineBrush { Brush: FourBitColorBrush },
                 Thickness: 1,
-                DashStyle: null or { Dashes: { Count: 0 } },
+                DashStyle: null or { Dashes.Count: 0 },
                 LineCap: PenLineCap.Flat,
                 LineJoin: PenLineJoin.Miter
             })

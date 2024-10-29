@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
@@ -12,7 +13,7 @@ namespace Consolonia.Core.Drawing
         public Rectangle(Rect rect, IGeometryImpl sourceGeometry = default, Matrix transform = default)
         {
             _rect = rect;
-            SourceGeometry = sourceGeometry;
+            SourceGeometry = sourceGeometry!;
             Transform = transform;
         }
 
@@ -33,9 +34,9 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
-        public bool StrokeContains(IPen pen, Point point)
+        public bool StrokeContains([NotNull]IPen pen, Point point)
         {
-            if (pen.Thickness == 0)
+            if (pen!.Thickness == 0)
                 return false;
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (pen.Thickness != 1)

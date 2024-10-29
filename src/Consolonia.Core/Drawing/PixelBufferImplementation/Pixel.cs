@@ -57,7 +57,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             PixelForeground newForeground;
             PixelBackground newBackground;
-            bool newIsCaret;
 
             switch (pixelAbove.Background.Mode)
             {
@@ -66,15 +65,15 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 case PixelBackgroundMode.Transparent:
                     newForeground = Foreground.Blend(pixelAbove.Foreground);
                     newBackground = Background;
-                    newIsCaret = IsCaret | pixelAbove.IsCaret;
                     break;
                 case PixelBackgroundMode.Shaded:
                     (newForeground, newBackground) = Shade();
                     newForeground = newForeground.Blend(pixelAbove.Foreground);
-                    newIsCaret = IsCaret | pixelAbove.IsCaret;
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(pixelAbove));
             }
+
+            bool newIsCaret = IsCaret | pixelAbove.IsCaret;
 
             return new Pixel(newForeground, newBackground, newIsCaret);
         }

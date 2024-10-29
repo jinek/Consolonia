@@ -14,7 +14,7 @@ namespace Consolonia.Core.Drawing
             PStart = pStart;
             Vertical = vertical;
             Length = length;
-            SourceGeometry = sourceGeometry;
+            SourceGeometry = sourceGeometry!; // todo: check why sometimes is goes nullable?
             Transform = transform;
         }
 
