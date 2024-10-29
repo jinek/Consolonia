@@ -112,7 +112,7 @@
                 </KeyFrame>
                 <KeyFrame Cue="100%">
                     <Setter Property="Height"
-                            Value="{TemplateBinding IndeterminateEndingOffset}" />
+                            Value="{Binding TemplateSettings.IndeterminateEndingOffset, RelativeSource={RelativeSource TemplatedParent}}" />
                 </KeyFrame>
             </Animation>
         </Style.Animations>
