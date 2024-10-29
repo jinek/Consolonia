@@ -9,7 +9,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Example.Views
 {
-    public class DataGridTestWindow : Window
+    public partial class DataGridTestWindow : Window
     {
         private readonly ObservableCollection<TheItem> _items;
 
@@ -21,7 +21,7 @@ namespace Example.Views
 #endif
 
             var comboBox = this.FindControl<ComboBox>("Combo");
-            comboBox.Items = TheItem.Genres;
+            comboBox.ItemsSource = TheItem.Genres;
             var rnd = new Random();
 
             DataContext = _items = new ObservableCollection<TheItem>(Enumerable.Range(1, 50).Select(i => new TheItem

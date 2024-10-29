@@ -1,18 +1,15 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:drawing1="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
-             d:DesignHeight="450"
              x:Class="Consolonia.Themes.TurboVision.Templates.Controls.DialogWrap">
 
     <Panel>
         <Border Background="{drawing1:FourBitColorBrush Mode=Shaded}"
                 IsVisible="{Binding RelativeSource={RelativeSource Self}, Path=IsEffectivelyEnabled}" />
 
-        <ContentPresenter x:Name="ContentPresenter"
+        <!-- ReSharper disable once UnusedMember.Local Used for manual search-->
+        <ContentPresenter Name="ContentPresenter"
+                          x:FieldModifier="private"
                           HorizontalContentAlignment="Stretch"
                           VerticalContentAlignment="Stretch"
                           HorizontalAlignment="Stretch"

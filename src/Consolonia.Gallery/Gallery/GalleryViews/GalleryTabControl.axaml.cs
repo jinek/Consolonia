@@ -1,13 +1,11 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using JetBrains.Annotations;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    [UsedImplicitly]
-    public class GalleryTabControl : UserControl
+    public partial class GalleryTabControl : UserControl
     {
         public GalleryTabControl()
         {

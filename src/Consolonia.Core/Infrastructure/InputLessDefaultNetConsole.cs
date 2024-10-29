@@ -78,20 +78,12 @@ namespace Consolonia.Core.Infrastructure
                 _headForeground = Console.ForegroundColor = foregroundColor;
 
             if (!str.IsNormalized(NormalizationForm.FormKC))
-                str = str.Normalize(NormalizationForm.FormKC);
+                throw new NotSupportedException("Is not supposed to be rendered");
 
             if (str.Any(
-                c => ConsoleText.IsWideChar(c) &&
-                     char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
-            {
-                StringBuilder stringBuilder = new();
-                foreach (char c in str)
-                    stringBuilder.Append(ConsoleText.IsWideChar(c) && char.IsLetterOrDigit(c)
-                        ? '?' //todo: support wide characters
-                        : c);
-
-                str = stringBuilder.ToString();
-            }
+                    c => ConsoleText.IsWideChar(c) &&
+                         char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
+                throw new NotSupportedException("Is not supposed to be rendered");
 
             Console.Write(str);
 

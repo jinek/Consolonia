@@ -1,10 +1,10 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Consolonia.Core.Styles;
-using JetBrains.Annotations;
 
 namespace Consolonia.Themes.TurboVision.Templates
 {
-    [UsedImplicitly /*Why resharper suggests this?*/]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class TurboVisionTheme : ResourceIncludeBase
     {
         public TurboVisionTheme(Uri baseUri) : base(baseUri)
@@ -15,6 +15,6 @@ namespace Consolonia.Themes.TurboVision.Templates
         {
         }
 
-        protected override Uri Uri => new(@"avares://Consolonia.Themes.TurboVision/Templates/TurboVision.axaml");
+        protected override Uri Uri => new("avares://Consolonia.Themes.TurboVision/Templates/TurboVision.axaml");
     }
 }

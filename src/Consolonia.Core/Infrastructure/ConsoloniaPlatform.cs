@@ -2,12 +2,12 @@ using System;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.Platform;
-using Avalonia.FreeDesktop;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Rendering;
+using Avalonia.Threading;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Text;
 
@@ -23,7 +23,7 @@ namespace Consolonia.Core.Infrastructure
         public IWindowImpl CreateEmbeddableWindow()
         {
             RaiseNotSupported(13);
-            return null;
+            return null!;
         }
 
         public ITrayIconImpl CreateTrayIcon()
@@ -37,21 +37,25 @@ namespace Consolonia.Core.Infrastructure
 
             AvaloniaLocator.CurrentMutable.BindToSelf(this)
                 .Bind<IWindowingPlatform>().ToConstant(this)
-                .Bind<IPlatformThreadingInterface>().ToSingleton<ConsoloniaPlatformThreadingInterface>()
+                /*todo: need replacement? .Bind<IPlatformThreadingInterface>().ToSingleton<ConsoloniaPlatformThreadingInterface>()*/
                 .Bind<IRenderTimer>().ToConstant(new UiThreadRenderTimer(120))
-                .Bind<IRenderLoop>().ToConstant(new RenderLoop())
+                .Bind<IDispatcherImpl>().ToConstant(new ManagedDispatcherImpl(null))
+                /*.Bind<IRenderTimer>().ToConstant(new SleepLoopRenderTimer(120))*/
+                /*SleepLoopRenderTimer : IRenderTimer*/
+                /*.Bind<IRenderLoop>().ToConstant(new RenderLoop()) todo: is internal now*/
                 .Bind<PlatformHotkeyConfiguration>().ToConstant(new PlatformHotkeyConfiguration(KeyModifiers.Control))
                 .Bind<IKeyboardDevice>().ToConstant(new ConsoleKeyboardDevice())
                 .Bind<IFontManagerImpl>().ToConstant(new FontManagerImpl())
-                .Bind<ITextShaperImpl>().ToConstant(new TextShaperImpl())
+                .Bind<ITextShaperImpl>().ToConstant(new TextShaper())
                 .Bind<IMouseDevice>().ToConstant(new MouseDevice())
                 .Bind<ICursorFactory>().ToConstant(new DummyCursorFactory())
                 .Bind<IPlatformIconLoader>().ToConstant(new DummyIconLoader())
-                .Bind<IKeyboardNavigationHandler>().ToTransient<ArrowsAndKeyboardNavigationHandler>()
+                .Bind<IPlatformSettings>().ToSingleton<ConsoloniaPlatformSettings>()
+                /*.Bind<IKeyboardNavigationHandler>().ToTransient<ArrowsAndKeyboardNavigationHandler>() todo: implement this navigation*/
                 //.Bind<IClipboard>().ToConstant(new X11Clipboard(this))
                 //.Bind<IPlatformSettings>().ToConstant(new PlatformSettingsStub())
                 //.Bind<ISystemDialogImpl>().ToConstant(new GtkSystemDialog())
-                .Bind<IMountedVolumeInfoProvider>().ToConstant(new LinuxMountedVolumeInfoProvider());
+                /*.Bind<IMountedVolumeInfoProvider>().ToConstant(new LinuxMountedVolumeInfoProvider())*/;
         }
 
         [DebuggerStepThrough]
@@ -76,5 +80,10 @@ namespace Consolonia.Core.Infrastructure
                     break;
             }
         }
+    }
+
+    public class ConsoloniaPlatformSettings : DefaultPlatformSettings
+    {
+        //todo:
     }
 }

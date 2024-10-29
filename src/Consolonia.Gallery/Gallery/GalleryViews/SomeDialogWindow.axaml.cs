@@ -1,11 +1,12 @@
 using System;
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Consolonia.Themes.TurboVision.Templates.Controls.Dialog;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public class SomeDialogWindow : DialogWindow
+    public partial class SomeDialogWindow : DialogWindow
     {
         private static readonly Random Random = new();
 
@@ -14,6 +15,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
             Width = width;
             Height = height;
+            Loaded += (_, _) =>
+            {
+                this.FindControl<Button>("Button")!.Focus();
+            };
         }
 
         // ReSharper disable once MemberCanBePrivate.Global Can be used by constructor

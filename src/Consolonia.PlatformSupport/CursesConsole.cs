@@ -354,20 +354,16 @@ namespace Consolonia.PlatformSupport
                                     break;
                                 }
                             }
-
-                        RaiseKeyPressInternal(k);
                     }
                     else
                     {
                         k = Key.Esc;
-                        RaiseKeyPressInternal(k);
                     }
 
                     break;
                 }
                 case Curses.KeyTab:
                     k = MapCursesKey(wch);
-                    RaiseKeyPressInternal(k);
                     break;
                 default:
                 {
@@ -386,10 +382,11 @@ namespace Consolonia.PlatformSupport
                         _keyModifiers.Shift = true;
                     }
 
-                    RaiseKeyPressInternal(k);
                     break;
                 }
             }
+
+            RaiseKeyPressInternal(k);
         }
 
 
@@ -401,12 +398,16 @@ namespace Consolonia.PlatformSupport
             ConsoleKey consoleKey =
                 KeyFlagTranslator.Translate(key & ~Key.CtrlMask & ~Key.ShiftMask & ~Key.AltMask, true);
 
-            if (consoleKey == ConsoleKey.NoName)
-                return;
-
-            if (consoleKey == default)
+            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
+            switch (consoleKey)
             {
-                bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
+                case ConsoleKey.NoName:
+                    return;
+                case 0:
+                {
+                    bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
+                    break;
+                }
             }
 
             if (((uint)keyValue & (uint)Key.CharMask) > 27)
@@ -459,79 +460,79 @@ namespace Consolonia.PlatformSupport
 
         private static Key MapCursesKey(int cursesKey)
         {
-            switch (cursesKey)
+            return cursesKey switch
             {
-                case Curses.KeyF1: return Key.F1;
-                case Curses.KeyF2: return Key.F2;
-                case Curses.KeyF3: return Key.F3;
-                case Curses.KeyF4: return Key.F4;
-                case Curses.KeyF5: return Key.F5;
-                case Curses.KeyF6: return Key.F6;
-                case Curses.KeyF7: return Key.F7;
-                case Curses.KeyF8: return Key.F8;
-                case Curses.KeyF9: return Key.F9;
-                case Curses.KeyF10: return Key.F10;
-                case Curses.KeyF11: return Key.F11;
-                case Curses.KeyF12: return Key.F12;
-                case Curses.KeyUp: return Key.CursorUp;
-                case Curses.KeyDown: return Key.CursorDown;
-                case Curses.KeyLeft: return Key.CursorLeft;
-                case Curses.KeyRight: return Key.CursorRight;
-                case Curses.KeyHome: return Key.Home;
-                case Curses.KeyEnd: return Key.End;
-                case Curses.KeyNPage: return Key.PageDown;
-                case Curses.KeyPPage: return Key.PageUp;
-                case Curses.KeyDeleteChar: return Key.DeleteChar;
-                case Curses.KeyInsertChar: return Key.InsertChar;
-                case Curses.KeyTab: return Key.Tab;
-                case Curses.KeyBackTab: return Key.BackTab;
-                case Curses.KeyBackspace: return Key.Backspace;
-                case Curses.ShiftKeyUp: return Key.CursorUp | Key.ShiftMask;
-                case Curses.ShiftKeyDown: return Key.CursorDown | Key.ShiftMask;
-                case Curses.ShiftKeyLeft: return Key.CursorLeft | Key.ShiftMask;
-                case Curses.ShiftKeyRight: return Key.CursorRight | Key.ShiftMask;
-                case Curses.ShiftKeyHome: return Key.Home | Key.ShiftMask;
-                case Curses.ShiftKeyEnd: return Key.End | Key.ShiftMask;
-                case Curses.ShiftKeyNPage: return Key.PageDown | Key.ShiftMask;
-                case Curses.ShiftKeyPPage: return Key.PageUp | Key.ShiftMask;
-                case Curses.AltKeyUp: return Key.CursorUp | Key.AltMask;
-                case Curses.AltKeyDown: return Key.CursorDown | Key.AltMask;
-                case Curses.AltKeyLeft: return Key.CursorLeft | Key.AltMask;
-                case Curses.AltKeyRight: return Key.CursorRight | Key.AltMask;
-                case Curses.AltKeyHome: return Key.Home | Key.AltMask;
-                case Curses.AltKeyEnd: return Key.End | Key.AltMask;
-                case Curses.AltKeyNPage: return Key.PageDown | Key.AltMask;
-                case Curses.AltKeyPPage: return Key.PageUp | Key.AltMask;
-                case Curses.CtrlKeyUp: return Key.CursorUp | Key.CtrlMask;
-                case Curses.CtrlKeyDown: return Key.CursorDown | Key.CtrlMask;
-                case Curses.CtrlKeyLeft: return Key.CursorLeft | Key.CtrlMask;
-                case Curses.CtrlKeyRight: return Key.CursorRight | Key.CtrlMask;
-                case Curses.CtrlKeyHome: return Key.Home | Key.CtrlMask;
-                case Curses.CtrlKeyEnd: return Key.End | Key.CtrlMask;
-                case Curses.CtrlKeyNPage: return Key.PageDown | Key.CtrlMask;
-                case Curses.CtrlKeyPPage: return Key.PageUp | Key.CtrlMask;
-                case Curses.ShiftCtrlKeyUp: return Key.CursorUp | Key.ShiftMask | Key.CtrlMask;
-                case Curses.ShiftCtrlKeyDown: return Key.CursorDown | Key.ShiftMask | Key.CtrlMask;
-                case Curses.ShiftCtrlKeyLeft: return Key.CursorLeft | Key.ShiftMask | Key.CtrlMask;
-                case Curses.ShiftCtrlKeyRight: return Key.CursorRight | Key.ShiftMask | Key.CtrlMask;
-                case Curses.ShiftCtrlKeyHome: return Key.Home | Key.ShiftMask | Key.CtrlMask;
-                case Curses.ShiftCtrlKeyEnd: return Key.End | Key.ShiftMask | Key.CtrlMask;
-                case Curses.ShiftCtrlKeyNPage: return Key.PageDown | Key.ShiftMask | Key.CtrlMask;
-                case Curses.ShiftCtrlKeyPPage: return Key.PageUp | Key.ShiftMask | Key.CtrlMask;
-                case Curses.ShiftAltKeyUp: return Key.CursorUp | Key.ShiftMask | Key.AltMask;
-                case Curses.ShiftAltKeyDown: return Key.CursorDown | Key.ShiftMask | Key.AltMask;
-                case Curses.ShiftAltKeyLeft: return Key.CursorLeft | Key.ShiftMask | Key.AltMask;
-                case Curses.ShiftAltKeyRight: return Key.CursorRight | Key.ShiftMask | Key.AltMask;
-                case Curses.ShiftAltKeyNPage: return Key.PageDown | Key.ShiftMask | Key.AltMask;
-                case Curses.ShiftAltKeyPPage: return Key.PageUp | Key.ShiftMask | Key.AltMask;
-                case Curses.ShiftAltKeyHome: return Key.Home | Key.ShiftMask | Key.AltMask;
-                case Curses.ShiftAltKeyEnd: return Key.End | Key.ShiftMask | Key.AltMask;
-                case Curses.AltCtrlKeyNPage: return Key.PageDown | Key.AltMask | Key.CtrlMask;
-                case Curses.AltCtrlKeyPPage: return Key.PageUp | Key.AltMask | Key.CtrlMask;
-                case Curses.AltCtrlKeyHome: return Key.Home | Key.AltMask | Key.CtrlMask;
-                case Curses.AltCtrlKeyEnd: return Key.End | Key.AltMask | Key.CtrlMask;
-                default: return Key.Unknown;
-            }
+                Curses.KeyF1 => Key.F1,
+                Curses.KeyF2 => Key.F2,
+                Curses.KeyF3 => Key.F3,
+                Curses.KeyF4 => Key.F4,
+                Curses.KeyF5 => Key.F5,
+                Curses.KeyF6 => Key.F6,
+                Curses.KeyF7 => Key.F7,
+                Curses.KeyF8 => Key.F8,
+                Curses.KeyF9 => Key.F9,
+                Curses.KeyF10 => Key.F10,
+                Curses.KeyF11 => Key.F11,
+                Curses.KeyF12 => Key.F12,
+                Curses.KeyUp => Key.CursorUp,
+                Curses.KeyDown => Key.CursorDown,
+                Curses.KeyLeft => Key.CursorLeft,
+                Curses.KeyRight => Key.CursorRight,
+                Curses.KeyHome => Key.Home,
+                Curses.KeyEnd => Key.End,
+                Curses.KeyNPage => Key.PageDown,
+                Curses.KeyPPage => Key.PageUp,
+                Curses.KeyDeleteChar => Key.DeleteChar,
+                Curses.KeyInsertChar => Key.InsertChar,
+                Curses.KeyTab => Key.Tab,
+                Curses.KeyBackTab => Key.BackTab,
+                Curses.KeyBackspace => Key.Backspace,
+                Curses.ShiftKeyUp => Key.CursorUp | Key.ShiftMask,
+                Curses.ShiftKeyDown => Key.CursorDown | Key.ShiftMask,
+                Curses.ShiftKeyLeft => Key.CursorLeft | Key.ShiftMask,
+                Curses.ShiftKeyRight => Key.CursorRight | Key.ShiftMask,
+                Curses.ShiftKeyHome => Key.Home | Key.ShiftMask,
+                Curses.ShiftKeyEnd => Key.End | Key.ShiftMask,
+                Curses.ShiftKeyNPage => Key.PageDown | Key.ShiftMask,
+                Curses.ShiftKeyPPage => Key.PageUp | Key.ShiftMask,
+                Curses.AltKeyUp => Key.CursorUp | Key.AltMask,
+                Curses.AltKeyDown => Key.CursorDown | Key.AltMask,
+                Curses.AltKeyLeft => Key.CursorLeft | Key.AltMask,
+                Curses.AltKeyRight => Key.CursorRight | Key.AltMask,
+                Curses.AltKeyHome => Key.Home | Key.AltMask,
+                Curses.AltKeyEnd => Key.End | Key.AltMask,
+                Curses.AltKeyNPage => Key.PageDown | Key.AltMask,
+                Curses.AltKeyPPage => Key.PageUp | Key.AltMask,
+                Curses.CtrlKeyUp => Key.CursorUp | Key.CtrlMask,
+                Curses.CtrlKeyDown => Key.CursorDown | Key.CtrlMask,
+                Curses.CtrlKeyLeft => Key.CursorLeft | Key.CtrlMask,
+                Curses.CtrlKeyRight => Key.CursorRight | Key.CtrlMask,
+                Curses.CtrlKeyHome => Key.Home | Key.CtrlMask,
+                Curses.CtrlKeyEnd => Key.End | Key.CtrlMask,
+                Curses.CtrlKeyNPage => Key.PageDown | Key.CtrlMask,
+                Curses.CtrlKeyPPage => Key.PageUp | Key.CtrlMask,
+                Curses.ShiftCtrlKeyUp => Key.CursorUp | Key.ShiftMask | Key.CtrlMask,
+                Curses.ShiftCtrlKeyDown => Key.CursorDown | Key.ShiftMask | Key.CtrlMask,
+                Curses.ShiftCtrlKeyLeft => Key.CursorLeft | Key.ShiftMask | Key.CtrlMask,
+                Curses.ShiftCtrlKeyRight => Key.CursorRight | Key.ShiftMask | Key.CtrlMask,
+                Curses.ShiftCtrlKeyHome => Key.Home | Key.ShiftMask | Key.CtrlMask,
+                Curses.ShiftCtrlKeyEnd => Key.End | Key.ShiftMask | Key.CtrlMask,
+                Curses.ShiftCtrlKeyNPage => Key.PageDown | Key.ShiftMask | Key.CtrlMask,
+                Curses.ShiftCtrlKeyPPage => Key.PageUp | Key.ShiftMask | Key.CtrlMask,
+                Curses.ShiftAltKeyUp => Key.CursorUp | Key.ShiftMask | Key.AltMask,
+                Curses.ShiftAltKeyDown => Key.CursorDown | Key.ShiftMask | Key.AltMask,
+                Curses.ShiftAltKeyLeft => Key.CursorLeft | Key.ShiftMask | Key.AltMask,
+                Curses.ShiftAltKeyRight => Key.CursorRight | Key.ShiftMask | Key.AltMask,
+                Curses.ShiftAltKeyNPage => Key.PageDown | Key.ShiftMask | Key.AltMask,
+                Curses.ShiftAltKeyPPage => Key.PageUp | Key.ShiftMask | Key.AltMask,
+                Curses.ShiftAltKeyHome => Key.Home | Key.ShiftMask | Key.AltMask,
+                Curses.ShiftAltKeyEnd => Key.End | Key.ShiftMask | Key.AltMask,
+                Curses.AltCtrlKeyNPage => Key.PageDown | Key.AltMask | Key.CtrlMask,
+                Curses.AltCtrlKeyPPage => Key.PageUp | Key.AltMask | Key.CtrlMask,
+                Curses.AltCtrlKeyHome => Key.Home | Key.AltMask | Key.CtrlMask,
+                Curses.AltCtrlKeyEnd => Key.End | Key.AltMask | Key.CtrlMask,
+                _ => Key.Unknown
+            };
         }
     }
 }

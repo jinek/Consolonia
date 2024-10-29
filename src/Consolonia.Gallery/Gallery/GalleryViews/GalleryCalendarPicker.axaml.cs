@@ -4,13 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using JetBrains.Annotations;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     [GalleryOrder(35)]
-    [UsedImplicitly]
-    public class GalleryCalendarPicker : UserControl
+    public partial class GalleryCalendarPicker : UserControl
     {
         public GalleryCalendarPicker()
         {
@@ -55,8 +53,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
+        
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

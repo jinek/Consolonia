@@ -1,6 +1,6 @@
 using System;
 using System.Globalization;
-using Avalonia.Controls;
+using Avalonia;
 using Avalonia.Logging;
 
 namespace Consolonia.Core.Infrastructure
@@ -16,8 +16,7 @@ namespace Consolonia.Core.Infrastructure
         public void Log(LogEventLevel level, string area, object source, string messageTemplate)
         {
             Log(level, area, source, messageTemplate, Array.Empty<object>());
-        }
-
+        } // ReSharper disable UnusedMember.Global
         public void Log<T0>(LogEventLevel level, string area, object source, string messageTemplate, T0 propertyValue0)
         {
             Log(level, area, source, messageTemplate, new object[] { propertyValue0 });
@@ -59,10 +58,11 @@ namespace Consolonia.Core.Infrastructure
 
     public static class ExceptionSinkExtensions
     {
-        public static T LogToException<T>(this T builder) where T : AppBuilderBase<T>, new()
+        public static AppBuilder LogToException(this AppBuilder builder)
         {
             Logger.Sink = new ExceptionSink();
             return builder;
         }
     }
+    // ReSharper restore UnusedMember.Global
 }

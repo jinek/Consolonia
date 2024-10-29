@@ -1,10 +1,10 @@
-using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
@@ -19,11 +19,11 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 
         static ScrollViewerExtensions()
         {
-            ScrollBarsWidthProperty.Changed.Subscribe(args =>
+            ScrollBarsWidthProperty.Changed.SubscribeAction(args =>
             {
                 var scrollViewer = (ScrollViewer)args.Sender;
                 var grid = (Grid)scrollViewer.GetTemplateChildren()
-                    .SingleOrDefault(control => control.Name == @"PART_Root");
+                    .SingleOrDefault(control => control.Name == "PART_Root");
                 if (grid != null)
                 {
                     Apply();
@@ -34,12 +34,14 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     {
                         scrollViewer.TemplateApplied -= OnScrollViewerOnTemplateApplied;
                         grid = (Grid)scrollViewer.GetTemplateChildren()
-                            .SingleOrDefault(control => control.Name == @"PART_Root");
+                            .SingleOrDefault(control => control.Name == "PART_Root");
                         Apply();
                     }
 
                     scrollViewer.TemplateApplied += OnScrollViewerOnTemplateApplied;
                 }
+
+                return;
 
                 void Apply()
                 {
@@ -48,7 +50,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 }
             });
 
-            ScrollOnArrowsProperty.Changed.Subscribe(args =>
+            ScrollOnArrowsProperty.Changed.SubscribeAction(args =>
             {
                 var scrollViewer = (ScrollViewer)args.Sender;
                 if (args.NewValue.Value)

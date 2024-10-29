@@ -14,7 +14,7 @@ namespace Consolonia.Core.Drawing
             PStart = pStart;
             Vertical = vertical;
             Length = length;
-            SourceGeometry = sourceGeometry;
+            SourceGeometry = sourceGeometry!; // todo: check why sometimes is goes nullable?
             Transform = transform;
         }
 
@@ -95,14 +95,15 @@ namespace Consolonia.Core.Drawing
         public static Line CreateMyLine(Point p1, Point p2)
         {
             (double x, double y) = p2 - p1;
+            // ReSharper disable once InvertIf
             if (p1.X > p2.X || p1.Y > p2.Y)
             {
                 p1 = p2;
                 (x, y) = (-x, -y); //todo: move this to constructor
             }
 
-
-            return x is 0 or -0 ? new Line(p1, true, (int)y) : new Line(p1, false, (int)x);
+            // ReSharper disable once PatternIsRedundant todo: fix
+            return x is 0 or 0d ? new Line(p1, true, (int)y) : new Line(p1, false, (int)x);
         }
     }
 }

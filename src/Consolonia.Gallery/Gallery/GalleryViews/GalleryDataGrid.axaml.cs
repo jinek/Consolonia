@@ -10,7 +10,6 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml;
 using Consolonia.Core.Drawing;
-using JetBrains.Annotations;
 
 // ReSharper disable UnusedMember.Global
 
@@ -20,8 +19,7 @@ using JetBrains.Annotations;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    [UsedImplicitly]
-    public class GalleryDataGrid : UserControl
+    public partial class GalleryDataGrid : UserControl
     {
         public GalleryDataGrid()
         {
@@ -43,7 +41,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     && !collectionView1.SortDescriptions.Contains(dataGridSortDescription))
                     collectionView1.SortDescriptions.Add(dataGridSortDescription);
             };
-            dg1.Items = collectionView1;
+            dg1.ItemsSource = collectionView1;
 
             var dg2 = this.FindControl<DataGrid>("DataGridGrouping");
             dg2.IsReadOnly = true;
@@ -51,7 +49,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             var collectionView2 = new DataGridCollectionView(Countries.All);
             collectionView2.GroupDescriptions.Add(new DataGridPathGroupDescription("Region"));
 
-            dg2.Items = collectionView2;
+            dg2.ItemsSource = collectionView2;
 
             var dg3 = this.FindControl<DataGrid>("DataGridEdit");
             dg3.IsReadOnly = false;
@@ -64,7 +62,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             };
             var collectionView3 = new DataGridCollectionView(items);
 
-            dg3.Items = collectionView3;
+            dg3.ItemsSource = collectionView3;
 
             var addButton = this.FindControl<Button>("BtnAdd");
             addButton.Click += (_, _) => collectionView3.AddNew();

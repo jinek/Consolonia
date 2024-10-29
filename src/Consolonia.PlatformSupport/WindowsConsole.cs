@@ -73,6 +73,7 @@ namespace Consolonia.PlatformSupport
                 bSetFocus = true
             };
 
+            // ReSharper disable once InvertIf
             if (!WriteConsoleInput(_windowsConsole.InputHandle, inputRecords, 1, out uint _))
             {
                 // Handle error
@@ -138,8 +139,8 @@ namespace Consolonia.PlatformSupport
                 case default(WindowsConsole.EventFlags):
                     int xor = _mouseButtonsState ^ incomeMouseState;
                     foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor &
-                                incomeMouseState)).GetFlags()
-                            .Select(MouseButtonFlagTranslator.Translate))
+                                 incomeMouseState)).GetFlags()
+                             .Select(MouseButtonFlagTranslator.Translate))
                         //todo: вернуть mouse gesture на элементы
                         RaiseMouseEvent(pointerEventType,
                             point,
@@ -148,8 +149,8 @@ namespace Consolonia.PlatformSupport
 
                     //todo: refactor: code clone
                     foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor &
-                            _mouseButtonsState)).GetFlags()
-                        .Select(MouseButtonFlagTranslator.Translate))
+                                 _mouseButtonsState)).GetFlags()
+                             .Select(MouseButtonFlagTranslator.Translate))
                     {
                         RawPointerEventType rawPointerEventType = pointerEventType + 1;
                         RaiseMouseEvent(rawPointerEventType,

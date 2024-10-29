@@ -1,12 +1,10 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using JetBrains.Annotations;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    [UsedImplicitly]
-    public class GalleryMenu : UserControl
+    public partial class GalleryMenu : UserControl
     {
         private MenuPageViewModel _model;
 

@@ -1,10 +1,3 @@
-<!--
-// (c) Copyright Microsoft Corporation.
-// This source is subject to the Microsoft Public License (Ms-PL).
-// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
-// All other rights reserved.
--->
-
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
@@ -21,16 +14,9 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             Background="{TemplateBinding Background}">
 
-                        <Grid Margin="{TemplateBinding Padding}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <Grid Margin="{TemplateBinding Padding}"
+                              RowDefinitions="Auto,*"
+                              ColumnDefinitions="Auto,*,Auto">
 
                             <Grid.Styles>
                                 <Style Selector="Button.CalendarHeader">
@@ -78,21 +64,21 @@
                              Margin="0"/>
 todo: while it's not needed it also does not work when set in the style-->
 
-                            <Button Name="PreviousButton"
+                            <Button Name="PART_PreviousButton"
                                     Classes="CalendarHeader CalendarNavigation"
                                     IsVisible="False"
                                     HorizontalAlignment="Left"
                                     Content="&lt;"
                                     Margin="1,0,-1,-1" />
 
-                            <Button Name="HeaderButton"
+                            <Button Name="PART_HeaderButton"
                                     Classes="CalendarHeader"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center" />
 
-                            <Button Name="NextButton"
+                            <Button Name="PART_NextButton"
                                     Classes="CalendarHeader CalendarNavigation"
                                     Grid.Row="0"
                                     Grid.Column="2"
@@ -101,50 +87,23 @@ todo: while it's not needed it also does not work when set in the style-->
                                     Content="&gt;"
                                     Margin="0,0,1,-1" />
 
-                            <Grid Name="MonthView"
+                            <Grid Name="PART_MonthView"
                                   Grid.Row="1"
                                   Grid.ColumnSpan="3"
                                   Grid.Column="0"
                                   IsVisible="False"
-                                  HorizontalAlignment="Center">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                            </Grid>
+                                  HorizontalAlignment="Center"
+                                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                                  ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" />
 
-                            <Grid Name="YearView"
+                            <Grid Name="PART_YearView"
                                   Grid.Row="1"
                                   Grid.ColumnSpan="3"
                                   Grid.Column="0"
                                   IsVisible="False"
-                                  Margin="0,1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                            </Grid>
+                                  Margin="0,1"
+                                  RowDefinitions="Auto,Auto,Auto"
+                                  ColumnDefinitions="Auto,Auto,Auto,Auto" />
 
                         </Grid>
 

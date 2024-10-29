@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using JetBrains.Annotations;
 
 // ReSharper disable UnusedMember.Global
 
@@ -13,8 +16,7 @@ using JetBrains.Annotations;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    [UsedImplicitly]
-    public class GalleryScrollViewer : UserControl
+    public partial class GalleryScrollViewer : UserControl
     {
         public GalleryScrollViewer()
         {

@@ -1,69 +1,97 @@
 using System;
 using System.Reflection;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Media;
+using Avalonia.Reactive;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing;
-using Consolonia.Core.Infrastructure;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
-    public class ConsoloniaTextPresenter : TextPresenter, ICaptureTimerStartStop
+    public class ConsoloniaTextPresenter : TextPresenter
     {
+        // ReSharper disable once MemberCanBePrivate.Global
+        public static readonly StyledProperty<Point> CaretPositionProperty =
+            AvaloniaProperty.Register<ConsoloniaTextPresenter, Point>(nameof(CaretPosition));
+
         private static readonly FieldInfo TickTimerField =
             typeof(TextPresenter).GetField("_caretTimer", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
-        private bool _caretBlinking;
-
         static ConsoloniaTextPresenter()
         {
-            CaretBrushProperty.Changed.Subscribe(static args =>
+            SelectionEndProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<int>>(args =>
             {
-                if (args.NewValue.Value is not MoveConsoleCaretToPositionBrush)
-                    throw new NotSupportedException();
-            });
+                if (args.Sender is not ConsoloniaTextPresenter textPresenter)
+                    return;
+
+                textPresenter.UpdateCaretPosition(null);
+            }));
+
+            CaretIndexProperty.Changed
+                .SubscribeAction(args =>
+                {
+                    if (args.Sender is not ConsoloniaTextPresenter textPresenter)
+                        return;
+
+                    // once avalonia moved the caret we then moving it additionally to scroll outside the boundaries
+
+                    int caretIndex = args.NewValue.Value;
+
+                    Rect hitTestTextPosition = textPresenter.UpdateCaretPosition(caretIndex);
+
+                    Dispatcher.UIThread.Post(
+                        () =>
+                        {
+                            textPresenter.BringIntoView(new Rect(hitTestTextPosition.X, hitTestTextPosition.Y, 1, 1));
+                        },
+                        DispatcherPriority
+                            .UiThreadRender /*Must be lower than DispatcherPriority.AfterRender which is used by TextPresenter*/);
+                });
+
+            CaretBrushProperty.Changed
+                .Subscribe(
+                    new AnonymousObserver<AvaloniaPropertyChangedEventArgs<IBrush>>(
+                        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local //todo: what does this mean?
+                        args =>
+                        {
+                            if (args.NewValue.Value is not FourBitColorBrush
+                                {
+                                    Color: ConsoleColor.Black, Mode: PixelBackgroundMode.Transparent
+                                })
+                                throw new NotSupportedException();
+                        }));
         }
 
         public ConsoloniaTextPresenter()
         {
+            // we need to disable blinking caret, our terminal caret blinks itself once shown
             var caretTickTimer = (DispatcherTimer)TickTimerField.GetValue(this);
-            caretTickTimer!.Tag = this;
+            caretTickTimer!.Interval =
+                TimeSpan.FromMilliseconds(int
+                    .MaxValue); //see DispatcherTimer.Interval, since we can not disable it, setting it to the longest interval possible
+            caretTickTimer!.Tick += (_, _) => throw new NotImplementedException("How to disable timer completely?");
 
-            CaretBrush = new MoveConsoleCaretToPositionBrush();
+            CaretBrush =
+                new FourBitColorBrush(ConsoleColor.Black, PixelBackgroundMode.Transparent); // we want to draw own caret
         }
 
-        public void CaptureTimerStart()
+        public Point CaretPosition
         {
-            _caretBlinking = true;
+            get => GetValue(CaretPositionProperty);
+            private set => SetValue(CaretPositionProperty, value);
         }
 
-        public void CaptureTimerStop()
+        private Rect UpdateCaretPosition(int? caretIndex)
         {
-            _caretBlinking = false;
-        }
+            caretIndex ??= CaretIndex;
 
-        public override void Render(DrawingContext context)
-        {
-            base.Render(context);
-            if (SelectionStart == SelectionEnd || !_caretBlinking) return;
-            (Point p1, Point p2) = GetCaretPoints();
-            context.DrawLine(
-                new Pen(CaretBrush),
-                p1, p2);
-        }
-
-        private (Point, Point) GetCaretPoints()
-        {
-            return ((Point, Point))typeof(TextPresenter)
-                .GetMethod(nameof(GetCaretPoints), BindingFlags.Instance | BindingFlags.NonPublic)!
-                .Invoke(this, null)!;
-        }
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            Size measureOverride = base.MeasureOverride(availableSize);
-            return measureOverride.WithWidth(measureOverride.Width + 1);
+            Rect hitTestTextPosition = TextLayout.HitTestTextPosition(caretIndex.Value);
+            CaretPosition = new Point(hitTestTextPosition.X, hitTestTextPosition.Y);
+            return hitTestTextPosition;
         }
     }
 }

@@ -9,6 +9,7 @@ using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.VisualTree;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 {
@@ -26,7 +27,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 
         static DialogHost()
         {
-            IsDialogHostProperty.Changed.Subscribe(args =>
+            IsDialogHostProperty.Changed.SubscribeAction(args =>
             {
                 args.Sender.SetValue(DialogHostProperty,
                     args.NewValue.Value ? new DialogHost((Window)args.Sender) : null);
@@ -40,8 +41,9 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 
         public void OpenInternal(DialogWindow dialogWindow)
         {
+            IInputElement focusedElement = _window.FocusManager! /*todo: low: Why can be null?*/.GetFocusedElement();
             var overlayLayer = OverlayLayer.GetOverlayLayer(_window);
-            var popupHost = new OverlayPopupHost(overlayLayer);
+            var popupHost = new OverlayPopupHost(overlayLayer!);
 
             popupHost.ConfigurePosition(_window, PlacementMode.AnchorAndGravity,
                 new Point(), PopupAnchor.TopLeft, PopupGravity.BottomRight);
@@ -53,18 +55,19 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
 
             if (_dialogs.TryPeek(out OverlayPopupHost previousDialog)) previousDialog.IsEnabled = false;
 
-            dialogWrap.HadFocusOn = FocusManager.Instance!.Current;
+            dialogWrap.HadFocusOn = focusedElement;
 
             _dialogs.Push(popupHost);
             popupHost.Show();
 
             dialogWindow.AttachedToVisualTree += DialogAttachedToVisualTree;
+            return;
 
             static void DialogAttachedToVisualTree(object sender, EventArgs e)
             {
                 var dialogWindow = (DialogWindow)sender!;
                 dialogWindow.AttachedToVisualTree -= DialogAttachedToVisualTree;
-                FocusManager.Instance!.Focus(dialogWindow);
+                dialogWindow.Focus();
             }
         }
 
@@ -72,15 +75,15 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
         {
             ContentPresenter firstContentPresenter = _window.GetTemplateChildren()
                 .Select(control => control.FindDescendantOfType<ContentPresenter>())
-                .First(d => d.Name == "PART_ContentPresenter");
+                .First(d => d!.Name == "PART_ContentPresenter");
             return firstContentPresenter;
         }
 
         public void PopInternal(DialogWindow dialogWindow)
         {
             OverlayPopupHost overlayPopupHost = _dialogs.Pop();
-            var dialogWrap = (DialogWrap)overlayPopupHost.Content;
-            if (!Equals(dialogWrap.ContentPresenter.Content, dialogWindow))
+            var dialogWrap = (DialogWrap)overlayPopupHost.Content!;
+            if (!Equals(dialogWrap!.FoundContentPresenter.Content, dialogWindow!))
                 throw new InvalidOperationException("Dialog is not topmost. Close private dialogs first");
             overlayPopupHost.Hide();
 
@@ -97,7 +100,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
                 firstContentPresenter.Focus();
             }
 
-            FocusManager.Instance!.Focus(dialogWrap.HadFocusOn);
+            dialogWrap.HadFocusOn.Focus();
         }
     }
 }

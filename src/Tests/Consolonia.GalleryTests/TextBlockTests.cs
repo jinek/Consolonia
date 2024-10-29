@@ -11,16 +11,16 @@ namespace Consolonia.GalleryTests
         protected override Task PerformSingleTest()
         {
             return UITest.AssertHasText("This is TextBlock",
-                "Text trimming with characte…",
-                "Text trimming with word …",
+                "Text trimming with charac...",
+                "Text trimming with word...",
                 "│Left aligned text    ",
                 "   Center aligned text    ",
                 "│          Right aligned text                            │",
 
                 // multiline
-                "│Lorem ipsum dolor sit amet, consectetur adipiscing      │",
-                @"│elit\. Vivamus magna\. Cras in mi at felis aliquet        │",
-                @"│elit sit amet quam\. Vivamus pretium ornare est\.         │");
+                "│Lorem ipsum dolor sit amet, consectetur adipiscing elit.│",
+                @"│Vivamus magna. Cras in mi at felis aliquet congue. Ut a │",
+                @"│est eget ligula molestie gravida. Curabitur massa. Donec│");
         }
     }
 }

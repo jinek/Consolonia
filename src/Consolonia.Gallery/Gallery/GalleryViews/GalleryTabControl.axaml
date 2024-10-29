@@ -1,13 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:galleryViews="clr-namespace:Consolonia.Gallery.Gallery.GalleryViews"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
-             d:DesignHeight="450"
-             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryTabControl"
-             d:DataContext="{d:DesignInstance galleryViews:PageViewModel}">
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryTabControl">
     <Grid ColumnDefinitions="*,*"
           RowDefinitions="*,10">
         <DockPanel Grid.Column="0"
@@ -33,7 +27,7 @@
                    Margin="1">
             <TextBlock DockPanel.Dock="Top"
                        Text="From DataTemplate" />
-            <TabControl Items="{Binding Tabs}"
+            <TabControl ItemsSource="{Binding Tabs}"
                         TabStripPlacement="{Binding TabPlacement}">
                 <TabControl.ItemTemplate>
                     <DataTemplate>
@@ -49,7 +43,7 @@
                     <Style Selector="TabItem">
                         <Setter Property="IsEnabled"
                                 Value="{Binding IsEnabled}"
-                                d:DataContext="{d:DesignInstance TabItem}" />
+                                x:DataType="TabItem"/>
                     </Style>
                 </TabControl.Styles>
             </TabControl>

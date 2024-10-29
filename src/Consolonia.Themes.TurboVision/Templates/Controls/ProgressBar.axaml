@@ -92,7 +92,7 @@
                 </KeyFrame>
                 <KeyFrame Cue="100%">
                     <Setter Property="Width"
-                            Value="{Binding IndeterminateEndingOffset, RelativeSource={RelativeSource TemplatedParent}}" />
+                            Value="{Binding TemplateSettings.IndeterminateEndingOffset, RelativeSource={RelativeSource TemplatedParent}}" />
                 </KeyFrame>
             </Animation>
         </Style.Animations>
@@ -112,7 +112,7 @@
                 </KeyFrame>
                 <KeyFrame Cue="100%">
                     <Setter Property="Height"
-                            Value="{Binding IndeterminateEndingOffset, RelativeSource={RelativeSource TemplatedParent}}" />
+                            Value="{Binding TemplateSettings.IndeterminateEndingOffset, RelativeSource={RelativeSource TemplatedParent}}" />
                 </KeyFrame>
             </Animation>
         </Style.Animations>

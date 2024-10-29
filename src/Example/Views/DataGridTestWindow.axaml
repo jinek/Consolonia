@@ -1,17 +1,12 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
         xmlns:views="clr-namespace:Example.Views"
-        mc:Ignorable="d"
-        d:DesignWidth="800"
-        d:DesignHeight="450"
         x:Class="Example.Views.DataGridTestWindow"
         Title="Movie Catalog">
     <Grid ColumnDefinitions="* 35">
         <Grid>
-            <DataGrid Items="{Binding}"
+            <DataGrid ItemsSource="{Binding}"
                       Name="Grid"
                       SelectionMode="Single"
                       Focusable="True"
@@ -38,8 +33,7 @@
                 <Border.BorderBrush>
                     <drawing:FourBitColorBrush Color="DarkGray" />
                 </Border.BorderBrush>
-                <Grid ColumnDefinitions="Auto *"
-                      d:DataContext="{d:DesignInstance views:TheItem}">
+                <Grid ColumnDefinitions="Auto *" x:DataType="views:TheItem">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
