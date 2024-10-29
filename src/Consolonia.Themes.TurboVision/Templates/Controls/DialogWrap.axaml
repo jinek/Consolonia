@@ -9,7 +9,7 @@
 
         <!-- ReSharper disable once UnusedMember.Local Used for manual search-->
         <ContentPresenter Name="ContentPresenter"
-                          x:FieldModifier="private"                          
+                          x:FieldModifier="private"
                           HorizontalContentAlignment="Stretch"
                           VerticalContentAlignment="Stretch"
                           HorizontalAlignment="Stretch"

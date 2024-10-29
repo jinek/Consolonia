@@ -12,14 +12,11 @@ namespace Consolonia.Core.Text
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
             var glyphInfos = Convert(text.Span.ToString());
-            
+
             var shapedBuffer = new ShapedBuffer(text, glyphInfos.Length,
                 new GlyphTypeface(), 1, 0 /*todo: must be 1 for right to left?*/);
-            
-            for (int i = 0; i < shapedBuffer.Length; i++)
-            {
-                shapedBuffer[i] = glyphInfos[i];
-            }
+
+            for (int i = 0; i < shapedBuffer.Length; i++) shapedBuffer[i] = glyphInfos[i];
             return shapedBuffer;
         }
 

@@ -170,6 +170,7 @@ namespace Consolonia.Core.Drawing
                 ConsoloniaPlatform.RaiseNotSupported(17, glyphRun);
                 throw new InvalidProgramException();
             }
+
             if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
             if (!glyphRun.FontRenderingEmSize.IsNearlyEqual(1))
             {
@@ -195,9 +196,9 @@ namespace Consolonia.Core.Drawing
 
         public void PushClip(RoundedRect clip)
         {
-            if(clip.IsRounded)
+            if (clip.IsRounded)
                 ConsoloniaPlatform.RaiseNotSupported(2);
-            
+
             PushClip(clip.Rect);
         }
 
@@ -265,13 +266,13 @@ namespace Consolonia.Core.Drawing
         {
             lineStyle = null;
             if (pen is not
-            {
-                Brush: FourBitColorBrush or LineBrush { Brush: FourBitColorBrush },
-                Thickness: 1,
-                DashStyle: null or { Dashes.Count: 0 },
-                LineCap: PenLineCap.Flat,
-                LineJoin: PenLineJoin.Miter
-            })
+                {
+                    Brush: FourBitColorBrush or LineBrush { Brush: FourBitColorBrush },
+                    Thickness: 1,
+                    DashStyle: null or { Dashes.Count: 0 },
+                    LineCap: PenLineCap.Flat,
+                    LineJoin: PenLineJoin.Miter
+                })
             {
                 ConsoloniaPlatform.RaiseNotSupported(6);
                 return null;
@@ -352,7 +353,7 @@ namespace Consolonia.Core.Drawing
                 }
             }
         }
-         
+
         private void DrawStringInternal(IBrush foreground, string str, Point origin = new())
         {
             if (foreground is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
@@ -394,8 +395,8 @@ namespace Consolonia.Core.Drawing
                     case '\n':
                     {
                         /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
-                         var consolePixel =  new Pixel(' ', foregroundColor); 
-                        
+                         var consolePixel =  new Pixel(' ', foregroundColor);
+
                         _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
                             (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
                     }

@@ -34,7 +34,7 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
-        public bool StrokeContains([NotNull]IPen pen, Point point)
+        public bool StrokeContains([NotNull] IPen pen, Point point)
         {
             if (pen!.Thickness == 0)
                 return false;
