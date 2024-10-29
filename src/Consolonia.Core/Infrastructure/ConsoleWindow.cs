@@ -29,7 +29,10 @@ namespace Consolonia.Core.Infrastructure
             Console.KeyEvent += ConsoleOnKeyEvent;
             Console.MouseEvent += ConsoleOnMouseEvent;
             Console.FocusEvent += ConsoleOnFocusEvent;
+            Handle = null!;
         }
+
+        private IMouseDevice MouseDevice { get; }
 
         public void Dispose()
         {
@@ -40,7 +43,7 @@ namespace Consolonia.Core.Infrastructure
             Console.FocusEvent -= ConsoleOnFocusEvent;
             Console.Dispose();
         }
-        
+
         public void SetInputRoot(IInputRoot inputRoot)
         {
             _inputRoot = inputRoot;
@@ -76,7 +79,7 @@ namespace Consolonia.Core.Infrastructure
         {
             //todo:
         }
-        
+
         public Size ClientSize
         {
             get
@@ -104,7 +107,6 @@ namespace Consolonia.Core.Infrastructure
         public Compositor Compositor { get; } = new(null);
         public Action Closed { get; set; }
         public Action LostFocus { get; set; }
-        private IMouseDevice MouseDevice { get; }
 
         public WindowTransparencyLevel TransparencyLevel => WindowTransparencyLevel.None;
 
@@ -113,7 +115,7 @@ namespace Consolonia.Core.Infrastructure
         public void Show(bool activate, bool isDialog)
         {
             if (activate)
-                Activated();
+                Activated!();
         }
 
         public void Hide()
@@ -146,7 +148,7 @@ namespace Consolonia.Core.Infrastructure
         public Size MaxAutoSizeHint { get; }
 
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
-        public IScreenImpl Screen => null;
+        public IScreenImpl Screen => null!;
 
         public void SetTitle(string title)
         {
@@ -240,6 +242,14 @@ namespace Consolonia.Core.Infrastructure
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
         public Thickness OffScreenMargin { get; }
 
+        public object TryGetFeature(Type featureType)
+        {
+            if (featureType == typeof(ISystemNavigationManagerImpl))
+                return null;
+            if (featureType == typeof(ITextInputMethodImpl)) return null;
+            throw new NotImplementedException("Consider this");
+        }
+
         private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,
             RawInputModifiers modifiers)
         {
@@ -261,12 +271,12 @@ namespace Consolonia.Core.Infrastructure
                     case RawPointerEventType.MiddleButtonUp:
                     case RawPointerEventType.XButton1Up:
                     case RawPointerEventType.XButton2Up:
-                        Input(new RawPointerEventArgs(MouseDevice, timestamp, _inputRoot,
+                        Input!(new RawPointerEventArgs(MouseDevice, timestamp, _inputRoot,
                             type, point,
                             modifiers));
                         break;
                     case RawPointerEventType.Wheel:
-                        Input(new RawMouseWheelEventArgs(MouseDevice, timestamp, _inputRoot, point,
+                        Input!(new RawMouseWheelEventArgs(MouseDevice, timestamp, _inputRoot, point,
                             (Vector)wheelDelta!, modifiers));
                         break;
                 }
@@ -289,7 +299,7 @@ namespace Consolonia.Core.Infrastructure
             {
                 PixelBufferSize pixelBufferSize = Console.Size;
                 var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
-                Resized(size, WindowResizeReason.Unspecified);
+                Resized!(size, WindowResizeReason.Unspecified);
             });
         }
 
@@ -319,30 +329,19 @@ namespace Consolonia.Core.Infrastructure
                         RawKeyEventType.KeyDown, key,
                         rawInputModifiers);
 #pragma warning restore CS0618 // Type or member is obsolete
-                    Input(rawInputEventArgs);
+                    Input!(rawInputEventArgs);
                     handled = rawInputEventArgs.Handled;
                 }, DispatcherPriority.Input).GetTask().ConfigureAwait(true);
 
                 if (!handled && !char.IsControl(keyChar))
                     Dispatcher.UIThread.Post(() =>
                     {
-                        Input(new RawTextInputEventArgs(_myKeyboardDevice,
+                        Input!(new RawTextInputEventArgs(_myKeyboardDevice,
                             timeStamp,
                             _inputRoot,
                             keyChar.ToString()));
                     }, DispatcherPriority.Input);
             }
-        }
-
-        public object TryGetFeature(Type featureType)
-        {
-            if (featureType == typeof(ISystemNavigationManagerImpl))
-                return null;
-            if (featureType == typeof(ITextInputMethodImpl))
-            {
-                return null;
-            }
-            throw new NotImplementedException("Consider this");
         }
     }
 }

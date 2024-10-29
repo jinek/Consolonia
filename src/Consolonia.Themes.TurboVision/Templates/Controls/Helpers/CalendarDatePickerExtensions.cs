@@ -40,6 +40,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                         await Task.Yield();
                         Dispatcher.UIThread.Post(() => { textBox?.Focus(); });
                     });
+                return;
 
                 static void FocusOnDropDown(object sender,
                     VisualTreeAttachmentEventArgs visualTreeAttachmentEventArgs)

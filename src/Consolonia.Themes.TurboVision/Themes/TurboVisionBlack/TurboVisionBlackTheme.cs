@@ -16,6 +16,6 @@ namespace Consolonia.Themes.TurboVision.Themes.TurboVisionBlack
         }
 
         protected override Uri Uri =>
-            new(@"avares://Consolonia.Themes.TurboVision/Themes/TurboVisionBlack/TurboVisionBlack.axaml");
+            new("avares://Consolonia.Themes.TurboVision/Themes/TurboVisionBlack/TurboVisionBlack.axaml");
     }
 }

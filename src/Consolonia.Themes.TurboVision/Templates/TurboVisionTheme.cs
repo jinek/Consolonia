@@ -15,6 +15,6 @@ namespace Consolonia.Themes.TurboVision.Templates
         {
         }
 
-        protected override Uri Uri => new(@"avares://Consolonia.Themes.TurboVision/Templates/TurboVision.axaml");
+        protected override Uri Uri => new("avares://Consolonia.Themes.TurboVision/Templates/TurboVision.axaml");
     }
 }

@@ -10,25 +10,25 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
         public static readonly StyledProperty<Orientation> OrientationProperty =
             AvaloniaProperty.Register<FastLineSeparator, Orientation>(nameof(Orientation));
 
+        public static readonly StyledProperty<IBrush> BrushProperty =
+            AvaloniaProperty.Register<FastLineSeparator, IBrush>(nameof(Brush), Brushes.Black);
+
+
+        public FastLineSeparator()
+        {
+            AffectsRender<FastLineSeparator>(OrientationProperty);
+        }
+
         public Orientation Orientation
         {
             get => GetValue(OrientationProperty);
             set => SetValue(OrientationProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> BrushProperty =
-            AvaloniaProperty.Register<FastLineSeparator, IBrush>(nameof(Brush), Brushes.Black);
-
         public IBrush Brush
         {
             get => GetValue(BrushProperty);
             set => SetValue(BrushProperty, value);
-        }
-
-
-        public FastLineSeparator()
-        {
-            AffectsRender<FastLineSeparator>(OrientationProperty);
         }
 
         protected override Size MeasureOverride(Size availableSize)

@@ -32,6 +32,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 DropDownExtensions.ProcessFocusOnOpen<ItemsPresenter, ComboBox>(args, ComboBox.IsDropDownOpenProperty,
                     FocusOnDropDown,
                     comboBox => comboBox.Focus());
+                return;
 
                 static void FocusOnDropDown(object sender,
                     VisualTreeAttachmentEventArgs visualTreeAttachmentEventArgs)

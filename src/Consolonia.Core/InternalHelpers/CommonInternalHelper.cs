@@ -6,7 +6,8 @@ namespace Consolonia.Core.InternalHelpers
     internal static class CommonInternalHelper
     {
         public static bool IsNearlyEqual(this double value, double compareTo)
-        {//todo: strange implementation for this name
+        {
+            //todo: strange implementation for this name
             return value.CompareTo(compareTo) == 0;
         }
 

@@ -50,69 +50,44 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
                 default:
                 {
-                    switch (_upRightDownLeft)
+                    return _upRightDownLeft switch
                     {
-                        case EmptySymbol: return char.MinValue;
-                        case BoldSymbol: return '█';
-
-                        case 0b0000_1001: return '┘';
-                        case 0b1000_1001: return '╜';
-                        case 0b0001_1001: return '╛';
-                        case 0b1001_1001: return '╝';
-
-                        case 0b0000_0011: return '┐';
-                        case 0b0010_0011: return '╖';
-                        case 0b0001_0011: return '╕';
-                        case 0b0011_0011: return '╗';
-
-                        case 0b0000_0110: return '┌';
-                        case 0b0100_0110: return '╒';
-                        case 0b0010_0110: return '╓';
-                        case 0b0110_0110: return '╔';
-
-                        case 0b0000_1100: return '└';
-                        case 0b0100_1100: return '╘';
-                        case 0b1000_1100: return '╙';
-                        case 0b1100_1100: return '╚';
-
-                        case 0b0000_1110: return '├';
-                        case 0b1000_1110:
-                        case 0b0010_1110:
-                        case 0b1010_1110: return '╟';
-                        case 0b0100_1110: return '╞';
-                        case 0b1100_1110:
-                        case 0b0110_1110:
-                        case 0b1110_1110: return '╠';
-
-                        case 0b0000_1011: return '┤';
-                        case 0b1000_1011:
-                        case 0b0010_1011:
-                        case 0b1010_1011: return '╢';
-                        case 0b0001_1011: return '╡';
-                        case 0b1001_1011:
-                        case 0b0011_1011:
-                        case 0b1011_1011: return '╣';
-
-                        case 0b0000_1101: return '┴';
-                        case 0b1000_1101: return '╨';
-                        case 0b0100_1101:
-                        case 0b0001_1101:
-                        case 0b0101_1101: return '╧';
-                        case 0b1100_1101:
-                        case 0b1001_1101:
-                        case 0b1101_1101: return '╩';
-
-                        case 0b0000_0111: return '┬';
-                        case 0b0010_0111: return '╥';
-                        case 0b0100_0111:
-                        case 0b0001_0111:
-                        case 0b0101_0111: return '╤';
-                        case 0b0110_0111:
-                        case 0b0011_0111:
-                        case 0b0111_0111: return '╦';
-
-                        default: throw new InvalidOperationException();
-                    }
+                        EmptySymbol => char.MinValue,
+                        BoldSymbol => '█',
+                        0b0000_1001 => '┘',
+                        0b1000_1001 => '╜',
+                        0b0001_1001 => '╛',
+                        0b1001_1001 => '╝',
+                        0b0000_0011 => '┐',
+                        0b0010_0011 => '╖',
+                        0b0001_0011 => '╕',
+                        0b0011_0011 => '╗',
+                        0b0000_0110 => '┌',
+                        0b0100_0110 => '╒',
+                        0b0010_0110 => '╓',
+                        0b0110_0110 => '╔',
+                        0b0000_1100 => '└',
+                        0b0100_1100 => '╘',
+                        0b1000_1100 => '╙',
+                        0b1100_1100 => '╚',
+                        0b0000_1110 => '├',
+                        0b1000_1110 or 0b0010_1110 or 0b1010_1110 => '╟',
+                        0b0100_1110 => '╞',
+                        0b1100_1110 or 0b0110_1110 or 0b1110_1110 => '╠',
+                        0b0000_1011 => '┤',
+                        0b1000_1011 or 0b0010_1011 or 0b1010_1011 => '╢',
+                        0b0001_1011 => '╡',
+                        0b1001_1011 or 0b0011_1011 or 0b1011_1011 => '╣',
+                        0b0000_1101 => '┴',
+                        0b1000_1101 => '╨',
+                        0b0100_1101 or 0b0001_1101 or 0b0101_1101 => '╧',
+                        0b1100_1101 or 0b1001_1101 or 0b1101_1101 => '╩',
+                        0b0000_0111 => '┬',
+                        0b0010_0111 => '╥',
+                        0b0100_0111 or 0b0001_0111 or 0b0101_0111 => '╤',
+                        0b0110_0111 or 0b0011_0111 or 0b0111_0111 => '╦',
+                        _ => throw new InvalidOperationException()
+                    };
                 }
             }
         }

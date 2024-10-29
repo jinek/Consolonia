@@ -10,10 +10,10 @@ namespace Consolonia.Core.Infrastructure
 {
     public class ArrowsAndKeyboardNavigationHandler : IKeyboardNavigationHandler
     {
+        private readonly IKeyboardNavigationHandler _keyboardNavigationHandler;
+
         //todo: check XTFocus https://github.com/jinek/Consolonia/issues/105#issuecomment-2089015880
         private IInputRoot _owner;
-
-        private readonly IKeyboardNavigationHandler _keyboardNavigationHandler;
 
         public ArrowsAndKeyboardNavigationHandler(IKeyboardNavigationHandler keyboardNavigationHandler)
         {
@@ -81,6 +81,8 @@ namespace Consolonia.Core.Infrastructure
             {
                 _keyboardNavigationHandler.Move(element, direction, keyModifiers);
             }
+
+            return;
 
             (Point, Point) GetOriginalPoint(Rect valueClip)
             {

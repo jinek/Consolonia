@@ -112,12 +112,12 @@ namespace Consolonia.Core.Drawing
                         caretPosition = new PixelBufferCoordinate(x, y);
                     }
 
-                    /* todo: There is not IWindowImpl.Invalidate anymore.
-                     if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                        rect.ContainsExclusive(new Point(x, y)))) continue;*/
-                    if (pixel.Background.Mode != PixelBackgroundMode.Colored)
-                        throw new InvalidOperationException(
-                            "All pixels in the buffer must have exact console color before rendering");
+                /* todo: There is not IWindowImpl.Invalidate anymore.
+                 if (!_consoleWindow.InvalidatedRects.Any(rect =>
+                    rect.ContainsExclusive(new Point(x, y)))) continue;*/
+                if (pixel.Background.Mode != PixelBackgroundMode.Colored)
+                    throw new InvalidOperationException(
+                        "All pixels in the buffer must have exact console color before rendering");
 
                     if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
                         break;
@@ -134,8 +134,8 @@ namespace Consolonia.Core.Drawing
                         character = pixel.Foreground.Symbol.GetCharacter();
                     }
 
-                    if (char.IsControl(character) /*|| character is '保' or '哥'*/)
-                        character = ' '; // some terminals do not print \0
+                if (char.IsControl(character) /*|| character is '保' or '哥'*/)
+                    character = ' '; // some terminals do not print \0
 
                     Color backgroundColor = pixel.Background.Color;
                     Color foregroundColor = pixel.Foreground.Color;

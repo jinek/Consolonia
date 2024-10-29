@@ -174,6 +174,7 @@ namespace Consolonia.Core.Drawing
                 ConsoloniaPlatform.RaiseNotSupported(17, glyphRun);
                 throw new InvalidProgramException();
             }
+            
             if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
             if (!glyphRun.FontRenderingEmSize.IsNearlyEqual(1))
             {
@@ -359,6 +360,7 @@ namespace Consolonia.Core.Drawing
 
             pattern = (byte)(line.Vertical ? 0b1000 : 0b0001);
             DrawPixelAndMoveHead(1); //ending 
+            return;
 
             void DrawPixelAndMoveHead(int count)
             {
@@ -426,13 +428,13 @@ namespace Consolonia.Core.Drawing
                         }
                         break;
                     case '\n':
-                        {
-                            /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
-                             var consolePixel =  new Pixel(' ', foregroundColor); 
+                    {
+                        /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
+                         var consolePixel =  new Pixel(' ', foregroundColor);
 
-                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
-                        }
+                        _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
+                    }
                         break;
                     case '\u200B':
                         currentXPosition--;
