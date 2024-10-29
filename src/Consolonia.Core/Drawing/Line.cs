@@ -102,8 +102,8 @@ namespace Consolonia.Core.Drawing
                 (x, y) = (-x, -y); //todo: move this to constructor
             }
 
-
-            return x is 0 or -0 ? new Line(p1, true, (int)y) : new Line(p1, false, (int)x);
+            // ReSharper disable once PatternIsRedundant todo: fix
+            return x is 0 or 0d ? new Line(p1, true, (int)y) : new Line(p1, false, (int)x);
         }
     }
 }
