@@ -21,7 +21,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             IsCaret = isCaret;
         }
 
-        public Pixel(char character, Color foregroundColor, FontStyle style = FontStyle.Normal, FontWeight weight = FontWeight.Normal) : 
+        public Pixel(char character, Color foregroundColor, FontStyle style = FontStyle.Normal, FontWeight weight = FontWeight.Normal) :
             this(new SimpleSymbol(character), foregroundColor, style, weight)
         {
         }
@@ -69,7 +69,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 case PixelBackgroundMode.Colored:
                     return pixelAbove;
                 case PixelBackgroundMode.Transparent:
-                    newForeground = Foreground.Blend(pixelAbove.Foreground);
+                    // when a textdecoration of underline happens a DrawLine() is called over the top of the a pixel with non-zero symbol.
+                    // this detects this situation and eats the draw line, instead changing the underling text to be fontStyle=Oblique
+                    if (pixelAbove.Foreground.Symbol is DrawingBoxSymbol box &&
+                        this.Foreground.Symbol is SimpleSymbol simpleSymbol &&
+                        simpleSymbol is ISymbol symbol &&
+                        symbol.GetCharacter() != (Char)0)
+                    {
+                        // this is a line being draw through text. use fontstyle.Oblique to signal this.
+                        newForeground = new PixelForeground(this.Foreground.Symbol, this.Foreground.Weight, FontStyle.Oblique, this.Foreground.Color);
+                    }
+                    else
+                    {
+                        // do normal blend.
+                        newForeground = Foreground.Blend(pixelAbove.Foreground);
+                    }
                     newBackground = Background;
                     newIsCaret = IsCaret | pixelAbove.IsCaret;
                     break;

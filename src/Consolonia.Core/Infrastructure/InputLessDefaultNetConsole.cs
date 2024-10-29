@@ -82,6 +82,12 @@ namespace Consolonia.Core.Infrastructure
                 throw new NotSupportedException("Is not supposed to be rendered");
             }
 
+            if (style == FontStyle.Oblique)
+            {
+                // we are using Oblique to signal Underline
+                str = Crayon.Output.Underline(str);
+            }
+
             if (weight == FontWeight.Normal)
                 foreground = foreground.Shade(background);
             else if ((int)weight < (int)FontWeight.Normal)
