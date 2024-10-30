@@ -20,7 +20,7 @@ namespace Consolonia.Core.Drawing
 
         private PixelBuffer _bufferBuffer;
 
-        private (Color background, Color foreground, FontWeight weight, FontStyle style, char character)?[,] _cache;
+        private (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection textDecorations, char character)?[,] _cache;
 
         internal RenderTarget(ConsoleWindow consoleWindow)
         {
@@ -88,7 +88,7 @@ namespace Consolonia.Core.Drawing
 
         private void InitializeCache(ushort width, ushort height)
         {
-            _cache = new (Color background, Color foreground, FontWeight weight, FontStyle style,  char character)?[width, height];
+            _cache = new (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection textDecorations, char character)?[width, height];
         }
 
         private void RenderToDevice()
@@ -141,10 +141,10 @@ namespace Consolonia.Core.Drawing
                     Color foregroundColor = pixel.Foreground.Color;
 
                     //todo: indexOutOfRange during resize
-                    if (_cache[x, y] == (backgroundColor, foregroundColor, pixel.Foreground.Weight, pixel.Foreground.Style, character))
+                    if (_cache[x, y] == (backgroundColor, foregroundColor, pixel.Foreground.Weight, pixel.Foreground.Style, pixel.Foreground.TextDecorations, character))
                         continue;
 
-                    _cache[x, y] = (backgroundColor, foregroundColor, pixel.Foreground.Weight, pixel.Foreground.Style, character);
+                    _cache[x, y] = (backgroundColor, foregroundColor, pixel.Foreground.Weight, pixel.Foreground.Style, pixel.Foreground.TextDecorations, character);
 
                     flushingBuffer.WriteCharacter(new PixelBufferCoordinate(x, y), 
                         character, 

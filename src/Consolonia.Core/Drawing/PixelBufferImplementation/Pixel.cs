@@ -38,7 +38,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
         }
 
-        public Pixel(Color backgroundColor, IGlyphTypeface typeface = null) : this(
+        public Pixel(Color backgroundColor) : this(
             new PixelBackground(PixelBackgroundMode.Colored, backgroundColor))
         {
         }
