@@ -85,11 +85,7 @@
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Right">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="DoubleLine">
-                        <drawing:LineBrush.Brush>
-                            <drawing:ConsoleBrush Color="Blue" />
-                        </drawing:LineBrush.Brush>
-                    </drawing:LineBrush>
+                    <drawing:LineBrush LineStyle="DoubleLine" Brush="Blue"/>
                 </Border.BorderBrush>
                 <Border.Styles>
                     <Style Selector="Border">
