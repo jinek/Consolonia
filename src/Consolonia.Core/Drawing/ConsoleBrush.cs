@@ -8,7 +8,6 @@ using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
-    [TypeConverter(typeof(ConsoleBrushConverter))]
     public class ConsoleBrush : AvaloniaObject, IImmutableBrush
     {
         public static readonly StyledProperty<Color> ColorProperty =
@@ -176,28 +175,4 @@ namespace Consolonia.Core.Drawing
             return Color.FromArgb(a, r, g, b);
         }
     }
-
-    public class ConsoleBrushConverter : TypeConverter
-    {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            return sourceType == typeof(string);
-        }
-
-        public override object ConvertFrom(
-            ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value is string s)
-            {
-                if (Color.TryParse(s, out Color color))
-                {
-                    return color;
-                }
-            }
-
-            return null;
-        }
-    }
-
-
 }
