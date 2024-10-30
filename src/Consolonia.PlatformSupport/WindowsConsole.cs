@@ -172,17 +172,12 @@ namespace Consolonia.PlatformSupport
                 case WindowsConsole.EventFlags.MouseMoved:
                     eventType = RawPointerEventType.Move;
                     break;
+                case WindowsConsole.EventFlags.MouseMoved | WindowsConsole.EventFlags.DoubleClick:
+                    RaiseMouseEvent(RawPointerEventType.LeftButtonDown, point, null, inputModifiers);
+                    RaiseMouseEvent(RawPointerEventType.Move, point, null, inputModifiers);
+                    return false;
                 default:
-                    if (mouseEvent.EventFlags == (WindowsConsole.EventFlags.MouseMoved | WindowsConsole.EventFlags.DoubleClick))
-                    {
-                        RaiseMouseEvent(RawPointerEventType.LeftButtonDown, point, null, inputModifiers);
-                        RaiseMouseEvent(RawPointerEventType.Move, point, null, inputModifiers);
-                        return false;
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException(mouseEvent.EventFlags.ToString());
-                    }
+                    throw new InvalidOperationException(mouseEvent.EventFlags.ToString());
             }
 
             for (short i = 0; i < repeat; i++)
