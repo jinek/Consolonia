@@ -11,7 +11,8 @@
     <!--Examples from Avalonia https://github.com/AvaloniaUI/Avalonia/blob/master/samples/ControlCatalog/Pages/TextBlockPage.xaml-->
     <StackPanel Orientation="Vertical">
         <TextBlock Text="This is TextBlock" />
-
+        <TextBlock Text="This is colored TextBlock" FontWeight="Bold" Background="DarkMagenta" Foreground="Chartreuse"/>
+        
         <StackPanel Orientation="Vertical" Margin="0" Background="DarkGray">
             <TextBlock TextTrimming="CharacterEllipsis"
                        Text="Text trimming with character ellipsis. Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
