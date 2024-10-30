@@ -70,7 +70,6 @@ namespace Consolonia.Core.Drawing
 
                 default:
                     ConsoloniaPlatform.RaiseNotSupported(6);
-                    throw new ArgumentException($"Brush type {brush.GetType().Name} is not supported", nameof(brush));
                     return null;
             }
         }
@@ -100,8 +99,43 @@ namespace Consolonia.Core.Drawing
                         var verticalColor = InterpolateColor(gradientBrush, verticalRelativePosition);
 
                         // Average the two colors to get the final color
-                        var finalColor = BlendColors(horizontalColor, verticalColor);
-                        return new ConsoleBrush(finalColor);
+                        var color = BlendColors(horizontalColor, verticalColor);
+                        return new ConsoleBrush(color);
+                    }
+                case IRadialGradientBrush radialBrush:
+                    {
+                        // Calculate the normalized center coordinates
+                        double centerX = radialBrush.Center.Point.X * width;
+                        double centerY = radialBrush.Center.Point.Y * height;
+
+                        // Calculate the distance from the center
+                        double dx = x - centerX;
+                        double dy = y - centerY;
+                        double distance = Math.Sqrt(dx * dx + dy * dy);
+
+                        // Normalize the distance based on the brush radius
+                        double normalizedDistance = distance / (Math.Min(width, height) * radialBrush.Radius);
+
+                        // Clamp the normalized distance to [0, 1]
+                        normalizedDistance = Math.Min(Math.Max(normalizedDistance, 0), 1);
+
+                        // Interpolate the color based on the normalized distance
+                        var color = InterpolateColor(radialBrush, normalizedDistance);
+                        return new ConsoleBrush(color);
+                    }
+                    case IConicGradientBrush conicBrush:
+                    {
+                        // Calculate the relative position within the gradient
+                        double horizontalRelativePosition = (double)x / (width - 1);
+                        double verticalRelativePosition = (double)y / (height - 1);
+
+                        // Interpolate horizontal and vertical colors
+                        var horizontalColor = InterpolateColor(conicBrush, horizontalRelativePosition);
+                        var verticalColor = InterpolateColor(conicBrush, verticalRelativePosition);
+
+                        // Average the two colors to get the final color
+                        var color = BlendColors(horizontalColor, verticalColor);
+                        return new ConsoleBrush(color);
                     }
 
                 default:
@@ -132,7 +166,7 @@ namespace Consolonia.Core.Drawing
         public ITransform Transform => null;
         public RelativePoint TransformOrigin => RelativePoint.TopLeft;
 
-        private static Color InterpolateColor(ILinearGradientBrush brush, double relativePosition)
+        private static Color InterpolateColor(IGradientBrush brush, double relativePosition)
         {
             IGradientStop before = null;
             IGradientStop after = null;
