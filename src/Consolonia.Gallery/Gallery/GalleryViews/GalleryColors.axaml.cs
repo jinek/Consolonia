@@ -14,9 +14,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public GalleryColors()
         {
             InitializeComponent();
-            Random rnd = new Random();
+            var rnd = Random.Shared;
             this.DataContext = new RGBModel() { Color = Color.FromRgb((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255)) };
-            ;
         }
 
         private void InitializeComponent()

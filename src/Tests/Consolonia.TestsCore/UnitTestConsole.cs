@@ -59,6 +59,15 @@ namespace Consolonia.TestsCore
 
             for (int i = 0; i < str.Length; i++)
                 PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
+                    new Pixel(
+                        new PixelForeground(new SimpleSymbol(str[i]), color: foreground, style: style, weight: weight),
+                        new PixelBackground(PixelBackgroundMode.Colored, background)));
+        }
+        {
+            (ushort x, ushort y) = bufferPoint;
+
+            for (int i = 0; i < str.Length; i++)
+                PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
                     // ReSharper disable once AccessToModifiedClosure we are sure about inline execution
                     new Pixel(new PixelForeground(new SimpleSymbol(str[i]), color: foreground),
                         new PixelBackground(PixelBackgroundMode.Colored, background)));
