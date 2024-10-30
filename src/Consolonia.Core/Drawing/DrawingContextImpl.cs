@@ -120,7 +120,10 @@ namespace Consolonia.Core.Drawing
                     case ISceneBrush sceneBrush:
                         {
                             ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
-                            sceneBrushContent!.Render(this, Matrix.Identity);
+                            if (sceneBrushContent != null)
+                            {
+                                sceneBrushContent.Render(this, Matrix.Identity);
+                            }
                             return;
                         }
                     default:
@@ -141,14 +144,16 @@ namespace Consolonia.Core.Drawing
                         {
                             ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
                             _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                                (pixel, bb) => pixel.Blend(
-                                    new Pixel(new PixelBackground(bb.Mode, bb.Color))),
-                                backgroundBrush);
+                                (pixel, bb) =>
+                                {
+                                    return pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color)));
+                                }, backgroundBrush);
                         });
                     }
             }
 
-            if (pen is null or { Thickness: 0 } or { Brush: null }) return;
+            if (pen is null or { Thickness: 0 }
+    or { Brush: null }) return;
 
             DrawLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width));
             DrawLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width));

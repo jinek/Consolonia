@@ -173,7 +173,7 @@ namespace Consolonia.Core.Drawing
             private Color _lastForegroundColor;
             private FontStyle _lastStyle = FontStyle.Normal;
             private FontWeight _lastWeight = FontWeight.Normal;
-            private TextDecorationCollection _lastTextDecorations;
+            private TextDecorationCollection _lastTextDecorations = new();
             private PixelBufferCoordinate _currentBufferPoint;
             private PixelBufferCoordinate _lastBufferPointStart;
 
