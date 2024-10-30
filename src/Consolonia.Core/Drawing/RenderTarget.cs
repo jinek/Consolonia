@@ -6,6 +6,7 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting.Unicode;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -122,33 +123,20 @@ namespace Consolonia.Core.Drawing
                     if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
                         break;
 
-                    char character;
                     if (pixel.Foreground.Symbol is null) // not using 'when' as it swallows the exceptions 
                     {
                         // buffer re-initialized after resizing
-                        character = '░';
-                        pixel = new Pixel(new PixelForeground(new SimpleSymbol(character)), new PixelBackground(PixelBackgroundMode.Colored));
-                    }
-                    else
-                    {
-                        character = pixel.Foreground.Symbol.GetCharacter();
+                        pixel = new Pixel(new PixelForeground(new SimpleSymbol('░')), new PixelBackground(PixelBackgroundMode.Colored));
                     }
 
-                if (char.IsControl(character) /*|| character is '保' or '哥'*/)
-                    character = ' '; // some terminals do not print \0
-
-                    Color backgroundColor = pixel.Background.Color;
-                    Color foregroundColor = pixel.Foreground.Color;
-
+                    var pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight, pixel.Foreground.Style, pixel.Foreground.TextDecorations, pixel.Foreground.Symbol.GetCharacter());
                     //todo: indexOutOfRange during resize
-                    if (_cache[x, y] == (backgroundColor, foregroundColor, pixel.Foreground.Weight, pixel.Foreground.Style, pixel.Foreground.TextDecorations, character))
+                    if (_cache[x, y] == pixelSpread) 
                         continue;
 
-                    _cache[x, y] = (backgroundColor, foregroundColor, pixel.Foreground.Weight, pixel.Foreground.Style, pixel.Foreground.TextDecorations, character);
+                    _cache[x, y] = pixelSpread;
 
-                    flushingBuffer.WriteCharacter(new PixelBufferCoordinate(x, y), 
-                        character, 
-                        pixel);
+                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
                 }
 
             flushingBuffer.Flush();
@@ -184,9 +172,8 @@ namespace Consolonia.Core.Drawing
                 _stringBuilder = new StringBuilder();
             }
 
-            public void WriteCharacter(
+            public void WritePixel(
                 PixelBufferCoordinate bufferPoint,
-                char character,
                 Pixel pixel)
             {
                 if (!bufferPoint.Equals(_currentBufferPoint) /*todo: performance*/ ||
@@ -206,7 +193,9 @@ namespace Consolonia.Core.Drawing
                     _lastTextDecorations = pixel.Foreground.TextDecorations;
                     _lastBufferPointStart = _currentBufferPoint = bufferPoint;
                 }
-
+                var character = pixel.Foreground.Symbol.GetCharacter();
+                if (char.IsControl(character) /*|| character is '保' or '哥'*/)
+                    character = ' '; // some terminals do not print \0
                 _stringBuilder.Append(character);
                 _currentBufferPoint = _currentBufferPoint.WithXpp();
             }

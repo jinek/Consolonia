@@ -42,6 +42,8 @@ namespace Consolonia.Core.Drawing
         /// <returns></returns>
         public static ConsoleBrush FromBrush(IBrush brush, PixelBackgroundMode? mode = null)
         {
+            ArgumentNullException.ThrowIfNull(brush, nameof(brush));
+
             switch (brush)
             {
                 case ConsoleBrush consoleBrush:
@@ -68,6 +70,7 @@ namespace Consolonia.Core.Drawing
 
                 default:
                     ConsoloniaPlatform.RaiseNotSupported(6);
+                    throw new ArgumentException($"Brush type {brush.GetType().Name} is not supported", nameof(brush));
                     return null;
             }
         }
@@ -167,12 +170,11 @@ namespace Consolonia.Core.Drawing
 
         private static Color BlendColors(Color color1, Color color2)
         {
-            byte r = (byte)((color1.R + color2.R) / 2);
-            byte g = (byte)((color1.G + color2.G) / 2);
-            byte b = (byte)((color1.B + color2.B) / 2);
-            byte a = (byte)((color1.A + color2.A) / 2);
-
-            return Color.FromArgb(a, r, g, b);
+            int r = (color1.R + color2.R) / 2;
+            int g = (color1.G + color2.G) / 2;
+            int b = (color1.B + color2.B) / 2;
+            int a = (color1.A + color2.A) / 2;
+            return Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
         }
     }
 }
