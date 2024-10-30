@@ -61,7 +61,7 @@ namespace Consolonia.TestsCore
                 PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
                     // ReSharper disable once AccessToModifiedClosure we are sure about inline execution
                     new Pixel(
-                        new PixelForeground(new SimpleSymbol(str[i]), color: foreground, style: style, weight: weight),
+                        new PixelForeground(new SimpleSymbol(str[i]), color: foreground, style: style, weight: weight, textDecorations: textDecorations),
                         new PixelBackground(PixelBackgroundMode.Colored, background)));
         }
 
