@@ -75,6 +75,16 @@ namespace Consolonia.Core.Drawing
 
         public static ConsoleBrush FromPosition(IBrush brush, int x, int y, int width, int height)
         {
+            ArgumentNullException.ThrowIfNull(brush);
+            if (x < 0 || x > width)
+                throw new ArgumentOutOfRangeException(nameof(width), "x is out bounds");
+            if (y < 0 || y > height)
+                throw new ArgumentOutOfRangeException(nameof(width), "y is out bounds");
+            if (width <= 0)
+                throw new ArgumentOutOfRangeException(nameof(width), "Width must be positive");
+            if (height <= 0)
+                throw new ArgumentOutOfRangeException(nameof(height), "Height must be positive");
+
             switch (brush)
             {
                 case ILinearGradientBrush gradientBrush:

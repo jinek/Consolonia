@@ -73,8 +73,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             get => _brush; set
             {
                 _brush = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs(nameof(Brush)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Brush)));
             }
         }
 
