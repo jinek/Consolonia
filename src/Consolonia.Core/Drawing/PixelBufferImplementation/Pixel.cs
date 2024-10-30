@@ -72,8 +72,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     // this detects this situation and eats the draw line, instead changing the underling text to be fontStyle=Oblique
                     if (pixelAbove.Foreground.Symbol is DrawingBoxSymbol box &&
                         this.Foreground.Symbol is SimpleSymbol simpleSymbol &&
-                        simpleSymbol is ISymbol symbol &&
-                        symbol.GetCharacter() != (Char)0)
+                        ((ISymbol)simpleSymbol).GetCharacter() != (Char)0)
                     {
                         // this is a line being draw through text. use fontstyle.Oblique to signal this.
                         newForeground = new PixelForeground(this.Foreground.Symbol, this.Foreground.Weight, FontStyle.Oblique, this.Foreground.Color);

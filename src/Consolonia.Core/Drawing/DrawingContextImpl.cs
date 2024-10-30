@@ -125,15 +125,9 @@ namespace Consolonia.Core.Drawing
                             sceneBrushContent!.Render(this, Matrix.Identity);
                             return;
                         }
-                    case ConsoleBrush cb:
-                        backgroundBrush = cb;
-                        break;
-                    case ISolidColorBrush solidBrush:
-                        backgroundBrush = new ConsoleBrush(solidBrush.Color, PixelBackgroundMode.Colored);
-                        break;
                     default:
-                        ConsoloniaPlatform.RaiseNotSupported(9, brush, pen, rect, boxShadows);
-                        return;
+                        backgroundBrush = ConsoleBrush.FromBrush(brush);
+                        break;
                 }
 
                 Rect r2 = r.TransformToAABB(Transform);
@@ -174,7 +168,7 @@ namespace Consolonia.Core.Drawing
                 ConsoloniaPlatform.RaiseNotSupported(17, glyphRun);
                 throw new InvalidProgramException();
             }
-            
+
             if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
             if (!glyphRun.FontRenderingEmSize.IsNearlyEqual(1))
             {
@@ -282,36 +276,10 @@ namespace Consolonia.Core.Drawing
                 return null;
             }
 
-            var brush = pen.Brush;
-            ConsoleBrush consoleColorBrush;
-            switch (brush)
-            {
-                case ConsoleBrush c:
-                    consoleColorBrush = c;
-                    break;
-                case LineBrush lineBrush:
-                    lineStyle = lineBrush.LineStyle;
-                    switch(lineBrush.Brush)
-                    {
-                        case ConsoleBrush :
-                            consoleColorBrush = lineBrush.Brush as ConsoleBrush;
-                            break;
-                        case ISolidColorBrush br:
-                           consoleColorBrush = new ConsoleBrush(br.Color, PixelBackgroundMode.Colored);
-                            break;
-                        default:
-                            ConsoloniaPlatform.RaiseNotSupported(6);
-                            return null;
-                    }
-                    break;
-                case ISolidColorBrush br2:
-                    consoleColorBrush = new ConsoleBrush(br2.Color, PixelBackgroundMode.Colored);
-                    break;
+            if (pen.Brush is LineBrush lineBrush)
+                lineStyle = lineBrush.LineStyle;
 
-                default:
-                    ConsoloniaPlatform.RaiseNotSupported(6);
-                    return null;
-            }
+            ConsoleBrush consoleColorBrush = ConsoleBrush.FromBrush(pen.Brush);
 
             switch (consoleColorBrush.Mode)
             {
@@ -384,6 +352,7 @@ namespace Consolonia.Core.Drawing
 
         private void DrawStringInternal(IBrush foreground, string str, IGlyphTypeface typeface, Point origin = new())
         {
+            foreground = ConsoleBrush.FromBrush(foreground);
             if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
             {
                 if (foreground is ISolidColorBrush solidBrush)
@@ -428,13 +397,13 @@ namespace Consolonia.Core.Drawing
                         }
                         break;
                     case '\n':
-                    {
-                        /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
-                         var consolePixel =  new Pixel(' ', foregroundColor);
+                        {
+                            /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
+                             var consolePixel =  new Pixel(' ', foregroundColor);
 
-                        _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
-                    }
+                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
+                        }
                         break;
                     case '\u200B':
                         currentXPosition--;
@@ -443,10 +412,10 @@ namespace Consolonia.Core.Drawing
                         {
                             var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
                             CurrentClip.ExecuteWithClipping(characterPoint, () =>
-                                {
-                                    _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                                }
+                            {
+                                _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                            }
                             );
                         }
                         break;

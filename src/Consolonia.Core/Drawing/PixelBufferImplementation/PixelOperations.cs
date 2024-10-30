@@ -39,7 +39,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             var foregroundAvg = (foreground.R + foreground.B + foreground.G) / 3;
             var backgroundAvg = (background.R + background.B + background.G) / 3;
-            if (foregroundAvg > backgroundAvg)
+            if (foregroundAvg > backgroundAvg || (foregroundAvg == backgroundAvg && foregroundAvg > 0))
             {
                 // if color is lighter than background shading should make it more dark (less constrast)
                 return Color.FromRgb((byte)Math.Max(0, foreground.R - _factor),
@@ -67,7 +67,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             var foregroundAvg = (foreground.R + foreground.B + foreground.G) / 3;
             var backgroundAvg = (background.R + background.B + background.G) / 3;
-            if (foregroundAvg > backgroundAvg)
+            if (foregroundAvg > backgroundAvg || (foregroundAvg == backgroundAvg && foregroundAvg < Byte.MaxValue))
             {
                 // if color is lighter than background brighten should make it more bright (more contrast)
                 return Color.FromRgb((byte)Math.Min(Byte.MaxValue, foreground.R + _factor),

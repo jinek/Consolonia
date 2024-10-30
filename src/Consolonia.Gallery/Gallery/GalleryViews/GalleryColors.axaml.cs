@@ -24,26 +24,26 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void Random_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void Random_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Random rnd = new Random();
             var model = (RGBModel)this.DataContext;
             model.Color = Color.FromRgb((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255));
         }
 
-        private void Red_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void Red_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Random rnd = new Random();
             var model = (RGBModel)this.DataContext;
             model.Color = Color.FromRgb((byte)rnd.Next(255), model.Color.G, model.Color.B);
         }
-        private void Green_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void Green_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Random rnd = new Random();
             var model = (RGBModel)this.DataContext;
             model.Color = Color.FromRgb(model.Color.R, (byte)rnd.Next(255), model.Color.B);
         }
-        private void Blue_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void Blue_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Random rnd = new Random();
             var model = (RGBModel)this.DataContext;
