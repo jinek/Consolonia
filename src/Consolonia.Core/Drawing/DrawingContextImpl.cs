@@ -142,7 +142,7 @@ namespace Consolonia.Core.Drawing
                             ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
                             _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
                                 (pixel, bb) => pixel.Blend(
-                                    new Pixel(new PixelBackground(bb.Mode, bb.Color))), 
+                                    new Pixel(new PixelBackground(bb.Mode, bb.Color))),
                                 backgroundBrush);
                         });
                     }
@@ -355,15 +355,8 @@ namespace Consolonia.Core.Drawing
             foreground = ConsoleBrush.FromBrush(foreground);
             if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
             {
-                if (foreground is ISolidColorBrush solidBrush)
-                {
-                    consoleColorBrush = new ConsoleBrush(solidBrush.Color, PixelBackgroundMode.Colored);
-                }
-                else
-                {
-                    ConsoloniaPlatform.RaiseNotSupported(4);
-                    return;
-                }
+                ConsoloniaPlatform.RaiseNotSupported(4);
+                return;
             }
 
             if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
