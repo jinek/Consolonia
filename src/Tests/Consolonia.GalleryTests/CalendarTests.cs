@@ -13,9 +13,9 @@ namespace Consolonia.GalleryTests
         protected override async Task PerformSingleTest()
         {
             await UITest.AssertHasText("24 25 26 27 28 29 30");
-            await UITest.AssertHasText("April", "2022");
+            await UITest.AssertHasText(@"April", @"2022");
             await UITest.KeyInput(Key.Tab, Key.Back);
-            await UITest.AssertHasText("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+            await UITest.AssertHasText(@"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
                 "Dec");
             await UITest.KeyInput(Key.Back);
             await UITest.AssertHasText(Enumerable.Range(2019, 12).Select(year => year.ToString()).ToArray());

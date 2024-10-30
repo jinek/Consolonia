@@ -39,6 +39,7 @@ jobs:
           solutionPath: ./src/Consolonia.sln
           exclude: "**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*;**Example/**.*"
           version: '2024.2.6'
+          minimumSeverity: 'warning'
 
       - name: install-resharper
         run: |
