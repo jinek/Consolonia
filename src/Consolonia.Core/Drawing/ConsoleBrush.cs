@@ -177,7 +177,7 @@ namespace Consolonia.Core.Drawing
                 {
                     before = stop;
                 }
-                if (stop.Offset >= relativePosition)
+                else if (stop.Offset >= relativePosition)
                 {
                     after = stop;
                     break;

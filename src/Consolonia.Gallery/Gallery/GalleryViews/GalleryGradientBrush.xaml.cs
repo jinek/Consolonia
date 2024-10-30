@@ -31,7 +31,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 GradientStops = new GradientStops
                 {
                     new GradientStop { Color = Colors.White, Offset = 0 },
-                    new GradientStop { Color = Colors.Black, Offset = 1 }
+                    new GradientStop { Color = Colors.Red, Offset = 1 }
                 }
             };
         }
@@ -45,8 +45,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 Radius = 0.5,
                 GradientStops = new GradientStops
                 {
-                    new GradientStop { Color = Colors.White, Offset = 0 },
-                    new GradientStop { Color = Colors.Black, Offset = 1 }
+                    new GradientStop { Color = Colors.Black, Offset = 0 },
+                    new GradientStop { Color = Colors.Red, Offset = 1 }
                 }
             };
         }

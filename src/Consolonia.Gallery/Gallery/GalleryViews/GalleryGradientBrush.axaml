@@ -8,11 +8,11 @@
              d:DesignHeight="450"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryGradientBrush">
 
-    <Grid x:Name="MyGrid" RowDefinitions="Auto *" Margin="1">
+    <Grid x:Name="MyGrid" RowDefinitions="Auto *">
         <Grid.Background>
-            <LinearGradientBrush EndPoint="0%,100%" StartPoint="0%,100%">
-                <GradientStop Color="Black" Offset="0" />
-                <GradientStop Color="White" Offset="1" />
+            <LinearGradientBrush EndPoint="0%,0%" StartPoint="0%,100%">
+                <GradientStop Color="White" Offset="0" />
+                <GradientStop Color="Red" Offset="1" />
             </LinearGradientBrush>
         </Grid.Background>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
