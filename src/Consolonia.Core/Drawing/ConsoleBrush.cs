@@ -126,8 +126,8 @@ namespace Consolonia.Core.Drawing
                     case IConicGradientBrush conicBrush:
                     {
                         // Calculate the relative position within the gradient
-                        double horizontalRelativePosition = (double)x / (width - 1);
-                        double verticalRelativePosition = (double)y / (height - 1);
+                        double horizontalRelativePosition = (double)x / width;
+                        double verticalRelativePosition = (double)y / height;
 
                         // Interpolate horizontal and vertical colors
                         var horizontalColor = InterpolateColor(conicBrush, horizontalRelativePosition);
