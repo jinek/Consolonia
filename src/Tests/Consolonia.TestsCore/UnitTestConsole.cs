@@ -53,23 +53,15 @@ namespace Consolonia.TestsCore
             return _fakeCaretPosition;
         }
 
-        void IConsole.Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style, FontWeight weight, string str)
-        {
-            (ushort x, ushort y) = bufferPoint;
-
-            for (int i = 0; i < str.Length; i++)
-                PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
-                    new Pixel(
-                        new PixelForeground(new SimpleSymbol(str[i]), color: foreground, style: style, weight: weight),
-                        new PixelBackground(PixelBackgroundMode.Colored, background)));
-        }
+        void IConsole.Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style, FontWeight weight, TextDecorationCollection textDecorations, string str)
         {
             (ushort x, ushort y) = bufferPoint;
 
             for (int i = 0; i < str.Length; i++)
                 PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
                     // ReSharper disable once AccessToModifiedClosure we are sure about inline execution
-                    new Pixel(new PixelForeground(new SimpleSymbol(str[i]), color: foreground),
+                    new Pixel(
+                        new PixelForeground(new SimpleSymbol(str[i]), color: foreground, style: style, weight: weight),
                         new PixelBackground(PixelBackgroundMode.Colored, background)));
         }
 
