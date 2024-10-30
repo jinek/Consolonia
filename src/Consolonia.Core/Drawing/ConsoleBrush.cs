@@ -7,27 +7,27 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 namespace Consolonia.Core.Drawing
 {
-    [TypeConverter(typeof(ConsoleColorBrushConverter))]
-    public class ConsoleColorBrush : AvaloniaObject, IImmutableBrush
+    [TypeConverter(typeof(ConsoleBrushConverter))]
+    public class ConsoleBrush : AvaloniaObject, IImmutableBrush
     {
         public static readonly StyledProperty<Color> ColorProperty =
-            AvaloniaProperty.Register<ConsoleColorBrush, Color>(nameof(Color));
+            AvaloniaProperty.Register<ConsoleBrush, Color>(nameof(Color));
 
         public static readonly StyledProperty<PixelBackgroundMode> ModeProperty =
-            AvaloniaProperty.Register<ConsoleColorBrush, PixelBackgroundMode>(nameof(Mode));
+            AvaloniaProperty.Register<ConsoleBrush, PixelBackgroundMode>(nameof(Mode));
 
         // ReSharper disable once UnusedMember.Global
-        public ConsoleColorBrush(Color color, PixelBackgroundMode mode) : this(color)
+        public ConsoleBrush(Color color, PixelBackgroundMode mode) : this(color)
         {
             Mode = mode;
         }
 
-        public ConsoleColorBrush(Color color)
+        public ConsoleBrush(Color color)
         {
             Color = color;
         }
 
-        public ConsoleColorBrush()
+        public ConsoleBrush()
         {
         }
 
@@ -55,7 +55,7 @@ namespace Consolonia.Core.Drawing
         public RelativePoint TransformOrigin => RelativePoint.TopLeft;
     }
 
-    public class ConsoleColorBrushConverter : TypeConverter 
+    public class ConsoleBrushConverter : TypeConverter 
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {

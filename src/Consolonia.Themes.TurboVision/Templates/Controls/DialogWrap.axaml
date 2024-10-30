@@ -4,7 +4,7 @@
              x:Class="Consolonia.Themes.TurboVision.Templates.Controls.DialogWrap">
 
     <Panel>
-        <Border Background="{drawing1:ConsoleColorBrush Mode=Shaded}"
+        <Border Background="{drawing1:ConsoleBrush Mode=Shaded}"
                 IsVisible="{Binding RelativeSource={RelativeSource Self}, Path=IsEffectivelyEnabled}" />
 
         <!-- ReSharper disable once UnusedMember.Local Used for manual search-->

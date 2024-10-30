@@ -26,10 +26,10 @@
                     <Panel>
                         <!--Centered layout-->
                         <!--Panel shade Mode=Shaded-->
-                        <Border Background="{drawing:ConsoleColorBrush Mode=Shaded}"
+                        <Border Background="{drawing:ConsoleBrush Mode=Shaded}"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom">
-                            <Border BorderBrush="{drawing:ConsoleColorBrush Mode=Transparent}"
+                            <Border BorderBrush="{drawing:ConsoleBrush Mode=Transparent}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}">
                                 <Control

@@ -64,12 +64,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             set
             {
                 _color = value;
-                Brush = new ConsoleColorBrush(_color);
+                Brush = new ConsoleBrush(_color);
             }
         }
 
-        private ConsoleColorBrush _brush;
-        public ConsoleColorBrush Brush
+        private ConsoleBrush _brush;
+        public ConsoleBrush Brush
         {
             get => _brush; set
             {

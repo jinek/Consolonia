@@ -113,7 +113,7 @@ namespace Consolonia.Core.Drawing
 
             if (brush is not null)
             {
-                ConsoleColorBrush backgroundBrush;
+                ConsoleBrush backgroundBrush;
 
                 switch (brush)
                 {
@@ -125,11 +125,11 @@ namespace Consolonia.Core.Drawing
                             sceneBrushContent!.Render(this, Matrix.Identity);
                             return;
                         }
-                    case ConsoleColorBrush cb:
+                    case ConsoleBrush cb:
                         backgroundBrush = cb;
                         break;
                     case ISolidColorBrush solidBrush:
-                        backgroundBrush = new ConsoleColorBrush(solidBrush.Color, PixelBackgroundMode.Colored);
+                        backgroundBrush = new ConsoleBrush(solidBrush.Color, PixelBackgroundMode.Colored);
                         break;
                     default:
                         ConsoloniaPlatform.RaiseNotSupported(9, brush, pen, rect, boxShadows);
@@ -271,7 +271,7 @@ namespace Consolonia.Core.Drawing
             lineStyle = null;
             if (pen is not
                 {
-                    Brush: ConsoleColorBrush or LineBrush or ImmutablePen or ImmutableSolidColorBrush,
+                    Brush: ConsoleBrush or LineBrush or ImmutablePen or ImmutableSolidColorBrush,
                     Thickness: 1,
                     DashStyle: null or { Dashes: { Count: 0 } },
                     LineCap: PenLineCap.Flat,
@@ -283,21 +283,21 @@ namespace Consolonia.Core.Drawing
             }
 
             var brush = pen.Brush;
-            ConsoleColorBrush consoleColorBrush;
+            ConsoleBrush consoleColorBrush;
             switch (brush)
             {
-                case ConsoleColorBrush c:
+                case ConsoleBrush c:
                     consoleColorBrush = c;
                     break;
                 case LineBrush lineBrush:
                     lineStyle = lineBrush.LineStyle;
                     switch(lineBrush.Brush)
                     {
-                        case ConsoleColorBrush :
-                            consoleColorBrush = lineBrush.Brush as ConsoleColorBrush;
+                        case ConsoleBrush :
+                            consoleColorBrush = lineBrush.Brush as ConsoleBrush;
                             break;
                         case ISolidColorBrush br:
-                           consoleColorBrush = new ConsoleColorBrush(br.Color, PixelBackgroundMode.Colored);
+                           consoleColorBrush = new ConsoleBrush(br.Color, PixelBackgroundMode.Colored);
                             break;
                         default:
                             ConsoloniaPlatform.RaiseNotSupported(6);
@@ -305,7 +305,7 @@ namespace Consolonia.Core.Drawing
                     }
                     break;
                 case ISolidColorBrush br2:
-                    consoleColorBrush = new ConsoleColorBrush(br2.Color, PixelBackgroundMode.Colored);
+                    consoleColorBrush = new ConsoleBrush(br2.Color, PixelBackgroundMode.Colored);
                     break;
 
                 default:
@@ -384,11 +384,11 @@ namespace Consolonia.Core.Drawing
 
         private void DrawStringInternal(IBrush foreground, string str, IGlyphTypeface typeface, Point origin = new())
         {
-            if (foreground is not ConsoleColorBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
+            if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
             {
                 if (foreground is ISolidColorBrush solidBrush)
                 {
-                    consoleColorBrush = new ConsoleColorBrush(solidBrush.Color, PixelBackgroundMode.Colored);
+                    consoleColorBrush = new ConsoleBrush(solidBrush.Color, PixelBackgroundMode.Colored);
                 }
                 else
                 {

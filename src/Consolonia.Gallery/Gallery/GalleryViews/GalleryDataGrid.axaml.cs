@@ -610,10 +610,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             if (value is int gdp)
             {
                 if (gdp <= 5000)
-                    return new ConsoleColorBrush(Colors.Yellow);
+                    return new ConsoleBrush(Colors.Yellow);
                 if (gdp <= 10000)
-                    return new ConsoleColorBrush(Colors.DarkGoldenrod);
-                return new ConsoleColorBrush(Colors.Green);
+                    return new ConsoleBrush(Colors.DarkGoldenrod);
+                return new ConsoleBrush(Colors.Green);
             }
 
             return value;

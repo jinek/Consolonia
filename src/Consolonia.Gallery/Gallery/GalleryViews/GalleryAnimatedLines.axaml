@@ -87,7 +87,7 @@
                 <Border.BorderBrush>
                     <drawing:LineBrush LineStyle="DoubleLine">
                         <drawing:LineBrush.Brush>
-                            <drawing:ConsoleColorBrush Color="Blue" />
+                            <drawing:ConsoleBrush Color="Blue" />
                         </drawing:LineBrush.Brush>
                     </drawing:LineBrush>
                 </Border.BorderBrush>

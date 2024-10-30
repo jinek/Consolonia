@@ -45,7 +45,7 @@
                             <Style Selector="TextBlock">
                                 <Setter Property="Foreground">
                                     <Setter.Value>
-                                        <drawing:ConsoleColorBrush Color="Gray" />
+                                        <drawing:ConsoleBrush Color="Gray" />
                                     </Setter.Value>
                                 </Setter>
                             </Style>

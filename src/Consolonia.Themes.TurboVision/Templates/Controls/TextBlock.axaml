@@ -3,7 +3,7 @@
     <!--<Style Selector="TextBlock">
                 <Setter Property="Foreground">
                         <Setter.Value>
-                                <notImportant:ConsoleColorBrush Color="DarkRed"/>
+                                <notImportant:ConsoleBrush Color="DarkRed"/>
                         </Setter.Value>
                 </Setter>
         </Style>-->

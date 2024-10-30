@@ -47,14 +47,14 @@
         <ComboBox SelectedIndex="0">
             <ComboBoxItem>
                 <Panel>
-                    <Rectangle Fill="{drawing:ConsoleColorBrush Red}" />
+                    <Rectangle Fill="{drawing:ConsoleBrush Red}" />
                     <TextBlock Text="Still item"
                                Margin="1" />
                 </Panel>
             </ComboBoxItem>
             <ComboBoxItem>
                 <helpers:SymbolsControl Text="o"
-                                        Foreground="{drawing:ConsoleColorBrush DarkMagenta}" />
+                                        Foreground="{drawing:ConsoleBrush DarkMagenta}" />
             </ComboBoxItem>
             <ComboBoxItem>
                 <TextBox Text="TextBox"
