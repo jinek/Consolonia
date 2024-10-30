@@ -51,6 +51,7 @@ namespace Consolonia.Core.Drawing
                         return new ConsoleBrush(consoleBrush.Color, mode.Value);
                     }
                     return consoleBrush;
+
                 case LineBrush lineBrush:
                     switch (lineBrush.Brush)
                     {
@@ -62,12 +63,37 @@ namespace Consolonia.Core.Drawing
                             ConsoloniaPlatform.RaiseNotSupported(6);
                             return null;
                     }
+
                 case ISolidColorBrush solidBrush:
                     return new ConsoleBrush(solidBrush.Color, mode ?? PixelBackgroundMode.Colored);
 
                 default:
                     ConsoloniaPlatform.RaiseNotSupported(6);
                     return null;
+            }
+        }
+
+        public static ConsoleBrush FromPosition(IBrush brush, int x, int y, int width, int height)
+        {
+            switch (brush)
+            {
+                case ILinearGradientBrush gradientBrush:
+                    {
+                        // Calculate the relative position within the gradient
+                        double horizontalRelativePosition = (double)x / width;
+                        double verticalRelativePosition = (double)y / height;
+
+                        // Interpolate horizontal and vertical colors
+                        var horizontalColor = InterpolateColor(gradientBrush, horizontalRelativePosition);
+                        var verticalColor = InterpolateColor(gradientBrush, verticalRelativePosition);
+
+                        // Average the two colors to get the final color
+                        var finalColor = BlendColors(horizontalColor, verticalColor);
+                        return new ConsoleBrush(finalColor);
+                    }
+
+                default:
+                    return FromBrush(brush);
             }
         }
 
@@ -93,9 +119,55 @@ namespace Consolonia.Core.Drawing
         public double Opacity => 1;
         public ITransform Transform => null;
         public RelativePoint TransformOrigin => RelativePoint.TopLeft;
+
+        private static Color InterpolateColor(ILinearGradientBrush brush, double relativePosition)
+        {
+            IGradientStop before = null;
+            IGradientStop after = null;
+
+            foreach (var stop in brush.GradientStops)
+            {
+                if (stop.Offset <= relativePosition)
+                {
+                    before = stop;
+                }
+                if (stop.Offset >= relativePosition)
+                {
+                    after = stop;
+                    break;
+                }
+            }
+
+            if (before == null)
+            {
+                return after.Color;
+            }
+            if (after == null)
+            {
+                return before.Color;
+            }
+
+            double ratio = (relativePosition - before.Offset) / (after.Offset - before.Offset);
+            byte r = (byte)(before.Color.R + ratio * (after.Color.R - before.Color.R));
+            byte g = (byte)(before.Color.G + ratio * (after.Color.G - before.Color.G));
+            byte b = (byte)(before.Color.B + ratio * (after.Color.B - before.Color.B));
+            byte a = (byte)(before.Color.A + ratio * (after.Color.A - before.Color.A));
+
+            return Color.FromArgb(a, r, g, b);
+        }
+
+        private static Color BlendColors(Color color1, Color color2)
+        {
+            byte r = (byte)((color1.R + color2.R) / 2);
+            byte g = (byte)((color1.G + color2.G) / 2);
+            byte b = (byte)((color1.B + color2.B) / 2);
+            byte a = (byte)((color1.A + color2.A) / 2);
+
+            return Color.FromArgb(a, r, g, b);
+        }
     }
 
-    public class ConsoleBrushConverter : TypeConverter 
+    public class ConsoleBrushConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
@@ -107,14 +179,14 @@ namespace Consolonia.Core.Drawing
         {
             if (value is string s)
             {
-                return Enum.TryParse(s, out Color result) 
-                    ? result 
+                return Enum.TryParse(s, out Color result)
+                    ? result
                     : null;
             }
-    
+
             return null;
         }
     }
-    
-    
+
+
 }

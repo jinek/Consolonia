@@ -113,8 +113,6 @@ namespace Consolonia.Core.Drawing
 
             if (brush is not null)
             {
-                ConsoleBrush backgroundBrush;
-
                 switch (brush)
                 {
                     case VisualBrush:
@@ -126,24 +124,26 @@ namespace Consolonia.Core.Drawing
                             return;
                         }
                     default:
-                        backgroundBrush = ConsoleBrush.FromBrush(brush);
                         break;
                 }
 
                 Rect r2 = r.TransformToAABB(Transform);
 
-                (double x, double y) = r2.TopLeft;
-                for (int i = 0; i < r2.Width + (pen?.Thickness ?? 0); i++)
-                    for (int j = 0; j < r2.Height + (pen?.Thickness ?? 0); j++)
+                (double top, double left) = r2.TopLeft;
+                var width = r2.Width + (pen?.Thickness ?? 0);
+                var height = r2.Height + (pen?.Thickness ?? 0);
+                for (int x = 0; x < width; x++)
+                    for (int y = 0; y < height; y++)
                     {
-                        int px = (int)(x + i);
-                        int py = (int)(y + j);
+                        int px = (int)(top + x);
+                        int py = (int)(left + y);
                         CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                         {
+                            ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
                             _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
                                 (pixel, bb) => pixel.Blend(
-                                    new Pixel(
-                                        new PixelBackground(bb.Mode, bb.Color))), backgroundBrush);
+                                    new Pixel(new PixelBackground(bb.Mode, bb.Color))), 
+                                backgroundBrush);
                         });
                     }
             }
