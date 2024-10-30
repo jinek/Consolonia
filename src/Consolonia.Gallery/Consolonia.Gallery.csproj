@@ -6,24 +6,36 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <AvaloniaResource Include="Resources\happy.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
       <ProjectReference Include="..\Consolonia.PlatformSupport\Consolonia.PlatformSupport.csproj" />
       <ProjectReference Include="..\Consolonia.Themes.TurboVision\Consolonia.Themes.TurboVision.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.3.0" />
       <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
       <PackageReference Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
       <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     </ItemGroup>
 
     <ItemGroup>
+      <AvaloniaXaml Update="Gallery\GalleryViews\GalleryImage.axaml">
+        <Generator>MSBuild:Compile</Generator>
+      </AvaloniaXaml>
       <AvaloniaXaml Update="Gallery\GalleryViews\GalleryGradientBrush.axaml">
         <Generator>MSBuild:Compile</Generator>
       </AvaloniaXaml>
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Update="Gallery\GalleryViews\GalleryImage.xaml.cs">
+        <SubType>Code</SubType>
+        <DependentUpon>GalleryImage.axaml</DependentUpon>
+      </Compile>
       <Compile Update="Gallery\GalleryViews\GalleryGradientBrush.xaml.cs">
         <SubType>Code</SubType>
         <DependentUpon>GalleryGradientBrush.axaml</DependentUpon>

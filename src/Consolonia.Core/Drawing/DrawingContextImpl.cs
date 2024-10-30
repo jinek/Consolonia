@@ -9,6 +9,7 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
+using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
 {
@@ -47,27 +48,34 @@ namespace Consolonia.Core.Drawing
 
         public void DrawBitmap(IBitmapImpl source, double opacity, Rect sourceRect, Rect destRect)
         {
-            throw new NotImplementedException();
-            /*
-           //  prototype
-            Rect clip = _currentClip.Intersect(destRect);
-           for (int x = 0; x < sourceRect.Width; x++)
-           for (int y = 0; y < sourceRect.Height; y++)
-           {
-               var myRenderTarget = (RenderTarget)source.Item;
+            // resize bitmap
+            var bmp = (BitmapImpl)source;
+            // THIS IS A HACK. I'm backing in the fact that the font I'm using has 1.8 higher height than width. We want square pixels so image isn't stretched.
+            // phooey.
+            var adjustedHeight = (int)(destRect.Height * .55);
+            var bitmap = new SKBitmap((int)destRect.Width, adjustedHeight);
+            using (var canvas = new SKCanvas(bitmap))
+            {
+                canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (int)destRect.Width, adjustedHeight), new SKPaint { FilterQuality = SKFilterQuality.High });
+            }
 
-               int left = (int)(x + destRect.Left);
-               int top = (int)(y + destRect.Top);
-               clip.ExecuteWithClipping(new Point(left, top), () =>
-               {
-                   _pixelBuffer.Set(new PixelBufferCoordinate((ushort)left, (ushort)top), destPixel =>
-                   {
-                       return destPixel.Blend(
-                           myRenderTarget._bufferBuffer[new PixelBufferCoordinate((ushort)(x + sourceRect.Left),
-                               (ushort)(y + sourceRect.Top))]);
-                   });
-               });
-           }*/
+            // Rect clip = _currentClip.Intersect(destRect);
+            var width = (int)bitmap.Info.Width;
+            var height = (int)bitmap.Info.Height;
+            for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
+                {
+                    int px = (int)(CurrentClip.Left + x);
+                    int py = (int)(CurrentClip.Top + y);
+                    CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                    {
+                        var skColor = bitmap.GetPixel(x, y);
+                        var color = Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
+                        var imagePixel = new Pixel('█', color);
+                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py), (existingPixel, bb) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
+                    });
+                }
+
         }
 
         public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
