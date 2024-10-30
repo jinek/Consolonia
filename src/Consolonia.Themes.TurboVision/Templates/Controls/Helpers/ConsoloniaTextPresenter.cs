@@ -60,8 +60,8 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                         {
                             ConsoleBrush brush = ConsoleBrush.FromBrush(args.NewValue.Value, PixelBackgroundMode.Transparent);
 
-                            if (brush.Color != Colors.Black || brush.Mode != PixelBackgroundMode.Transparent)
-                                throw new NotSupportedException();
+                            if (brush.Mode != PixelBackgroundMode.Transparent)
+                                throw new NotSupportedException("CaretBrush must have a transparent background. This ensures proper rendering of the caret over text content.");
                         }));
         }
 

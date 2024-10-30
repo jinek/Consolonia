@@ -173,6 +173,7 @@ namespace Consolonia.Core.Drawing
             private Color _lastForegroundColor;
             private FontStyle _lastStyle = FontStyle.Normal;
             private FontWeight _lastWeight = FontWeight.Normal;
+            private TextDecorationCollection _lastTextDecorations;
             private PixelBufferCoordinate _currentBufferPoint;
             private PixelBufferCoordinate _lastBufferPointStart;
 
@@ -192,7 +193,8 @@ namespace Consolonia.Core.Drawing
                     _lastForegroundColor != pixel.Foreground.Color ||
                     _lastBackgroundColor != pixel.Background.Color ||
                     _lastWeight != pixel.Foreground.Weight ||
-                    _lastStyle != pixel.Foreground.Style )
+                    _lastStyle != pixel.Foreground.Style ||
+                    _lastTextDecorations != pixel.Foreground.TextDecorations)
                     Flush();
 
                 if (_stringBuilder.Length == 0)
@@ -201,6 +203,7 @@ namespace Consolonia.Core.Drawing
                     _lastForegroundColor = pixel.Foreground.Color;
                     _lastStyle = pixel.Foreground.Style;
                     _lastWeight = pixel.Foreground.Weight;
+                    _lastTextDecorations = pixel.Foreground.TextDecorations;
                     _lastBufferPointStart = _currentBufferPoint = bufferPoint;
                 }
 
@@ -213,7 +216,7 @@ namespace Consolonia.Core.Drawing
                 if (_stringBuilder.Length == 0)
                     return;
 
-                _console.Print(_lastBufferPointStart, _lastBackgroundColor, _lastForegroundColor, _lastStyle, _lastWeight, _stringBuilder.ToString());
+                _console.Print(_lastBufferPointStart, _lastBackgroundColor, _lastForegroundColor, _lastStyle, _lastWeight, _lastTextDecorations, _stringBuilder.ToString());
                 _stringBuilder.Clear();
             }
         }

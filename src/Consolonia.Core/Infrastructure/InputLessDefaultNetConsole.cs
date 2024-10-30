@@ -67,7 +67,7 @@ namespace Consolonia.Core.Infrastructure
             return _headBufferPoint;
         }
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style, FontWeight weight, string str)
+        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style, FontWeight weight, TextDecorationCollection textDecorations, string str)
         {
             PauseTask?.Wait();
             SetCaretPosition(bufferPoint);
@@ -80,12 +80,11 @@ namespace Consolonia.Core.Infrastructure
                          char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
                 throw new NotSupportedException("Is not supposed to be rendered");
 
-            if (style == FontStyle.Oblique)
+            if (textDecorations != null && textDecorations.Any(td => td.Location == TextDecorationLocation.Underline))
             {
-                // we are using Oblique to signal Underline
                 str = Crayon.Output.Underline(str);
             }
-            
+
             if (weight == FontWeight.Normal)
                 foreground = foreground.Shade(background);
             else if ((int)weight < (int)FontWeight.Normal)

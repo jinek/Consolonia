@@ -19,7 +19,7 @@
                                    Margin="{TemplateBinding Padding}"
                                    Tag="This TextBlock is a hack. Otherwise Line below does not get redrawn in CheckBox">
                             <!--<TextBlock.Background>
-                                <dawing:ConsoleBrush Mode="Transparent"/>
+                                <drawing:ConsoleBrush Mode="Transparent"/>
                             </TextBlock.Background>-->
                         </TextBlock>
                         <ContentPresenter Name="PART_ContentPresenter"
