@@ -55,8 +55,8 @@ namespace Consolonia.Core.Drawing
                 case LineBrush lineBrush:
                     switch (lineBrush.Brush)
                     {
-                        case ConsoleBrush:
-                            return lineBrush.Brush as ConsoleBrush;
+                        case ConsoleBrush consoleBrush:
+                            return consoleBrush;
                         case ISolidColorBrush br:
                             return new ConsoleBrush(br.Color, mode ?? PixelBackgroundMode.Colored);
                         default:
@@ -179,9 +179,10 @@ namespace Consolonia.Core.Drawing
         {
             if (value is string s)
             {
-                return Enum.TryParse(s, out Color result)
-                    ? result
-                    : null;
+                if (Color.TryParse(s, out Color color))
+                {
+                    return color;
+                }
             }
 
             return null;
