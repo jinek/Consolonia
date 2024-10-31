@@ -94,15 +94,15 @@ namespace Consolonia.Core.Drawing
                 throw new ArgumentOutOfRangeException(nameof(x), "x is out bounds");
             if (y < 0 || y > height)
                 throw new ArgumentOutOfRangeException(nameof(y), "y is out bounds");
-            if (width <= 0)
-                throw new ArgumentOutOfRangeException(nameof(width), "Width must be positive");
-            if (height <= 0)
-                throw new ArgumentOutOfRangeException(nameof(height), "Height must be positive");
 
             switch (brush)
             {
                 case ILinearGradientBrush gradientBrush:
                 {
+                    if (width <= 0)
+                        width = 1;
+                    if (height <= 0)
+                        height = 1;
                     // Calculate the relative position within the gradient
                     double horizontalRelativePosition = (double)x / width;
                     double verticalRelativePosition = (double)y / height;
@@ -138,6 +138,10 @@ namespace Consolonia.Core.Drawing
                 }
                 case IConicGradientBrush conicBrush:
                 {
+                    if (width <= 0)
+                        width = 1;
+                    if (height <= 0)
+                        height = 1;
                     // Calculate the relative position within the gradient
                     double horizontalRelativePosition = (double)x / width;
                     double verticalRelativePosition = (double)y / height;

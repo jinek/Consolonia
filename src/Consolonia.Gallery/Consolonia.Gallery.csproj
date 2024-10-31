@@ -5,6 +5,11 @@
         <IsPackable>False</IsPackable>
     </PropertyGroup>
 
+
+    <ItemGroup>
+      <AvaloniaResource Include="Resources\*" />
+    </ItemGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
       <ProjectReference Include="..\Consolonia.PlatformSupport\Consolonia.PlatformSupport.csproj" />

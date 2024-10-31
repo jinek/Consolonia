@@ -9,6 +9,7 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
+using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
 {
@@ -47,27 +48,33 @@ namespace Consolonia.Core.Drawing
 
         public void DrawBitmap(IBitmapImpl source, double opacity, Rect sourceRect, Rect destRect)
         {
-            throw new NotImplementedException();
-            /*
-           //  prototype
-            Rect clip = _currentClip.Intersect(destRect);
-           for (int x = 0; x < sourceRect.Width; x++)
-           for (int y = 0; y < sourceRect.Height; y++)
-           {
-               var myRenderTarget = (RenderTarget)source.Item;
+            // resize bitmap to destination rect size
+            var targetRect = new Rect(Transform.Transform(new Point(destRect.TopLeft.X, destRect.TopLeft.Y)),
+                Transform.Transform(new Point(destRect.BottomRight.X, destRect.BottomRight.Y)));
+            var bmp = (BitmapImpl)source;
+            using var bitmap = new SKBitmap((int)targetRect.Width, (int)targetRect.Height);
+            using var canvas = new SKCanvas(bitmap);
+            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (float)targetRect.Width, (float)targetRect.Height),
+                new SKPaint { FilterQuality = SKFilterQuality.Medium });
 
-               int left = (int)(x + destRect.Left);
-               int top = (int)(y + destRect.Top);
-               clip.ExecuteWithClipping(new Point(left, top), () =>
-               {
-                   _pixelBuffer.Set(new PixelBufferCoordinate((ushort)left, (ushort)top), destPixel =>
-                   {
-                       return destPixel.Blend(
-                           myRenderTarget._bufferBuffer[new PixelBufferCoordinate((ushort)(x + sourceRect.Left),
-                               (ushort)(y + sourceRect.Top))]);
-                   });
-               });
-           }*/
+            // Rect clip = CurrentClip.Intersect(destRect);
+            int width = bitmap.Info.Width;
+            int height = bitmap.Info.Height;
+            for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+            {
+                int px = (int)targetRect.TopLeft.X + x;
+                int py = (int)targetRect.TopLeft.Y + y;
+                SKColor skColor = bitmap.GetPixel(x, y);
+                Color color = Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
+                var imagePixel = new Pixel('█', color);
+                CurrentClip.ExecuteWithClipping(new Point(px, py),
+                    () =>
+                    {
+                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                            (existingPixel, _) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
+                    });
+            }
         }
 
         public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
@@ -357,7 +364,7 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
+            //if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
 
             Point whereToDraw = origin.Transform(Transform);
             int currentXPosition = 0;
@@ -403,11 +410,10 @@ namespace Consolonia.Core.Drawing
                     {
                         var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
                         CurrentClip.ExecuteWithClipping(characterPoint, () =>
-                            {
-                                _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                            }
-                        );
+                        {
+                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                        });
                     }
                         break;
                 }
