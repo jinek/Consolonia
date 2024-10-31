@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -163,9 +163,7 @@ namespace Consolonia.PlatformSupport
                     repeat = 0;
                     break;
                 case WindowsConsole.EventFlags.MouseWheeled:
-                    double velocity = 1 / 12D;
-                    if (incomeMouseState == -7864320)
-                        velocity *= -1;
+                    double velocity = incomeMouseState < 0 ? -1 : 1;
                     wheelDelta = new Vector(0, velocity);
                     eventType = RawPointerEventType.Wheel;
                     break;
@@ -174,6 +172,10 @@ namespace Consolonia.PlatformSupport
                 case WindowsConsole.EventFlags.MouseMoved:
                     eventType = RawPointerEventType.Move;
                     break;
+                case WindowsConsole.EventFlags.MouseMoved | WindowsConsole.EventFlags.DoubleClick:
+                    RaiseMouseEvent(RawPointerEventType.LeftButtonDown, point, null, inputModifiers);
+                    RaiseMouseEvent(RawPointerEventType.Move, point, null, inputModifiers);
+                    return false;
                 default:
                     throw new InvalidOperationException(mouseEvent.EventFlags.ToString());
             }
@@ -257,7 +259,7 @@ namespace Consolonia.PlatformSupport
         // Resharper restore MemberCanBePrivate.Local
         // Resharper restore FieldCanBeMadeReadOnly.Global
         // Resharper restore FieldCanBeMadeReadOnly.Local
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
 
         #endregion
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
@@ -28,7 +27,7 @@ namespace Consolonia.Core.Text
 
         public IReadOnlyList<float> GetIntersections(float lowerLimit, float upperLimit)
         {
-            throw new NotImplementedException();
+            return new List<float>();
         }
 
         public IGlyphTypeface GlyphTypeface { get; }

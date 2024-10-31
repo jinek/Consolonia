@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -19,7 +20,8 @@ namespace Consolonia.Core.Drawing
 
         private PixelBuffer _bufferBuffer;
 
-        private (ConsoleColor background, ConsoleColor foreground, char character)?[,] _cache;
+        private (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
+            textDecorations, char character)?[,] _cache;
 
         internal RenderTarget(ConsoleWindow consoleWindow)
         {
@@ -94,7 +96,9 @@ namespace Consolonia.Core.Drawing
 
         private void InitializeCache(ushort width, ushort height)
         {
-            _cache = new (ConsoleColor background, ConsoleColor foreground, char character)?[width, height];
+            _cache =
+                new (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
+                    textDecorations, char character)?[width, height];
         }
 
         private void RenderToDevice()
@@ -125,45 +129,22 @@ namespace Consolonia.Core.Drawing
                     throw new InvalidOperationException(
                         "All pixels in the buffer must have exact console color before rendering");
 
-                if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
-                    break;
+                if (pixel.Foreground.Symbol is null) // not using 'when' as it swallows the exceptions 
+                    // buffer re-initialized after resizing
+                    pixel = new Pixel(new PixelForeground(new SimpleSymbol('░')),
+                        new PixelBackground(PixelBackgroundMode.Colored));
 
-                char character;
-                try
-                {
-                    character = pixel.Foreground.Symbol.GetCharacter();
-                }
-                catch (NullReferenceException)
-                {
-                    //todo: need to break current drawing
-                    if (pixel.Foreground.Symbol is null) // not using 'when' as it swallows the exceptions 
-                    {
-                        // buffer re-initialized after resizing
-                        character = '░';
-                        pixel = new Pixel(new PixelForeground(), new PixelBackground(PixelBackgroundMode.Colored));
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                if (char.IsControl(character) /*|| character is '保' or '哥'*/)
-                    character = ' '; // some terminals do not print \0
-
-                ConsoleColor backgroundColor = pixel.Background.Color;
-                ConsoleColor foregroundColor = pixel.Foreground.Color;
-
+                (Color, Color, FontWeight Weight, FontStyle Style, TextDecorationCollection TextDecorations, char)
+                    pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight,
+                        pixel.Foreground.Style, pixel.Foreground.TextDecorations,
+                        pixel.Foreground.Symbol.GetCharacter());
                 //todo: indexOutOfRange during resize
-                if (_cache[x, y] == (backgroundColor, foregroundColor, character))
+                if (_cache[x, y] == pixelSpread)
                     continue;
 
-                _cache[x, y] = (backgroundColor, foregroundColor, character);
+                _cache[x, y] = pixelSpread;
 
-                flushingBuffer.WriteCharacter(new PixelBufferCoordinate(x, y),
-                    backgroundColor,
-                    foregroundColor,
-                    character);
+                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
             }
 
             flushingBuffer.Flush();
@@ -184,8 +165,11 @@ namespace Consolonia.Core.Drawing
             //todo: move class out
             private readonly IConsole _console;
             private readonly StringBuilder _stringBuilder;
-            private ConsoleColor _lastBackgroundColor;
-            private ConsoleColor _lastForegroundColor;
+            private Color _lastBackgroundColor;
+            private Color _lastForegroundColor;
+            private FontStyle _lastStyle = FontStyle.Normal;
+            private FontWeight _lastWeight = FontWeight.Normal;
+            private TextDecorationCollection _lastTextDecorations = new();
             private PixelBufferCoordinate _currentBufferPoint;
             private PixelBufferCoordinate _lastBufferPointStart;
 
@@ -196,24 +180,31 @@ namespace Consolonia.Core.Drawing
                 _stringBuilder = new StringBuilder();
             }
 
-            public void WriteCharacter(
+            public void WritePixel(
                 PixelBufferCoordinate bufferPoint,
-                ConsoleColor backgroundColor,
-                ConsoleColor foregroundColor,
-                char character)
+                Pixel pixel)
             {
                 if (!bufferPoint.Equals(_currentBufferPoint) /*todo: performance*/ ||
-                    _lastForegroundColor != foregroundColor ||
-                    _lastBackgroundColor != backgroundColor)
+                    _lastForegroundColor != pixel.Foreground.Color ||
+                    _lastBackgroundColor != pixel.Background.Color ||
+                    _lastWeight != pixel.Foreground.Weight ||
+                    _lastStyle != pixel.Foreground.Style ||
+                    _lastTextDecorations != pixel.Foreground.TextDecorations)
                     Flush();
 
                 if (_stringBuilder.Length == 0)
                 {
-                    _lastBackgroundColor = backgroundColor;
-                    _lastForegroundColor = foregroundColor;
+                    _lastBackgroundColor = pixel.Background.Color;
+                    _lastForegroundColor = pixel.Foreground.Color;
+                    _lastStyle = pixel.Foreground.Style;
+                    _lastWeight = pixel.Foreground.Weight;
+                    _lastTextDecorations = pixel.Foreground.TextDecorations;
                     _lastBufferPointStart = _currentBufferPoint = bufferPoint;
                 }
 
+                char character = pixel.Foreground.Symbol.GetCharacter();
+                if (char.IsControl(character) /*|| character is '保' or '哥'*/)
+                    character = ' '; // some terminals do not print \0
                 _stringBuilder.Append(character);
                 _currentBufferPoint = _currentBufferPoint.WithXpp();
             }
@@ -223,8 +214,8 @@ namespace Consolonia.Core.Drawing
                 if (_stringBuilder.Length == 0)
                     return;
 
-                _console.Print(_lastBufferPointStart, _lastBackgroundColor, _lastForegroundColor,
-                    _stringBuilder.ToString());
+                _console.Print(_lastBufferPointStart, _lastBackgroundColor, _lastForegroundColor, _lastStyle,
+                    _lastWeight, _lastTextDecorations, _stringBuilder.ToString());
                 _stringBuilder.Clear();
             }
         }

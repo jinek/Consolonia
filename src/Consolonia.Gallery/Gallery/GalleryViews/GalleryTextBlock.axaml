@@ -11,35 +11,37 @@
     <!--Examples from Avalonia https://github.com/AvaloniaUI/Avalonia/blob/master/samples/ControlCatalog/Pages/TextBlockPage.xaml-->
     <StackPanel Orientation="Vertical">
         <TextBlock Text="This is TextBlock" />
-        <TextBlock Text="This is colored TextBlock">
-            <TextBlock.Background>
-                <drawing:FourBitColorBrush Color="Blue" />
-            </TextBlock.Background>
-            <TextBlock.Foreground>
-                <drawing:FourBitColorBrush Color="DarkRed" />
-            </TextBlock.Foreground>
-        </TextBlock>
-        <Grid ColumnDefinitions="* *">
-            <StackPanel Orientation="Vertical">
-                <StackPanel.Background>
-                    <drawing:FourBitColorBrush Color="DarkGray" />
-                </StackPanel.Background>
-                <TextBlock TextTrimming="CharacterEllipsis"
-                           Text="Text trimming with character ellipsis. Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
-                <TextBlock TextTrimming="WordEllipsis"
-                           Text="Text trimming with word ellipsis.Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
-                <TextBlock Text="Left aligned text"
-                           TextAlignment="Left" />
-                <TextBlock Text="Center aligned text"
-                           TextAlignment="Center" />
-                <TextBlock Text="Right aligned text"
-                           TextAlignment="Right" />
-            </StackPanel>
-        </Grid>
+        <TextBlock Text="This is colored TextBlock" FontWeight="Bold" Background="DarkMagenta" Foreground="Chartreuse"/>
+        
+        <StackPanel Orientation="Vertical" Margin="0" Background="DarkGray">
+            <TextBlock TextTrimming="CharacterEllipsis"
+                       Text="Text trimming with character ellipsis. Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+            <TextBlock TextTrimming="WordEllipsis"
+                       Text="Text trimming with word ellipsis.Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+            <TextBlock Text="Left aligned text"
+                       TextAlignment="Left" />
+            <TextBlock Text="Center aligned text"
+                       TextAlignment="Center" />
+            <TextBlock Text="Right aligned text"
+                       TextAlignment="Right" />
+        </StackPanel>
+
         <TextBlock TextWrapping="Wrap"
                    Text="Multiline TextBlock with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
         <TextBlock TextWrapping="Wrap"
                    Text="Special characters: Élève naïve: “𝔉𝔞𝔫𝔠𝔶” ligatures like ﬀ, ﬁ, and ﬂ; numbers ½, ¼; symbols like @, #, and €; emoji 😊; and math symbols Ω, ∑, √…"/>
+        <TextBlock Text="TextDecoration=Underline" TextDecorations="Underline" HorizontalAlignment="Left"/>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="FontWeight=BOLD" FontWeight="Bold" Foreground="Sienna"/>
+            <TextBlock Text="FontWeight=NORMAL" FontWeight="Normal" Foreground="Sienna"/>
+            <TextBlock Text="FontWeight=LIGHT" FontWeight="Light" Foreground="Sienna"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="FontWeight=BOLD" Background="DarkMagenta" Foreground="Yellow" FontWeight="Bold"/>
+            <TextBlock Text="FontWeight=NORMAL" Background="DarkMagenta" Foreground="Yellow" FontWeight="Normal"/>
+            <TextBlock Text="FontWeight=LIGHT" Background="DarkMagenta" Foreground="Yellow" FontWeight="Light"/>
+        </StackPanel>
+
     </StackPanel>
 
 </UserControl>

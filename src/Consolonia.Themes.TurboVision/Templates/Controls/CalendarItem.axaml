@@ -21,7 +21,7 @@
                             <Grid.Styles>
                                 <Style Selector="Button.CalendarHeader">
                                     <Setter Property="Background"
-                                            Value="{drawing:FourBitColorBrush Mode=Transparent}" />
+                                            Value="{drawing:ConsoleBrush Mode=Transparent}" />
                                     <Setter Property="BorderThickness"
                                             Value="0" />
                                     <Setter Property="(helpers:ButtonExtensions.Shadow)"
@@ -32,7 +32,7 @@
                                 <Style Selector="Button.CalendarHeader:pressed  /template/ ContentPresenter">
                                     <!--todo: needs some color may be-->
                                     <Setter Property="Background"
-                                            Value="{drawing:FourBitColorBrush Mode=Transparent}" />
+                                            Value="{drawing:ConsoleBrush Mode=Transparent}" />
                                 </Style>
 
                                 <Style Selector="Button.CalendarNavigation">
@@ -57,7 +57,7 @@
                             </Grid.Styles>
 
                             <!--<Rectangle Grid.ColumnSpan="3"
-                             Fill="{drawing:FourBitColorBrush Green}"
+                             Fill="Green"
                              Stretch="Fill"
                              VerticalAlignment="Top"
                              Height="1"

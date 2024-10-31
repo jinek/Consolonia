@@ -61,8 +61,8 @@ namespace Consolonia.Core.Text
         }
 
         public string FamilyName { get; } = FontManagerImpl.GetTheOnlyFontFamilyName();
-        public FontWeight Weight => FontWeight.Normal;
-        public FontStyle Style => FontStyle.Normal;
+        public FontWeight Weight { get; set; } = FontWeight.Normal;
+        public FontStyle Style { get; set; } = FontStyle.Normal;
         public FontStretch Stretch => FontStretch.Normal;
         public int GlyphCount => char.MaxValue;
 
@@ -73,8 +73,9 @@ namespace Consolonia.Core.Text
             Ascent = -1, //var height = (GlyphTypeface.Descent - GlyphTypeface.Ascent + GlyphTypeface.LineGap) * Scale; //todo: need to consult Avalonia guys
             Descent = 0,
             LineGap = 0,
-            UnderlinePosition = 0,
-            UnderlineThickness = 0,
+            UnderlinePosition =
+                -1, // this turns on TextDecorations="Underline", -1 is so it draws over the top of the text.
+            UnderlineThickness = 1, // this is the thickness of the underline, aka 1 char thick.
             StrikethroughPosition = 0,
             StrikethroughThickness = 0,
             IsFixedPitch = true

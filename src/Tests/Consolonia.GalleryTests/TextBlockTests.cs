@@ -15,7 +15,7 @@ namespace Consolonia.GalleryTests
                 "Text trimming with word...",
                 "│Left aligned text    ",
                 "   Center aligned text    ",
-                "│          Right aligned text                            │",
+                "Right aligned text│",
 
                 // multiline
                 "│Lorem ipsum dolor sit amet, consectetur adipiscing elit.│",

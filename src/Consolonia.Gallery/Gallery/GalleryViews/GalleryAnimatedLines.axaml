@@ -4,9 +4,8 @@
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryAnimatedLines">
     <Panel>
         <Panel Width="40"
-               Height="30"
-               Background="{drawing:FourBitColorBrush Gray}">
-            <Border BorderBrush="{drawing:FourBitColorBrush Blue}"
+               Height="30">
+            <Border BorderBrush="Blue"
                     BorderThickness="1"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left">
@@ -46,10 +45,7 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Bold">
-                        <drawing:LineBrush.Brush>
-                            <drawing:FourBitColorBrush Color="Blue" />
-                        </drawing:LineBrush.Brush>
+                    <drawing:LineBrush LineStyle="Bold" Brush="Blue">
                     </drawing:LineBrush>
                 </Border.BorderBrush>
                 <Border.Styles>
@@ -89,11 +85,7 @@
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Right">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="DoubleLine">
-                        <drawing:LineBrush.Brush>
-                            <drawing:FourBitColorBrush Color="Blue" />
-                        </drawing:LineBrush.Brush>
-                    </drawing:LineBrush>
+                    <drawing:LineBrush LineStyle="DoubleLine" Brush="Blue"/>
                 </Border.BorderBrush>
                 <Border.Styles>
                     <Style Selector="Border">

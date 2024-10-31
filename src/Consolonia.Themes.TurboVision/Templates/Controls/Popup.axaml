@@ -7,11 +7,11 @@
         <ControlTemplate>
             <Panel>
                 <Panel.Background>
-                    <drawing:FourBitColorBrush Mode="Transparent" />
+                    <drawing:ConsoleBrush Mode="Transparent" />
                 </Panel.Background>
                 <!--<Border Name="PART_TransparencyFallback" IsHitTestVisible="False" Tag="thth">
                     <Border.Background>
-                        <notImportant:ConsoleColorBrush Color="DarkGreen"/>
+                        <notImportant:ConsoleBrush Color="DarkGreen"/>
                     </Border.Background>
                 </Border>-->
                 <VisualLayerManager IsPopup="True">

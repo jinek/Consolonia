@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Consolonia.Core.Drawing;
 
 // ReSharper disable UnusedMember.Global
@@ -609,10 +610,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             if (value is int gdp)
             {
                 if (gdp <= 5000)
-                    return new FourBitColorBrush(ConsoleColor.Yellow);
+                    return new ConsoleBrush(Colors.Yellow);
                 if (gdp <= 10000)
-                    return new FourBitColorBrush(ConsoleColor.DarkYellow);
-                return new FourBitColorBrush(ConsoleColor.Green);
+                    return new ConsoleBrush(Colors.DarkGoldenrod);
+                return new ConsoleBrush(Colors.Green);
             }
 
             return value;

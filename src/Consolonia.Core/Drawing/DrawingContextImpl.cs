@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -119,38 +120,33 @@ namespace Consolonia.Core.Drawing
                     case ISceneBrush sceneBrush:
                     {
                         ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
-                        sceneBrushContent!.Render(this, Matrix.Identity);
+                        if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
                         return;
                     }
                 }
 
-                if (brush is not FourBitColorBrush backgroundBrush)
-                {
-                    ConsoloniaPlatform.RaiseNotSupported(9, brush, pen, rect, boxShadows);
-                    return;
-                }
+                Rect r2 = r.TransformToAABB(Transform);
 
+                double width = r2.Width + (pen?.Thickness ?? 0);
+                double height = r2.Height + (pen?.Thickness ?? 0);
+                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    Rect r2 = r.TransformToAABB(Transform);
+                    int px = (int)(r2.TopLeft.X + x);
+                    int py = (int)(r2.TopLeft.Y + y);
 
-                    (double x, double y) = r2.TopLeft;
-                    for (int i = 0; i < r2.Width + (pen?.Thickness ?? 0); i++)
-                    for (int j = 0; j < r2.Height + (pen?.Thickness ?? 0); j++)
+                    ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
+                    CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                     {
-                        int px = (int)(x + i);
-                        int py = (int)(y + j);
-                        CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
-                        {
-                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                                (pixel, bb) => pixel.Blend(
-                                    new Pixel(
-                                        new PixelBackground(bb.Mode, bb.Color))), backgroundBrush);
-                        });
-                    }
+                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                            (pixel, bb) => { return pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))); },
+                            backgroundBrush);
+                    });
                 }
             }
 
-            if (pen is null or { Thickness: 0 } or { Brush: null }) return;
+            if (pen is null or { Thickness: 0 }
+                or { Brush: null }) return;
 
             DrawLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width));
             DrawLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width));
@@ -180,7 +176,7 @@ namespace Consolonia.Core.Drawing
 
             string charactersDoDraw =
                 string.Concat(glyphRunImpl.GlyphIndices.Select(us => (char)us).ToArray());
-            DrawStringInternal(foreground, charactersDoDraw);
+            DrawStringInternal(foreground, charactersDoDraw, glyphRun.GlyphTypeface);
         }
 
         public IDrawingContextLayerImpl CreateLayer(Size size)
@@ -262,14 +258,14 @@ namespace Consolonia.Core.Drawing
             set => _transform = value * _postTransform;
         }
 
-        private static ConsoleColor? ExtractConsoleColorOrNullWithPlatformCheck(IPen pen, out LineStyle? lineStyle)
+        private static Color? ExtractColorOrNullWithPlatformCheck(IPen pen, out LineStyle? lineStyle)
         {
             lineStyle = null;
             if (pen is not
                 {
-                    Brush: FourBitColorBrush or LineBrush { Brush: FourBitColorBrush },
+                    Brush: ConsoleBrush or LineBrush or ImmutableSolidColorBrush,
                     Thickness: 1,
-                    DashStyle: null or { Dashes.Count: 0 },
+                    DashStyle: null or { Dashes: { Count: 0 } },
                     LineCap: PenLineCap.Flat,
                     LineJoin: PenLineJoin.Miter
                 })
@@ -278,12 +274,10 @@ namespace Consolonia.Core.Drawing
                 return null;
             }
 
-            if (pen.Brush is not FourBitColorBrush consoleColorBrush)
-            {
-                var lineBrush = (LineBrush)pen.Brush;
-                consoleColorBrush = (FourBitColorBrush)lineBrush.Brush;
+            if (pen.Brush is LineBrush lineBrush)
                 lineStyle = lineBrush.LineStyle;
-            }
+
+            ConsoleBrush consoleColorBrush = ConsoleBrush.FromBrush(pen.Brush);
 
             switch (consoleColorBrush.Mode)
             {
@@ -317,12 +311,12 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            var extractConsoleColorCheckPlatformSupported =
-                ExtractConsoleColorOrNullWithPlatformCheck(pen, out var lineStyle);
-            if (extractConsoleColorCheckPlatformSupported == null)
+            var extractColorCheckPlatformSupported =
+                ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
+            if (extractColorCheckPlatformSupported == null)
                 return;
 
-            var consoleColor = (ConsoleColor)extractConsoleColorCheckPlatformSupported;
+            var consoleColor = (Color)extractColorCheckPlatformSupported;
 
             byte pattern = (byte)(line.Vertical ? 0b0010 : 0b0100);
             DrawPixelAndMoveHead(1); //beginning
@@ -354,9 +348,10 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawStringInternal(IBrush foreground, string str, Point origin = new())
+        private void DrawStringInternal(IBrush foreground, string str, IGlyphTypeface typeface, Point origin = new())
         {
-            if (foreground is not FourBitColorBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
+            foreground = ConsoleBrush.FromBrush(foreground);
+            if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
             {
                 ConsoloniaPlatform.RaiseNotSupported(4);
                 return;
@@ -371,7 +366,7 @@ namespace Consolonia.Core.Drawing
             foreach (char c in str)
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
-                ConsoleColor foregroundColor = consoleColorBrush.Color;
+                Color foregroundColor = consoleColorBrush.Color;
 
                 switch (c)
                 {
@@ -406,7 +401,7 @@ namespace Consolonia.Core.Drawing
                         break;
                     default:
                     {
-                        var consolePixel = new Pixel(c, foregroundColor);
+                        var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
                         CurrentClip.ExecuteWithClipping(characterPoint, () =>
                             {
                                 _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,

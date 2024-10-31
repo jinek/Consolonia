@@ -1,0 +1,176 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryColors">
+    <UserControl.Resources>
+        <LinearGradientBrush x:Key="ColorGalleryBackgroundBrush" EndPoint="0%,0%" StartPoint="0%,100%">
+            <GradientStop Color="Black" Offset="0" />
+            <GradientStop Color="DarkRed" Offset="1" />
+        </LinearGradientBrush>
+    </UserControl.Resources>
+
+    <!--Examples from Avalonia https://github.com/AvaloniaUI/Avalonia/blob/master/samples/ControlCatalog/Pages/TextBlockPage.xaml-->
+    <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
+
+        <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" >
+            <Button Content="Random Color" Click="Random_Click"/>
+            <Button Content="Random Red" Click="Red_Click"/>
+            <Button Content="Random Green" Click="Green_Click"/>
+            <Button Content="Random Blue" Click="Blue_Click"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Foreground="{Binding Brush}" >Hello world!</TextBlock>
+            <TextBlock Foreground="{Binding Brush}" FontWeight="Bold" >Something bold!</TextBlock>
+        </StackPanel>
+
+        <WrapPanel Grid.Row="1"  ItemWidth="18" Background="{StaticResource ColorGalleryBackgroundBrush}">
+            <TextBlock Margin="0 0 1 0" Foreground="AliceBlue" Text="AliceBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="AntiqueWhite" Text="AntiqueWhite"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Aqua" Text="Aqua"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Aquamarine" Text="Aquamarine"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Azure" Text="Azure"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Beige" Text="Beige"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Bisque" Text="Bisque"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Black" Text="Black"/>
+            <TextBlock Margin="0 0 1 0" Foreground="BlanchedAlmond" Text="BlanchedAlmond"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Blue" Text="Blue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="BlueViolet" Text="BlueViolet"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Brown" Text="Brown"/>
+            <TextBlock Margin="0 0 1 0" Foreground="BurlyWood" Text="BurlyWood"/>
+            <TextBlock Margin="0 0 1 0" Foreground="CadetBlue" Text="CadetBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Chartreuse" Text="Chartreuse"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Chocolate" Text="Chocolate"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Coral" Text="Coral"/>
+            <TextBlock Margin="0 0 1 0" Foreground="CornflowerBlue" Text="CornflowerBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Cornsilk" Text="Cornsilk"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Crimson" Text="Crimson"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Cyan" Text="Cyan"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkBlue" Text="DarkBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkCyan" Text="DarkCyan"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkGoldenrod" Text="DarkGoldenrod"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkGray" Text="DarkGray"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkGreen" Text="DarkGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkKhaki" Text="DarkKhaki"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkMagenta" Text="DarkMagenta"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkOliveGreen" Text="DarkOliveGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkOrange" Text="DarkOrange"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkOrchid" Text="DarkOrchid"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkRed" Text="DarkRed"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkSalmon" Text="DarkSalmon"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkSeaGreen" Text="DarkSeaGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkSlateBlue" Text="DarkSlateBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkSlateGray" Text="DarkSlateGray"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkTurquoise" Text="DarkTurquoise"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DarkViolet" Text="DarkViolet"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DeepPink" Text="DeepPink"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DeepSkyBlue" Text="DeepSkyBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DimGray" Text="DimGray"/>
+            <TextBlock Margin="0 0 1 0" Foreground="DodgerBlue" Text="DodgerBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Firebrick" Text="Firebrick"/>
+            <TextBlock Margin="0 0 1 0" Foreground="FloralWhite" Text="FloralWhite"/>
+            <TextBlock Margin="0 0 1 0" Foreground="ForestGreen" Text="ForestGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Fuchsia" Text="Fuchsia"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Gainsboro" Text="Gainsboro"/>
+            <TextBlock Margin="0 0 1 0" Foreground="GhostWhite" Text="GhostWhite"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Gold" Text="Gold"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Goldenrod" Text="Goldenrod"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Gray" Text="Gray"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Green" Text="Green"/>
+            <TextBlock Margin="0 0 1 0" Foreground="GreenYellow" Text="GreenYellow"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Honeydew" Text="Honeydew"/>
+            <TextBlock Margin="0 0 1 0" Foreground="HotPink" Text="HotPink"/>
+            <TextBlock Margin="0 0 1 0" Foreground="IndianRed" Text="IndianRed"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Indigo" Text="Indigo"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Ivory" Text="Ivory"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Khaki" Text="Khaki"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Lavender" Text="Lavender"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LavenderBlush" Text="LavenderBlush"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LawnGreen" Text="LawnGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LemonChiffon" Text="LemonChiffon"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightBlue" Text="LightBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightCoral" Text="LightCoral"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightCyan" Text="LightCyan"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightGoldenrodYellow" Text="LightGoldenrodYellow"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightGray" Text="LightGray"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightGreen" Text="LightGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightPink" Text="LightPink"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightSalmon" Text="LightSalmon"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightSeaGreen" Text="LightSeaGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightSkyBlue" Text="LightSkyBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightSlateGray" Text="LightSlateGray"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightSteelBlue" Text="LightSteelBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LightYellow" Text="LightYellow"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Lime" Text="Lime"/>
+            <TextBlock Margin="0 0 1 0" Foreground="LimeGreen" Text="LimeGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Linen" Text="Linen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Magenta" Text="Magenta"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Maroon" Text="Maroon"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MediumAquamarine" Text="MediumAquamarine"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MediumBlue" Text="MediumBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MediumOrchid" Text="MediumOrchid"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MediumPurple" Text="MediumPurple"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MediumSeaGreen" Text="MediumSeaGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MediumSlateBlue" Text="MediumSlateBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MediumSpringGreen" Text="MediumSpringGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MediumTurquoise" Text="MediumTurquoise"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MediumVioletRed" Text="MediumVioletRed"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MidnightBlue" Text="MidnightBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MintCream" Text="MintCream"/>
+            <TextBlock Margin="0 0 1 0" Foreground="MistyRose" Text="MistyRose"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Moccasin" Text="Moccasin"/>
+            <TextBlock Margin="0 0 1 0" Foreground="NavajoWhite" Text="NavajoWhite"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Navy" Text="Navy"/>
+            <TextBlock Margin="0 0 1 0" Foreground="OldLace" Text="OldLace"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Olive" Text="Olive"/>
+            <TextBlock Margin="0 0 1 0" Foreground="OliveDrab" Text="OliveDrab"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Orange" Text="Orange"/>
+            <TextBlock Margin="0 0 1 0" Foreground="OrangeRed" Text="OrangeRed"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Orchid" Text="Orchid"/>
+            <TextBlock Margin="0 0 1 0" Foreground="PaleGoldenrod" Text="PaleGoldenrod"/>
+            <TextBlock Margin="0 0 1 0" Foreground="PaleGreen" Text="PaleGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="PaleTurquoise" Text="PaleTurquoise"/>
+            <TextBlock Margin="0 0 1 0" Foreground="PaleVioletRed" Text="PaleVioletRed"/>
+            <TextBlock Margin="0 0 1 0" Foreground="PapayaWhip" Text="PapayaWhip"/>
+            <TextBlock Margin="0 0 1 0" Foreground="PeachPuff" Text="PeachPuff"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Peru" Text="Peru"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Pink" Text="Pink"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Plum" Text="Plum"/>
+            <TextBlock Margin="0 0 1 0" Foreground="PowderBlue" Text="PowderBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Purple" Text="Purple"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Red" Text="Red"/>
+            <TextBlock Margin="0 0 1 0" Foreground="RosyBrown" Text="RosyBrown"/>
+            <TextBlock Margin="0 0 1 0" Foreground="RoyalBlue" Text="RoyalBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="SaddleBrown" Text="SaddleBrown"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Salmon" Text="Salmon"/>
+            <TextBlock Margin="0 0 1 0" Foreground="SandyBrown" Text="SandyBrown"/>
+            <TextBlock Margin="0 0 1 0" Foreground="SeaGreen" Text="SeaGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="SeaShell" Text="SeaShell"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Sienna" Text="Sienna"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Silver" Text="Silver"/>
+            <TextBlock Margin="0 0 1 0" Foreground="SkyBlue" Text="SkyBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="SlateBlue" Text="SlateBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="SlateGray" Text="SlateGray"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Snow" Text="Snow"/>
+            <TextBlock Margin="0 0 1 0" Foreground="SpringGreen" Text="SpringGreen"/>
+            <TextBlock Margin="0 0 1 0" Foreground="SteelBlue" Text="SteelBlue"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Tan" Text="Tan"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Teal" Text="Teal"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Thistle" Text="Thistle"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Tomato" Text="Tomato"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Transparent" Text="Transparent"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Turquoise" Text="Turquoise"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Violet" Text="Violet"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Wheat" Text="Wheat"/>
+            <TextBlock Margin="0 0 1 0" Foreground="White" Text="White"/>
+            <TextBlock Margin="0 0 1 0" Foreground="WhiteSmoke" Text="WhiteSmoke"/>
+            <TextBlock Margin="0 0 1 0" Foreground="Yellow" Text="Yellow"/>
+            <TextBlock Margin="0 0 1 0" Foreground="YellowGreen" Text="YellowGreen"/>
+        </WrapPanel>
+    </Grid>
+</UserControl>

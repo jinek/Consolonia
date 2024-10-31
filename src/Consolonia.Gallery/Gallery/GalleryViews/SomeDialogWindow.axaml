@@ -10,7 +10,7 @@
         <TextBlock xml:space="preserve"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"
-                   Foreground="{drawing:FourBitColorBrush DarkRed}">.
+                   Foreground="DarkRed">.
         /;    ;\
     __  \\____//
    /{_\_/   `'\____
