@@ -83,18 +83,16 @@ namespace Consolonia.Core.Drawing
 
         private static SKEncodedImageFormat GetFormatFromFileName(string fileName)
         {
-            return Path.GetExtension(fileName).ToLower(CultureInfo.InvariantCulture) switch
+            return Path.GetExtension(fileName).ToUpperInvariant() switch
             {
-                ".png" => SKEncodedImageFormat.Png,
-                ".jpeg" => SKEncodedImageFormat.Jpeg,
-                ".jpg" => SKEncodedImageFormat.Jpeg,
-                ".gif" => SKEncodedImageFormat.Gif,
-                ".bmp" => SKEncodedImageFormat.Bmp,
-                ".wbmp" => SKEncodedImageFormat.Wbmp,
-                ".webp" => SKEncodedImageFormat.Webp,
-                ".ico" => SKEncodedImageFormat.Ico,
-                ".heif" => SKEncodedImageFormat.Heif,
-                ".avif" => SKEncodedImageFormat.Avif,
+                ".PNG" => SKEncodedImageFormat.Png,
+                ".JPEG" => SKEncodedImageFormat.Jpeg,
+                ".JPG" => SKEncodedImageFormat.Jpeg,
+                ".GIF" => SKEncodedImageFormat.Gif,
+                ".BMP" => SKEncodedImageFormat.Bmp,
+                ".WBMP" => SKEncodedImageFormat.Wbmp,
+                ".WEBP" => SKEncodedImageFormat.Webp,
+                ".ICO" => SKEncodedImageFormat.Ico,
                 _ => throw new ArgumentException($"Unsupported file extension: {fileName}")
             };
         }
