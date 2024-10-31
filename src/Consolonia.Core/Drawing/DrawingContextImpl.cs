@@ -71,7 +71,7 @@ namespace Consolonia.Core.Drawing
                     var imagePixel = new Pixel('█', color);
                     CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                     {
-                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py), (existingPixel, bb) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
+                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py), (existingPixel, _) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
                     });
                 }
 

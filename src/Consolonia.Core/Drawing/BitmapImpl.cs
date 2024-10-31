@@ -46,7 +46,7 @@ namespace Consolonia.Core.Drawing
 
         public AlphaFormat? AlphaFormat { get => _bitmap.Info.AlphaType.ToAlphaFormat(); }
 
-        public PixelFormat? Format { get => _bitmap.Info.ColorType.ToAvalonia();  }
+        public PixelFormat? Format { get => _bitmap.Info.ColorType.ToAvalonia(); }
 
         public void Dispose()
         {
@@ -58,7 +58,7 @@ namespace Consolonia.Core.Drawing
             var resized = new SKBitmap(pixelSize.Width, pixelSize.Height);
             using (var canvas = new SKCanvas(resized))
             {
-                canvas.DrawBitmap(_bitmap, new SKRect(0, 0, pixelSize.Width, pixelSize.Height), new SKPaint { FilterQuality = interpolationMode.ToSKFilterQuality()});
+                canvas.DrawBitmap(_bitmap, new SKRect(0, 0, pixelSize.Width, pixelSize.Height), new SKPaint { FilterQuality = interpolationMode.ToSKFilterQuality() });
             }
             return new BitmapImpl(resized);
         }
@@ -67,7 +67,7 @@ namespace Consolonia.Core.Drawing
         {
             SKEncodedImageFormat format = GetFormatFromFileName(fileName);
             using (var image = SKImage.FromBitmap(_bitmap))
-            using (var data = image.Encode(format, quality.Value))
+            using (var data = image.Encode(format, quality ?? 100))
             using (var stream = File.OpenWrite(fileName))
             {
                 data.SaveTo(stream);
@@ -78,7 +78,7 @@ namespace Consolonia.Core.Drawing
         {
             SKEncodedImageFormat format = SKEncodedImageFormat.Jpeg;
             using (var image = SKImage.FromBitmap(_bitmap))
-            using (var data = image.Encode(format, quality.Value))
+            using (var data = image.Encode(format, quality ?? 100))
             {
                 data.SaveTo(stream);
             }
