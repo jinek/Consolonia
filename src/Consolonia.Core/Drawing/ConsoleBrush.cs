@@ -99,6 +99,10 @@ namespace Consolonia.Core.Drawing
             {
                 case ILinearGradientBrush gradientBrush:
                 {
+                    if (width <= 0)
+                        width = 1;
+                    if (height <= 0)
+                        height = 1;
                     // Calculate the relative position within the gradient
                     double horizontalRelativePosition = (double)x / width;
                     double verticalRelativePosition = (double)y / height;
@@ -134,6 +138,10 @@ namespace Consolonia.Core.Drawing
                 }
                 case IConicGradientBrush conicBrush:
                 {
+                    if (width <= 0)
+                        width = 1;
+                    if (height <= 0)
+                        height = 1;
                     // Calculate the relative position within the gradient
                     double horizontalRelativePosition = (double)x / width;
                     double verticalRelativePosition = (double)y / height;

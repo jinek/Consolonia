@@ -54,14 +54,15 @@ namespace Consolonia.Core.Drawing
             // return new ConsoleRenderTargetBitmapImpl(size, dpi);
         }
 
-        public IWriteableBitmapImpl CreateWriteableBitmap(PixelSize size, Vector dpi, PixelFormat format, AlphaFormat alphaFormat)
+        public IWriteableBitmapImpl CreateWriteableBitmap(PixelSize size, Vector dpi, PixelFormat format,
+            AlphaFormat alphaFormat)
         {
             return new BitmapImpl(size.Width, size.Height, format, alphaFormat);
         }
 
         public IBitmapImpl LoadBitmap(string fileName)
         {
-            using (var stream = File.OpenRead(fileName))
+            using (FileStream stream = File.OpenRead(fileName))
             {
                 return new BitmapImpl(stream);
             }
@@ -72,31 +73,35 @@ namespace Consolonia.Core.Drawing
             return new BitmapImpl(stream);
         }
 
-        public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode)
+        public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
+            BitmapInterpolationMode interpolationMode)
         {
             using (var skStream = new SKManagedStream(stream))
             {
-                var originalBitmap = SKBitmap.Decode(skStream);
-                var width = (int)(height * ((double)originalBitmap.Width / originalBitmap.Height));
-                var resizedBitmap = originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
+                SKBitmap originalBitmap = SKBitmap.Decode(skStream);
+                int width = (int)(height * ((double)originalBitmap.Width / originalBitmap.Height));
+                SKBitmap resizedBitmap =
+                    originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
                 return new BitmapImpl(resizedBitmap);
             }
         }
 
-        public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
+        public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
+            BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
         {
             using (var skStream = new SKManagedStream(stream))
             {
-                var originalBitmap = SKBitmap.Decode(skStream);
-                var height = (int)(width * ((double)originalBitmap.Height / originalBitmap.Width));
-                var resizedBitmap = originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
+                SKBitmap originalBitmap = SKBitmap.Decode(skStream);
+                int height = (int)(width * ((double)originalBitmap.Height / originalBitmap.Width));
+                SKBitmap resizedBitmap =
+                    originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
                 return new BitmapImpl(resizedBitmap);
             }
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmap(string fileName)
         {
-            using (var stream = File.OpenRead(fileName))
+            using (FileStream stream = File.OpenRead(fileName))
             {
                 return LoadWriteableBitmap(stream);
             }
@@ -106,7 +111,7 @@ namespace Consolonia.Core.Drawing
         {
             using (var skStream = new SKManagedStream(stream))
             {
-                var originalBitmap = SKBitmap.Decode(skStream);
+                SKBitmap originalBitmap = SKBitmap.Decode(skStream);
                 return new BitmapImpl(originalBitmap);
             }
         }
@@ -115,9 +120,10 @@ namespace Consolonia.Core.Drawing
         {
             using (var skStream = new SKManagedStream(stream))
             {
-                var originalBitmap = SKBitmap.Decode(skStream);
-                var height = (int)(width * ((double)originalBitmap.Height / originalBitmap.Width));
-                var resizedBitmap = originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
+                SKBitmap originalBitmap = SKBitmap.Decode(skStream);
+                int height = (int)(width * ((double)originalBitmap.Height / originalBitmap.Width));
+                SKBitmap resizedBitmap =
+                    originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
                 return new BitmapImpl(resizedBitmap);
             }
         }
@@ -126,20 +132,23 @@ namespace Consolonia.Core.Drawing
         {
             using (var skStream = new SKManagedStream(stream))
             {
-                var originalBitmap = SKBitmap.Decode(skStream);
-                var width = (int)(height * ((double)originalBitmap.Width / originalBitmap.Height));
-                var resizedBitmap = originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
+                SKBitmap originalBitmap = SKBitmap.Decode(skStream);
+                int width = (int)(height * ((double)originalBitmap.Width / originalBitmap.Height));
+                SKBitmap resizedBitmap =
+                    originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
                 return new BitmapImpl(resizedBitmap);
             }
         }
 
-        public IBitmapImpl ResizeBitmap(IBitmapImpl bitmapImpl, PixelSize destinationSize, BitmapInterpolationMode interpolationMode)
+        public IBitmapImpl ResizeBitmap(IBitmapImpl bitmapImpl, PixelSize destinationSize,
+            BitmapInterpolationMode interpolationMode)
         {
             var consoleBitmap = (BitmapImpl)bitmapImpl;
             return consoleBitmap.Resize(destinationSize, interpolationMode);
         }
 
-        public IBitmapImpl LoadBitmap(PixelFormat format, AlphaFormat alphaFormat, IntPtr data, PixelSize size, Vector dpi, int stride)
+        public IBitmapImpl LoadBitmap(PixelFormat format, AlphaFormat alphaFormat, IntPtr data, PixelSize size,
+            Vector dpi, int stride)
         {
             var info = new SKImageInfo(size.Width, size.Height, SKColorType.Rgb888x, SKAlphaType.Opaque);
             var bitmap = new SKBitmap();
