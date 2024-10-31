@@ -1,8 +1,5 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
-using Avalonia.Controls.Documents;
 using Avalonia.Media;
-using Consolonia.Core.Text;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -22,17 +19,19 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             IsCaret = isCaret;
         }
 
-        public Pixel(char character, Color foregroundColor, FontStyle style = FontStyle.Normal, FontWeight weight = FontWeight.Normal) :
+        public Pixel(char character, Color foregroundColor, FontStyle style = FontStyle.Normal,
+            FontWeight weight = FontWeight.Normal) :
             this(new SimpleSymbol(character), foregroundColor, style, weight)
         {
         }
 
         public Pixel(byte drawingBoxSymbol, Color foregroundColor) : this(
-            new DrawingBoxSymbol(drawingBoxSymbol), foregroundColor, FontStyle.Normal, FontWeight.Normal)
+            new DrawingBoxSymbol(drawingBoxSymbol), foregroundColor)
         {
         }
 
-        public Pixel(ISymbol symbol, Color foregroundColor, FontStyle style = FontStyle.Normal, FontWeight weight = FontWeight.Normal, TextDecorationCollection textDecorations = null) : this(
+        public Pixel(ISymbol symbol, Color foregroundColor, FontStyle style = FontStyle.Normal,
+            FontWeight weight = FontWeight.Normal, TextDecorationCollection textDecorations = null) : this(
             new PixelForeground(symbol, weight, style, textDecorations, foregroundColor),
             new PixelBackground(PixelBackgroundMode.Transparent))
         {
@@ -71,18 +70,15 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 case PixelBackgroundMode.Transparent:
                     // when a textdecoration of underline happens a DrawLine() is called over the top of the a pixel with non-zero symbol.
                     // this detects this situation and eats the draw line, turning it into a textdecoration
-                    if (pixelAbove.Foreground.Symbol is DrawingBoxSymbol box &&
-                        this.Foreground.Symbol is SimpleSymbol simpleSymbol &&
-                        ((ISymbol)simpleSymbol).GetCharacter() != (Char)0)
-                    {
+                    if (pixelAbove.Foreground.Symbol is DrawingBoxSymbol &&
+                        Foreground.Symbol is SimpleSymbol simpleSymbol &&
+                        ((ISymbol)simpleSymbol).GetCharacter() != (char)0)
                         // this is a line being draw through text. add TextDecoration for underline.
-                        newForeground = new PixelForeground(this.Foreground.Symbol, this.Foreground.Weight, this.Foreground.Style, TextDecorations.Underline,  this.Foreground.Color);
-                    }
+                        newForeground = new PixelForeground(Foreground.Symbol, Foreground.Weight, Foreground.Style,
+                            TextDecorations.Underline, Foreground.Color);
                     else
-                    {
                         // do normal blend.
                         newForeground = Foreground.Blend(pixelAbove.Foreground);
-                    }
                     newBackground = Background;
                     break;
                 case PixelBackgroundMode.Shaded:
@@ -101,6 +97,5 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             return (Foreground.Shade(), Background.Shade());
         }
-
     }
 }

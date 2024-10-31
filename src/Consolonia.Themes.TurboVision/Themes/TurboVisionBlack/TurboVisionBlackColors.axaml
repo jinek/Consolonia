@@ -3,27 +3,27 @@
                     xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
     <!--https://www.mikrocontroller.net/attachment/483578/Turbo_Vision.gif-->
     <drawing:ConsoleBrush x:Key="ThemeForegroundBrush"
-                               Color="Gray" />
+                          Color="Gray" />
     <drawing:ConsoleBrush x:Key="ThemeBackgroundBrush"
-                               Color="Black" />
+                          Color="Black" />
     <drawing:ConsoleBrush x:Key="ThemeChooserBackgroundBrush"
-                               Color="DarkBlue" />
+                          Color="DarkBlue" />
     <drawing:ConsoleBrush x:Key="ThemeActionBackgroundBrush"
-                               Color="DarkMagenta" />
+                          Color="DarkMagenta" />
     <drawing:ConsoleBrush x:Key="ThemeSelectionBackgroundBrush"
-                               Color="DarkGray" />
+                          Color="DarkGray" />
     <drawing:ConsoleBrush x:Key="ThemeSelectionForegroundBrush"
-                               Color="White" />
+                          Color="White" />
     <drawing:ConsoleBrush x:Key="ThemeAlternativeBackgroundBrush"
-                               Color="DarkGray" />
+                          Color="DarkGray" />
     <drawing:ConsoleBrush x:Key="ThemeBorderBrush"
-                               Color="Gray" />
+                          Color="Gray" />
     <drawing:ConsoleBrush x:Key="ThemeNoDisturbBrush"
-                               Color="DarkGoldenrod" />
+                          Color="DarkGoldenrod" />
     <drawing:ConsoleBrush x:Key="ThemeShadeBrush"
-                               Mode="Shaded" />
+                          Mode="Shaded" />
     <drawing:ConsoleBrush x:Key="ThemePseudoShadeBrush"
-                               Color="DarkGray" />
+                          Color="DarkGray" />
     <drawing:ConsoleBrush x:Key="ThemeErrorBrush"
-                               Color="Red" />
+                          Color="Red" />
 </ResourceDictionary>

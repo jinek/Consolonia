@@ -37,7 +37,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             AvaloniaProperty.Register<SymbolsControl, bool>(nameof(Fill));
 
         private GlyphRun _shapedText;
-        
+
         private string _text;
 
         static SymbolsControl()

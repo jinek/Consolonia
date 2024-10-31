@@ -58,10 +58,12 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local //todo: what does this mean?
                         args =>
                         {
-                            ConsoleBrush brush = ConsoleBrush.FromBrush(args.NewValue.Value, PixelBackgroundMode.Transparent);
+                            ConsoleBrush brush =
+                                ConsoleBrush.FromBrush(args.NewValue.Value, PixelBackgroundMode.Transparent);
 
                             if (brush.Mode != PixelBackgroundMode.Transparent)
-                                throw new NotSupportedException("CaretBrush must have a transparent background. This ensures proper rendering of the caret over text content.");
+                                throw new NotSupportedException(
+                                    "CaretBrush must have a transparent background. This ensures proper rendering of the caret over text content.");
                         }));
         }
 

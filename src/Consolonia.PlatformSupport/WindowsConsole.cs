@@ -163,7 +163,7 @@ namespace Consolonia.PlatformSupport
                     repeat = 0;
                     break;
                 case WindowsConsole.EventFlags.MouseWheeled:
-                    double velocity = (incomeMouseState < 0) ? -1 : 1;
+                    double velocity = incomeMouseState < 0 ? -1 : 1;
                     wheelDelta = new Vector(0, velocity);
                     eventType = RawPointerEventType.Wheel;
                     break;

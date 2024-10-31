@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
@@ -37,6 +36,5 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             return new PixelBackground(newMode, newColor);
         }
-
     }
 }

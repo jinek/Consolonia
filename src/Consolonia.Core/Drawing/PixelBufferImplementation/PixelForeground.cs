@@ -1,15 +1,15 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public readonly struct PixelForeground
     {
-        public PixelForeground(ISymbol symbol, FontWeight weight = FontWeight.Normal, FontStyle style = FontStyle.Normal, TextDecorationCollection textDecorations = null, Color? color = null)
+        public PixelForeground(ISymbol symbol, FontWeight weight = FontWeight.Normal,
+            FontStyle style = FontStyle.Normal, TextDecorationCollection textDecorations = null, Color? color = null)
         {
             ArgumentNullException.ThrowIfNull(symbol);
-            Symbol = symbol ?? new SimpleSymbol('░');
+            Symbol = symbol;
             Color = color ?? Colors.White;
             Weight = weight;
             Style = style;
@@ -42,9 +42,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             ISymbol newSymbol = Symbol.Blend(ref symbolAbove);
 
-            return new PixelForeground(newSymbol, pixelAboveForeground.Weight, pixelAboveForeground.Style, pixelAboveForeground.TextDecorations, pixelAboveForeground.Color);
+            return new PixelForeground(newSymbol, pixelAboveForeground.Weight, pixelAboveForeground.Style,
+                pixelAboveForeground.TextDecorations, pixelAboveForeground.Color);
         }
-
-
     }
 }
