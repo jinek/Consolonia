@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using Avalonia;
 using Avalonia.Media.Imaging;
@@ -83,9 +84,20 @@ namespace Consolonia.Core.Drawing
 
         private static SKEncodedImageFormat GetFormatFromFileName(string fileName)
         {
-            if (Enum.TryParse<SKEncodedImageFormat>(Path.GetExtension(fileName).Trim('.'), ignoreCase: true, out var format))
-                return format;
-            return SKEncodedImageFormat.Jpeg;
+            return Path.GetExtension(fileName).ToLower(CultureInfo.InvariantCulture) switch
+            {
+                ".png" => SKEncodedImageFormat.Png,
+                ".jpeg" => SKEncodedImageFormat.Jpeg,
+                ".jpg" => SKEncodedImageFormat.Jpeg,
+                ".gif" => SKEncodedImageFormat.Gif,
+                ".bmp" => SKEncodedImageFormat.Bmp,
+                ".wbmp" => SKEncodedImageFormat.Wbmp,
+                ".webp" => SKEncodedImageFormat.Webp,
+                ".ico" => SKEncodedImageFormat.Ico,
+                ".heif" => SKEncodedImageFormat.Heif,
+                ".avif" => SKEncodedImageFormat.Avif,
+                _ => throw new ArgumentException($"Unsupported file extension: {fileName}")
+            };
         }
     }
 }
