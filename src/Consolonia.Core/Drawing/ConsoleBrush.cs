@@ -29,11 +29,28 @@ namespace Consolonia.Core.Drawing
         {
         }
 
+        public PixelBackgroundMode Mode
+        {
+            get => GetValue(ModeProperty);
+            set => SetValue(ModeProperty, value);
+        }
+
+        public Color Color
+        {
+            get => GetValue(ColorProperty);
+            set => SetValue(ColorProperty, value);
+        }
+
+        public double Opacity => 1;
+        public ITransform Transform => null;
+        public RelativePoint TransformOrigin => RelativePoint.TopLeft;
+
         /// <summary>
-        /// Convert a IBrush to a Brush. 
+        ///     Convert a IBrush to a Brush.
         /// </summary>
         /// <remarks>
-        /// NOTE: If it's a ConsoleBrush it will be passed through unchanged, unless mode is set then it will convert consolebrush to mode
+        ///     NOTE: If it's a ConsoleBrush it will be passed through unchanged, unless mode is set then it will convert
+        ///     consolebrush to mode
         /// </remarks>
         /// <param name="brush"></param>
         /// <param name="mode">Default is Colored.</param>
@@ -46,9 +63,7 @@ namespace Consolonia.Core.Drawing
             {
                 case ConsoleBrush consoleBrush:
                     if (mode != null && consoleBrush.Mode != mode)
-                    {
                         return new ConsoleBrush(consoleBrush.Color, mode.Value);
-                    }
                     return consoleBrush;
 
                 case LineBrush lineBrush:
@@ -87,70 +102,58 @@ namespace Consolonia.Core.Drawing
             switch (brush)
             {
                 case ILinearGradientBrush gradientBrush:
-                    {
-                        // Calculate the relative position within the gradient
-                        double horizontalRelativePosition = (double)x / width;
-                        double verticalRelativePosition = (double)y / height;
+                {
+                    // Calculate the relative position within the gradient
+                    double horizontalRelativePosition = (double)x / width;
+                    double verticalRelativePosition = (double)y / height;
 
-                        // Interpolate horizontal and vertical colors
-                        var horizontalColor = InterpolateColor(gradientBrush, horizontalRelativePosition);
-                        var verticalColor = InterpolateColor(gradientBrush, verticalRelativePosition);
+                    // Interpolate horizontal and vertical colors
+                    Color horizontalColor = InterpolateColor(gradientBrush, horizontalRelativePosition);
+                    Color verticalColor = InterpolateColor(gradientBrush, verticalRelativePosition);
 
-                        // Average the two colors to get the final color
-                        var color = BlendColors(horizontalColor, verticalColor);
-                        return new ConsoleBrush(color);
-                    }
+                    // Average the two colors to get the final color
+                    Color color = BlendColors(horizontalColor, verticalColor);
+                    return new ConsoleBrush(color);
+                }
                 case IRadialGradientBrush radialBrush:
-                    {
-                        // Calculate the normalized center coordinates
-                        double centerX = radialBrush.Center.Point.X * width;
-                        double centerY = radialBrush.Center.Point.Y * height;
+                {
+                    // Calculate the normalized center coordinates
+                    double centerX = radialBrush.Center.Point.X * width;
+                    double centerY = radialBrush.Center.Point.Y * height;
 
-                        // Calculate the distance from the center
-                        double dx = x - centerX;
-                        double dy = y - centerY;
-                        double distance = Math.Sqrt(dx * dx + dy * dy);
+                    // Calculate the distance from the center
+                    double dx = x - centerX;
+                    double dy = y - centerY;
+                    double distance = Math.Sqrt(dx * dx + dy * dy);
 
-                        // Normalize the distance based on the brush radius
-                        double normalizedDistance = distance / (Math.Min(width, height) * radialBrush.Radius);
+                    // Normalize the distance based on the brush radius
+                    double normalizedDistance = distance / (Math.Min(width, height) * radialBrush.Radius);
 
-                        // Clamp the normalized distance to [0, 1]
-                        normalizedDistance = Math.Min(Math.Max(normalizedDistance, 0), 1);
+                    // Clamp the normalized distance to [0, 1]
+                    normalizedDistance = Math.Min(Math.Max(normalizedDistance, 0), 1);
 
-                        // Interpolate the color based on the normalized distance
-                        var color = InterpolateColor(radialBrush, normalizedDistance);
-                        return new ConsoleBrush(color);
-                    }
-                    case IConicGradientBrush conicBrush:
-                    {
-                        // Calculate the relative position within the gradient
-                        double horizontalRelativePosition = (double)x / width;
-                        double verticalRelativePosition = (double)y / height;
+                    // Interpolate the color based on the normalized distance
+                    Color color = InterpolateColor(radialBrush, normalizedDistance);
+                    return new ConsoleBrush(color);
+                }
+                case IConicGradientBrush conicBrush:
+                {
+                    // Calculate the relative position within the gradient
+                    double horizontalRelativePosition = (double)x / width;
+                    double verticalRelativePosition = (double)y / height;
 
-                        // Interpolate horizontal and vertical colors
-                        var horizontalColor = InterpolateColor(conicBrush, horizontalRelativePosition);
-                        var verticalColor = InterpolateColor(conicBrush, verticalRelativePosition);
+                    // Interpolate horizontal and vertical colors
+                    Color horizontalColor = InterpolateColor(conicBrush, horizontalRelativePosition);
+                    Color verticalColor = InterpolateColor(conicBrush, verticalRelativePosition);
 
-                        // Average the two colors to get the final color
-                        var color = BlendColors(horizontalColor, verticalColor);
-                        return new ConsoleBrush(color);
-                    }
+                    // Average the two colors to get the final color
+                    Color color = BlendColors(horizontalColor, verticalColor);
+                    return new ConsoleBrush(color);
+                }
 
                 default:
                     return FromBrush(brush);
             }
-        }
-
-        public PixelBackgroundMode Mode
-        {
-            get => GetValue(ModeProperty);
-            set => SetValue(ModeProperty, value);
-        }
-
-        public Color Color
-        {
-            get => GetValue(ColorProperty);
-            set => SetValue(ColorProperty, value);
         }
 
         // ReSharper disable once UnusedMember.Global used by Avalonia
@@ -160,17 +163,12 @@ namespace Consolonia.Core.Drawing
             return this;
         }
 
-        public double Opacity => 1;
-        public ITransform Transform => null;
-        public RelativePoint TransformOrigin => RelativePoint.TopLeft;
-
         private static Color InterpolateColor(IGradientBrush brush, double relativePosition)
         {
             IGradientStop before = null;
             IGradientStop after = null;
 
-            foreach (var stop in brush.GradientStops)
-            {
+            foreach (IGradientStop stop in brush.GradientStops)
                 if (stop.Offset <= relativePosition)
                 {
                     before = stop;
@@ -180,18 +178,12 @@ namespace Consolonia.Core.Drawing
                     after = stop;
                     break;
                 }
-            }
+
             if (before == null && after == null)
                 throw new ArgumentException("no gradientstops defined");
 
-            if (before == null)
-            {
-                return after.Color;
-            }
-            if (after == null)
-            {
-                return before.Color;
-            }
+            if (before == null) return after.Color;
+            if (after == null) return before.Color;
 
             double ratio = (relativePosition - before.Offset) / (after.Offset - before.Offset);
             byte r = (byte)(before.Color.R + ratio * (after.Color.R - before.Color.R));

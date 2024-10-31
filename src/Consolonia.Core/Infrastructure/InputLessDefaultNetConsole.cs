@@ -7,6 +7,7 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Crayon;
 using NullLib.ConsoleEx;
 
 namespace Consolonia.Core.Infrastructure
@@ -65,7 +66,8 @@ namespace Consolonia.Core.Infrastructure
             return _headBufferPoint;
         }
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style, FontWeight weight, TextDecorationCollection textDecorations, string str)
+        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style,
+            FontWeight weight, TextDecorationCollection textDecorations, string str)
         {
             PauseTask?.Wait();
             SetCaretPosition(bufferPoint);
@@ -79,19 +81,18 @@ namespace Consolonia.Core.Infrastructure
                 throw new NotSupportedException("Is not supposed to be rendered");
 
             if (textDecorations != null && textDecorations.Any(td => td.Location == TextDecorationLocation.Underline))
-            {
-                str = Crayon.Output.Underline(str);
-            }
+                str = Output.Underline(str);
 
             if (weight == FontWeight.Normal)
                 foreground = foreground.Shade(background);
             else if (weight == FontWeight.Thin || weight == FontWeight.ExtraLight || weight == FontWeight.Light)
                 foreground = foreground.Shade(background).Shade(background);
-            else if (weight == FontWeight.Medium || weight == FontWeight.SemiBold || weight == FontWeight.Bold || weight == FontWeight.ExtraBold || weight == FontWeight.Black || weight == FontWeight.ExtraBlack)
+            else if (weight == FontWeight.Medium || weight == FontWeight.SemiBold || weight == FontWeight.Bold ||
+                     weight == FontWeight.ExtraBold || weight == FontWeight.Black || weight == FontWeight.ExtraBlack)
                 foreground = foreground.Brighten(background);
-            Console.Write(Crayon.Output.Rgb(foreground.R, foreground.G, foreground.B)
-                         .Background.Rgb(background.R, background.G, background.B)
-                         .Text(str));
+            Console.Write(Output.Rgb(foreground.R, foreground.G, foreground.B)
+                .Background.Rgb(background.R, background.G, background.B)
+                .Text(str));
 
 
             if (_headBufferPoint.X < Size.Width - str.Length)

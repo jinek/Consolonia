@@ -107,7 +107,7 @@ namespace Consolonia.Core.Drawing
         {
             throw new NotImplementedException();
         }
-        
+
         public IBitmapImpl LoadBitmap(
             PixelFormat format,
             AlphaFormat alphaFormat,

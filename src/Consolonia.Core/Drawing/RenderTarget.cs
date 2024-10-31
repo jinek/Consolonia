@@ -20,7 +20,8 @@ namespace Consolonia.Core.Drawing
 
         private PixelBuffer _bufferBuffer;
 
-        private (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection textDecorations, char character)?[,] _cache;
+        private (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
+            textDecorations, char character)?[,] _cache;
 
         internal RenderTarget(ConsoleWindow consoleWindow)
         {
@@ -68,6 +69,13 @@ namespace Consolonia.Core.Drawing
 
         bool IDrawingContextLayerImpl.CanBlit => true;
 
+        public IDrawingContextImpl CreateDrawingContext()
+        {
+            return new DrawingContextImpl(_consoleWindow, _bufferBuffer);
+        }
+
+        public bool IsCorrupted => false;
+
 
         private void OnResized(Size size, WindowResizeReason reason)
         {
@@ -88,7 +96,9 @@ namespace Consolonia.Core.Drawing
 
         private void InitializeCache(ushort width, ushort height)
         {
-            _cache = new (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection textDecorations, char character)?[width, height];
+            _cache =
+                new (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
+                    textDecorations, char character)?[width, height];
         }
 
         private void RenderToDevice()
@@ -101,38 +111,41 @@ namespace Consolonia.Core.Drawing
             var flushingBuffer = new FlushingBuffer(_console);
 
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-                for (ushort x = 0; x < pixelBuffer.Width; x++)
+            for (ushort x = 0; x < pixelBuffer.Width; x++)
+            {
+                Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
+
+                if (pixel.IsCaret)
                 {
-                    Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
-
-                    if (pixel.IsCaret)
-                    {
-                        if (caretPosition != null)
-                            throw new InvalidOperationException("Caret is already shown");
-                        caretPosition = new PixelBufferCoordinate(x, y);
-                    }
-
-                    /* todo: There is not IWindowImpl.Invalidate anymore.
-                     if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                        rect.ContainsExclusive(new Point(x, y)))) continue;*/
-                    if (pixel.Background.Mode != PixelBackgroundMode.Colored)
-                        throw new InvalidOperationException("All pixels in the buffer must have exact console color before rendering");
-
-                    if (pixel.Foreground.Symbol is null) // not using 'when' as it swallows the exceptions 
-                    {
-                        // buffer re-initialized after resizing
-                        pixel = new Pixel(new PixelForeground(new SimpleSymbol('░')), new PixelBackground(PixelBackgroundMode.Colored));
-                    }
-
-                    var pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight, pixel.Foreground.Style, pixel.Foreground.TextDecorations, pixel.Foreground.Symbol.GetCharacter());
-                    //todo: indexOutOfRange during resize
-                    if (_cache[x, y] == pixelSpread)
-                        continue;
-
-                    _cache[x, y] = pixelSpread;
-
-                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+                    if (caretPosition != null)
+                        throw new InvalidOperationException("Caret is already shown");
+                    caretPosition = new PixelBufferCoordinate(x, y);
                 }
+
+                /* todo: There is not IWindowImpl.Invalidate anymore.
+                 if (!_consoleWindow.InvalidatedRects.Any(rect =>
+                    rect.ContainsExclusive(new Point(x, y)))) continue;*/
+                if (pixel.Background.Mode != PixelBackgroundMode.Colored)
+                    throw new InvalidOperationException(
+                        "All pixels in the buffer must have exact console color before rendering");
+
+                if (pixel.Foreground.Symbol is null) // not using 'when' as it swallows the exceptions 
+                    // buffer re-initialized after resizing
+                    pixel = new Pixel(new PixelForeground(new SimpleSymbol('░')),
+                        new PixelBackground(PixelBackgroundMode.Colored));
+
+                (Color, Color, FontWeight Weight, FontStyle Style, TextDecorationCollection TextDecorations, char)
+                    pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight,
+                        pixel.Foreground.Style, pixel.Foreground.TextDecorations,
+                        pixel.Foreground.Symbol.GetCharacter());
+                //todo: indexOutOfRange during resize
+                if (_cache[x, y] == pixelSpread)
+                    continue;
+
+                _cache[x, y] = pixelSpread;
+
+                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+            }
 
             flushingBuffer.Flush();
 
@@ -188,7 +201,8 @@ namespace Consolonia.Core.Drawing
                     _lastTextDecorations = pixel.Foreground.TextDecorations;
                     _lastBufferPointStart = _currentBufferPoint = bufferPoint;
                 }
-                var character = pixel.Foreground.Symbol.GetCharacter();
+
+                char character = pixel.Foreground.Symbol.GetCharacter();
                 if (char.IsControl(character) /*|| character is '保' or '哥'*/)
                     character = ' '; // some terminals do not print \0
                 _stringBuilder.Append(character);
@@ -200,16 +214,10 @@ namespace Consolonia.Core.Drawing
                 if (_stringBuilder.Length == 0)
                     return;
 
-                _console.Print(_lastBufferPointStart, _lastBackgroundColor, _lastForegroundColor, _lastStyle, _lastWeight, _lastTextDecorations, _stringBuilder.ToString());
+                _console.Print(_lastBufferPointStart, _lastBackgroundColor, _lastForegroundColor, _lastStyle,
+                    _lastWeight, _lastTextDecorations, _stringBuilder.ToString());
                 _stringBuilder.Clear();
             }
         }
-
-        public IDrawingContextImpl CreateDrawingContext()
-        {
-            return new DrawingContextImpl(_consoleWindow, _bufferBuffer);
-        }
-
-        public bool IsCorrupted => false;
     }
 }

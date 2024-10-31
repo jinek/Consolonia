@@ -7,10 +7,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     internal static class PixelOperations
     {
-        private static int _colorAdjustment = 32;
+        private static readonly int _colorAdjustment = 32;
 
         /// <summary>
-        /// Make color darker
+        ///     Make color darker
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -20,7 +20,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         /// <summary>
-        /// Make color brighter
+        ///     Make color brighter
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -30,63 +30,53 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         /// <summary>
-        /// Make color less contrast with background color
+        ///     Make color less contrast with background color
         /// </summary>
         /// <param name="foreground"></param>
         /// <param name="background"></param>
         /// <returns></returns>
         public static Color Shade(this Color foreground, Color background)
         {
-            var foregroundBrightness = GetPerceivedBrightness(foreground);
-            var backgroundBrightness = GetPerceivedBrightness(background);
-            if (foregroundBrightness > backgroundBrightness || (foregroundBrightness == backgroundBrightness && foregroundBrightness > 0))
-            {
+            int foregroundBrightness = GetPerceivedBrightness(foreground);
+            int backgroundBrightness = GetPerceivedBrightness(background);
+            if (foregroundBrightness > backgroundBrightness ||
+                foregroundBrightness == backgroundBrightness && foregroundBrightness > 0)
                 // if color is lighter than background shading should make it more dark (less contrast)
                 return Color.FromRgb((byte)Math.Max(0, foreground.R - _colorAdjustment),
-                                     (byte)Math.Max(0, foreground.G - _colorAdjustment),
-                                     (byte)Math.Max(0, foreground.B - _colorAdjustment));
-
-            }
-            else
-            {
-                // if color is darker than background shading should make it more bright (less contrast)
-                return Color.FromRgb((byte)Math.Min(Byte.MaxValue, foreground.R + _colorAdjustment),
-                                     (byte)Math.Min(Byte.MaxValue, foreground.G + _colorAdjustment),
-                                     (byte)Math.Min(Byte.MaxValue, foreground.B + _colorAdjustment));
-
-            }
+                    (byte)Math.Max(0, foreground.G - _colorAdjustment),
+                    (byte)Math.Max(0, foreground.B - _colorAdjustment));
+            // if color is darker than background shading should make it more bright (less contrast)
+            return Color.FromRgb((byte)Math.Min(byte.MaxValue, foreground.R + _colorAdjustment),
+                (byte)Math.Min(byte.MaxValue, foreground.G + _colorAdjustment),
+                (byte)Math.Min(byte.MaxValue, foreground.B + _colorAdjustment));
         }
 
         /// <summary>
-        /// Make color more contrast with background color
+        ///     Make color more contrast with background color
         /// </summary>
         /// <param name="foreground"></param>
         /// <param name="background"></param>
         /// <returns></returns>
         public static Color Brighten(this Color foreground, Color background)
         {
-            var foregroundBrightness = GetPerceivedBrightness(foreground);
-            var backgroundBrightness = GetPerceivedBrightness(background);
-            if (foregroundBrightness > backgroundBrightness || (foregroundBrightness == backgroundBrightness && foregroundBrightness < Byte.MaxValue))
-            {
+            int foregroundBrightness = GetPerceivedBrightness(foreground);
+            int backgroundBrightness = GetPerceivedBrightness(background);
+            if (foregroundBrightness > backgroundBrightness || foregroundBrightness == backgroundBrightness &&
+                foregroundBrightness < byte.MaxValue)
                 // if color is lighter than background brighten should make it more bright (more contrast)
-                return Color.FromRgb((byte)Math.Min(Byte.MaxValue, foreground.R + _colorAdjustment),
-                                     (byte)Math.Min(Byte.MaxValue, foreground.G + _colorAdjustment),
-                                     (byte)Math.Min(Byte.MaxValue, foreground.B + _colorAdjustment));
-            }
-            else
-            {
-                // if color is darker than background brighten should make it more dark (more contrast)
-                return Color.FromRgb((byte)Math.Max(0, foreground.R - _colorAdjustment),
-                                     (byte)Math.Max(0, foreground.G - _colorAdjustment),
-                                     (byte)Math.Max(0, foreground.B - _colorAdjustment));
-            }
+                return Color.FromRgb((byte)Math.Min(byte.MaxValue, foreground.R + _colorAdjustment),
+                    (byte)Math.Min(byte.MaxValue, foreground.G + _colorAdjustment),
+                    (byte)Math.Min(byte.MaxValue, foreground.B + _colorAdjustment));
+            // if color is darker than background brighten should make it more dark (more contrast)
+            return Color.FromRgb((byte)Math.Max(0, foreground.R - _colorAdjustment),
+                (byte)Math.Max(0, foreground.G - _colorAdjustment),
+                (byte)Math.Max(0, foreground.B - _colorAdjustment));
         }
 
         private static int GetPerceivedBrightness(Color color)
         {
-            return (int)(0.299 * color.R + 
-                         0.587 * color.G + 
+            return (int)(0.299 * color.R +
+                         0.587 * color.G +
                          0.114 * color.B);
         }
     }

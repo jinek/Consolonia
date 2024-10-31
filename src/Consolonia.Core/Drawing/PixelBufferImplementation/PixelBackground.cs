@@ -36,6 +36,5 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             return new PixelBackground(newMode, newColor);
         }
-
     }
 }

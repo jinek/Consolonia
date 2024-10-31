@@ -5,14 +5,13 @@ using NUnit.Framework;
 namespace Consolonia.TestsCore
 {
     [TestFixture]
-    public class PixelTests 
+    public class PixelTests
     {
-
         [Test]
         public void TestShade()
         {
             Color foreground = Colors.Gray;
-            var newColor = foreground.Shade();
+            Color newColor = foreground.Shade();
             Assert.That(newColor.R < foreground.R);
             Assert.That(newColor.G < foreground.G);
             Assert.That(newColor.B < foreground.B);
@@ -22,7 +21,7 @@ namespace Consolonia.TestsCore
         public void TestBrighten()
         {
             Color foreground = Colors.Gray;
-            var newColor = foreground.Brighten();
+            Color newColor = foreground.Brighten();
             Assert.That(newColor.R > foreground.R);
             Assert.That(newColor.G > foreground.G);
             Assert.That(newColor.B > foreground.B);
@@ -33,7 +32,7 @@ namespace Consolonia.TestsCore
         {
             Color foreground = Colors.LightGray;
             Color background = Colors.DarkGray;
-            var newColor = foreground.Shade(background);
+            Color newColor = foreground.Shade(background);
             Assert.That(newColor.R < foreground.R);
             Assert.That(newColor.G < foreground.G);
             Assert.That(newColor.B < foreground.B);
@@ -51,7 +50,7 @@ namespace Consolonia.TestsCore
         {
             Color foreground = Colors.LightGray;
             Color background = Colors.DarkGray;
-            var newColor = foreground.Brighten(background);
+            Color newColor = foreground.Brighten(background);
             Assert.That(newColor.R > foreground.R);
             Assert.That(newColor.G > foreground.G);
             Assert.That(newColor.B > foreground.B);
@@ -70,7 +69,7 @@ namespace Consolonia.TestsCore
             Color foreground = Colors.White;
             Color background = Colors.Black;
             Color newColor = foreground;
-            for(int i=0;i< byte.MaxValue;i++)
+            for (int i = 0; i < byte.MaxValue; i++)
             {
                 newColor = newColor.Shade(background);
                 Assert.That(newColor.R < foreground.R);
@@ -79,6 +78,7 @@ namespace Consolonia.TestsCore
                 if (newColor == Colors.Black)
                     break;
             }
+
             Assert.That(newColor == Colors.Black);
 
             Color foreground2 = Colors.Black;
@@ -93,6 +93,7 @@ namespace Consolonia.TestsCore
                 if (newColor == Colors.White)
                     break;
             }
+
             Assert.That(newColor == Colors.White);
         }
 
@@ -111,6 +112,7 @@ namespace Consolonia.TestsCore
                 if (newColor == Colors.White)
                     break;
             }
+
             Assert.That(newColor == Colors.White);
 
             Color foreground2 = Colors.White;
@@ -125,9 +127,8 @@ namespace Consolonia.TestsCore
                 if (newColor == Colors.Black)
                     break;
             }
+
             Assert.That(newColor == Colors.Black);
         }
-
-
     }
 }
