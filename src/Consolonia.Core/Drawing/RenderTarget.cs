@@ -6,7 +6,6 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Media.TextFormatting.Unicode;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -117,8 +116,7 @@ namespace Consolonia.Core.Drawing
                  if (!_consoleWindow.InvalidatedRects.Any(rect =>
                     rect.ContainsExclusive(new Point(x, y)))) continue;*/
                 if (pixel.Background.Mode != PixelBackgroundMode.Colored)
-                    throw new InvalidOperationException(
-                        "All pixels in the buffer must have exact console color before rendering");
+                    throw new InvalidOperationException("All pixels in the buffer must have exact console color before rendering");
 
                     if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
                         break;

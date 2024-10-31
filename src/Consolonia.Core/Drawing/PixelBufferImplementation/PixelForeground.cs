@@ -9,7 +9,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public PixelForeground(ISymbol symbol, FontWeight weight = FontWeight.Normal, FontStyle style = FontStyle.Normal, TextDecorationCollection textDecorations = null, Color? color = null)
         {
             ArgumentNullException.ThrowIfNull(symbol);
-            Symbol = symbol ?? new SimpleSymbol('░');
+            Symbol = symbol;
             Color = color ?? Colors.White;
             Weight = weight;
             Style = style;

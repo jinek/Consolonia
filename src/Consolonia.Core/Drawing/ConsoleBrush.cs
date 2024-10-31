@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel;
-using System.Globalization;
 using Avalonia;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -183,6 +181,8 @@ namespace Consolonia.Core.Drawing
                     break;
                 }
             }
+            if (before == null && after == null)
+                throw new ArgumentException("no gradientstops defined");
 
             if (before == null)
             {

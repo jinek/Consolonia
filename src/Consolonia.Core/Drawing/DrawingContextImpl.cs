@@ -126,8 +126,6 @@ namespace Consolonia.Core.Drawing
                             }
                             return;
                         }
-                    default:
-                        break;
                 }
 
                 Rect r2 = r.TransformToAABB(Transform);
@@ -270,7 +268,7 @@ namespace Consolonia.Core.Drawing
             lineStyle = null;
             if (pen is not
                 {
-                    Brush: ConsoleBrush or LineBrush or ImmutablePen or ImmutableSolidColorBrush,
+                    Brush: ConsoleBrush or LineBrush or ImmutableSolidColorBrush,
                     Thickness: 1,
                     DashStyle: null or { Dashes: { Count: 0 } },
                     LineCap: PenLineCap.Flat,
