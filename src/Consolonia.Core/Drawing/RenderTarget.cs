@@ -112,11 +112,11 @@ namespace Consolonia.Core.Drawing
                         caretPosition = new PixelBufferCoordinate(x, y);
                     }
 
-                /* todo: There is not IWindowImpl.Invalidate anymore.
-                 if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                    rect.ContainsExclusive(new Point(x, y)))) continue;*/
-                if (pixel.Background.Mode != PixelBackgroundMode.Colored)
-                    throw new InvalidOperationException("All pixels in the buffer must have exact console color before rendering");
+                    /* todo: There is not IWindowImpl.Invalidate anymore.
+                     if (!_consoleWindow.InvalidatedRects.Any(rect =>
+                        rect.ContainsExclusive(new Point(x, y)))) continue;*/
+                    if (pixel.Background.Mode != PixelBackgroundMode.Colored)
+                        throw new InvalidOperationException("All pixels in the buffer must have exact console color before rendering");
 
                     if (pixel.Foreground.Symbol is null) // not using 'when' as it swallows the exceptions 
                     {
@@ -126,7 +126,7 @@ namespace Consolonia.Core.Drawing
 
                     var pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight, pixel.Foreground.Style, pixel.Foreground.TextDecorations, pixel.Foreground.Symbol.GetCharacter());
                     //todo: indexOutOfRange during resize
-                    if (_cache[x, y] == pixelSpread) 
+                    if (_cache[x, y] == pixelSpread)
                         continue;
 
                     _cache[x, y] = pixelSpread;

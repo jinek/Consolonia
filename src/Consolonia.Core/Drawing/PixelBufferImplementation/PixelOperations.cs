@@ -83,9 +83,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
         }
 
-        private static double GetPerceivedBrightness(Color color)
+        private static int GetPerceivedBrightness(Color color)
         {
-            return (0.299 * color.R + 0.587 * color.G + 0.114 * color.B);
+            return (int)(0.299 * color.R + 
+                         0.587 * color.G + 
+                         0.114 * color.B);
         }
     }
 }

@@ -140,10 +140,11 @@ namespace Consolonia.Core.Drawing
                         CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                         {
                             _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                                (pixel, bb) =>
+                                (pixel, backgroundBrush) =>
                                 {
-                                    return pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color)));
-                                }, ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height));
+                                    backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
+                                    return pixel.Blend(new Pixel(new PixelBackground(backgroundBrush.Mode, backgroundBrush.Color)));
+                                }, new ConsoleBrush(Colors.Transparent));
                         });
                     }
             }
