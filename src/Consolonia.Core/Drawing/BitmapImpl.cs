@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.IO;
 using Avalonia;
 using Avalonia.Media.Imaging;
@@ -11,15 +10,17 @@ namespace Consolonia.Core.Drawing
 {
     internal class BitmapImpl : IWriteableBitmapImpl
     {
+        private SKBitmap _bitmap;
+
         public BitmapImpl(int width, int height, PixelFormat format, AlphaFormat? alphaFormat = null)
         {
-            Bitmap = new SKBitmap(new SKImageInfo(width, height, format.ToSkColorType(),
+            _bitmap = new SKBitmap(new SKImageInfo(width, height, format.ToSkColorType(),
                 alphaFormat?.ToSkAlphaType() ?? SKAlphaType.Unknown));
         }
 
         public BitmapImpl(SKBitmap bitmap)
         {
-            Bitmap = bitmap;
+            _bitmap = bitmap;
         }
 
         public BitmapImpl(Stream stream)
@@ -30,7 +31,7 @@ namespace Consolonia.Core.Drawing
 
         public BitmapImpl(string fileName)
         {
-            Bitmap = SKBitmap.Decode(fileName);
+            _bitmap = SKBitmap.Decode(fileName);
         }
 
         public SKBitmap Bitmap => _bitmap;
@@ -78,18 +79,6 @@ namespace Consolonia.Core.Drawing
         public ILockedFramebuffer Lock()
         {
             throw new NotImplementedException();
-        }
-
-        public IBitmapImpl Resize(PixelSize pixelSize, BitmapInterpolationMode interpolationMode)
-        {
-            var resized = new SKBitmap(pixelSize.Width, pixelSize.Height);
-            using (var canvas = new SKCanvas(resized))
-            {
-                canvas.DrawBitmap(Bitmap, new SKRect(0, 0, pixelSize.Width, pixelSize.Height),
-                    new SKPaint { FilterQuality = interpolationMode.ToSKFilterQuality() });
-            }
-
-            return new BitmapImpl(resized);
         }
 
         private static SKEncodedImageFormat GetFormatFromFileName(string fileName)
