@@ -54,7 +54,8 @@ namespace Consolonia.Core.Drawing
             var bmp = (BitmapImpl)source;
             using var bitmap = new SKBitmap((int)targetRect.Width, (int)targetRect.Height);
             using var canvas = new SKCanvas(bitmap);
-            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (float)targetRect.Width, (float)targetRect.Height), new SKPaint { FilterQuality = SKFilterQuality.Medium });
+            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (float)targetRect.Width, (float)targetRect.Height),
+                new SKPaint { FilterQuality = SKFilterQuality.Medium });
 
             // Rect clip = CurrentClip.Intersect(destRect);
             int width = bitmap.Info.Width;
@@ -409,11 +410,11 @@ namespace Consolonia.Core.Drawing
                     {
                         var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
                         CurrentClip.ExecuteWithClipping(characterPoint, () =>
-                            {
-                                _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                            });
-                        }
+                        {
+                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                        });
+                    }
                         break;
                 }
             }
