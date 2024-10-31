@@ -3,14 +3,49 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
-             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryImage">
 
-    <Grid RowDefinitions="*">
-        <Image Source="avares://Consolonia.Gallery/Resources/happy.jpg"  />
-        <!--<Image Source="file:///c:/scratch/happy.jpg" />-->
+    <Grid RowDefinitions="20 *">
+        <Image Source="avares://Consolonia.Gallery/Resources/happy.jpg" Margin="0 1 1 0" />
+
+        <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1">
+            <ScrollViewer >
+                <WrapPanel ItemWidth="50" >
+                    <Viewbox Stretch="Uniform">
+                        <Image Source="avares://Consolonia.Gallery/Resources/0.jpg" />
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" >
+                        <Image Source="avares://Consolonia.Gallery/Resources/1.jpg" />
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" >
+                        <Image Source="avares://Consolonia.Gallery/Resources/2.jpg" />
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" >
+                        <Image Source="avares://Consolonia.Gallery/Resources/3.jpg" />
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" >
+                        <Image Source="avares://Consolonia.Gallery/Resources/4.jpg" />
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" >
+                        <Image Source="avares://Consolonia.Gallery/Resources/5.jpg" />
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" >
+                        <Image Source="avares://Consolonia.Gallery/Resources/6.jpg" />
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" >
+                        <Image Source="avares://Consolonia.Gallery/Resources/7.jpg" />
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" >
+                        <Image Source="avares://Consolonia.Gallery/Resources/8.jpg" />
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" >
+                        <Image Source="avares://Consolonia.Gallery/Resources/9.jpg" />
+                    </Viewbox>
+                </WrapPanel>
+            </ScrollViewer>
+        </Border>
     </Grid>
 </UserControl>

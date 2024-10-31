@@ -4,6 +4,7 @@ using System.IO;
 using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Skia;
 using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
@@ -40,7 +41,7 @@ namespace Consolonia.Core.Drawing
 
         Vector IBitmapImpl.Dpi => new Vector(96f, 96f);
 
-        public PixelSize PixelSize => new PixelSize(_bitmap.Width, _bitmap.Height);
+        public PixelSize PixelSize => new PixelSize(_bitmap.Width, (int)(_bitmap.Height * .55));
 
         public int Version => 1;
 
@@ -58,7 +59,7 @@ namespace Consolonia.Core.Drawing
             var resized = new SKBitmap(pixelSize.Width, pixelSize.Height);
             using (var canvas = new SKCanvas(resized))
             {
-                canvas.DrawBitmap(_bitmap, new SKRect(0, 0, pixelSize.Width, pixelSize.Height), new SKPaint { FilterQuality = SKFilterQuality.High });
+                canvas.DrawBitmap(_bitmap, new SKRect(0, 0, pixelSize.Width, pixelSize.Height), new SKPaint { FilterQuality = interpolationMode.ToSKFilterQuality()});
             }
             return new BitmapImpl(resized);
         }
@@ -91,13 +92,13 @@ namespace Consolonia.Core.Drawing
         private static SKEncodedImageFormat GetFormatFromFileName(string fileName)
         {
             SKEncodedImageFormat format;
-            switch (Path.GetExtension(fileName).ToLower(CultureInfo.InvariantCulture))
+            switch (Path.GetExtension(fileName).ToUpper(CultureInfo.InvariantCulture))
             {
-                case ".png":
+                case ".PNG":
                     format = SKEncodedImageFormat.Png;
                     break;
-                case ".jpg":
-                case ".jpeg":
+                case ".JPG":
+                case ".JPEG":
                 default:
                     format = SKEncodedImageFormat.Jpeg;
                     break;
@@ -105,6 +106,5 @@ namespace Consolonia.Core.Drawing
 
             return format;
         }
-
     }
 }
