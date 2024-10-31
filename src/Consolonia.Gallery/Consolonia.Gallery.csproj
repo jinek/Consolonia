@@ -22,4 +22,17 @@
       <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AvaloniaXaml Update="Gallery\GalleryViews\GalleryGradientBrush.axaml">
+        <Generator>MSBuild:Compile</Generator>
+      </AvaloniaXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Gallery\GalleryViews\GalleryGradientBrush.xaml.cs">
+        <SubType>Code</SubType>
+        <DependentUpon>GalleryGradientBrush.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

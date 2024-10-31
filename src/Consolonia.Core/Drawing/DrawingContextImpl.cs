@@ -411,8 +411,7 @@ namespace Consolonia.Core.Drawing
                             {
                                 _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
                                     (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                            }
-                            );
+                            });
                         }
                         break;
                 }
