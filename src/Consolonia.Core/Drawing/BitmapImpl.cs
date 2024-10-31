@@ -9,14 +9,13 @@ using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
 {
-    internal class BitmapImpl : IBitmapImpl, IWriteableBitmapImpl
+    internal class BitmapImpl : IWriteableBitmapImpl
     {
         private SKBitmap _bitmap;
 
         public BitmapImpl(int width, int height, PixelFormat format, AlphaFormat? alphaFormat = null)
         {
-            _bitmap = new SKBitmap(width, height);
-            AlphaFormat = alphaFormat;
+            _bitmap = new SKBitmap(new SKImageInfo(width, height, format.ToSkColorType(), alphaFormat?.ToSkAlphaType() ?? SKAlphaType.Unknown));
         }
 
         public BitmapImpl(SKBitmap bitmap)
@@ -45,9 +44,9 @@ namespace Consolonia.Core.Drawing
 
         public int Version => 1;
 
-        public AlphaFormat? AlphaFormat { get; set; }
+        public AlphaFormat? AlphaFormat { get => _bitmap.Info.AlphaType.ToAlphaFormat(); }
 
-        public PixelFormat? Format { get; set; }
+        public PixelFormat? Format { get => _bitmap.Info.ColorType.ToAvalonia();  }
 
         public void Dispose()
         {
@@ -97,8 +96,6 @@ namespace Consolonia.Core.Drawing
                 case ".PNG":
                     format = SKEncodedImageFormat.Png;
                     break;
-                case ".JPG":
-                case ".JPEG":
                 default:
                     format = SKEncodedImageFormat.Jpeg;
                     break;

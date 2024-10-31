@@ -5,7 +5,6 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Platform;
-using Avalonia.Skia;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
@@ -56,22 +55,22 @@ namespace Consolonia.Core.Drawing
             var bitmap = new SKBitmap((int)targetRect.Width, (int)targetRect.Height);
             using (var canvas = new SKCanvas(bitmap))
             {
-                canvas.DrawBitmap(bmp.Bitmap, new SKRect((int)0, (int)0, (int)targetRect.Width, (int)targetRect.Height), new SKPaint { FilterQuality = SKFilterQuality.Medium });
+                canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (float)targetRect.Width, (float)targetRect.Height), new SKPaint { FilterQuality = SKFilterQuality.Medium });
             }
 
             // Rect clip = CurrentClip.Intersect(destRect);
-            var width = (int)bitmap.Info.Width;
-            var height = (int)bitmap.Info.Height;
+            var width = bitmap.Info.Width;
+            var height = bitmap.Info.Height;
             for (int x = 0; x < width; x++)
                 for (int y = 0; y < height; y++)
                 {
                     int px = ((int)targetRect.TopLeft.X + x);
                     int py = ((int)targetRect.TopLeft.Y + y);
+                    var skColor = bitmap.GetPixel(x, y);
+                    var color = Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
+                    var imagePixel = new Pixel('█', color);
                     CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                     {
-                        var skColor = bitmap.GetPixel(x, y);
-                        var color = Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
-                        var imagePixel = new Pixel('█', color);
                         _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py), (existingPixel, bb) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
                     });
                 }
