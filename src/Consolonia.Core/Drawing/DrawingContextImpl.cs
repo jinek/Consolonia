@@ -50,31 +50,33 @@ namespace Consolonia.Core.Drawing
         {
             // resize bitmap to destination rect size
             var targetRect = new Rect(Transform.Transform(new Point(destRect.TopLeft.X, destRect.TopLeft.Y)),
-                                       Transform.Transform(new Point(destRect.BottomRight.X, destRect.BottomRight.Y)));
+                Transform.Transform(new Point(destRect.BottomRight.X, destRect.BottomRight.Y)));
             var bmp = (BitmapImpl)source;
             var bitmap = new SKBitmap((int)targetRect.Width, (int)targetRect.Height);
             using (var canvas = new SKCanvas(bitmap))
             {
-                canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (float)targetRect.Width, (float)targetRect.Height), new SKPaint { FilterQuality = SKFilterQuality.Medium });
+                canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (float)targetRect.Width, (float)targetRect.Height),
+                    new SKPaint { FilterQuality = SKFilterQuality.Medium });
             }
 
             // Rect clip = CurrentClip.Intersect(destRect);
-            var width = bitmap.Info.Width;
-            var height = bitmap.Info.Height;
+            int width = bitmap.Info.Width;
+            int height = bitmap.Info.Height;
             for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
-                {
-                    int px = ((int)targetRect.TopLeft.X + x);
-                    int py = ((int)targetRect.TopLeft.Y + y);
-                    var skColor = bitmap.GetPixel(x, y);
-                    var color = Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
-                    var imagePixel = new Pixel('█', color);
-                    CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+            for (int y = 0; y < height; y++)
+            {
+                int px = (int)targetRect.TopLeft.X + x;
+                int py = (int)targetRect.TopLeft.Y + y;
+                SKColor skColor = bitmap.GetPixel(x, y);
+                Color color = Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
+                var imagePixel = new Pixel('█', color);
+                CurrentClip.ExecuteWithClipping(new Point(px, py),
+                    () =>
                     {
-                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py), (existingPixel, _) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
+                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                            (existingPixel, _) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
                     });
-                }
-
+            }
         }
 
         public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
@@ -125,11 +127,11 @@ namespace Consolonia.Core.Drawing
                     case VisualBrush:
                         throw new NotImplementedException();
                     case ISceneBrush sceneBrush:
-                        {
-                            ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
-                            if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
-                            return;
-                        }
+                    {
+                        ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
+                        if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
+                        return;
+                    }
                 }
 
                 Rect r2 = r.TransformToAABB(Transform);
@@ -137,19 +139,19 @@ namespace Consolonia.Core.Drawing
                 double width = r2.Width + (pen?.Thickness ?? 0);
                 double height = r2.Height + (pen?.Thickness ?? 0);
                 for (int x = 0; x < width; x++)
-                    for (int y = 0; y < height; y++)
-                    {
-                        int px = (int)(r2.TopLeft.X + x);
-                        int py = (int)(r2.TopLeft.Y + y);
+                for (int y = 0; y < height; y++)
+                {
+                    int px = (int)(r2.TopLeft.X + x);
+                    int py = (int)(r2.TopLeft.Y + y);
 
-                        ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
-                        CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
-                        {
-                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                                (pixel, bb) => { return pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))); },
-                                backgroundBrush);
-                        });
-                    }
+                    ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
+                    CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                    {
+                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                            (pixel, bb) => { return pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))); },
+                            backgroundBrush);
+                    });
+                }
             }
 
             if (pen is null or { Thickness: 0 }
@@ -378,44 +380,44 @@ namespace Consolonia.Core.Drawing
                 switch (c)
                 {
                     case '\t':
+                    {
+                        const int tabSize = 8;
+                        var consolePixel = new Pixel(' ', foregroundColor);
+                        for (int j = 0; j < tabSize; j++)
                         {
-                            const int tabSize = 8;
-                            var consolePixel = new Pixel(' ', foregroundColor);
-                            for (int j = 0; j < tabSize; j++)
+                            Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
+                            CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
                             {
-                                Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
-                                CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
-                                {
-                                    _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
-                                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                                });
-                            }
-
-                            currentXPosition += tabSize - 1;
+                                _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
+                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                            });
                         }
+
+                        currentXPosition += tabSize - 1;
+                    }
                         break;
                     case '\n':
-                        {
-                            /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
-                             var consolePixel =  new Pixel(' ', foregroundColor);
+                    {
+                        /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
+                         var consolePixel =  new Pixel(' ', foregroundColor);
 
-                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
-                        }
+                        _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
+                    }
                         break;
                     case '\u200B':
                         currentXPosition--;
                         break;
                     default:
-                        {
-                            var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
-                            CurrentClip.ExecuteWithClipping(characterPoint, () =>
+                    {
+                        var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
+                        CurrentClip.ExecuteWithClipping(characterPoint, () =>
                             {
                                 _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
                                     (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
                             }
-                            );
-                        }
+                        );
+                    }
                         break;
                 }
             }

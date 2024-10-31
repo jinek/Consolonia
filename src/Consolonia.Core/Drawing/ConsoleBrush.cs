@@ -98,62 +98,62 @@ namespace Consolonia.Core.Drawing
             switch (brush)
             {
                 case ILinearGradientBrush gradientBrush:
-                    {
-                        if (width <= 0)
-                            width = 1;
-                        if (height <= 0)
-                            height = 1;
-                        // Calculate the relative position within the gradient
-                        double horizontalRelativePosition = (double)x / width;
-                        double verticalRelativePosition = (double)y / height;
+                {
+                    if (width <= 0)
+                        width = 1;
+                    if (height <= 0)
+                        height = 1;
+                    // Calculate the relative position within the gradient
+                    double horizontalRelativePosition = (double)x / width;
+                    double verticalRelativePosition = (double)y / height;
 
-                        // Interpolate horizontal and vertical colors
-                        Color horizontalColor = InterpolateColor(gradientBrush, horizontalRelativePosition);
-                        Color verticalColor = InterpolateColor(gradientBrush, verticalRelativePosition);
+                    // Interpolate horizontal and vertical colors
+                    Color horizontalColor = InterpolateColor(gradientBrush, horizontalRelativePosition);
+                    Color verticalColor = InterpolateColor(gradientBrush, verticalRelativePosition);
 
-                        // Average the two colors to get the final color
-                        Color color = BlendColors(horizontalColor, verticalColor);
-                        return new ConsoleBrush(color);
-                    }
+                    // Average the two colors to get the final color
+                    Color color = BlendColors(horizontalColor, verticalColor);
+                    return new ConsoleBrush(color);
+                }
                 case IRadialGradientBrush radialBrush:
-                    {
-                        // Calculate the normalized center coordinates
-                        double centerX = radialBrush.Center.Point.X * width;
-                        double centerY = radialBrush.Center.Point.Y * height;
+                {
+                    // Calculate the normalized center coordinates
+                    double centerX = radialBrush.Center.Point.X * width;
+                    double centerY = radialBrush.Center.Point.Y * height;
 
-                        // Calculate the distance from the center
-                        double dx = x - centerX;
-                        double dy = y - centerY;
-                        double distance = Math.Sqrt(dx * dx + dy * dy);
+                    // Calculate the distance from the center
+                    double dx = x - centerX;
+                    double dy = y - centerY;
+                    double distance = Math.Sqrt(dx * dx + dy * dy);
 
-                        // Normalize the distance based on the brush radius
-                        double normalizedDistance = distance / (Math.Min(width, height) * radialBrush.Radius);
+                    // Normalize the distance based on the brush radius
+                    double normalizedDistance = distance / (Math.Min(width, height) * radialBrush.Radius);
 
-                        // Clamp the normalized distance to [0, 1]
-                        normalizedDistance = Math.Min(Math.Max(normalizedDistance, 0), 1);
+                    // Clamp the normalized distance to [0, 1]
+                    normalizedDistance = Math.Min(Math.Max(normalizedDistance, 0), 1);
 
-                        // Interpolate the color based on the normalized distance
-                        Color color = InterpolateColor(radialBrush, normalizedDistance);
-                        return new ConsoleBrush(color);
-                    }
+                    // Interpolate the color based on the normalized distance
+                    Color color = InterpolateColor(radialBrush, normalizedDistance);
+                    return new ConsoleBrush(color);
+                }
                 case IConicGradientBrush conicBrush:
-                    {
-                        if (width <= 0)
-                            width = 1;
-                        if (height <= 0)
-                            height = 1;
-                        // Calculate the relative position within the gradient
-                        double horizontalRelativePosition = (double)x / width;
-                        double verticalRelativePosition = (double)y / height;
+                {
+                    if (width <= 0)
+                        width = 1;
+                    if (height <= 0)
+                        height = 1;
+                    // Calculate the relative position within the gradient
+                    double horizontalRelativePosition = (double)x / width;
+                    double verticalRelativePosition = (double)y / height;
 
-                        // Interpolate horizontal and vertical colors
-                        Color horizontalColor = InterpolateColor(conicBrush, horizontalRelativePosition);
-                        Color verticalColor = InterpolateColor(conicBrush, verticalRelativePosition);
+                    // Interpolate horizontal and vertical colors
+                    Color horizontalColor = InterpolateColor(conicBrush, horizontalRelativePosition);
+                    Color verticalColor = InterpolateColor(conicBrush, verticalRelativePosition);
 
-                        // Average the two colors to get the final color
-                        Color color = BlendColors(horizontalColor, verticalColor);
-                        return new ConsoleBrush(color);
-                    }
+                    // Average the two colors to get the final color
+                    Color color = BlendColors(horizontalColor, verticalColor);
+                    return new ConsoleBrush(color);
+                }
 
                 default:
                     return FromBrush(brush);
