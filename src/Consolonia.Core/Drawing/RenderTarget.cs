@@ -118,9 +118,6 @@ namespace Consolonia.Core.Drawing
                 if (pixel.Background.Mode != PixelBackgroundMode.Colored)
                     throw new InvalidOperationException("All pixels in the buffer must have exact console color before rendering");
 
-                    if (x == pixelBuffer.Width - 1 && y == pixelBuffer.Height - 1)
-                        break;
-
                     if (pixel.Foreground.Symbol is null) // not using 'when' as it swallows the exceptions 
                     {
                         // buffer re-initialized after resizing

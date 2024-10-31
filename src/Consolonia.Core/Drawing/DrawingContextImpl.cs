@@ -130,22 +130,20 @@ namespace Consolonia.Core.Drawing
 
                 Rect r2 = r.TransformToAABB(Transform);
 
-                (double top, double left) = r2.TopLeft;
                 var width = r2.Width + (pen?.Thickness ?? 0);
                 var height = r2.Height + (pen?.Thickness ?? 0);
                 for (int x = 0; x < width; x++)
                     for (int y = 0; y < height; y++)
                     {
-                        int px = (int)(top + x);
-                        int py = (int)(left + y);
+                        int px = (int)(r2.TopLeft.X + x);
+                        int py = (int)(r2.TopLeft.Y + y);
                         CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                         {
-                            ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
                             _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
                                 (pixel, bb) =>
                                 {
                                     return pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color)));
-                                }, backgroundBrush);
+                                }, ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height));
                         });
                     }
             }
