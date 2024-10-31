@@ -27,6 +27,7 @@ namespace Consolonia.Core.Text
 
         public IReadOnlyList<float> GetIntersections(float lowerLimit, float upperLimit)
         {
+            // empty intersections defaults to entire span.
             return new List<float>();
         }
 

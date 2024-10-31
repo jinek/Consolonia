@@ -52,11 +52,9 @@ namespace Consolonia.Core.Drawing
             var targetRect = new Rect(Transform.Transform(new Point(destRect.TopLeft.X, destRect.TopLeft.Y)),
                                        Transform.Transform(new Point(destRect.BottomRight.X, destRect.BottomRight.Y)));
             var bmp = (BitmapImpl)source;
-            var bitmap = new SKBitmap((int)targetRect.Width, (int)targetRect.Height);
-            using (var canvas = new SKCanvas(bitmap))
-            {
-                canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (float)targetRect.Width, (float)targetRect.Height), new SKPaint { FilterQuality = SKFilterQuality.Medium });
-            }
+            using var bitmap = new SKBitmap((int)targetRect.Width, (int)targetRect.Height);
+            using var canvas = new SKCanvas(bitmap);
+            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (float)targetRect.Width, (float)targetRect.Height), new SKPaint { FilterQuality = SKFilterQuality.Medium });
 
             // Rect clip = CurrentClip.Intersect(destRect);
             var width = bitmap.Info.Width;

@@ -25,10 +25,8 @@ namespace Consolonia.Core.Drawing
 
         public BitmapImpl(Stream stream)
         {
-            using (var skStream = new SKManagedStream(stream))
-            {
-                _bitmap = SKBitmap.Decode(skStream);
-            }
+            using var skStream = new SKManagedStream(stream);
+            _bitmap = SKBitmap.Decode(skStream);
         }
 
         public BitmapImpl(string fileName)
@@ -36,7 +34,7 @@ namespace Consolonia.Core.Drawing
             _bitmap = SKBitmap.Decode(fileName);
         }
 
-        public SKBitmap Bitmap { get { return _bitmap; } }
+        public SKBitmap Bitmap => _bitmap;
 
         Vector IBitmapImpl.Dpi => new Vector(96f, 96f);
 
@@ -44,9 +42,9 @@ namespace Consolonia.Core.Drawing
 
         public int Version => 1;
 
-        public AlphaFormat? AlphaFormat { get => _bitmap.Info.AlphaType.ToAlphaFormat(); }
+        public AlphaFormat? AlphaFormat => _bitmap.Info.AlphaType.ToAlphaFormat();
 
-        public PixelFormat? Format { get => _bitmap.Info.ColorType.ToAvalonia(); }
+        public PixelFormat? Format => _bitmap.Info.ColorType.ToAvalonia();
 
         public void Dispose()
         {
@@ -56,32 +54,26 @@ namespace Consolonia.Core.Drawing
         public IBitmapImpl Resize(PixelSize pixelSize, BitmapInterpolationMode interpolationMode)
         {
             var resized = new SKBitmap(pixelSize.Width, pixelSize.Height);
-            using (var canvas = new SKCanvas(resized))
-            {
-                canvas.DrawBitmap(_bitmap, new SKRect(0, 0, pixelSize.Width, pixelSize.Height), new SKPaint { FilterQuality = interpolationMode.ToSKFilterQuality() });
-            }
+            using var canvas = new SKCanvas(resized);
+            canvas.DrawBitmap(_bitmap, new SKRect(0, 0, pixelSize.Width, pixelSize.Height), new SKPaint { FilterQuality = interpolationMode.ToSKFilterQuality() });
             return new BitmapImpl(resized);
         }
 
         public void Save(string fileName, int? quality = 100)
         {
             SKEncodedImageFormat format = GetFormatFromFileName(fileName);
-            using (var image = SKImage.FromBitmap(_bitmap))
-            using (var data = image.Encode(format, quality ?? 100))
-            using (var stream = File.OpenWrite(fileName))
-            {
-                data.SaveTo(stream);
-            }
+            using var image = SKImage.FromBitmap(_bitmap);
+            using var data = image.Encode(format, quality ?? 100);
+            using var stream = File.OpenWrite(fileName);
+            data.SaveTo(stream);
         }
 
         public void Save(Stream stream, int? quality = 100)
         {
             SKEncodedImageFormat format = SKEncodedImageFormat.Jpeg;
-            using (var image = SKImage.FromBitmap(_bitmap))
-            using (var data = image.Encode(format, quality ?? 100))
-            {
-                data.SaveTo(stream);
-            }
+            using var image = SKImage.FromBitmap(_bitmap);
+            using var data = image.Encode(format, quality ?? 100);
+            data.SaveTo(stream);
         }
         public ILockedFramebuffer Lock()
         {
@@ -90,18 +82,9 @@ namespace Consolonia.Core.Drawing
 
         private static SKEncodedImageFormat GetFormatFromFileName(string fileName)
         {
-            SKEncodedImageFormat format;
-            switch (Path.GetExtension(fileName).ToUpper(CultureInfo.InvariantCulture))
-            {
-                case ".PNG":
-                    format = SKEncodedImageFormat.Png;
-                    break;
-                default:
-                    format = SKEncodedImageFormat.Jpeg;
-                    break;
-            }
-
-            return format;
+            if (Enum.TryParse<SKEncodedImageFormat>(Path.GetExtension(fileName).Trim('.'), ignoreCase: true, out var format))
+                return format;
+            return SKEncodedImageFormat.Jpeg;
         }
     }
 }
