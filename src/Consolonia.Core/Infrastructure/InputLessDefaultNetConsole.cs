@@ -7,7 +7,7 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Crayon;
+using Consolonia.Core.Text;
 using NullLib.ConsoleEx;
 
 namespace Consolonia.Core.Infrastructure
@@ -72,28 +72,28 @@ namespace Consolonia.Core.Infrastructure
             PauseTask?.Wait();
             SetCaretPosition(bufferPoint);
 
-            if (!str.IsNormalized(NormalizationForm.FormKC))
-                throw new NotSupportedException("Is not supposed to be rendered");
-
-            if (str.Any(
-                    c => ConsoleText.IsWideChar(c) &&
-                         char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
-                throw new NotSupportedException("Is not supposed to be rendered");
-
+            StringBuilder sb = new StringBuilder();
             if (textDecorations != null && textDecorations.Any(td => td.Location == TextDecorationLocation.Underline))
-                str = Output.Underline(str);
+                sb.Append(ConsoleUtils.Underline);
+            
+            if (textDecorations != null && textDecorations.Any(td => td.Location == TextDecorationLocation.Strikethrough))
+                sb.Append(ConsoleUtils.Strikethrough);
 
+            if (style == FontStyle.Italic)
+                sb.Append(ConsoleUtils.Italic);
+
+            sb.Append(ConsoleUtils.Background(background));
             if (weight == FontWeight.Normal)
-                foreground = foreground.Shade(background);
+                sb.Append(ConsoleUtils.Foreground(foreground));
             else if (weight == FontWeight.Thin || weight == FontWeight.ExtraLight || weight == FontWeight.Light)
-                foreground = foreground.Shade(background).Shade(background);
+                sb.Append(ConsoleUtils.Foreground(foreground.Shade(background)));
             else if (weight == FontWeight.Medium || weight == FontWeight.SemiBold || weight == FontWeight.Bold ||
                      weight == FontWeight.ExtraBold || weight == FontWeight.Black || weight == FontWeight.ExtraBlack)
-                foreground = foreground.Brighten(background);
-            Console.Write(Output.Rgb(foreground.R, foreground.G, foreground.B)
-                .Background.Rgb(background.R, background.G, background.B)
-                .Text(str));
-
+                sb.Append(ConsoleUtils.Foreground(foreground.Brighten(background)));
+            sb.Append(str);
+            sb.Append(ConsoleUtils.Reset);
+            
+            Console.Write(sb.ToString());
 
             if (_headBufferPoint.X < Size.Width - str.Length)
                 _headBufferPoint =

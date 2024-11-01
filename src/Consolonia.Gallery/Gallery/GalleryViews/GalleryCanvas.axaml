@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryCanvas">
+    <Grid RowDefinitions="Auto Auto *">
+
+        <StackPanel>
+            <TextBlock TextDecorations="Underline">Canvas supports horizontal/vertical lines and rectangles</TextBlock>
+            <TextBlock>Lines</TextBlock>
+            <Grid RowDefinitions="Auto Auto Auto Auto Auto Auto Auto Auto Auto Auto Auto " ColumnDefinitions="Auto Auto ">
+                <TextBlock Grid.Column="1" Foreground="Black">0123456789</TextBlock>
+                <TextBlock Grid.Row="1" Foreground="Black">0</TextBlock>
+                <TextBlock Grid.Row="2" Foreground="Black">1</TextBlock>
+                <TextBlock Grid.Row="3" Foreground="Black">2</TextBlock>
+                <TextBlock Grid.Row="4" Foreground="Black">3</TextBlock>
+                <TextBlock Grid.Row="5" Foreground="Black">4</TextBlock>
+                <TextBlock Grid.Row="6" Foreground="Black">5</TextBlock>
+                <TextBlock Grid.Row="7" Foreground="Black">6</TextBlock>
+                <TextBlock Grid.Row="8" Foreground="Black">7</TextBlock>
+                <TextBlock Grid.Row="9" Foreground="Black">8</TextBlock>
+                <TextBlock Grid.Row="10" Foreground="Black">9</TextBlock>
+                <Canvas Background="DarkGreen" Grid.Row="1" Grid.Column="1" Grid.RowSpan="10" Width="10" Height="10" HorizontalAlignment="Left" >
+                    <Line StartPoint="1,0" EndPoint="2,0" Stroke="Yellow" StrokeThickness="1"/>
+                    <Line StartPoint="0,1" EndPoint="0,2" Stroke="Yellow" StrokeThickness="1"/>
+                    <Line StartPoint="0,9" EndPoint="10,9" Stroke="White" StrokeThickness="1"/>
+                    <Line StartPoint="9,0" EndPoint="9,10" Stroke="White" StrokeThickness="1"/>
+                </Canvas>
+            </Grid>
+        </StackPanel>
+        <TextBlock Grid.Row="1">Rectangles</TextBlock>
+        <Canvas Grid.Row="2" Background="AliceBlue" ClipToBounds="True">
+            <Rectangle Fill="Red" Height="5" Width="10" />
+            <Rectangle Fill="Blue" Height="5" Width="10" Canvas.Left="5" Canvas.Top="2"/>
+            <Rectangle Fill="Green" Height="5" Width="10" Canvas.Left="6" Margin="4" Canvas.Top="4"/>
+            <Rectangle Fill="Orange" Height="3" Width="5" Canvas.Right="4" Canvas.Bottom="4"/>
+        </Canvas>
+    </Grid>
+</UserControl>

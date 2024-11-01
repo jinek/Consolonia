@@ -76,8 +76,8 @@ namespace Consolonia.Core.Text
             UnderlinePosition =
                 -1, // this turns on TextDecorations="Underline", -1 is so it draws over the top of the text.
             UnderlineThickness = 1, // this is the thickness of the underline, aka 1 char thick.
-            StrikethroughPosition = 0,
-            StrikethroughThickness = 0,
+            StrikethroughPosition = -1,
+            StrikethroughThickness = 1,
             IsFixedPitch = true
         };
 
