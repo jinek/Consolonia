@@ -8,7 +8,6 @@ using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Text;
-using NullLib.ConsoleEx;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -75,7 +74,7 @@ namespace Consolonia.Core.Infrastructure
             StringBuilder sb = new StringBuilder();
             if (textDecorations != null && textDecorations.Any(td => td.Location == TextDecorationLocation.Underline))
                 sb.Append(ConsoleUtils.Underline);
-            
+
             if (textDecorations != null && textDecorations.Any(td => td.Location == TextDecorationLocation.Strikethrough))
                 sb.Append(ConsoleUtils.Strikethrough);
 
@@ -83,16 +82,19 @@ namespace Consolonia.Core.Infrastructure
                 sb.Append(ConsoleUtils.Italic);
 
             sb.Append(ConsoleUtils.Background(background));
-            if (weight == FontWeight.Normal)
-                sb.Append(ConsoleUtils.Foreground(foreground));
-            else if (weight == FontWeight.Thin || weight == FontWeight.ExtraLight || weight == FontWeight.Light)
-                sb.Append(ConsoleUtils.Foreground(foreground.Shade(background)));
-            else if (weight == FontWeight.Medium || weight == FontWeight.SemiBold || weight == FontWeight.Bold ||
-                     weight == FontWeight.ExtraBold || weight == FontWeight.Black || weight == FontWeight.ExtraBlack)
-                sb.Append(ConsoleUtils.Foreground(foreground.Brighten(background)));
+            
+            sb.Append(ConsoleUtils.Foreground(weight switch
+            {
+                FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black or FontWeight.ExtraBlack 
+                    => foreground.Brighten(background),
+                FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light 
+                    => foreground.Shade(background),
+                _ => foreground
+            }));
+
             sb.Append(str);
             sb.Append(ConsoleUtils.Reset);
-            
+
             Console.Write(sb.ToString());
 
             if (_headBufferPoint.X < Size.Width - str.Length)

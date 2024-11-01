@@ -7,19 +7,16 @@ namespace Consolonia.Core.Text
     /// </summary>
     internal static class ConsoleUtils
     {
-        public const string Normal = $"\u001b[22m";
-        
-        public const string Bold = $"\u001b[1m";
-        
-        public const string Dim = $"\u001b[2m";
-        
-        public const string Italic = $"\u001b[3m";
-        
-        public const string Underline = $"\u001b[4m";
-        
-        public const string Strikethrough = $"\u001b[9m";
-
+        // style modifiers
         public const string Reset = "\u001b[0m";
+        public const string Normal = "\u001b[22m";
+        public const string Bold = "\u001b[1m";
+        public const string Dim = "\u001b[2m";
+
+        // text decorations
+        public const string Italic = "\u001b[3m";
+        public const string Underline = "\u001b[4m";
+        public const string Strikethrough = "\u001b[9m";
 
         public static string Foreground(Color color)
             => Foreground(color.R, color.G, color.B);

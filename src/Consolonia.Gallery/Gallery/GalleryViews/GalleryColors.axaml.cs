@@ -8,7 +8,6 @@ using Consolonia.Core.Drawing;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    [GalleryOrder(1000)]
     public partial class GalleryColors : UserControl
     {
         public GalleryColors()

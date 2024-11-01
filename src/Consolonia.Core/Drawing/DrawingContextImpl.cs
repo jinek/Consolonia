@@ -381,12 +381,12 @@ namespace Consolonia.Core.Drawing
             if (pen.Brush is LineBrush lineBrush)
                 lineStyle = lineBrush.LineStyle;
 
-            ConsoleBrush consoleColorBrush = ConsoleBrush.FromBrush(pen.Brush);
+            ConsoleBrush consoleBrush = ConsoleBrush.FromBrush(pen.Brush);
 
-            switch (consoleColorBrush.Mode)
+            switch (consoleBrush.Mode)
             {
                 case PixelBackgroundMode.Colored:
-                    return consoleColorBrush.Color;
+                    return consoleBrush.Color;
                 case PixelBackgroundMode.Transparent:
                     return null;
                 case PixelBackgroundMode.Shaded:
@@ -415,7 +415,7 @@ namespace Consolonia.Core.Drawing
                 {
                     // ReSharper disable once AccessToModifiedClosure todo: pass as a parameter
                     _pixelBuffer.Set((PixelBufferCoordinate)h,
-                        (Pixel pixel, (byte pattern, Color consoleColor) mcC) => pixel.Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(
+                        (pixel, mcC) => pixel.Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(
                             mcC.pattern,
                             lineStyle ?? LineStyle.SingleLine), mcC.consoleColor)),
                         (pattern, consoleColor: color));
@@ -429,7 +429,7 @@ namespace Consolonia.Core.Drawing
         private void DrawStringInternal(IBrush foreground, string str, IGlyphTypeface typeface, Point origin = new())
         {
             foreground = ConsoleBrush.FromBrush(foreground);
-            if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
+            if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleBrush)
             {
                 ConsoloniaPlatform.RaiseNotSupported(4);
                 return;
@@ -444,7 +444,7 @@ namespace Consolonia.Core.Drawing
             foreach (char c in str)
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
-                Color foregroundColor = consoleColorBrush.Color;
+                Color foregroundColor = consoleBrush.Color;
 
                 switch (c)
                 {
