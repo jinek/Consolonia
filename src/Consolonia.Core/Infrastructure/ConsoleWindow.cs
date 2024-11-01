@@ -19,10 +19,10 @@ namespace Consolonia.Core.Infrastructure
     internal class ConsoleWindow : IWindowImpl
     {
         private readonly IKeyboardDevice _myKeyboardDevice;
+        private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(50);
         [NotNull] internal readonly IConsole Console;
         private IInputRoot _inputRoot;
         private CancellationTokenSource _resizeCancellationTokenSource;
-        private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(50);
 
         public ConsoleWindow()
         {
