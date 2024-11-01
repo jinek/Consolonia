@@ -72,22 +72,22 @@ namespace Consolonia.Core.Infrastructure
             SetCaretPosition(bufferPoint);
 
             StringBuilder sb = new StringBuilder();
-            if (textDecorations != null && textDecorations.Any(td => td.Location == TextDecorationLocation.Underline))
+            if (HasTextDecoration(textDecorations, TextDecorationLocation.Underline))
                 sb.Append(ConsoleUtils.Underline);
 
-            if (textDecorations != null && textDecorations.Any(td => td.Location == TextDecorationLocation.Strikethrough))
+            if (HasTextDecoration(textDecorations, TextDecorationLocation.Strikethrough))
                 sb.Append(ConsoleUtils.Strikethrough);
 
             if (style == FontStyle.Italic)
                 sb.Append(ConsoleUtils.Italic);
 
             sb.Append(ConsoleUtils.Background(background));
-            
+
             sb.Append(ConsoleUtils.Foreground(weight switch
             {
-                FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black or FontWeight.ExtraBlack 
+                FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black or FontWeight.ExtraBlack
                     => foreground.Brighten(background),
-                FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light 
+                FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light
                     => foreground.Shade(background),
                 _ => foreground
             }));
@@ -101,6 +101,11 @@ namespace Consolonia.Core.Infrastructure
                 _headBufferPoint =
                     new PixelBufferCoordinate((ushort)(_headBufferPoint.X + str.Length), _headBufferPoint.Y);
             else _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
+        }
+
+        private static bool HasTextDecoration(TextDecorationCollection textDecorations, TextDecorationLocation location)
+        {
+            return textDecorations?.Any(td => td.Location == location) ?? false;
         }
 
         public event Action Resized;

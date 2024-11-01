@@ -146,7 +146,7 @@ namespace Consolonia.Core.Drawing
                         CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                         {
                             _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                                (pixel, bb) => { return pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))); },
+                                (pixel, bb) => pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
                                 backgroundBrush);
                         });
                     }
@@ -289,7 +289,6 @@ namespace Consolonia.Core.Drawing
 
             byte pattern = (byte)(line.Vertical ? 0b1010 : 0b0101);
             DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length); //line
-            return;
         }
 
         /// <summary>
@@ -322,7 +321,6 @@ namespace Consolonia.Core.Drawing
 
             pattern = (byte)(line.Vertical ? 0b1000 : 0b0001);
             DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //ending 
-            return;
         }
 
         /// <summary>
