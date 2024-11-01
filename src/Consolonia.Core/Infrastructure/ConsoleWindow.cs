@@ -19,10 +19,10 @@ namespace Consolonia.Core.Infrastructure
     internal class ConsoleWindow : IWindowImpl
     {
         private readonly IKeyboardDevice _myKeyboardDevice;
+        private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(100);
         [NotNull] internal readonly IConsole Console;
         private IInputRoot _inputRoot;
         private CancellationTokenSource _resizeCancellationTokenSource;
-        private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(100);
 
         public ConsoleWindow()
         {
@@ -303,7 +303,7 @@ namespace Consolonia.Core.Infrastructure
             System.Console.Clear();
 
             // Cancel previous task if there is one and start a new one
-            var oldCts = _resizeCancellationTokenSource;
+            CancellationTokenSource oldCts = _resizeCancellationTokenSource;
             _resizeCancellationTokenSource = new CancellationTokenSource();
             oldCts?.Cancel();
             oldCts?.Dispose();
