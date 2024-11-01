@@ -21,7 +21,7 @@ namespace Consolonia.Core.Infrastructure
         private readonly IKeyboardDevice _myKeyboardDevice;
         [NotNull] internal readonly IConsole Console;
         private IInputRoot _inputRoot;
-        private CancellationTokenSource? _resizeCancellationTokenSource;
+        private CancellationTokenSource _resizeCancellationTokenSource;
         private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(50);
 
         public ConsoleWindow()
