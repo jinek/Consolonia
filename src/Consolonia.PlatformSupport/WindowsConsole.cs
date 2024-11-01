@@ -55,6 +55,8 @@ namespace Consolonia.PlatformSupport
 
         public Win32Console()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             _windowsConsole = new WindowsConsole();
 
             StartEventLoop();

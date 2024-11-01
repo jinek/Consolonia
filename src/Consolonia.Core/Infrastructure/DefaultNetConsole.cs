@@ -41,6 +41,8 @@ namespace Consolonia.Core.Infrastructure
 
         public DefaultNetConsole()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             StartSizeCheckTimerAsync();
             StartInputReading();
         }
