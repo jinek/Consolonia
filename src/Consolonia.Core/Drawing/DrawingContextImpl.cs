@@ -346,7 +346,7 @@ namespace Consolonia.Core.Drawing
         {
             if (pen.Brush is not MoveConsoleCaretToPositionBrush)
                 return false;
-                
+
             CurrentClip.ExecuteWithClipping(head,
                 () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
             return true;
