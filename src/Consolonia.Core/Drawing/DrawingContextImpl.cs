@@ -344,14 +344,12 @@ namespace Consolonia.Core.Drawing
         /// <returns></returns>
         private bool IfMoveConsoleCaretMove(IPen pen, Point head)
         {
-            if (pen.Brush is MoveConsoleCaretToPositionBrush)
-            {
-                CurrentClip.ExecuteWithClipping(head,
-                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
-                return true;
-            }
-
-            return false;
+            if (pen.Brush is not MoveConsoleCaretToPositionBrush)
+                return false;
+                
+            CurrentClip.ExecuteWithClipping(head,
+                () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
+            return true;
         }
 
         /// <summary>
