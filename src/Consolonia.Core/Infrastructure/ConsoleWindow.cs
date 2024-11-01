@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -17,8 +19,10 @@ namespace Consolonia.Core.Infrastructure
     internal class ConsoleWindow : IWindowImpl
     {
         private readonly IKeyboardDevice _myKeyboardDevice;
+        private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(100);
         [NotNull] internal readonly IConsole Console;
         private IInputRoot _inputRoot;
+        private CancellationTokenSource _resizeCancellationTokenSource;
 
         public ConsoleWindow()
         {
@@ -295,11 +299,35 @@ namespace Consolonia.Core.Infrastructure
 
         private void OnConsoleOnResized()
         {
-            Dispatcher.UIThread.Post(() =>
+            // clear screen so we don't see crazy while resizing.
+            System.Console.Clear();
+
+            // Cancel previous task if there is one and start a new one
+            CancellationTokenSource oldCts = _resizeCancellationTokenSource;
+            _resizeCancellationTokenSource = new CancellationTokenSource();
+            oldCts?.Cancel();
+            oldCts?.Dispose();
+
+            // start a task which if no resize event comes for _resizeDelay will post the resize to the window
+            Task.Run(async () =>
             {
-                PixelBufferSize pixelBufferSize = Console.Size;
-                var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
-                Resized!(size, WindowResizeReason.Unspecified);
+                try
+                {
+                    // Wait for the delay period, this task will be canceled if another refresh comes in.
+                    await Task.Delay(_resizeDelay, _resizeCancellationTokenSource.Token).ConfigureAwait(false);
+
+                    // dispatch to the UI thread 
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        PixelBufferSize pixelBufferSize = Console.Size;
+                        var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
+                        Resized!(size, WindowResizeReason.Unspecified);
+                    });
+                }
+                catch (TaskCanceledException)
+                {
+                    // Ignore cancellation exception, we want this to happen while resizes are happening quickly
+                }
             });
         }
 
