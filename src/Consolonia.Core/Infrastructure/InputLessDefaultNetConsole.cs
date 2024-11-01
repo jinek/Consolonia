@@ -71,7 +71,7 @@ namespace Consolonia.Core.Infrastructure
             PauseTask?.Wait();
             SetCaretPosition(bufferPoint);
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (HasTextDecoration(textDecorations, TextDecorationLocation.Underline))
                 sb.Append(ConsoleUtils.Underline);
 
@@ -85,7 +85,8 @@ namespace Consolonia.Core.Infrastructure
 
             sb.Append(ConsoleUtils.Foreground(weight switch
             {
-                FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black or FontWeight.ExtraBlack
+                FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black
+                    or FontWeight.ExtraBlack
                     => foreground.Brighten(background),
                 FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light
                     => foreground.Shade(background),
@@ -101,11 +102,6 @@ namespace Consolonia.Core.Infrastructure
                 _headBufferPoint =
                     new PixelBufferCoordinate((ushort)(_headBufferPoint.X + str.Length), _headBufferPoint.Y);
             else _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
-        }
-
-        private static bool HasTextDecoration(TextDecorationCollection textDecorations, TextDecorationLocation location)
-        {
-            return textDecorations?.Any(td => td.Location == location) ?? false;
         }
 
         public event Action Resized;
@@ -130,6 +126,11 @@ namespace Consolonia.Core.Infrastructure
             // this is hack, but somehow it does not work when just calling ActualizeSize with same size
             Size = new PixelBufferSize(1, 1);
             Resized?.Invoke();
+        }
+
+        private static bool HasTextDecoration(TextDecorationCollection textDecorations, TextDecorationLocation location)
+        {
+            return textDecorations?.Any(td => td.Location == location) ?? false;
         }
 
         // ReSharper disable once MemberCanBePrivate.Global

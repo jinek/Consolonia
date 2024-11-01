@@ -3,7 +3,7 @@ using Avalonia.Media;
 namespace Consolonia.Core.Text
 {
     /// <summary>
-    /// ANSI escape definitions and utility methods.
+    ///     ANSI escape definitions and utility methods.
     /// </summary>
     internal static class ConsoleUtils
     {
@@ -19,15 +19,23 @@ namespace Consolonia.Core.Text
         public const string Strikethrough = "\u001b[9m";
 
         public static string Foreground(Color color)
-            => Foreground(color.R, color.G, color.B);
+        {
+            return Foreground(color.R, color.G, color.B);
+        }
 
         public static string Foreground(byte red, byte green, byte blue)
-            => $"\u001b[38;2;{red};{green};{blue}m";
+        {
+            return $"\u001b[38;2;{red};{green};{blue}m";
+        }
 
         public static string Background(Color color)
-            => Background(color.R, color.G, color.B);
+        {
+            return Background(color.R, color.G, color.B);
+        }
 
         public static string Background(byte red, byte green, byte blue)
-            => $"\u001b[48;2;{red};{green};{blue}m";
+        {
+            return $"\u001b[48;2;{red};{green};{blue}m";
+        }
     }
 }
