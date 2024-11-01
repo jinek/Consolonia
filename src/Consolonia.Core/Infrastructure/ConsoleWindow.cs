@@ -22,7 +22,7 @@ namespace Consolonia.Core.Infrastructure
         [NotNull] internal readonly IConsole Console;
         private IInputRoot _inputRoot;
         private CancellationTokenSource _resizeCancellationTokenSource;
-        private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(50);
+        private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(100);
 
         public ConsoleWindow()
         {
