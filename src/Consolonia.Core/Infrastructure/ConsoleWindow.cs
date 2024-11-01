@@ -303,8 +303,10 @@ namespace Consolonia.Core.Infrastructure
             System.Console.Clear();
 
             // Cancel previous task if there is one and start a new one
-            _resizeCancellationTokenSource?.Cancel();
+            var oldCts = _resizeCancellationTokenSource;
             _resizeCancellationTokenSource = new CancellationTokenSource();
+            oldCts?.Cancel();
+            oldCts?.Dispose();
 
             // start a task which if no resize event comes for _resizeDelay will post the resize to the window
             Task.Run(async () =>
