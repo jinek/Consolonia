@@ -22,6 +22,12 @@
                 <Canvas Background="DarkGreen" Grid.Row="1" Grid.Column="1" Grid.RowSpan="10" Width="10" Height="10" HorizontalAlignment="Left" >
                     <Line StartPoint="1,0" EndPoint="2,0" Stroke="Yellow" StrokeThickness="1"/>
                     <Line StartPoint="0,1" EndPoint="0,2" Stroke="Yellow" StrokeThickness="1"/>
+                    <Line StartPoint="4,4" EndPoint="8,8">
+                        <Line.Stroke>
+                            <drawing:LineBrush LineStyle="DoubleLine" Brush="Red"/>
+                        </Line.Stroke>
+                    </Line>
+
                     <Line StartPoint="0,9" EndPoint="10,9" Stroke="White" StrokeThickness="1"/>
                     <Line StartPoint="9,0" EndPoint="9,10" Stroke="White" StrokeThickness="1"/>
                 </Canvas>

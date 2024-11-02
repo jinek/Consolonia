@@ -324,7 +324,7 @@ namespace Consolonia.Core.Drawing
             DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //beginning
 
             pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
-            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length - 2); //line
+            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length - 1); //line
 
             pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
             DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //ending 
