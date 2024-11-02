@@ -7,8 +7,7 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Crayon;
-using NullLib.ConsoleEx;
+using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -72,28 +71,32 @@ namespace Consolonia.Core.Infrastructure
             PauseTask?.Wait();
             SetCaretPosition(bufferPoint);
 
-            if (!str.IsNormalized(NormalizationForm.FormKC))
-                throw new NotSupportedException("Is not supposed to be rendered");
+            var sb = new StringBuilder();
+            if (HasTextDecoration(textDecorations, TextDecorationLocation.Underline))
+                sb.Append(ConsoleUtils.Underline);
 
-            if (str.Any(
-                    c => ConsoleText.IsWideChar(c) &&
-                         char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
-                throw new NotSupportedException("Is not supposed to be rendered");
+            if (HasTextDecoration(textDecorations, TextDecorationLocation.Strikethrough))
+                sb.Append(ConsoleUtils.Strikethrough);
 
-            if (textDecorations != null && textDecorations.Any(td => td.Location == TextDecorationLocation.Underline))
-                str = Output.Underline(str);
+            if (style == FontStyle.Italic)
+                sb.Append(ConsoleUtils.Italic);
 
-            if (weight == FontWeight.Normal)
-                foreground = foreground.Shade(background);
-            else if (weight == FontWeight.Thin || weight == FontWeight.ExtraLight || weight == FontWeight.Light)
-                foreground = foreground.Shade(background).Shade(background);
-            else if (weight == FontWeight.Medium || weight == FontWeight.SemiBold || weight == FontWeight.Bold ||
-                     weight == FontWeight.ExtraBold || weight == FontWeight.Black || weight == FontWeight.ExtraBlack)
-                foreground = foreground.Brighten(background);
-            Console.Write(Output.Rgb(foreground.R, foreground.G, foreground.B)
-                .Background.Rgb(background.R, background.G, background.B)
-                .Text(str));
+            sb.Append(ConsoleUtils.Background(background));
 
+            sb.Append(ConsoleUtils.Foreground(weight switch
+            {
+                FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black
+                    or FontWeight.ExtraBlack
+                    => foreground.Brighten(background),
+                FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light
+                    => foreground.Shade(background),
+                _ => foreground
+            }));
+
+            sb.Append(str);
+            sb.Append(ConsoleUtils.Reset);
+
+            Console.Write(sb.ToString());
 
             if (_headBufferPoint.X < Size.Width - str.Length)
                 _headBufferPoint =
@@ -123,6 +126,11 @@ namespace Consolonia.Core.Infrastructure
             // this is hack, but somehow it does not work when just calling ActualizeSize with same size
             Size = new PixelBufferSize(1, 1);
             Resized?.Invoke();
+        }
+
+        private static bool HasTextDecoration(TextDecorationCollection textDecorations, TextDecorationLocation location)
+        {
+            return textDecorations?.Any(td => td.Location == location) ?? false;
         }
 
         // ReSharper disable once MemberCanBePrivate.Global

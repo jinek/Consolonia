@@ -12,7 +12,7 @@
     <StackPanel Orientation="Vertical">
         <TextBlock Text="This is TextBlock" />
         <TextBlock Text="This is colored TextBlock" FontWeight="Bold" Background="DarkMagenta" Foreground="Chartreuse"/>
-        
+
         <StackPanel Orientation="Vertical" Margin="0" Background="DarkGray">
             <TextBlock TextTrimming="CharacterEllipsis"
                        Text="Text trimming with character ellipsis. Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
@@ -30,7 +30,11 @@
                    Text="Multiline TextBlock with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
         <TextBlock TextWrapping="Wrap"
                    Text="Special characters: Élève naïve: “𝔉𝔞𝔫𝔠𝔶” ligatures like ﬀ, ﬁ, and ﬂ; numbers ½, ¼; symbols like @, #, and €; emoji 😊; and math symbols Ω, ∑, √…"/>
-        <TextBlock Text="TextDecoration=Underline" TextDecorations="Underline" HorizontalAlignment="Left"/>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="TextDecoration=Underline" TextDecorations="Underline" HorizontalAlignment="Left"/>
+            <TextBlock Text="TextDecoration=Strikethrough" HorizontalAlignment="Left" TextDecorations="Strikethrough" />
+            <TextBlock Text="FontStyle=Italic" FontStyle="Italic" HorizontalAlignment="Left"/>
+        </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="FontWeight=BOLD" FontWeight="Bold" Foreground="Sienna"/>
             <TextBlock Text="FontWeight=NORMAL" FontWeight="Normal" Foreground="Sienna"/>

@@ -3,9 +3,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public partial class GalleryImage : UserControl
+    public partial class GalleryCanvas : UserControl
     {
-        public GalleryImage()
+        public GalleryCanvas()
         {
             InitializeComponent();
         }
@@ -14,6 +14,5 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             AvaloniaXamlLoader.Load(this);
         }
-
     }
 }

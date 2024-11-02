@@ -1,15 +1,10 @@
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using Consolonia.Core.Drawing;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    [GalleryOrder(1000)]
     public partial class GalleryGradientBrush : UserControl
     {
         public GalleryGradientBrush()

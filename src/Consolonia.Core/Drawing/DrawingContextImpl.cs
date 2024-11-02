@@ -15,6 +15,13 @@ namespace Consolonia.Core.Drawing
 {
     internal class DrawingContextImpl : IDrawingContextImpl
     {
+        private const byte VerticalStartPattern = 0b0010;
+        private const byte VerticalLinePattern = 0b1010;
+        private const byte VerticalEndPattern = 0b1000;
+        private const byte HorizontalStartPattern = 0b0100;
+        private const byte HorizontalLinePattern = 0b0101;
+        private const byte HorizontalEndPattern = 0b0001;
+
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
         private readonly PixelBuffer _pixelBuffer;
@@ -146,7 +153,7 @@ namespace Consolonia.Core.Drawing
                     CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                     {
                         _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            (pixel, bb) => { return pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))); },
+                            (pixel, bb) => pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
                             backgroundBrush);
                     });
                 }
@@ -155,10 +162,10 @@ namespace Consolonia.Core.Drawing
             if (pen is null or { Thickness: 0 }
                 or { Brush: null }) return;
 
-            DrawLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width));
-            DrawLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width));
-            DrawLineInternal(pen, new Line(r.TopLeft, true, (int)r.Height));
-            DrawLineInternal(pen, new Line(r.TopRight, true, (int)r.Height));
+            DrawRectangleLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width));
+            DrawRectangleLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width));
+            DrawRectangleLineInternal(pen, new Line(r.TopLeft, true, (int)r.Height));
+            DrawRectangleLineInternal(pen, new Line(r.TopRight, true, (int)r.Height));
         }
 
         public void DrawEllipse(IBrush brush, IPen pen, Rect rect)
@@ -265,6 +272,100 @@ namespace Consolonia.Core.Drawing
             set => _transform = value * _postTransform;
         }
 
+        /// <summary>
+        ///     Draw a straight horizontal line or vertical line
+        /// </summary>
+        /// <param name="pen">pen</param>
+        /// <param name="line">line</param>
+        private void DrawLineInternal(IPen pen, Line line)
+        {
+            if (pen.Thickness == 0) return;
+
+            line = TransformLineInternal(line);
+
+            Point head = line.PStart;
+
+            if (IfMoveConsoleCaretMove(pen, head))
+                return;
+
+            var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
+            if (extractColorCheckPlatformSupported == null)
+                return;
+
+            var color = (Color)extractColorCheckPlatformSupported;
+
+            byte pattern = (byte)(line.Vertical ? 0b1010 : 0b0101);
+            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length); //line
+        }
+
+        /// <summary>
+        ///     Draw a rectangle line with corners
+        /// </summary>
+        /// <param name="pen">pen</param>
+        /// <param name="line">line</param>
+        private void DrawRectangleLineInternal(IPen pen, Line line)
+        {
+            if (pen.Thickness == 0) return;
+
+            line = TransformLineInternal(line);
+
+            Point head = line.PStart;
+
+            if (IfMoveConsoleCaretMove(pen, head))
+                return;
+
+            var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
+            if (extractColorCheckPlatformSupported == null)
+                return;
+
+            var color = (Color)extractColorCheckPlatformSupported;
+
+            byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
+            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //beginning
+
+            pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
+            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length - 1); //line
+
+            pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
+            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //ending 
+        }
+
+        /// <summary>
+        ///     Transform line coordinates
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        private Line TransformLineInternal(Line line)
+        {
+            if (!Transform.NoRotation()) ConsoloniaPlatform.RaiseNotSupported(16);
+
+            line = (Line)line.WithTransform(Transform);
+            return line;
+        }
+
+        /// <summary>
+        ///     If the pen brush is a MoveConsoleCaretToPositionBrush, move the caret
+        /// </summary>
+        /// <param name="pen"></param>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        private bool IfMoveConsoleCaretMove(IPen pen, Point head)
+        {
+            if (pen.Brush is not MoveConsoleCaretToPositionBrush)
+                return false;
+
+            CurrentClip.ExecuteWithClipping(head,
+                () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
+            return true;
+        }
+
+        /// <summary>
+        ///     Extract color from pen brush
+        /// </summary>
+        /// <param name="pen"></param>
+        /// <param name="lineStyle"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         private static Color? ExtractColorOrNullWithPlatformCheck(IPen pen, out LineStyle? lineStyle)
         {
             lineStyle = null;
@@ -284,12 +385,12 @@ namespace Consolonia.Core.Drawing
             if (pen.Brush is LineBrush lineBrush)
                 lineStyle = lineBrush.LineStyle;
 
-            ConsoleBrush consoleColorBrush = ConsoleBrush.FromBrush(pen.Brush);
+            ConsoleBrush consoleBrush = ConsoleBrush.FromBrush(pen.Brush);
 
-            switch (consoleColorBrush.Mode)
+            switch (consoleBrush.Mode)
             {
                 case PixelBackgroundMode.Colored:
-                    return consoleColorBrush.Color;
+                    return consoleBrush.Color;
                 case PixelBackgroundMode.Transparent:
                     return null;
                 case PixelBackgroundMode.Shaded:
@@ -300,65 +401,40 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawLineInternal(IPen pen, Line line)
+        /// <summary>
+        ///     Draw pixels for a line with linestyle and a pattern
+        /// </summary>
+        /// <param name="head">the current caret position</param>
+        /// <param name="line">line to render</param>
+        /// <param name="lineStyle">line style</param>
+        /// <param name="pattern">pattern of character to use</param>
+        /// <param name="color">color for char</param>
+        /// <param name="count">number of chars</param>
+        private void DrawPixelAndMoveHead(ref Point head, Line line, LineStyle? lineStyle, byte pattern, Color color,
+            int count)
         {
-            if (pen.Thickness == 0) return;
-
-            if (!Transform.NoRotation()) ConsoloniaPlatform.RaiseNotSupported(16);
-
-            line = (Line)line.WithTransform(Transform);
-
-            Point head = line.PStart;
-
-            if (pen.Brush is MoveConsoleCaretToPositionBrush)
+            for (int i = 0; i < count; i++)
             {
-                CurrentClip.ExecuteWithClipping(head,
-                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
-
-                return;
-            }
-
-            var extractColorCheckPlatformSupported =
-                ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
-            if (extractColorCheckPlatformSupported == null)
-                return;
-
-            var consoleColor = (Color)extractColorCheckPlatformSupported;
-
-            byte pattern = (byte)(line.Vertical ? 0b0010 : 0b0100);
-            DrawPixelAndMoveHead(1); //beginning
-
-            pattern = (byte)(line.Vertical ? 0b1010 : 0b0101);
-            DrawPixelAndMoveHead(line.Length - 1); //line
-
-            pattern = (byte)(line.Vertical ? 0b1000 : 0b0001);
-            DrawPixelAndMoveHead(1); //ending 
-            return;
-
-            void DrawPixelAndMoveHead(int count)
-            {
-                for (int i = 0; i < count; i++)
+                Point h = head;
+                CurrentClip.ExecuteWithClipping(h, () =>
                 {
-                    CurrentClip.ExecuteWithClipping(head, () =>
-                    {
-                        // ReSharper disable once AccessToModifiedClosure todo: pass as a parameter
-                        _pixelBuffer.Set((PixelBufferCoordinate)head,
-                            (pixel, mcC) => pixel.Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(
-                                mcC.pattern,
-                                lineStyle ?? LineStyle.SingleLine), mcC.consoleColor)),
-                            (pattern, consoleColor));
-                    });
-                    head = line.Vertical
-                        ? head.WithY(head.Y + 1)
-                        : head.WithX(head.X + 1);
-                }
+                    // ReSharper disable once AccessToModifiedClosure todo: pass as a parameter
+                    _pixelBuffer.Set((PixelBufferCoordinate)h,
+                        (pixel, mcC) => pixel.Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(
+                            mcC.pattern,
+                            lineStyle ?? LineStyle.SingleLine), mcC.consoleColor)),
+                        (pattern, consoleColor: color));
+                });
+                head = line.Vertical
+                    ? head.WithY(head.Y + 1)
+                    : head.WithX(head.X + 1);
             }
         }
 
         private void DrawStringInternal(IBrush foreground, string str, IGlyphTypeface typeface, Point origin = new())
         {
             foreground = ConsoleBrush.FromBrush(foreground);
-            if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
+            if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleBrush)
             {
                 ConsoloniaPlatform.RaiseNotSupported(4);
                 return;
@@ -373,7 +449,7 @@ namespace Consolonia.Core.Drawing
             foreach (char c in str)
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
-                Color foregroundColor = consoleColorBrush.Color;
+                Color foregroundColor = consoleBrush.Color;
 
                 switch (c)
                 {
