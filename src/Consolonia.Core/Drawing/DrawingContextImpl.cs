@@ -15,6 +15,13 @@ namespace Consolonia.Core.Drawing
 {
     internal class DrawingContextImpl : IDrawingContextImpl
     {
+        private const byte VerticalStartPattern = 0b0010;
+        private const byte VerticalLinePattern = 0b1010;
+        private const byte VerticalEndPattern = 0b1000;
+        private const byte HorizontalStartPattern = 0b0100;
+        private const byte HorizontalLinePattern = 0b0101;
+        private const byte HorizontalEndPattern = 0b0001;
+
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
         private readonly PixelBuffer _pixelBuffer;
@@ -296,13 +303,6 @@ namespace Consolonia.Core.Drawing
         /// </summary>
         /// <param name="pen">pen</param>
         /// <param name="line">line</param>
-        private const byte VERTICAL_START = 0b0010;
-        private const byte VERTICAL_LINE = 0b1010;
-        private const byte VERTICAL_END = 0b1000;
-        private const byte HORIZONTAL_START = 0b0100;
-        private const byte HORIZONTAL_LINE = 0b0101;
-        private const byte HORIZONTAL_END = 0b0001;
-
         private void DrawRectangleLineInternal(IPen pen, Line line)
         {
             if (pen.Thickness == 0) return;
@@ -320,13 +320,13 @@ namespace Consolonia.Core.Drawing
 
             var color = (Color)extractColorCheckPlatformSupported;
 
-            byte pattern = line.Vertical ? VERTICAL_START : HORIZONTAL_START;
+            byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
             DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //beginning
 
-            pattern = line.Vertical ? VERTICAL_LINE : HORIZONTAL_LINE;
-            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length - 1); //line
+            pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
+            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length - 2); //line
 
-            pattern = line.Vertical ? VERTICAL_END : HORIZONTAL_END;
+            pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
             DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //ending 
         }
 
