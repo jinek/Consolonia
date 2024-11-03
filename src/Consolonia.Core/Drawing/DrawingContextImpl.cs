@@ -64,7 +64,7 @@ namespace Consolonia.Core.Drawing
             // resize source to be target rect * 2 so we can map to quad pixels
             using var bitmap = new SKBitmap((int)targetRect.Width * 2, (int)targetRect.Height * 2);
             using var canvas = new SKCanvas(bitmap);
-            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (float)bitmap.Width, (float)bitmap.Height),
+            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, bitmap.Width, bitmap.Height),
                 new SKPaint { FilterQuality = SKFilterQuality.Medium });
 
             for (int y = 0; y < bitmap.Info.Height; y += 2)
@@ -77,7 +77,7 @@ namespace Consolonia.Core.Drawing
                     int py = (int)targetRect.TopLeft.Y + y / 2;
 
                     // get the quad pixel the bitmap
-                    var quadColors = new SKColor[]
+                    var quadColors = new []
                     {
                         bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
                         bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
@@ -87,7 +87,7 @@ namespace Consolonia.Core.Drawing
                     var quadPixel = GetQuadPixelCharacter(quadColors);
 
                     // get the combined colors for the quad pixel
-                    var quadPixels = new SKColor[]
+                    var quadPixels = new []
                     {
                         bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
                         bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
@@ -656,7 +656,7 @@ namespace Consolonia.Core.Drawing
                 SKColor[] newClusterCenters = new SKColor[2];
                 for (int cluster = 0; cluster < 2; cluster++)
                 {
-                    var clusteredColors = colors.Where((c, i) => clusters[i] == cluster).ToList();
+                    var clusteredColors = colors.Where((_, i) => clusters[i] == cluster).ToList();
                     newClusterCenters[cluster] = GetAverageColor(clusteredColors);
                     if (clusteredColors.Count == 4)
                     {
