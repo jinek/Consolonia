@@ -335,7 +335,6 @@ namespace Consolonia.Core.Drawing
                 });
                 head = head.WithX(head.X + 1);
             }
-            return;
         }
 
         /// <summary>
