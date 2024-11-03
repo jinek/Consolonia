@@ -313,6 +313,7 @@ namespace Consolonia.Core.Drawing
             {
                 UnderlineThickness => TextDecorations.Underline,
                 StrikthroughThickness => TextDecorations.Strikethrough,
+                _ => throw new ArgumentOutOfRangeException($"Unsupported thickness {pen.Thickness}")
             };
 
             for (int x = 0; x < line.Length; x++)
