@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
@@ -59,29 +60,45 @@ namespace Consolonia.Core.Drawing
             var targetRect = new Rect(Transform.Transform(new Point(destRect.TopLeft.X, destRect.TopLeft.Y)),
                 Transform.Transform(new Point(destRect.BottomRight.X, destRect.BottomRight.Y)));
             var bmp = (BitmapImpl)source;
-            using var bitmap = new SKBitmap((int)targetRect.Width, (int)targetRect.Height);
+
+            // resize source to be target rect * 2 so we can map to quad pixels
+            using var bitmap = new SKBitmap((int)targetRect.Width * 2, (int)targetRect.Height * 2);
             using var canvas = new SKCanvas(bitmap);
-            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (float)targetRect.Width, (float)targetRect.Height),
+            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, (float)bitmap.Width, (float)bitmap.Height),
                 new SKPaint { FilterQuality = SKFilterQuality.Medium });
 
-            // Rect clip = CurrentClip.Intersect(destRect);
-            int width = bitmap.Info.Width;
-            int height = bitmap.Info.Height;
-            for (int x = 0; x < width; x++)
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < bitmap.Info.Height; y += 2)
             {
-                int px = (int)targetRect.TopLeft.X + x;
-                int py = (int)targetRect.TopLeft.Y + y;
-                SKColor skColor = bitmap.GetPixel(x, y);
-                Color color = Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
-                var imagePixel = new Pixel('█', color);
-                CurrentClip.ExecuteWithClipping(new Point(px, py),
-                    () =>
+                for (int x = 0; x < bitmap.Info.Width; x += 2)
+                {
+                    // NOTE: we divide by 2 because we are working with quad pixels, the bitmap has twice the horizontal
+                    // and twice the vertical of the target rect.
+                    int px = (int)targetRect.TopLeft.X + x / 2;
+                    int py = (int)targetRect.TopLeft.Y + y / 2;
+
+                    var quadPixels = new SKColor[]
                     {
-                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            (existingPixel, _) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
-                    });
+                        bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
+                        bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
+                    };
+
+                    // get the character and colors to draw, combining 4 pixels into one character with foreground and background.
+                    var quadPixel = GetQuadPixelCharacter(quadPixels);
+                    var foreground = GetForegroundColorForQuadPixel(quadPixels, quadPixel);
+                    var background = GetBackgroundColorForQuadPixel(quadPixels, quadPixel);
+
+                    var imagePixel = new Pixel(new PixelForeground(new SimpleSymbol(quadPixel), color: foreground),
+                                               new PixelBackground(PixelBackgroundMode.Colored, background));
+                    CurrentClip.ExecuteWithClipping(new Point(px, py),
+                        () =>
+                        {
+                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                (existingPixel, _) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
+                        });
+                }
             }
+
+
         }
 
         public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
@@ -132,11 +149,11 @@ namespace Consolonia.Core.Drawing
                     case VisualBrush:
                         throw new NotImplementedException();
                     case ISceneBrush sceneBrush:
-                    {
-                        ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
-                        if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
-                        return;
-                    }
+                        {
+                            ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
+                            if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
+                            return;
+                        }
                 }
 
                 Rect r2 = r.TransformToAABB(Transform);
@@ -144,19 +161,19 @@ namespace Consolonia.Core.Drawing
                 double width = r2.Width + (pen?.Thickness ?? 0);
                 double height = r2.Height + (pen?.Thickness ?? 0);
                 for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
-                {
-                    int px = (int)(r2.TopLeft.X + x);
-                    int py = (int)(r2.TopLeft.Y + y);
-
-                    ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
-                    CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                    for (int y = 0; y < height; y++)
                     {
-                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            (pixel, bb) => pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
-                            backgroundBrush);
-                    });
-                }
+                        int px = (int)(r2.TopLeft.X + x);
+                        int py = (int)(r2.TopLeft.Y + y);
+
+                        ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
+                        CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                        {
+                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                (pixel, bb) => pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
+                                backgroundBrush);
+                        });
+                    }
             }
 
             if (pen is null or { Thickness: 0 }
@@ -454,46 +471,156 @@ namespace Consolonia.Core.Drawing
                 switch (c)
                 {
                     case '\t':
-                    {
-                        const int tabSize = 8;
-                        var consolePixel = new Pixel(' ', foregroundColor);
-                        for (int j = 0; j < tabSize; j++)
                         {
-                            Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
-                            CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                            const int tabSize = 8;
+                            var consolePixel = new Pixel(' ', foregroundColor);
+                            for (int j = 0; j < tabSize; j++)
                             {
-                                _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
-                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                            });
-                        }
+                                Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
+                                CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                                {
+                                    _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
+                                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                                });
+                            }
 
-                        currentXPosition += tabSize - 1;
-                    }
+                            currentXPosition += tabSize - 1;
+                        }
                         break;
                     case '\n':
-                    {
-                        /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
-                         var consolePixel =  new Pixel(' ', foregroundColor);
+                        {
+                            /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
+                             var consolePixel =  new Pixel(' ', foregroundColor);
 
-                        _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
-                    }
+                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
+                        }
                         break;
                     case '\u200B':
                         currentXPosition--;
                         break;
                     default:
-                    {
-                        var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
-                        CurrentClip.ExecuteWithClipping(characterPoint, () =>
                         {
-                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                        });
-                    }
+                            var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
+                            CurrentClip.ExecuteWithClipping(characterPoint, () =>
+                            {
+                                _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                            });
+                        }
                         break;
                 }
             }
         }
+
+        private static char GetQuadPixelCharacter(params SKColor[] pixels)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var pixel in pixels)
+            {
+                var gray = (byte)(0.3 * pixel.Red + 0.59 * pixel.Green + 0.11 * pixel.Blue);
+                if (gray >= 128)
+                    sb.Append('T');
+                else
+                    sb.Append('F');
+            };
+            var character = sb.ToString() switch
+            {
+                "FFFF" => ' ',
+                "TFFF" => '▘',
+                "FTFF" => '▝',
+                "FFTF" => '▖',
+                "FFFT" => '▗',
+                "TFFT" => '▚',
+                "FTTF" => '▞',
+                "TFTF" => '▌',
+                "FTFT" => '▐',
+                "FFTT" => '▄',
+                "TTFF" => '▀',
+                "TTTF" => '▛',
+                "TTFT" => '▜',
+                "TFTT" => '▙',
+                "FTTT" => '▟',
+                "TTTT" => '█',
+                _ => throw new NotImplementedException(),
+            };
+            return character;
+        }
+
+
+        /// <summary>
+        /// Combine the colors for the white part of the quad pixel character.
+        /// </summary>
+        /// <param name="pixelColors">4 colors</param>
+        /// <param name="quadPixel"></param>
+        /// <returns>foreground color</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private static Color GetForegroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
+        {
+            if (pixelColors.Length != 4)
+                throw new ArgumentException($"{nameof(pixelColors)} must have 4 elements.");
+
+            var skColor = quadPixel switch
+            {
+                ' ' => SKColors.Transparent,
+                '▘' => pixelColors[0],
+                '▝' => pixelColors[1],
+                '▖' => pixelColors[2],
+                '▗' => pixelColors[3],
+                '▚' => CombineColors(pixelColors[0], pixelColors[2]),
+                '▞' => CombineColors(pixelColors[1], pixelColors[3]),
+                '▌' => CombineColors(pixelColors[0], pixelColors[2]),
+                '▐' => CombineColors(pixelColors[1], pixelColors[3]),
+                '▄' => CombineColors(pixelColors[2], pixelColors[3]),
+                '▀' => CombineColors(pixelColors[0], pixelColors[1]),
+                '▛' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[2]),
+                '▜' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[3]),
+                '▙' => CombineColors(pixelColors[0], pixelColors[2], pixelColors[3]),
+                '▟' => CombineColors(pixelColors[1], pixelColors[2], pixelColors[3]),
+                '█' => CombineColors(pixelColors.ToArray()),
+                _ => throw new NotImplementedException()
+            };
+
+            return Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
+        }
+
+
+        /// <summary>
+        /// Combine the colors for the black part of the quad pixel character.
+        /// </summary>
+        /// <param name="pixelColors"></param>
+        /// <param name="quadPixel"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private static Color GetBackgroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
+        {
+            var skColor = quadPixel switch
+            {
+                ' ' => CombineColors(pixelColors.ToArray()),
+                '▘' => CombineColors(pixelColors[1], pixelColors[2], pixelColors[3]),
+                '▝' => CombineColors(pixelColors[0], pixelColors[2], pixelColors[3]),
+                '▖' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[3]),
+                '▗' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[2]),
+                '▚' => CombineColors(pixelColors[1], pixelColors[2]),
+                '▞' => CombineColors(pixelColors[0], pixelColors[3]),
+                '▌' => CombineColors(pixelColors[1], pixelColors[3]),
+                '▐' => CombineColors(pixelColors[0], pixelColors[2]),
+                '▄' => CombineColors(pixelColors[0], pixelColors[1]),
+                '▀' => CombineColors(pixelColors[2], pixelColors[3]),
+                '▛' => pixelColors[3],
+                '▜' => pixelColors[2],
+                '▙' => pixelColors[1],
+                '▟' => pixelColors[0],
+                '█' => SKColors.Transparent,
+                _ => throw new NotImplementedException()
+            };
+            return Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
+        }
+
+        private static SKColor CombineColors(params SKColor[] colors)
+        {
+            return new SKColor((byte)colors.Average(c => c.Red), (byte)colors.Average(c => c.Green), (byte)colors.Average(c => c.Blue));
+        }
+
     }
 }
