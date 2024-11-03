@@ -68,17 +68,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 case PixelBackgroundMode.Colored:
                     return pixelAbove;
                 case PixelBackgroundMode.Transparent:
-                    // when a textdecoration of underline happens a DrawLine() is called over the top of the a pixel with non-zero symbol.
-                    // this detects this situation and eats the draw line, turning it into a textdecoration
-                    if (pixelAbove.Foreground.Symbol is DrawingBoxSymbol &&
-                        Foreground.Symbol is SimpleSymbol simpleSymbol &&
-                        ((ISymbol)simpleSymbol).GetCharacter() != (char)0)
-                        // this is a line being draw through text. add TextDecoration for underline.
-                        newForeground = new PixelForeground(Foreground.Symbol, Foreground.Weight, Foreground.Style,
-                            TextDecorations.Underline, Foreground.Color);
-                    else
-                        // do normal blend.
-                        newForeground = Foreground.Blend(pixelAbove.Foreground);
+                    newForeground = Foreground.Blend(pixelAbove.Foreground);
                     newBackground = Background;
                     break;
                 case PixelBackgroundMode.Shaded:
