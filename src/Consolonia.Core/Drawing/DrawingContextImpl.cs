@@ -71,19 +71,27 @@ namespace Consolonia.Core.Drawing
             {
                 for (int x = 0; x < bitmap.Info.Width; x += 2)
                 {
-                    // NOTE: we divide by 2 because we are working with quad pixels, the bitmap has twice the horizontal
-                    // and twice the vertical of the target rect.
+                    // NOTE: we divide by 2 because we are working with quad pixels,
+                    // // the bitmap has twice the horizontal and twice the vertical of the target rect.
                     int px = (int)targetRect.TopLeft.X + x / 2;
                     int py = (int)targetRect.TopLeft.Y + y / 2;
 
-                    var quadPixels = new SKColor[]
+                    // get the quad pixel the bitmap
+                    var quadColors = new SKColor[]
                     {
                         bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
                         bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
                     };
 
-                    // get the character and colors to draw, combining 4 pixels into one character with foreground and background.
-                    var quadPixel = GetQuadPixelCharacter(quadPixels);
+                    // map it to a single char to represet the 4 pixels
+                    var quadPixel = GetQuadPixelCharacter(quadColors);
+
+                    // get the combined colors for the quad pixel
+                    var quadPixels = new SKColor[]
+                    {
+                        bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
+                        bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
+                    };
                     var foreground = GetForegroundColorForQuadPixel(quadPixels, quadPixel);
                     var background = GetBackgroundColorForQuadPixel(quadPixels, quadPixel);
 
@@ -513,18 +521,15 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private static char GetQuadPixelCharacter(params SKColor[] pixels)
+        /// <summary>
+        /// given 4 colors return quadPixel character which is suitable to represent the colors
+        /// </summary>
+        /// <param name="colors"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private static char GetQuadPixelCharacter(params SKColor[] colors)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (var pixel in pixels)
-            {
-                var gray = (byte)(0.3 * pixel.Red + 0.59 * pixel.Green + 0.11 * pixel.Blue);
-                if (gray >= 128)
-                    sb.Append('T');
-                else
-                    sb.Append('F');
-            };
-            var character = sb.ToString() switch
+            var character = GetColorsPattern(colors) switch
             {
                 "FFFF" => ' ',
                 "TFFF" => '▘',
@@ -620,6 +625,105 @@ namespace Consolonia.Core.Drawing
         private static SKColor CombineColors(params SKColor[] colors)
         {
             return new SKColor((byte)colors.Average(c => c.Red), (byte)colors.Average(c => c.Green), (byte)colors.Average(c => c.Blue));
+        }
+
+        /// <summary>
+        /// Cluster quad colors into a pattern (like: TTFF) based on relative closeness
+        /// </summary>
+        /// <param name="colors"></param>
+        /// <returns>T or F for each color as a string</returns>
+        /// <exception cref="ArgumentException"></exception>
+        static string GetColorsPattern(SKColor[] colors)
+        {
+            if (colors.Length != 4)
+            {
+                throw new ArgumentException("Array must contain exactly 4 colors.");
+            }
+
+            // Initial guess: two clusters with the first two colors as centers
+            SKColor[] clusterCenters = { colors[0], colors[1] };
+            int[] clusters = new int[colors.Length];
+
+            for (int iteration = 0; iteration < 10; iteration++) // limit iterations to avoid infinite loop
+            {
+                // Assign colors to the closest cluster center
+                for (int i = 0; i < colors.Length; i++)
+                {
+                    clusters[i] = GetColorCluster(colors[i], clusterCenters);
+                }
+
+                // Recalculate cluster centers
+                SKColor[] newClusterCenters = new SKColor[2];
+                for (int cluster = 0; cluster < 2; cluster++)
+                {
+                    var clusteredColors = colors.Where((c, i) => clusters[i] == cluster).ToList();
+                    newClusterCenters[cluster] = GetAverageColor(clusteredColors);
+                    if (clusteredColors.Count == 4)
+                    {
+                        return "TTTT";
+                    }
+                }
+
+                // Check for convergence
+                if (newClusterCenters.SequenceEqual(clusterCenters))
+                    break;
+
+                clusterCenters = newClusterCenters;
+            }
+
+            // Determine which cluster is lower and which is higher
+            int lowerCluster = GetColorBrightness(clusterCenters[0]) < GetColorBrightness(clusterCenters[1]) ? 0 : 1;
+            int higherCluster = 1 - lowerCluster;
+
+            // Replace colors with 0 for lower cluster and 1 for higher cluster
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < colors.Length; i++)
+            {
+                sb.Append((clusters[i] == higherCluster) ? 'T' : 'F');
+            }
+
+            return sb.ToString();
+        }
+
+        static int GetColorCluster(SKColor color, SKColor[] clusterCenters)
+        {
+            double minDistance = double.MaxValue;
+            int closestCluster = -1;
+
+            for (int i = 0; i < clusterCenters.Length; i++)
+            {
+                double distance = GetColorDistance(color, clusterCenters[i]);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestCluster = i;
+                }
+            }
+
+            return closestCluster;
+        }
+
+        static double GetColorDistance(SKColor c1, SKColor c2)
+        {
+            return Math.Sqrt(
+                Math.Pow(c1.Red - c2.Red, 2) +
+                Math.Pow(c1.Green - c2.Green, 2) +
+                Math.Pow(c1.Blue - c2.Blue, 2)
+            );
+        }
+
+        static SKColor GetAverageColor(List<SKColor> colors)
+        {
+            var averageRed = (byte)colors.Average(c => c.Red);
+            var averageGreen = (byte)colors.Average(c => c.Green);
+            var averageBlue = (byte)colors.Average(c => c.Blue);
+
+            return new SKColor(averageRed, averageGreen, averageBlue);
+        }
+
+        static double GetColorBrightness(SKColor color)
+        {
+            return 0.299 * color.Red + 0.587 * color.Green + 0.114 * color.Blue;
         }
 
     }
