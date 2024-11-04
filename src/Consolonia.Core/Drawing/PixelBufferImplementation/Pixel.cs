@@ -66,7 +66,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             switch (pixelAbove.Background.Mode)
             {
                 case PixelBackgroundMode.Colored:
-                    return pixelAbove;
+                    // merge pixelAbove into this pixel using alpha channel.
+                    var mergedColors = MergeColors(Background.Color, pixelAbove.Background.Color);
+                    return new Pixel(pixelAbove.Foreground, 
+                                     new PixelBackground(mergedColors));
+
                 case PixelBackgroundMode.Transparent:
                     // when a textdecoration of underline happens a DrawLine() is called over the top of the a pixel with non-zero symbol.
                     // this detects this situation and eats the draw line, turning it into a textdecoration
@@ -96,6 +100,24 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         private (PixelForeground, PixelBackground) Shade()
         {
             return (Foreground.Shade(), Background.Shade());
+        }
+
+        /// <summary>
+        /// merge colors with alpha blending
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="source"></param>
+        /// <returns>source blended into target</returns>
+        private static Color MergeColors(Color target, Color source)
+        {
+            float alphaB = source.A / 255.0f;
+            float inverseAlphaB = 1.0f - alphaB;
+
+            byte red = (byte)((target.R * inverseAlphaB) + (source.R * alphaB));
+            byte green = (byte)((target.G * inverseAlphaB) + (source.G * alphaB));
+            byte blue = (byte)((target.B * inverseAlphaB) + (source.B * alphaB));
+
+            return new Color(0xFF, red, green, blue);
         }
     }
 }
