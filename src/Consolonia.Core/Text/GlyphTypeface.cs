@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Avalonia.Media;
+using Consolonia.Core.Drawing;
 
 namespace Consolonia.Core.Text
 {
@@ -73,11 +74,10 @@ namespace Consolonia.Core.Text
             Ascent = -1, //var height = (GlyphTypeface.Descent - GlyphTypeface.Ascent + GlyphTypeface.LineGap) * Scale; //todo: need to consult Avalonia guys
             Descent = 0,
             LineGap = 0,
-            UnderlinePosition =
-                -1, // this turns on TextDecorations="Underline", -1 is so it draws over the top of the text.
-            UnderlineThickness = 1, // this is the thickness of the underline, aka 1 char thick.
+            UnderlinePosition = -1,
+            UnderlineThickness = DrawingContextImpl.UnderlineThickness,
             StrikethroughPosition = -1,
-            StrikethroughThickness = 1,
+            StrikethroughThickness = DrawingContextImpl.StrikthroughThickness,
             IsFixedPitch = true
         };
 

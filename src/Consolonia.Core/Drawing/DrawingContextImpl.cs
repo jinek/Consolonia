@@ -23,6 +23,8 @@ namespace Consolonia.Core.Drawing
         private const byte HorizontalLinePattern = 0b0101;
         private const byte HorizontalEndPattern = 0b0001;
 
+        public const int UnderlineThickness = 10;
+        public const int StrikthroughThickness = 11;
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
         private readonly PixelBuffer _pixelBuffer;
@@ -304,6 +306,13 @@ namespace Consolonia.Core.Drawing
             if (IfMoveConsoleCaretMove(pen, head))
                 return;
 
+            if (line.Vertical == false && pen.Thickness > 1)
+            {
+                // horizontal lines with thickness larger than one are text decorations
+                ApplyTextDecorationLineInternal(ref head, pen, line);
+                return;
+            }
+
             var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
             if (extractColorCheckPlatformSupported == null)
                 return;
@@ -312,6 +321,36 @@ namespace Consolonia.Core.Drawing
 
             byte pattern = (byte)(line.Vertical ? 0b1010 : 0b0101);
             DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length); //line
+        }
+
+        private void ApplyTextDecorationLineInternal(ref Point head, IPen pen, Line line)
+        {
+            TextDecorationCollection textDecoration = pen.Thickness switch
+            {
+                UnderlineThickness => TextDecorations.Underline,
+                StrikthroughThickness => TextDecorations.Strikethrough,
+                _ => throw new ArgumentOutOfRangeException($"Unsupported thickness {pen.Thickness}")
+            };
+
+            for (int x = 0; x < line.Length; x++)
+            {
+                Point h = head;
+                CurrentClip.ExecuteWithClipping(h, () =>
+                {
+                    // ReSharper disable once AccessToModifiedClosure todo: pass as a parameter
+                    _pixelBuffer.Set((PixelBufferCoordinate)h,
+                        pixel =>
+                        {
+                            var newPixelForeground = new PixelForeground(pixel.Foreground.Symbol,
+                                pixel.Foreground.Weight,
+                                pixel.Foreground.Style,
+                                textDecoration,
+                                pixel.Foreground.Color);
+                            return pixel.Blend(new Pixel(newPixelForeground, pixel.Background));
+                        });
+                });
+                head = head.WithX(head.X + 1);
+            }
         }
 
         /// <summary>
@@ -388,7 +427,7 @@ namespace Consolonia.Core.Drawing
             if (pen is not
                 {
                     Brush: ConsoleBrush or LineBrush or ImmutableSolidColorBrush,
-                    Thickness: 1,
+                    // Thickness: 1,
                     DashStyle: null or { Dashes: { Count: 0 } },
                     LineCap: PenLineCap.Flat,
                     LineJoin: PenLineJoin.Miter
