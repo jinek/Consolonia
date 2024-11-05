@@ -5,6 +5,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public readonly struct PixelBackground
     {
+        public PixelBackground(Color color)
+        {
+            Mode = color.A == 0 ? PixelBackgroundMode.Transparent : PixelBackgroundMode.Colored;
+            Color = color;
+        }
+
         public PixelBackground(PixelBackgroundMode mode, Color? color = null)
         {
             Color = color ?? Colors.Black;
