@@ -11,12 +11,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     public class PixelBuffer : IEnumerable<Pixel>
     {
         private readonly Pixel[,] _buffer;
+        private PixelBufferCoordinate _caretPosition;
 
         public PixelBuffer(ushort width, ushort height)
         {
             Width = width;
             Height = height;
             _buffer = new Pixel[width, height];
+            _caretPosition = new PixelBufferCoordinate(0, 0);
         }
 
         public ushort Width { get; }
@@ -68,6 +70,20 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             this[point] = changeAction(this[point], userObject);
         }
 
+        /// <summary>
+        /// Clears old pixel caret position and sets new caret position
+        /// </summary>
+        /// <param name="point"></param>
+        public void SetCaretPosition(PixelBufferCoordinate point)
+        {
+            var oldCaretPixel = _buffer[_caretPosition.X, _caretPosition.Y];
+            _buffer[_caretPosition.X, _caretPosition.Y] = new Pixel(oldCaretPixel.Foreground, oldCaretPixel.Background, isCaret: false);
+
+            _caretPosition = point;
+            var newCaretPixel = _buffer[_caretPosition.X, _caretPosition.Y];
+            _buffer[_caretPosition.X, _caretPosition.Y] = new Pixel(newCaretPixel.Foreground, newCaretPixel.Background, isCaret: true);
+        }
+
         public void Foreach(Func<PixelBufferCoordinate, Pixel, Pixel> replaceAction)
         {
             ForeachReadonly((point, oldPixel) =>
@@ -81,11 +97,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public void ForeachReadonly(Action<PixelBufferCoordinate, Pixel> action)
         {
             for (ushort j = 0; j < Height; j++)
-            for (ushort i = 0; i < Width; i++)
-            {
-                Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
-                action(new PixelBufferCoordinate(i, j), pixel);
-            }
+                for (ushort i = 0; i < Width; i++)
+                {
+                    Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
+                    action(new PixelBufferCoordinate(i, j), pixel);
+                }
         }
 
         private (ushort x, ushort y) ToXY(int i)

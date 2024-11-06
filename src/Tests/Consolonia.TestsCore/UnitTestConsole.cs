@@ -58,13 +58,17 @@ namespace Consolonia.TestsCore
         {
             (ushort x, ushort y) = bufferPoint;
 
-            for (int i = 0; i < str.Length; i++)
+            int i = 0;
+            foreach (var rune in str.EnumerateRunes())
+            {
                 PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
                     // ReSharper disable once AccessToModifiedClosure we are sure about inline execution
                     new Pixel(
-                        new PixelForeground(new SimpleSymbol(str[i]), color: foreground, style: style, weight: weight,
+                        new PixelForeground(new SimpleSymbol(rune), color: foreground, style: style, weight: weight,
                             textDecorations: textDecorations),
                         new PixelBackground(PixelBackgroundMode.Colored, background)));
+                i++;
+            }
         }
 
         public void PauseIO(Task task)

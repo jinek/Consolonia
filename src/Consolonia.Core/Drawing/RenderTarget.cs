@@ -131,7 +131,7 @@ namespace Consolonia.Core.Drawing
 
                 if (pixel.Foreground.Symbol is null) // not using 'when' as it swallows the exceptions 
                     // buffer re-initialized after resizing
-                    pixel = new Pixel(new PixelForeground(new SimpleSymbol('░')),
+                    pixel = new Pixel(new PixelForeground(new SimpleSymbol(new Rune('░'))),
                         new PixelBackground(PixelBackgroundMode.Colored));
 
                 (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection

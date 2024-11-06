@@ -91,7 +91,7 @@ namespace Consolonia.Core.Drawing
                     Color foreground = GetForegroundColorForQuadPixel(quadColors, quadPixel);
                     Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
 
-                    var imagePixel = new Pixel(new PixelForeground(new SimpleSymbol(quadPixel), color: foreground),
+                    var imagePixel = new Pixel(new PixelForeground(new SimpleSymbol(new Rune(quadPixel)), color: foreground),
                         new PixelBackground(background));
                     CurrentClip.ExecuteWithClipping(new Point(px, py),
                         () =>
@@ -409,8 +409,7 @@ namespace Consolonia.Core.Drawing
             if (pen.Brush is not MoveConsoleCaretToPositionBrush)
                 return false;
 
-            CurrentClip.ExecuteWithClipping(head,
-                () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
+            _pixelBuffer.SetCaretPosition((PixelBufferCoordinate)head);
             return true;
         }
 

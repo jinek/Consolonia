@@ -11,7 +11,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             FontStyle style = FontStyle.Normal, TextDecorationCollection textDecorations = null, Color? color = null)
         {
             ArgumentNullException.ThrowIfNull(symbol);
-            Symbol = symbol ?? new SimpleSymbol((char)0);
+            Symbol = symbol;
             Color = color ?? Colors.White;
             Weight = weight;
             Style = style;
