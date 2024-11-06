@@ -21,7 +21,7 @@ namespace Consolonia.Core.Drawing
         private PixelBuffer _bufferBuffer;
 
         private (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
-            textDecorations, char character)?[,] _cache;
+            textDecorations, Rune rune)?[,] _cache;
 
         internal RenderTarget(ConsoleWindow consoleWindow)
         {
@@ -98,7 +98,7 @@ namespace Consolonia.Core.Drawing
         {
             _cache =
                 new (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
-                    textDecorations, char character)?[width, height];
+                    textDecorations, Rune rune)?[width, height];
         }
 
         private void RenderToDevice()
@@ -134,10 +134,12 @@ namespace Consolonia.Core.Drawing
                     pixel = new Pixel(new PixelForeground(new SimpleSymbol('░')),
                         new PixelBackground(PixelBackgroundMode.Colored));
 
-                (Color, Color, FontWeight Weight, FontStyle Style, TextDecorationCollection TextDecorations, char)
-                    pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight,
+                (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
+                    textDecorations, Rune rune) 
+                        pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight,
                         pixel.Foreground.Style, pixel.Foreground.TextDecorations,
-                        pixel.Foreground.Symbol.GetCharacter());
+                        pixel.Foreground.Symbol.Rune);
+
                 //todo: indexOutOfRange during resize
                 if (_cache[x, y] == pixelSpread)
                     continue;
@@ -202,10 +204,10 @@ namespace Consolonia.Core.Drawing
                     _lastBufferPointStart = _currentBufferPoint = bufferPoint;
                 }
 
-                char character = pixel.Foreground.Symbol.GetCharacter();
-                if (char.IsControl(character) /*|| character is '保' or '哥'*/)
-                    character = ' '; // some terminals do not print \0
-                _stringBuilder.Append(character);
+                var rune = pixel.Foreground.Symbol.Rune;
+                if (Rune.IsControl(rune)) /*|| character is '保' or '哥'*/
+                    rune = new Rune(' '); // some terminals do not print \0
+                _stringBuilder.Append(rune);
                 _currentBufferPoint = _currentBufferPoint.WithXpp();
             }
 

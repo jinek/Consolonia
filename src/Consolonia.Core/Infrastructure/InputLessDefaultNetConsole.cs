@@ -66,7 +66,7 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style,
-            FontWeight weight, TextDecorationCollection textDecorations, string str)
+            FontWeight weight, TextDecorationCollection textDecorations, string text)
         {
             PauseTask?.Wait();
             SetCaretPosition(bufferPoint);
@@ -93,15 +93,25 @@ namespace Consolonia.Core.Infrastructure
                 _ => foreground
             }));
 
-            sb.Append(str);
+            sb.Append(text);
             sb.Append(ConsoleUtils.Reset);
 
             Console.Write(sb.ToString());
 
-            if (_headBufferPoint.X < Size.Width - str.Length)
-                _headBufferPoint =
-                    new PixelBufferCoordinate((ushort)(_headBufferPoint.X + str.Length), _headBufferPoint.Y);
-            else _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
+            // if we have complex unicode runes then we need to calculate the position manually,  EnumerateRunes is
+            // not enough as some runes (like '🥰') are a single rune, but are emitted as two console characters
+            if (text.EnumerateRunes().Count() != text.Length)
+            {
+                var (left, top) = Console.GetCursorPosition();
+                _headBufferPoint = new PixelBufferCoordinate((ushort)left, (ushort)top);
+            }
+            else
+            {
+                if (_headBufferPoint.X < Size.Width - text.Length)
+                    _headBufferPoint = new PixelBufferCoordinate((ushort)(_headBufferPoint.X + text.Length), _headBufferPoint.Y);
+                else
+                    _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
+            }
         }
 
         public event Action Resized;

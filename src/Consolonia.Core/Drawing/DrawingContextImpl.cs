@@ -24,7 +24,7 @@ namespace Consolonia.Core.Drawing
         private const byte HorizontalEndPattern = 0b0001;
 
         public const int UnderlineThickness = 10;
-        public const int StrikthroughThickness = 11;
+        public const int StrikethroughThickness = 11;
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
         private readonly PixelBuffer _pixelBuffer;
@@ -70,36 +70,36 @@ namespace Consolonia.Core.Drawing
                 new SKPaint { FilterQuality = SKFilterQuality.Medium });
 
             for (int y = 0; y < bitmap.Info.Height; y += 2)
-            for (int x = 0; x < bitmap.Info.Width; x += 2)
-            {
-                // NOTE: we divide by 2 because we are working with quad pixels,
-                // // the bitmap has twice the horizontal and twice the vertical of the target rect.
-                int px = (int)targetRect.TopLeft.X + x / 2;
-                int py = (int)targetRect.TopLeft.Y + y / 2;
-
-                // get the quad pixel the bitmap
-                var quadColors = new[]
+                for (int x = 0; x < bitmap.Info.Width; x += 2)
                 {
+                    // NOTE: we divide by 2 because we are working with quad pixels,
+                    // // the bitmap has twice the horizontal and twice the vertical of the target rect.
+                    int px = (int)targetRect.TopLeft.X + x / 2;
+                    int py = (int)targetRect.TopLeft.Y + y / 2;
+
+                    // get the quad pixel the bitmap
+                    var quadColors = new[]
+                    {
                     bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
                     bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
                 };
 
-                // map it to a single char to represet the 4 pixels
-                char quadPixel = GetQuadPixelCharacter(quadColors);
+                    // map it to a single char to represet the 4 pixels
+                    char quadPixel = GetQuadPixelCharacter(quadColors);
 
-                // get the combined colors for the quad pixel
-                Color foreground = GetForegroundColorForQuadPixel(quadColors, quadPixel);
-                Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
+                    // get the combined colors for the quad pixel
+                    Color foreground = GetForegroundColorForQuadPixel(quadColors, quadPixel);
+                    Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
 
-                var imagePixel = new Pixel(new PixelForeground(new SimpleSymbol(quadPixel), color: foreground),
-                    new PixelBackground(background));
-                CurrentClip.ExecuteWithClipping(new Point(px, py),
-                    () =>
-                    {
-                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            (existingPixel, _) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
-                    });
-            }
+                    var imagePixel = new Pixel(new PixelForeground(new SimpleSymbol(quadPixel), color: foreground),
+                        new PixelBackground(background));
+                    CurrentClip.ExecuteWithClipping(new Point(px, py),
+                        () =>
+                        {
+                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                (existingPixel, _) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
+                        });
+                }
         }
 
         public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
@@ -150,11 +150,11 @@ namespace Consolonia.Core.Drawing
                     case VisualBrush:
                         throw new NotImplementedException();
                     case ISceneBrush sceneBrush:
-                    {
-                        ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
-                        if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
-                        return;
-                    }
+                        {
+                            ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
+                            if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
+                            return;
+                        }
                 }
 
                 Rect r2 = r.TransformToAABB(Transform);
@@ -162,19 +162,19 @@ namespace Consolonia.Core.Drawing
                 double width = r2.Width + (pen?.Thickness ?? 0);
                 double height = r2.Height + (pen?.Thickness ?? 0);
                 for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
-                {
-                    int px = (int)(r2.TopLeft.X + x);
-                    int py = (int)(r2.TopLeft.Y + y);
-
-                    ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
-                    CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                    for (int y = 0; y < height; y++)
                     {
-                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            (pixel, bb) => pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
-                            backgroundBrush);
-                    });
-                }
+                        int px = (int)(r2.TopLeft.X + x);
+                        int py = (int)(r2.TopLeft.Y + y);
+
+                        ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
+                        CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                        {
+                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                (pixel, bb) => pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
+                                backgroundBrush);
+                        });
+                    }
             }
 
             if (pen is null or { Thickness: 0 }
@@ -207,7 +207,7 @@ namespace Consolonia.Core.Drawing
             }
 
             string charactersDoDraw =
-                string.Concat(glyphRunImpl.GlyphIndices.Select(us => (char)us).ToArray());
+               string.Concat(glyphRunImpl.GlyphIndices.Select(us => (char)us).ToArray());
             DrawStringInternal(foreground, charactersDoDraw, glyphRun.GlyphTypeface);
         }
 
@@ -328,7 +328,7 @@ namespace Consolonia.Core.Drawing
             TextDecorationCollection textDecoration = pen.Thickness switch
             {
                 UnderlineThickness => TextDecorations.Underline,
-                StrikthroughThickness => TextDecorations.Strikethrough,
+                StrikethroughThickness => TextDecorations.Strikethrough,
                 _ => throw new ArgumentOutOfRangeException($"Unsupported thickness {pen.Thickness}")
             };
 
@@ -486,7 +486,7 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawStringInternal(IBrush foreground, string str, IGlyphTypeface typeface, Point origin = new())
+        private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
         {
             foreground = ConsoleBrush.FromBrush(foreground);
             if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleBrush)
@@ -500,52 +500,52 @@ namespace Consolonia.Core.Drawing
             Point whereToDraw = origin.Transform(Transform);
             int currentXPosition = 0;
 
-            //todo: support surrogates
-            foreach (char c in str)
+            // Each rune maps to a pixel
+            foreach(var rune in text.EnumerateRunes())
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
                 Color foregroundColor = consoleBrush.Color;
 
-                switch (c)
+                switch (rune.Value)
                 {
                     case '\t':
-                    {
-                        const int tabSize = 8;
-                        var consolePixel = new Pixel(' ', foregroundColor);
-                        for (int j = 0; j < tabSize; j++)
                         {
-                            Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
-                            CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                            const int tabSize = 8;
+                            var consolePixel = new Pixel(new Rune(' '), foregroundColor);
+                            for (int j = 0; j < tabSize; j++)
                             {
-                                _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
-                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                            });
-                        }
+                                Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
+                                CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                                {
+                                    _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
+                                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                                });
+                            }
 
-                        currentXPosition += tabSize - 1;
-                    }
+                            currentXPosition += tabSize - 1;
+                        }
                         break;
                     case '\n':
-                    {
-                        /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
-                         var consolePixel =  new Pixel(' ', foregroundColor);
+                        {
+                            /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
+                             var consolePixel =  new Pixel(' ', foregroundColor);
 
-                        _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
-                    }
+                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
+                        }
                         break;
                     case '\u200B':
                         currentXPosition--;
                         break;
                     default:
-                    {
-                        var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
-                        CurrentClip.ExecuteWithClipping(characterPoint, () =>
                         {
-                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                        });
-                    }
+                            var consolePixel = new Pixel(rune, foregroundColor, typeface.Style, typeface.Weight);
+                            CurrentClip.ExecuteWithClipping(characterPoint, () =>
+                            {
+                                _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                            });
+                        }
                         break;
                 }
             }

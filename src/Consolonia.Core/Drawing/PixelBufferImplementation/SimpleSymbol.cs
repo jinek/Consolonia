@@ -1,27 +1,29 @@
+using System.Diagnostics;
+using System.Text;
+
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
+    [DebuggerDisplay("'{Rune}'")]
     public readonly struct SimpleSymbol : ISymbol
     {
-        public SimpleSymbol(char character)
+        private readonly Rune _rune;
+
+        public SimpleSymbol(char ch)
+            : this(new Rune(ch))
         {
-            _character = character;
         }
 
-        private readonly char _character;
-
-        char ISymbol.GetCharacter()
+        public SimpleSymbol(Rune rune)
         {
-            return _character;
+            _rune = rune;
         }
+
+        public Rune Rune => _rune;
 
         public bool IsWhiteSpace()
-        {
-            return _character == char.MinValue;
-        }
+            => Rune.IsWhiteSpace(_rune);
 
         public ISymbol Blend(ref ISymbol symbolAbove)
-        {
-            return symbolAbove;
-        }
+            => symbolAbove;
     }
 }

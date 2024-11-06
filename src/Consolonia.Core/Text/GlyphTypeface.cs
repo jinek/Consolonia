@@ -77,7 +77,7 @@ namespace Consolonia.Core.Text
             UnderlinePosition = -1,
             UnderlineThickness = DrawingContextImpl.UnderlineThickness,
             StrikethroughPosition = -1,
-            StrikethroughThickness = DrawingContextImpl.StrikthroughThickness,
+            StrikethroughThickness = DrawingContextImpl.StrikethroughThickness,
             IsFixedPitch = true
         };
 

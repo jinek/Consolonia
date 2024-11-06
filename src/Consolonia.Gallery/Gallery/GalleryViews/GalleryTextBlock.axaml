@@ -31,6 +31,15 @@
         <TextBlock TextWrapping="Wrap"
                    Text="Special characters: Élève naïve: “𝔉𝔞𝔫𝔠𝔶” ligatures like ﬀ, ﬁ, and ﬂ; numbers ½, ¼; symbols like @, #, and €; emoji 😊; and math symbols Ω, ∑, √…"/>
         <WrapPanel>
+            <SelectableTextBlock Text="Surrogates:"/>
+            <SelectableTextBlock Text="🥰" />
+            <SelectableTextBlock Text="𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟"/>
+        </WrapPanel>
+        <WrapPanel FlowDirection="RightToLeft">
+            <SelectableTextBlock Text="من اليمين إلى اليسار" />
+            <SelectableTextBlock Text="RightToLeft:"/>
+        </WrapPanel>
+        <WrapPanel>
             <TextBlock Text="Underline" TextDecorations="Underline" HorizontalAlignment="Left" Margin="1 0"/>
             <TextBlock Text="Strikethrough" HorizontalAlignment="Left" TextDecorations="Strikethrough"  Margin="1 0"/>
             <TextBlock Text="Italic" FontStyle="Italic" HorizontalAlignment="Left"  Margin="1 0"/>

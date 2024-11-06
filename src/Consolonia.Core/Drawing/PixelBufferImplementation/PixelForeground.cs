@@ -1,15 +1,17 @@
 using System;
+using System.Diagnostics;
 using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
+    [DebuggerDisplay("'{Symbol.Rune}' [{Color}]")]
     public readonly struct PixelForeground
     {
         public PixelForeground(ISymbol symbol, FontWeight weight = FontWeight.Normal,
             FontStyle style = FontStyle.Normal, TextDecorationCollection textDecorations = null, Color? color = null)
         {
             ArgumentNullException.ThrowIfNull(symbol);
-            Symbol = symbol;
+            Symbol = symbol ?? new SimpleSymbol((char)0);
             Color = color ?? Colors.White;
             Weight = weight;
             Style = style;
@@ -37,8 +39,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             //todo: check default(char) is there
             ISymbol symbolAbove = pixelAboveForeground.Symbol;
             ArgumentNullException.ThrowIfNull(symbolAbove);
-
-            if (symbolAbove.IsWhiteSpace()) return this;
 
             ISymbol newSymbol = Symbol.Blend(ref symbolAbove);
 

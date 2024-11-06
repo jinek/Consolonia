@@ -144,9 +144,9 @@ namespace Consolonia.TestsCore
                     if (i == PixelBuffer.Width - 1 && j == PixelBuffer.Height - 1)
                         break;
                     Pixel pixel = PixelBuffer[new PixelBufferCoordinate(i, j)];
-                    char character = pixel.IsCaret ? 'Ꮖ' : pixel.Foreground.Symbol.GetCharacter();
+                    Rune rune = pixel.IsCaret ? new Rune('Ꮖ') : pixel.Foreground.Symbol.Rune;
                     //todo: check why cursor is not drawing
-                    stringBuilder.Append(character);
+                    stringBuilder.Append(rune);
                 }
 
                 stringBuilder.AppendLine();

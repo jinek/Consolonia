@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Text;
 using Avalonia.Media;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -6,6 +8,7 @@ using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
+    [DebuggerDisplay("'{Foreground.Symbol.Rune}' [{Foreground.Color}, {Background.Color}]")]
     public readonly struct Pixel
     {
         public PixelForeground Foreground { get; }
@@ -19,14 +22,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             IsCaret = isCaret;
         }
 
-        public Pixel(char character, Color foregroundColor, FontStyle style = FontStyle.Normal,
+        public Pixel(Rune rune, Color foregroundColor, FontStyle style = FontStyle.Normal,
             FontWeight weight = FontWeight.Normal) :
-            this(new SimpleSymbol(character), foregroundColor, style, weight)
-        {
-        }
-
-        public Pixel(byte drawingBoxSymbol, Color foregroundColor) : this(
-            new DrawingBoxSymbol(drawingBoxSymbol), foregroundColor)
+            this(new SimpleSymbol(rune), foregroundColor, style, weight)
         {
         }
 
