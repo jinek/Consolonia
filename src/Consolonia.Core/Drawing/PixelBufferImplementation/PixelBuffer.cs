@@ -71,17 +71,19 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         /// <summary>
-        /// Clears old pixel caret position and sets new caret position
+        ///     Clears old pixel caret position and sets new caret position
         /// </summary>
         /// <param name="point"></param>
         public void SetCaretPosition(PixelBufferCoordinate point)
         {
-            var oldCaretPixel = _buffer[_caretPosition.X, _caretPosition.Y];
-            _buffer[_caretPosition.X, _caretPosition.Y] = new Pixel(oldCaretPixel.Foreground, oldCaretPixel.Background, isCaret: false);
+            Pixel oldCaretPixel = _buffer[_caretPosition.X, _caretPosition.Y];
+            _buffer[_caretPosition.X, _caretPosition.Y] =
+                new Pixel(oldCaretPixel.Foreground, oldCaretPixel.Background, false);
 
             _caretPosition = point;
-            var newCaretPixel = _buffer[_caretPosition.X, _caretPosition.Y];
-            _buffer[_caretPosition.X, _caretPosition.Y] = new Pixel(newCaretPixel.Foreground, newCaretPixel.Background, isCaret: true);
+            Pixel newCaretPixel = _buffer[_caretPosition.X, _caretPosition.Y];
+            _buffer[_caretPosition.X, _caretPosition.Y] =
+                new Pixel(newCaretPixel.Foreground, newCaretPixel.Background, true);
         }
 
         public void Foreach(Func<PixelBufferCoordinate, Pixel, Pixel> replaceAction)
@@ -97,11 +99,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public void ForeachReadonly(Action<PixelBufferCoordinate, Pixel> action)
         {
             for (ushort j = 0; j < Height; j++)
-                for (ushort i = 0; i < Width; i++)
-                {
-                    Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
-                    action(new PixelBufferCoordinate(i, j), pixel);
-                }
+            for (ushort i = 0; i < Width; i++)
+            {
+                Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
+                action(new PixelBufferCoordinate(i, j), pixel);
+            }
         }
 
         private (ushort x, ushort y) ToXY(int i)

@@ -6,24 +6,26 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [DebuggerDisplay("'{Rune}'")]
     public readonly struct SimpleSymbol : ISymbol
     {
-        private readonly Rune _rune = new Rune('\0');
-
         public SimpleSymbol()
         {
-            _rune = new Rune('\0');
+            Rune = new Rune('\0');
         }
 
         public SimpleSymbol(Rune rune)
         {
-            _rune = rune;
+            Rune = rune;
         }
 
-        public Rune Rune => _rune;
+        public Rune Rune { get; } = new('\0');
 
         public bool IsWhiteSpace()
-            => Rune.IsWhiteSpace(_rune);
+        {
+            return Rune.IsWhiteSpace(Rune);
+        }
 
         public ISymbol Blend(ref ISymbol symbolAbove)
-            => (symbolAbove.Rune.Value != '\0') ? symbolAbove : this;
+        {
+            return symbolAbove.Rune.Value != '\0' ? symbolAbove : this;
+        }
     }
 }
