@@ -77,7 +77,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public void SetCaretPosition(PixelBufferCoordinate point)
         {
             var oldCaretPixel = _buffer[_caretPosition.X, _caretPosition.Y];
-            _buffer[_caretPosition.X, _caretPosition.Y] = new Pixel(oldCaretPixel.Foreground, oldCaretPixel.Background, isCaret: false);
+            _buffer[_caretPosition.X, _caretPosition.Y] = new Pixel(oldCaretPixel.Foreground, oldCaretPixel.Background/*, isCaret:false*/);
 
             _caretPosition = point;
             var newCaretPixel = _buffer[_caretPosition.X, _caretPosition.Y];

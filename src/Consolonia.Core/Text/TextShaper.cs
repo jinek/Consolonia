@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Text;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using NullLib.ConsoleEx;
@@ -11,7 +10,9 @@ namespace Consolonia.Core.Text
     {
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
-            var glyphInfos = Convert(text.Span.ToString());
+            Text = text.Span.ToString();
+
+            var glyphInfos = Convert(Text);
 
             var shapedBuffer = new ShapedBuffer(text, glyphInfos.Length,
                 options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);
@@ -20,26 +21,15 @@ namespace Consolonia.Core.Text
             return shapedBuffer;
         }
 
-        public static GlyphInfo[] Convert(string str)
+        public string Text { get; set; }
+
+        public static GlyphInfo[] Convert(string text)
         {
-            if (!str.IsNormalized(NormalizationForm.FormKC))
-                str = str.Normalize(NormalizationForm.FormKC);
-
-            // ReSharper disable once InvertIf
-            if (str.Any(
-                    c => ConsoleText.IsWideChar(c) &&
-                         char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
-            {
-                StringBuilder stringBuilder = new();
-                foreach (char c in str)
-                    stringBuilder.Append(ConsoleText.IsWideChar(c) && char.IsLetterOrDigit(c)
-                        ? '?' //todo: support wide characters
-                        : c);
-
-                str = stringBuilder.ToString();
-            }
-
-            return str.Select((c, index) => new GlyphInfo(c, index, 1)).ToArray();
+            return text.EnumerateRunes()
+                            .Select((rune, index) =>
+                                new GlyphInfo((ushort)rune.Value, index, ConsoleText.IsWideChar((char)rune.Value) ? 2 : 1)).ToArray();
         }
+
+
     }
 }

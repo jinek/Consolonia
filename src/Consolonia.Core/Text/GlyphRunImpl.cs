@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
@@ -14,12 +15,12 @@ namespace Consolonia.Core.Text
             FontRenderingEmSize = glyphTypeface.Metrics.DesignEmHeight;
             GlyphTypeface = glyphTypeface;
             BaselineOrigin = baselineOrigin;
-            GlyphIndices = glyphInfos.Select(info => info.GlyphIndex).ToArray();
+            GlyphInfos = glyphInfos;
             Bounds = new Rect(new Point(0, 0),
-                new Size(glyphInfos.Sum(info => info.GlyphAdvance), FontRenderingEmSize));
+                new Size(glyphInfos.Count, FontRenderingEmSize));
         }
 
-        public ushort[] GlyphIndices { get; }
+        public IReadOnlyList<GlyphInfo> GlyphInfos { get; }
 
         public void Dispose()
         {

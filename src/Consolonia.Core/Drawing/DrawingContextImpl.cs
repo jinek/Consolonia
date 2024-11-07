@@ -5,6 +5,7 @@ using System.Text;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
+using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -206,9 +207,9 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            string charactersDoDraw =
-               string.Concat(glyphRunImpl.GlyphIndices.Select(us => (char)us).ToArray());
-            DrawStringInternal(foreground, charactersDoDraw, glyphRun.GlyphTypeface);
+            var shapedBuffer = glyphRunImpl.GlyphInfos as ShapedBuffer;
+            var text = shapedBuffer.Text.ToString();
+            DrawStringInternal(foreground, text, glyphRun.GlyphTypeface);
         }
 
         public IDrawingContextLayerImpl CreateLayer(Size size)
@@ -500,7 +501,7 @@ namespace Consolonia.Core.Drawing
             int currentXPosition = 0;
 
             // Each rune maps to a pixel
-            foreach(var rune in text.EnumerateRunes())
+            foreach (var rune in text.EnumerateRunes())
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
                 Color foregroundColor = consoleBrush.Color;
