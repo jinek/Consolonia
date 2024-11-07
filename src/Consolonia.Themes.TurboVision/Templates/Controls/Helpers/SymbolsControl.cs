@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting;
 using Consolonia.Core.Text;
 using TextShaper = Consolonia.Core.Text.TextShaper;
 
@@ -69,10 +70,11 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             {
                 _text = value;
 
+                var glyphs = new TextShaper().ShapeText(value.AsMemory(), new TextShaperOptions(new GlyphTypeface(), 1));
                 _shapedText = new GlyphRun(new GlyphTypeface(),
                     1,
                     (_text ?? string.Empty).AsMemory(),
-                    TextShaper.Convert(_text ?? string.Empty).ToImmutableArray(),
+                    glyphs,
                     default(Point));
             }
         }
