@@ -102,13 +102,14 @@ namespace Consolonia.Core.Infrastructure
             // not enough as some runes (like '🥰') are a single rune, but are emitted as two console characters
             if (str.EnumerateRunes().Count() != str.Length)
             {
-                var (left, top) = Console.GetCursorPosition();
+                (int left, int top) = Console.GetCursorPosition();
                 _headBufferPoint = new PixelBufferCoordinate((ushort)left, (ushort)top);
             }
             else
             {
                 if (_headBufferPoint.X < Size.Width - str.Length)
-                    _headBufferPoint = new PixelBufferCoordinate((ushort)(_headBufferPoint.X + str.Length), _headBufferPoint.Y);
+                    _headBufferPoint =
+                        new PixelBufferCoordinate((ushort)(_headBufferPoint.X + str.Length), _headBufferPoint.Y);
                 else
                     _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
             }

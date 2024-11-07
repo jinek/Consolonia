@@ -135,8 +135,8 @@ namespace Consolonia.Core.Drawing
                         new PixelBackground(PixelBackgroundMode.Colored));
 
                 (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
-                    textDecorations, Rune rune) 
-                        pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight,
+                    textDecorations, Rune rune)
+                    pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight,
                         pixel.Foreground.Style, pixel.Foreground.TextDecorations,
                         pixel.Foreground.Symbol.Rune);
 
@@ -204,7 +204,7 @@ namespace Consolonia.Core.Drawing
                     _lastBufferPointStart = _currentBufferPoint = bufferPoint;
                 }
 
-                var rune = pixel.Foreground.Symbol.Rune;
+                Rune rune = pixel.Foreground.Symbol.Rune;
                 if (Rune.IsControl(rune)) /*|| character is '保' or '哥'*/
                     rune = new Rune(' '); // some terminals do not print \0
                 _stringBuilder.Append(rune);

@@ -67,10 +67,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
                 case PixelBackgroundMode.Transparent:
                     // if the foreground is transparent, ignore pixelAbove foreground.
-                    newForeground = pixelAbove.Foreground.Color != Colors.Transparent ? Foreground.Blend(pixelAbove.Foreground) : Foreground;
-                    
+                    newForeground = pixelAbove.Foreground.Color != Colors.Transparent
+                        ? Foreground.Blend(pixelAbove.Foreground)
+                        : Foreground;
+
                     // background is transparent, ignore pixelAbove background.
-                    newBackground = Background; 
+                    newBackground = Background;
                     break;
                 case PixelBackgroundMode.Shaded:
                     (newForeground, newBackground) = Shade();

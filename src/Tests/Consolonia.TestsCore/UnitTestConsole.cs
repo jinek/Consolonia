@@ -59,7 +59,7 @@ namespace Consolonia.TestsCore
             (ushort x, ushort y) = bufferPoint;
 
             int i = 0;
-            foreach (var rune in str.EnumerateRunes())
+            foreach (Rune rune in str.EnumerateRunes())
             {
                 PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
                     // ReSharper disable once AccessToModifiedClosure we are sure about inline execution
