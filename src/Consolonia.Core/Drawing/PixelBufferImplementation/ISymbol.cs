@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public interface ISymbol

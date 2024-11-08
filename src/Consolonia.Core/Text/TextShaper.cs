@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Avalonia.Media.TextFormatting;
-using Avalonia.Media.TextFormatting.Unicode;
 using Avalonia.Platform;
 
 namespace Consolonia.Core.Text

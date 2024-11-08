@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Text;
 using Avalonia.Media;
 
 // ReSharper disable MemberCanBePrivate.Global
