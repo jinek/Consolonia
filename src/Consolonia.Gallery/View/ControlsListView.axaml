@@ -7,15 +7,17 @@
         <gallery:GalleryItemConverter x:Key="GalleryItemConverter" />
     </Window.Resources>
     <DockPanel>
-        <DataGrid x:Name="Grid"
-                  SelectedIndex="0"
-                  SelectionMode="Single"
-                  DockPanel.Dock="Left">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name"
-                                    Binding="{Binding Name}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid RowDefinitions="* Auto" DockPanel.Dock="Left">
+            <DataGrid x:Name="Grid"
+                      SelectedIndex="0"
+                      SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name"
+                                        Binding="{Binding Name}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Grid.Row="1" Content="Exit" Click="Exit_Click"/>
+        </Grid>
         <Border Child="{Binding ElementName=Grid,Path=SelectedItem, Converter={StaticResource GalleryItemConverter}}"
                 BorderThickness="1"
                 BorderBrush="{DynamicResource ThemeBorderBrush}" />

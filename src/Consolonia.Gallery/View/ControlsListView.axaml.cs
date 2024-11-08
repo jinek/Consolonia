@@ -68,5 +68,10 @@ namespace Consolonia.Gallery.View
             _commandLineArgs = args;
             TrySetupSelected();
         }
+
+        private void Exit_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
