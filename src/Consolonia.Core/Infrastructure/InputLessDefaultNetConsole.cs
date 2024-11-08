@@ -118,7 +118,9 @@ namespace Consolonia.Core.Infrastructure
             PauseTask = task;
         }
 
+#pragma warning disable CA1063 // Implement IDisposable Correctly
         public void Dispose()
+#pragma warning restore CA1063 // Implement IDisposable Correctly
         {
             Dispose(true);
             GC.SuppressFinalize(this);
