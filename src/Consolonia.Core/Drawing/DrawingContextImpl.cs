@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Avalonia;
@@ -582,14 +583,24 @@ namespace Consolonia.Core.Drawing
                             {
                                 if (!GlyphMetrics.TryGetValue(glyph, out width))
                                 {
-                                    var (originalLeft, originalTop) = Console.GetCursorPosition();
-                                    Console.SetCursorPosition((int)characterPoint.X, (int)characterPoint.Y);
-                                    Console.Write(glyph);
-                                    var (left, top) = Console.GetCursorPosition();
-                                    width = (ushort)(left - (int)characterPoint.X);
-                                    Debug.WriteLine($"{glyph} {width}");
-                                    GlyphMetrics[glyph] = width;
-                                    Console.SetCursorPosition(originalLeft, originalTop);
+                                    try
+                                    {
+
+                                        var (originalLeft, originalTop) = Console.GetCursorPosition();
+                                        Console.SetCursorPosition((int)characterPoint.X, (int)characterPoint.Y);
+                                        Console.Write(glyph);
+                                        var (left, top) = Console.GetCursorPosition();
+                                        width = (ushort)(left - (int)characterPoint.X);
+                                        Debug.WriteLine($"{glyph} {width}");
+                                        GlyphMetrics[glyph] = width;
+                                        Console.SetCursorPosition(originalLeft, originalTop);
+                                    }
+                                    catch (IOException)
+                                    {
+                                        // IOException happens when running unit tests TODO: We should emulate this better
+                                        width = 1;
+                                        GlyphMetrics[glyph] = width;
+                                    }
                                 }
                             }
                             var symbol = new SimpleSymbol(glyph, width);
