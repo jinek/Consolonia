@@ -48,7 +48,5 @@ namespace Consolonia.Core.Infrastructure
 
             return Dispatcher.UIThread.InvokeAsync(() => { }).GetTask();
         }
-
-
     }
 }
