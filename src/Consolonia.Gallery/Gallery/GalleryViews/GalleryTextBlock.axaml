@@ -33,6 +33,12 @@
             <TextBlock TextWrapping="Wrap"
                        Text="Special characters: Élève naïve: “𝔉𝔞𝔫𝔠𝔶” ligatures like ﬀ, ﬁ and ﬂ numbers ½, ¼; symbols like @, #, and €; emoji 😊 and math symbols Ω, ∑, √…"/>
             <TextBlock Text="𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟 𝄞 🎵 👨‍👩‍👧‍👦  🏳️‍🌈" />
+            <StackPanel Spacing="0">
+                <TextBlock Text="International chars" TextDecorations="Underline"/>
+                <TextBlock Text="Chinese: 中国人 "/>
+                <TextBlock Text="Japanese: 漢字学"/>
+                <TextBlock Text="Korean: 한국인" />
+            </StackPanel>
             <WrapPanel>
                 <TextBlock Text="Underline" TextDecorations="Underline" HorizontalAlignment="Left" Margin="1 0"/>
                 <TextBlock Text="Strikethrough" HorizontalAlignment="Left" TextDecorations="Strikethrough"  Margin="1 0"/>
