@@ -38,6 +38,8 @@ namespace Consolonia.TestsCore
         PixelBufferSize IConsole.Size => _size;
         bool IConsole.CaretVisible { get; set; }
 
+        public bool SupportsComplexEmoji => true;
+
         public void SetTitle(string title)
         {
             Console.WriteLine($"Title changed to {title}");
