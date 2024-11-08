@@ -12,7 +12,6 @@ using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
-using NeoSmart.Unicode;
 using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
