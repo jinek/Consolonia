@@ -31,5 +31,7 @@ namespace Consolonia.Core.Infrastructure
         event Action<bool> FocusEvent;
         void PauseIO(Task task);
         void ClearOutput();
+
+        bool SupportsComplexEmoji { get; }
     }
 }

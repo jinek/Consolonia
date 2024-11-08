@@ -19,7 +19,16 @@ namespace Consolonia.Core.Infrastructure
 
         protected InputLessDefaultNetConsole()
         {
+            // detect emoji composition support
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.SetCursorPosition(0, 0);
+            Console.Write("👨‍👩‍👧‍👦");
+            var (left, _) = Console.GetCursorPosition();
+            Console.Clear();
+
+            SupportsComplexEmoji = left == 2;
             Console.CursorVisible = false;
+
             ActualizeSize();
         }
 
@@ -39,6 +48,8 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public PixelBufferSize Size { get; private set; }
+
+        public bool SupportsComplexEmoji { get; private set; }
 
         public void SetTitle(string title)
         {
