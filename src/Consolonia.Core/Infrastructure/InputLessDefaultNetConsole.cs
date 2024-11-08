@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Text;
+using NeoSmart.Unicode;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -93,26 +95,19 @@ namespace Consolonia.Core.Infrastructure
                 _ => foreground
             }));
 
+            if (Emoji.IsEmoji(str))
+                Debug.WriteLine(str);
+
             sb.Append(str);
             sb.Append(ConsoleUtils.Reset);
 
             Console.Write(sb.ToString());
 
-            // if we have complex unicode runes then we need to calculate the position manually,  EnumerateRunes is
-            // not enough as some runes (like '🥰') are a single rune, but are emitted as two console characters
-            if (str.EnumerateRunes().Count() != str.Length)
-            {
-                (int left, int top) = Console.GetCursorPosition();
-                _headBufferPoint = new PixelBufferCoordinate((ushort)left, (ushort)top);
-            }
+            if (_headBufferPoint.X < Size.Width - str.Length)
+                _headBufferPoint =
+                    new PixelBufferCoordinate((ushort)(_headBufferPoint.X + str.Length), _headBufferPoint.Y);
             else
-            {
-                if (_headBufferPoint.X < Size.Width - str.Length)
-                    _headBufferPoint =
-                        new PixelBufferCoordinate((ushort)(_headBufferPoint.X + str.Length), _headBufferPoint.Y);
-                else
-                    _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
-            }
+                _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
         }
 
         public event Action Resized;

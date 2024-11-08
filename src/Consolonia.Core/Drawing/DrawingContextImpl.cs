@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Avalonia;
@@ -11,6 +12,7 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
+using NeoSmart.Unicode;
 using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
@@ -26,6 +28,10 @@ namespace Consolonia.Core.Drawing
 
         public const int UnderlineThickness = 10;
         public const int StrikethroughThickness = 11;
+
+        // this computes once for a glyph it's width (this is only for emoticons and ligatures)
+        private readonly static Dictionary<string, ushort> GlyphMetrics = new();
+
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
         private readonly PixelBuffer _pixelBuffer;
@@ -71,37 +77,37 @@ namespace Consolonia.Core.Drawing
                 new SKPaint { FilterQuality = SKFilterQuality.Medium });
 
             for (int y = 0; y < bitmap.Info.Height; y += 2)
-            for (int x = 0; x < bitmap.Info.Width; x += 2)
-            {
-                // NOTE: we divide by 2 because we are working with quad pixels,
-                // // the bitmap has twice the horizontal and twice the vertical of the target rect.
-                int px = (int)targetRect.TopLeft.X + x / 2;
-                int py = (int)targetRect.TopLeft.Y + y / 2;
-
-                // get the quad pixel the bitmap
-                var quadColors = new[]
+                for (int x = 0; x < bitmap.Info.Width; x += 2)
                 {
+                    // NOTE: we divide by 2 because we are working with quad pixels,
+                    // // the bitmap has twice the horizontal and twice the vertical of the target rect.
+                    int px = (int)targetRect.TopLeft.X + x / 2;
+                    int py = (int)targetRect.TopLeft.Y + y / 2;
+
+                    // get the quad pixel the bitmap
+                    var quadColors = new[]
+                    {
                     bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
                     bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
                 };
 
-                // map it to a single char to represet the 4 pixels
-                char quadPixel = GetQuadPixelCharacter(quadColors);
+                    // map it to a single char to represet the 4 pixels
+                    char quadPixel = GetQuadPixelCharacter(quadColors);
 
-                // get the combined colors for the quad pixel
-                Color foreground = GetForegroundColorForQuadPixel(quadColors, quadPixel);
-                Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
+                    // get the combined colors for the quad pixel
+                    Color foreground = GetForegroundColorForQuadPixel(quadColors, quadPixel);
+                    Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
 
-                var imagePixel = new Pixel(
-                    new PixelForeground(new SimpleSymbol(new Rune(quadPixel)), color: foreground),
-                    new PixelBackground(background));
-                CurrentClip.ExecuteWithClipping(new Point(px, py),
-                    () =>
-                    {
-                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            (existingPixel, _) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
-                    });
-            }
+                    var imagePixel = new Pixel(
+                        new PixelForeground(new SimpleSymbol(quadPixel), color: foreground),
+                        new PixelBackground(background));
+                    CurrentClip.ExecuteWithClipping(new Point(px, py),
+                        () =>
+                        {
+                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                (existingPixel, _) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
+                        });
+                }
         }
 
         public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
@@ -152,11 +158,11 @@ namespace Consolonia.Core.Drawing
                     case VisualBrush:
                         throw new NotImplementedException();
                     case ISceneBrush sceneBrush:
-                    {
-                        ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
-                        if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
-                        return;
-                    }
+                        {
+                            ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
+                            if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
+                            return;
+                        }
                 }
 
                 Rect r2 = r.TransformToAABB(Transform);
@@ -164,19 +170,19 @@ namespace Consolonia.Core.Drawing
                 double width = r2.Width + (pen?.Thickness ?? 0);
                 double height = r2.Height + (pen?.Thickness ?? 0);
                 for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
-                {
-                    int px = (int)(r2.TopLeft.X + x);
-                    int py = (int)(r2.TopLeft.Y + y);
-
-                    ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
-                    CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                    for (int y = 0; y < height; y++)
                     {
-                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            (pixel, bb) => pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
-                            backgroundBrush);
-                    });
-                }
+                        int px = (int)(r2.TopLeft.X + x);
+                        int py = (int)(r2.TopLeft.Y + y);
+
+                        ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
+                        CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                        {
+                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                (pixel, bb) => pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
+                                backgroundBrush);
+                        });
+                    }
             }
 
             if (pen is null or { Thickness: 0 }
@@ -496,57 +502,109 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            //if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
+            // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
 
             Point whereToDraw = origin.Transform(Transform);
             int currentXPosition = 0;
+            int currentYPosition = 0;
 
-            // Each rune maps to a pixel
-            foreach (var rune in text.EnumerateRunes())
+            // Process text into collection of glyphs where
+            // a glyph is either text or a combination of chars which make up an emoji.
+            List<string> glyphs = new List<string>();
+            StringBuilder emoji = new StringBuilder();
+            var runes = text.EnumerateRunes();
+            Rune lastRune = new Rune();
+
+            while (runes.MoveNext())
             {
-                Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
+                if (lastRune.Value == Codepoints.ZWJ ||
+                    lastRune.Value == Codepoints.ORC ||
+                    Emoji.IsEmoji(runes.Current.ToString()))
+                {
+                    emoji.Append(runes.Current);
+                }
+                else if (runes.Current.Value == Emoji.ZeroWidthJoiner ||
+                        runes.Current.Value == Emoji.ObjectReplacementCharacter ||
+                        runes.Current.Value == Codepoints.VariationSelectors.EmojiSymbol ||
+                        runes.Current.Value == Codepoints.VariationSelectors.TextSymbol)
+                {
+                    emoji.Append(runes.Current);
+                }
+                else
+                {
+                    if (emoji.Length > 0)
+                    {
+                        glyphs.Add(emoji.ToString());
+                        emoji.Clear();
+                    }
+                    glyphs.Add(runes.Current.ToString());
+                }
+                lastRune = runes.Current;
+            }
+
+            // Each glyph maps to a pixel as a starting point.
+            // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
+            // the x and y are adjusted accodingly.
+            foreach (var glyph in glyphs)
+            {
+                Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));
                 Color foregroundColor = consoleBrush.Color;
 
-                switch (rune.Value)
+                switch (glyph)
                 {
-                    case '\t':
-                    {
-                        const int tabSize = 8;
-                        var consolePixel = new Pixel(new Rune(' '), foregroundColor);
-                        for (int j = 0; j < tabSize; j++)
+                    case "\t":
                         {
-                            Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
-                            CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                            const int tabSize = 8;
+                            var consolePixel = new Pixel(new SimpleSymbol(' '), foregroundColor);
+                            for (int j = 0; j < tabSize; j++)
                             {
-                                _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
-                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                            });
+                                Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
+                                CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                                {
+                                    _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
+                                        (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                                });
+                            }
+
+                            currentXPosition += tabSize - 1;
                         }
-
-                        currentXPosition += tabSize - 1;
-                    }
                         break;
-                    case '\n':
-                    {
-                        /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
-                         var consolePixel =  new Pixel(' ', foregroundColor);
-
-                        _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
-                    }
-                        break;
-                    case '\u200B':
-                        currentXPosition--;
+                    case "\r":
+                    case "\f":
+                    case "\n":
+                        currentXPosition = 0;
+                        currentYPosition++;
                         break;
                     default:
-                    {
-                        var consolePixel = new Pixel(rune, foregroundColor, typeface.Style, typeface.Weight);
-                        CurrentClip.ExecuteWithClipping(characterPoint, () =>
                         {
-                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                        });
-                    }
+                            ushort width = 1;
+                            if (Emoji.IsEmoji(glyph) || (glyph.Normalize(NormalizationForm.FormKD).Length != 1))
+                            {
+                                if (!GlyphMetrics.TryGetValue(glyph, out width))
+                                {
+                                    var (originalLeft, originalTop) = Console.GetCursorPosition();
+                                    Console.SetCursorPosition((int)characterPoint.X, (int)characterPoint.Y);
+                                    Console.Write(glyph);
+                                    var (left, top) = Console.GetCursorPosition();
+                                    width = (ushort)(left - (int)characterPoint.X);
+                                    Debug.WriteLine($"{glyph} {width}");
+                                    GlyphMetrics[glyph] = width;
+                                    Console.SetCursorPosition(originalLeft, originalTop);
+                                }
+                            }
+                            var symbol = new SimpleSymbol(glyph, width);
+                            var consolePixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
+                            CurrentClip.ExecuteWithClipping(characterPoint, () =>
+                            {
+                                _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                            });
+
+                            if (symbol.Width > 1)
+                                currentXPosition += symbol.Width;
+                            else
+                                currentXPosition++;
+                        }
                         break;
                 }
             }

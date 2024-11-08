@@ -1,31 +1,43 @@
+using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("'{Rune}'")]
+    [DebuggerDisplay("'{Text}'")]
     public readonly struct SimpleSymbol : ISymbol
     {
         public SimpleSymbol()
         {
-            Rune = new Rune('\0');
+            Text = string.Empty;
+            Width = 1;
         }
 
-        public SimpleSymbol(Rune rune)
+        public SimpleSymbol(char character)
         {
-            Rune = rune;
+            Text = character.ToString();
+            Width = 1;
         }
 
-        public Rune Rune { get; } = new('\0');
+        public SimpleSymbol(string text, ushort width)
+        {
+            Text = text;
+            Width = width;
+        }
+
+        public string Text { get; } = string.Empty;
+
+        public ushort Width { get; }
 
         public bool IsWhiteSpace()
         {
-            return Rune.IsWhiteSpace(Rune);
+            return string.IsNullOrWhiteSpace(Text);
         }
 
         public ISymbol Blend(ref ISymbol symbolAbove)
         {
-            return symbolAbove.Rune.Value != '\0' ? symbolAbove : this;
+            return !String.IsNullOrEmpty(symbolAbove.Text) ? symbolAbove : this;
         }
     }
 }

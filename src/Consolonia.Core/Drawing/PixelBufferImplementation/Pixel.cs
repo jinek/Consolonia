@@ -8,7 +8,7 @@ using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("'{Foreground.Symbol.Rune}' [{Foreground.Color}, {Background.Color}]")]
+    [DebuggerDisplay("'{Foreground.Symbol.Text}' [{Foreground.Color}, {Background.Color}]")]
     public readonly struct Pixel
     {
         public PixelForeground Foreground { get; }
@@ -16,12 +16,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public PixelBackground Background { get; }
 
         public bool IsCaret { get; }
-
-        public Pixel(Rune rune, Color foregroundColor, FontStyle style = FontStyle.Normal,
-            FontWeight weight = FontWeight.Normal) :
-            this(new SimpleSymbol(rune), foregroundColor, style, weight)
-        {
-        }
 
         public Pixel(ISymbol symbol, Color foregroundColor, FontStyle style = FontStyle.Normal,
             FontWeight weight = FontWeight.Normal, TextDecorationCollection textDecorations = null) : this(

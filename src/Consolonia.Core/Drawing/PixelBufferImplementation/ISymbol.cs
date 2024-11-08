@@ -5,9 +5,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     public interface ISymbol
     {
         /// <summary>
-        ///     The rune for the symbol
+        ///     The text for the symbol (This can be single character or unicode encoding for Emoji's and the like)
         /// </summary>
-        Rune Rune { get; }
+        string Text { get; }
+
+        /// <summary>
+        ///     The number of characters the symbol takes up
+        /// </summary>
+        ushort Width { get; } 
 
         bool IsWhiteSpace();
 

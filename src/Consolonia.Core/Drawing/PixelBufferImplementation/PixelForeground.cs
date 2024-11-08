@@ -4,7 +4,7 @@ using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("'{Symbol.Rune}' [{Color}]")]
+    [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
     public readonly struct PixelForeground
     {
         public PixelForeground(ISymbol symbol, FontWeight weight = FontWeight.Normal,

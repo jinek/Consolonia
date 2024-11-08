@@ -29,16 +29,8 @@
         <TextBlock TextWrapping="Wrap"
                    Text="Multiline TextBlock with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
         <TextBlock TextWrapping="Wrap"
-                   Text="Special characters: Élève naïve: “𝔉𝔞𝔫𝔠𝔶” ligatures like ﬀ, ﬁ, and ﬂ; numbers ½, ¼; symbols like @, #, and €; emoji 😊; and math symbols Ω, ∑, √…"/>
-        <StackPanel Spacing="0" >
-            <TextBlock Text="Surrogate Pairs:" />
-            <TextBlock Text="01234567890123456789" />
-            <TextBlock Text="[𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟]" Background="DarkRed" Foreground="White"/>
-            <TextBlock Text="[𝄞]" Margin="0" Background="Aqua"/>
-            <TextBlock Text="[🎵]" Margin="0" Background="Yellow"/>
-            <TextBlock Text="[👨‍👩‍👧‍👦]" Margin="0" Background="AliceBlue"/>
-            <TextBlock Text="[🏳️‍🌈]" Margin="0" Background="Purple"/>
-        </StackPanel>
+                   Text="Special characters: Élève naïve: “𝔉𝔞𝔫𝔠𝔶” ligatures like ﬀ, ﬁ and ﬂ numbers ½, ¼; symbols like @, #, and €; emoji 😊 and math symbols Ω, ∑, √…"/>
+        <TextBlock Text="𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟 𝄞 🎵 👨‍👩‍👧‍👦  🏳️‍🌈" />
         <WrapPanel>
             <TextBlock Text="Underline" TextDecorations="Underline" HorizontalAlignment="Left" Margin="1 0"/>
             <TextBlock Text="Strikethrough" HorizontalAlignment="Left" TextDecorations="Strikethrough"  Margin="1 0"/>
