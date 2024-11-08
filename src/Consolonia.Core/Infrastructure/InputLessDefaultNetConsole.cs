@@ -14,6 +14,7 @@ namespace Consolonia.Core.Infrastructure
 {
     public class InputLessDefaultNetConsole : IConsole
     {
+        private const string TestEmoji = "👨‍👩‍👧‍👦";
         private bool _caretVisible;
         private PixelBufferCoordinate _headBufferPoint;
 
@@ -22,7 +23,9 @@ namespace Consolonia.Core.Infrastructure
             // detect emoji composition support
             Console.OutputEncoding = Encoding.UTF8;
             Console.SetCursorPosition(0, 0);
-            Console.Write("👨‍👩‍👧‍👦");
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+            Console.Write(TestEmoji);
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
             var (left, _) = Console.GetCursorPosition();
             Console.Clear();
 
