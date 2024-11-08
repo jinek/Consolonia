@@ -31,21 +31,21 @@ namespace Consolonia.Core.Helpers
         }
 
         /// <summary>
-        ///  Process text into collection of glyphs where a glyph is either text or a combination of chars which make up an emoji.
+        ///     Process text into collection of glyphs where a glyph is either text or a combination of chars which make up an
+        ///     emoji.
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
         public static IList<string> GetGlyphs(this string text)
         {
-            IConsole console = AvaloniaLocator.Current.GetService<IConsole>();
+            var console = AvaloniaLocator.Current.GetService<IConsole>();
 
-            List<string> glyphs = new List<string>();
-            StringBuilder emoji = new StringBuilder();
-            var runes = text.EnumerateRunes();
-            Rune lastRune = new Rune();
+            var glyphs = new List<string>();
+            var emoji = new StringBuilder();
+            StringRuneEnumerator runes = text.EnumerateRunes();
+            var lastRune = new Rune();
 
             while (runes.MoveNext())
-            {
                 if (console.SupportsComplexEmoji)
                 {
                     if (lastRune.Value == Codepoints.ZWJ ||
@@ -55,9 +55,9 @@ namespace Consolonia.Core.Helpers
                         emoji.Append(runes.Current);
                     }
                     else if (runes.Current.Value == Emoji.ZeroWidthJoiner ||
-                            runes.Current.Value == Emoji.ObjectReplacementCharacter ||
-                            runes.Current.Value == Codepoints.VariationSelectors.EmojiSymbol ||
-                            runes.Current.Value == Codepoints.VariationSelectors.TextSymbol)
+                             runes.Current.Value == Emoji.ObjectReplacementCharacter ||
+                             runes.Current.Value == Codepoints.VariationSelectors.EmojiSymbol ||
+                             runes.Current.Value == Codepoints.VariationSelectors.TextSymbol)
                     {
                         emoji.Append(runes.Current);
                     }
@@ -68,8 +68,10 @@ namespace Consolonia.Core.Helpers
                             glyphs.Add(emoji.ToString());
                             emoji.Clear();
                         }
+
                         glyphs.Add(runes.Current.ToString());
                     }
+
                     lastRune = runes.Current;
                 }
                 else
@@ -80,29 +82,26 @@ namespace Consolonia.Core.Helpers
                         runes.Current.Value != Codepoints.VariationSelectors.TextSymbol)
                         glyphs.Add(runes.Current.ToString());
                 }
-            }
-            if (emoji.Length > 0)
-            {
-                glyphs.Add(emoji.ToString());
-            }
+
+            if (emoji.Length > 0) glyphs.Add(emoji.ToString());
             return glyphs;
         }
 
         /// <summary>
-        /// Measure text for actual width 
+        ///     Measure text for actual width
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
         public static ushort MeasureText(this string text)
         {
-            IConsole console = AvaloniaLocator.Current.GetService<IConsole>();
+            var console = AvaloniaLocator.Current.GetService<IConsole>();
 
             ushort width = 0;
             ushort lastWidth = 0;
-            foreach (var rune in text.EnumerateRunes())
+            foreach (Rune rune in text.EnumerateRunes())
             {
-                var runeWidth = (ushort)UnicodeCalculator.GetWidth(rune);
-                if (console.SupportsComplexEmoji && 
+                ushort runeWidth = (ushort)UnicodeCalculator.GetWidth(rune);
+                if (console.SupportsComplexEmoji &&
                     (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter))
                     width -= lastWidth;
                 else

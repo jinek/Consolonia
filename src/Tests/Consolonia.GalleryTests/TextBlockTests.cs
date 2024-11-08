@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Consolonia.GalleryTests
 {
     /// <summary>
-    /// Unit test for TextBlock view
+    ///     Unit test for TextBlock view
     /// </summary>
     [TestFixture]
     internal class TextBlockTests : GalleryTestsBaseBase
@@ -23,9 +23,8 @@ namespace Consolonia.GalleryTests
                 // multiline
                 "│Vivamus magna. Cras in mi at felis aliquet congue. Ut a │",
                 "│est eget ligula molestie gravida. Curabitur massa. Donec│",
-                    // special chars, emojis, etc.
+                // special chars, emojis, etc.
                 "𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟", "𝄞", "🎵", "“𝔉𝔞𝔫𝔠𝔶”", "ﬀ", "ﬁ", "½");
-
         }
     }
 }

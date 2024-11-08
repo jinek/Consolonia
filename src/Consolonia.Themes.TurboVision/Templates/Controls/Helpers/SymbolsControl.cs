@@ -69,7 +69,8 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             {
                 _text = value;
 
-                var glyphs = new TextShaper().ShapeText(value.AsMemory(), new TextShaperOptions(new GlyphTypeface(), 1));
+                ShapedBuffer glyphs =
+                    new TextShaper().ShapeText(value.AsMemory(), new TextShaperOptions(new GlyphTypeface(), 1));
                 _shapedText = new GlyphRun(new GlyphTypeface(),
                     1,
                     (_text ?? string.Empty).AsMemory(),

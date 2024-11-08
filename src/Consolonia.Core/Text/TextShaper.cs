@@ -5,7 +5,6 @@ using Consolonia.Core.Helpers;
 
 namespace Consolonia.Core.Text
 {
-
     public class TextShaper : ITextShaperImpl
     {
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
@@ -17,7 +16,7 @@ namespace Consolonia.Core.Text
 
             for (int i = 0; i < shapedBuffer.Length; i++)
                 shapedBuffer[i] = new GlyphInfo('X', i, glyphs[i].MeasureText());
-            
+
             return shapedBuffer;
         }
     }

@@ -111,45 +111,43 @@ namespace Consolonia.Core.Drawing
             var flushingBuffer = new FlushingBuffer(_console);
 
             for (ushort y = 0; y < pixelBuffer.Height; y++)
+            for (ushort x = 0; x < pixelBuffer.Width;)
             {
-                for (ushort x = 0; x < pixelBuffer.Width; )
+                Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
+
+                if (pixel.IsCaret)
                 {
-                    Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
+                    if (caretPosition != null)
+                        throw new InvalidOperationException("Caret is already shown");
+                    caretPosition = new PixelBufferCoordinate(x, y);
+                }
 
-                    if (pixel.IsCaret)
-                    {
-                        if (caretPosition != null)
-                            throw new InvalidOperationException("Caret is already shown");
-                        caretPosition = new PixelBufferCoordinate(x, y);
-                    }
-
-                    /* todo: There is not IWindowImpl.Invalidate anymore.
+                /* todo: There is not IWindowImpl.Invalidate anymore.
                      if (!_consoleWindow.InvalidatedRects.Any(rect =>
                         rect.ContainsExclusive(new Point(x, y)))) continue;*/
-                    if (pixel.Background.Mode != PixelBackgroundMode.Colored)
-                        throw new InvalidOperationException(
-                            "All pixels in the buffer must have exact console color before rendering");
+                if (pixel.Background.Mode != PixelBackgroundMode.Colored)
+                    throw new InvalidOperationException(
+                        "All pixels in the buffer must have exact console color before rendering");
 
 
-                    (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
-                        textDecorations, string text)
-                        pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight,
-                            pixel.Foreground.Style, pixel.Foreground.TextDecorations,
-                            pixel.Foreground.Symbol.Text);
+                (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
+                    textDecorations, string text)
+                    pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight,
+                        pixel.Foreground.Style, pixel.Foreground.TextDecorations,
+                        pixel.Foreground.Symbol.Text);
 
-                    //todo: indexOutOfRange during resize
-                    if (_cache[x, y] == pixelSpread)
-                    {
-                        x++;
-                        continue;
-                    }
-
-                    _cache[x, y] = pixelSpread;
-
-                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
-
-                    x += pixel.Foreground.Symbol.Width;
+                //todo: indexOutOfRange during resize
+                if (_cache[x, y] == pixelSpread)
+                {
+                    x++;
+                    continue;
                 }
+
+                _cache[x, y] = pixelSpread;
+
+                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+
+                x += pixel.Foreground.Symbol.Width;
             }
 
             flushingBuffer.Flush();

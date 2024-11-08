@@ -26,7 +26,7 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning disable CA1303 // Do not pass literals as localized parameters
             Console.Write(TestEmoji);
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
-            var (left, _) = Console.GetCursorPosition();
+            (int left, _) = Console.GetCursorPosition();
             Console.Clear();
 
             SupportsComplexEmoji = left == 2;
@@ -52,7 +52,7 @@ namespace Consolonia.Core.Infrastructure
 
         public PixelBufferSize Size { get; private set; }
 
-        public bool SupportsComplexEmoji { get; private set; }
+        public bool SupportsComplexEmoji { get; }
 
         public void SetTitle(string title)
         {
@@ -113,7 +113,7 @@ namespace Consolonia.Core.Infrastructure
 
             Console.Write(sb.ToString());
 
-            var textWidth = str.MeasureText();
+            ushort textWidth = str.MeasureText();
             if (_headBufferPoint.X < Size.Width - textWidth)
                 _headBufferPoint =
                     new PixelBufferCoordinate((ushort)(_headBufferPoint.X + textWidth), _headBufferPoint.Y);

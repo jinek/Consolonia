@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Text;
 using Consolonia.Core.Helpers;
@@ -16,7 +15,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         public SimpleSymbol(char character)
-            :this(character.ToString())
+            : this(character.ToString())
         {
         }
 
@@ -43,7 +42,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public ISymbol Blend(ref ISymbol symbolAbove)
         {
-            return !String.IsNullOrEmpty(symbolAbove.Text) ? symbolAbove : this;
+            return !string.IsNullOrEmpty(symbolAbove.Text) ? symbolAbove : this;
         }
     }
 }

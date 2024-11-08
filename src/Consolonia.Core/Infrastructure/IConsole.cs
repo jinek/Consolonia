@@ -15,6 +15,12 @@ namespace Consolonia.Core.Infrastructure
     {
         PixelBufferSize Size { get; }
         bool CaretVisible { get; set; }
+
+        /// <summary>
+        ///     This is true if console supports composing multiple emojis together (like: 👨‍👩‍👧‍👦).
+        /// </summary>
+        bool SupportsComplexEmoji { get; }
+
         void SetTitle(string title);
 
         void SetCaretPosition(PixelBufferCoordinate bufferPoint);
@@ -31,10 +37,5 @@ namespace Consolonia.Core.Infrastructure
         event Action<bool> FocusEvent;
         void PauseIO(Task task);
         void ClearOutput();
-
-        /// <summary>
-        /// This is true if console supports composing multiple emojis together (like: 👨‍👩‍👧‍👦).
-        /// </summary>
-        bool SupportsComplexEmoji { get; }
     }
 }

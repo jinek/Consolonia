@@ -10,7 +10,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <summary>
         ///     The number of characters the symbol takes up
         /// </summary>
-        ushort Width { get; } 
+        ushort Width { get; }
 
         bool IsWhiteSpace();
 
