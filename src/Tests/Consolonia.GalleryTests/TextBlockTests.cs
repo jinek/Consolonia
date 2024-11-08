@@ -6,6 +6,9 @@ using NUnit.Framework.Internal;
 
 namespace Consolonia.GalleryTests
 {
+    /// <summary>
+    /// Unit test for TextBlock view
+    /// </summary>
     [TestFixture]
     internal class TextBlockTests : GalleryTestsBaseBase
     {
