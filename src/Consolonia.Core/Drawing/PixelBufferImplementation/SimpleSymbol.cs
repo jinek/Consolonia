@@ -2,8 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using Consolonia.Core.Helpers;
-using NeoSmart.Unicode;
-using Wcwidth;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -25,13 +23,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public SimpleSymbol(string glyph)
         {
             Text = glyph;
-            Width = Text.MeasureGlyph();
+            Width = Text.MeasureText();
         }
 
         public SimpleSymbol(Rune rune)
         {
             Text = rune.ToString();
-            Width = Text.MeasureGlyph();
+            Width = Text.MeasureText();
         }
 
         public string Text { get; } = string.Empty;

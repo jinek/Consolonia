@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +7,8 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Text;
-using NeoSmart.Unicode;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -100,9 +99,10 @@ namespace Consolonia.Core.Infrastructure
 
             Console.Write(sb.ToString());
 
-            if (_headBufferPoint.X < Size.Width - str.Length)
+            var textWidth = str.MeasureText();
+            if (_headBufferPoint.X < Size.Width - textWidth)
                 _headBufferPoint =
-                    new PixelBufferCoordinate((ushort)(_headBufferPoint.X + str.Length), _headBufferPoint.Y);
+                    new PixelBufferCoordinate((ushort)(_headBufferPoint.X + textWidth), _headBufferPoint.Y);
             else
                 _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
         }

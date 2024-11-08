@@ -68,14 +68,23 @@ namespace Consolonia.Core.Helpers
                 }
                 lastRune = runes.Current;
             }
+            if (emoji.Length > 0)
+            {
+                glyphs.Add(emoji.ToString());
+            }
             return glyphs;
         }
 
-        public static ushort MeasureGlyph(this string glyph)
+        /// <summary>
+        /// Measure text for actual width 
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static ushort MeasureText(this string text)
         {
             ushort width = 0;
             ushort lastWidth = 0;
-            foreach (var rune in glyph.EnumerateRunes())
+            foreach (var rune in text.EnumerateRunes())
             {
                 var runeWidth = (ushort)UnicodeCalculator.GetWidth(rune);
                 if (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter)

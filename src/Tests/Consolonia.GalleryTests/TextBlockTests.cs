@@ -1,6 +1,4 @@
 using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Media;
 using Consolonia.GalleryTests.Base;
 using Consolonia.TestsCore;
 using NUnit.Framework;
