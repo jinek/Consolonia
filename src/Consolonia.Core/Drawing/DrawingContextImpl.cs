@@ -8,6 +8,7 @@ using Avalonia.Media.Immutable;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
@@ -504,44 +505,10 @@ namespace Consolonia.Core.Drawing
             int currentXPosition = 0;
             int currentYPosition = 0;
 
-            // Process text into collection of glyphs where
-            // a glyph is either text or a combination of chars which make up an emoji.
-            List<string> glyphs = new List<string>();
-            StringBuilder emoji = new StringBuilder();
-            var runes = text.EnumerateRunes();
-            Rune lastRune = new Rune();
-
-            while (runes.MoveNext())
-            {
-                if (lastRune.Value == Codepoints.ZWJ ||
-                    lastRune.Value == Codepoints.ORC ||
-                    Emoji.IsEmoji(runes.Current.ToString()))
-                {
-                    emoji.Append(runes.Current);
-                }
-                else if (runes.Current.Value == Emoji.ZeroWidthJoiner ||
-                        runes.Current.Value == Emoji.ObjectReplacementCharacter ||
-                        runes.Current.Value == Codepoints.VariationSelectors.EmojiSymbol ||
-                        runes.Current.Value == Codepoints.VariationSelectors.TextSymbol)
-                {
-                    emoji.Append(runes.Current);
-                }
-                else
-                {
-                    if (emoji.Length > 0)
-                    {
-                        glyphs.Add(emoji.ToString());
-                        emoji.Clear();
-                    }
-                    glyphs.Add(runes.Current.ToString());
-                }
-                lastRune = runes.Current;
-            }
-
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
             // the x and y are adjusted accodingly.
-            foreach (var glyph in glyphs)
+            foreach (var glyph in text.GetGlyphs())
             {
                 Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));
                 Color foregroundColor = consoleBrush.Color;

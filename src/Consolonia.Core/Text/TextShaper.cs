@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Core.Text
 {
@@ -10,8 +11,9 @@ namespace Consolonia.Core.Text
     {
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
-            var glyphInfos = text.Span.ToString().EnumerateRunes()
-                .Select((_, index) => new GlyphInfo('X', index, 1)).ToArray();
+            var glyphInfos = text.Span.ToString().GetGlyphs()
+                .Select((glyph, index) => new GlyphInfo('X', index, glyph.MeasureGlyph()))
+                .ToArray();
 
             var shapedBuffer = new ShapedBuffer(text, glyphInfos.Length,
                 options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);

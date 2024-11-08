@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Text;
+using Consolonia.Core.Helpers;
 using NeoSmart.Unicode;
 using Wcwidth;
 
@@ -24,13 +25,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public SimpleSymbol(string glyph)
         {
             Text = glyph;
-            Width = MeasureGlyph(Text);
+            Width = Text.MeasureGlyph();
         }
 
         public SimpleSymbol(Rune rune)
         {
             Text = rune.ToString();
-            Width = MeasureGlyph(Text);
+            Width = Text.MeasureGlyph();
         }
 
         public string Text { get; } = string.Empty;
@@ -45,26 +46,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public ISymbol Blend(ref ISymbol symbolAbove)
         {
             return !String.IsNullOrEmpty(symbolAbove.Text) ? symbolAbove : this;
-        }
-
-
-        private static ushort MeasureGlyph(string glyph)
-        {
-            ushort width = 0;
-            ushort lastWidth = 0;
-            foreach (var rune in glyph.EnumerateRunes())
-            {
-                var runeWidth = (ushort)UnicodeCalculator.GetWidth(rune);
-                if (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter)
-                    width -= lastWidth;
-                else
-                    width += runeWidth;
-
-                if (runeWidth > 0)
-                    lastWidth = runeWidth;
-            }
-
-            return width;
         }
     }
 }
