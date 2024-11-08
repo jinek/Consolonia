@@ -11,8 +11,7 @@ namespace Consolonia.Core.Text
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
             var glyphInfos = text.Span.ToString().EnumerateRunes()
-                            .Select((rune, index) =>
-                                new GlyphInfo((ushort)'X', index, 1)).ToArray();
+                .Select((_, index) => new GlyphInfo('X', index, 1)).ToArray();
 
             var shapedBuffer = new ShapedBuffer(text, glyphInfos.Length,
                 options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);

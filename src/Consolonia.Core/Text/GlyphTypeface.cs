@@ -28,23 +28,20 @@ namespace Consolonia.Core.Text
         {
             // we just return placeholder chars as we are pushing the raw
             // text to the console
-            return (ushort)'X';
+            return 'X';
         }
 
         public bool TryGetGlyph(uint codepoint, out ushort glyph)
         {
             // we just return placeholder chars as we are pushing the raw
             // text to the console
-            glyph = (ushort)'X';
+            glyph = 'X';
             return true;
         }
 
         public ushort[] GetGlyphs(ReadOnlySpan<uint> codepoints)
         {
-            checked
-            {
-                return codepoints.ToArray().Select(u => (ushort)'X').ToArray();
-            }
+            return codepoints.ToArray().Select(_ => (ushort)'X').ToArray();
         }
 
         public int GetGlyphAdvance(ushort glyph)

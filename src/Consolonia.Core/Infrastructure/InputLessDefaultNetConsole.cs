@@ -95,9 +95,6 @@ namespace Consolonia.Core.Infrastructure
                 _ => foreground
             }));
 
-            if (Emoji.IsEmoji(str))
-                Debug.WriteLine(str);
-
             sb.Append(str);
             sb.Append(ConsoleUtils.Reset);
 

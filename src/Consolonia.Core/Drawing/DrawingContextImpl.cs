@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Avalonia;
@@ -29,9 +27,6 @@ namespace Consolonia.Core.Drawing
 
         public const int UnderlineThickness = 10;
         public const int StrikethroughThickness = 11;
-
-        // this computes once for a glyph it's width (this is only for emoticons and ligatures)
-        private readonly static Dictionary<string, ushort> GlyphMetrics = new();
 
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
@@ -578,32 +573,7 @@ namespace Consolonia.Core.Drawing
                         break;
                     default:
                         {
-                            ushort width = 1;
-                            if (Emoji.IsEmoji(glyph) || (glyph.Normalize(NormalizationForm.FormKD).Length != 1))
-                            {
-                                if (!GlyphMetrics.TryGetValue(glyph, out width))
-                                {
-                                    try
-                                    {
-
-                                        var (originalLeft, originalTop) = Console.GetCursorPosition();
-                                        Console.SetCursorPosition((int)characterPoint.X, (int)characterPoint.Y);
-                                        Console.Write(glyph);
-                                        var (left, top) = Console.GetCursorPosition();
-                                        width = (ushort)(left - (int)characterPoint.X);
-                                        Debug.WriteLine($"{glyph} {width}");
-                                        GlyphMetrics[glyph] = width;
-                                        Console.SetCursorPosition(originalLeft, originalTop);
-                                    }
-                                    catch (IOException)
-                                    {
-                                        // IOException happens when running unit tests TODO: We should emulate this better
-                                        width = 1;
-                                        GlyphMetrics[glyph] = width;
-                                    }
-                                }
-                            }
-                            var symbol = new SimpleSymbol(glyph, width);
+                            var symbol = new SimpleSymbol(glyph);
                             var consolePixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
                             CurrentClip.ExecuteWithClipping(characterPoint, () =>
                             {
