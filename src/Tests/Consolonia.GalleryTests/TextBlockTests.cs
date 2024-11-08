@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Consolonia.GalleryTests.Base;
 using Consolonia.TestsCore;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace Consolonia.GalleryTests
 {
