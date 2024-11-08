@@ -74,9 +74,9 @@ namespace Consolonia.Core.Helpers
                 }
                 else
                 {
-                    if (runes.Current.Value != Emoji.ZeroWidthJoiner ||
-                        runes.Current.Value != Emoji.ObjectReplacementCharacter ||
-                        runes.Current.Value != Codepoints.VariationSelectors.EmojiSymbol ||
+                    if (runes.Current.Value != Emoji.ZeroWidthJoiner &&
+                        runes.Current.Value != Emoji.ObjectReplacementCharacter &&
+                        runes.Current.Value != Codepoints.VariationSelectors.EmojiSymbol &&
                         runes.Current.Value != Codepoints.VariationSelectors.TextSymbol)
                         glyphs.Add(runes.Current.ToString());
                 }
