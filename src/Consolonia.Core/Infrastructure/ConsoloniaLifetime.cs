@@ -1,9 +1,7 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
-using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
