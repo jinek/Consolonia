@@ -11,7 +11,8 @@ namespace Consolonia.Core.Text
     {
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
-            var console = AvaloniaLocator.Current.GetService<IConsole>();
+            var console = AvaloniaLocator.Current.GetRequiredService<IConsole>();
+
             var glyphs = text.Span.ToString().GetGlyphs(console.SupportsComplexEmoji);
 
             var shapedBuffer = new ShapedBuffer(text, glyphs.Count,
