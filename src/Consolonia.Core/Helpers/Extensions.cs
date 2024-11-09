@@ -36,7 +36,7 @@ namespace Consolonia.Core.Helpers
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static IList<string> GetGlyphs(this string text)
+        public static IReadOnlyList<string> GetGlyphs(this string text)
         {
             var console = AvaloniaLocator.Current.GetService<IConsole>();
 
