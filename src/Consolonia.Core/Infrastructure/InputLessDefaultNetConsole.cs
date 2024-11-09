@@ -35,7 +35,7 @@ namespace Consolonia.Core.Infrastructure
 
             Console.CursorVisible = false;
             Console.Clear();
-            
+
             ActualizeSize();
         }
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
