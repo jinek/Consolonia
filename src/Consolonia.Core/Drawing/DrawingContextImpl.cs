@@ -306,9 +306,11 @@ namespace Consolonia.Core.Drawing
             line = TransformLineInternal(line);
 
             Point head = line.PStart;
-
-            if (IfMoveConsoleCaretMove(pen, head))
+            if (pen.Brush is MoveConsoleCaretToPositionBrush)
+            {
+                _pixelBuffer.SetCaretPosition((PixelBufferCoordinate)head);
                 return;
+            }
 
             if (line.Vertical == false && pen.Thickness > 1)
             {
@@ -370,8 +372,11 @@ namespace Consolonia.Core.Drawing
 
             Point head = line.PStart;
 
-            if (IfMoveConsoleCaretMove(pen, head))
+            if (pen.Brush is MoveConsoleCaretToPositionBrush)
+            {
+                _pixelBuffer.SetCaretPosition((PixelBufferCoordinate)head);
                 return;
+            }
 
             var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
             if (extractColorCheckPlatformSupported == null)
@@ -400,21 +405,6 @@ namespace Consolonia.Core.Drawing
 
             line = (Line)line.WithTransform(Transform);
             return line;
-        }
-
-        /// <summary>
-        ///     If the pen brush is a MoveConsoleCaretToPositionBrush, move the caret
-        /// </summary>
-        /// <param name="pen"></param>
-        /// <param name="head"></param>
-        /// <returns></returns>
-        private bool IfMoveConsoleCaretMove(IPen pen, Point head)
-        {
-            if (pen.Brush is not MoveConsoleCaretToPositionBrush)
-                return false;
-
-            _pixelBuffer.SetCaretPosition((PixelBufferCoordinate)head);
-            return true;
         }
 
         /// <summary>
