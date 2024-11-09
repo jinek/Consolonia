@@ -10,7 +10,7 @@ using Consolonia.Core;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using NUnit.Framework;
 
-namespace Consolonia.TestsCore
+namespace Consolonia.NUnit
 {
     [NonParallelizable /*todo: switch to semaphore like https://stackoverflow.com/a/6427425/2362847 to allow other tests to execute in parallel*/]
 #pragma warning disable CA1001 // we are relying on TearDown by NUnit

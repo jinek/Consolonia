@@ -6,10 +6,10 @@ using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Gallery;
 using Consolonia.Gallery.View;
-using Consolonia.TestsCore;
+using Consolonia.NUnit;
 using NUnit.Framework;
 
-namespace Consolonia.GalleryTests.Base
+namespace Consolonia.Gallery.Tests.Base
 {
     internal abstract class GalleryTestsBaseBase : ConsoloniaAppTestBase<App>
     {
@@ -20,15 +20,6 @@ namespace Consolonia.GalleryTests.Base
             Args = new string[2];
             Args[1] = GetType().Name[..^5];
         }
-
-        [Test]
-        public async Task SingleTest()
-        {
-            await UITest.KeyInput(Key.Tab);
-            await PerformSingleTest();
-        }
-
-        protected abstract Task PerformSingleTest();
 
         [OneTimeSetUp]
         public async Task Setup()

@@ -13,7 +13,7 @@ using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
-namespace Consolonia.TestsCore
+namespace Consolonia.NUnit
 {
     public sealed class UnitTestConsole : IConsole
     {

@@ -21,6 +21,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public ISymbol Blend(ref ISymbol symbolAbove)
         {
+            if (symbolAbove.IsWhiteSpace())
+                return this;
             return symbolAbove;
         }
     }

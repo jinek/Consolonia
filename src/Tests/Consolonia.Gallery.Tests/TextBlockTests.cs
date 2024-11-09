@@ -1,16 +1,19 @@
 using System.Threading.Tasks;
-using Consolonia.GalleryTests.Base;
-using Consolonia.TestsCore;
+using Avalonia.Input;
+using Consolonia.Gallery.Tests.Base;
+using Consolonia.NUnit;
 using NUnit.Framework;
 
-namespace Consolonia.GalleryTests
+namespace Consolonia.Gallery.Tests
 {
     [TestFixture]
     internal class TextBlockTests : GalleryTestsBaseBase
     {
-        protected override Task PerformSingleTest()
+        [Test]
+        public async Task PerformSingleTest()
         {
-            return UITest.AssertHasText("This is TextBlock",
+            await UITest.KeyInput(Key.Tab);
+            await UITest.AssertHasText("This is TextBlock",
                 "Text trimming with charac...",
                 "Text trimming with word...",
                 "│Left aligned text    ",

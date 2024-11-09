@@ -13,7 +13,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Consolonia.Gallery\Consolonia.Gallery.csproj" />
-        <ProjectReference Include="..\Consolonia.TestsCore\Consolonia.TestsCore.csproj" />
+        <ProjectReference Include="..\..\Consolonia.NUnit\Consolonia.NUnit.csproj" />
     </ItemGroup>
 
 </Project>

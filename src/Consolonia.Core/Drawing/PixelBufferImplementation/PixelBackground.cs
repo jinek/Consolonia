@@ -13,7 +13,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public PixelBackground(PixelBackgroundMode mode, Color? color = null)
         {
-            Color = color ?? Colors.Black;
+            Color = color ?? Colors.Transparent;
             Mode = mode;
         }
 

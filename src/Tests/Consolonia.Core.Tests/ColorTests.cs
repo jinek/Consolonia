@@ -2,10 +2,10 @@ using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using NUnit.Framework;
 
-namespace Consolonia.TestsCore
+namespace Consolonia.Core.Tests
 {
     [TestFixture]
-    public class PixelTests
+    public class ColorTests
     {
         [Test]
         public void TestShade()

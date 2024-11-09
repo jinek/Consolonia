@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using NUnit.Framework;
 
-namespace Consolonia.TestsCore
+namespace Consolonia.NUnit
 {
     public static class TestHelpers
     {
