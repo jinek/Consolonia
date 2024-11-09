@@ -9,7 +9,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void GetGlyphsEmptyStringReturnsEmptyList()
         {
-            var text = string.Empty;
+            string text = string.Empty;
             var glyphs = text.GetGlyphs(true);
             Assert.IsEmpty(glyphs);
         }
@@ -17,7 +17,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void GetGlyphsSingleCharacterReturnsSingleGlyph()
         {
-            var text = "a";
+            string text = "a";
             Assert.AreEqual(1, text.MeasureText());
 
             var glyphs = text.GetGlyphs(true);
@@ -28,7 +28,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void GetGlyphsMultipleCharsReturnsMultipleGlyph()
         {
-            var text = "hello";
+            string text = "hello";
             Assert.AreEqual(5, text.MeasureText());
 
             var glyphs = text.GetGlyphs(true);
@@ -43,7 +43,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void GetGlyphsComplexCharsReturnsSingleGlyph()
         {
-            var text = "𝔉𝔞𝔫𝔠𝔶";
+            string text = "𝔉𝔞𝔫𝔠𝔶";
             Assert.AreEqual(5, text.MeasureText());
 
             var glyphs = text.GetGlyphs(true);
@@ -58,7 +58,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void GetGlyphsSingleEmojiReturnsSingleGlyph()
         {
-            var text = "👍";
+            string text = "👍";
             Assert.AreEqual(2, text.MeasureText());
 
             var glyphs = text.GetGlyphs(true);
@@ -69,7 +69,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void GetGlyphsWithComplexEmoji()
         {
-            var text = "👨‍👩‍👧‍👦";
+            string text = "👨‍👩‍👧‍👦";
             Assert.AreEqual(2, text.MeasureText());
 
             var glyphs = text.GetGlyphs(true);
@@ -80,7 +80,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void GetGlyphsWithMultipleGlyphs()
         {
-            var text = "a👍";
+            string text = "a👍";
             Assert.AreEqual(3, text.MeasureText());
 
             var glyphs = text.GetGlyphs(true);
@@ -92,7 +92,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void GetGlyphsWithOutComplexEmojiSupport()
         {
-            var text = "👨‍👩‍👧‍👦";
+            string text = "👨‍👩‍👧‍👦";
             Assert.AreEqual(2, text.MeasureText());
 
             var glyphs = text.GetGlyphs(false);

@@ -48,19 +48,16 @@ namespace Consolonia.Core.Tests
                 (0b0000_1111, "┼")
             };
 
-            foreach (var (code1, _) in symbols)
+            foreach ((byte code1, string _) in symbols)
+            foreach ((byte code2, string _) in symbols)
             {
-                foreach (var (code2, _) in symbols)
-                {
-                    ISymbol symbol1 = new DrawingBoxSymbol(code1);
-                    ISymbol symbol2 = new DrawingBoxSymbol(code2);
-                    ISymbol blendedSymbol = symbol1.Blend(ref symbol2);
-                    if (symbol1.Text != symbol2.Text)
-                        Debug.WriteLine($"{symbol1.Text} + {symbol2.Text} => {blendedSymbol.Text}");
-                    Assert.That(blendedSymbol.Text, Is.Not.Null);
-                }
+                ISymbol symbol1 = new DrawingBoxSymbol(code1);
+                ISymbol symbol2 = new DrawingBoxSymbol(code2);
+                ISymbol blendedSymbol = symbol1.Blend(ref symbol2);
+                if (symbol1.Text != symbol2.Text)
+                    Debug.WriteLine($"{symbol1.Text} + {symbol2.Text} => {blendedSymbol.Text}");
+                Assert.That(blendedSymbol.Text, Is.Not.Null);
             }
         }
-
-   }
+    }
 }

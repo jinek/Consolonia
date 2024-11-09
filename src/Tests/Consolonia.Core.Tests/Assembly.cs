@@ -18,6 +18,5 @@ namespace Consolonia.Core.Tests
             AvaloniaLocator.Current = new AvaloniaLocator()
                 .Bind<IConsole>().ToConstant(new UnitTestConsole(new PixelBufferSize(100, 100)));
         }
-
     }
 }

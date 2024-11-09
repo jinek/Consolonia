@@ -8,7 +8,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     public readonly struct PixelForeground
     {
         public PixelForeground(ISymbol symbol, Color color,
-            FontWeight weight = FontWeight.Normal, FontStyle style = FontStyle.Normal, TextDecorationCollection textDecorations = null)
+            FontWeight weight = FontWeight.Normal, FontStyle style = FontStyle.Normal,
+            TextDecorationCollection textDecorations = null)
         {
             ArgumentNullException.ThrowIfNull(symbol);
             Symbol = symbol;

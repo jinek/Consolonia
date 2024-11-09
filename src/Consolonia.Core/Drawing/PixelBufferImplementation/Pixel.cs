@@ -17,17 +17,17 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public bool IsCaret { get; }
 
         /// <summary>
-        /// Make a pixel foreground with transparent background
+        ///     Make a pixel foreground with transparent background
         /// </summary>
         /// <param name="symbol"></param>
         /// <param name="foregroundColor"></param>
         /// <param name="style"></param>
         /// <param name="weight"></param>
         /// <param name="textDecorations"></param>
-        public Pixel(ISymbol symbol, 
-            Color foregroundColor, 
+        public Pixel(ISymbol symbol,
+            Color foregroundColor,
             FontStyle style = FontStyle.Normal,
-            FontWeight weight = FontWeight.Normal, 
+            FontWeight weight = FontWeight.Normal,
             TextDecorationCollection textDecorations = null) : this(
             new PixelForeground(symbol, foregroundColor, weight, style, textDecorations),
             new PixelBackground(PixelBackgroundMode.Transparent))
@@ -35,23 +35,23 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         /// <summary>
-        /// Make a pixel with only background color, but no foreground
+        ///     Make a pixel with only background color, but no foreground
         /// </summary>
         /// <param name="background"></param>
-        public Pixel(PixelBackground background) : 
+        public Pixel(PixelBackground background) :
             this(new PixelForeground(new SimpleSymbol(), Colors.Transparent),
-            background)
+                background)
         {
         }
 
         /// <summary>
-        /// Make a pixel with foreground and background
+        ///     Make a pixel with foreground and background
         /// </summary>
         /// <param name="foreground"></param>
         /// <param name="background"></param>
         /// <param name="isCaret"></param>
-        public Pixel(PixelForeground foreground, 
-            PixelBackground background, 
+        public Pixel(PixelForeground foreground,
+            PixelBackground background,
             bool isCaret = false)
         {
             Foreground = foreground;
@@ -60,7 +60,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         /// <summary>
-        /// Blend the pixelAbove with the this pixel.
+        ///     Blend the pixelAbove with the this pixel.
         /// </summary>
         /// <param name="pixelAbove"></param>
         /// <returns></returns>

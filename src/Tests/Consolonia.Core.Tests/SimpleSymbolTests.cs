@@ -8,7 +8,6 @@ namespace Consolonia.Core.Tests
     [TestFixture]
     public class SimpleSymbolTests
     {
-
         [Test]
         public void ConstructorChar()
         {
@@ -36,7 +35,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void ConstructorRuneEmoji()
         {
-            var rune = "👍".EnumerateRunes().First();
+            Rune rune = "👍".EnumerateRunes().First();
             ISymbol symbol = new SimpleSymbol(rune);
             Assert.That(symbol.Text, Is.EqualTo("👍"));
             Assert.That(symbol.Width, Is.EqualTo(2));

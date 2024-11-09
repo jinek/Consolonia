@@ -7,11 +7,10 @@ namespace Consolonia.Core.Tests
     [TestFixture]
     public class PixelTests
     {
-
         [Test]
         public void ConstructorColorOnly()
         {
-            Pixel pixel = new Pixel(new PixelBackground(Colors.Red));
+            var pixel = new Pixel(new PixelBackground(Colors.Red));
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Colored));
         }
@@ -19,7 +18,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void ConstructorColorAndSymbol()
         {
-            Pixel pixel = new Pixel(new SimpleSymbol("a"), Colors.Red);
+            var pixel = new Pixel(new SimpleSymbol("a"), Colors.Red);
             Assert.That(pixel.Foreground.Symbol.Text, Is.EqualTo("a"));
             Assert.That(pixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixel.Foreground.Style, Is.EqualTo(FontStyle.Normal));
@@ -32,7 +31,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void ConstructorDrawingBoxSymbol()
         {
-            Pixel pixel = new Pixel(new DrawingBoxSymbol(0b0000_1111), Colors.Red);
+            var pixel = new Pixel(new DrawingBoxSymbol(0b0000_1111), Colors.Red);
             Assert.That(pixel.Foreground.Symbol.Text, Is.EqualTo("┼"));
             Assert.That(pixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixel.Foreground.Style, Is.EqualTo(FontStyle.Normal));
@@ -45,7 +44,8 @@ namespace Consolonia.Core.Tests
         [Test]
         public void ConstructorDrawingBoxSymbolAndColor()
         {
-            Pixel pixel = new Pixel(new PixelForeground(new DrawingBoxSymbol(0b0000_1111), color: Colors.Red), new PixelBackground(Colors.Blue));
+            var pixel = new Pixel(new PixelForeground(new DrawingBoxSymbol(0b0000_1111), Colors.Red),
+                new PixelBackground(Colors.Blue));
             Assert.That(pixel.Foreground.Symbol.Text, Is.EqualTo("┼"));
             Assert.That(pixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixel.Foreground.Style, Is.EqualTo(FontStyle.Normal));
@@ -58,8 +58,9 @@ namespace Consolonia.Core.Tests
         [Test]
         public void BlendTransparentBackground()
         {
-            Pixel pixel = new Pixel(new PixelBackground(Colors.Green));
-            Pixel pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red), new PixelBackground(Colors.Transparent));
+            var pixel = new Pixel(new PixelBackground(Colors.Green));
+            var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+                new PixelBackground(Colors.Transparent));
             Pixel newPixel = pixel.Blend(pixel2);
             Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
             Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Red));
@@ -69,8 +70,9 @@ namespace Consolonia.Core.Tests
         [Test]
         public void BlendColoredBackground()
         {
-            Pixel pixel = new Pixel(new PixelBackground(Colors.Green));
-            Pixel pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red), new PixelBackground(Colors.Blue));
+            var pixel = new Pixel(new PixelBackground(Colors.Green));
+            var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+                new PixelBackground(Colors.Blue));
             Pixel newPixel = pixel.Blend(pixel2);
             Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
             Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Red));

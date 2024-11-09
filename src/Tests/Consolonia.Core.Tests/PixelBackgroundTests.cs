@@ -14,7 +14,7 @@ namespace Consolonia.Core.Tests
             Assert.That(pixelBackground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixelBackground.Mode, Is.EqualTo(PixelBackgroundMode.Colored));
         }
-        
+
         [TestCase(PixelBackgroundMode.Transparent)]
         [TestCase(PixelBackgroundMode.Colored)]
         [TestCase(PixelBackgroundMode.Shaded)]

@@ -34,7 +34,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             byte leftPart = (byte)(upRightDownLeft & 0b1111_0000);
             bool hasLeftPart = leftPart > 0;
 
-             switch (upRightDownLeft & 0b0000_1111)
+            switch (upRightDownLeft & 0b0000_1111)
             {
                 case 0b0000_1000:
                 case 0b0000_0010:
@@ -107,12 +107,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             if (symbolAbove.IsWhiteSpace()) return this;
 
-            if (symbolAbove is not DrawingBoxSymbol drawingBoxSymbol) 
+            if (symbolAbove is not DrawingBoxSymbol drawingBoxSymbol)
                 return symbolAbove;
-            
+
             if (drawingBoxSymbol._upRightDownLeft == BoldSymbol || _upRightDownLeft == BoldSymbol)
                 return new DrawingBoxSymbol(BoldSymbol);
-            
+
             return new DrawingBoxSymbol((byte)(_upRightDownLeft | drawingBoxSymbol._upRightDownLeft));
         }
 

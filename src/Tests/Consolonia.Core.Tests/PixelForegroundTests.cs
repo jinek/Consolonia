@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using NUnit.Framework;
@@ -48,7 +49,7 @@ namespace Consolonia.Core.Tests
         public void ConstructorWithSymbolAndTextDecorations()
         {
             var symbol = new SimpleSymbol('a');
-            var textDecorations = TextDecorations.Underline;
+            TextDecorationCollection textDecorations = TextDecorations.Underline;
             var pixelForeground = new PixelForeground(symbol, Colors.Red, textDecorations: textDecorations);
             Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixelForeground.Symbol.Text, Is.EqualTo("a"));
@@ -60,7 +61,7 @@ namespace Consolonia.Core.Tests
         [Test]
         public void ConstructorWithWideCharacter()
         {
-            var rune = "🎵".EnumerateRunes().First();
+            Rune rune = "🎵".EnumerateRunes().First();
             var symbol = new SimpleSymbol(rune);
             var pixelForeground = new PixelForeground(symbol, Colors.Red);
             Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Red));
@@ -77,7 +78,7 @@ namespace Consolonia.Core.Tests
             var pixelForeground = new PixelForeground(symbol, Colors.Red);
             var symbolAbove = new SimpleSymbol('b');
             var pixelForegroundAbove = new PixelForeground(symbolAbove, Colors.Blue);
-            var newPixelForeground = pixelForeground.Blend(pixelForegroundAbove);
+            PixelForeground newPixelForeground = pixelForeground.Blend(pixelForegroundAbove);
             Assert.That(newPixelForeground.Color, Is.EqualTo(Colors.Blue));
             Assert.That(newPixelForeground.Symbol.Text, Is.EqualTo("b"));
         }
@@ -86,10 +87,12 @@ namespace Consolonia.Core.Tests
         public void BlendComplex()
         {
             var symbol = new SimpleSymbol('a');
-            var pixelForeground = new PixelForeground(symbol, Colors.Red, FontWeight.Light, FontStyle.Normal, TextDecorations.Strikethrough);
+            var pixelForeground = new PixelForeground(symbol, Colors.Red, FontWeight.Light, FontStyle.Normal,
+                TextDecorations.Strikethrough);
             var symbolAbove = new SimpleSymbol('b');
-            var pixelForegroundAbove = new PixelForeground(symbolAbove, Colors.Blue, FontWeight.Bold, FontStyle.Italic, TextDecorations.Underline);
-            var newPixelForeground = pixelForeground.Blend(pixelForegroundAbove);
+            var pixelForegroundAbove = new PixelForeground(symbolAbove, Colors.Blue, FontWeight.Bold, FontStyle.Italic,
+                TextDecorations.Underline);
+            PixelForeground newPixelForeground = pixelForeground.Blend(pixelForegroundAbove);
             Assert.That(newPixelForeground.Color, Is.EqualTo(Colors.Blue));
             Assert.That(newPixelForeground.Symbol.Text, Is.EqualTo("b"));
             Assert.That(newPixelForeground.Weight, Is.EqualTo(FontWeight.Bold));
@@ -104,7 +107,7 @@ namespace Consolonia.Core.Tests
             var pixelForeground = new PixelForeground(symbol, Colors.Red);
             var symbolAbove = new SimpleSymbol("🎶");
             var pixelForegroundAbove = new PixelForeground(symbolAbove, Colors.Blue);
-            var newPixelForeground = pixelForeground.Blend(pixelForegroundAbove);
+            PixelForeground newPixelForeground = pixelForeground.Blend(pixelForegroundAbove);
             Assert.That(newPixelForeground.Color, Is.EqualTo(Colors.Blue));
             Assert.That(newPixelForeground.Symbol.Text, Is.EqualTo("🎶"));
         }

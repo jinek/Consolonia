@@ -95,7 +95,7 @@ namespace Consolonia.Core.Drawing
                 Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
 
                 var imagePixel = new Pixel(
-                    new PixelForeground(new SimpleSymbol(quadPixel), color: foreground),
+                    new PixelForeground(new SimpleSymbol(quadPixel), foreground),
                     new PixelBackground(background));
                 CurrentClip.ExecuteWithClipping(new Point(px, py),
                     () =>
