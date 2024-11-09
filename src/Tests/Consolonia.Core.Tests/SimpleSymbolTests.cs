@@ -1,10 +1,6 @@
 using System.Linq;
 using System.Text;
-using Avalonia;
-using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Infrastructure;
-using Consolonia.NUnit;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests
