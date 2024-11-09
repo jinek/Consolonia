@@ -18,6 +18,9 @@ namespace Consolonia.Core.Infrastructure
 
         protected InputLessDefaultNetConsole()
         {
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+            Console.Write(ConsoleUtils.EnableAlternateBuffer);
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
             Console.CursorVisible = false;
             ActualizeSize();
         }
@@ -115,10 +118,15 @@ namespace Consolonia.Core.Infrastructure
             PauseTask = task;
         }
 
+#pragma warning disable CA1063 // Implement IDisposable Correctly
         public void Dispose()
+#pragma warning restore CA1063 // Implement IDisposable Correctly
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+            Console.Write(ConsoleUtils.DisableAlternateBuffer);
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
         public void ClearOutput()
