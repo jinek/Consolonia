@@ -28,7 +28,7 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
             (int left, _) = Console.GetCursorPosition();
             SupportsComplexEmoji = left == 2;
-            
+
 #pragma warning disable CA1303 // Do not pass literals as localized parameters
             Console.Write(ConsoleUtils.EnableAlternateBuffer);
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
