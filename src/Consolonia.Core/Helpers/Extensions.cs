@@ -35,7 +35,7 @@ namespace Consolonia.Core.Helpers
         ///     emoji.
         /// </summary>
         /// <param name="text">text to get glyphs from</param>
-        /// <param name="supportsComplexEmoji"If true, emojis like 👨‍👩‍👧‍👦 will be treated as a single glyph></param>
+        /// <param name="supportsComplexEmoji">If true, emojis like 👨‍👩‍👧‍👦 will be treated as a single glyph></param>
         /// <returns></returns>
         public static IReadOnlyList<string> GetGlyphs(this string text, bool supportsComplexEmoji)
         {
