@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using NUnit.Framework;
 
@@ -49,9 +48,9 @@ namespace Consolonia.Core.Tests
                 (0b0000_1111, "┼")
             };
 
-            foreach (var (code1, text1) in symbols)
+            foreach (var (code1, _) in symbols)
             {
-                foreach (var (code2, text2) in symbols)
+                foreach (var (code2, _) in symbols)
                 {
                     ISymbol symbol1 = new DrawingBoxSymbol(code1);
                     ISymbol symbol2 = new DrawingBoxSymbol(code2);

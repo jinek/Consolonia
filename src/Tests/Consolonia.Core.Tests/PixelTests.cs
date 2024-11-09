@@ -1,6 +1,5 @@
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.NUnit;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests

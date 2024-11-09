@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Text;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using NUnit.Framework;

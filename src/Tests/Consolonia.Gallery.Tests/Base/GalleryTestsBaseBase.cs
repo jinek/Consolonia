@@ -1,10 +1,8 @@
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Input;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Gallery;
 using Consolonia.Gallery.View;
 using Consolonia.NUnit;
 using NUnit.Framework;
