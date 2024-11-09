@@ -26,8 +26,8 @@ namespace Consolonia.Core.Infrastructure
             // enable alternate screen so original console screen is not affected by the app
             Console.Write(ConsoleUtils.EnableAlternateBuffer);
 
-            /// Detect complex emoji support by writing a complex emoji and checking cursor position.
-            /// If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
+            // Detect complex emoji support by writing a complex emoji and checking cursor position.
+            // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
             Console.SetCursorPosition(0, 0);
             Console.Write(TestEmoji);
             (int left, _) = Console.GetCursorPosition();
