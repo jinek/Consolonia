@@ -37,12 +37,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool IsWhiteSpace()
         {
-            return string.IsNullOrWhiteSpace(Text);
+            return string.IsNullOrEmpty(Text);
         }
 
         public ISymbol Blend(ref ISymbol symbolAbove)
         {
-            return !string.IsNullOrEmpty(symbolAbove.Text) ? symbolAbove : this;
+            return symbolAbove.IsWhiteSpace() ? this : symbolAbove;
         }
     }
 }

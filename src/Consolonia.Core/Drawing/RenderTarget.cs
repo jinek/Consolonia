@@ -130,10 +130,11 @@ namespace Consolonia.Core.Drawing
                         "All pixels in the buffer must have exact console color before rendering");
 
 
-                (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
-                    textDecorations, string text)
-                    pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight,
-                        pixel.Foreground.Style, pixel.Foreground.TextDecorations,
+                var pixelSpread = (pixel.Background.Color, 
+                        pixel.Foreground.Color, 
+                        pixel.Foreground.Weight,
+                        pixel.Foreground.Style, 
+                        pixel.Foreground.TextDecorations,
                         pixel.Foreground.Symbol.Text);
 
                 //todo: indexOutOfRange during resize

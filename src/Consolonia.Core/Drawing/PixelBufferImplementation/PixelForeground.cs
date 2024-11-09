@@ -7,12 +7,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
     public readonly struct PixelForeground
     {
-        public PixelForeground(ISymbol symbol, FontWeight weight = FontWeight.Normal,
-            FontStyle style = FontStyle.Normal, TextDecorationCollection textDecorations = null, Color? color = null)
+        public PixelForeground(ISymbol symbol, Color color,
+            FontWeight weight = FontWeight.Normal, FontStyle style = FontStyle.Normal, TextDecorationCollection textDecorations = null)
         {
             ArgumentNullException.ThrowIfNull(symbol);
             Symbol = symbol;
-            Color = color ?? Colors.White;
+            Color = color;
             Weight = weight;
             Style = style;
             TextDecorations = textDecorations;
@@ -31,7 +31,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public PixelForeground Shade()
         {
             Color newColor = Color.Shade();
-            return new PixelForeground(Symbol, Weight, Style, TextDecorations, newColor);
+            return new PixelForeground(Symbol, newColor, Weight, Style, TextDecorations);
         }
 
         public PixelForeground Blend(PixelForeground pixelAboveForeground)
@@ -42,8 +42,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             ISymbol newSymbol = Symbol.Blend(ref symbolAbove);
 
-            return new PixelForeground(newSymbol, pixelAboveForeground.Weight, pixelAboveForeground.Style,
-                pixelAboveForeground.TextDecorations, pixelAboveForeground.Color);
+            return new PixelForeground(newSymbol, pixelAboveForeground.Color, pixelAboveForeground.Weight,
+                pixelAboveForeground.Style, pixelAboveForeground.TextDecorations);
         }
     }
 }

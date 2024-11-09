@@ -8,7 +8,7 @@ namespace Consolonia.Core.Tests
     public class ColorTests
     {
         [Test]
-        public void TestShade()
+        public void Shade()
         {
             Color foreground = Colors.Gray;
             Color newColor = foreground.Shade();
@@ -18,7 +18,7 @@ namespace Consolonia.Core.Tests
         }
 
         [Test]
-        public void TestBrighten()
+        public void Brighten()
         {
             Color foreground = Colors.Gray;
             Color newColor = foreground.Brighten();
@@ -28,7 +28,7 @@ namespace Consolonia.Core.Tests
         }
 
         [Test]
-        public void TestRelativeShade()
+        public void RelativeShade()
         {
             Color foreground = Colors.LightGray;
             Color background = Colors.DarkGray;
@@ -46,7 +46,7 @@ namespace Consolonia.Core.Tests
         }
 
         [Test]
-        public void TestRelativeBrighten()
+        public void RelativeBrighten()
         {
             Color foreground = Colors.LightGray;
             Color background = Colors.DarkGray;
@@ -64,7 +64,7 @@ namespace Consolonia.Core.Tests
         }
 
         [Test]
-        public void TestShadeBoundaries()
+        public void ShadeBoundaries()
         {
             Color foreground = Colors.White;
             Color background = Colors.Black;
@@ -98,7 +98,7 @@ namespace Consolonia.Core.Tests
         }
 
         [Test]
-        public void TestBrightenBoundaries()
+        public void BrightenBoundaries()
         {
             Color foreground = Colors.Black;
             Color background = Colors.Black;

@@ -1,7 +1,9 @@
 using System;
+using Avalonia;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.Helpers;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Text
 {
@@ -9,7 +11,8 @@ namespace Consolonia.Core.Text
     {
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
-            var glyphs = text.Span.ToString().GetGlyphs();
+            var console = AvaloniaLocator.Current.GetService<IConsole>();
+            var glyphs = text.Span.ToString().GetGlyphs(console.SupportsComplexEmoji);
 
             var shapedBuffer = new ShapedBuffer(text, glyphs.Count,
                 options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);

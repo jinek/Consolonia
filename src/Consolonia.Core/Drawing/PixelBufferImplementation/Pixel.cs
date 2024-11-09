@@ -16,34 +16,55 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool IsCaret { get; }
 
-        public Pixel(ISymbol symbol, Color foregroundColor, FontStyle style = FontStyle.Normal,
-            FontWeight weight = FontWeight.Normal, TextDecorationCollection textDecorations = null) : this(
-            new PixelForeground(symbol, weight, style, textDecorations, foregroundColor),
+        /// <summary>
+        /// Make a pixel foreground with transparent background
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <param name="foregroundColor"></param>
+        /// <param name="style"></param>
+        /// <param name="weight"></param>
+        /// <param name="textDecorations"></param>
+        public Pixel(ISymbol symbol, 
+            Color foregroundColor, 
+            FontStyle style = FontStyle.Normal,
+            FontWeight weight = FontWeight.Normal, 
+            TextDecorationCollection textDecorations = null) : this(
+            new PixelForeground(symbol, foregroundColor, weight, style, textDecorations),
             new PixelBackground(PixelBackgroundMode.Transparent))
         {
         }
 
-        public Pixel(Color backgroundColor) : this(
-            new PixelBackground(PixelBackgroundMode.Colored, backgroundColor))
-        {
-        }
-
-        public Pixel(PixelBackgroundMode mode) : this(new PixelBackground(mode))
-        {
-        }
-
-        public Pixel(PixelBackground background) : this(new PixelForeground(new SimpleSymbol()),
+        /// <summary>
+        /// Make a pixel with only background color, but no foreground
+        /// </summary>
+        /// <param name="background"></param>
+        public Pixel(PixelBackground background) : 
+            this(new PixelForeground(new SimpleSymbol(), Colors.Transparent),
             background)
         {
         }
 
-        public Pixel(PixelForeground foreground, PixelBackground background, bool isCaret = false)
+        /// <summary>
+        /// Make a pixel with foreground and background
+        /// </summary>
+        /// <param name="foreground"></param>
+        /// <param name="background"></param>
+        /// <param name="isCaret"></param>
+        public Pixel(PixelForeground foreground, 
+            PixelBackground background, 
+            bool isCaret = false)
         {
             Foreground = foreground;
             Background = background;
             IsCaret = isCaret;
         }
 
+        /// <summary>
+        /// Blend the pixelAbove with the this pixel.
+        /// </summary>
+        /// <param name="pixelAbove"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public Pixel Blend(Pixel pixelAbove)
         {
             PixelForeground newForeground;

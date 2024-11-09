@@ -36,17 +36,15 @@ namespace Consolonia.Core.Helpers
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static IReadOnlyList<string> GetGlyphs(this string text)
+        public static IReadOnlyList<string> GetGlyphs(this string text, bool supportsComplexEmoji)
         {
-            var console = AvaloniaLocator.Current.GetService<IConsole>();
-
             var glyphs = new List<string>();
             var emoji = new StringBuilder();
             StringRuneEnumerator runes = text.EnumerateRunes();
             var lastRune = new Rune();
 
             while (runes.MoveNext())
-                if (console.SupportsComplexEmoji)
+                if (supportsComplexEmoji)
                 {
                     if (lastRune.Value == Codepoints.ZWJ ||
                         lastRune.Value == Codepoints.ORC ||

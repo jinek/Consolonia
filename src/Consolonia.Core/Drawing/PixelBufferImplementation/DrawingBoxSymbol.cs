@@ -12,29 +12,29 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         // all 0bXXXX_0000 are special values
         private const byte BoldSymbol = 0b0001_0000;
         private const byte EmptySymbol = 0b0;
+        private readonly byte _upRightDownLeft;
 
         public DrawingBoxSymbol(byte upRightDownLeft)
         {
             _upRightDownLeft = upRightDownLeft;
+            Text = GetBoxSymbol(_upRightDownLeft).ToString();
         }
 
-        private byte _upRightDownLeft;
-
-        public string Text => GetBoxSymbol().ToString();
+        public string Text { get; private init; }
 
         public ushort Width { get; } = 1;
 
         /// <summary>
         ///     https://en.wikipedia.org/wiki/Code_page_437
         /// </summary>
-        private char GetBoxSymbol()
+        private static char GetBoxSymbol(byte upRightDownLeft)
         {
             //DOS linedraw characters are not ordered in any programmatic manner, and calculating a particular character shape needs to use a look-up table. from https://en.wikipedia.org/wiki/Box-drawing_character
 
-            byte leftPart = (byte)(_upRightDownLeft & 0b1111_0000);
+            byte leftPart = (byte)(upRightDownLeft & 0b1111_0000);
             bool hasLeftPart = leftPart > 0;
 
-            switch (_upRightDownLeft & 0b0000_1111)
+             switch (upRightDownLeft & 0b0000_1111)
             {
                 case 0b0000_1000:
                 case 0b0000_0010:
@@ -56,7 +56,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
                 default:
                 {
-                    return _upRightDownLeft switch
+                    return upRightDownLeft switch
                     {
                         EmptySymbol => char.MinValue,
                         BoldSymbol => '█',
@@ -107,12 +107,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             if (symbolAbove.IsWhiteSpace()) return this;
 
-            if (symbolAbove is not DrawingBoxSymbol drawingBoxSymbol) return symbolAbove;
+            if (symbolAbove is not DrawingBoxSymbol drawingBoxSymbol) 
+                return symbolAbove;
+            
             if (drawingBoxSymbol._upRightDownLeft == BoldSymbol || _upRightDownLeft == BoldSymbol)
-                _upRightDownLeft = BoldSymbol;
-            else
-                _upRightDownLeft |= drawingBoxSymbol._upRightDownLeft;
-            return this;
+                return new DrawingBoxSymbol(BoldSymbol);
+            
+            return new DrawingBoxSymbol((byte)(_upRightDownLeft | drawingBoxSymbol._upRightDownLeft));
         }
 
         public static DrawingBoxSymbol UpRightDownLeftFromPattern(byte pattern, LineStyle lineStyle)
