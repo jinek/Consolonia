@@ -26,24 +26,22 @@ namespace Consolonia.Core.Text
 
         public ushort GetGlyph(uint codepoint)
         {
-            checked
-            {
-                return (ushort)codepoint;
-            }
+            // we just return placeholder chars as we are pushing the raw
+            // text to the console
+            return 'X';
         }
 
         public bool TryGetGlyph(uint codepoint, out ushort glyph)
         {
-            glyph = (ushort)codepoint;
+            // we just return placeholder chars as we are pushing the raw
+            // text to the console
+            glyph = 'X';
             return true;
         }
 
         public ushort[] GetGlyphs(ReadOnlySpan<uint> codepoints)
         {
-            checked
-            {
-                return codepoints.ToArray().Select(u => (ushort)u).ToArray();
-            }
+            return codepoints.ToArray().Select(_ => (ushort)'X').ToArray();
         }
 
         public int GetGlyphAdvance(ushort glyph)
@@ -77,7 +75,7 @@ namespace Consolonia.Core.Text
             UnderlinePosition = -1,
             UnderlineThickness = DrawingContextImpl.UnderlineThickness,
             StrikethroughPosition = -1,
-            StrikethroughThickness = DrawingContextImpl.StrikthroughThickness,
+            StrikethroughThickness = DrawingContextImpl.StrikethroughThickness,
             IsFixedPitch = true
         };
 

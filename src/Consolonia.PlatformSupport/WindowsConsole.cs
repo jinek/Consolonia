@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
@@ -56,8 +55,6 @@ namespace Consolonia.PlatformSupport
 
         public Win32Console()
         {
-            Console.OutputEncoding = Encoding.UTF8;
-
             _windowsConsole = new WindowsConsole();
 
             StartEventLoop();

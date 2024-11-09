@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Input;
@@ -42,8 +41,6 @@ namespace Consolonia.Core.Infrastructure
 
         public DefaultNetConsole()
         {
-            Console.OutputEncoding = Encoding.UTF8;
-
             StartSizeCheckTimerAsync();
             StartInputReading();
         }

@@ -5,8 +5,10 @@ using System.Text;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
+using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
@@ -24,7 +26,8 @@ namespace Consolonia.Core.Drawing
         private const byte HorizontalEndPattern = 0b0001;
 
         public const int UnderlineThickness = 10;
-        public const int StrikthroughThickness = 11;
+        public const int StrikethroughThickness = 11;
+
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
         private readonly PixelBuffer _pixelBuffer;
@@ -91,7 +94,8 @@ namespace Consolonia.Core.Drawing
                 Color foreground = GetForegroundColorForQuadPixel(quadColors, quadPixel);
                 Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
 
-                var imagePixel = new Pixel(new PixelForeground(new SimpleSymbol(quadPixel), color: foreground),
+                var imagePixel = new Pixel(
+                    new PixelForeground(new SimpleSymbol(quadPixel), color: foreground),
                     new PixelBackground(background));
                 CurrentClip.ExecuteWithClipping(new Point(px, py),
                     () =>
@@ -206,9 +210,9 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            string charactersDoDraw =
-                string.Concat(glyphRunImpl.GlyphIndices.Select(us => (char)us).ToArray());
-            DrawStringInternal(foreground, charactersDoDraw, glyphRun.GlyphTypeface);
+            var shapedBuffer = (ShapedBuffer)glyphRunImpl.GlyphInfos;
+            string text = shapedBuffer.Text.ToString();
+            DrawStringInternal(foreground, text, glyphRun.GlyphTypeface);
         }
 
         public IDrawingContextLayerImpl CreateLayer(Size size)
@@ -302,9 +306,11 @@ namespace Consolonia.Core.Drawing
             line = TransformLineInternal(line);
 
             Point head = line.PStart;
-
-            if (IfMoveConsoleCaretMove(pen, head))
+            if (pen.Brush is MoveConsoleCaretToPositionBrush)
+            {
+                _pixelBuffer.SetCaretPosition((PixelBufferCoordinate)head);
                 return;
+            }
 
             if (line.Vertical == false && pen.Thickness > 1)
             {
@@ -328,7 +334,7 @@ namespace Consolonia.Core.Drawing
             TextDecorationCollection textDecoration = pen.Thickness switch
             {
                 UnderlineThickness => TextDecorations.Underline,
-                StrikthroughThickness => TextDecorations.Strikethrough,
+                StrikethroughThickness => TextDecorations.Strikethrough,
                 _ => throw new ArgumentOutOfRangeException($"Unsupported thickness {pen.Thickness}")
             };
 
@@ -366,8 +372,11 @@ namespace Consolonia.Core.Drawing
 
             Point head = line.PStart;
 
-            if (IfMoveConsoleCaretMove(pen, head))
+            if (pen.Brush is MoveConsoleCaretToPositionBrush)
+            {
+                _pixelBuffer.SetCaretPosition((PixelBufferCoordinate)head);
                 return;
+            }
 
             var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
             if (extractColorCheckPlatformSupported == null)
@@ -396,22 +405,6 @@ namespace Consolonia.Core.Drawing
 
             line = (Line)line.WithTransform(Transform);
             return line;
-        }
-
-        /// <summary>
-        ///     If the pen brush is a MoveConsoleCaretToPositionBrush, move the caret
-        /// </summary>
-        /// <param name="pen"></param>
-        /// <param name="head"></param>
-        /// <returns></returns>
-        private bool IfMoveConsoleCaretMove(IPen pen, Point head)
-        {
-            if (pen.Brush is not MoveConsoleCaretToPositionBrush)
-                return false;
-
-            CurrentClip.ExecuteWithClipping(head,
-                () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
-            return true;
         }
 
         /// <summary>
@@ -486,7 +479,7 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawStringInternal(IBrush foreground, string str, IGlyphTypeface typeface, Point origin = new())
+        private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
         {
             foreground = ConsoleBrush.FromBrush(foreground);
             if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleBrush)
@@ -495,23 +488,27 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            //if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
+            // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
 
             Point whereToDraw = origin.Transform(Transform);
             int currentXPosition = 0;
+            int currentYPosition = 0;
 
-            //todo: support surrogates
-            foreach (char c in str)
+            // Each glyph maps to a pixel as a starting point.
+            // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
+            // the x and y are adjusted accodingly.
+            foreach (string glyph in text.GetGlyphs())
             {
-                Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
+                Point characterPoint =
+                    whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));
                 Color foregroundColor = consoleBrush.Color;
 
-                switch (c)
+                switch (glyph)
                 {
-                    case '\t':
+                    case "\t":
                     {
                         const int tabSize = 8;
-                        var consolePixel = new Pixel(' ', foregroundColor);
+                        var consolePixel = new Pixel(new SimpleSymbol(' '), foregroundColor);
                         for (int j = 0; j < tabSize; j++)
                         {
                             Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
@@ -525,26 +522,26 @@ namespace Consolonia.Core.Drawing
                         currentXPosition += tabSize - 1;
                     }
                         break;
-                    case '\n':
-                    {
-                        /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
-                         var consolePixel =  new Pixel(' ', foregroundColor);
-
-                        _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
-                    }
-                        break;
-                    case '\u200B':
-                        currentXPosition--;
+                    case "\r":
+                    case "\f":
+                    case "\n":
+                        currentXPosition = 0;
+                        currentYPosition++;
                         break;
                     default:
                     {
-                        var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
+                        var symbol = new SimpleSymbol(glyph);
+                        var consolePixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
                         CurrentClip.ExecuteWithClipping(characterPoint, () =>
                         {
                             _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
                                 (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
                         });
+
+                        if (symbol.Width > 1)
+                            currentXPosition += symbol.Width;
+                        else
+                            currentXPosition++;
                     }
                         break;
                 }

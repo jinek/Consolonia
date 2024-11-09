@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
+    [DebuggerDisplay("[{Color}, {Mode}]")]
     public readonly struct PixelBackground
     {
         public PixelBackground(Color color)

@@ -6,6 +6,9 @@ using NUnit.Framework;
 
 namespace Consolonia.Gallery.Tests
 {
+    /// <summary>
+    ///     Unit test for TextBlock view
+    /// </summary>
     [TestFixture]
     internal class TextBlockTests : GalleryTestsBaseBase
     {
@@ -21,9 +24,10 @@ namespace Consolonia.Gallery.Tests
                 "Right aligned text│",
 
                 // multiline
-                "│Lorem ipsum dolor sit amet, consectetur adipiscing elit.│",
-                @"│Vivamus magna. Cras in mi at felis aliquet congue. Ut a │",
-                @"│est eget ligula molestie gravida. Curabitur massa. Donec│");
+                "│Vivamus magna. Cras in mi at felis aliquet congue. Ut a │",
+                "│est eget ligula molestie gravida. Curabitur massa. Donec│",
+                // special chars, emojis, etc.
+                "𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟", "𝄞", "🎵", "“𝔉𝔞𝔫𝔠𝔶”", "ﬀ", "ﬁ", "½");
         }
     }
 }
