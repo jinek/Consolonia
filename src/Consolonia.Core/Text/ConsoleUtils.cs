@@ -18,6 +18,10 @@ namespace Consolonia.Core.Text
         public const string Underline = "\u001b[4m";
         public const string Strikethrough = "\u001b[9m";
 
+        // screen buffer
+        public const string EnableAlternateBuffer = "\u001b[?1049h";
+        public const string DisableAlternateBuffer = "\u001b[?1049l";
+
         public static string Foreground(Color color)
         {
             return Foreground(color.R, color.G, color.B);

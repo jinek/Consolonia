@@ -27,10 +27,14 @@ namespace Consolonia.Core.Infrastructure
             Console.Write(TestEmoji);
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
             (int left, _) = Console.GetCursorPosition();
-            Console.Clear();
-
             SupportsComplexEmoji = left == 2;
+            
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+            Console.Write(ConsoleUtils.EnableAlternateBuffer);
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
+
             Console.CursorVisible = false;
+            Console.Clear();
 
             ActualizeSize();
         }
@@ -132,10 +136,15 @@ namespace Consolonia.Core.Infrastructure
             PauseTask = task;
         }
 
+#pragma warning disable CA1063 // Implement IDisposable Correctly
         public void Dispose()
+#pragma warning restore CA1063 // Implement IDisposable Correctly
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+            Console.Write(ConsoleUtils.DisableAlternateBuffer);
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
         public void ClearOutput()
