@@ -20,11 +20,6 @@ namespace Consolonia.Core.Infrastructure
 
         protected InputLessDefaultNetConsole()
         {
-            #pragma warning disable CA1303 // Do not pass literals as localized parameters
-            Console.Write(ConsoleUtils.EnableAlternateBuffer);
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
-            Console.CursorVisible = false;
-
             // detect emoji composition support
             Console.OutputEncoding = Encoding.UTF8;
             Console.SetCursorPosition(0, 0);
@@ -32,9 +27,14 @@ namespace Consolonia.Core.Infrastructure
             Console.Write(TestEmoji);
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
             (int left, _) = Console.GetCursorPosition();
+            SupportsComplexEmoji = left == 2;
+            
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+            Console.Write(ConsoleUtils.EnableAlternateBuffer);
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
+            Console.CursorVisible = false;
             Console.Clear();
 
-            SupportsComplexEmoji = left == 2;
             ActualizeSize();
         }
 
