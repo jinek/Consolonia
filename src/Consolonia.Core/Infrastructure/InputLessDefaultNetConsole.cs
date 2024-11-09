@@ -18,25 +18,27 @@ namespace Consolonia.Core.Infrastructure
         private bool _caretVisible;
         private PixelBufferCoordinate _headBufferPoint;
 
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
         protected InputLessDefaultNetConsole()
         {
-            // detect emoji composition support
             Console.OutputEncoding = Encoding.UTF8;
+
+            // enable alternate screen so original console screen is not affected by the app
+            Console.Write(ConsoleUtils.EnableAlternateBuffer);
+
+            /// Detect complex emoji support by writing a complex emoji and checking cursor position.
+            /// If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
             Console.SetCursorPosition(0, 0);
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
             Console.Write(TestEmoji);
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
             (int left, _) = Console.GetCursorPosition();
             SupportsComplexEmoji = left == 2;
-            
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
-            Console.Write(ConsoleUtils.EnableAlternateBuffer);
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
+
             Console.CursorVisible = false;
             Console.Clear();
-
+            
             ActualizeSize();
         }
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
         protected bool Disposed { get; private set; }
 
