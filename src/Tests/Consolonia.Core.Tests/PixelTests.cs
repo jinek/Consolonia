@@ -12,7 +12,7 @@ namespace Consolonia.Core.Tests
         public void ConstructorCaret()
         {
             var pixel = new Pixel(true);
-            Assert.That(pixel.IsCaret == true);
+            Assert.That(pixel.IsCaret);
             Assert.That(pixel.Foreground == new PixelForeground());
             Assert.That(pixel.Background == new PixelBackground());
         }

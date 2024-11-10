@@ -11,14 +11,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     public class PixelBuffer : IEnumerable<Pixel>
     {
         private readonly Pixel[,] _buffer;
-        private PixelBufferCoordinate _caretPosition;
 
         public PixelBuffer(ushort width, ushort height)
         {
             Width = width;
             Height = height;
             _buffer = new Pixel[width, height];
-            _caretPosition = new PixelBufferCoordinate(0, 0);
         }
 
         public ushort Width { get; }
