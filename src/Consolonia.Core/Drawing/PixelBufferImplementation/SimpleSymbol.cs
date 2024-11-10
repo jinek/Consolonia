@@ -1,11 +1,13 @@
+using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Consolonia.Core.Helpers;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("'{Text}'")]
-    public readonly struct SimpleSymbol : ISymbol
+    public readonly struct SimpleSymbol : ISymbol, IEquatable<SimpleSymbol>
     {
         public SimpleSymbol()
         {
@@ -44,5 +46,20 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             return symbolAbove.IsWhiteSpace() ? this : symbolAbove;
         }
+
+        public bool Equals(SimpleSymbol other)
+            => Text.Equals(other.Text, StringComparison.Ordinal);
+
+        public override bool Equals([NotNullWhen(true)] object obj)
+            => obj is SimpleSymbol other && this.Equals(other);
+
+        public override int GetHashCode()
+            => Text.GetHashCode(StringComparison.Ordinal);
+
+        public static bool operator ==(SimpleSymbol left, SimpleSymbol right)
+            => left.Equals(right);
+
+        public static bool operator !=(SimpleSymbol left, SimpleSymbol right)
+            => !left.Equals(right);
     }
 }

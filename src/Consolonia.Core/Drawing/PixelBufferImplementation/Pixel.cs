@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -8,7 +9,7 @@ using Avalonia.Media;
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("'{Foreground.Symbol.Text}' [{Foreground.Color}, {Background.Color}]")]
-    public readonly struct Pixel
+    public readonly struct Pixel : IEquatable<Pixel>
     {
         public PixelForeground Foreground { get; }
 
@@ -122,5 +123,22 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             return new Color(0xFF, red, green, blue);
         }
+
+        public bool Equals(Pixel other)
+            => Foreground.Equals(other.Foreground) && 
+               Background.Equals(other.Background) && 
+               IsCaret.Equals(IsCaret);
+
+        public override bool Equals([NotNullWhen(true)] object obj)
+            => obj is Pixel other && this.Equals(other);
+
+        public override int GetHashCode()
+            => HashCode.Combine(Foreground, Background, IsCaret);
+
+        public static bool operator ==(Pixel left, Pixel right)
+            => left.Equals(right);
+
+        public static bool operator !=(Pixel left, Pixel right)
+            => !left.Equals(right);
     }
 }

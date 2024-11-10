@@ -49,15 +49,53 @@ namespace Consolonia.Core.Tests
             };
 
             foreach ((byte code1, string _) in symbols)
-            foreach ((byte code2, string _) in symbols)
-            {
-                ISymbol symbol1 = new DrawingBoxSymbol(code1);
-                ISymbol symbol2 = new DrawingBoxSymbol(code2);
-                ISymbol blendedSymbol = symbol1.Blend(ref symbol2);
-                if (symbol1.Text != symbol2.Text)
-                    Debug.WriteLine($"{symbol1.Text} + {symbol2.Text} => {blendedSymbol.Text}");
-                Assert.That(blendedSymbol.Text, Is.Not.Null);
-            }
+                foreach ((byte code2, string _) in symbols)
+                {
+                    ISymbol symbol1 = new DrawingBoxSymbol(code1);
+                    ISymbol symbol2 = new DrawingBoxSymbol(code2);
+                    ISymbol blendedSymbol = symbol1.Blend(ref symbol2);
+                    if (symbol1.Text != symbol2.Text)
+                        Debug.WriteLine($"{symbol1.Text} + {symbol2.Text} => {blendedSymbol.Text}");
+                    Assert.That(blendedSymbol.Text, Is.Not.Null);
+                }
+        }
+
+        [Test]
+        public void Equality()
+        {
+            var symbol = new DrawingBoxSymbol(0b0000_1111);
+            var symbol2 = new DrawingBoxSymbol(0b0000_1111);
+            Assert.That(symbol.Equals((object)symbol2));
+            Assert.That(symbol.Equals(symbol2));
+            Assert.That(symbol == symbol2);
+        }
+
+        [Test]
+        public void EqualityISymbol()
+        {
+            ISymbol symbol = new DrawingBoxSymbol(0b0000_1111);
+            ISymbol symbol2 = new DrawingBoxSymbol(0b0000_1111);
+            Assert.That(symbol.Equals((object)symbol2));
+            Assert.That(symbol.Equals(symbol2));
+        }
+
+        [Test]
+        public void Inequality()
+        {
+            var symbol = new DrawingBoxSymbol(0b0000_1111);
+            var symbol2 = new DrawingBoxSymbol(0b0000_0000);
+            Assert.That(!symbol.Equals((object)symbol2));
+            Assert.That(!symbol.Equals(symbol2));
+            Assert.That(symbol != symbol2);
+        }
+
+        [Test]
+        public void InequalityISymbol()
+        {
+            ISymbol symbol = new DrawingBoxSymbol(0b0000_1111);
+            ISymbol symbol2 = new DrawingBoxSymbol(0b0000_0000);
+            Assert.That(!symbol.Equals((object)symbol2));
+            Assert.That(!symbol.Equals(symbol2));
         }
     }
 }

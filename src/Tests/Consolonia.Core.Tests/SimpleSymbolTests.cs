@@ -50,6 +50,44 @@ namespace Consolonia.Core.Tests
         }
 
         [Test]
+        public void Equality()
+        {
+            var symbol = new SimpleSymbol("a");
+            var symbol2 = new SimpleSymbol("a");
+            Assert.That(symbol.Equals((object)symbol2));
+            Assert.That(symbol.Equals(symbol2));
+            Assert.That(symbol == symbol2);
+        }
+
+        [Test]
+        public void EqualityISymbol()
+        {
+            ISymbol symbol = new SimpleSymbol("a");
+            ISymbol symbol2 = new SimpleSymbol("a");
+            Assert.That(symbol.Equals((object)symbol2));
+            Assert.That(symbol.Equals(symbol2));
+        }
+
+        [Test]
+        public void Inequality()
+        {
+            var symbol = new SimpleSymbol("a");
+            var symbol2 = new SimpleSymbol("b");
+            Assert.That(!symbol.Equals((object)symbol2));
+            Assert.That(!symbol.Equals(symbol2));
+            Assert.That(symbol != symbol2);
+        }
+
+        [Test]
+        public void InequalityISymbol()
+        {
+            ISymbol symbol = new SimpleSymbol("a");
+            ISymbol symbol2 = new SimpleSymbol("b");
+            Assert.That(!symbol.Equals((object)symbol2));
+            Assert.That(!symbol.Equals(symbol2));
+        }
+
+        [Test]
         public void IsWhiteSpace()
         {
             Assert.That(new SimpleSymbol(string.Empty).IsWhiteSpace(), Is.True);

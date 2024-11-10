@@ -72,6 +72,35 @@ namespace Consolonia.Core.Tests
         }
 
         [Test]
+        public void Equality()
+        {
+            var pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
+            var pixelForeground2 = new PixelForeground(new SimpleSymbol('a'), Colors.Red, FontWeight.Normal, FontStyle.Normal, null);
+            Assert.That(pixelForeground.Equals((object)pixelForeground2));
+            Assert.That(pixelForeground.Equals(pixelForeground2));
+            Assert.That(pixelForeground == pixelForeground2, Is.True);
+        }
+
+        [Test]
+        public void Inequality()
+        {
+            var pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
+            foreach (var variation in new PixelForeground[]
+                                    {
+                                        new(new SimpleSymbol('b'), Colors.Red, FontWeight.Normal, FontStyle.Normal, null),
+                                        new(new SimpleSymbol('a'), Colors.Blue, FontWeight.Normal, FontStyle.Normal, null),
+                                        new(new SimpleSymbol('a'), Colors.Red, FontWeight.Bold, FontStyle.Normal, null),
+                                        new(new SimpleSymbol('a'), Colors.Red, FontWeight.Normal, FontStyle.Italic, null),
+                                        new(new SimpleSymbol('a'), Colors.Red, FontWeight.Normal, FontStyle.Normal, TextDecorations.Underline),
+                                    })
+            {
+                Assert.That(!pixelForeground.Equals((object)variation));
+                Assert.That(!pixelForeground.Equals(variation));
+                Assert.That(pixelForeground != variation, Is.True);
+            }
+        }
+
+        [Test]
         public void Blend()
         {
             var symbol = new SimpleSymbol('a');

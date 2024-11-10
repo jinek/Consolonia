@@ -53,5 +53,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             return X == secondPoint.X && Y == secondPoint.Y;
         }
+
+        public override int GetHashCode()
+        {
+            return X ^ Y;
+        }
     }
 }

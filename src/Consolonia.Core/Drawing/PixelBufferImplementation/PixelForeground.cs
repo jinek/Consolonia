@@ -1,11 +1,12 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
-    public readonly struct PixelForeground
+    public readonly struct PixelForeground : IEquatable<PixelForeground>
     {
         public PixelForeground(ISymbol symbol, Color color,
             FontWeight weight = FontWeight.Normal, FontStyle style = FontStyle.Normal,
@@ -46,5 +47,24 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return new PixelForeground(newSymbol, pixelAboveForeground.Color, pixelAboveForeground.Weight,
                 pixelAboveForeground.Style, pixelAboveForeground.TextDecorations);
         }
+
+        public bool Equals(PixelForeground other)
+            => Symbol.Equals(other.Symbol) &&
+                Color.Equals(other.Color) &&
+                Weight == other.Weight &&
+                Style == other.Style &&
+                Equals(TextDecorations, other.TextDecorations);
+
+        public override bool Equals([NotNullWhen(true)] object obj)
+            => obj is PixelForeground other && this.Equals(other);
+
+        public override int GetHashCode()
+          => HashCode.Combine(Symbol, Color, (int)Weight, (int)Style, TextDecorations);
+
+        public static bool operator ==(PixelForeground left, PixelForeground right)
+            => left.Equals(right);
+
+        public static bool operator !=(PixelForeground left, PixelForeground right)
+            => !left.Equals(right);
     }
 }

@@ -94,13 +94,13 @@ namespace Consolonia.Core.Helpers
         public static ushort MeasureText(this string text)
         {
             var console = AvaloniaLocator.Current.GetService<IConsole>();
-
+            bool supportsComplexEmoji = console?.SupportsComplexEmoji ?? false;
             ushort width = 0;
             ushort lastWidth = 0;
             foreach (Rune rune in text.EnumerateRunes())
             {
                 ushort runeWidth = (ushort)UnicodeCalculator.GetWidth(rune);
-                if (console.SupportsComplexEmoji &&
+                if (supportsComplexEmoji &&
                     (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter))
                     width -= lastWidth;
                 else

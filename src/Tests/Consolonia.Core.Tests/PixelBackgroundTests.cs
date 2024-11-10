@@ -15,14 +15,47 @@ namespace Consolonia.Core.Tests
             Assert.That(pixelBackground.Mode, Is.EqualTo(PixelBackgroundMode.Colored));
         }
 
+        [Test]
         [TestCase(PixelBackgroundMode.Transparent)]
         [TestCase(PixelBackgroundMode.Colored)]
         [TestCase(PixelBackgroundMode.Shaded)]
         public void ConstructorWithMode(PixelBackgroundMode mode)
         {
             var pixelBackground = new PixelBackground(mode, Colors.Red);
-            Assert.That(pixelBackground.Color, Is.EqualTo(Colors.Red));
-            Assert.That(pixelBackground.Mode, Is.EqualTo(mode));
+            Assert.That(pixelBackground.Color.Equals(Colors.Red));
+            Assert.That(pixelBackground.Mode.Equals(mode));
         }
+
+        [Test]
+        public void Equality()
+        {
+            var pixelBackground = new PixelBackground(Colors.Red);
+            var pixelBackground2 = new PixelBackground(Colors.Red);
+            Assert.That(pixelBackground.Equals((object)pixelBackground2));
+            Assert.That(pixelBackground.Equals(pixelBackground2));
+            Assert.That(pixelBackground == pixelBackground2);
+
+            pixelBackground = new PixelBackground(PixelBackgroundMode.Transparent, Colors.Blue);
+            pixelBackground2 = new PixelBackground(PixelBackgroundMode.Transparent, Colors.Blue);
+            Assert.That(pixelBackground.Equals((object)pixelBackground2));
+            Assert.That(pixelBackground.Equals(pixelBackground2));
+            Assert.That(pixelBackground == pixelBackground2);
+        }
+
+        [Test]
+        public void Inequality()
+        {
+            var pixelBackground = new PixelBackground(Colors.Red);
+            var pixelBackground2 = new PixelBackground(Colors.Blue);
+            Assert.That(!pixelBackground.Equals(pixelBackground2));
+            Assert.That(pixelBackground != pixelBackground2);
+
+            pixelBackground = new PixelBackground(PixelBackgroundMode.Colored, Colors.Red);
+            pixelBackground2 = new PixelBackground(PixelBackgroundMode.Transparent, Colors.Red);
+            Assert.That(!pixelBackground.Equals((object)pixelBackground2));
+            Assert.That(!pixelBackground.Equals(pixelBackground2));
+            Assert.That(pixelBackground != pixelBackground2);
+        }
+
     }
 }

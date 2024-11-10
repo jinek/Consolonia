@@ -1,11 +1,12 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("[{Color}, {Mode}]")]
-    public readonly struct PixelBackground
+    public readonly struct PixelBackground : IEquatable<PixelBackground>
     {
         public PixelBackground(Color color)
         {
@@ -44,5 +45,20 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             return new PixelBackground(newMode, newColor);
         }
+            
+        public bool Equals(PixelBackground other)
+            => Color.Equals(other.Color) && Mode == other.Mode;
+
+        public override bool Equals([NotNullWhen(true)] object obj)
+            => obj is PixelBackground other && this.Equals(other);
+
+        public override int GetHashCode()
+            => HashCode.Combine(Color, Mode);
+
+        public static bool operator ==(PixelBackground left, PixelBackground right)
+            => left.Equals(right);
+
+        public static bool operator !=(PixelBackground left, PixelBackground right)
+            => !left.Equals(right);
     }
 }
