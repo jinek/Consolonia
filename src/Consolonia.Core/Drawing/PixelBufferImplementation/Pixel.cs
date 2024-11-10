@@ -17,6 +17,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool IsCaret { get; }
 
+       public Pixel(bool isCaret)
+        {
+            Foreground = new PixelForeground(new SimpleSymbol());
+            Background = new PixelBackground(PixelBackgroundMode.Transparent);
+            IsCaret = isCaret;
+        }
+        
         /// <summary>
         ///     Make a pixel foreground with transparent background
         /// </summary>
@@ -78,7 +85,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     Color mergedColors = MergeColors(Background.Color, pixelAbove.Background.Color);
                     newForeground = pixelAbove.Foreground;
                     newBackground = new PixelBackground(mergedColors);
-                    break;
+                    return new Pixel(newForeground, newBackground);
 
                 case PixelBackgroundMode.Transparent:
                     // if the foreground is transparent, ignore pixelAbove foreground.

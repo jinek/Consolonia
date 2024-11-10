@@ -25,6 +25,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public ushort Width { get; } = 1;
 
+        public string Text => GetBoxSymbol().ToString();
+
+        public ushort Width { get; } = 1;
+
         /// <summary>
         ///     https://en.wikipedia.org/wiki/Code_page_437
         /// </summary>

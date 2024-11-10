@@ -19,7 +19,9 @@ namespace Consolonia.Core.Text
                 options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);
 
             for (int i = 0; i < shapedBuffer.Length; i++)
-                shapedBuffer[i] = new GlyphInfo('X', i, glyphs[i].MeasureText());
+                // NOTE: We are using the placeholder glyph since we are pushing
+                // raw text to the console and not using a font system to render the text
+                shapedBuffer[i] = new GlyphInfo(GlyphTypeface.Glyph, i, glyphs[i].MeasureText());
 
             return shapedBuffer;
         }

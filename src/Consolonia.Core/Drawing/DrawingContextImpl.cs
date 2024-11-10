@@ -308,7 +308,8 @@ namespace Consolonia.Core.Drawing
             Point head = line.PStart;
             if (pen.Brush is MoveConsoleCaretToPositionBrush)
             {
-                _pixelBuffer.SetCaretPosition((PixelBufferCoordinate)head);
+                CurrentClip.ExecuteWithClipping(head,
+                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
                 return;
             }
 
@@ -374,7 +375,8 @@ namespace Consolonia.Core.Drawing
 
             if (pen.Brush is MoveConsoleCaretToPositionBrush)
             {
-                _pixelBuffer.SetCaretPosition((PixelBufferCoordinate)head);
+                CurrentClip.ExecuteWithClipping(head,
+                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
                 return;
             }
 
@@ -497,7 +499,7 @@ namespace Consolonia.Core.Drawing
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
             // the x and y are adjusted accodingly.
-            foreach (string glyph in text.GetGlyphs(_consoleWindow.Console.SupportsComplexEmoji))
+            foreach (string glyph in text.GetGlyphs())
             {
                 Point characterPoint =
                     whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));
