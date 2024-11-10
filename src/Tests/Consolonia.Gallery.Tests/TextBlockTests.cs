@@ -13,21 +13,46 @@ namespace Consolonia.Gallery.Tests
     internal class TextBlockTests : GalleryTestsBaseBase
     {
         [Test]
-        public async Task PerformSingleTest()
+        public async Task TextBlock_DisplaysBasicText()
         {
             await UITest.KeyInput(Key.Tab);
-            await UITest.AssertHasText("This is TextBlock",
+            await UITest.AssertHasText("This is TextBlock");
+        }
+
+        [Test]
+        public async Task TextBlock_HandlesTrimming()
+        {
+            await UITest.KeyInput(Key.Tab);
+            await UITest.AssertHasText(
                 "Text trimming with charac...",
-                "Text trimming with word...",
+                "Text trimming with word...");
+        }
+
+        [Test]
+        public async Task TextBlock_HandlesAlignment()
+        {
+            await UITest.KeyInput(Key.Tab);
+            await UITest.AssertHasText(
                 "│Left aligned text    ",
                 "   Center aligned text    ",
-                "Right aligned text│",
+                "        Right aligned text│");
+        }
 
-                // multiline
+        [Test]
+        public async Task TextBlock_HandlesMultilineText()
+        {
+            await UITest.KeyInput(Key.Tab);
+            await UITest.AssertHasText(
                 "│Vivamus magna. Cras in mi at felis aliquet congue. Ut a │",
-                "│est eget ligula molestie gravida. Curabitur massa. Donec│",
-                // special chars, emojis, etc.
-                "𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟", "𝄞", "🎵", "“𝔉𝔞𝔫𝔠𝔶”", "ﬀ", "ﬁ", "½");
+                "│est eget ligula molestie gravida. Curabitur massa. Donec│");
+        }
+
+        [Test]
+        public async Task TextBlock_HandlesSpecialCharacters()
+        {
+            await UITest.KeyInput(Key.Tab);
+            await UITest.AssertHasText(
+                "𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟", "𝄞", "🎵", "𝔉𝔞𝔫𝔠𝔶", "ﬀ", "ﬁ", "½");
         }
     }
 }
