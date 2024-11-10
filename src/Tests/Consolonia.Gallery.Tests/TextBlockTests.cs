@@ -13,14 +13,14 @@ namespace Consolonia.Gallery.Tests
     internal class TextBlockTests : GalleryTestsBaseBase
     {
         [Test]
-        public async Task TextBlock_DisplaysBasicText()
+        public async Task DisplaysBasicText()
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText("This is TextBlock");
         }
 
         [Test]
-        public async Task TextBlock_HandlesTrimming()
+        public async Task HandlesTrimming()
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText(
@@ -29,7 +29,7 @@ namespace Consolonia.Gallery.Tests
         }
 
         [Test]
-        public async Task TextBlock_HandlesAlignment()
+        public async Task HandlesAlignment()
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText(
@@ -39,7 +39,7 @@ namespace Consolonia.Gallery.Tests
         }
 
         [Test]
-        public async Task TextBlock_HandlesMultilineText()
+        public async Task HandlesMultilineText()
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText(
@@ -48,7 +48,7 @@ namespace Consolonia.Gallery.Tests
         }
 
         [Test]
-        public async Task TextBlock_HandlesSpecialCharacters()
+        public async Task HandlesSpecialCharacters()
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText(

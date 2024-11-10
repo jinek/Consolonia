@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Avalonia.Media;
 using Consolonia.Core.Drawing;
 
@@ -41,7 +40,9 @@ namespace Consolonia.Core.Text
 
         public ushort[] GetGlyphs(ReadOnlySpan<uint> codepoints)
         {
-            return Enumerable.Repeat(Glyph, codepoints.Length).ToArray();
+            ushort[] glyphs = new ushort[codepoints.Length];
+            Array.Fill(glyphs, Glyph);
+            return glyphs;
         }
 
         public int GetGlyphAdvance(ushort glyph)
@@ -51,7 +52,9 @@ namespace Consolonia.Core.Text
 
         public int[] GetGlyphAdvances(ReadOnlySpan<ushort> glyphs)
         {
-            return Enumerable.Repeat(1, glyphs.Length).ToArray();
+            int[] advances = new int[glyphs.Length];
+            Array.Fill(advances, 1);
+            return advances;
         }
 
         public bool TryGetTable(uint tag, out byte[] table)
