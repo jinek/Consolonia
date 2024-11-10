@@ -41,7 +41,7 @@ namespace Consolonia.Core.Text
 
         public ushort[] GetGlyphs(ReadOnlySpan<uint> codepoints)
         {
-            return codepoints.ToArray().Select(_ => (ushort)Glyph).ToArray();
+            return Enumerable.Repeat(Glyph, codepoints.Length).ToArray();
         }
 
         public int GetGlyphAdvance(ushort glyph)
