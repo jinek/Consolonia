@@ -9,6 +9,15 @@ namespace Consolonia.Core.Tests
     public class PixelTests
     {
         [Test]
+        public void ConstructorCaret()
+        {
+            var pixel = new Pixel(true);
+            Assert.That(pixel.IsCaret == true);
+            Assert.That(pixel.Foreground == new PixelForeground());
+            Assert.That(pixel.Background == new PixelBackground());
+        }
+
+        [Test]
         public void ConstructorColorOnly()
         {
             var pixel = new Pixel(new PixelBackground(Colors.Red));

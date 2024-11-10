@@ -8,6 +8,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [DebuggerDisplay("[{Color}, {Mode}]")]
     public readonly struct PixelBackground : IEquatable<PixelBackground>
     {
+        public PixelBackground()
+        {
+            Mode = PixelBackgroundMode.Transparent;
+            Color = Colors.Transparent;
+        }
         public PixelBackground(Color color)
         {
             Mode = color.A == 0 ? PixelBackgroundMode.Transparent : PixelBackgroundMode.Colored;
@@ -20,7 +25,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Mode = mode;
         }
 
-        public Color Color { get; }
+        public Color Color { get; } 
         public PixelBackgroundMode Mode { get; }
 
         public PixelBackground Shade()

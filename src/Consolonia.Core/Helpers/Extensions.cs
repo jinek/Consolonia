@@ -91,9 +91,10 @@ namespace Consolonia.Core.Helpers
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static ushort MeasureText(this string text, bool supportsComplexEmoji)
+        public static ushort MeasureText(this string text)
         {
             var console = AvaloniaLocator.Current.GetService<IConsole>();
+            bool supportsComplexEmoji = console != null ? console.SupportsComplexEmoji : false;
             ushort width = 0;
             ushort lastWidth = 0;
             foreach (Rune rune in text.EnumerateRunes())

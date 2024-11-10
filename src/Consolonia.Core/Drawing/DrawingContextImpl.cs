@@ -499,7 +499,7 @@ namespace Consolonia.Core.Drawing
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
             // the x and y are adjusted accodingly.
-            foreach (string glyph in text.GetGlyphs())
+            foreach (string glyph in text.GetGlyphs(_consoleWindow.Console.SupportsComplexEmoji))
             {
                 Point characterPoint =
                     whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));

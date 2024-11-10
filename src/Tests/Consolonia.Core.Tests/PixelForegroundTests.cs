@@ -10,6 +10,17 @@ namespace Consolonia.Core.Tests
     public class PixelForegroundTests
     {
         [Test]
+        public void Constructor()
+        {
+            var pixelForeground = new PixelForeground();
+            Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Transparent));
+            Assert.That(pixelForeground.Symbol.Text, Is.EqualTo(string.Empty));
+            Assert.That(pixelForeground.Weight, Is.EqualTo(FontWeight.Normal));
+            Assert.That(pixelForeground.Style, Is.EqualTo(FontStyle.Normal));
+            Assert.That(pixelForeground.TextDecorations, Is.Null);
+        }
+
+        [Test]
         public void ConstructorWithSymbol()
         {
             var symbol = new SimpleSymbol('a');

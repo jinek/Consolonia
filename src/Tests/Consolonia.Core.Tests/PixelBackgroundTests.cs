@@ -10,6 +10,14 @@ namespace Consolonia.Core.Tests
         [Test]
         public void Constructor()
         {
+            var pixelBackground = new PixelBackground();
+            Assert.That(pixelBackground.Color, Is.EqualTo(Colors.Transparent));
+            Assert.That(pixelBackground.Mode, Is.EqualTo(PixelBackgroundMode.Transparent));
+        }
+
+        [Test]
+        public void ConstructorWithColor()
+        {
             var pixelBackground = new PixelBackground(Colors.Red);
             Assert.That(pixelBackground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixelBackground.Mode, Is.EqualTo(PixelBackgroundMode.Colored));

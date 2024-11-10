@@ -8,6 +8,15 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
     public readonly struct PixelForeground : IEquatable<PixelForeground>
     {
+        public PixelForeground()
+        {
+            Symbol = new SimpleSymbol();
+            Color = Colors.Transparent;
+            Weight = FontWeight.Normal;
+            Style = FontStyle.Normal;
+            TextDecorations = null;
+        }
+
         public PixelForeground(ISymbol symbol, Color color,
             FontWeight weight = FontWeight.Normal, FontStyle style = FontStyle.Normal,
             TextDecorationCollection textDecorations = null)
