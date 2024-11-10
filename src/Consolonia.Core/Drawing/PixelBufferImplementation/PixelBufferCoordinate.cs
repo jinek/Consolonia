@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 
 // ReSharper disable UnusedMember.Global
@@ -56,7 +57,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override int GetHashCode()
         {
-            return X ^ Y;
+            return HashCode.Combine(X, Y);
         }
     }
 }

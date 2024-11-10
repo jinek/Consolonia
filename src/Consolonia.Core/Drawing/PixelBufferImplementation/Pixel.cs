@@ -140,7 +140,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             return Foreground.Equals(other.Foreground) &&
                    Background.Equals(other.Background) &&
-                   IsCaret.Equals(IsCaret);
+                   IsCaret.Equals(other.IsCaret);
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)

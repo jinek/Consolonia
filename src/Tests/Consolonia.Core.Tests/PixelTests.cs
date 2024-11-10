@@ -98,6 +98,26 @@ namespace Consolonia.Core.Tests
         }
 
         [Test]
+        public void EqualityCaret()
+        {
+            var pixel = new Pixel(true);
+            var pixel2 = new Pixel(true);
+            Assert.That(pixel.Equals((object)pixel2));
+            Assert.That(pixel.Equals(pixel2));
+            Assert.That(pixel == pixel2);
+        }
+
+        [Test]
+        public void InequalityCaret()
+        {
+            var pixel = new Pixel(true);
+            var pixel2 = new Pixel(false);
+            Assert.That(!pixel.Equals((object)pixel2));
+            Assert.That(!pixel.Equals(pixel2));
+            Assert.That(pixel != pixel2);
+        }
+
+        [Test]
         public void BlendTransparentBackground()
         {
             var pixel = new Pixel(new PixelBackground(Colors.Green));
