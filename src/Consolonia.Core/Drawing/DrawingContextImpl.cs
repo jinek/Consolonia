@@ -308,7 +308,8 @@ namespace Consolonia.Core.Drawing
             Point head = line.PStart;
             if (pen.Brush is MoveConsoleCaretToPositionBrush)
             {
-                _pixelBuffer.SetCaretPosition((PixelBufferCoordinate)head);
+                CurrentClip.ExecuteWithClipping(head,
+                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
                 return;
             }
 
@@ -374,7 +375,8 @@ namespace Consolonia.Core.Drawing
 
             if (pen.Brush is MoveConsoleCaretToPositionBrush)
             {
-                _pixelBuffer.SetCaretPosition((PixelBufferCoordinate)head);
+                CurrentClip.ExecuteWithClipping(head,
+                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
                 return;
             }
 

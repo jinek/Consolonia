@@ -18,7 +18,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Width = width;
             Height = height;
             _buffer = new Pixel[width, height];
-            _caretPosition = new PixelBufferCoordinate(0, 0);
         }
 
         public ushort Width { get; }
@@ -68,25 +67,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             TUserObject userObject)
         {
             this[point] = changeAction(this[point], userObject);
-        }
-
-        /// <summary>
-        ///     Clears old pixel caret position and sets new caret position
-        /// </summary>
-        /// <param name="point"></param>
-        public void SetCaretPosition(PixelBufferCoordinate point)
-        {
-            // clear old caret position by merging in IsCaret = false
-            Pixel oldCaretPixel = _buffer[_caretPosition.X, _caretPosition.Y];
-            _buffer[_caretPosition.X, _caretPosition.Y] =
-                new Pixel(oldCaretPixel.Foreground, oldCaretPixel.Background /*, false*/);
-
-            _caretPosition = point;
-
-            // set new caret position by merging in IsCaret = true
-            Pixel newCaretPixel = _buffer[_caretPosition.X, _caretPosition.Y];
-            _buffer[_caretPosition.X, _caretPosition.Y] =
-                new Pixel(newCaretPixel.Foreground, newCaretPixel.Background, true);
         }
 
         public void Foreach(Func<PixelBufferCoordinate, Pixel, Pixel> replaceAction)
