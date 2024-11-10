@@ -1,16 +1,18 @@
 using System.Threading.Tasks;
 using Avalonia.Input;
-using Consolonia.GalleryTests.Base;
-using Consolonia.TestsCore;
+using Consolonia.Gallery.Tests.Base;
+using Consolonia.NUnit;
 using NUnit.Framework;
 
-namespace Consolonia.GalleryTests
+namespace Consolonia.Gallery.Tests
 {
     [TestFixture]
     internal class MenuTests : GalleryTestsBaseBase
     {
-        protected override async Task PerformSingleTest()
+        [Test]
+        public async Task PerformSingleTest()
         {
+            await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText("First", "Second");
             await UITest.KeyInput(Key.Enter);
             await UITest.AssertHasText("Standard Menu Item", @"Ctrl\+A");

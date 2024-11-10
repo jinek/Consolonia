@@ -95,7 +95,7 @@ namespace Consolonia.Core.Drawing
                 Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
 
                 var imagePixel = new Pixel(
-                    new PixelForeground(new SimpleSymbol(quadPixel), color: foreground),
+                    new PixelForeground(new SimpleSymbol(quadPixel), foreground),
                     new PixelBackground(background));
                 CurrentClip.ExecuteWithClipping(new Point(px, py),
                     () =>
@@ -349,10 +349,10 @@ namespace Consolonia.Core.Drawing
                         pixel =>
                         {
                             var newPixelForeground = new PixelForeground(pixel.Foreground.Symbol,
+                                pixel.Foreground.Color,
                                 pixel.Foreground.Weight,
                                 pixel.Foreground.Style,
-                                textDecoration,
-                                pixel.Foreground.Color);
+                                textDecoration);
                             return pixel.Blend(new Pixel(newPixelForeground, pixel.Background));
                         });
                 });
@@ -499,7 +499,7 @@ namespace Consolonia.Core.Drawing
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
             // the x and y are adjusted accodingly.
-            foreach (string glyph in text.GetGlyphs())
+            foreach (string glyph in text.GetGlyphs(_consoleWindow.Console.SupportsComplexEmoji))
             {
                 Point characterPoint =
                     whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));

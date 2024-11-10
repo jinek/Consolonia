@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 
 // ReSharper disable UnusedMember.Global
@@ -52,6 +53,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public bool Equals(PixelBufferCoordinate secondPoint)
         {
             return X == secondPoint.X && Y == secondPoint.Y;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(X, Y);
         }
     }
 }

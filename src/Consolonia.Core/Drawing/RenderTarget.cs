@@ -20,8 +20,8 @@ namespace Consolonia.Core.Drawing
 
         private PixelBuffer _bufferBuffer;
 
-        private (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
-            textDecorations, string text)?[,] _cache;
+        // cache of pixels written so we can ignore them if unchanged.
+        private Pixel?[,] _cache;
 
         internal RenderTarget(ConsoleWindow consoleWindow)
         {
@@ -96,9 +96,7 @@ namespace Consolonia.Core.Drawing
 
         private void InitializeCache(ushort width, ushort height)
         {
-            _cache =
-                new (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
-                    textDecorations, string text)?[width, height];
+            _cache = new Pixel?[width, height];
         }
 
         private void RenderToDevice()
@@ -130,20 +128,14 @@ namespace Consolonia.Core.Drawing
                         "All pixels in the buffer must have exact console color before rendering");
 
 
-                (Color background, Color foreground, FontWeight weight, FontStyle style, TextDecorationCollection
-                    textDecorations, string text)
-                    pixelSpread = (pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight,
-                        pixel.Foreground.Style, pixel.Foreground.TextDecorations,
-                        pixel.Foreground.Symbol.Text);
-
                 //todo: indexOutOfRange during resize
-                if (_cache[x, y] == pixelSpread)
+                if (_cache[x, y] == pixel)
                 {
                     x++;
                     continue;
                 }
 
-                _cache[x, y] = pixelSpread;
+                _cache[x, y] = pixel;
 
                 flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
 

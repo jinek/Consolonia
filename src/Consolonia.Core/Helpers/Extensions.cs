@@ -34,19 +34,18 @@ namespace Consolonia.Core.Helpers
         ///     Process text into collection of glyphs where a glyph is either text or a combination of chars which make up an
         ///     emoji.
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">text to get glyphs from</param>
+        /// <param name="supportsComplexEmoji">If true, emojis like 👨‍👩‍👧‍👦 will be treated as a single glyph></param>
         /// <returns></returns>
-        public static IReadOnlyList<string> GetGlyphs(this string text)
+        public static IReadOnlyList<string> GetGlyphs(this string text, bool supportsComplexEmoji)
         {
-            var console = AvaloniaLocator.Current.GetService<IConsole>();
-
             var glyphs = new List<string>();
             var emoji = new StringBuilder();
             StringRuneEnumerator runes = text.EnumerateRunes();
             var lastRune = new Rune();
 
             while (runes.MoveNext())
-                if (console.SupportsComplexEmoji)
+                if (supportsComplexEmoji)
                 {
                     if (lastRune.Value == Codepoints.ZWJ ||
                         lastRune.Value == Codepoints.ORC ||
@@ -95,13 +94,13 @@ namespace Consolonia.Core.Helpers
         public static ushort MeasureText(this string text)
         {
             var console = AvaloniaLocator.Current.GetService<IConsole>();
-
+            bool supportsComplexEmoji = console != null ? console.SupportsComplexEmoji : false;
             ushort width = 0;
             ushort lastWidth = 0;
             foreach (Rune rune in text.EnumerateRunes())
             {
                 ushort runeWidth = (ushort)UnicodeCalculator.GetWidth(rune);
-                if (console.SupportsComplexEmoji &&
+                if (supportsComplexEmoji &&
                     (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter))
                     width -= lastWidth;
                 else

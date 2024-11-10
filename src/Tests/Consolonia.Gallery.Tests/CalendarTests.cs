@@ -1,17 +1,19 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Input;
-using Consolonia.GalleryTests.Base;
-using Consolonia.TestsCore;
+using Consolonia.Gallery.Tests.Base;
+using Consolonia.NUnit;
 using NUnit.Framework;
 
-namespace Consolonia.GalleryTests
+namespace Consolonia.Gallery.Tests
 {
     [TestFixture]
     internal class CalendarTests : GalleryTestsBaseBase
     {
-        protected override async Task PerformSingleTest()
+        [Test]
+        public async Task PerformSingleTest()
         {
+            await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText("24 25 26 27 28 29 30");
             await UITest.AssertHasText(@"April", @"2022");
             await UITest.KeyInput(Key.Tab, Key.Back);

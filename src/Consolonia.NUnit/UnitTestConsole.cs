@@ -13,7 +13,7 @@ using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
-namespace Consolonia.TestsCore
+namespace Consolonia.NUnit
 {
     public sealed class UnitTestConsole : IConsole
     {
@@ -66,7 +66,7 @@ namespace Consolonia.TestsCore
                 PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
                     // ReSharper disable once AccessToModifiedClosure we are sure about inline execution
                     new Pixel(
-                        new PixelForeground(new SimpleSymbol(rune), color: foreground, style: style, weight: weight,
+                        new PixelForeground(new SimpleSymbol(rune), foreground, style: style, weight: weight,
                             textDecorations: textDecorations),
                         new PixelBackground(PixelBackgroundMode.Colored, background)));
                 i++;
