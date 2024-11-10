@@ -7,6 +7,10 @@ namespace Consolonia.Core.Text
 {
     public sealed class GlyphTypeface : IGlyphTypeface
     {
+        // NOTE: We are using this placeholder glyph since we are pushing
+        // raw text to the console and not using a font system to render the text
+        internal const ushort Glyph = 21; // ASCII NAK
+
         public void Dispose()
         {
         }
@@ -26,22 +30,18 @@ namespace Consolonia.Core.Text
 
         public ushort GetGlyph(uint codepoint)
         {
-            // we just return placeholder chars as we are pushing the raw
-            // text to the console
-            return 'X';
+            return Glyph;
         }
 
         public bool TryGetGlyph(uint codepoint, out ushort glyph)
         {
-            // we just return placeholder chars as we are pushing the raw
-            // text to the console
-            glyph = 'X';
+            glyph = Glyph;
             return true;
         }
 
         public ushort[] GetGlyphs(ReadOnlySpan<uint> codepoints)
         {
-            return codepoints.ToArray().Select(_ => (ushort)'X').ToArray();
+            return codepoints.ToArray().Select(_ => (ushort)Glyph).ToArray();
         }
 
         public int GetGlyphAdvance(ushort glyph)
