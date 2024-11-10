@@ -87,7 +87,7 @@ namespace Consolonia.Core.Tests
             Assert.That(!symbol.Equals(symbol2));
             Assert.That(!symbol.Equals(symbol2));
         }
-        
+
         [Test]
         public void HashCode()
         {
@@ -95,7 +95,7 @@ namespace Consolonia.Core.Tests
             set.Add(new SimpleSymbol("a"));
             set.Add(new SimpleSymbol("a"));
             Assert.That(set.Count, Is.EqualTo(1));
-            
+
             var set2 = new HashSet<ISymbol>();
             set2.Add(new SimpleSymbol("a"));
             set2.Add(new SimpleSymbol("a"));

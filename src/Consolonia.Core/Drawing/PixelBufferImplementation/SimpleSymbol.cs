@@ -48,18 +48,28 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         public bool Equals(SimpleSymbol other)
-            => Text.Equals(other.Text, StringComparison.Ordinal);
+        {
+            return Text.Equals(other.Text, StringComparison.Ordinal);
+        }
 
         public override bool Equals([NotNullWhen(true)] object obj)
-            => obj is SimpleSymbol other && this.Equals(other);
+        {
+            return obj is SimpleSymbol other && Equals(other);
+        }
 
         public override int GetHashCode()
-            => Text.GetHashCode(StringComparison.Ordinal);
+        {
+            return Text.GetHashCode(StringComparison.Ordinal);
+        }
 
         public static bool operator ==(SimpleSymbol left, SimpleSymbol right)
-            => left.Equals(right);
+        {
+            return left.Equals(right);
+        }
 
         public static bool operator !=(SimpleSymbol left, SimpleSymbol right)
-            => !left.Equals(right);
+        {
+            return !left.Equals(right);
+        }
     }
 }

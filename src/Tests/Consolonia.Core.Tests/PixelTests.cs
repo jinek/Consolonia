@@ -72,17 +72,17 @@ namespace Consolonia.Core.Tests
         public void NotEqual()
         {
             var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
-                                  new PixelBackground(Colors.Blue));
+                new PixelBackground(Colors.Blue));
             var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('b'), Colors.Red),
-                                   new PixelBackground(Colors.Blue));
+                new PixelBackground(Colors.Blue));
             Assert.That(!pixel.Equals((object)pixel2));
             Assert.That(!pixel.Equals(pixel2));
             Assert.That(pixel != pixel2);
 
             pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
-                                  new PixelBackground(Colors.Blue));
+                new PixelBackground(Colors.Blue));
             pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Blue),
-                                   new PixelBackground(Colors.Blue));
+                new PixelBackground(Colors.Blue));
             Assert.That(!pixel.Equals((object)pixel2));
             Assert.That(!pixel.Equals(pixel2));
             Assert.That(pixel != pixel2);

@@ -56,46 +56,46 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     return horizontal ? '╪' : '╫';
 
                 default:
+                {
+                    return upRightDownLeft switch
                     {
-                        return upRightDownLeft switch
-                        {
-                            EmptySymbol => char.MinValue,
-                            BoldSymbol => '█',
-                            0b0000_1001 => '┘',
-                            0b1000_1001 => '╜',
-                            0b0001_1001 => '╛',
-                            0b1001_1001 => '╝',
-                            0b0000_0011 => '┐',
-                            0b0010_0011 => '╖',
-                            0b0001_0011 => '╕',
-                            0b0011_0011 => '╗',
-                            0b0000_0110 => '┌',
-                            0b0100_0110 => '╒',
-                            0b0010_0110 => '╓',
-                            0b0110_0110 => '╔',
-                            0b0000_1100 => '└',
-                            0b0100_1100 => '╘',
-                            0b1000_1100 => '╙',
-                            0b1100_1100 => '╚',
-                            0b0000_1110 => '├',
-                            0b1000_1110 or 0b0010_1110 or 0b1010_1110 => '╟',
-                            0b0100_1110 => '╞',
-                            0b1100_1110 or 0b0110_1110 or 0b1110_1110 => '╠',
-                            0b0000_1011 => '┤',
-                            0b1000_1011 or 0b0010_1011 or 0b1010_1011 => '╢',
-                            0b0001_1011 => '╡',
-                            0b1001_1011 or 0b0011_1011 or 0b1011_1011 => '╣',
-                            0b0000_1101 => '┴',
-                            0b1000_1101 => '╨',
-                            0b0100_1101 or 0b0001_1101 or 0b0101_1101 => '╧',
-                            0b1100_1101 or 0b1001_1101 or 0b1101_1101 => '╩',
-                            0b0000_0111 => '┬',
-                            0b0010_0111 => '╥',
-                            0b0100_0111 or 0b0001_0111 or 0b0101_0111 => '╤',
-                            0b0110_0111 or 0b0011_0111 or 0b0111_0111 => '╦',
-                            _ => throw new InvalidOperationException()
-                        };
-                    }
+                        EmptySymbol => char.MinValue,
+                        BoldSymbol => '█',
+                        0b0000_1001 => '┘',
+                        0b1000_1001 => '╜',
+                        0b0001_1001 => '╛',
+                        0b1001_1001 => '╝',
+                        0b0000_0011 => '┐',
+                        0b0010_0011 => '╖',
+                        0b0001_0011 => '╕',
+                        0b0011_0011 => '╗',
+                        0b0000_0110 => '┌',
+                        0b0100_0110 => '╒',
+                        0b0010_0110 => '╓',
+                        0b0110_0110 => '╔',
+                        0b0000_1100 => '└',
+                        0b0100_1100 => '╘',
+                        0b1000_1100 => '╙',
+                        0b1100_1100 => '╚',
+                        0b0000_1110 => '├',
+                        0b1000_1110 or 0b0010_1110 or 0b1010_1110 => '╟',
+                        0b0100_1110 => '╞',
+                        0b1100_1110 or 0b0110_1110 or 0b1110_1110 => '╠',
+                        0b0000_1011 => '┤',
+                        0b1000_1011 or 0b0010_1011 or 0b1010_1011 => '╢',
+                        0b0001_1011 => '╡',
+                        0b1001_1011 or 0b0011_1011 or 0b1011_1011 => '╣',
+                        0b0000_1101 => '┴',
+                        0b1000_1101 => '╨',
+                        0b0100_1101 or 0b0001_1101 or 0b0101_1101 => '╧',
+                        0b1100_1101 or 0b1001_1101 or 0b1101_1101 => '╩',
+                        0b0000_0111 => '┬',
+                        0b0010_0111 => '╥',
+                        0b0100_0111 or 0b0001_0111 or 0b0101_0111 => '╤',
+                        0b0110_0111 or 0b0011_0111 or 0b0111_0111 => '╦',
+                        _ => throw new InvalidOperationException()
+                    };
+                }
             }
         }
 
@@ -135,18 +135,28 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         public bool Equals(DrawingBoxSymbol other)
-            => _upRightDownLeft == other._upRightDownLeft;
+        {
+            return _upRightDownLeft == other._upRightDownLeft;
+        }
 
         public override bool Equals([NotNullWhen(true)] object obj)
-            => obj is DrawingBoxSymbol other && this.Equals(other);
+        {
+            return obj is DrawingBoxSymbol other && Equals(other);
+        }
 
         public override int GetHashCode()
-            => _upRightDownLeft.GetHashCode();
+        {
+            return _upRightDownLeft.GetHashCode();
+        }
 
         public static bool operator ==(DrawingBoxSymbol left, DrawingBoxSymbol right)
-            => left.Equals(right);
-        
+        {
+            return left.Equals(right);
+        }
+
         public static bool operator !=(DrawingBoxSymbol left, DrawingBoxSymbol right)
-            => !left.Equals(right);
+        {
+            return !left.Equals(right);
+        }
     }
 }

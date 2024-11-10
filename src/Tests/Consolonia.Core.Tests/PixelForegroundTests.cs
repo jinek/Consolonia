@@ -85,14 +85,14 @@ namespace Consolonia.Core.Tests
         public void Inequality()
         {
             var pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
-            foreach (var variation in new PixelForeground[]
-                                    {
-                                        new(new SimpleSymbol('b'), Colors.Red),
-                                        new(new SimpleSymbol('a'), Colors.Blue),
-                                        new(new SimpleSymbol('a'), Colors.Red, FontWeight.Bold),
-                                        new(new SimpleSymbol('a'), Colors.Red, style: FontStyle.Italic),
-                                        new(new SimpleSymbol('a'), Colors.Red, textDecorations: TextDecorations.Underline),
-                                    })
+            foreach (PixelForeground variation in new PixelForeground[]
+                     {
+                         new(new SimpleSymbol('b'), Colors.Red),
+                         new(new SimpleSymbol('a'), Colors.Blue),
+                         new(new SimpleSymbol('a'), Colors.Red, FontWeight.Bold),
+                         new(new SimpleSymbol('a'), Colors.Red, style: FontStyle.Italic),
+                         new(new SimpleSymbol('a'), Colors.Red, textDecorations: TextDecorations.Underline)
+                     })
             {
                 Assert.That(!pixelForeground.Equals((object)variation));
                 Assert.That(!pixelForeground.Equals(variation));
@@ -151,7 +151,7 @@ namespace Consolonia.Core.Tests
             pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
             pixelForeground2 = new PixelForeground(new SimpleSymbol('b'), Colors.Red);
             Assert.That(pixelForeground.GetHashCode(), Is.Not.EqualTo(pixelForeground2.GetHashCode()));
-            
+
             pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
             pixelForeground2 = new PixelForeground(new SimpleSymbol('a'), Colors.Blue);
             Assert.That(pixelForeground.GetHashCode(), Is.Not.EqualTo(pixelForeground2.GetHashCode()));

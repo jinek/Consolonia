@@ -49,22 +49,32 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         public bool Equals(PixelForeground other)
-            => Symbol.Equals(other.Symbol) &&
-                Color.Equals(other.Color) &&
-                Weight == other.Weight &&
-                Style == other.Style &&
-                Equals(TextDecorations, other.TextDecorations);
+        {
+            return Symbol.Equals(other.Symbol) &&
+                   Color.Equals(other.Color) &&
+                   Weight == other.Weight &&
+                   Style == other.Style &&
+                   Equals(TextDecorations, other.TextDecorations);
+        }
 
         public override bool Equals([NotNullWhen(true)] object obj)
-            => obj is PixelForeground other && this.Equals(other);
+        {
+            return obj is PixelForeground other && Equals(other);
+        }
 
         public override int GetHashCode()
-          => HashCode.Combine(Symbol, Color, (int)Weight, (int)Style, TextDecorations);
+        {
+            return HashCode.Combine(Symbol, Color, (int)Weight, (int)Style, TextDecorations);
+        }
 
         public static bool operator ==(PixelForeground left, PixelForeground right)
-            => left.Equals(right);
+        {
+            return left.Equals(right);
+        }
 
         public static bool operator !=(PixelForeground left, PixelForeground right)
-            => !left.Equals(right);
+        {
+            return !left.Equals(right);
+        }
     }
 }

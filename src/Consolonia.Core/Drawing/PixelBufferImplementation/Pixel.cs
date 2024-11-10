@@ -125,20 +125,30 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         public bool Equals(Pixel other)
-            => Foreground.Equals(other.Foreground) && 
-               Background.Equals(other.Background) && 
-               IsCaret.Equals(IsCaret);
+        {
+            return Foreground.Equals(other.Foreground) &&
+                   Background.Equals(other.Background) &&
+                   IsCaret.Equals(IsCaret);
+        }
 
         public override bool Equals([NotNullWhen(true)] object obj)
-            => obj is Pixel other && this.Equals(other);
+        {
+            return obj is Pixel other && Equals(other);
+        }
 
         public override int GetHashCode()
-            => HashCode.Combine(Foreground, Background, IsCaret);
+        {
+            return HashCode.Combine(Foreground, Background, IsCaret);
+        }
 
         public static bool operator ==(Pixel left, Pixel right)
-            => left.Equals(right);
+        {
+            return left.Equals(right);
+        }
 
         public static bool operator !=(Pixel left, Pixel right)
-            => !left.Equals(right);
+        {
+            return !left.Equals(right);
+        }
     }
 }
