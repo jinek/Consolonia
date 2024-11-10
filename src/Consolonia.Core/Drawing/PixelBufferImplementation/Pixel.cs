@@ -78,10 +78,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             PixelForeground newForeground;
             PixelBackground newBackground;
 
-            if (pixelAbove.IsCaret)
-            {
-                return new Pixel(this.Foreground, this.Background, true);
-            }
+            if (pixelAbove.IsCaret) return new Pixel(Foreground, Background, true);
 
             switch (pixelAbove.Background.Mode)
             {
