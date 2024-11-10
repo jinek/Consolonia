@@ -7,23 +7,38 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
     public class InputLessDefaultNetConsole : IConsole
     {
+        private const string TestEmoji = "👨‍👩‍👧‍👦";
         private bool _caretVisible;
         private PixelBufferCoordinate _headBufferPoint;
 
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
         protected InputLessDefaultNetConsole()
         {
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
+            Console.OutputEncoding = Encoding.UTF8;
+
+            // enable alternate screen so original console screen is not affected by the app
             Console.Write(ConsoleUtils.EnableAlternateBuffer);
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
+
+            // Detect complex emoji support by writing a complex emoji and checking cursor position.
+            // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
+            Console.SetCursorPosition(0, 0);
+            Console.Write(TestEmoji);
+            (int left, _) = Console.GetCursorPosition();
+            SupportsComplexEmoji = left == 2;
+
             Console.CursorVisible = false;
+            Console.Clear();
+
             ActualizeSize();
         }
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
         protected bool Disposed { get; private set; }
 
@@ -41,6 +56,8 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public PixelBufferSize Size { get; private set; }
+
+        public bool SupportsComplexEmoji { get; }
 
         public void SetTitle(string title)
         {
@@ -101,10 +118,12 @@ namespace Consolonia.Core.Infrastructure
 
             Console.Write(sb.ToString());
 
-            if (_headBufferPoint.X < Size.Width - str.Length)
+            ushort textWidth = str.MeasureText();
+            if (_headBufferPoint.X < Size.Width - textWidth)
                 _headBufferPoint =
-                    new PixelBufferCoordinate((ushort)(_headBufferPoint.X + str.Length), _headBufferPoint.Y);
-            else _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
+                    new PixelBufferCoordinate((ushort)(_headBufferPoint.X + textWidth), _headBufferPoint.Y);
+            else
+                _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
         }
 
         public event Action Resized;

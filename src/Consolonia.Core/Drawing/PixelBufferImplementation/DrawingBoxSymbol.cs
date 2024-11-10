@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     /// <summary>
     ///     https://en.wikipedia.org/wiki/Box-drawing_character
     /// </summary>
+    [DebuggerDisplay("DrawingBox {Text}")]
     public struct DrawingBoxSymbol : ISymbol
     {
         // all 0bXXXX_0000 are special values
@@ -18,10 +20,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         private byte _upRightDownLeft;
 
+        public string Text => GetBoxSymbol().ToString();
+
+        public ushort Width { get; } = 1;
+
         /// <summary>
         ///     https://en.wikipedia.org/wiki/Code_page_437
         /// </summary>
-        char ISymbol.GetCharacter()
+        private char GetBoxSymbol()
         {
             //DOS linedraw characters are not ordered in any programmatic manner, and calculating a particular character shape needs to use a look-up table. from https://en.wikipedia.org/wiki/Box-drawing_character
 
@@ -106,22 +112,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 _upRightDownLeft = BoldSymbol;
             else
                 _upRightDownLeft |= drawingBoxSymbol._upRightDownLeft;
-
             return this;
         }
 
-        public static byte UpRightDownLeftFromPattern(byte pattern, LineStyle lineStyle)
+        public static DrawingBoxSymbol UpRightDownLeftFromPattern(byte pattern, LineStyle lineStyle)
         {
-            if (pattern == EmptySymbol) return EmptySymbol;
+            if (pattern == EmptySymbol) return new DrawingBoxSymbol(EmptySymbol);
             switch (lineStyle)
             {
                 case LineStyle.SingleLine:
-                    return pattern;
+                    return new DrawingBoxSymbol(pattern);
                 case LineStyle.Bold:
-                    return BoldSymbol;
+                    return new DrawingBoxSymbol(BoldSymbol);
                 case LineStyle.DoubleLine:
                     byte leftPart = (byte)(pattern << 4);
-                    return (byte)(leftPart | pattern);
+                    return new DrawingBoxSymbol((byte)(leftPart | pattern));
                 default:
                     throw new ArgumentOutOfRangeException(nameof(lineStyle), lineStyle, null);
             }

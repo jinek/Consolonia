@@ -38,6 +38,8 @@ namespace Consolonia.TestsCore
         PixelBufferSize IConsole.Size => _size;
         bool IConsole.CaretVisible { get; set; }
 
+        public bool SupportsComplexEmoji => true;
+
         public void SetTitle(string title)
         {
             Console.WriteLine($"Title changed to {title}");
@@ -58,13 +60,17 @@ namespace Consolonia.TestsCore
         {
             (ushort x, ushort y) = bufferPoint;
 
-            for (int i = 0; i < str.Length; i++)
+            int i = 0;
+            foreach (Rune rune in str.EnumerateRunes())
+            {
                 PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
                     // ReSharper disable once AccessToModifiedClosure we are sure about inline execution
                     new Pixel(
-                        new PixelForeground(new SimpleSymbol(str[i]), color: foreground, style: style, weight: weight,
+                        new PixelForeground(new SimpleSymbol(rune), color: foreground, style: style, weight: weight,
                             textDecorations: textDecorations),
                         new PixelBackground(PixelBackgroundMode.Colored, background)));
+                i++;
+            }
         }
 
         public void PauseIO(Task task)
@@ -144,9 +150,9 @@ namespace Consolonia.TestsCore
                     if (i == PixelBuffer.Width - 1 && j == PixelBuffer.Height - 1)
                         break;
                     Pixel pixel = PixelBuffer[new PixelBufferCoordinate(i, j)];
-                    char character = pixel.IsCaret ? 'Ꮖ' : pixel.Foreground.Symbol.GetCharacter();
+                    string text = pixel.IsCaret ? "Ꮖ" : pixel.Foreground.Symbol.Text;
                     //todo: check why cursor is not drawing
-                    stringBuilder.Append(character);
+                    stringBuilder.Append(text);
                 }
 
                 stringBuilder.AppendLine();

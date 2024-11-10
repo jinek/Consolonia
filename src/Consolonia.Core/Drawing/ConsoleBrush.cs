@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -6,6 +7,7 @@ using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
+    [DebuggerDisplay("{Color} [{Mode}]")]
     public class ConsoleBrush : AvaloniaObject, IImmutableBrush
     {
         public static readonly StyledProperty<Color> ColorProperty =

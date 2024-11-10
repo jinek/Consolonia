@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Avalonia.Media;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -6,6 +7,7 @@ using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
+    [DebuggerDisplay("'{Foreground.Symbol.Text}' [{Foreground.Color}, {Background.Color}]")]
     public readonly struct Pixel
     {
         public PixelForeground Foreground { get; }
@@ -14,20 +16,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool IsCaret { get; }
 
-        public Pixel(bool isCaret) : this(PixelBackgroundMode.Transparent)
+        public Pixel(bool isCaret)
         {
+            Foreground = new PixelForeground(new SimpleSymbol());
+            Background = new PixelBackground(PixelBackgroundMode.Transparent);
             IsCaret = isCaret;
-        }
-
-        public Pixel(char character, Color foregroundColor, FontStyle style = FontStyle.Normal,
-            FontWeight weight = FontWeight.Normal) :
-            this(new SimpleSymbol(character), foregroundColor, style, weight)
-        {
-        }
-
-        public Pixel(byte drawingBoxSymbol, Color foregroundColor) : this(
-            new DrawingBoxSymbol(drawingBoxSymbol), foregroundColor)
-        {
         }
 
         public Pixel(ISymbol symbol, Color foregroundColor, FontStyle style = FontStyle.Normal,
@@ -68,11 +61,17 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 case PixelBackgroundMode.Colored:
                     // merge pixelAbove into this pixel using alpha channel.
                     Color mergedColors = MergeColors(Background.Color, pixelAbove.Background.Color);
-                    return new Pixel(pixelAbove.Foreground,
-                        new PixelBackground(mergedColors));
+                    newForeground = pixelAbove.Foreground;
+                    newBackground = new PixelBackground(mergedColors);
+                    return new Pixel(newForeground, newBackground);
 
                 case PixelBackgroundMode.Transparent:
-                    newForeground = Foreground.Blend(pixelAbove.Foreground);
+                    // if the foreground is transparent, ignore pixelAbove foreground.
+                    newForeground = pixelAbove.Foreground.Color != Colors.Transparent
+                        ? Foreground.Blend(pixelAbove.Foreground)
+                        : Foreground;
+
+                    // background is transparent, ignore pixelAbove background.
                     newBackground = Background;
                     break;
                 case PixelBackgroundMode.Shaded:

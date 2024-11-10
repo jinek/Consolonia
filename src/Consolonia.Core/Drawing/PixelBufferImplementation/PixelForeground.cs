@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
+    [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
     public readonly struct PixelForeground
     {
         public PixelForeground(ISymbol symbol, FontWeight weight = FontWeight.Normal,
@@ -37,8 +39,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             //todo: check default(char) is there
             ISymbol symbolAbove = pixelAboveForeground.Symbol;
             ArgumentNullException.ThrowIfNull(symbolAbove);
-
-            if (symbolAbove.IsWhiteSpace()) return this;
 
             ISymbol newSymbol = Symbol.Blend(ref symbolAbove);
 
