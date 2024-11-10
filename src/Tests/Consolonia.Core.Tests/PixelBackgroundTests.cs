@@ -57,5 +57,21 @@ namespace Consolonia.Core.Tests
             Assert.That(pixelBackground != pixelBackground2);
         }
 
+        [Test]
+        public void HashCode()
+        {
+            var pixelBackground = new PixelBackground(Colors.Red);
+            var pixelBackground2 = new PixelBackground(Colors.Red);
+            Assert.That(pixelBackground.GetHashCode(), Is.EqualTo(pixelBackground2.GetHashCode()));
+
+            pixelBackground = new PixelBackground(PixelBackgroundMode.Transparent, Colors.Blue);
+            pixelBackground2 = new PixelBackground(PixelBackgroundMode.Transparent, Colors.Blue);
+            Assert.That(pixelBackground.GetHashCode(), Is.EqualTo(pixelBackground2.GetHashCode()));
+
+            // inequal hashcode
+            pixelBackground = new PixelBackground(Colors.Red);
+            pixelBackground2 = new PixelBackground(Colors.Blue);
+            Assert.That(pixelBackground.GetHashCode(), Is.Not.EqualTo(pixelBackground2.GetHashCode()));
+        }
     }
 }

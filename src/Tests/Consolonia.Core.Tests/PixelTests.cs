@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using NUnit.Framework;
@@ -109,6 +110,17 @@ namespace Consolonia.Core.Tests
             Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
             Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(newPixel.Background.Color, Is.EqualTo(Colors.Blue));
+        }
+
+        [Test]
+        public void HashCode()
+        {
+            var set = new HashSet<Pixel>();
+            set.Add(new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+                new PixelBackground(Colors.Blue)));
+            set.Add(new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+                new PixelBackground(Colors.Blue)));
+            Assert.That(set.Count, Is.EqualTo(1));
         }
     }
 }

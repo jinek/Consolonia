@@ -75,7 +75,7 @@ namespace Consolonia.Core.Tests
         public void Equality()
         {
             var pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
-            var pixelForeground2 = new PixelForeground(new SimpleSymbol('a'), Colors.Red, FontWeight.Normal, FontStyle.Normal, null);
+            var pixelForeground2 = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
             Assert.That(pixelForeground.Equals((object)pixelForeground2));
             Assert.That(pixelForeground.Equals(pixelForeground2));
             Assert.That(pixelForeground == pixelForeground2, Is.True);
@@ -87,11 +87,11 @@ namespace Consolonia.Core.Tests
             var pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
             foreach (var variation in new PixelForeground[]
                                     {
-                                        new(new SimpleSymbol('b'), Colors.Red, FontWeight.Normal, FontStyle.Normal, null),
-                                        new(new SimpleSymbol('a'), Colors.Blue, FontWeight.Normal, FontStyle.Normal, null),
-                                        new(new SimpleSymbol('a'), Colors.Red, FontWeight.Bold, FontStyle.Normal, null),
-                                        new(new SimpleSymbol('a'), Colors.Red, FontWeight.Normal, FontStyle.Italic, null),
-                                        new(new SimpleSymbol('a'), Colors.Red, FontWeight.Normal, FontStyle.Normal, TextDecorations.Underline),
+                                        new(new SimpleSymbol('b'), Colors.Red),
+                                        new(new SimpleSymbol('a'), Colors.Blue),
+                                        new(new SimpleSymbol('a'), Colors.Red, FontWeight.Bold),
+                                        new(new SimpleSymbol('a'), Colors.Red, style: FontStyle.Italic),
+                                        new(new SimpleSymbol('a'), Colors.Red, textDecorations: TextDecorations.Underline),
                                     })
             {
                 Assert.That(!pixelForeground.Equals((object)variation));
@@ -116,8 +116,7 @@ namespace Consolonia.Core.Tests
         public void BlendComplex()
         {
             var symbol = new SimpleSymbol('a');
-            var pixelForeground = new PixelForeground(symbol, Colors.Red, FontWeight.Light, FontStyle.Normal,
-                TextDecorations.Strikethrough);
+            var pixelForeground = new PixelForeground(symbol, Colors.Red);
             var symbolAbove = new SimpleSymbol('b');
             var pixelForegroundAbove = new PixelForeground(symbolAbove, Colors.Blue, FontWeight.Bold, FontStyle.Italic,
                 TextDecorations.Underline);
@@ -139,6 +138,23 @@ namespace Consolonia.Core.Tests
             PixelForeground newPixelForeground = pixelForeground.Blend(pixelForegroundAbove);
             Assert.That(newPixelForeground.Color, Is.EqualTo(Colors.Blue));
             Assert.That(newPixelForeground.Symbol.Text, Is.EqualTo("🎶"));
+        }
+
+        [Test]
+        public void HashCode()
+        {
+            var pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
+            var pixelForeground2 = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
+            Assert.That(pixelForeground.GetHashCode(), Is.EqualTo(pixelForeground2.GetHashCode()));
+
+            // inequal test
+            pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
+            pixelForeground2 = new PixelForeground(new SimpleSymbol('b'), Colors.Red);
+            Assert.That(pixelForeground.GetHashCode(), Is.Not.EqualTo(pixelForeground2.GetHashCode()));
+            
+            pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
+            pixelForeground2 = new PixelForeground(new SimpleSymbol('a'), Colors.Blue);
+            Assert.That(pixelForeground.GetHashCode(), Is.Not.EqualTo(pixelForeground2.GetHashCode()));
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using NUnit.Framework;
@@ -75,7 +76,7 @@ namespace Consolonia.Core.Tests
         {
             ISymbol symbol = new DrawingBoxSymbol(0b0000_1111);
             ISymbol symbol2 = new DrawingBoxSymbol(0b0000_1111);
-            Assert.That(symbol.Equals((object)symbol2));
+            Assert.That(symbol.Equals(symbol2));
             Assert.That(symbol.Equals(symbol2));
         }
 
@@ -94,8 +95,23 @@ namespace Consolonia.Core.Tests
         {
             ISymbol symbol = new DrawingBoxSymbol(0b0000_1111);
             ISymbol symbol2 = new DrawingBoxSymbol(0b0000_0000);
-            Assert.That(!symbol.Equals((object)symbol2));
+            Assert.That(!symbol.Equals(symbol2));
             Assert.That(!symbol.Equals(symbol2));
         }
+
+        [Test]
+        public void Hash()
+        {
+            var set = new HashSet<DrawingBoxSymbol>();
+            set.Add(new DrawingBoxSymbol(0b0000_1111));
+            set.Add(new DrawingBoxSymbol(0b0000_1111));
+            Assert.That(set.Count, Is.EqualTo(1));
+
+            var set2 = new HashSet<ISymbol>();
+            set2.Add(new DrawingBoxSymbol(0b0000_1111));
+            set2.Add(new DrawingBoxSymbol(0b0000_1111));
+            Assert.That(set2.Count, Is.EqualTo(1));
+        }
+
     }
 }

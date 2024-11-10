@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -64,7 +65,7 @@ namespace Consolonia.Core.Tests
         {
             ISymbol symbol = new SimpleSymbol("a");
             ISymbol symbol2 = new SimpleSymbol("a");
-            Assert.That(symbol.Equals((object)symbol2));
+            Assert.That(symbol.Equals(symbol2));
             Assert.That(symbol.Equals(symbol2));
         }
 
@@ -83,8 +84,22 @@ namespace Consolonia.Core.Tests
         {
             ISymbol symbol = new SimpleSymbol("a");
             ISymbol symbol2 = new SimpleSymbol("b");
-            Assert.That(!symbol.Equals((object)symbol2));
             Assert.That(!symbol.Equals(symbol2));
+            Assert.That(!symbol.Equals(symbol2));
+        }
+        
+        [Test]
+        public void HashCode()
+        {
+            var set = new HashSet<SimpleSymbol>();
+            set.Add(new SimpleSymbol("a"));
+            set.Add(new SimpleSymbol("a"));
+            Assert.That(set.Count, Is.EqualTo(1));
+            
+            var set2 = new HashSet<ISymbol>();
+            set2.Add(new SimpleSymbol("a"));
+            set2.Add(new SimpleSymbol("a"));
+            Assert.That(set2.Count, Is.EqualTo(1));
         }
 
         [Test]
