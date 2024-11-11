@@ -1,6 +1,8 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
-    <Style Selector="ComboBoxItem">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision"
+            xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+    <ControlTheme x:Key="{x:Type ComboBoxItem}" TargetType="ComboBoxItem">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="Padding"
@@ -24,26 +26,26 @@
                 </helpers:CaretControl>
             </ControlTemplate>
         </Setter>
-    </Style>
 
-    <!--
-    <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter">
+        <!--
+    <Style Selector="^:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ThemeControlHighlightMidBrush}" />
     </Style>
     -->
 
-    <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
-        <Setter Property="Background"
-                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
-    </Style>
+        <Style Selector="^:selected /template/ ContentPresenter">
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        </Style>
 
-    <Style Selector="ComboBoxItem:selected:focus /template/ ContentPresenter">
-        <Setter Property="Background"
-                Value="{DynamicResource ThemeActionBackgroundBrush}" />
-    </Style>
+        <Style Selector="^:selected:focus /template/ ContentPresenter">
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeActionBackgroundBrush}" />
+        </Style>
 
-    <Style Selector="ComboBoxItem:focus /template/ ContentPresenter">
-        <Setter Property="Background"
-                Value="{DynamicResource ThemeActionBackgroundBrush}" />
-    </Style>
-</Styles>
+        <Style Selector="^:focus /template/ ContentPresenter">
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeActionBackgroundBrush}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

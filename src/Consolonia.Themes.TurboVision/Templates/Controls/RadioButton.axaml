@@ -1,6 +1,8 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
-    <Style Selector="RadioButton">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision"
+            xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+    <ControlTheme x:Key="{x:Type RadioButton}" TargetType="RadioButton">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="BorderBrush"
@@ -40,28 +42,28 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
-    </Style>
 
-    <Style Selector="RadioButton /template/ helpers|SymbolsControl#checkMark">
-        <Setter Property="IsVisible"
-                Value="False" />
-    </Style>
-    <Style Selector="RadioButton /template/ helpers|SymbolsControl#indeterminateMark">
-        <Setter Property="IsVisible"
-                Value="False" />
-    </Style>
-    <Style Selector="RadioButton:checked /template/ helpers|SymbolsControl#checkMark">
-        <Setter Property="IsVisible"
-                Value="True" />
-    </Style>
-    <Style Selector="RadioButton:indeterminate /template/ helpers|SymbolsControl#indeterminateMark">
-        <Setter Property="IsVisible"
-                Value="True" />
-    </Style>
-    <Style Selector="RadioButton:disabled">
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeNoDisturbBrush}" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeNoDisturbBrush}" />
-    </Style>
-</Styles>
+        <Style Selector="^ /template/ helpers|SymbolsControl#checkMark">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^ /template/ helpers|SymbolsControl#indeterminateMark">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:checked /template/ helpers|SymbolsControl#checkMark">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+        <Style Selector="^:indeterminate /template/ helpers|SymbolsControl#indeterminateMark">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

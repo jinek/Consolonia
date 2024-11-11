@@ -1,8 +1,9 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
-    <Style Selector="ScrollViewer">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
+            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision"
+            xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+    <ControlTheme x:Key="{x:Type ScrollViewer}" TargetType="ScrollViewer">
         <Setter Property="(helpers:ScrollViewerExtensions.ScrollOnArrows)"
                 Value="True" />
         <Setter Property="Foreground"
@@ -57,70 +58,70 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
-    </Style>
 
-    <Style Selector="ScrollViewer:disabled /template/ ScrollBar">
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-    </Style>
+        <Style Selector="^:disabled /template/ ScrollBar">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        </Style>
 
-    <Style Selector="ScrollViewer.menuscroller">
-        <Setter Property="Template">
-            <ControlTemplate>
-                <DockPanel>
-                    <RepeatButton DockPanel.Dock="Top"
-                                  BorderThickness="0"
-                                  Background="Transparent"
-                                  Command="{Binding LineUp, RelativeSource={RelativeSource TemplatedParent}}">
-                        <RepeatButton.IsVisible>
-                            <MultiBinding Converter="{x:Static converters:MenuScrollingVisibilityConverter.Instance}"
-                                          ConverterParameter="0">
-                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                                         Path="VerticalScrollBarVisibility" />
-                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                                         Path="Offset.Y" />
-                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                                         Path="Extent.Height" />
-                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                                         Path="Viewport.Height" />
-                            </MultiBinding>
-                        </RepeatButton.IsVisible>
-                        <helpers:SymbolsControl Text="^"
-                                                Foreground="{TemplateBinding Foreground}" />
-                    </RepeatButton>
-                    <RepeatButton DockPanel.Dock="Bottom"
-                                  BorderThickness="0"
-                                  Background="Transparent"
-                                  Command="{Binding LineDown, RelativeSource={RelativeSource TemplatedParent}}">
-                        <RepeatButton.IsVisible>
-                            <MultiBinding Converter="{x:Static converters:MenuScrollingVisibilityConverter.Instance}"
-                                          ConverterParameter="100">
-                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                                         Path="VerticalScrollBarVisibility" />
-                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                                         Path="Offset.Y" />
-                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                                         Path="Extent.Height" />
-                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                                         Path="Viewport.Height" />
-                            </MultiBinding>
-                        </RepeatButton.IsVisible>
-                        <helpers:SymbolsControl Text="v"
-                                                Foreground="{TemplateBinding Foreground}" />
-                    </RepeatButton>
-                    <ScrollContentPresenter Name="PART_ContentPresenter"
-                                            Padding="{TemplateBinding Padding}"
-                                            HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
-                                            VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
-                                            HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
-                                            VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
-                                            ScrollViewer.IsScrollInertiaEnabled="False" />
-                </DockPanel>
-            </ControlTemplate>
-        </Setter>
-    </Style>
-    <Style Selector="ScrollViewer.menuscroller /template/ RepeatButton > helpers|SymbolsControl">
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeForegroundBrush}" />
-    </Style>
-</Styles>
+        <Style Selector="^.menuscroller">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <DockPanel>
+                        <RepeatButton DockPanel.Dock="Top"
+                                      BorderThickness="0"
+                                      Background="Transparent"
+                                      Command="{Binding LineUp, RelativeSource={RelativeSource TemplatedParent}}">
+                            <RepeatButton.IsVisible>
+                                <MultiBinding Converter="{x:Static converters:MenuScrollingVisibilityConverter.Instance}"
+                                              ConverterParameter="0">
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="VerticalScrollBarVisibility" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Offset.Y" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Extent.Height" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Viewport.Height" />
+                                </MultiBinding>
+                            </RepeatButton.IsVisible>
+                            <helpers:SymbolsControl Text="^"
+                                                    Foreground="{TemplateBinding Foreground}" />
+                        </RepeatButton>
+                        <RepeatButton DockPanel.Dock="Bottom"
+                                      BorderThickness="0"
+                                      Background="Transparent"
+                                      Command="{Binding LineDown, RelativeSource={RelativeSource TemplatedParent}}">
+                            <RepeatButton.IsVisible>
+                                <MultiBinding Converter="{x:Static converters:MenuScrollingVisibilityConverter.Instance}"
+                                              ConverterParameter="100">
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="VerticalScrollBarVisibility" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Offset.Y" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Extent.Height" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Viewport.Height" />
+                                </MultiBinding>
+                            </RepeatButton.IsVisible>
+                            <helpers:SymbolsControl Text="v"
+                                                    Foreground="{TemplateBinding Foreground}" />
+                        </RepeatButton>
+                        <ScrollContentPresenter Name="PART_ContentPresenter"
+                                                Padding="{TemplateBinding Padding}"
+                                                HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                                VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                                HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                                VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+                                                ScrollViewer.IsScrollInertiaEnabled="False" />
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="^.menuscroller /template/ RepeatButton > helpers|SymbolsControl">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeForegroundBrush}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

@@ -1,14 +1,14 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision"
-        xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision"
+            xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
     <!--TODO: Validation and Focus-->
 
-    <Styles.Resources>
-        <Thickness x:Key="DataGridTextColumnCellTextBlockMargin">1,0</Thickness>
-    </Styles.Resources>
 
-    <Style Selector="DataGridCell">
+    <Thickness x:Key="DataGridTextColumnCellTextBlockMargin">1,0</Thickness>
+
+
+    <ControlTheme x:Key="{x:Type DataGridCell}" TargetType="DataGridCell">
         <Setter Property="HorizontalContentAlignment"
                 Value="Stretch" />
         <Setter Property="VerticalContentAlignment"
@@ -38,9 +38,9 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
-    </Style>
+    </ControlTheme>
 
-    <Style Selector="DataGridColumnHeader">
+    <ControlTheme x:Key="{x:Type DataGridColumnHeader}" TargetType="DataGridColumnHeader">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="HorizontalContentAlignment"
@@ -82,31 +82,31 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
-    </Style>
+        <Style Selector="^ /template/ TextBlock#SortIcon">
+            <Setter Property="IsVisible"
+                    Value="False" />
+            <Setter Property="Text"
+                    Value="" />
+        </Style>
+
+        <Style Selector="^:sortascending /template/ TextBlock#SortIcon">
+            <Setter Property="IsVisible"
+                    Value="True" />
+            <Setter Property="Text"
+                    Value="▼" />
+        </Style>
+
+        <Style Selector="^:sortdescending /template/ TextBlock#SortIcon">
+            <Setter Property="IsVisible"
+                    Value="True" />
+            <Setter Property="Text"
+                    Value="▲" />
+        </Style>
+    </ControlTheme>
 
 
-    <Style Selector="DataGridColumnHeader /template/ TextBlock#SortIcon">
-        <Setter Property="IsVisible"
-                Value="False" />
-        <Setter Property="Text"
-                Value="" />
-    </Style>
 
-    <Style Selector="DataGridColumnHeader:sortascending /template/ TextBlock#SortIcon">
-        <Setter Property="IsVisible"
-                Value="True" />
-        <Setter Property="Text"
-                Value="▼" />
-    </Style>
-
-    <Style Selector="DataGridColumnHeader:sortdescending /template/ TextBlock#SortIcon">
-        <Setter Property="IsVisible"
-                Value="True" />
-        <Setter Property="Text"
-                Value="▲" />
-    </Style>
-
-    <Style Selector="DataGridRow">
+    <ControlTheme x:Key="{x:Type DataGridRow}" TargetType="DataGridRow">
         <Setter Property="Template">
             <ControlTemplate>
                 <DataGridFrozenGrid Name="PART_Root"
@@ -157,34 +157,35 @@
                 </DataGridFrozenGrid>
             </ControlTemplate>
         </Setter>
-    </Style>
+        <Style Selector="^ /template/ Rectangle#SelectionRectangle">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
 
-    <Style Selector="DataGridRow /template/ Rectangle#SelectionRectangle">
-        <Setter Property="IsVisible"
-                Value="False" />
-    </Style>
-
-    <!--<Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
+        <!--<Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
     <Setter Property="IsVisible" Value="True"/>
     <Setter Property="Opacity" Value="0.5"/>
   </Style>-->
 
-    <Style Selector="DataGridRow:selected /template/ Rectangle#SelectionRectangle">
-        <Setter Property="IsVisible"
-                Value="True" />
-    </Style>
+        <Style Selector="^:selected /template/ Rectangle#SelectionRectangle">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
 
-    <Style Selector="DataGridRow:selected /template/ helpers|CaretControl">
-        <Setter Property="(helpers:DataGridExtensions.IsSelected)"
-                Value="True" />
-    </Style>
+        <Style Selector="^:selected /template/ helpers|CaretControl">
+            <Setter Property="(helpers:DataGridExtensions.IsSelected)"
+                    Value="True" />
+        </Style>
+    </ControlTheme>
+
+
 
     <!--<Style Selector="DataGridRow:selected">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
     </Style>-->
 
-    <Style Selector="DataGridRowHeader">
+    <ControlTheme x:Key="{x:Type DataGridRowHeader}" TargetType="DataGridRowHeader">
         <Setter Property="Focusable"
                 Value="False" />
         <Setter Property="Template">
@@ -224,7 +225,7 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
-    </Style>
+    </ControlTheme>
 
     <!--<Style Selector="DataGridRowGroupHeader">
     <Setter Property="Background" Value="{DynamicResource ThemeControlMidHighBrush}" />
@@ -271,7 +272,7 @@
     </Setter>
   </Style>-->
 
-    <Style Selector="DataGrid">
+    <ControlTheme x:Key="{x:Type DataGrid}" TargetType="DataGrid">
         <Setter Property="Focusable"
                 Value="True" />
         <Setter Property="RowBackground">
@@ -382,10 +383,10 @@
                 </Border>
             </ControlTemplate>
         </Setter>
-    </Style>
+    </ControlTheme>
 
     <!--<Style Selector="DataGrid:focus">
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>-->
-</Styles>
+</ResourceDictionary>

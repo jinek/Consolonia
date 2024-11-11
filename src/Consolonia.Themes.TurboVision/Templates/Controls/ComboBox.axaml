@@ -1,7 +1,8 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
-    <Style Selector="ComboBox">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision"
+            xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+    <ControlTheme x:Key="{x:Type ComboBox}" TargetType="ComboBox">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
         <Setter Property="Foreground"
@@ -96,17 +97,17 @@
 
             </ControlTemplate>
         </Setter>
-    </Style>
-    <!--<Style Selector="ComboBox:focus">
+        <!--<Style Selector="^:focus">
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>-->
-    <Style Selector="ComboBox:disabled">
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeNoDisturbBrush}" />
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeNoDisturbBrush}" />
-        <Setter Property="PlaceholderForeground"
-                Value="{DynamicResource ThemeNoDisturbBrush}" />
-    </Style>
-</Styles>
+        <Style Selector="^:disabled">
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
+            <Setter Property="PlaceholderForeground"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

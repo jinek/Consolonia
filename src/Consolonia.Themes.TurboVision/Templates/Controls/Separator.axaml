@@ -1,6 +1,9 @@
-<Styles xmlns="https://github.com/avaloniaui">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision"
+            xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
 
-    <Style Selector="Separator">
+    <ControlTheme x:Key="{x:Type Separator}" TargetType="Separator">
         <Setter Property="Focusable"
                 Value="False" />
         <Setter Property="Template">
@@ -13,17 +16,17 @@
                         HorizontalAlignment="Stretch" />
             </ControlTemplate>
         </Setter>
-    </Style>
 
-    <Style Selector="MenuItem > Separator, ContextMenu > Separator">
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeNoDisturbBrush}" />
-        <Setter Property="BorderThickness"
-                Value="1" />
-        <Setter Property="Margin"
-                Value="1,0" />
-        <Setter Property="Height"
-                Value="1" />
-    </Style>
+        <Style Selector="^ > Separator, ContextMenu > Separator">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Margin"
+                    Value="1,0" />
+            <Setter Property="Height"
+                    Value="1" />
+        </Style>
 
-</Styles>
+    </ControlTheme>
+</ResourceDictionary>

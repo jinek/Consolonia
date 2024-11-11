@@ -1,13 +1,11 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:dialog="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Dialog"
-        xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
-
-    <Style Selector=":is(dialog|DialogWindow)">
-        <Style.Resources>
-            <Thickness x:Key="ConsoloniaDialogWindowBorderMargin">1,0</Thickness>
-        </Style.Resources>
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:dialog="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Dialog"
+            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers"
+            xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+    <Thickness x:Key="ConsoloniaDialogWindowBorderMargin">1,0</Thickness>
+    
+    <ControlTheme x:Key="{x:Type dialog:DialogWindow}" TargetType="dialog:DialogWindow">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="BorderBrush"
@@ -104,5 +102,5 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-</Styles>
+    </ControlTheme>
+</ResourceDictionary>
