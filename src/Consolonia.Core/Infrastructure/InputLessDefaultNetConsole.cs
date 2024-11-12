@@ -138,15 +138,16 @@ namespace Consolonia.Core.Infrastructure
         }
 
 #pragma warning disable CA1063 // Implement IDisposable Correctly
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
         public void Dispose()
-#pragma warning restore CA1063 // Implement IDisposable Correctly
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
             Console.Write(ConsoleUtils.DisableAlternateBuffer);
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
+            Console.CursorVisible = true;
         }
+#pragma warning restore CA1063 // Implement IDisposable Correctly
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
         public void ClearOutput()
         {

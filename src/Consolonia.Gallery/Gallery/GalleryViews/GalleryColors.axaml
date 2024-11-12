@@ -1,16 +1,17 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
-             d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="80" d:DesignHeight="25"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryColors">
+    <!--<Design.PreviewWith>
+        <TextBlock Text="Design Preview" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Design.PreviewWith>-->
     <UserControl.Resources>
         <LinearGradientBrush x:Key="ColorGalleryBackgroundBrush" EndPoint="0%,0%" StartPoint="0%,100%">
             <GradientStop Color="Black" Offset="0" />
-            <GradientStop Color="DarkRed" Offset="1" />
+            <GradientStop Color="Blue" Offset="1" />
         </LinearGradientBrush>
     </UserControl.Resources>
 
@@ -18,6 +19,7 @@
     <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
 
         <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" >
+            <TextBlock Foreground="Yellow">GRONK</TextBlock>
             <Button Content="Random Color" Click="Random_Click"/>
             <Button Content="Random Red" Click="Red_Click"/>
             <Button Content="Random Green" Click="Green_Click"/>

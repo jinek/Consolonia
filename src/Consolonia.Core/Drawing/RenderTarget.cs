@@ -139,7 +139,7 @@ namespace Consolonia.Core.Drawing
 
                 flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
 
-                x += pixel.Foreground.Symbol.Width;
+                x += pixel.Foreground.Symbol?.Width ?? 1;
             }
 
             flushingBuffer.Flush();
@@ -197,7 +197,7 @@ namespace Consolonia.Core.Drawing
                     _lastBufferPointStart = _currentBufferPoint = bufferPoint;
                 }
 
-                if (pixel.Foreground.Symbol.Text.Length == 0)
+                if ((pixel.Foreground.Symbol?.Text.Length ?? 0) == 0)
                     _stringBuilder.Append(' ');
                 else
                     _stringBuilder.Append(pixel.Foreground.Symbol.Text);

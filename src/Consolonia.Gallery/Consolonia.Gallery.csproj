@@ -5,9 +5,8 @@
         <IsPackable>False</IsPackable>
     </PropertyGroup>
 
-
     <ItemGroup>
-      <AvaloniaResource Include="Resources\*" />
+        <AvaloniaResource Include="Resources\**" />
     </ItemGroup>
 
     <ItemGroup>

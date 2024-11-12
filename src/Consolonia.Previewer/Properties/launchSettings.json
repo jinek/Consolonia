@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Consolonia.Previewer": {
+      "commandName": "Project",
+      "commandLineArgs": "s:\\github\\Consolonia\\src\\Consolonia.Gallery\\Gallery\\GalleryViews\\GalleryColors.axaml"
+    }
+  }
+}
