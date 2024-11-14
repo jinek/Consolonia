@@ -23,7 +23,10 @@ namespace Consolonia.Gallery
 
         public override void OnFrameworkInitializationCompleted()
         {
-            ((IClassicDesktopStyleApplicationLifetime)ApplicationLifetime)!.MainWindow = new ControlsListView();
+            var lifetime = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+            if (lifetime != null)
+                lifetime.MainWindow = new ControlsListView();
+
             base.OnFrameworkInitializationCompleted();
         }
     }

@@ -58,11 +58,10 @@ namespace Consolonia.Core.Infrastructure
             {
                 if (_supportEmoji == null)
                 {
-                    var lifetime = Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-                    if (lifetime.Args.Contains("--buffer"))
-                        _supportEmoji = true;
-                    else
+#pragma warning disable CA1031 // Do not catch general exception types
+                    try
                     {
+
                         // Detect complex emoji support by writing a complex emoji and checking cursor position.
                         // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
                         var (left, top) = Console.GetCursorPosition();
@@ -73,6 +72,11 @@ namespace Consolonia.Core.Infrastructure
                         _supportEmoji = left2 - left == 2;
                         Console.SetCursorPosition(left, top);
                     }
+                    catch (Exception err)
+                    {
+                        _supportEmoji = true;
+                    }
+#pragma warning restore CA1031 // Do not catch general exception types
                 }
                 return _supportEmoji ?? true;
             }
@@ -84,7 +88,17 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTitle(string title)
         {
+#pragma warning disable CA1031 // Do not catch general exception types
+            try
+            {
+
             Console.Title = title;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
@@ -188,14 +202,32 @@ namespace Consolonia.Core.Infrastructure
         // ReSharper disable once MemberCanBePrivate.Global
         protected bool CheckActualizeTheSize()
         {
-            if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
-            ActualizeSize();
+#pragma warning disable CA1031 // Do not catch general exception types
+            try
+            {
+                if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
+
+                ActualizeSize();
+            }
+            catch (Exception)
+            {
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
             return true;
         }
 
         protected void ActualizeSize()
         {
-            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+#pragma warning disable CA1031 // Do not catch general exception types
+            try
+            {
+                Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+            }
+            catch (Exception)
+            {
+                Size = new PixelBufferSize(100, 50);
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
             Resized?.Invoke();
         }
 

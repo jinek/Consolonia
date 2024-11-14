@@ -1,5 +1,7 @@
 using System;
+using System.Reflection;
 using Avalonia;
+using Avalonia.Controls;
 using Consolonia.Core;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
@@ -16,10 +18,22 @@ namespace Consolonia.Gallery
         }
 
         public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
+        {
+#if DEBUG
+            if (AppDomain.CurrentDomain.FriendlyName == "Avalonia.Designer.HostApp")
+            {
+                return AppBuilder.Configure<App>()
+                    .UsePlatformDetect()
+                    .WithInterFont()
+                    .LogToTrace();
+            }
+#endif
+
+            return AppBuilder.Configure<App>()
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
                 .LogToException();
+        }
 
     }
 }
