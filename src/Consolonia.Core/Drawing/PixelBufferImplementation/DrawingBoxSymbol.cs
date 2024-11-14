@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -8,7 +9,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     ///     https://en.wikipedia.org/wiki/Box-drawing_character
     /// </summary>
     [DebuggerDisplay("DrawingBox {Text}")]
-    public struct DrawingBoxSymbol : ISymbol, IEquatable<DrawingBoxSymbol>
+    [JsonConverter(typeof(SymbolConverter))]
+    public class DrawingBoxSymbol : ISymbol, IEquatable<DrawingBoxSymbol>
     {
         // all 0bXXXX_0000 are special values
         private const byte BoldSymbol = 0b0001_0000;
@@ -21,8 +23,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Text = GetBoxSymbol(_upRightDownLeft).ToString();
         }
 
-        public string Text { get; private init; }
+        public byte UpRightDownLeft => _upRightDownLeft;
 
+        [JsonIgnore]
+        public string Text { get; init; }
+
+        [JsonIgnore]
         public ushort Width { get; } = 1;
 
         /// <summary>

@@ -3,11 +3,13 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Consolonia.Core.Helpers;
+using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("'{Text}'")]
-    public readonly struct SimpleSymbol : ISymbol, IEquatable<SimpleSymbol>
+    [JsonConverter(typeof(SymbolConverter))]
+    public class SimpleSymbol : ISymbol, IEquatable<SimpleSymbol>
     {
         public SimpleSymbol()
         {
@@ -33,9 +35,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Width = Text.MeasureText();
         }
 
-        public string Text { get; } = string.Empty;
+        public string Text { get; set; } = string.Empty;
 
-        public ushort Width { get; }
+        public ushort Width { get; set; }
 
         public bool IsWhiteSpace()
         {

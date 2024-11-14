@@ -53,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia.NUnit", "Consolo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia.Core.Tests", "Tests\Consolonia.Core.Tests\Consolonia.Core.Tests.csproj", "{58D95751-209B-4AF4-BC76-A8E52D5CEF5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Previewer", "Consolonia.Previewer\Consolonia.Previewer.csproj", "{475CF5C9-7337-4890-A678-4ECDB513E73C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia.Previewer", "Consolonia.Previewer\Consolonia.Previewer.csproj", "{475CF5C9-7337-4890-A678-4ECDB513E73C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

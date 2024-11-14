@@ -175,7 +175,7 @@ namespace Consolonia.Core.Drawing
                     CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                     {
                         _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            (pixel, bb) => pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
+                            (pixel, bb) => (pixel ?? new Pixel()).Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
                             backgroundBrush);
                     });
                 }
@@ -332,10 +332,10 @@ namespace Consolonia.Core.Drawing
 
         private void ApplyTextDecorationLineInternal(ref Point head, IPen pen, Line line)
         {
-            TextDecorationCollection textDecoration = pen.Thickness switch
+            TextDecorationLocation textDecoration = pen.Thickness switch
             {
-                UnderlineThickness => TextDecorations.Underline,
-                StrikethroughThickness => TextDecorations.Strikethrough,
+                UnderlineThickness => TextDecorationLocation.Underline,
+                StrikethroughThickness => TextDecorationLocation.Strikethrough,
                 _ => throw new ArgumentOutOfRangeException($"Unsupported thickness {pen.Thickness}")
             };
 

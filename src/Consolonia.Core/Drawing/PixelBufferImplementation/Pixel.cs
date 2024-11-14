@@ -9,13 +9,22 @@ using Avalonia.Media;
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("'{Foreground.Symbol.Text}' [{Foreground.Color}, {Background.Color}]")]
-    public readonly struct Pixel : IEquatable<Pixel>
+    public class Pixel : IEquatable<Pixel>
     {
-        public PixelForeground Foreground { get; }
+        public static Pixel Empty => new Pixel();
 
-        public PixelBackground Background { get; }
+        public PixelForeground Foreground { get; set; }
 
-        public bool IsCaret { get; }
+        public PixelBackground Background { get; set; }
+
+        public bool IsCaret { get; set;  }
+
+        public Pixel()
+        {
+            Foreground = new PixelForeground();
+            Background = new PixelBackground();
+            IsCaret = false;
+        }
 
         public Pixel(bool isCaret)
         {
@@ -36,7 +45,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Color foregroundColor,
             FontStyle style = FontStyle.Normal,
             FontWeight weight = FontWeight.Normal,
-            TextDecorationCollection textDecorations = null) : this(
+            TextDecorationLocation? textDecorations = null) : this(
             new PixelForeground(symbol, foregroundColor, weight, style, textDecorations),
             new PixelBackground(PixelBackgroundMode.Transparent))
         {
@@ -142,7 +151,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override bool Equals([NotNullWhen(true)] object obj)
         {
-            return obj is Pixel other && Equals(other);
+            return obj is Pixel && this.Equals((Pixel)obj);
         }
 
         public override int GetHashCode()

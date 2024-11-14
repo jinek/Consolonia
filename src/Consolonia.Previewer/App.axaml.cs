@@ -83,6 +83,14 @@ namespace Consolonia.Previewer
 
                     ((Window)sender).Close();
                 }
+                else if (e.Key == Key.Space)
+                {
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        var applicationLifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
+                        applicationLifetime.MainWindow!.Content = LoadXaml();
+                    });
+                }
             };
             return window;
         }
@@ -112,7 +120,6 @@ namespace Consolonia.Previewer
 
         private Control LoadXaml()
         {
-
             string xaml = File.ReadAllText(_xamlPath);
 
             var control = (Control?)AvaloniaRuntimeXamlLoader.Load(xaml, _assembly, designMode: true);

@@ -11,13 +11,15 @@ namespace Consolonia.Gallery
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local Exactly why we are keeping it here
         private static void Main(string[] args)
         {
-            if (args.Length > 1) throw new NotSupportedException();
-
-            AppBuilder.Configure<App>()
-                .UseConsolonia()
-                .UseAutoDetectedConsole()
-                .LogToException()
+            BuildAvaloniaApp()
                 .StartWithConsoleLifetime(args);
         }
+
+        public static AppBuilder BuildAvaloniaApp()
+            => AppBuilder.Configure<App>()
+                .UseConsolonia()
+                .UseAutoDetectedConsole()
+                .LogToException();
+
     }
 }

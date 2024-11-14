@@ -28,7 +28,7 @@
 
         <StackPanel Orientation="Horizontal">
             <TextBlock Foreground="{Binding Brush}" >Hello world!</TextBlock>
-            <TextBlock Foreground="{Binding Brush}" FontWeight="Bold" >Something bold!</TextBlock>
+            <TextBlock Foreground="{Binding Brush}" FontWeight="Bold" > Something bold!</TextBlock>
         </StackPanel>
 
         <WrapPanel Grid.Row="1"  ItemWidth="18" Background="{StaticResource ColorGalleryBackgroundBrush}">

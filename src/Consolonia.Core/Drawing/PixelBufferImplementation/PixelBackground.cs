@@ -2,11 +2,12 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
+using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("[{Color}, {Mode}]")]
-    public readonly struct PixelBackground : IEquatable<PixelBackground>
+    public class PixelBackground : IEquatable<PixelBackground>
     {
         public PixelBackground()
         {
@@ -26,8 +27,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Mode = mode;
         }
 
-        public Color Color { get; }
-        public PixelBackgroundMode Mode { get; }
+        [JsonConverter(typeof(ColorConverter))]
+        public Color Color { get; set; }
+        
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public PixelBackgroundMode Mode { get; set; }
 
         public PixelBackground Shade()
         {

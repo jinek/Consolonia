@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests
@@ -148,6 +149,16 @@ namespace Consolonia.Core.Tests
             ISymbol newSymbol = symbol.Blend(ref symbolAbove);
             Assert.That(newSymbol.Text, Is.EqualTo("👍"));
             Assert.That(newSymbol.Width, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void JsonSerialization()
+        {
+            ISymbol symbol = new SimpleSymbol("a");
+            string json = JsonConvert.SerializeObject(symbol);
+            ISymbol deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            Assert.That(deserializedSymbol.Text, Is.EqualTo("a"));
+            Assert.That(deserializedSymbol.Width, Is.EqualTo(1));
         }
     }
 }

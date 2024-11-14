@@ -56,7 +56,7 @@ namespace Consolonia.NUnit
         }
 
         void IConsole.Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style,
-            FontWeight weight, TextDecorationCollection textDecorations, string str)
+            FontWeight weight, TextDecorationLocation? textDecoration, string str)
         {
             (ushort x, ushort y) = bufferPoint;
 
@@ -67,10 +67,15 @@ namespace Consolonia.NUnit
                     // ReSharper disable once AccessToModifiedClosure we are sure about inline execution
                     new Pixel(
                         new PixelForeground(new SimpleSymbol(rune), foreground, style: style, weight: weight,
-                            textDecorations: textDecorations),
+                            textDecoration: textDecoration),
                         new PixelBackground(PixelBackgroundMode.Colored, background)));
                 i++;
             }
+        }
+
+        public void WriteCommand(string str)
+        {
+            // ignore
         }
 
         public void PauseIO(Task task)
@@ -166,6 +171,7 @@ namespace Consolonia.NUnit
             _lifetime = lifetime;
         }
 
+        
 #pragma warning disable CS0067
         public event Action Resized;
         public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;

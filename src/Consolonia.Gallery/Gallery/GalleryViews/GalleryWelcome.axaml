@@ -5,6 +5,6 @@
              mc:Ignorable="d" d:DesignWidth="40" d:DesignHeight="40" 
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryWelcome">
     <TextBlock FontWeight="Bold" TextDecorations="Underline" HorizontalAlignment="Center" >
-        Welcome to Consolonia!
+        👨‍👩‍👧‍👦Welcome to Consolonia!
     </TextBlock>
 </UserControl>

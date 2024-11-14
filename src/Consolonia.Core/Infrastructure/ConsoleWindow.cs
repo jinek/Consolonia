@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Platform;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Input.TextInput;
@@ -13,6 +14,7 @@ using Avalonia.Platform;
 using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -156,7 +158,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTitle(string title)
         {
-            Console.SetTitle(title);
+                Console.SetTitle(title);
         }
 
         public void SetParent(IWindowImpl parent)
@@ -300,7 +302,7 @@ namespace Consolonia.Core.Infrastructure
         private void OnConsoleOnResized()
         {
             // clear screen so we don't see crazy while resizing.
-            System.Console.Clear();
+            System.Console.Write(ConsoleUtils.ClearScreen);
 
             // Cancel previous task if there is one and start a new one
             CancellationTokenSource oldCts = _resizeCancellationTokenSource;

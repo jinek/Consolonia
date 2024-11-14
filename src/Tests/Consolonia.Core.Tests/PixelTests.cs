@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests
@@ -33,7 +34,7 @@ namespace Consolonia.Core.Tests
             Assert.That(pixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixel.Foreground.Style, Is.EqualTo(FontStyle.Normal));
             Assert.That(pixel.Foreground.Weight, Is.EqualTo(FontWeight.Normal));
-            Assert.That(pixel.Foreground.TextDecorations, Is.Null);
+            Assert.That(pixel.Foreground.TextDecoration, Is.Null);
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Transparent));
             Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Transparent));
         }
@@ -46,7 +47,7 @@ namespace Consolonia.Core.Tests
             Assert.That(pixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixel.Foreground.Style, Is.EqualTo(FontStyle.Normal));
             Assert.That(pixel.Foreground.Weight, Is.EqualTo(FontWeight.Normal));
-            Assert.That(pixel.Foreground.TextDecorations, Is.Null);
+            Assert.That(pixel.Foreground.TextDecoration, Is.Null);
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Transparent));
             Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Transparent));
         }
@@ -60,7 +61,7 @@ namespace Consolonia.Core.Tests
             Assert.That(pixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixel.Foreground.Style, Is.EqualTo(FontStyle.Normal));
             Assert.That(pixel.Foreground.Weight, Is.EqualTo(FontWeight.Normal));
-            Assert.That(pixel.Foreground.TextDecorations, Is.Null);
+            Assert.That(pixel.Foreground.TextDecoration, Is.Null);
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Blue));
             Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Colored));
         }
@@ -68,13 +69,13 @@ namespace Consolonia.Core.Tests
         [Test]
         public void Equality()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+            var pixel1 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue));
             var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue));
-            Assert.That(pixel.Equals((object)pixel2));
-            Assert.That(pixel.Equals(pixel2));
-            Assert.That(pixel == pixel2);
+            Assert.That(pixel1.Equals((object)pixel2));
+            Assert.That(pixel1.Equals(pixel2));
+            Assert.That(pixel1 == pixel2);
         }
 
         [Test]
@@ -150,6 +151,16 @@ namespace Consolonia.Core.Tests
             set.Add(new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue)));
             Assert.That(set.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void JsonSerialization()
+        {
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+                new PixelBackground(Colors.Blue));
+            var json = JsonConvert.SerializeObject(pixel);
+            var pixel2 = JsonConvert.DeserializeObject<Pixel>(json);
+            Assert.That(pixel.Equals(pixel2));
         }
     }
 }
