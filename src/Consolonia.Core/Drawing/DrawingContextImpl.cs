@@ -540,9 +540,6 @@ namespace Consolonia.Core.Drawing
                                 (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
                         });
 
-                        if (symbol.Width > 1)
-                            currentXPosition += symbol.Width;
-                        else
                             currentXPosition++;
                     }
                         break;
