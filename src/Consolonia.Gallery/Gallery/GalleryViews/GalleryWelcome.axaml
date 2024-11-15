@@ -2,9 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="40" d:DesignHeight="40" 
+             mc:Ignorable="d" 
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryWelcome">
     <TextBlock FontWeight="Bold" TextDecorations="Underline" HorizontalAlignment="Center" >
-        👨‍👩‍👧‍👦Welcome to Consolonia!
+        Welcome to Consolonia!
     </TextBlock>
 </UserControl>

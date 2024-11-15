@@ -1,9 +1,12 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:v="using:Consolonia.Core.Designer" >
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="400"
+                    xmlns:v="using:Consolonia.Core.Designer" >
     <Design.PreviewWith>
-        <v:ConsolePreview FileName="s:\github\Consolonia\src\Consolonia.Gallery\Gallery\GalleryViews\GalleryTextBlock.axaml" 
-                          Columns="80" Rows="50"/>
+        <v:ConsolePreview FileName="s:\github\Consolonia\src\Consolonia.Gallery\Gallery\GalleryViews\GalleryTextBlock.axaml"
+                          Columns="80" Rows="80"/>
     </Design.PreviewWith>
 
 </ResourceDictionary>

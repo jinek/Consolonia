@@ -6,7 +6,9 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
+using Avalonia.Platform;
 using Consolonia.Core.Text;
+using HarfBuzzSharp;
 using TextShaper = Consolonia.Core.Text.TextShaper;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
@@ -69,13 +71,20 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             {
                 _text = value;
 
+                var platformRender = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>();
+                var textShaper = AvaloniaLocator.Current.GetService<ITextShaperImpl>();
+                var fontManager = AvaloniaLocator.Current.GetService<IFontManagerImpl>();
+                fontManager.TryCreateGlyphTypeface("Cascadia Mono", FontStyle.Normal, FontWeight.Normal, FontStretch.Normal, out var typeface);
                 ShapedBuffer glyphs =
-                    new TextShaper().ShapeText(value.AsMemory(), new TextShaperOptions(new GlyphTypeface(), 1));
-                _shapedText = new GlyphRun(new GlyphTypeface(),
-                    1,
-                    (_text ?? string.Empty).AsMemory(),
+                    textShaper.ShapeText(value.AsMemory(), new TextShaperOptions(typeface, typeface.Metrics.DesignEmHeight));
+                var glyphRunImpl = platformRender.CreateGlyphRun(typeface, 1, glyphs, default(Point));
+                _shapedText = new GlyphRun(glyphRunImpl.GlyphTypeface,
+                    glyphRunImpl.FontRenderingEmSize,
+                    _text.AsMemory(),
                     glyphs,
-                    default(Point));
+                    default(Point),
+                    0);
+
             }
         }
 

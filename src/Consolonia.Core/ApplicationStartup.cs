@@ -37,6 +37,16 @@ namespace Consolonia.Core
 
         public static AppBuilder UseConsolonia(this AppBuilder builder)
         {
+#if DEBUG
+            if (Design.IsDesignMode) //AppDomain.CurrentDomain.FriendlyName == "Avalonia.Designer.HostApp")
+            {
+                return builder
+                    .UsePlatformDetect()
+                    .WithInterFont()
+                    .LogToTrace();
+            }
+#endif
+
             return builder
                 .UseStandardRuntimePlatformSubsystem()
                 .UseWindowingSubsystem(() => new ConsoloniaPlatform().Initialize(), nameof(ConsoloniaPlatform))

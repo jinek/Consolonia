@@ -1,6 +1,15 @@
-﻿namespace PreviewHost.ViewModels;
+using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace PreviewHost.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    public string Greeting => "Welcome to Avalonia!";
+    [ObservableProperty]
+    private string? project;
+
+    [ObservableProperty]
+    private ObservableCollection<FileViewModel> files = new ObservableCollection<FileViewModel>();
 }
+
+

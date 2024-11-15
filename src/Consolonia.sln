@@ -57,7 +57,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia.Previewer", "Con
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{910B2845-1287-4F4A-9464-1988071907AF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PreviewHost", "Tools\PreviewHost\PreviewHost.csproj", "{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PreviewHost", "Tools\PreviewHost\Avalonia.PreviewHost.csproj", "{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

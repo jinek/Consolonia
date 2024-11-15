@@ -3,7 +3,7 @@
              xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"             
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="80" d:DesignHeight="25"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="550"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryDialog">
     <Panel Background="Magenta">
         <Button Content="Show Dialog"

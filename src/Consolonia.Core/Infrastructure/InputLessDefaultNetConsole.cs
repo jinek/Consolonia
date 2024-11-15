@@ -1,9 +1,7 @@
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
@@ -19,18 +17,24 @@ namespace Consolonia.Core.Infrastructure
         private bool _caretVisible;
         private PixelBufferCoordinate _headBufferPoint;
 
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
         protected InputLessDefaultNetConsole()
         {
             Console.OutputEncoding = Encoding.UTF8;
-            // enable alternate screen so original console screen is not affected by the app
-            Console.Write(ConsoleUtils.EnableAlternateBuffer);
-            Console.Write(ConsoleUtils.HideCursor);
-            Console.Write(ConsoleUtils.ClearScreen);
+
+            PrepareConsole();
 
             ActualizeSize();
         }
+
+        private void PrepareConsole()
+        {
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+            // enable alternate screen so original console screen is not affected by the app
+            WriteText(ConsoleUtils.EnableAlternateBuffer);
+            WriteText(ConsoleUtils.HideCursor);
+            WriteText(ConsoleUtils.ClearScreen);
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
+        }
 
         protected bool Disposed { get; private set; }
 
@@ -43,7 +47,7 @@ namespace Consolonia.Core.Infrastructure
             set
             {
                 if (_caretVisible == value) return;
-                Console.Write(value ? ConsoleUtils.ShowCursor : ConsoleUtils.HideCursor);
+                WriteText(value ? ConsoleUtils.ShowCursor : ConsoleUtils.HideCursor);
                 _caretVisible = value;
             }
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
@@ -65,14 +69,14 @@ namespace Consolonia.Core.Infrastructure
                         // Detect complex emoji support by writing a complex emoji and checking cursor position.
                         // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
                         var (left, top) = Console.GetCursorPosition();
-                        Console.Write(TestEmoji);
+                        WriteText(TestEmoji);
 
                         // TODO, escape sequence
                         var (left2, _) = Console.GetCursorPosition();
                         _supportEmoji = left2 - left == 2;
-                        Console.SetCursorPosition(left, top);
+                        WriteText(ConsoleUtils.SetCursorPosition(left, top));
                     }
-                    catch (Exception err)
+                    catch (Exception)
                     {
                         _supportEmoji = true;
                     }
@@ -108,7 +112,7 @@ namespace Consolonia.Core.Infrastructure
 
             try
             {
-                Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
+                WriteText(ConsoleUtils.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
             }
             catch (ArgumentOutOfRangeException argumentOutOfRangeException)
             {
@@ -153,7 +157,7 @@ namespace Consolonia.Core.Infrastructure
             sb.Append(str);
             sb.Append(ConsoleUtils.Reset);
 
-            Console.Write(sb.ToString());
+            WriteText(sb.ToString());
 
             ushort textWidth = str.MeasureText();
             if (_headBufferPoint.X < Size.Width - textWidth)
@@ -163,7 +167,7 @@ namespace Consolonia.Core.Infrastructure
                 _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
         }
 
-        public void WriteCommand(string str)
+        public virtual void WriteText(string str)
         {
             PauseTask?.Wait();
             Console.Write(str);
@@ -186,8 +190,8 @@ namespace Consolonia.Core.Infrastructure
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-            Console.Write(ConsoleUtils.DisableAlternateBuffer);
-            Console.Write(ConsoleUtils.ShowCursor);
+            WriteText(ConsoleUtils.DisableAlternateBuffer);
+            WriteText(ConsoleUtils.ShowCursor);
         }
 #pragma warning restore CA1063 // Implement IDisposable Correctly
 #pragma warning restore CA1303 // Do not pass literals as localized parameters

@@ -14,12 +14,12 @@ namespace Consolonia.Previewer
 {
     public partial class App : ConsoloniaApplication
     {
-        private string _xamlPath;
-        private string _assemblyPath;
-        private Assembly _assembly;
+        private string? _xamlPath;
+        private string? _assemblyPath;
+        private Assembly? _assembly;
         private FileSystemWatcher? _assemblyWatcher = null;
         private FileSystemWatcher? _fileWatcher = null;
-        private readonly AssemblyLoadContext? _loadContext = new CustomAssemblyLoadContext();
+        private readonly AssemblyLoadContext _loadContext = new CustomAssemblyLoadContext();
 
         static App()
         {
@@ -39,15 +39,16 @@ namespace Consolonia.Previewer
 
         public override void OnFrameworkInitializationCompleted()
         {
-            IClassicDesktopStyleApplicationLifetime applicationLifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime;
+            IClassicDesktopStyleApplicationLifetime applicationLifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
             if (applicationLifetime != null)
             {
-                _xamlPath = applicationLifetime.Args.First();
-                
+                _xamlPath = applicationLifetime.Args!.First();
+
                 InitializePreview();
 
                 var control = LoadXaml();
-
+                control.HorizontalAlignment = HorizontalAlignment.Stretch;
+                control.VerticalAlignment = VerticalAlignment.Stretch;
                 Window window = CreatePreviewWindow(control);
 
                 applicationLifetime!.MainWindow = window;
@@ -81,7 +82,7 @@ namespace Consolonia.Previewer
                         _assemblyWatcher.Dispose();
                     }
 
-                    ((Window)sender).Close();
+                    ((Window)sender!).Close();
                 }
                 else if (e.Key == Key.Space)
                 {
@@ -97,8 +98,8 @@ namespace Consolonia.Previewer
 
         private void InitializePreview()
         {
-            string projectFile = null;
-            string projectFolder = Path.GetDirectoryName(_xamlPath);
+            string? projectFile = null;
+            string projectFolder = Path.GetDirectoryName(_xamlPath)!;
             while (projectFolder != null)
             {
                 projectFile = Directory.GetFiles(projectFolder, "*.csproj").FirstOrDefault();
@@ -106,12 +107,12 @@ namespace Consolonia.Previewer
                 {
                     break;
                 }
-                projectFolder = Path.GetDirectoryName(projectFolder);
+                projectFolder = Path.GetDirectoryName(projectFolder)!;
             }
             ArgumentNullException.ThrowIfNull(projectFile);
             var projectName = Path.GetFileNameWithoutExtension(projectFile);
             var assemblyName = Path.GetFileNameWithoutExtension(projectFile) + ".dll";
-            var buildDirectory = Path.Combine(projectFolder, "bin", "Debug");
+            var buildDirectory = Path.Combine(projectFolder!, "bin", "Debug");
             _assemblyPath = Directory.EnumerateFiles(buildDirectory, assemblyName, SearchOption.AllDirectories).First();
 
             WatchAssemblyChanges();
@@ -120,9 +121,28 @@ namespace Consolonia.Previewer
 
         private Control LoadXaml()
         {
-            string xaml = File.ReadAllText(_xamlPath);
+            string xaml = null!;
+            int nTries = 0;
+            while (xaml == null)
+            {
+                try
+                {
+                    xaml = File.ReadAllText(_xamlPath!);
+                }
+                catch (IOException)
+                {
+                    if (nTries++ < 3)
+                    {
 
-            var control = (Control?)AvaloniaRuntimeXamlLoader.Load(xaml, _assembly, designMode: true);
+                        Thread.Sleep(100);
+                        continue;
+                    }
+                    else
+                        throw;
+                }
+            }
+
+            var control = (Control)AvaloniaRuntimeXamlLoader.Load(xaml, _assembly, designMode: false);
 
             var stackPanel = new StackPanel();
             stackPanel.HorizontalAlignment = HorizontalAlignment.Left;
@@ -135,10 +155,13 @@ namespace Consolonia.Previewer
 
         private void WatchAssemblyChanges()
         {
-            // load assembly
-            _assembly = _loadContext.LoadFromStream(new MemoryStream(File.ReadAllBytes(_assemblyPath)));
+            ArgumentNullException.ThrowIfNull(_assemblyPath);
 
-            _assemblyWatcher = new FileSystemWatcher(Path.GetDirectoryName(_assemblyPath), Path.GetFileName(_assemblyPath));
+            // load assembly
+            _assembly = _loadContext!.LoadFromStream(new MemoryStream(File.ReadAllBytes(_assemblyPath)));
+            ArgumentNullException.ThrowIfNull(_assembly);
+
+            _assemblyWatcher = new FileSystemWatcher(Path.GetDirectoryName(_assemblyPath)!, Path.GetFileName(_assemblyPath));
             _assemblyWatcher.Changed += (sender, e) =>
             {
                 Dispatcher.UIThread.Invoke(() =>
@@ -157,19 +180,24 @@ namespace Consolonia.Previewer
         {
             if (_fileWatcher == null)
             {
-                _fileWatcher = new FileSystemWatcher(Path.GetDirectoryName(_xamlPath), Path.GetFileName(_xamlPath));
-                _fileWatcher.Changed += (sender, e) =>
-                {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        var applicationLifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
-                        applicationLifetime.MainWindow!.Content = LoadXaml();
-                    });
-                };
+                ArgumentNullException.ThrowIfNull(_xamlPath);
+
+                _fileWatcher = new FileSystemWatcher(Path.GetDirectoryName(_xamlPath!)!, Path.GetFileName(_xamlPath));
+
+                _fileWatcher.Changed += (e, s) => RefreshPreview();
+                _fileWatcher.Renamed += (e, s) => RefreshPreview();
                 _fileWatcher.EnableRaisingEvents = true;
             }
         }
 
+        private void RefreshPreview()
+        {
+            Dispatcher.UIThread.Invoke(() =>
+            {
+                var applicationLifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
+                applicationLifetime.MainWindow!.Content = LoadXaml();
+            });
+        }
     }
 
     public class CustomAssemblyLoadContext : AssemblyLoadContext
@@ -181,15 +209,7 @@ namespace Consolonia.Previewer
 
         protected override Assembly Load(AssemblyName assemblyName)
         {
-
-            return null; // Return null to use the default loading mechanism
+            return null!; // Return null to use the default loading mechanism
         }
     }
-    //// var subPath = Path.GetRelativePath(projectFolder, _xamlPath).Replace(Path.DirectorySeparatorChar, '.').Replace(".axaml", String.Empty);
-    ////var resourceName = $"{projectName}.{subPath}";
-    ////            var control = (Control?)Activator.CreateInstance(localAsm.ExportedTypes.Single(t => t.FullName == resourceName));
-    //var subPath = Path.GetRelativePath(projectFolder, _xamlPath).Replace(Path.DirectorySeparatorChar, '/');
-    //var resourceName = $"{projectName}/{subPath}";
-    //var uri = new Uri($"avares://{resourceName}");
-
 }

@@ -1,11 +1,10 @@
+#nullable enable
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
-using System.IO.Pipes;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Schema;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
@@ -14,8 +13,6 @@ using Avalonia.Media.TextFormatting;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Newtonsoft.Json;
-using SteamCMD.ConPTY;
-using SteamCMD.ConPTY.Interop.Definitions;
 
 namespace Consolonia.Core.Designer
 {
@@ -24,11 +21,12 @@ namespace Consolonia.Core.Designer
     /// </summary>
     public class ConsolePreview : UserControl
     {
-        private ProcessInfo _process;
-        private WindowsPseudoConsole _psuedoConsole;
-        private Typeface _typeface = new Typeface("Consolas");
-        private double _charWidth = 0;
-        private double _charHeight = 0;
+        private object _lock = new object();
+        private Process? _process;
+        private Typeface _typeface = new Typeface("Cascadia Mono");
+        private double _charWidth;
+        private double _charHeight;
+        private bool _disposedValue;
 
         public static readonly StyledProperty<string> FileNameProperty =
             AvaloniaProperty.Register<ConsolePreview, string>(nameof(FileName));
@@ -39,11 +37,22 @@ namespace Consolonia.Core.Designer
         public static readonly StyledProperty<ushort> ColumnsProperty =
             AvaloniaProperty.Register<ConsolePreview, ushort>(nameof(Columns));
 
+        public static readonly StyledProperty<bool> MonitorChangesProperty =
+            AvaloniaProperty.Register<ConsolePreview, bool>(nameof(MonitorChanges));
+
         public ConsolePreview()
         {
-            this.FontFamily = FontFamily.Parse("Consolas, Courier New");
+            this.FontFamily = FontFamily.Parse("Cascadia Mono");
 
             Initialized += (sender, e) => LoadXaml();
+
+            this.PropertyChanged += (sender, e) =>
+            {
+                if (e.Property == FileNameProperty)
+                {
+                    LoadXaml();
+                }
+            };
         }
 
 
@@ -60,15 +69,35 @@ namespace Consolonia.Core.Designer
         /// <summary>
         /// Number of rows in the console
         /// </summary>
-        public ushort Rows { get => GetValue(ColumnsProperty); set => SetValue(RowsProperty, value); }
+        public ushort Rows { get => GetValue(RowsProperty); set => SetValue(RowsProperty, value); }
+
+        /// <summary>
+        /// If set to true then this control will monitor the file for changes and update the preview
+        /// </summary>
+        public bool MonitorChanges { get => GetValue(MonitorChangesProperty); set => SetValue(MonitorChangesProperty, value); }
 
         private void LoadXaml()
         {
-            // string xamlPath = @"S:\github\Consolonia\src\Consolonia.Gallery\Gallery\GalleryViews\GalleryTextBlock.axaml";
+            lock (_lock)
+            {
+                if (_process != null)
+                {
+                    _process.Kill();
+                    _process.Dispose();
+                    _process = null;
+                }
+            }
+
             string xamlPath;
+            if (String.IsNullOrEmpty(FileName))
+            {
+                this.Content = new StackPanel();
+                return;
+            }
+
             if (!Path.IsPathFullyQualified(FileName))
             {
-                var startFolder = Path.GetDirectoryName(Path.GetFullPath(FileName));
+                var startFolder = Path.GetDirectoryName(Path.GetFullPath(FileName))!;
                 // walk up parent folder until we find a .csproj file, then look for the file in that folder or below
                 xamlPath = FindFile(startFolder, FileName);
             }
@@ -76,83 +105,111 @@ namespace Consolonia.Core.Designer
                 xamlPath = FileName;
 
             string xaml = File.ReadAllText(xamlPath);
+
+            ComputeCharWidth();
             var (designWidth, designHeight) = GetDesignWidthAndHeight(xaml);
+            if (Columns == 0)
+                Columns = designWidth /= (ushort)_charWidth;
+            if (Rows == 0)
+                Rows = designHeight /= (ushort)_charHeight;
 
-            _psuedoConsole = new WindowsPseudoConsole()
+            var processStartInfo = new ProcessStartInfo()
             {
-                FilterControlSequences = true,
+                // TODO How do I find this?
                 FileName = @"s:\github\Consolonia\src\Consolonia.Previewer\bin\Debug\net8.0\Consolonia.Previewer.exe",
-                WorkingDirectory = Path.GetDirectoryName(xamlPath),
-                Arguments = $"{xamlPath} --buffer",
+                WorkingDirectory = Path.GetDirectoryName(this.GetType().Assembly.Location),
+                Arguments = $"{xamlPath} --buffer {Columns} {Rows}",
+                StandardOutputEncoding = Encoding.UTF8,
+                StandardInputEncoding = Encoding.UTF8,
+                UseShellExecute = false,
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = false,
+                CreateNoWindow = true,
             };
+            _process = Process.Start(processStartInfo);
 
-            _psuedoConsole.Exited += (sender, exitCode) =>
+            if (MonitorChanges)
             {
-                // restart the process
-                _process = _psuedoConsole.Start((short)designWidth, (short)designHeight);
+                _process!.Exited += (sender, e) =>
+                {
+                    // restart the process
+                    _process.Start();
+                    ListenForChanges(xamlPath);
+                };
+                ListenForChanges(xamlPath);
+            }
+            else
+            {
+                var line = _process!.StandardOutput.ReadLine();
+                if (!string.IsNullOrEmpty(line))
+                {
+                    Debug.WriteLine("BUFFER RECEIVED");
+                    var buffer = JsonConvert.DeserializeObject<PixelBuffer>(line)!;
+                    this.Content = RenderPixelBuffer(buffer);
+                }
 
-                StartBufferListener(xamlPath);
-            };
-
-            _process = _psuedoConsole.Start((short)designWidth, (short)designHeight);
-
-            StartBufferListener(xamlPath);
+                lock (_lock)
+                {
+                    _process.Kill();
+                    _process.Dispose();
+                    _process = null;
+                }
+            }
         }
 
-        private void StartBufferListener(string xamlPath)
+        private void ListenForChanges(string xamlPath)
         {
             Task.Run(async () =>
             {
-                var pipeName = Path.GetFileName(xamlPath);
-                using var pipeServer = new NamedPipeServerStream(pipeName, PipeDirection.In);
-
-                Debug.WriteLine($"Listening on {pipeName}");
-
-                await pipeServer.WaitForConnectionAsync();
-                Debug.WriteLine("Client connected");
-
-                // Read user input and send that to the client process.
-                using (StreamReader reader = new StreamReader(pipeServer))
+                while (true)
                 {
-                    // Send a 'sync message' and wait for client to receive it.
-                    while (true)
+                    lock (_lock)
                     {
-                        var line = await reader.ReadLineAsync();
+                        if (_process == null || _process.HasExited)
+                            return;
+                    }
+
+                    var line = await _process!.StandardOutput.ReadLineAsync().ConfigureAwait(false);
+                    if (!string.IsNullOrEmpty(line))
+                    {
                         Debug.WriteLine("BUFFER RECEIVED");
-                        if (!string.IsNullOrEmpty(line))
+#pragma warning disable CA1031 // Do not catch general exception types
+                        try
                         {
-                            var buffer = JsonConvert.DeserializeObject<PixelBuffer>(line);
+
+                            var buffer = JsonConvert.DeserializeObject<PixelBuffer>(line)!;
                             Dispatcher.UIThread.Invoke(() => this.Content = RenderPixelBuffer(buffer));
                         }
-                        else if (line == null)
+                        catch (Exception)
                         {
-                            // end of stream
-                            return;
+                            // process was probably shut down, we continue to check the proces.
                         }
+#pragma warning restore CA1031 // Do not catch general exception types
                     }
                 }
             });
         }
 
-        private Control RenderPixelBuffer(PixelBuffer? buffer)
+        private Control RenderPixelBuffer(PixelBuffer buffer)
         {
-            ComputeCharWidth();
-
-            StackPanel rows = new StackPanel()
+            StackPanel lines = new StackPanel()
             {
+                // TODO This should be theme Background brush
+                Background = new SolidColorBrush(Colors.Black),
                 Orientation = Orientation.Vertical,
+                VerticalAlignment = VerticalAlignment.Top
             };
 
             for (ushort y = 0; y < buffer.Height; y++)
             {
-                var columns = new StackPanel()
+                var line = new StackPanel()
                 {
                     Orientation = Orientation.Horizontal,
-                    //VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Left,
                 };
 
-                TextBlockComposer composer = new TextBlockComposer(columns, _charWidth);
+                TextBlockComposer composer = new TextBlockComposer(line, _charWidth);
                 for (ushort x = 0; x < buffer.Width;)
                 {
                     var pixel = buffer[x, y];
@@ -163,13 +220,13 @@ namespace Consolonia.Core.Designer
                 }
                 composer.Flush();
 
-                rows.Children.Add(columns);
+                lines.Children.Add(line);
             }
 
-            return rows;
+            return lines;
         }
 
-        private string FindFile(string startFolder, string fileName)
+        private static string FindFile(string startFolder, string fileName)
         {
             string currentFolder = startFolder;
 
@@ -187,7 +244,7 @@ namespace Consolonia.Core.Designer
                 }
 
                 // Move up to the parent directory
-                currentFolder = Directory.GetParent(currentFolder)?.FullName;
+                currentFolder = Directory.GetParent(currentFolder)?.FullName!;
             }
 
             throw new FileNotFoundException($"The file '{fileName}' was not found in any parent directory containing a .csproj file.");
@@ -199,10 +256,10 @@ namespace Consolonia.Core.Designer
             if (_charWidth == 0 && _charHeight == 0)
             {
                 var ts = TextShaper.Current;
-                ShapedBuffer shapedMeasure = ts.ShapeText($"X", new TextShaperOptions(_typeface.GlyphTypeface, FontSize));
-                var runMeasure = new ShapedTextRun(shapedMeasure, new GenericTextRunProperties(_typeface, FontSize));
-                _charWidth = runMeasure.Size.Width;
-                _charHeight = runMeasure.Size.Height;
+                ShapedBuffer shapedMeasure = ts.ShapeText($"▌", new TextShaperOptions(_typeface.GlyphTypeface, 14));
+                var runMeasure = new ShapedTextRun(shapedMeasure, new GenericTextRunProperties(_typeface, 14));
+                _charWidth = 10; // runMeasure.Size.Width;
+                _charHeight = 17; // runMeasure.Size.Height;
             }
         }
 
@@ -211,17 +268,19 @@ namespace Consolonia.Core.Designer
         {
             ushort designWidth = 80;
             ushort designHeight = 25;
-            var iStart = xaml.IndexOf("d:DesignWidth=\"");
+            var iStart = xaml.IndexOf("d:DesignWidth=\"", StringComparison.Ordinal);
             if (iStart > 0)
             {
                 iStart += 15;
-                var iEnd = xaml.IndexOf("\"", iStart);
-                designWidth = ushort.Parse(xaml.Substring(iStart, iEnd - iStart));
-                iStart = xaml.IndexOf("d:DesignHeight=\"");
+                var iEnd = xaml.IndexOf("\"", iStart, StringComparison.Ordinal);
+                string num = xaml.Substring(iStart, iEnd - iStart);
+                designWidth = ushort.Parse(num, CultureInfo.InvariantCulture);
+                iStart = xaml.IndexOf("d:DesignHeight=\"", StringComparison.Ordinal);
                 {
                     iStart += 16;
-                    iEnd = xaml.IndexOf("\"", iStart);
-                    designHeight = ushort.Parse(xaml.Substring(iStart, iEnd - iStart));
+                    iEnd = xaml.IndexOf("\"", iStart, StringComparison.Ordinal);
+                    num = xaml.Substring(iStart, iEnd - iStart);
+                    designHeight = ushort.Parse(num, CultureInfo.InvariantCulture);
                 }
             }
             return (designWidth, designHeight);
@@ -239,7 +298,7 @@ namespace Consolonia.Core.Designer
             private Color _lastForegroundColor;
             private FontStyle _lastStyle = FontStyle.Normal;
             private FontWeight _lastWeight = FontWeight.Normal;
-            private TextDecorationLocation? _lastTextDecorations = null;
+            private TextDecorationLocation? _lastTextDecorations;
 
             public TextBlockComposer(StackPanel panel, double charWidth)
             {
@@ -273,7 +332,7 @@ namespace Consolonia.Core.Designer
 
                 if (pixel.Foreground.Symbol.Width == 0)
                 {
-                    _textBuilder.Append("X");
+                    _textBuilder.Append('X');
                     _textRunCharWidth += 1;
                 }
                 else
@@ -287,7 +346,7 @@ namespace Consolonia.Core.Designer
                 }
             }
 
-            public void Flush(bool forceWidth = false)
+            public void Flush(bool forceWidth = true)
             {
                 if (_textBuilder.Length == 0)
                     return;
@@ -301,6 +360,7 @@ namespace Consolonia.Core.Designer
                     Background = new SolidColorBrush(_lastBackgroundColor),
                     FontWeight = _lastWeight,
                     FontStyle = _lastStyle,
+                    FontSize = 17,
                     TextDecorations = _lastTextDecorations switch
                     {
                         TextDecorationLocation.Underline => TextDecorations.Underline,
@@ -310,12 +370,52 @@ namespace Consolonia.Core.Designer
                 };
 
                 if (forceWidth)
+                {
                     textBlock.Width = _charWidth * _textRunCharWidth;
+                }
 
                 _panel.Children.Add(textBlock);
                 _textBuilder.Clear();
                 _textRunCharWidth = 0;
             }
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+#pragma warning disable CA1416 // Validate platform compatibility
+                    lock (_lock)
+                    {
+                        if (_process != null)
+                        {
+                            _process.Kill();
+                            _process.Dispose();
+                            _process = null;
+                        }
+                    }
+#pragma warning restore CA1416 // Validate platform compatibility
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        ~ConsolePreview()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+        }
     }
 }
+

@@ -28,10 +28,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         [JsonConverter(typeof(ColorConverter))]
-        public Color Color { get; set; }
-        
+        public Color Color { get; set; } 
+
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public PixelBackgroundMode Mode { get; set; }
+        public PixelBackgroundMode Mode { get; set; } 
 
         public PixelBackground Shade()
         {

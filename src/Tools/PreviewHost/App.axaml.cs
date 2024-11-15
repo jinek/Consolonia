@@ -1,8 +1,9 @@
-﻿using Avalonia;
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-
+using Consolonia.Core.Designer;
 using PreviewHost.ViewModels;
 using PreviewHost.Views;
 
@@ -27,15 +28,16 @@ public partial class App : Application
             {
                 DataContext = new MainViewModel()
             };
-        }
-        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-        {
-            singleViewPlatform.MainView = new MainView
-            {
-                DataContext = new MainViewModel()
-            };
+            desktop.Exit += Desktop_Exit;
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        var desktop = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+        
+        desktop!.MainWindow!.FindControl<ConsolePreview>("PreviewPane")?.Dispose();
     }
 }

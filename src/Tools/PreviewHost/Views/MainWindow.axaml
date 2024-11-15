@@ -3,10 +3,45 @@
         xmlns:vm="using:PreviewHost.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:v="clr-namespace:Consolonia.Core.Designer;assembly=Consolonia.Core"
         xmlns:views="clr-namespace:PreviewHost.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PreviewHost.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico" Background="DarkGray"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/avalonia-logo.ico"
         Title="PreviewHost">
-        <views:MainView />
+
+    <Grid RowDefinitions="Auto *">
+        <Menu Background="LightGray" >
+            <MenuItem Header="File">
+                <MenuItem Header="Open..." Click="OnOpen" />
+                <MenuItem Header="Exit" Click="OnExit"/>
+            </MenuItem>
+        </Menu>
+
+        <Grid Grid.Row="1" RowDefinitions="*" ColumnDefinitions="Auto Auto *" >
+            <ListBox x:Name="FilesListBox" 
+                     ItemsSource="{Binding Files}" 
+                     MinWidth="100" 
+                     VerticalAlignment="Stretch" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
+            <GridSplitter Grid.Column="1"
+                Width="5" ShowsPreview="True"
+                HorizontalAlignment="Stretch" Background="#FF101040"/>
+
+            <v:ConsolePreview x:Name="PreviewPane"
+                              Grid.Column="2"
+                              DataContext="{Binding SelectedItem, ElementName=FilesListBox}"
+                              FileName="{Binding FullName}"
+                              Columns="80" Rows="80" MonitorChanges="true"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        </Grid>
+    </Grid>
 </Window>

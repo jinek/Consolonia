@@ -188,5 +188,14 @@ namespace Consolonia.Core.Tests
             Assert.That(pixelForeground.Equals(pixelForeground2));
         }
 
+        [Test]
+        public void JsonSerializationDefault()
+        {
+            var pixelForeground = new PixelForeground();
+            var json = JsonConvert.SerializeObject(pixelForeground);
+            var pixelForeground2 = JsonConvert.DeserializeObject<PixelForeground>(json);
+            Assert.That(pixelForeground.Equals(pixelForeground2));
+        }
+
     }
 }

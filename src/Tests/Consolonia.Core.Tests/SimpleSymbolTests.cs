@@ -157,8 +157,30 @@ namespace Consolonia.Core.Tests
             ISymbol symbol = new SimpleSymbol("a");
             string json = JsonConvert.SerializeObject(symbol);
             ISymbol deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
-            Assert.That(deserializedSymbol.Text, Is.EqualTo("a"));
-            Assert.That(deserializedSymbol.Width, Is.EqualTo(1));
+            Assert.That(deserializedSymbol.Equals(symbol));
+        }
+
+        [Test]
+        [TestCase("👍")]
+        [TestCase("👨‍👩‍👧‍👦")]
+        [TestCase("“")]
+        [TestCase("”")]
+        [TestCase("\"")]
+        public void JsonSerializationCases(string text)
+        {
+            ISymbol symbol = new SimpleSymbol(text);
+            string json = JsonConvert.SerializeObject(symbol);
+            ISymbol deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            Assert.That(deserializedSymbol.Equals(symbol));
+        }
+
+        [Test]
+        public void JsonSerializationDefault()
+        {
+            ISymbol symbol = new SimpleSymbol();
+            string json = JsonConvert.SerializeObject(symbol);
+            ISymbol deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            Assert.That(deserializedSymbol.Equals(symbol));
         }
     }
 }

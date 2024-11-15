@@ -31,7 +31,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             TextDecoration = textDecoration;
         }
 
-        public ISymbol Symbol { get; set; } //now working with 16 bit unicode only for simplicity //todo: reference here
+        public ISymbol Symbol { get; set; }
 
         [JsonConverter(typeof(ColorConverter))]
         public Color Color { get; set; }
@@ -42,7 +42,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         [DefaultValue(FontStyle.Normal)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public FontStyle Style { get; set; }
+        public FontStyle Style { get; set; } = FontStyle.Normal;
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public TextDecorationLocation? TextDecoration { get; set; } = null;

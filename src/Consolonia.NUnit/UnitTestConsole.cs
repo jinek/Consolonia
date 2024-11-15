@@ -73,7 +73,7 @@ namespace Consolonia.NUnit
             }
         }
 
-        public void WriteCommand(string str)
+        public void WriteText(string str)
         {
             // ignore
         }

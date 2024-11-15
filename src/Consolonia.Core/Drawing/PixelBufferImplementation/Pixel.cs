@@ -17,7 +17,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public PixelBackground Background { get; set; }
 
-        public bool IsCaret { get; set;  }
+        public bool IsCaret { get; set; }
 
         public Pixel()
         {

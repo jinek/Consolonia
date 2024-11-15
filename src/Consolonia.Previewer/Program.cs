@@ -1,6 +1,8 @@
+using System.Text;
 using Avalonia;
 using Consolonia.Core;
 using Consolonia.Core.Infrastructure;
+using Consolonia.Dummy;
 using Consolonia.PlatformSupport;
 
 namespace Consolonia.Previewer
@@ -12,21 +14,24 @@ namespace Consolonia.Previewer
         // yet and stuff might break.
         public static void Main(string[] args)
         {
-            BuildAvaloniaApp()
-                   .StartWithConsoleLifetime(args);
-        }
+            Console.OutputEncoding = Encoding.UTF8;
 
-        // Avalonia configuration, don't remove; also used by visual designer.
-        public static AppBuilder BuildAvaloniaApp()
-        {
-            return AppBuilder.Configure<App>()
-                  .UseConsolonia()
-                  .UseAutoDetectedConsole()
-                  .LogToException();
+            var builder = AppBuilder.Configure<App>()
+                .UseConsolonia()
+                .LogToException();
+            
+            if (args.Contains("--buffer"))
+            {
+                var parts = args.SkipWhile(a => a != "--buffer").Skip(1).Take(2).ToArray();
+                var width = ushort.Parse(parts[0]);
+                var height = ushort.Parse(parts[1]);
+                builder = builder.UseConsole(new DummyConsole(width, height));
+            }
+            else
+                builder = builder.UseAutoDetectedConsole();
+            
+            builder
+                .StartWithConsoleLifetime(args);
         }
-        //AppBuilder.Configure<App>()
-        //        .UsePlatformDetect()
-        //        .WithInterFont()
-        //        .LogToTrace();
     }
 }

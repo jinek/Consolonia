@@ -1,9 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using Avalonia;
@@ -23,17 +21,18 @@ namespace Consolonia.Core.Drawing
 
         private readonly ConsoleWindow _consoleWindow;
 
-        private PixelBuffer _bufferBuffer;
+        private PixelBuffer _pixelBuffer;
 
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
 
         internal RenderTarget(ConsoleWindow consoleWindow)
         {
-            _console = consoleWindow.Console; // AvaloniaLocator.Current.GetService<IConsole>()!;
+            _console = AvaloniaLocator.Current.GetService<IConsole>()!;
             _consoleWindow = consoleWindow;
             consoleWindow.Resized += OnResized;
-            InitializeBuffer(_consoleWindow.ClientSize);
+            _pixelBuffer = InitializeBuffer(_consoleWindow.ClientSize);
+            _cache = InitializeCache(_pixelBuffer.Width, _pixelBuffer.Height);
         }
 
         public RenderTarget(IEnumerable<object> surfaces)
@@ -61,9 +60,7 @@ namespace Consolonia.Core.Drawing
         public PixelSize PixelSize { get; } = new(1, 1);
         public int Version => 0;
 
-        public PixelBuffer Buffer => _bufferBuffer;
-
-        private NamedPipeClientStream _previewPipe;
+        public PixelBuffer Buffer => _pixelBuffer;
 
         void IDrawingContextLayerImpl.Blit(IDrawingContextImpl context)
         {
@@ -71,21 +68,17 @@ namespace Consolonia.Core.Drawing
             {
                 RenderToDevice();
 
-                var lifetime = Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-                if (lifetime.Args.Contains("--buffer"))
+                // If we are rendering a console window and the args have --buffer
+                // then we are operating in headless mode and we want to 
+                // output the raw PixelBuffer serialized to the console so that
+                // previewer apps can consume the pixel buffer.
+                // In this environment the IConsole should be a DummyConsole so nothing
+                // gets output to the console other than the serialized PixelBuffer.
+                var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+                if (lifetime!.Args!.Contains("--buffer"))
                 {
-                    if (_previewPipe == null)
-                    {
-                        var pipeName = Path.GetFileName(lifetime.Args.First());
-                        _previewPipe = new NamedPipeClientStream(".", pipeName, PipeDirection.Out);
-
-                        Debug.WriteLine($"Connecting to server {pipeName}...");
-                        _previewPipe.Connect();
-                        Debug.WriteLine("Connected");
-                    }
-                    var json = JsonConvert.SerializeObject(_bufferBuffer);
-                    Debug.WriteLine(json);
-                    _previewPipe.Write(Encoding.UTF8.GetBytes($"{json}\n"));
+                    var json = JsonConvert.SerializeObject(_pixelBuffer);
+                    Console.WriteLine(json);
                 }
             }
             catch (InvalidDrawingContextException)
@@ -97,7 +90,7 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextImpl CreateDrawingContext()
         {
-            return new DrawingContextImpl(_consoleWindow, _bufferBuffer);
+            return new DrawingContextImpl(_consoleWindow, _pixelBuffer);
         }
 
         public bool IsCorrupted => false;
@@ -106,31 +99,29 @@ namespace Consolonia.Core.Drawing
         private void OnResized(Size size, WindowResizeReason reason)
         {
             // todo: should we check the reason?
-            InitializeBuffer(size);
+            _pixelBuffer = InitializeBuffer(size);
+            _cache = InitializeCache(_pixelBuffer.Width, _pixelBuffer.Height);
         }
 
-        private void InitializeBuffer(Size size)
+        private static PixelBuffer InitializeBuffer(Size size)
         {
             ushort width = (ushort)size.Width;
             ushort height = (ushort)size.Height;
-
-            _bufferBuffer =
-                new PixelBuffer(width, height);
-
-            InitializeCache(width, height);
+            return new PixelBuffer(width, height);
         }
 
-        private void InitializeCache(ushort width, ushort height)
+        private static Pixel?[,] InitializeCache(ushort width, ushort height)
         {
-            _cache = new Pixel?[width, height];
+            var cache = new Pixel?[width, height];
             for (ushort y = 0; y < height; y++)
                 for (ushort x = 0; x < width; x++)
-                    _cache[x, y] = new Pixel();
+                    cache[x, y] = new Pixel();
+            return cache;
         }
 
         private void RenderToDevice()
         {
-            PixelBuffer pixelBuffer = _bufferBuffer;
+            PixelBuffer pixelBuffer = _pixelBuffer;
 
             _console.CaretVisible = false;
             PixelBufferCoordinate? caretPosition = null;
@@ -164,7 +155,7 @@ namespace Consolonia.Core.Drawing
 
                     flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
 
-                    x += pixel.Foreground.Symbol?.Width ?? 1;
+                    x++;
                 }
 
             flushingBuffer.Flush();
@@ -182,7 +173,7 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextImpl CreateDrawingContext(bool useScaledDrawing)
         {
-            return new DrawingContextImpl(_consoleWindow, _bufferBuffer);
+            return new DrawingContextImpl(_consoleWindow, _pixelBuffer);
         }
 
         private struct FlushingBuffer
@@ -230,7 +221,8 @@ namespace Consolonia.Core.Drawing
                 if ((pixel.Foreground.Symbol?.Text.Length ?? 0) == 0)
                     _stringBuilder.Append(' ');
                 else
-                    _stringBuilder.Append(pixel.Foreground.Symbol.Text);
+                    _stringBuilder.Append(pixel.Foreground.Symbol!.Text);
+
                 _currentBufferPoint = _currentBufferPoint.WithXpp();
             }
 
