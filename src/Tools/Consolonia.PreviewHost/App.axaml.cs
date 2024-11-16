@@ -33,7 +33,6 @@ namespace Consolonia.PreviewHost
             IClassicDesktopStyleApplicationLifetime applicationLifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
             if (applicationLifetime != null)
             {
-                Window window;
                 var appViewModel = new AppViewModel();
                 
                 var path = applicationLifetime.Args!.FirstOrDefault();
@@ -41,12 +40,13 @@ namespace Consolonia.PreviewHost
                 {
                     path = Path.GetFullPath(path);
                     var projectFile = FindProjectFileFromPath(path);
+
                     appViewModel.Project = new ProjectViewModel(projectFile);
-                    if (path.EndsWith(".axaml"))
+                    if (path.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
                     {
                         applicationLifetime!.MainWindow = new HeadlessWindow()
                         {
-                            DataContext = appViewModel.Project.Files.Single(f => f.FullName.Equals(path, StringComparison.OrdinalIgnoreCase))
+                            DataContext = appViewModel.Project.Files.Single(f => f.FullName!.Equals(path, StringComparison.OrdinalIgnoreCase))
                         };
                     }
                 }
@@ -74,8 +74,9 @@ namespace Consolonia.PreviewHost
 
         public static string FindProjectFileFromPath(string path)
         {
+            ArgumentNullException.ThrowIfNull(path);
             string? projectFile = null;
-            string projectFolder = Directory.Exists(path) ? path : Path.GetDirectoryName(path!);
+            string projectFolder = Directory.Exists(path) ? path : Path.GetDirectoryName(path)!;
             while (projectFolder != null)
             {
                 projectFile = Directory.GetFiles(projectFolder, "*.csproj").FirstOrDefault();
@@ -85,6 +86,7 @@ namespace Consolonia.PreviewHost
                 }
                 projectFolder = Path.GetDirectoryName(projectFolder)!;
             }
+            ArgumentNullException.ThrowIfNull(projectFile);
             return projectFile;
         }
 

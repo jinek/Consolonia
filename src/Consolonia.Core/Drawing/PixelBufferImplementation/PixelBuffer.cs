@@ -11,6 +11,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     {
         private readonly Pixel[,] _buffer;
 
+        public PixelBuffer(PixelBufferSize size)
+            : this(size.Width, size.Height)
+        {
+        }
+
         public PixelBuffer(ushort width, ushort height)
         {
             Width = width;

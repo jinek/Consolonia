@@ -32,7 +32,7 @@ public partial class MainWindow : Window
                     Patterns= new List<string> { "*.csproj" }
                 },
             },
-        });
+        }).ConfigureAwait(false);
 
         if (files == null || !files.Any())
         {

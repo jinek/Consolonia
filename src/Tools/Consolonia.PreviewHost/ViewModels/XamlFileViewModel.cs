@@ -10,8 +10,9 @@ namespace Consolonia.PreviewHost.ViewModels;
 
 public partial class XamlFileViewModel : ObservableObject, IDisposable
 {
-    private bool loaded;
+    private bool _loaded;
     private FileSystemWatcher? _fileWatcher;
+    private bool _disposedValue;
 
     public XamlFileViewModel(string xamlPath, Assembly assembly)
     {
@@ -26,26 +27,24 @@ public partial class XamlFileViewModel : ObservableObject, IDisposable
     }
 
     [ObservableProperty]
-    private string? _name = null;
+    private string? _name;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Name))]
-    private string? _fullName = null;
+    private string? _fullName;
 
     [ObservableProperty]
-    private Assembly _assembly = null;
+    private Assembly _assembly;
 
-    private bool _disposedValue;
-
-    private Control _content = null;
-    public Control Content
+    private Control? _content;
+    public Control? Content
     {
         get
         {
-            if (!loaded)
+            if (!_loaded)
             {
                 _content = LoadXAML();
-                loaded = true;
+                _loaded = true;
             }
             return _content;
         }

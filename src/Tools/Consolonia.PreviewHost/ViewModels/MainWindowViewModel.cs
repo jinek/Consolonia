@@ -6,6 +6,6 @@ namespace Consolonia.PreviewHost.ViewModels
     {
 
         [ObservableProperty]
-        private ProjectViewModel _project = null;
+        private ProjectViewModel? _project;
     }
 }

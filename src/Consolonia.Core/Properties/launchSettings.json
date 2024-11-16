@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Consolonia.Core": {
+      "commandName": "Project",
+      "commandLineArgs": "s:\\github\\consolonia\\src\\consolonia.gallery\\gallery\\galleryviews\\gallerytextlblock.axaml --buffer 80 50"
+    }
+  }
+}

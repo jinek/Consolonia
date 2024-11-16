@@ -14,8 +14,9 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private async void OnOpen(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnOpen(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+#if IStorageProvider
         // Get top level from the current control. Alternatively, you can use Window reference instead.
         var topLevel = TopLevel.GetTopLevel(this);
 
@@ -46,6 +47,7 @@ public partial class MainWindow : Window
         {
             Model.Files.Add(new XamlFileViewModel(file, null));
         }
+#endif
     }
 
     public ProjectViewModel Model => (ProjectViewModel)DataContext!;

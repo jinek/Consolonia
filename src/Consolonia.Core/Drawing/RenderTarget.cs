@@ -6,12 +6,10 @@ using System.Linq;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
-using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing
 {
@@ -21,8 +19,6 @@ namespace Consolonia.Core.Drawing
 
         private readonly ConsoleWindow _consoleWindow;
 
-        private PixelBuffer _pixelBuffer;
-
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
 
@@ -31,8 +27,7 @@ namespace Consolonia.Core.Drawing
             _console = AvaloniaLocator.Current.GetService<IConsole>()!;
             _consoleWindow = consoleWindow;
             consoleWindow.Resized += OnResized;
-            _pixelBuffer = InitializeBuffer(_consoleWindow.ClientSize);
-            _cache = InitializeCache(_pixelBuffer.Width, _pixelBuffer.Height);
+            _cache = InitializeCache(_consoleWindow.PixelBuffer.Width, _consoleWindow.PixelBuffer.Height);
         }
 
         public RenderTarget(IEnumerable<object> surfaces)
@@ -60,26 +55,13 @@ namespace Consolonia.Core.Drawing
         public PixelSize PixelSize { get; } = new(1, 1);
         public int Version => 0;
 
-        public PixelBuffer Buffer => _pixelBuffer;
+        public PixelBuffer Buffer => _consoleWindow.PixelBuffer;
 
         void IDrawingContextLayerImpl.Blit(IDrawingContextImpl context)
         {
             try
             {
                 RenderToDevice();
-
-                // If we are rendering a console window and the args have --buffer
-                // then we are operating in headless mode and we want to 
-                // output the raw PixelBuffer serialized to the console so that
-                // previewer apps can consume the pixel buffer.
-                // In this environment the IConsole should be a DummyConsole so nothing
-                // gets output to the console other than the serialized PixelBuffer.
-                var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-                if (lifetime!.Args!.Contains("--buffer"))
-                {
-                    var json = JsonConvert.SerializeObject(_pixelBuffer);
-                    Console.WriteLine(json);
-                }
             }
             catch (InvalidDrawingContextException)
             {
@@ -90,7 +72,7 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextImpl CreateDrawingContext()
         {
-            return new DrawingContextImpl(_consoleWindow, _pixelBuffer);
+            return new DrawingContextImpl(_consoleWindow, _consoleWindow.PixelBuffer);
         }
 
         public bool IsCorrupted => false;
@@ -99,15 +81,7 @@ namespace Consolonia.Core.Drawing
         private void OnResized(Size size, WindowResizeReason reason)
         {
             // todo: should we check the reason?
-            _pixelBuffer = InitializeBuffer(size);
-            _cache = InitializeCache(_pixelBuffer.Width, _pixelBuffer.Height);
-        }
-
-        private static PixelBuffer InitializeBuffer(Size size)
-        {
-            ushort width = (ushort)size.Width;
-            ushort height = (ushort)size.Height;
-            return new PixelBuffer(width, height);
+            _cache = InitializeCache(_consoleWindow.PixelBuffer.Width, _consoleWindow.PixelBuffer.Height);
         }
 
         private static Pixel?[,] InitializeCache(ushort width, ushort height)
@@ -121,7 +95,7 @@ namespace Consolonia.Core.Drawing
 
         private void RenderToDevice()
         {
-            PixelBuffer pixelBuffer = _pixelBuffer;
+            PixelBuffer pixelBuffer = _consoleWindow.PixelBuffer;
 
             _console.CaretVisible = false;
             PixelBufferCoordinate? caretPosition = null;
@@ -173,7 +147,7 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextImpl CreateDrawingContext(bool useScaledDrawing)
         {
-            return new DrawingContextImpl(_consoleWindow, _pixelBuffer);
+            return new DrawingContextImpl(_consoleWindow, _consoleWindow.PixelBuffer);
         }
 
         private struct FlushingBuffer

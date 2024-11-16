@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using Avalonia;
 using Consolonia.Core;
@@ -23,8 +24,8 @@ namespace Consolonia.PreviewHost
             if (args.Contains("--buffer"))
             {
                 var parts = args.SkipWhile(a => a != "--buffer").Skip(1).Take(2).ToArray();
-                var width = ushort.Parse(parts[0]);
-                var height = ushort.Parse(parts[1]);
+                var width = ushort.Parse(parts[0], CultureInfo.InvariantCulture);
+                var height = ushort.Parse(parts[1], CultureInfo.InvariantCulture);
                 builder = builder.UseConsole(new DummyConsole(width, height));
             }
             else

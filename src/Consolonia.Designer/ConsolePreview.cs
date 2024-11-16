@@ -113,10 +113,11 @@ namespace Consolonia.Designer
             if (Rows == 0)
                 Rows = designHeight /= (ushort)_charHeight;
 
+
+            var previewHostPath = typeof(Consolonia.PreviewHost.App).Assembly.Location.Replace(".dll", ".exe", StringComparison.OrdinalIgnoreCase);
             var processStartInfo = new ProcessStartInfo()
             {
-                FileName = @"Consolonia.PreviewHost.exe",
-                WorkingDirectory = Path.GetDirectoryName(this.GetType().Assembly.Location),
+                FileName = previewHostPath,
                 Arguments = $"{xamlPath} --buffer {Columns} {Rows}",
                 StandardOutputEncoding = Encoding.UTF8,
                 StandardInputEncoding = Encoding.UTF8,
@@ -143,8 +144,9 @@ namespace Consolonia.Designer
                 var line = _process!.StandardOutput.ReadLine();
                 if (!string.IsNullOrEmpty(line))
                 {
-                    Debug.WriteLine("BUFFER RECEIVED");
+                    Debug.WriteLine("PIXELBUFFER RECEIVED");
                     var buffer = JsonConvert.DeserializeObject<PixelBuffer>(line)!;
+                    Debug.WriteLine($"Buffer: {buffer.Width}x{buffer.Height}");
                     this.Content = RenderPixelBuffer(buffer);
                 }
 
@@ -232,7 +234,7 @@ namespace Consolonia.Designer
             while (currentFolder != null)
             {
                 // Check if any .csproj file exists in the current directory
-                if (Directory.GetFiles(currentFolder, "*.csproj").Length > 0)
+                if (Directory.GetFiles(currentFolder, "*.csproj").Length > 0 || Directory.GetFiles(currentFolder, "*.sln").Length > 0)
                 {
                     // Search for the specified file in the current directory and its subdirectories
                     var files = Directory.GetFiles(currentFolder, fileName, SearchOption.AllDirectories);
@@ -246,7 +248,7 @@ namespace Consolonia.Designer
                 currentFolder = Directory.GetParent(currentFolder)?.FullName!;
             }
 
-            throw new FileNotFoundException($"The file '{fileName}' was not found in any parent directory containing a .csproj file.");
+            throw new FileNotFoundException($"The file '{fileName}' in start folder: {startFolder} was not found in any parent directory containing a .csproj file.");
         }
 
 

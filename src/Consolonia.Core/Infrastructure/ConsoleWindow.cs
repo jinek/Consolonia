@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Platform;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Input.TextInput;
@@ -19,13 +18,14 @@ using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
-    internal class ConsoleWindow : IWindowImpl
+    public class ConsoleWindow : IWindowImpl
     {
         private readonly IKeyboardDevice _myKeyboardDevice;
         private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(100);
         [NotNull] internal readonly IConsole Console;
         private IInputRoot _inputRoot;
         private CancellationTokenSource _resizeCancellationTokenSource;
+        private bool _disposedValue;
 
         public ConsoleWindow()
         {
@@ -37,19 +37,13 @@ namespace Consolonia.Core.Infrastructure
             Console.MouseEvent += ConsoleOnMouseEvent;
             Console.FocusEvent += ConsoleOnFocusEvent;
             Handle = null!;
+            PixelBuffer = new PixelBuffer(Console.Size);
         }
+
+        public PixelBuffer PixelBuffer { get; set; }
 
         private IMouseDevice MouseDevice { get; }
 
-        public void Dispose()
-        {
-            Closed?.Invoke();
-            Console.Resized -= OnConsoleOnResized;
-            Console.KeyEvent -= ConsoleOnKeyEvent;
-            Console.MouseEvent -= ConsoleOnMouseEvent;
-            Console.FocusEvent -= ConsoleOnFocusEvent;
-            Console.Dispose();
-        }
 
         public void SetInputRoot(IInputRoot inputRoot)
         {
@@ -159,7 +153,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTitle(string title)
         {
-                Console.SetTitle(title);
+            Console.SetTitle(title);
         }
 
         public void SetParent(IWindowImpl parent)
@@ -325,8 +319,8 @@ namespace Consolonia.Core.Infrastructure
                     // dispatch to the UI thread 
                     Dispatcher.UIThread.Post(() =>
                     {
-                        PixelBufferSize pixelBufferSize = Console.Size;
-                        var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
+                        PixelBuffer = new PixelBuffer(Console.Size);
+                        var size = new Size(Console.Size.Width, Console.Size.Height);
                         Resized!(size, WindowResizeReason.Unspecified);
                     });
                 }
@@ -376,6 +370,41 @@ namespace Consolonia.Core.Infrastructure
                             keyChar.ToString()));
                     }, DispatcherPriority.Input);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                    Closed?.Invoke();
+                    Console.Resized -= OnConsoleOnResized;
+                    Console.KeyEvent -= ConsoleOnKeyEvent;
+                    Console.MouseEvent -= ConsoleOnMouseEvent;
+                    Console.FocusEvent -= ConsoleOnFocusEvent;
+                    Console.Dispose();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                _disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~ConsoleWindow()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
