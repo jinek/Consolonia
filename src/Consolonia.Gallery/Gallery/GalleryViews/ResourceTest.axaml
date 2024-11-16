@@ -5,7 +5,7 @@
                     mc:Ignorable="d" 
                     xmlns:v="using:Consolonia.Designer" >
     <Design.PreviewWith>
-        <TextBlock>This is a resource</TextBlock>
+        <TextBlock Text="Test" Width="100"/>
     </Design.PreviewWith>
 
 </ResourceDictionary>

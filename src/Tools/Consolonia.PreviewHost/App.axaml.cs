@@ -35,11 +35,8 @@ namespace Consolonia.PreviewHost
             {
                 Window window;
                 var appViewModel = new AppViewModel();
-                var turboVisionTheme = new TurboVisionTheme(new Uri("avares://Consolonia.Gallery"));
-                turboVisionTheme.TryGetResource("ThemeForegroundBrush", null, out var foregroundBrush);
-                turboVisionTheme.TryGetResource("ThemeBackgroundBrush", null, out var backgroundBrush);
-
-                    var path = applicationLifetime.Args!.FirstOrDefault();
+                
+                var path = applicationLifetime.Args!.FirstOrDefault();
                 if (!String.IsNullOrEmpty(path))
                 {
                     path = Path.GetFullPath(path);
@@ -49,8 +46,6 @@ namespace Consolonia.PreviewHost
                     {
                         applicationLifetime!.MainWindow = new HeadlessWindow()
                         {
-                            Foreground = (IBrush)foregroundBrush,
-                            Background = (IBrush)backgroundBrush,
                             DataContext = appViewModel.Project.Files.Single(f => f.FullName.Equals(path, StringComparison.OrdinalIgnoreCase))
                         };
                     }
@@ -68,8 +63,6 @@ namespace Consolonia.PreviewHost
                 {
                     applicationLifetime!.MainWindow = new MainWindow()
                     {
-                        Foreground = (IBrush)foregroundBrush,
-                        Background = (IBrush)backgroundBrush,
                         DataContext = appViewModel
                     };
                 }

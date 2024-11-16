@@ -15,6 +15,7 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />

@@ -3,6 +3,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         x:Class="Consolonia.PreviewHost.App">
     <Application.Styles>
-        <StyleInclude Source="avares://Consolonia.Themes.TurboVision/Themes/TurboVisionBlack/TurboVisionBlack.axaml"/>
+        <!--<StyleInclude Source="avares://Consolonia.Themes.TurboVision/Themes/TurboVisionDark/TurboVisionDark.axaml"/>-->
+        <StyleInclude Source="avares://Consolonia.Themes.TurboVision/Themes/Material/Material.axaml"/>
     </Application.Styles>
 </Application>
