@@ -3,9 +3,9 @@
         xmlns:vm="using:PreviewHost.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:v="clr-namespace:Consolonia.Core.Designer;assembly=Consolonia.Core"
+        xmlns:v="using:Consolonia.Designer"
         xmlns:views="clr-namespace:PreviewHost.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" 
         x:Class="PreviewHost.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
@@ -13,9 +13,9 @@
 
     <Grid RowDefinitions="Auto *">
         <Menu Background="LightGray" >
-            <MenuItem Header="File">
-                <MenuItem Header="Open..." Click="OnOpen" />
-                <MenuItem Header="Exit" Click="OnExit"/>
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open..." Click="OnOpen" />
+                <MenuItem Header="_Exit" Click="OnExit"/>
             </MenuItem>
         </Menu>
 

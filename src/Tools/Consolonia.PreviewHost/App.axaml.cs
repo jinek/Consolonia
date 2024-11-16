@@ -6,6 +6,7 @@ using Avalonia.Media;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PreviewHost.Views;
 using Consolonia.PreviewHost.ViewModels;
+using Consolonia.Themes.TurboVision.Templates;
 
 namespace Consolonia.PreviewHost
 {
@@ -32,27 +33,44 @@ namespace Consolonia.PreviewHost
             IClassicDesktopStyleApplicationLifetime applicationLifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
             if (applicationLifetime != null)
             {
-                var path = applicationLifetime.Args!.FirstOrDefault();
                 Window window;
-                var projectFile = FindProjectFileFromPath(path);
-                var projectViewModel = new ProjectViewModel(projectFile);
+                var appViewModel = new AppViewModel();
+                var turboVisionTheme = new TurboVisionTheme(new Uri("avares://Consolonia.Gallery"));
+                turboVisionTheme.TryGetResource("ThemeForegroundBrush", null, out var foregroundBrush);
+                turboVisionTheme.TryGetResource("ThemeBackgroundBrush", null, out var backgroundBrush);
 
-                if (path.EndsWith(".axaml"))
+                    var path = applicationLifetime.Args!.FirstOrDefault();
+                if (!String.IsNullOrEmpty(path))
                 {
-                    applicationLifetime!.MainWindow = new HeadlessWindow()
+                    path = Path.GetFullPath(path);
+                    var projectFile = FindProjectFileFromPath(path);
+                    appViewModel.Project = new ProjectViewModel(projectFile);
+                    if (path.EndsWith(".axaml"))
                     {
-                        Foreground = Brushes.White,
-                        Background = Brushes.Black,
-                        DataContext = projectViewModel.Files.Single(f => f.FullName.Equals(path, StringComparison.OrdinalIgnoreCase) )
-                    };
+                        applicationLifetime!.MainWindow = new HeadlessWindow()
+                        {
+                            Foreground = (IBrush)foregroundBrush,
+                            Background = (IBrush)backgroundBrush,
+                            DataContext = appViewModel.Project.Files.Single(f => f.FullName.Equals(path, StringComparison.OrdinalIgnoreCase))
+                        };
+                    }
                 }
                 else
                 {
-                    applicationLifetime!.MainWindow = new ProjectWindow()
+                    var projectFile = FindProjectFileFromPath(Environment.CurrentDirectory);
+                    if (projectFile != null)
                     {
-                        Foreground = Brushes.White,
-                        Background = Brushes.Black,
-                        DataContext = projectViewModel
+                        appViewModel.Project = new ProjectViewModel(projectFile);
+                    }
+                }
+
+                if (applicationLifetime.MainWindow == null)
+                {
+                    applicationLifetime!.MainWindow = new MainWindow()
+                    {
+                        Foreground = (IBrush)foregroundBrush,
+                        Background = (IBrush)backgroundBrush,
+                        DataContext = appViewModel
                     };
                 }
 
@@ -64,7 +82,7 @@ namespace Consolonia.PreviewHost
         public static string FindProjectFileFromPath(string path)
         {
             string? projectFile = null;
-            string projectFolder = Path.GetDirectoryName(path!);
+            string projectFolder = Directory.Exists(path) ? path : Path.GetDirectoryName(path!);
             while (projectFolder != null)
             {
                 projectFile = Directory.GetFiles(projectFolder, "*.csproj").FirstOrDefault();
@@ -107,44 +125,5 @@ namespace Consolonia.PreviewHost
         //}
         //            };
 
-        //private void WatchAssemblyChanges()
-        //        {
-        //            _assemblyWatcher = new FileSystemWatcher(Path.GetDirectoryName(_assemblyPath)!, Path.GetFileName(_assemblyPath));
-        //            _assemblyWatcher.Changed += (sender, e) =>
-        //            {
-        //                Dispatcher.UIThread.Invoke(() =>
-        //                {
-        //                    var applicationLifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
-        //                    _loadContext.Unload();
-        //                    _loadContext.LoadFromStream(new MemoryStream(File.ReadAllBytes(_assemblyPath)));
-
-        //                    applicationLifetime.MainWindow!.Content = LoadXaml();
-        //                });
-        //            };
-        //            _assemblyWatcher.EnableRaisingEvents = true;
-        //        }
-
-        //        private void WatchFileChanges()
-        //        {
-        //            if (_fileWatcher == null)
-        //            {
-        //                ArgumentNullException.ThrowIfNull(_xamlPath);
-
-        //                _fileWatcher = new FileSystemWatcher(Path.GetDirectoryName(_xamlPath!)!, Path.GetFileName(_xamlPath));
-
-        //                _fileWatcher.Changed += (e, s) => RefreshPreview();
-        //                _fileWatcher.Renamed += (e, s) => RefreshPreview();
-        //                _fileWatcher.EnableRaisingEvents = true;
-        //            }
-        //        }
-
-        //        private void RefreshPreview()
-        //        {
-        //            Dispatcher.UIThread.Invoke(() =>
-        //            {
-        //                var applicationLifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
-        //                applicationLifetime.MainWindow!.Content = LoadXaml();
-        //            });
-        //        }
     }
 }

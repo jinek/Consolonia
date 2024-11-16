@@ -36,7 +36,7 @@ namespace Consolonia.Gallery
                 {
                     Setters =
                     {
-                        new Setter(TemplatedControl.FontSizeProperty, 16.0),
+                        // new Setter(TemplatedControl.FontSizeProperty, 16.0),
                         new Setter(TemplatedControl.FontFamilyProperty, new FontFamily("Cascadia Mono")),
                         new Setter(TemplatedControl.ForegroundProperty, new SolidColorBrush(((ConsoleBrush)foregroundBrush).Color)),
                         new Setter(TemplatedControl.BackgroundProperty, new SolidColorBrush(((ConsoleBrush)backgroundBrush).Color)),

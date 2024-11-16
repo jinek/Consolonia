@@ -14,7 +14,7 @@ using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Newtonsoft.Json;
 
-namespace Consolonia.Core.Designer
+namespace Consolonia.Designer
 {
     /// <summary>
     /// ConsolePreview is a control that can be used to preview the output of a console AXAML file in visual studio.
@@ -115,8 +115,7 @@ namespace Consolonia.Core.Designer
 
             var processStartInfo = new ProcessStartInfo()
             {
-                // TODO How do I find this?
-                FileName = @"s:\github\Consolonia\src\Tools\Consolonia.PreviewHost\bin\Debug\net8.0\Consolonia.PreviewHost.exe",
+                FileName = @"Consolonia.PreviewHost.exe",
                 WorkingDirectory = Path.GetDirectoryName(this.GetType().Assembly.Location),
                 Arguments = $"{xamlPath} --buffer {Columns} {Rows}",
                 StandardOutputEncoding = Encoding.UTF8,

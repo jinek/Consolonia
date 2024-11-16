@@ -4,7 +4,7 @@
                      xmlns:dialog="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Dialog;assembly=Consolonia.Themes.TurboVision"
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="400"
+                     mc:Ignorable="d" 
                      HorizontalAlignment="Center"
                      VerticalAlignment="Center"
                      Title="Dialog"

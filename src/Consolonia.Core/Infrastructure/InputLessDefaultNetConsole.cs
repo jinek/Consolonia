@@ -96,7 +96,7 @@ namespace Consolonia.Core.Infrastructure
             try
             {
 
-            Console.Title = title;
+                Console.Title = title;
             }
             catch (Exception)
             {

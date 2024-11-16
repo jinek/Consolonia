@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Consolonia.Previewer\Consolonia.Previewer.csproj" />
-        <ProjectReference Include="S:\github\Consolonia\src\Consolonia.Core\Consolonia.Core.csproj" />
+      <ProjectReference Include="..\..\Consolonia.Designer\Consolonia.Designer.csproj" />
     </ItemGroup>
+
 </Project>

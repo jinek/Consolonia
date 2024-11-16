@@ -59,6 +59,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{910B2845
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PreviewHost", "Tools\Avalonia.PreviewHost\Avalonia.PreviewHost.csproj", "{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Designer", "Consolonia.Designer\Consolonia.Designer.csproj", "{7F0EA682-C28C-4C1C-9D40-EC0561179505}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

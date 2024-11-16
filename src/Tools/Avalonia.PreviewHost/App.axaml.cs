@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using Consolonia.Core.Designer;
+using Consolonia.Designer;
 using PreviewHost.ViewModels;
 using PreviewHost.Views;
 

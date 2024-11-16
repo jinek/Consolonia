@@ -3,7 +3,7 @@
         xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="80" d:DesignHeight="25"
+        mc:Ignorable="d" 
         x:Class="Consolonia.Gallery.View.ControlsListView"
         Title="ControlsListView" Background="LightGray">
     <Window.Resources>

@@ -3,24 +3,24 @@
         xmlns:vm="using:Consolonia.PreviewHost.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:v="clr-namespace:Consolonia.Core.Designer;assembly=Consolonia.Core"
+        xmlns:v="clr-namespace:Consolonia.Designer;assembly=Consolonia.Designer"
         xmlns:views="clr-namespace:PreviewHost.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Consolonia.PreviewHost.Views.ProjectWindow"
+        mc:Ignorable="d" 
+        x:Class="Consolonia.PreviewHost.Views.MainWindow"
         x:DataType="vm:ProjectViewModel"
         Title="PreviewHost">
 
     <Grid RowDefinitions="Auto *">
         <Menu Background="LightGray" >
-            <MenuItem Header="File">
-                <MenuItem Header="Open..." Click="OnOpen" />
-                <MenuItem Header="Exit" Click="OnExit"/>
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open..." Click="OnOpen" />
+                <MenuItem Header="E_xit" Click="OnExit"/>
             </MenuItem>
         </Menu>
 
         <Grid Grid.Row="1" RowDefinitions="*" ColumnDefinitions="Auto Auto *" >
             <ListBox x:Name="FilesListBox"
-                     ItemsSource="{Binding Files}"
+                     ItemsSource="{Binding Project.Files}"
                      MinWidth="30"
                      VerticalAlignment="Stretch" >
                 <ListBox.ItemTemplate>

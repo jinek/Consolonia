@@ -1,12 +1,15 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Consolonia.PreviewHost.ViewModels;
 
 namespace Consolonia.PreviewHost.Views;
 
-public partial class ProjectWindow : Window
+public partial class MainWindow : Window
 {
-    public ProjectWindow()
+    public MainWindow()
     {
         InitializeComponent();
     }
@@ -28,7 +31,7 @@ public partial class ProjectWindow : Window
                     Patterns= new List<string> { "*.csproj" }
                 },
             },
-        });
+        }).ConfigureAwait(false);
 
         if (files == null || !files.Any())
         {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
-using Consolonia.Core.Designer;
+using Consolonia.Designer;
 using PreviewHost.ViewModels;
 
 namespace PreviewHost.Views;
