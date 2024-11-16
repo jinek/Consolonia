@@ -5,7 +5,7 @@ using Consolonia.Core.Infrastructure;
 using Consolonia.Dummy;
 using Consolonia.PlatformSupport;
 
-namespace Consolonia.Previewer
+namespace Consolonia.PreviewHost
 {
     internal class Program
     {

@@ -15,12 +15,18 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\HeadlessWindow.axaml.cs">
+        <DependentUpon>HeadlessWindow.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\ProjectWindow.axaml.cs">
+        <DependentUpon>ProjectWindow.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 

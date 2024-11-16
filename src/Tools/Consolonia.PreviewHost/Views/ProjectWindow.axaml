@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Consolonia.PreviewHost.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:v="clr-namespace:Consolonia.Core.Designer;assembly=Consolonia.Core"
+        xmlns:views="clr-namespace:PreviewHost.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Consolonia.PreviewHost.Views.ProjectWindow"
+        x:DataType="vm:ProjectViewModel"
+        Title="PreviewHost">
+
+    <Grid RowDefinitions="Auto *">
+        <Menu Background="LightGray" >
+            <MenuItem Header="File">
+                <MenuItem Header="Open..." Click="OnOpen" />
+                <MenuItem Header="Exit" Click="OnExit"/>
+            </MenuItem>
+        </Menu>
+
+        <Grid Grid.Row="1" RowDefinitions="*" ColumnDefinitions="Auto Auto *" >
+            <ListBox x:Name="FilesListBox"
+                     ItemsSource="{Binding Files}"
+                     MinWidth="30"
+                     VerticalAlignment="Stretch" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <GridSplitter Grid.Column="1" Background="White"
+                Width="1" ShowsPreview="True"
+                HorizontalAlignment="Stretch" />
+            
+            <ContentControl Grid.Column="2" Content="{Binding Content}"
+                            DataContext="{Binding SelectedItem, ElementName=FilesListBox}"/>
+        </Grid>
+    </Grid>
+</Window>
