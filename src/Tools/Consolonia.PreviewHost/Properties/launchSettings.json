@@ -2,7 +2,7 @@
   "profiles": {
     "Consolonia.Previewer": {
       "commandName": "Project",
-      "commandLineArgs": "s:\\github\\Consolonia\\src\\Consolonia.Gallery\\Gallery\\GalleryViews\\GalleryTabControl.axaml ",
+      "commandLineArgs": "s:\\github\\Consolonia\\src\\Consolonia.Gallery\\Gallery\\GalleryViews\\GalleryTextBlock.axaml ",
       "workingDirectory": "s:\\github\\consolonia\\src\\Consolonia.Gallery"
     }
   }

@@ -116,7 +116,7 @@ namespace Consolonia.Core.Designer
             var processStartInfo = new ProcessStartInfo()
             {
                 // TODO How do I find this?
-                FileName = @"s:\github\Consolonia\src\Consolonia.Previewer\bin\Debug\net8.0\Consolonia.Previewer.exe",
+                FileName = @"s:\github\Consolonia\src\Tools\Consolonia.PreviewHost\bin\Debug\net8.0\Consolonia.PreviewHost.exe",
                 WorkingDirectory = Path.GetDirectoryName(this.GetType().Assembly.Location),
                 Arguments = $"{xamlPath} --buffer {Columns} {Rows}",
                 StandardOutputEncoding = Encoding.UTF8,

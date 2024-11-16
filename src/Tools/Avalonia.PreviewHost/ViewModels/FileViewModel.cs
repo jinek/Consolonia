@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PreviewHost.ViewModels;
 
-public partial class FileViewModel : ViewModelBase
+public partial class FileViewModel : ObservableObject
 {
     [ObservableProperty]
     private string? _name = null;
