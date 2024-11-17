@@ -11,7 +11,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [DebuggerDisplay("'{Foreground.Symbol.Text}' [{Foreground.Color}, {Background.Color}]")]
     public class Pixel : IEquatable<Pixel>
     {
+        // Pixel empty is a non-pixel. It has no symbol, no color, no weight, no style, no text decoration, and no background.
+        // it is used only when a multichar sequence overlaps a pixel making it a non-entity.
         public static Pixel Empty => new Pixel();
+
+        // pixel space is a pixel with a space symbol, but could have color blended into. it is used to advance the cursor
+        // and set the background color
+        public static Pixel Space => new Pixel(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent), new PixelBackground(Colors.Transparent));
 
         public PixelForeground Foreground { get; set; }
 
@@ -19,13 +25,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool IsCaret { get; set; }
 
-        public Pixel()
+        protected Pixel()
         {
             Foreground = new PixelForeground();
             Background = new PixelBackground();
             IsCaret = false;
         }
-
         public Pixel(bool isCaret)
         {
             Foreground = new PixelForeground();
@@ -56,7 +61,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// </summary>
         /// <param name="background"></param>
         public Pixel(PixelBackground background) :
-            this(new PixelForeground(new SimpleSymbol(), Colors.Transparent),
+            this(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent),
                 background)
         {
         }

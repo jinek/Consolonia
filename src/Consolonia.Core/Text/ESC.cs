@@ -5,7 +5,7 @@ namespace Consolonia.Core.Text
     /// <summary>
     ///     ANSI escape definitions and utility methods.
     /// </summary>
-    internal static class ConsoleUtils
+    internal static class ESC
     {
         // Control
         public const string EndOfText = "\u0003";
@@ -31,6 +31,14 @@ namespace Consolonia.Core.Text
         public const string HideCursor = "\u001b[?25l";
         public const string ShowCursor = "\u001b[?25h";
 
+        // move cursor
+        public static string MoveCursorUp(int n) => $"\u001b[{n}A";
+
+        public static string MoveCursorDown(int n) => $"\u001b[{n}B";
+
+        public static string MoveCursorRight(int n) => $"\u001b[{n}C";
+
+        public static string MoveCursorLeft(int n) => $"\u001b[{n}D";
 
         public static string SetCursorPosition(int x, int y) 
             => $"\u001b[{y+1};{x+1}f";

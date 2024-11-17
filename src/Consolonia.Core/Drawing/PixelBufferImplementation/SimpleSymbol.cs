@@ -13,9 +13,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     {
         public SimpleSymbol()
         {
-            // we use String.Empty to represent an empty symbol. It still takes up space, but it's invisible
+            // we use String.Empty to represent an empty symbol
             Text = string.Empty;
-            Width = 1;
+            Width = 0;
         }
 
         public SimpleSymbol(char character)

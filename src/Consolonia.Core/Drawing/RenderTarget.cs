@@ -87,9 +87,11 @@ namespace Consolonia.Core.Drawing
         private static Pixel?[,] InitializeCache(ushort width, ushort height)
         {
             var cache = new Pixel?[width, height];
+            
+            // initalize the cache with Pixel.Empty as it literally means nothing
             for (ushort y = 0; y < height; y++)
                 for (ushort x = 0; x < width; x++)
-                    cache[x, y] = new Pixel();
+                    cache[x, y] = Pixel.Empty;
             return cache;
         }
 
@@ -192,9 +194,10 @@ namespace Consolonia.Core.Drawing
                     _lastBufferPointStart = _currentBufferPoint = bufferPoint;
                 }
 
-                if ((pixel.Foreground.Symbol?.Text.Length ?? 0) == 0)
-                    _stringBuilder.Append(' ');
-                else
+                // the only pixels without width are Empty pixels, which we don't 
+                // want to output as they are already invisible and represented
+                // by the complex glyph coming before it (aka double-wide chars)
+                if (pixel.Foreground.Symbol.Width > 0)
                     _stringBuilder.Append(pixel.Foreground.Symbol!.Text);
 
                 _currentBufferPoint = _currentBufferPoint.WithXpp();

@@ -18,7 +18,7 @@ namespace Consolonia.Core.Tests
                     if (x % 3 == 0)
                         buffer[x, y] = new Pixel(new SimpleSymbol($"{x},{y}"), Colors.Blue);
                     else if (x % 3 == 1)
-                        buffer[x, y] = new Pixel();
+                        buffer[x, y] = Pixel.Empty;
                     else
                         buffer[x, y] = new Pixel(new SimpleSymbol($"{x},{y}"), Colors.White, FontStyle.Italic, FontWeight.Bold, TextDecorationLocation.Underline);
                 }

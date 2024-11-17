@@ -175,7 +175,7 @@ namespace Consolonia.Core.Drawing
                         CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                         {
                             _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                                (pixel, bb) => (pixel ?? new Pixel()).Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
+                                (pixel, bb) => pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
                                 backgroundBrush);
                         });
                     }
@@ -539,8 +539,21 @@ namespace Consolonia.Core.Drawing
                                 _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
                                     (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
                             });
-
                             currentXPosition++;
+                            if (symbol.Width > 1)
+                            {
+                                for(int i=1;i<symbol.Width;i++)
+                                {
+                                    characterPoint =
+                                        whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));
+                                    CurrentClip.ExecuteWithClipping(characterPoint, () =>
+                                    {
+                                        _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                            (oldPixel, cp) => Pixel.Empty, consolePixel);
+                                    });
+                                    currentXPosition++;
+                                }
+                            }
                         }
                         break;
                 }

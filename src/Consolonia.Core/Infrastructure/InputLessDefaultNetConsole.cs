@@ -30,9 +30,9 @@ namespace Consolonia.Core.Infrastructure
         {
 #pragma warning disable CA1303 // Do not pass literals as localized parameters
             // enable alternate screen so original console screen is not affected by the app
-            WriteText(ConsoleUtils.EnableAlternateBuffer);
-            WriteText(ConsoleUtils.HideCursor);
-            WriteText(ConsoleUtils.ClearScreen);
+            WriteText(ESC.EnableAlternateBuffer);
+            WriteText(ESC.HideCursor);
+            WriteText(ESC.ClearScreen);
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
@@ -47,7 +47,7 @@ namespace Consolonia.Core.Infrastructure
             set
             {
                 if (_caretVisible == value) return;
-                WriteText(value ? ConsoleUtils.ShowCursor : ConsoleUtils.HideCursor);
+                WriteText(value ? ESC.ShowCursor : ESC.HideCursor);
                 _caretVisible = value;
             }
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
@@ -74,7 +74,7 @@ namespace Consolonia.Core.Infrastructure
                         // TODO, escape sequence
                         var (left2, _) = Console.GetCursorPosition();
                         _supportEmoji = left2 - left == 2;
-                        WriteText(ConsoleUtils.SetCursorPosition(left, top));
+                        WriteText(ESC.SetCursorPosition(left, top));
                     }
                     catch (Exception)
                     {
@@ -112,7 +112,7 @@ namespace Consolonia.Core.Infrastructure
 
             try
             {
-                WriteText(ConsoleUtils.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+                WriteText(ESC.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
             }
             catch (ArgumentOutOfRangeException argumentOutOfRangeException)
             {
@@ -134,17 +134,17 @@ namespace Consolonia.Core.Infrastructure
 
             var sb = new StringBuilder();
             if (textDecoration == TextDecorationLocation.Underline)
-                sb.Append(ConsoleUtils.Underline);
+                sb.Append(ESC.Underline);
 
             if (textDecoration == TextDecorationLocation.Strikethrough)
-                sb.Append(ConsoleUtils.Strikethrough);
+                sb.Append(ESC.Strikethrough);
 
             if (style == FontStyle.Italic)
-                sb.Append(ConsoleUtils.Italic);
+                sb.Append(ESC.Italic);
 
-            sb.Append(ConsoleUtils.Background(background));
+            sb.Append(ESC.Background(background));
 
-            sb.Append(ConsoleUtils.Foreground(weight switch
+            sb.Append(ESC.Foreground(weight switch
             {
                 FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black
                     or FontWeight.ExtraBlack
@@ -155,7 +155,7 @@ namespace Consolonia.Core.Infrastructure
             }));
 
             sb.Append(str);
-            sb.Append(ConsoleUtils.Reset);
+            sb.Append(ESC.Reset);
 
             WriteText(sb.ToString());
 
@@ -190,8 +190,8 @@ namespace Consolonia.Core.Infrastructure
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-            WriteText(ConsoleUtils.DisableAlternateBuffer);
-            WriteText(ConsoleUtils.ShowCursor);
+            WriteText(ESC.DisableAlternateBuffer);
+            WriteText(ESC.ShowCursor);
         }
 #pragma warning restore CA1063 // Implement IDisposable Correctly
 #pragma warning restore CA1303 // Do not pass literals as localized parameters

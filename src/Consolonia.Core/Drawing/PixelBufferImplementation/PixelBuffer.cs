@@ -21,9 +21,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Width = width;
             Height = height;
             _buffer = new Pixel[width, height];
+            
+            // initialize the buffer with space so it draws any background color
+            // blended into it.
             for (ushort y = 0; y < height; y++)
                 for (ushort x = 0; x < width; x++)
-                    _buffer[x, y] = new Pixel();
+                    _buffer[x, y] = Pixel.Space;
         }
 
         public ushort Width { get; }

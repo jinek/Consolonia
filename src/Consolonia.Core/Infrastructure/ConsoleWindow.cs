@@ -299,7 +299,7 @@ namespace Consolonia.Core.Infrastructure
         {
             // clear screen so we don't see crazy while resizing.
 #pragma warning disable CA1303 // Do not pass literals as localized parameters
-            System.Console.Write(ConsoleUtils.ClearScreen);
+            System.Console.Write(ESC.ClearScreen);
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
 
             // Cancel previous task if there is one and start a new one
