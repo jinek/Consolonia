@@ -1,12 +1,9 @@
 using System.Globalization;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PreviewHost.Views;
 using Consolonia.PreviewHost.ViewModels;
-using Consolonia.Themes.TurboVision.Templates;
 
 namespace Consolonia.PreviewHost
 {
@@ -38,15 +35,24 @@ namespace Consolonia.PreviewHost
                 var path = applicationLifetime.Args!.FirstOrDefault();
                 if (!String.IsNullOrEmpty(path))
                 {
-                    path = Path.GetFullPath(path);
-                    var projectFile = FindProjectFileFromPath(path);
+                    string folder;
+                    if (Path.IsPathFullyQualified(path))
+                    {
+                        folder = Path.GetDirectoryName(path)!;
+                    }
+                    else
+                        folder = Environment.CurrentDirectory;
+                    ArgumentNullException.ThrowIfNull(folder);
+                    var projectFile = FindProjectFileFromPath(folder);
 
                     appViewModel.Project = new ProjectViewModel(projectFile);
                     if (path.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
                     {
                         applicationLifetime!.MainWindow = new HeadlessWindow()
                         {
-                            DataContext = appViewModel.Project.Files.Single(f => f.FullName!.Equals(path, StringComparison.OrdinalIgnoreCase))
+                            DataContext = appViewModel.Project.Files.SingleOrDefault(f => f.FullName!.Equals(path, StringComparison.OrdinalIgnoreCase))
+                                ?? appViewModel.Project.Files.SingleOrDefault(f => f.Name!.Equals(Path.GetFileName(path), StringComparison.OrdinalIgnoreCase))
+                                ?? throw new ArgumentException($"{path} not found in project", nameof(path))
                         };
                     }
                 }

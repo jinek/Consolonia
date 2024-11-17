@@ -9,6 +9,16 @@
         <ToolCommandName>Consolonia.PreviewHost</ToolCommandName>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageIcon>Icon.png</PackageIcon>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="..\..\..\Icon.png" Pack="True" PackagePath="\" />
+        <None Include="readme.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\..\Consolonia.Core\Consolonia.Core.csproj" />
         <ProjectReference Include="..\..\Consolonia.PlatformSupport\Consolonia.PlatformSupport.csproj" />
@@ -22,15 +32,5 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
     </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Views\HeadlessWindow.axaml.cs">
-            <DependentUpon>HeadlessWindow.axaml</DependentUpon>
-        </Compile>
-        <Compile Update="Views\MainWindow.axaml.cs">
-            <DependentUpon>MainWindow.axaml</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
 
 </Project>

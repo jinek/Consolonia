@@ -8,7 +8,7 @@
         mc:Ignorable="d" 
         x:Class="PreviewHost.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/consolonia-logo.ico"
         Title="PreviewHost">
 
     <Grid RowDefinitions="Auto *" Background="#ff09161e">

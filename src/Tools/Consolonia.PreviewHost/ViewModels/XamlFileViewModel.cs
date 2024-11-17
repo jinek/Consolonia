@@ -56,6 +56,7 @@ public partial class XamlFileViewModel : ObservableObject, IDisposable
 
     public Control LoadXAML()
     {
+#pragma warning disable CA1031 // Do not catch general exception types
         try
         {
             string xaml = null!;
@@ -83,11 +84,11 @@ public partial class XamlFileViewModel : ObservableObject, IDisposable
             var content = AvaloniaRuntimeXamlLoader.Load(xaml, Assembly, designMode: true);
             if (content is Control control)
             {
-                Application.Current.TryGetResource("ThemeBorderBrush", null, out var borderBrush);
+                Application.Current!.TryGetResource("ThemeBorderBrush", null, out var borderBrush);
                 var panel = new Border()
                 {
                     BorderThickness = new Thickness(0,0,0,0),
-                    BorderBrush = (IBrush)borderBrush
+                    BorderBrush = (IBrush)borderBrush!
                 };
 
                 panel.Child = control;
@@ -114,10 +115,11 @@ public partial class XamlFileViewModel : ObservableObject, IDisposable
                 return new TextBlock() { Text = "Root element is not a control" };
             }
         }
-        catch (XmlException e)
+        catch (Exception e)
         {
             return new TextBlock() { Text = e.Message };
         }
+#pragma warning restore CA1031 // Do not catch general exception types
     }
 
     private void WatchFileChanges()
