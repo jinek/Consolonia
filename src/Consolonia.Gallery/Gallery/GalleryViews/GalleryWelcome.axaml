@@ -4,29 +4,5 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryWelcome">
-    <StackPanel>
-        <!--This binds to the observable collection in the ViewModel-->
-        <ItemsControl ItemsSource="{Binding Glyphs}">
-
-            <!--Use a StackPanel to display all the modules-->
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <!--This defines the layout for each item (i.e. each module)-->
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <!--The controls to display each item; bind them to properties on the HardwareModule class-->
-                    <TextBlock Text="{Binding}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-            <Button Content="Add" Click="OnAdd"/>
-            <Button Content="Remove" Click="OnRemove"/>
-        </StackPanel>
-    </StackPanel>
-    
+    <TextBlock Text="Welcome to Consolonia!" TextDecorations="Underline" FontWeight="Bold" HorizontalAlignment="Center"/>
 </UserControl>
