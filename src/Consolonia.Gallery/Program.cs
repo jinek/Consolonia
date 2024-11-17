@@ -18,19 +18,13 @@ namespace Consolonia.Gallery
         }
 
         public static AppBuilder BuildAvaloniaApp()
-        {
+         => AppBuilder.Configure<App>()
 #if DEBUG
-            return AppBuilder.Configure<App>()
                 .UseConsoloniaDesigner()
-                .UseAutoDetectedConsole()
-                .LogToException();
 #else
-            return AppBuilder.Configure<App>()
                 .UseConsolonia()
+#endif
                 .UseAutoDetectedConsole()
                 .LogToException();
-#endif
-        }
-
     }
 }

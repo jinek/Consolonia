@@ -20,7 +20,6 @@ public partial class ProjectViewModel : ObservableObject
         var buildDirectory = Path.Combine(projectFolder!, "bin", "Debug");
         var assemblyPath = Directory.EnumerateFiles(buildDirectory, assemblyName, SearchOption.AllDirectories).First();
 
-
         ArgumentNullException.ThrowIfNull(assemblyPath);
         // load assembly
         Assembly = _loadContext!.LoadFromStream(new MemoryStream(File.ReadAllBytes(assemblyPath)));

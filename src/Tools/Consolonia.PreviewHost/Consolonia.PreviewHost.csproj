@@ -5,6 +5,8 @@
         <OutputType>Exe</OutputType>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>Consolonia.PreviewHost</ToolCommandName>
     </PropertyGroup>
 
     <ItemGroup>

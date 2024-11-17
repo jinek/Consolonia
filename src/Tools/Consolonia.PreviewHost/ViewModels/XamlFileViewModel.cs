@@ -5,6 +5,9 @@ using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Avalonia.Threading;
 using System.Xml;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia;
+using Avalonia.Media;
 
 namespace Consolonia.PreviewHost.ViewModels;
 
@@ -80,13 +83,31 @@ public partial class XamlFileViewModel : ObservableObject, IDisposable
             var content = AvaloniaRuntimeXamlLoader.Load(xaml, Assembly, designMode: true);
             if (content is Control control)
             {
-                var stackPanel = new StackPanel();
-                stackPanel.HorizontalAlignment = HorizontalAlignment.Left;
-                stackPanel.VerticalAlignment = VerticalAlignment.Top;
-                stackPanel.Children.Add(control);
-                Design.ApplyDesignModeProperties(stackPanel, control);
+                Application.Current.TryGetResource("ThemeBorderBrush", null, out var borderBrush);
+                var panel = new Border()
+                {
+                    BorderThickness = new Thickness(0,0,0,0),
+                    BorderBrush = (IBrush)borderBrush
+                };
 
-                return stackPanel;
+                panel.Child = control;
+                Design.ApplyDesignModeProperties(panel, control);
+
+                if (control.IsSet(Design.WidthProperty))
+                {
+                    panel.Width = control.GetValue(Design.WidthProperty);
+                    if (panel.Width > 150)
+                        panel.Width /= 10;
+                }
+
+                if (control.IsSet(Design.HeightProperty))
+                {
+                    panel.Height = control.GetValue(Design.HeightProperty);
+                    if (panel.Height > 150)
+                        panel.Height /= 10;
+                }
+
+                return panel;
             }
             else
             {

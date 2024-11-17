@@ -13,7 +13,7 @@
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
         <ProjectReference Include="..\Consolonia.PlatformSupport\Consolonia.PlatformSupport.csproj" />
         <ProjectReference Include="..\Consolonia.Themes.TurboVision\Consolonia.Themes.TurboVision.csproj" />
-        <ProjectReference Condition="'$(Configuration)' == 'Debug'" Include="..\Consolonia.Designer\Consolonia.Designer.csproj" />
+        <ProjectReference Include="..\Consolonia.Designer\Consolonia.Designer.csproj" />
         <ProjectReference Condition="'$(Configuration)' == 'Debug'" Include="..\Tools\Consolonia.PreviewHost\Consolonia.PreviewHost.csproj" />
     </ItemGroup>
 

@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:v="clr-namespace:Consolonia.Designer;assembly=Consolonia.Designer"
         xmlns:views="clr-namespace:PreviewHost.Views"
-        mc:Ignorable="d" 
+        mc:Ignorable="d"
         x:Class="Consolonia.PreviewHost.Views.MainWindow"
         x:DataType="vm:ProjectViewModel"
         Title="PreviewHost">
 
-    <Grid RowDefinitions="Auto *">
-        <Menu Background="LightGray" >
+    <Grid RowDefinitions="Auto *" >
+        <Menu>
             <MenuItem Header="_File">
                 <MenuItem Header="_Open..." Click="OnOpen" />
                 <MenuItem Header="E_xit" Click="OnExit"/>
             </MenuItem>
         </Menu>
 
-        <Grid Grid.Row="1" RowDefinitions="*" ColumnDefinitions="Auto Auto *" >
-            <ListBox x:Name="FilesListBox"
+        <Grid Grid.Row="1" RowDefinitions="*" ColumnDefinitions="Auto 2 *" Background="#ff09161e">
+            <ListBox x:Name="FilesListBox" Background="{DynamicResource ThemeBackgroundBrush}"
                      ItemsSource="{Binding Project.Files}"
                      MinWidth="30"
                      VerticalAlignment="Stretch" >
@@ -30,12 +30,13 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <GridSplitter Grid.Column="1" Background="White"
-                Width="1" ShowsPreview="True"
-                HorizontalAlignment="Stretch" />
-            
-            <ContentControl Grid.Column="2" Content="{Binding Content}"
+            <GridSplitter Grid.Column="2" Background="White"
+                Width="2" ShowsPreview="True" VerticalAlignment="Stretch" />
+
+            <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                <ContentControl Grid.Column="2" Content="{Binding Content}" Background="{DynamicResource ThemeBackgroundBrush}"
                             DataContext="{Binding SelectedItem, ElementName=FilesListBox}"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

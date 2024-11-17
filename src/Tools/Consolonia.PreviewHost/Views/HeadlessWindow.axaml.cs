@@ -1,4 +1,7 @@
+using Avalonia;
+using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PreviewHost.ViewModels;
@@ -20,19 +23,22 @@ public partial class HeadlessWindow : Window
         this.Close();
     }
 
-
     protected override void OnDataContextEndUpdate()
     {
         base.OnDataContextEndUpdate();
-
-        Dispatcher.UIThread.Post(() =>
+        
+        var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
+        if (lifetime.Args!.Contains("--buffer"))
         {
-            var consoleWindow = this.PlatformImpl as ConsoleWindow;
-            ArgumentNullException.ThrowIfNull(consoleWindow);
-            var json = JsonConvert.SerializeObject(consoleWindow.PixelBuffer);
-            Console.WriteLine(json);
+            Dispatcher.UIThread.Post(() =>
+            {
+                var consoleWindow = this.PlatformImpl as ConsoleWindow;
+                ArgumentNullException.ThrowIfNull(consoleWindow);
+                var json = JsonConvert.SerializeObject(consoleWindow.PixelBuffer);
+                Console.WriteLine(json);
 
-        });
+            });
+        }
     }
 }
 

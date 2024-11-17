@@ -1,31 +1,41 @@
 #nullable enable
+using Avalonia;
+using Avalonia.Controls;
+#if DEBUG
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Newtonsoft.Json;
+#endif 
 
 namespace Consolonia.Designer
 {
+
     /// <summary>
-    /// ConsolePreview is a control that can be used to preview the output of a console AXAML file in visual studio.
+    /// ConsolePreview is a control that can be used to preview the output of a console AXAML file in visual studio. 
     /// </summary>
+    /// <remarks>
+    /// This depends on Consolonia.PreviewHost application to render the view. It
+    /// launches it as a child process with a --buffer width height arguments to tell it
+    /// to output the PixelBuffer as json. The control then reads the json and renders it as a full pixel avalonia control.
+    /// </remarks>
     public class ConsolePreview : UserControl
     {
+#if DEBUG
         private object _lock = new object();
         private Process? _process;
         private Typeface _typeface = new Typeface("Cascadia Mono");
         private double _charWidth;
         private double _charHeight;
+#endif
         private bool _disposedValue;
 
         public static readonly StyledProperty<string> FileNameProperty =
@@ -42,8 +52,8 @@ namespace Consolonia.Designer
 
         public ConsolePreview()
         {
+#if DEBUG
             this.FontFamily = FontFamily.Parse("Cascadia Mono");
-
             Initialized += (sender, e) => LoadXaml();
 
             this.PropertyChanged += (sender, e) =>
@@ -53,6 +63,7 @@ namespace Consolonia.Designer
                     LoadXaml();
                 }
             };
+#endif
         }
 
 
@@ -75,6 +86,8 @@ namespace Consolonia.Designer
         /// If set to true then this control will monitor the file for changes and update the preview
         /// </summary>
         public bool MonitorChanges { get => GetValue(MonitorChangesProperty); set => SetValue(MonitorChangesProperty, value); }
+
+#if DEBUG
 
         private void LoadXaml()
         {
@@ -380,7 +393,7 @@ namespace Consolonia.Designer
                 _textRunCharWidth = 0;
             }
         }
-
+#endif
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
@@ -388,6 +401,7 @@ namespace Consolonia.Designer
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
+#if DEBUG
 #pragma warning disable CA1416 // Validate platform compatibility
                     lock (_lock)
                     {
@@ -399,6 +413,7 @@ namespace Consolonia.Designer
                         }
                     }
 #pragma warning restore CA1416 // Validate platform compatibility
+#endif
                 }
 
                 _disposedValue = true;

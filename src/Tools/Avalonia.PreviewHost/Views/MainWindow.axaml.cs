@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Consolonia.Designer;
 using PreviewHost.ViewModels;
 
@@ -38,19 +39,23 @@ public partial class MainWindow : Window
         {
             return;
         }
-        Model.Files.Clear();
-        var projectFile = files[0].Path.AbsolutePath.Replace('/','\\');
-        this.Title = projectFile;
-        
-        var folderRoot = Path.GetDirectoryName(projectFile)!;
-        foreach (var file in Directory.EnumerateFiles(folderRoot, "*.axaml", SearchOption.AllDirectories))
+
+        Dispatcher.UIThread.Invoke(() =>
         {
-            Model.Files.Add(new FileViewModel()
+            Model.Files.Clear();
+            var projectFile = files[0].Path.AbsolutePath.Replace('/', '\\');
+            this.Title = projectFile;
+
+            var folderRoot = Path.GetDirectoryName(projectFile)!;
+            foreach (var file in Directory.EnumerateFiles(folderRoot, "*.axaml", SearchOption.AllDirectories))
             {
-                Name = Path.GetFileName(file), 
-                FullName = file
-            });
-        }
+                Model.Files.Add(new FileViewModel()
+                {
+                    Name = Path.GetFileName(file),
+                    FullName = file
+                });
+            }
+        });
     }
 
     public MainViewModel Model => (MainViewModel)DataContext!;

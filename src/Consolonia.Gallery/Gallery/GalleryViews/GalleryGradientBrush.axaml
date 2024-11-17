@@ -3,7 +3,7 @@
              xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
+             mc:Ignorable="d" d:DesignWidth="80" d:DesignHeight="50"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryGradientBrush">
 
     <Grid x:Name="MyGrid" RowDefinitions="Auto *">
@@ -18,5 +18,7 @@
             <Button Click="Radial_Click" Background="Gray">Radial</Button>
             <Button Click="Conic_Click" Background="Gray">Conic</Button>
         </StackPanel>
+        
+        <StackPanel Grid.Row="1"/>
     </Grid>
 </UserControl>

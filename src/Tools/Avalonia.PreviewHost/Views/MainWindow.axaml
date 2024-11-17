@@ -11,7 +11,7 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="PreviewHost">
 
-    <Grid RowDefinitions="Auto *">
+    <Grid RowDefinitions="Auto *" Background="#ff09161e">
         <Menu Background="LightGray" >
             <MenuItem Header="_File">
                 <MenuItem Header="_Open..." Click="OnOpen" />
@@ -33,14 +33,16 @@
             
             <GridSplitter Grid.Column="1"
                 Width="5" ShowsPreview="True"
-                HorizontalAlignment="Stretch" Background="#FF101040"/>
+                HorizontalAlignment="Stretch" Background="Black"/>
 
-            <v:ConsolePreview x:Name="PreviewPane"
-                              Grid.Column="2"
-                              DataContext="{Binding SelectedItem, ElementName=FilesListBox}"
-                              FileName="{Binding FullName}"
-                              Columns="80" Rows="80" MonitorChanges="true"
-                              HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"> 
+                <v:ConsolePreview x:Name="PreviewPane" Background="#FF101020" 
+                                  Grid.Column="2"
+                                  DataContext="{Binding SelectedItem, ElementName=FilesListBox}"
+                                  FileName="{Binding FullName}"
+                                  Columns="80" Rows="40" MonitorChanges="true"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </StackPanel>
 
         </Grid>
     </Grid>
