@@ -5,9 +5,9 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Consolonia.Designer;
-using PreviewHost.ViewModels;
+using Avalonia.PreviewHost.ViewModels;
 
-namespace PreviewHost.Views;
+namespace Avalonia.PreviewHost.Views;
 
 public partial class MainWindow : Window
 {
@@ -35,7 +35,7 @@ public partial class MainWindow : Window
             },
         }).ConfigureAwait(false);
 
-        if (files == null || !files.Any())
+        if (!files.Any())
         {
             return;
         }

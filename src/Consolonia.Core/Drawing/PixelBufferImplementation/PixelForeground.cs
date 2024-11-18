@@ -31,21 +31,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             TextDecoration = textDecoration;
         }
 
-        public ISymbol Symbol { get; set; }
+        public ISymbol Symbol { get; set; } 
 
         [JsonConverter(typeof(ColorConverter))]
-        public Color Color { get; set; }
+        public Color Color { get; set; } 
 
         [DefaultValue(FontWeight.Normal)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public FontWeight Weight { get; set; } = FontWeight.Normal;
+        public FontWeight Weight { get; set; } 
 
         [DefaultValue(FontStyle.Normal)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public FontStyle Style { get; set; } = FontStyle.Normal;
+        public FontStyle Style { get; set; } 
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public TextDecorationLocation? TextDecoration { get; set; } = null;
+        public TextDecorationLocation? TextDecoration { get; set; } 
 
         public PixelForeground Shade()
         {

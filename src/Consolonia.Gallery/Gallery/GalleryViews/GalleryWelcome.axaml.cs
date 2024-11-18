@@ -1,7 +1,5 @@
-using System.Collections.ObjectModel;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {

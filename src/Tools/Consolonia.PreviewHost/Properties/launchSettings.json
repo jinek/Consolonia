@@ -6,7 +6,6 @@
     },
     "Consolonia.PreviewHost": {
       "commandName": "Project",
-      "commandLineArgs": "GalleryWelcome.axaml",
       "workingDirectory": "S:\\github\\Consolonia\\src\\Consolonia.Gallery"
     }
   }

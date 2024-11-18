@@ -15,8 +15,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
 
             var jObject = JObject.Load(reader);
-            var width = jObject[nameof(PixelBuffer.Width)].Value<ushort>();
-            var height = jObject[nameof(PixelBuffer.Height)].Value<ushort>();
+            var width = jObject[nameof(PixelBuffer.Width)]!.Value<ushort>();
+            var height = jObject[nameof(PixelBuffer.Height)]!.Value<ushort>();
             var pixelBuffer = new PixelBuffer(width, height);
             var pixels = jObject["Pixels"];
             int i = 0;

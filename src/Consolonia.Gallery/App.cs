@@ -5,7 +5,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Styling;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
-using Consolonia.Themes.TurboVision.Themes.TurboVisionBlack;
+using Consolonia.Themes.TurboVision.Themes.Material;
 
 namespace Consolonia.Gallery
 {

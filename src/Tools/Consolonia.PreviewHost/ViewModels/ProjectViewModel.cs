@@ -7,7 +7,7 @@ namespace Consolonia.PreviewHost.ViewModels;
 
 public partial class ProjectViewModel : ObservableObject
 {
-    private static readonly AssemblyLoadContext _loadContext = new CustomAssemblyLoadContext();
+    private static readonly AssemblyLoadContext LoadContext = new CustomAssemblyLoadContext();
 
     public ProjectViewModel(string projectFile)
     {
@@ -22,7 +22,7 @@ public partial class ProjectViewModel : ObservableObject
 
         ArgumentNullException.ThrowIfNull(assemblyPath);
         // load assembly
-        Assembly = _loadContext!.LoadFromStream(new MemoryStream(File.ReadAllBytes(assemblyPath)));
+        Assembly = LoadContext!.LoadFromStream(new MemoryStream(File.ReadAllBytes(assemblyPath)));
         ArgumentNullException.ThrowIfNull(Assembly);
 
         foreach (var xamlFile in Directory.GetFiles(projectFolder, "*.axaml", SearchOption.AllDirectories))

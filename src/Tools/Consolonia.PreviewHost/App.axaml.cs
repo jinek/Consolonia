@@ -27,11 +27,11 @@ namespace Consolonia.PreviewHost
 
         public override void OnFrameworkInitializationCompleted()
         {
-            IClassicDesktopStyleApplicationLifetime applicationLifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
+            IClassicDesktopStyleApplicationLifetime? applicationLifetime = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
             if (applicationLifetime != null)
             {
                 var appViewModel = new AppViewModel();
-                
+
                 var path = applicationLifetime.Args!.FirstOrDefault();
                 if (!String.IsNullOrEmpty(path))
                 {
@@ -59,10 +59,7 @@ namespace Consolonia.PreviewHost
                 else
                 {
                     var projectFile = FindProjectFileFromPath(Environment.CurrentDirectory);
-                    if (projectFile != null)
-                    {
-                        appViewModel.Project = new ProjectViewModel(projectFile);
-                    }
+                    appViewModel.Project = new ProjectViewModel(projectFile);
                 }
 
                 if (applicationLifetime.MainWindow == null)
@@ -93,7 +90,7 @@ namespace Consolonia.PreviewHost
                 projectFolder = Path.GetDirectoryName(projectFolder)!;
             }
             ArgumentNullException.ThrowIfNull(projectFile);
-            return projectFile;
+            return projectFile!;
         }
 
 

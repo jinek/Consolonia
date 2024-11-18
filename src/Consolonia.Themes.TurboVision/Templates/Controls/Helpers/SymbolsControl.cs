@@ -75,6 +75,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 var textShaper = AvaloniaLocator.Current.GetService<ITextShaperImpl>();
                 var fontManager = AvaloniaLocator.Current.GetService<IFontManagerImpl>();
                 fontManager.TryCreateGlyphTypeface("Cascadia Mono", FontStyle.Normal, FontWeight.Normal, FontStretch.Normal, out var typeface);
+                ArgumentNullException.ThrowIfNull(typeface);
                 ShapedBuffer glyphs =
                     textShaper.ShapeText(value.AsMemory(), new TextShaperOptions(typeface, typeface.Metrics.DesignEmHeight));
                 var glyphRunImpl = platformRender.CreateGlyphRun(typeface, 1, glyphs, default(Point));

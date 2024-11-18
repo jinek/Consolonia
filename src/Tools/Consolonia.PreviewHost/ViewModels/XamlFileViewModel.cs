@@ -46,7 +46,7 @@ public partial class XamlFileViewModel : ObservableObject, IDisposable
         {
             if (!_loaded)
             {
-                _content = LoadXAML();
+                _content = LoadXaml();
                 _loaded = true;
             }
             return _content;
@@ -54,7 +54,7 @@ public partial class XamlFileViewModel : ObservableObject, IDisposable
         set => SetProperty(ref _content, value);
     }
 
-    public Control LoadXAML()
+    public Control LoadXaml()
     {
 #pragma warning disable CA1031 // Do not catch general exception types
         try
@@ -130,8 +130,8 @@ public partial class XamlFileViewModel : ObservableObject, IDisposable
 
             _fileWatcher = new FileSystemWatcher(Path.GetDirectoryName(FullName!)!, Path.GetFileName(FullName));
 
-            _fileWatcher.Changed += (e, s) => Dispatcher.UIThread.Invoke(() => Content = LoadXAML());
-            _fileWatcher.Renamed += (e, s) => Dispatcher.UIThread.Invoke(() => Content = LoadXAML());
+            _fileWatcher.Changed += (e, s) => Dispatcher.UIThread.Invoke(() => Content = LoadXaml());
+            _fileWatcher.Renamed += (e, s) => Dispatcher.UIThread.Invoke(() => Content = LoadXaml());
             _fileWatcher.EnableRaisingEvents = true;
         }
     }

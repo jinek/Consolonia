@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Consolonia.Core.Styles;
 
-namespace Consolonia.Themes.TurboVision.Themes.TurboVisionBlack
+namespace Consolonia.Themes.TurboVision.Themes.Fluent
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FluentTheme : ResourceIncludeBase

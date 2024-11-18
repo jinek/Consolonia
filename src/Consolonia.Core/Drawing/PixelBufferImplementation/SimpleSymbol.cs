@@ -35,9 +35,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Width = Text.MeasureText();
         }
 
-        public string Text { get; set; } = string.Empty;
+        public string Text { get; private set; } 
 
-        public ushort Width { get; set; }
+        public ushort Width { get; private set; }
 
         public bool IsWhiteSpace()
         {

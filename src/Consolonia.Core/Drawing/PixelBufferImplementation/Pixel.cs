@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using Avalonia.Media;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -123,6 +124,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             return new Pixel(newForeground, newBackground, newIsCaret);
         }
+
+        public bool IsEmpty() => Foreground.Symbol.Width == 0;
+
+        [JsonIgnore]
+        public ushort Width => Foreground.Symbol.Width;
 
         private (PixelForeground, PixelBackground) Shade()
         {

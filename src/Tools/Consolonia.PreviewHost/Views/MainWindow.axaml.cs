@@ -1,8 +1,4 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Platform.Storage;
-using Avalonia.Threading;
 using Consolonia.PreviewHost.ViewModels;
 
 namespace Consolonia.PreviewHost.Views;

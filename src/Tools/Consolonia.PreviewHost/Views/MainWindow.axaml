@@ -1,11 +1,9 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Consolonia.PreviewHost.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:v="clr-namespace:Consolonia.Designer;assembly=Consolonia.Designer"
-        xmlns:views="clr-namespace:PreviewHost.Views"
         mc:Ignorable="d"
+        xmlns:vm="using:Consolonia.PreviewHost.ViewModels"
         x:Class="Consolonia.PreviewHost.Views.MainWindow"
         x:DataType="vm:ProjectViewModel"
         Title="PreviewHost">

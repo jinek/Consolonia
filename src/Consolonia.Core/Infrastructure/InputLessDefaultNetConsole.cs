@@ -30,9 +30,9 @@ namespace Consolonia.Core.Infrastructure
         {
 #pragma warning disable CA1303 // Do not pass literals as localized parameters
             // enable alternate screen so original console screen is not affected by the app
-            WriteText(ESC.EnableAlternateBuffer);
-            WriteText(ESC.HideCursor);
-            WriteText(ESC.ClearScreen);
+            WriteText(Esc.EnableAlternateBuffer);
+            WriteText(Esc.HideCursor);
+            WriteText(Esc.ClearScreen);
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
@@ -47,7 +47,7 @@ namespace Consolonia.Core.Infrastructure
             set
             {
                 if (_caretVisible == value) return;
-                WriteText(value ? ESC.ShowCursor : ESC.HideCursor);
+                WriteText(value ? Esc.ShowCursor : Esc.HideCursor);
                 _caretVisible = value;
             }
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
@@ -69,17 +69,18 @@ namespace Consolonia.Core.Infrastructure
                         // Detect complex emoji support by writing a complex emoji and checking cursor position.
                         // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
                         var (left, top) = Console.GetCursorPosition();
-                        WriteText($"{ESC.Foreground(Colors.Transparent)}{ESC.Background(Colors.Transparent)}{TestEmoji}");
+                        WriteText($"{Esc.Foreground(Colors.Transparent)}{Esc.Background(Colors.Transparent)}{TestEmoji}");
 
                         // TODO, escape sequence
                         var (left2, _) = Console.GetCursorPosition();
                         _supportEmoji = left2 - left == 2;
+                        Console.SetCursorPosition(left, top);
                     }
                     catch (Exception)
                     {
                         _supportEmoji = true;
                     }
-                    WriteText(ESC.ClearScreen);
+                    WriteText(Esc.ClearScreen);
 #pragma warning restore CA1031 // Do not catch general exception types
                 }
                 return _supportEmoji ?? true;
@@ -112,7 +113,7 @@ namespace Consolonia.Core.Infrastructure
 
             try
             {
-                WriteText(ESC.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+                WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
             }
             catch (ArgumentOutOfRangeException argumentOutOfRangeException)
             {
@@ -134,17 +135,17 @@ namespace Consolonia.Core.Infrastructure
 
             var sb = new StringBuilder();
             if (textDecoration == TextDecorationLocation.Underline)
-                sb.Append(ESC.Underline);
+                sb.Append(Esc.Underline);
 
             if (textDecoration == TextDecorationLocation.Strikethrough)
-                sb.Append(ESC.Strikethrough);
+                sb.Append(Esc.Strikethrough);
 
             if (style == FontStyle.Italic)
-                sb.Append(ESC.Italic);
+                sb.Append(Esc.Italic);
 
-            sb.Append(ESC.Background(background));
+            sb.Append(Esc.Background(background));
 
-            sb.Append(ESC.Foreground(weight switch
+            sb.Append(Esc.Foreground(weight switch
             {
                 FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black
                     or FontWeight.ExtraBlack
@@ -155,7 +156,7 @@ namespace Consolonia.Core.Infrastructure
             }));
 
             sb.Append(str);
-            sb.Append(ESC.Reset);
+            sb.Append(Esc.Reset);
 
             WriteText(sb.ToString());
 
@@ -190,8 +191,8 @@ namespace Consolonia.Core.Infrastructure
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-            WriteText(ESC.DisableAlternateBuffer);
-            WriteText(ESC.ShowCursor);
+            WriteText(Esc.DisableAlternateBuffer);
+            WriteText(Esc.ShowCursor);
         }
 #pragma warning restore CA1063 // Implement IDisposable Correctly
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
@@ -206,32 +207,15 @@ namespace Consolonia.Core.Infrastructure
         // ReSharper disable once MemberCanBePrivate.Global
         protected bool CheckActualizeTheSize()
         {
-#pragma warning disable CA1031 // Do not catch general exception types
-            try
-            {
-                if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
+            if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
 
-                ActualizeSize();
-            }
-            catch (Exception)
-            {
-            }
-#pragma warning restore CA1031 // Do not catch general exception types
+            ActualizeSize();
             return true;
         }
 
         protected void ActualizeSize()
         {
-#pragma warning disable CA1031 // Do not catch general exception types
-            try
-            {
-                Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
-            }
-            catch (Exception)
-            {
-                Size = new PixelBufferSize(100, 50);
-            }
-#pragma warning restore CA1031 // Do not catch general exception types
+            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
             Resized?.Invoke();
         }
 

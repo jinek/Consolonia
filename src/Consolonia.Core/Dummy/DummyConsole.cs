@@ -7,7 +7,7 @@ using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
-namespace Consolonia.Dummy
+namespace Consolonia.Core.Dummy
 {
     public class DummyConsole : IConsole
     {

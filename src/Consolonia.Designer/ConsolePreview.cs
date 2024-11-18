@@ -30,7 +30,6 @@ namespace Consolonia.Designer
     public class ConsolePreview : UserControl
     {
 #if DEBUG
-        private object _lock = new object();
         private Process? _process;
         private Typeface _typeface = new Typeface("Cascadia Mono");
         private double _charWidth;
@@ -91,14 +90,11 @@ namespace Consolonia.Designer
 
         private void LoadXaml()
         {
-            lock (_lock)
+            if (_process != null)
             {
-                if (_process != null)
-                {
-                    _process.Kill();
-                    _process.Dispose();
-                    _process = null;
-                }
+                _process.Kill();
+                _process.Dispose();
+                _process = null;
             }
 
             string xamlPath;
@@ -163,12 +159,9 @@ namespace Consolonia.Designer
                     this.Content = RenderPixelBuffer(buffer);
                 }
 
-                lock (_lock)
-                {
-                    _process.Kill();
-                    _process.Dispose();
-                    _process = null;
-                }
+                _process.Kill();
+                _process.Dispose();
+                _process = null;
             }
         }
 
@@ -178,11 +171,8 @@ namespace Consolonia.Designer
             {
                 while (true)
                 {
-                    lock (_lock)
-                    {
-                        if (_process == null || _process.HasExited)
-                            return;
-                    }
+                    if (_process == null || _process.HasExited)
+                        return;
 
                     var line = await _process!.StandardOutput.ReadLineAsync().ConfigureAwait(false);
                     if (!string.IsNullOrEmpty(line))
@@ -242,7 +232,7 @@ namespace Consolonia.Designer
 
         private static string FindFile(string startFolder, string fileName)
         {
-            string currentFolder = startFolder;
+            string? currentFolder = startFolder;
 
             while (currentFolder != null)
             {
@@ -258,7 +248,7 @@ namespace Consolonia.Designer
                 }
 
                 // Move up to the parent directory
-                currentFolder = Directory.GetParent(currentFolder)?.FullName!;
+                currentFolder = Directory.GetParent(currentFolder)?.FullName;
             }
 
             throw new FileNotFoundException($"The file '{fileName}' in start folder: {startFolder} was not found in any parent directory containing a .csproj file.");
@@ -403,14 +393,11 @@ namespace Consolonia.Designer
                     // TODO: dispose managed state (managed objects)
 #if DEBUG
 #pragma warning disable CA1416 // Validate platform compatibility
-                    lock (_lock)
+                    if (_process != null)
                     {
-                        if (_process != null)
-                        {
-                            _process.Kill();
-                            _process.Dispose();
-                            _process = null;
-                        }
+                        _process.Kill();
+                        _process.Dispose();
+                        _process = null;
                     }
 #pragma warning restore CA1416 // Validate platform compatibility
 #endif

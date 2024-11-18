@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Consolonia.Core;
 using Consolonia.Core.Infrastructure;
-using Consolonia.Dummy;
+using Consolonia.Core.Dummy;
 
 #pragma warning disable IDE0161
 namespace Consolonia.PlatformSupport

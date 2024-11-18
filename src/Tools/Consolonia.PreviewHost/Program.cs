@@ -3,7 +3,7 @@ using System.Text;
 using Avalonia;
 using Consolonia.Core;
 using Consolonia.Core.Infrastructure;
-using Consolonia.Dummy;
+using Consolonia.Core.Dummy;
 using Consolonia.PlatformSupport;
 
 namespace Consolonia.PreviewHost

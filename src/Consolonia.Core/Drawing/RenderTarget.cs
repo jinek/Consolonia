@@ -72,7 +72,7 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextImpl CreateDrawingContext()
         {
-            return new DrawingContextImpl(_consoleWindow, _consoleWindow.PixelBuffer);
+            return new DrawingContextImpl(_consoleWindow);
         }
 
         public bool IsCorrupted => false;
@@ -149,7 +149,7 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextImpl CreateDrawingContext(bool useScaledDrawing)
         {
-            return new DrawingContextImpl(_consoleWindow, _consoleWindow.PixelBuffer);
+            return new DrawingContextImpl(_consoleWindow);
         }
 
         private struct FlushingBuffer
@@ -161,7 +161,7 @@ namespace Consolonia.Core.Drawing
             private Color _lastForegroundColor;
             private FontStyle _lastStyle = FontStyle.Normal;
             private FontWeight _lastWeight = FontWeight.Normal;
-            private TextDecorationLocation? _lastTextDecoration = null;
+            private TextDecorationLocation? _lastTextDecoration;
             private PixelBufferCoordinate _currentBufferPoint;
             private PixelBufferCoordinate _lastBufferPointStart;
 
