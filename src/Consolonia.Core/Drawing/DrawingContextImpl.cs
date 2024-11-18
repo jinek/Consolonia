@@ -533,6 +533,10 @@ namespace Consolonia.Core.Drawing
                     default:
                         {
                             var symbol = new SimpleSymbol(glyph);
+                            // if we are attempting to draw a wide glyph we need to make sure that the clipping point
+                            // is for the last physical char. Aka a double char should be clipped if it's second rendered 
+                            // char would break the boundary of the clip.
+                            // var clippingPoint = new Point(characterPoint.X + symbol.Width - 1, characterPoint.Y);
                             var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
                             CurrentClip.ExecuteWithClipping(characterPoint, () =>
                             {
@@ -542,19 +546,20 @@ namespace Consolonia.Core.Drawing
                                         if (oldPixel.Width == 0)
                                         {
                                             // if the oldPixel was empty, we need to set the previous pixel to space
-                                            var targetX = characterPoint.X + currentXPosition - 1;
+                                            var targetX = characterPoint.X - 1;
                                             if (targetX >= 0)
                                             {
                                                 _pixelBuffer.Set((PixelBufferCoordinate)(PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
                                                 (oldPixel2) => new Pixel(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent), oldPixel2.Background));
                                             }
                                         }
-                                        else if (oldPixel.Width > 1)
+                                        else
+                                        if (oldPixel.Width > 1)
                                         {
                                             // if oldPixel was wide we need to reset overlapped symbols from empty to space
                                             for (ushort i = 1; i < oldPixel.Width; i++)
                                             {
-                                                var targetX = characterPoint.X + currentXPosition + i;
+                                                var targetX = characterPoint.X + i;
                                                 if (targetX < _pixelBuffer.Size.Width)
                                                 {
                                                     _pixelBuffer.Set((PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
@@ -568,11 +573,11 @@ namespace Consolonia.Core.Drawing
                                         {
                                             for (int i = 1; i < symbol.Width; i++)
                                             {
-                                                var targetX = characterPoint.X + currentXPosition + i;
+                                                var targetX = characterPoint.X + i;
                                                 if (targetX < _pixelBuffer.Size.Width)
                                                 {
                                                     _pixelBuffer.Set((PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
-                                                    (oldPixel2) => new Pixel(new PixelForeground(new SimpleSymbol(), Colors.Transparent), newPixel.Background));
+                                                    (oldPixel2) => new Pixel(new PixelForeground(new SimpleSymbol(), Colors.Transparent), oldPixel2.Background));
                                                 }
                                             }
                                         }
