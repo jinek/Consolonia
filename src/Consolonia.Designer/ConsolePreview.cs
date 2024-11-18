@@ -53,9 +53,9 @@ namespace Consolonia.Designer
         {
 #if DEBUG
             this.FontFamily = FontFamily.Parse("Cascadia Mono");
-            Initialized += (sender, e) => LoadXaml();
+            Initialized += (_, _) => LoadXaml();
 
-            this.PropertyChanged += (sender, e) =>
+            this.PropertyChanged += (_, e) =>
             {
                 if (e.Property == FileNameProperty)
                 {
@@ -90,13 +90,6 @@ namespace Consolonia.Designer
 
         private void LoadXaml()
         {
-            if (_process != null)
-            {
-                _process.Kill();
-                _process.Dispose();
-                _process = null;
-            }
-
             string xamlPath;
             if (String.IsNullOrEmpty(FileName))
             {
@@ -122,50 +115,39 @@ namespace Consolonia.Designer
             if (Rows == 0)
                 Rows = designHeight /= (ushort)_charHeight;
 
-
-            var previewHostPath = typeof(Consolonia.PreviewHost.App).Assembly.Location.Replace(".dll", ".exe", StringComparison.OrdinalIgnoreCase);
-            var processStartInfo = new ProcessStartInfo()
+            if (_process == null)
             {
-                FileName = previewHostPath,
-                Arguments = $"{xamlPath} --buffer {Columns} {Rows}",
-                StandardOutputEncoding = Encoding.UTF8,
-                StandardInputEncoding = Encoding.UTF8,
-                UseShellExecute = false,
-                RedirectStandardInput = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = false,
-                CreateNoWindow = true,
-            };
-            _process = Process.Start(processStartInfo);
 
-            if (MonitorChanges)
-            {
-                _process!.Exited += (sender, e) =>
+                var previewHostPath = typeof(Consolonia.PreviewHost.App).Assembly.Location.Replace(".dll", ".exe", StringComparison.OrdinalIgnoreCase);
+                var processStartInfo = new ProcessStartInfo()
+                {
+                    FileName = previewHostPath,
+                    Arguments = $"{xamlPath} --buffer {Columns} {Rows}",
+                    StandardOutputEncoding = Encoding.UTF8,
+                    StandardInputEncoding = Encoding.UTF8,
+                    UseShellExecute = false,
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = false,
+                    CreateNoWindow = false,
+                };
+                _process = Process.Start(processStartInfo);
+
+                _process!.Exited += (_, _) =>
                 {
                     // restart the process
                     _process.Start();
-                    ListenForChanges(xamlPath);
+                    ListenForChanges();
                 };
-                ListenForChanges(xamlPath);
+                ListenForChanges();
             }
             else
             {
-                var line = _process!.StandardOutput.ReadLine();
-                if (!string.IsNullOrEmpty(line))
-                {
-                    Debug.WriteLine("PIXELBUFFER RECEIVED");
-                    var buffer = JsonConvert.DeserializeObject<PixelBuffer>(line)!;
-                    Debug.WriteLine($"Buffer: {buffer.Width}x{buffer.Height}");
-                    this.Content = RenderPixelBuffer(buffer);
-                }
-
-                _process.Kill();
-                _process.Dispose();
-                _process = null;
+                _process.StandardInput.WriteLine(xamlPath);
             }
         }
 
-        private void ListenForChanges(string xamlPath)
+        private void ListenForChanges()
         {
             Task.Run(async () =>
             {
@@ -218,7 +200,7 @@ namespace Consolonia.Designer
                 {
                     var pixel = buffer[x, y];
 
-                    composer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+                    composer.WritePixel(pixel);
                     var widthAdjust = (pixel.Foreground.Symbol.Width == 0) ? (ushort)1 : (ushort)pixel.Foreground.Symbol.Width;
                     x += widthAdjust;
                 }
@@ -260,10 +242,10 @@ namespace Consolonia.Designer
             if (_charWidth == 0 && _charHeight == 0)
             {
                 var ts = TextShaper.Current;
-                ShapedBuffer shapedMeasure = ts.ShapeText($"▌", new TextShaperOptions(_typeface.GlyphTypeface, 14));
-                var runMeasure = new ShapedTextRun(shapedMeasure, new GenericTextRunProperties(_typeface, 14));
-                _charWidth = 10; // runMeasure.Size.Width;
-                _charHeight = 17; // runMeasure.Size.Height;
+                ShapedBuffer shapedMeasure = ts.ShapeText($"▌", new TextShaperOptions(_typeface.GlyphTypeface, 16));
+                var runMeasure = new ShapedTextRun(shapedMeasure, new GenericTextRunProperties(_typeface, 16));
+                _charWidth = Math.Ceiling(runMeasure.Size.Width);
+                _charHeight = Math.Ceiling(runMeasure.Size.Height);
             }
         }
 
@@ -312,9 +294,7 @@ namespace Consolonia.Designer
                 _textRunCharWidth = 0;
             }
 
-            public ushort TextRunCharWidth => (ushort)_textRunCharWidth;
-
-            public void WritePixel(PixelBufferCoordinate bufferPoint, Pixel pixel)
+            public void WritePixel(Pixel pixel)
             {
                 if (_textBuilder.Length > 0 &&
                         (pixel.Foreground.Symbol.Width > 1 ||

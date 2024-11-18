@@ -39,22 +39,15 @@ public partial class XamlFileViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private Assembly _assembly;
 
+    [ObservableProperty]
     private Control? _content;
-    public Control? Content
+
+    public void Load()
     {
-        get
-        {
-            if (!_loaded)
-            {
-                _content = LoadXaml();
-                _loaded = true;
-            }
-            return _content;
-        }
-        set => SetProperty(ref _content, value);
+        this.Content = LoadXaml();
     }
 
-    public Control LoadXaml()
+    private Control LoadXaml()
     {
 #pragma warning disable CA1031 // Do not catch general exception types
         try
@@ -130,8 +123,8 @@ public partial class XamlFileViewModel : ObservableObject, IDisposable
 
             _fileWatcher = new FileSystemWatcher(Path.GetDirectoryName(FullName!)!, Path.GetFileName(FullName));
 
-            _fileWatcher.Changed += (e, s) => Dispatcher.UIThread.Invoke(() => Content = LoadXaml());
-            _fileWatcher.Renamed += (e, s) => Dispatcher.UIThread.Invoke(() => Content = LoadXaml());
+            _fileWatcher.Changed += (_, _) => Dispatcher.UIThread.Invoke(() => Content = LoadXaml());
+            _fileWatcher.Renamed += (_, _) => Dispatcher.UIThread.Invoke(() => Content = LoadXaml());
             _fileWatcher.EnableRaisingEvents = true;
         }
     }

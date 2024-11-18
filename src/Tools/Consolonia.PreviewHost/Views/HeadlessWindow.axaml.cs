@@ -1,5 +1,4 @@
 using Avalonia;
-using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
@@ -16,17 +15,31 @@ public partial class HeadlessWindow : Window
         InitializeComponent();
     }
 
-    public ProjectViewModel Model => (ProjectViewModel)DataContext!;
+    public AppViewModel Model => (AppViewModel)DataContext!;
 
-    private void OnKeyUp(object? sender, Avalonia.Input.KeyEventArgs e)
+    private void OnKeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
     {
-        this.Close();
+        if (e.Key == Avalonia.Input.Key.Escape)
+            this.Close();
+        else if (e.Key == Avalonia.Input.Key.Left)
+        {
+            var i = Model.Project.Files.IndexOf(Model.Project.Current);
+            if (i > 0)
+                Model.Project.Current = Model.Project.Files[i - 1];
+        }
+        else if (e.Key == Avalonia.Input.Key.Right)
+        {
+            var i = Model.Project.Files.IndexOf(Model.Project.Current);
+            if (i < Model.Project.Files.Count - 1)
+                Model.Project.Current = Model.Project.Files[i + 1];
+        }
     }
 
-    protected override void OnDataContextEndUpdate()
+
+    private void ContentControl_DataContextChanged(object? sender, System.EventArgs e)
     {
         base.OnDataContextEndUpdate();
-        
+
         var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
         if (lifetime.Args!.Contains("--buffer"))
         {
@@ -36,7 +49,6 @@ public partial class HeadlessWindow : Window
                 ArgumentNullException.ThrowIfNull(consoleWindow);
                 var json = JsonConvert.SerializeObject(consoleWindow.PixelBuffer);
                 Console.WriteLine(json);
-
             });
         }
     }

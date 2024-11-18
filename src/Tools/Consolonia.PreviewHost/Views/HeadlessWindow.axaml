@@ -4,8 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
         x:Class="Consolonia.PreviewHost.Views.HeadlessWindow"
-        Content="{Binding Content}"
-        KeyUp="OnKeyUp"
+        KeyDown="OnKeyDown"
         Title="PreviewHost">
-    
+    <ContentControl DataContext="{Binding Project.Current}" Content="{Binding Content}" DataContextChanged="ContentControl_DataContextChanged"/>
 </Window>

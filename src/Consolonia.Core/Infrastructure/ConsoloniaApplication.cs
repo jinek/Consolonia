@@ -26,11 +26,13 @@ namespace Consolonia.Core.Infrastructure
             {
                 // For previewing in Visual Studio designer without Design.PreviewWith tag we need to set default font and colors
                 // get anything to render. This is not perfect, but nicer than getting a big error screen.
-                if (!this.Styles.TryGetResource("ThemeForegroundBrush", null, out var foregroundBrush))
-                    foregroundBrush = (ConsoleBrush)Brushes.White;
+                IBrush foregroundBrush = Brushes.White;
+                if (this.Styles.TryGetResource("ThemeForegroundBrush", null, out var brush))
+                    foregroundBrush = (IBrush)brush;
 
-                if (!this.Styles.TryGetResource("ThemeBackgroundBrush", null, out var backgroundBrush))
-                    backgroundBrush = (ConsoleBrush)Brushes.Black;
+                IBrush backgroundBrush = Brushes.Black;
+                if (!this.Styles.TryGetResource("ThemeBackgroundBrush", null, out brush))
+                    backgroundBrush = (IBrush)brush;
 
                 this.Styles.Add(new Style(x => x.Is<TemplatedControl>())
                 {
@@ -38,8 +40,8 @@ namespace Consolonia.Core.Infrastructure
                     {
                         new Setter(TemplatedControl.FontSizeProperty, 16.0),
                         new Setter(TemplatedControl.FontFamilyProperty, new FontFamily("Cascadia Mono")),
-                        new Setter(TemplatedControl.ForegroundProperty, new SolidColorBrush(((ConsoleBrush)foregroundBrush).Color)),
-                        new Setter(TemplatedControl.BackgroundProperty, new SolidColorBrush(((ConsoleBrush)backgroundBrush).Color)),
+                        new Setter(TemplatedControl.ForegroundProperty, foregroundBrush),
+                        new Setter(TemplatedControl.BackgroundProperty, backgroundBrush),
                     }
                 });
 

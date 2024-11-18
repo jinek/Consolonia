@@ -33,7 +33,7 @@
 
             <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" >
                 <ContentControl Grid.Column="2" Content="{Binding Content}" Background="{DynamicResource ThemeBackgroundBrush}"
-                            DataContext="{Binding SelectedItem, ElementName=FilesListBox}"/>
+                            DataContext="{Binding Current}"/>
             </StackPanel>
         </Grid>
     </Grid>

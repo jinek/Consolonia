@@ -35,7 +35,6 @@ namespace Consolonia.Core.Tests
         {
             var consoleWindow = new ConsoleWindow();
             var buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
 
             for (ushort y = 0; y < buffer.Height; y++)
                 for (ushort x = 0; x < buffer.Width; x++)

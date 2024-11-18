@@ -85,10 +85,6 @@ namespace Consolonia.Core.Infrastructure
                 }
                 return _supportEmoji ?? true;
             }
-            private set
-            {
-                _supportEmoji = value;
-            }
         }
 
         public void SetTitle(string title)
