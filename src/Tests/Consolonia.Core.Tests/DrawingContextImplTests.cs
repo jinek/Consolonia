@@ -49,7 +49,7 @@ namespace Consolonia.Core.Tests
         }
 
         [Test]
-        public void DrawString()
+        public void DrawText()
         {
             var consoleWindow = new ConsoleWindow();
             var buffer = consoleWindow.PixelBuffer;
@@ -67,7 +67,7 @@ namespace Consolonia.Core.Tests
         }
 
         [Test]
-        public void DrawPoint()
+        public void DrawSingleWide()
         {
             var consoleWindow = new ConsoleWindow();
             var buffer = consoleWindow.PixelBuffer;
@@ -499,7 +499,7 @@ namespace Consolonia.Core.Tests
                 }
         }
 
-        internal void DrawText(DrawingContextImpl dc, ushort x, ushort y, string text, IBrush brush)
+        internal static void DrawText(DrawingContextImpl dc, ushort x, ushort y, string text, IBrush brush)
         {
             dc.Transform = new Matrix(1, 0, 0, 1, x, y);
             var platformRender = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>();
