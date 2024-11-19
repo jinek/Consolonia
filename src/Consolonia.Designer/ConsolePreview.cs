@@ -278,7 +278,7 @@ namespace Consolonia.Designer
                 var composer = new TextBlockComposer(line, _charWidth);
                 for (ushort x = 0; x < buffer.Width;)
                 {
-                    Pixel? pixel = buffer[x, y];
+                    Pixel pixel = buffer[x, y];
 
                     composer.WritePixel(pixel);
                     ushort widthAdjust = pixel.Foreground.Symbol.Width == 0 ? (ushort)1 : pixel.Foreground.Symbol.Width;

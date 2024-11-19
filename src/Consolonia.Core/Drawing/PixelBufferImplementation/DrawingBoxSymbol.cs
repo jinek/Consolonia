@@ -10,7 +10,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     /// </summary>
     [DebuggerDisplay("DrawingBox {Text}")]
     [JsonConverter(typeof(SymbolConverter))]
-    public class DrawingBoxSymbol : ISymbol, IEquatable<DrawingBoxSymbol>
+    public readonly struct DrawingBoxSymbol : ISymbol, IEquatable<DrawingBoxSymbol>
     {
         // all 0bXXXX_0000 are special values
         private const byte BoldSymbol = 0b0001_0000;
@@ -22,7 +22,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Text = GetBoxSymbol(UpRightDownLeft).ToString();
         }
 
-        public byte UpRightDownLeft { get; }
+        public byte UpRightDownLeft { get; init; }
 
         public bool Equals(DrawingBoxSymbol other)
         {

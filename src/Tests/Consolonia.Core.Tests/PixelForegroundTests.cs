@@ -15,7 +15,8 @@ namespace Consolonia.Core.Tests
         {
             var pixelForeground = new PixelForeground();
             Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Transparent));
-            Assert.That(pixelForeground.Symbol.Text, Is.EqualTo(string.Empty));
+            Assert.That(pixelForeground.Symbol.Text, Is.EqualTo(" "));
+            Assert.That(pixelForeground.Symbol.Width, Is.EqualTo(1));
             Assert.That(pixelForeground.Weight, Is.EqualTo(FontWeight.Normal));
             Assert.That(pixelForeground.Style, Is.EqualTo(FontStyle.Normal));
             Assert.That(pixelForeground.TextDecoration, Is.Null);

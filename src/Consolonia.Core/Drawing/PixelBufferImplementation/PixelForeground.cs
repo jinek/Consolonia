@@ -8,11 +8,11 @@ using Newtonsoft.Json;
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
-    public class PixelForeground : IEquatable<PixelForeground>
+    public readonly struct PixelForeground : IEquatable<PixelForeground>
     {
         public PixelForeground()
         {
-            Symbol = new SimpleSymbol();
+            Symbol = new SimpleSymbol(" ");
             Color = Colors.Transparent;
             Weight = FontWeight.Normal;
             Style = FontStyle.Normal;
@@ -37,7 +37,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public Color Color { get; init; }
 
         [DefaultValue(FontWeight.Normal)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public FontWeight Weight { get; init; }
 
         [DefaultValue(FontStyle.Normal)]
@@ -53,9 +53,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             return Symbol.Equals(other.Symbol) &&
                    Color.Equals(other.Color) &&
-                   Weight == other.Weight &&
-                   Style == other.Style &&
-                   Equals(TextDecoration, other.TextDecoration);
+                   Weight.Equals(other.Weight) &&
+                   Style.Equals(other.Style) &&
+                   TextDecoration == other.TextDecoration;
         }
 
         public PixelForeground Shade()

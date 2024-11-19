@@ -10,9 +10,9 @@ using Newtonsoft.Json;
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("'{Foreground.Symbol.Text}' [{Foreground.Color}, {Background.Color}]")]
-    public class Pixel : IEquatable<Pixel>
+    public readonly struct Pixel : IEquatable<Pixel>
     {
-        protected Pixel()
+        public Pixel()
         {
             Foreground = new PixelForeground();
             Background = new PixelBackground();

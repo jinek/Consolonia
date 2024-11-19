@@ -9,7 +9,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("'{Text}'")]
     [JsonConverter(typeof(SymbolConverter))]
-    public class SimpleSymbol : ISymbol, IEquatable<SimpleSymbol>
+    public readonly struct SimpleSymbol : ISymbol, IEquatable<SimpleSymbol>
     {
         public SimpleSymbol()
         {
