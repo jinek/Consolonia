@@ -25,7 +25,7 @@
                      VerticalAlignment="Stretch" >
                 <ListBox.ItemTemplate>
                     <DataTemplate >
-                        <TextBlock Text="{Binding Name}" d:DataType="vm:FIleViewModel"/>
+                        <TextBlock Text="{Binding Name}" x:DataType="vm:FileViewModel"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -37,7 +37,7 @@
             <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"> 
                 <v:ConsolePreview x:Name="PreviewPane" Background="#FF101020" 
                                   DataContext="{Binding SelectedItem, ElementName=FilesListBox}"
-                                  d:DataType="vm:FileViewModel"
+                                  x:DataType="vm:FileViewModel"
                                   FileName="{Binding FullName}"
                                   Columns="80" Rows="40" MonitorChanges="true"
                                   HorizontalAlignment="Center" VerticalAlignment="Center" />

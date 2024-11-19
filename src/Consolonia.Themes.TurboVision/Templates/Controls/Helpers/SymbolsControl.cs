@@ -80,8 +80,7 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                     glyphRunImpl.FontRenderingEmSize,
                     _text.AsMemory(),
                     glyphs,
-                    default(Point),
-                    0);
+                    default(Point));
 
             }
         }

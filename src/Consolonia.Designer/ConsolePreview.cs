@@ -110,10 +110,12 @@ namespace Consolonia.Designer
 
             ComputeCharWidth();
             var (designWidth, designHeight) = GetDesignWidthAndHeight(xaml);
-            if (Columns == 0)
-                Columns = designWidth /= (ushort)_charWidth;
-            if (Rows == 0)
-                Rows = designHeight /= (ushort)_charHeight;
+            var cols = Columns;
+            var rows = Rows;
+            if (cols == 0)
+                cols = designWidth /= (ushort)_charWidth;
+            if (rows == 0)
+                rows = designHeight /= (ushort)_charHeight;
 
             if (_process == null)
             {
@@ -121,7 +123,7 @@ namespace Consolonia.Designer
                 var processStartInfo = new ProcessStartInfo()
                 {
                     FileName = previewHostPath,
-                    Arguments = $"{xamlPath} --buffer {Columns} {Rows}",
+                    Arguments = $"{xamlPath} --buffer {cols} {rows}",
                     StandardOutputEncoding = Encoding.UTF8,
                     StandardInputEncoding = Encoding.UTF8,
                     UseShellExecute = false,

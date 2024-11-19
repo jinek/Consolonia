@@ -209,7 +209,8 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            var shapedBuffer = (ShapedBuffer)glyphRunImpl.GlyphInfos;
+            var shapedBuffer = glyphRunImpl.GlyphInfos as ShapedBuffer;
+            ArgumentNullException.ThrowIfNull(shapedBuffer);
             string text = shapedBuffer.Text.ToString();
             DrawStringInternal(foreground, text, glyphRun.GlyphTypeface);
         }
@@ -548,7 +549,7 @@ namespace Consolonia.Core.Drawing
                                             var targetX = characterPoint.X - 1;
                                             if (targetX >= 0)
                                             {
-                                                _pixelBuffer.Set((PixelBufferCoordinate)(PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
+                                                _pixelBuffer.Set((PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
                                                 (oldPixel2) => new Pixel(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent), oldPixel2.Background));
                                             }
                                         }
