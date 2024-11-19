@@ -15,10 +15,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             if (reader.Value != null)
             {
-                if (reader.ValueType == typeof(string))
-                {
-                    return new SimpleSymbol((string)reader.Value);
-                }
+                if (reader.ValueType == typeof(string)) return new SimpleSymbol((string)reader.Value);
 
                 if (reader.ValueType == typeof(long))
                 {
