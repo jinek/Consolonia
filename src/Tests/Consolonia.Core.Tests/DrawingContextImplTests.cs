@@ -327,8 +327,8 @@ namespace Consolonia.Core.Tests
             ushort top = 0;
             int width = 3;
             int height = 3;
-            int right = left + width;
-            int bottom = top + height;
+            int right = width;
+            int bottom = height;
             dc.DrawRectangle(Brushes.Blue, null, new Rect(left, top, width, height));
 
             top++;
@@ -368,8 +368,8 @@ namespace Consolonia.Core.Tests
             ushort top = 0;
             int width = 3;
             int height = 3;
-            int right = left + width;
-            int bottom = top + height;
+            int right = width;
+            int bottom = height;
             dc.DrawRectangle(Brushes.Blue, new Pen(Brushes.Red), new Rect(left, top, width, height));
 
             top++;
@@ -463,8 +463,8 @@ namespace Consolonia.Core.Tests
             ushort top = 0;
             int width = 3;
             int height = 3;
-            int right = left + width;
-            int bottom = top + height;
+            int right = width;
+            int bottom =    height;
             var brush = new LineBrush { Brush = Brushes.Red, LineStyle = LineStyle.DoubleLine };
             dc.DrawRectangle(Brushes.Blue, new Pen(brush), new Rect(left, top, width, height));
 
