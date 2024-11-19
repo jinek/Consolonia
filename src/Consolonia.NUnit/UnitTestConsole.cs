@@ -171,7 +171,7 @@ namespace Consolonia.NUnit
             _lifetime = lifetime;
         }
 
-        
+
 #pragma warning disable CS0067
         public event Action Resized;
         public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;

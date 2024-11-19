@@ -6,9 +6,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public class ColorConverter : JsonConverter<Color>
     {
-        public override Color ReadJson(JsonReader reader, Type objectType, Color existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override Color ReadJson(JsonReader reader, Type objectType, Color existingValue, bool hasExistingValue,
+            JsonSerializer serializer)
         {
-            if (Color.TryParse(reader.Value!.ToString(), out var color))
+            if (Color.TryParse(reader.Value!.ToString(), out Color color))
                 return color;
             return Colors.Transparent;
         }

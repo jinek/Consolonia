@@ -12,20 +12,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [DebuggerDisplay("'{Foreground.Symbol.Text}' [{Foreground.Color}, {Background.Color}]")]
     public class Pixel : IEquatable<Pixel>
     {
-        // Pixel empty is a non-pixel. It has no symbol, no color, no weight, no style, no text decoration, and no background.
-        // it is used only when a multichar sequence overlaps a pixel making it a non-entity.
-        public static Pixel Empty => new Pixel();
-
-        // pixel space is a pixel with a space symbol, but could have color blended into. it is used to advance the cursor
-        // and set the background color
-        public static Pixel Space => new Pixel(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent), new PixelBackground(Colors.Transparent));
-
-        public PixelForeground Foreground { get; init; }
-
-        public PixelBackground Background { get; init; }
-
-        public bool IsCaret { get; init; }
-
         protected Pixel()
         {
             Foreground = new PixelForeground();
@@ -83,6 +69,33 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             IsCaret = isCaret;
         }
 
+        // Pixel empty is a non-pixel. It has no symbol, no color, no weight, no style, no text decoration, and no background.
+        // it is used only when a multichar sequence overlaps a pixel making it a non-entity.
+        public static Pixel Empty => new();
+
+        // pixel space is a pixel with a space symbol, but could have color blended into. it is used to advance the cursor
+        // and set the background color
+        public static Pixel Space => new(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent),
+            new PixelBackground(Colors.Transparent));
+
+        public PixelForeground Foreground { get; init; }
+
+        public PixelBackground Background { get; init; }
+
+        public bool IsCaret { get; init; }
+
+        [JsonIgnore] public ushort Width => Foreground.Symbol.Width;
+
+        public bool Equals(Pixel other)
+        {
+            if ((object)other == null)
+                return false;
+
+            return Foreground.Equals(other.Foreground) &&
+                   Background.Equals(other.Background) &&
+                   IsCaret.Equals(other.IsCaret);
+        }
+
         /// <summary>
         ///     Blend the pixelAbove with the this pixel.
         /// </summary>
@@ -126,10 +139,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return new Pixel(newForeground, newBackground, newIsCaret);
         }
 
-        public bool IsEmpty() => Foreground.Symbol.Width == 0;
-
-        [JsonIgnore]
-        public ushort Width => Foreground.Symbol.Width;
+        public bool IsEmpty()
+        {
+            return Foreground.Symbol.Width == 0;
+        }
 
         private (PixelForeground, PixelBackground) Shade()
         {
@@ -154,19 +167,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return new Color(0xFF, red, green, blue);
         }
 
-        public bool Equals(Pixel other)
-        {
-            if ((object)other == null)
-                return false;
-
-            return Foreground.Equals(other.Foreground) &&
-                   Background.Equals(other.Background) &&
-                   IsCaret.Equals(other.IsCaret);
-        }
-
         public override bool Equals([NotNullWhen(true)] object obj)
         {
-            return obj is Pixel && this.Equals((Pixel)obj);
+            return obj is Pixel && Equals((Pixel)obj);
         }
 
         public override int GetHashCode()
@@ -176,20 +179,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static bool operator ==(Pixel left, Pixel right)
         {
-            if ((object)left is null)
-            {
-                return (object)right is null;
-            }
+            if ((object)left is null) return (object)right is null;
 
             return left.Equals(right);
         }
 
         public static bool operator !=(Pixel left, Pixel right)
         {
-            if ((object)left is null)
-            {
-                return (object)right is not null;
-            }
+            if ((object)left is null) return (object)right is not null;
             return !left.Equals(right);
         }
     }

@@ -158,7 +158,7 @@ namespace Consolonia.Core.Tests
         {
             var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue));
-            var json = JsonConvert.SerializeObject(pixel);
+            string json = JsonConvert.SerializeObject(pixel);
             var pixel2 = JsonConvert.DeserializeObject<Pixel>(json);
             Assert.That(pixel.Equals(pixel2));
         }

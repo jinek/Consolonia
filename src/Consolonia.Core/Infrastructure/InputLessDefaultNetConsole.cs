@@ -17,6 +17,8 @@ namespace Consolonia.Core.Infrastructure
         private bool _caretVisible;
         private PixelBufferCoordinate _headBufferPoint;
 
+        private bool? _supportEmoji;
+
         protected InputLessDefaultNetConsole()
         {
             Console.OutputEncoding = Encoding.UTF8;
@@ -24,16 +26,6 @@ namespace Consolonia.Core.Infrastructure
             PrepareConsole();
 
             ActualizeSize();
-        }
-
-        private void PrepareConsole()
-        {
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
-            // enable alternate screen so original console screen is not affected by the app
-            WriteText(Esc.EnableAlternateBuffer);
-            WriteText(Esc.HideCursor);
-            WriteText(Esc.ClearScreen);
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
         protected bool Disposed { get; private set; }
@@ -55,7 +47,6 @@ namespace Consolonia.Core.Infrastructure
 
         public PixelBufferSize Size { get; private set; }
 
-        private bool? _supportEmoji;
         public bool SupportsComplexEmoji
         {
             get
@@ -65,14 +56,14 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning disable CA1031 // Do not catch general exception types
                     try
                     {
-
                         // Detect complex emoji support by writing a complex emoji and checking cursor position.
                         // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
-                        var (left, top) = Console.GetCursorPosition();
-                        WriteText($"{Esc.Foreground(Colors.Transparent)}{Esc.Background(Colors.Transparent)}{TestEmoji}");
+                        (int left, int top) = Console.GetCursorPosition();
+                        WriteText(
+                            $"{Esc.Foreground(Colors.Transparent)}{Esc.Background(Colors.Transparent)}{TestEmoji}");
 
                         // TODO, escape sequence
-                        var (left2, _) = Console.GetCursorPosition();
+                        (int left2, _) = Console.GetCursorPosition();
                         _supportEmoji = left2 - left == 2;
                         Console.SetCursorPosition(left, top);
                     }
@@ -80,9 +71,11 @@ namespace Consolonia.Core.Infrastructure
                     {
                         _supportEmoji = true;
                     }
+
                     WriteText(Esc.ClearScreen);
 #pragma warning restore CA1031 // Do not catch general exception types
                 }
+
                 return _supportEmoji ?? true;
             }
         }
@@ -92,7 +85,6 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning disable CA1031 // Do not catch general exception types
             try
             {
-
                 Console.Title = title;
             }
             catch (Exception)
@@ -198,6 +190,16 @@ namespace Consolonia.Core.Infrastructure
             // this is hack, but somehow it does not work when just calling ActualizeSize with same size
             Size = new PixelBufferSize(1, 1);
             Resized?.Invoke();
+        }
+
+        private void PrepareConsole()
+        {
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+            // enable alternate screen so original console screen is not affected by the app
+            WriteText(Esc.EnableAlternateBuffer);
+            WriteText(Esc.HideCursor);
+            WriteText(Esc.ClearScreen);
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
         // ReSharper disable once MemberCanBePrivate.Global

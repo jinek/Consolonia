@@ -2,8 +2,8 @@ using System.Globalization;
 using System.Text;
 using Avalonia;
 using Consolonia.Core;
-using Consolonia.Core.Infrastructure;
 using Consolonia.Core.Dummy;
+using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
 
 namespace Consolonia.PreviewHost
@@ -17,20 +17,22 @@ namespace Consolonia.PreviewHost
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            var builder = AppBuilder.Configure<App>()
+            AppBuilder? builder = AppBuilder.Configure<App>()
                 .UseConsolonia()
                 .LogToException();
-            
+
             if (args.Contains("--buffer"))
             {
-                var parts = args.SkipWhile(a => a != "--buffer").Skip(1).Take(2).ToArray();
-                var width = ushort.Parse(parts[0], CultureInfo.InvariantCulture);
-                var height = ushort.Parse(parts[1], CultureInfo.InvariantCulture);
+                string[] parts = args.SkipWhile(a => a != "--buffer").Skip(1).Take(2).ToArray();
+                ushort width = ushort.Parse(parts[0], CultureInfo.InvariantCulture);
+                ushort height = ushort.Parse(parts[1], CultureInfo.InvariantCulture);
                 builder = builder.UseConsole(new DummyConsole(width, height));
             }
             else
+            {
                 builder = builder.UseAutoDetectedConsole();
-            
+            }
+
             builder
                 .StartWithConsoleLifetime(args);
         }

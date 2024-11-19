@@ -4,8 +4,6 @@ namespace Consolonia.PreviewHost.ViewModels
 {
     public partial class AppViewModel : ObservableObject
     {
-
-        [ObservableProperty]
-        private ProjectViewModel? _project;
+        [ObservableProperty] private ProjectViewModel? _project;
     }
 }

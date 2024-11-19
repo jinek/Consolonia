@@ -1,14 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Avalonia.PreviewHost.ViewModels;
-
-public partial class FileViewModel : ObservableObject
+namespace Avalonia.PreviewHost.ViewModels
 {
-    [ObservableProperty]
-    private string? _name;
+    public partial class FileViewModel : ObservableObject
+    {
+        [ObservableProperty] private string? _fullName;
 
-    [ObservableProperty]
-    private string? _fullName;
+        [ObservableProperty] private string? _name;
+    }
 }
-
-

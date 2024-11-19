@@ -2,8 +2,8 @@ using System.Globalization;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Consolonia.Core.Infrastructure;
-using Consolonia.PreviewHost.Views;
 using Consolonia.PreviewHost.ViewModels;
+using Consolonia.PreviewHost.Views;
 
 namespace Consolonia.PreviewHost
 {
@@ -27,31 +27,32 @@ namespace Consolonia.PreviewHost
 
         public override void OnFrameworkInitializationCompleted()
         {
-            IClassicDesktopStyleApplicationLifetime? applicationLifetime = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+            var applicationLifetime = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
             if (applicationLifetime != null)
             {
                 var appViewModel = new AppViewModel();
 
-                var path = applicationLifetime.Args!.FirstOrDefault();
-                if (!String.IsNullOrEmpty(path))
+                string? path = applicationLifetime.Args!.FirstOrDefault();
+                if (!string.IsNullOrEmpty(path))
                 {
                     string folder;
                     if (Path.IsPathFullyQualified(path))
-                    {
                         folder = Path.GetDirectoryName(path)!;
-                    }
                     else
                         folder = Environment.CurrentDirectory;
                     ArgumentNullException.ThrowIfNull(folder);
-                    var projectFile = FindProjectFileFromPath(folder);
+                    string projectFile = FindProjectFileFromPath(folder);
 
                     appViewModel.Project = new ProjectViewModel(projectFile);
                     if (path.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
                     {
-                        appViewModel.Project.Current = appViewModel.Project.Files.SingleOrDefault(f => f.FullName!.Equals(path, StringComparison.OrdinalIgnoreCase))
-                                ?? appViewModel.Project.Files.SingleOrDefault(f => f.Name!.Equals(Path.GetFileName(path), StringComparison.OrdinalIgnoreCase))
-                                ?? throw new ArgumentException($"{path} not found in project", nameof(path));
-                        applicationLifetime.MainWindow = new HeadlessWindow()
+                        appViewModel.Project.Current =
+                            appViewModel.Project.Files.SingleOrDefault(f =>
+                                f.FullName!.Equals(path, StringComparison.OrdinalIgnoreCase))
+                            ?? appViewModel.Project.Files.SingleOrDefault(f =>
+                                f.Name!.Equals(Path.GetFileName(path), StringComparison.OrdinalIgnoreCase))
+                            ?? throw new ArgumentException($"{path} not found in project", nameof(path));
+                        applicationLifetime.MainWindow = new HeadlessWindow
                         {
                             DataContext = appViewModel
                         };
@@ -59,21 +60,18 @@ namespace Consolonia.PreviewHost
                 }
                 else
                 {
-                    var projectFile = FindProjectFileFromPath(Environment.CurrentDirectory);
+                    string projectFile = FindProjectFileFromPath(Environment.CurrentDirectory);
                     appViewModel.Project = new ProjectViewModel(projectFile);
                 }
 
                 if (applicationLifetime.MainWindow == null)
-                {
-                    applicationLifetime.MainWindow = new MainWindow()
+                    applicationLifetime.MainWindow = new MainWindow
                     {
                         DataContext = appViewModel
                     };
-                }
 
                 base.OnFrameworkInitializationCompleted();
             }
-
         }
 
         public static string FindProjectFileFromPath(string path)
@@ -84,16 +82,13 @@ namespace Consolonia.PreviewHost
             while (projectFolder != null)
             {
                 projectFile = Directory.GetFiles(projectFolder, "*.csproj").FirstOrDefault();
-                if (projectFile != null)
-                {
-                    break;
-                }
+                if (projectFile != null) break;
                 projectFolder = Path.GetDirectoryName(projectFolder);
             }
+
             ArgumentNullException.ThrowIfNull(projectFile);
             return projectFile;
         }
-
 
 
         //        window.KeyDown += (sender, e) =>
@@ -123,6 +118,5 @@ namespace Consolonia.PreviewHost
         //    });
         //}
         //            };
-
     }
 }

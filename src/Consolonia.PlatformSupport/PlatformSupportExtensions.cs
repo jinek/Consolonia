@@ -2,8 +2,8 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Consolonia.Core;
-using Consolonia.Core.Infrastructure;
 using Consolonia.Core.Dummy;
+using Consolonia.Core.Infrastructure;
 
 #pragma warning disable IDE0161
 namespace Consolonia.PlatformSupport
@@ -14,10 +14,8 @@ namespace Consolonia.PlatformSupport
         public static AppBuilder UseAutoDetectedConsole(this AppBuilder builder)
         {
             if (Design.IsDesignMode)
-            {
                 // in design mode we can't use any console operations at all, so we use a dummy IConsole.
                 return builder.UseConsole(new DummyConsole());
-            }
 
             IConsole console = Environment.OSVersion.Platform switch
             {

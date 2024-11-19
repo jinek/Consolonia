@@ -51,15 +51,15 @@ namespace Consolonia.Core.Tests
             };
 
             foreach ((byte code1, string _) in symbols)
-                foreach ((byte code2, string _) in symbols)
-                {
-                    ISymbol symbol1 = new DrawingBoxSymbol(code1);
-                    ISymbol symbol2 = new DrawingBoxSymbol(code2);
-                    ISymbol blendedSymbol = symbol1.Blend(ref symbol2);
-                    if (symbol1.Text != symbol2.Text)
-                        Debug.WriteLine($"{symbol1.Text} + {symbol2.Text} => {blendedSymbol.Text}");
-                    Assert.That(blendedSymbol.Text, Is.Not.Null);
-                }
+            foreach ((byte code2, string _) in symbols)
+            {
+                ISymbol symbol1 = new DrawingBoxSymbol(code1);
+                ISymbol symbol2 = new DrawingBoxSymbol(code2);
+                ISymbol blendedSymbol = symbol1.Blend(ref symbol2);
+                if (symbol1.Text != symbol2.Text)
+                    Debug.WriteLine($"{symbol1.Text} + {symbol2.Text} => {blendedSymbol.Text}");
+                Assert.That(blendedSymbol.Text, Is.Not.Null);
+            }
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace Consolonia.Core.Tests
         {
             var symbol = new DrawingBoxSymbol(0b0000_1111);
             string json = JsonConvert.SerializeObject(symbol);
-            ISymbol deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            var deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
             Assert.That(symbol.Equals(deserializedSymbol));
         }
     }

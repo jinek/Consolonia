@@ -15,21 +15,42 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         // all 0bXXXX_0000 are special values
         private const byte BoldSymbol = 0b0001_0000;
         private const byte EmptySymbol = 0b0;
-        private readonly byte _upRightDownLeft;
 
         public DrawingBoxSymbol(byte upRightDownLeft)
         {
-            _upRightDownLeft = upRightDownLeft;
-            Text = GetBoxSymbol(_upRightDownLeft).ToString();
+            UpRightDownLeft = upRightDownLeft;
+            Text = GetBoxSymbol(UpRightDownLeft).ToString();
         }
 
-        public byte UpRightDownLeft => _upRightDownLeft;
+        public byte UpRightDownLeft { get; }
 
-        [JsonIgnore]
-        public string Text { get; init; }
+        public bool Equals(DrawingBoxSymbol other)
+        {
+            if ((object)other is null) return false;
+            return UpRightDownLeft == other!.UpRightDownLeft;
+        }
 
-        [JsonIgnore]
-        public ushort Width { get; } = 1;
+        [JsonIgnore] public string Text { get; init; }
+
+        [JsonIgnore] public ushort Width { get; } = 1;
+
+        public bool IsWhiteSpace()
+        {
+            return UpRightDownLeft == EmptySymbol;
+        }
+
+        public ISymbol Blend(ref ISymbol symbolAbove)
+        {
+            if (symbolAbove.IsWhiteSpace()) return this;
+
+            if (symbolAbove is not DrawingBoxSymbol drawingBoxSymbol)
+                return symbolAbove;
+
+            if (drawingBoxSymbol.UpRightDownLeft == BoldSymbol || UpRightDownLeft == BoldSymbol)
+                return new DrawingBoxSymbol(BoldSymbol);
+
+            return new DrawingBoxSymbol((byte)(UpRightDownLeft | drawingBoxSymbol.UpRightDownLeft));
+        }
 
         /// <summary>
         ///     https://en.wikipedia.org/wiki/Code_page_437
@@ -105,24 +126,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
         }
 
-        public bool IsWhiteSpace()
-        {
-            return _upRightDownLeft == EmptySymbol;
-        }
-
-        public ISymbol Blend(ref ISymbol symbolAbove)
-        {
-            if (symbolAbove.IsWhiteSpace()) return this;
-
-            if (symbolAbove is not DrawingBoxSymbol drawingBoxSymbol)
-                return symbolAbove;
-
-            if (drawingBoxSymbol._upRightDownLeft == BoldSymbol || _upRightDownLeft == BoldSymbol)
-                return new DrawingBoxSymbol(BoldSymbol);
-
-            return new DrawingBoxSymbol((byte)(_upRightDownLeft | drawingBoxSymbol._upRightDownLeft));
-        }
-
         public static DrawingBoxSymbol UpRightDownLeftFromPattern(byte pattern, LineStyle lineStyle)
         {
             if (pattern == EmptySymbol) return new DrawingBoxSymbol(EmptySymbol);
@@ -140,15 +143,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
         }
 
-        public bool Equals(DrawingBoxSymbol other)
-        {
-            if ((object)other is null)
-            {
-                return false;
-            }
-            return _upRightDownLeft == other!._upRightDownLeft;
-        }
-
         public override bool Equals([NotNullWhen(true)] object obj)
         {
             return obj is DrawingBoxSymbol other && Equals(other);
@@ -156,24 +150,18 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override int GetHashCode()
         {
-            return _upRightDownLeft.GetHashCode();
+            return UpRightDownLeft.GetHashCode();
         }
 
         public static bool operator ==(DrawingBoxSymbol left, DrawingBoxSymbol right)
         {
-            if ((object)left is null)
-            {
-                return (object)right is null;
-            }
+            if ((object)left is null) return (object)right is null;
             return left.Equals(right);
         }
 
         public static bool operator !=(DrawingBoxSymbol left, DrawingBoxSymbol right)
         {
-            if ((object)left is null)
-            {
-                return (object)right is not null;
-            }
+            if ((object)left is null) return (object)right is not null;
             return !left!.Equals(right);
         }
     }

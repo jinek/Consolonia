@@ -6,77 +6,69 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Consolonia.PreviewHost.ViewModels;
-
-public partial class ProjectViewModel : ObservableObject
+namespace Consolonia.PreviewHost.ViewModels
 {
-    private static readonly AssemblyLoadContext LoadContext = new CustomAssemblyLoadContext();
-
-    public ProjectViewModel(string projectFile)
+    public partial class ProjectViewModel : ObservableObject
     {
-        _project = projectFile;
+        private static readonly AssemblyLoadContext LoadContext = new CustomAssemblyLoadContext();
 
-        var projectFolder = Path.GetDirectoryName(_project)!;
-        ArgumentNullException.ThrowIfNull(_project);
-        var assemblyName = Path.GetFileNameWithoutExtension(_project) + ".dll";
-        var buildDirectory = Path.Combine(projectFolder, "bin", "Debug");
-        var assemblyPath = Directory.EnumerateFiles(buildDirectory, assemblyName, SearchOption.AllDirectories).First();
+        [ObservableProperty] private XamlFileViewModel? _current;
 
-        ArgumentNullException.ThrowIfNull(assemblyPath);
-        // load assembly
-        Assembly = LoadContext.LoadFromStream(new MemoryStream(File.ReadAllBytes(assemblyPath)));
-        ArgumentNullException.ThrowIfNull(Assembly);
+        [ObservableProperty] private ObservableCollection<XamlFileViewModel> _files = new();
 
-        foreach (var xamlFile in Directory.GetFiles(projectFolder, "*.axaml", SearchOption.AllDirectories))
+        [ObservableProperty] private string? _project;
+
+        public ProjectViewModel(string projectFile)
         {
-            _files.Add(new XamlFileViewModel(xamlFile, Assembly));
-        }
+            _project = projectFile;
 
-        this.PropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == nameof(Current))
+            string projectFolder = Path.GetDirectoryName(_project)!;
+            ArgumentNullException.ThrowIfNull(_project);
+            string assemblyName = Path.GetFileNameWithoutExtension(_project) + ".dll";
+            string buildDirectory = Path.Combine(projectFolder, "bin", "Debug");
+            string assemblyPath = Directory.EnumerateFiles(buildDirectory, assemblyName, SearchOption.AllDirectories)
+                .First();
+
+            ArgumentNullException.ThrowIfNull(assemblyPath);
+            // load assembly
+            Assembly = LoadContext.LoadFromStream(new MemoryStream(File.ReadAllBytes(assemblyPath)));
+            ArgumentNullException.ThrowIfNull(Assembly);
+
+            foreach (string xamlFile in Directory.GetFiles(projectFolder, "*.axaml", SearchOption.AllDirectories))
+                _files.Add(new XamlFileViewModel(xamlFile, Assembly));
+
+            PropertyChanged += (_, e) =>
             {
-                if (Current != null)
-                {
-                    Current.Load();
-                }
-            }
-        };
+                if (e.PropertyName == nameof(Current))
+                    if (Current != null)
+                        Current.Load();
+            };
 
-        var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-        if (lifetime.Args!.Contains("--buffer"))
-        {
-            _ = Task.Run(() =>
-            {
-                string? xamlFile = Console.ReadLine();
-                while (!String.IsNullOrEmpty(xamlFile))
+            var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
+            if (lifetime.Args!.Contains("--buffer"))
+                _ = Task.Run(() =>
                 {
-                    if (!String.IsNullOrEmpty(xamlFile) && xamlFile.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
+                    string? xamlFile = Console.ReadLine();
+                    while (!string.IsNullOrEmpty(xamlFile))
                     {
-                        var file = _files.SingleOrDefault(f => f.FullName!.Equals(xamlFile, StringComparison.OrdinalIgnoreCase))
-                            ?? _files.SingleOrDefault(f => f.Name!.Equals(Path.GetFileName(xamlFile), StringComparison.OrdinalIgnoreCase))
-                            ?? throw new ArgumentException($"{xamlFile} not found in project");
-                     
-                        Dispatcher.UIThread.Invoke(() => this.Current = file);
+                        if (!string.IsNullOrEmpty(xamlFile) &&
+                            xamlFile.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
+                        {
+                            XamlFileViewModel file =
+                                _files.SingleOrDefault(f =>
+                                    f.FullName!.Equals(xamlFile, StringComparison.OrdinalIgnoreCase))
+                                ?? _files.SingleOrDefault(f =>
+                                    f.Name!.Equals(Path.GetFileName(xamlFile), StringComparison.OrdinalIgnoreCase))
+                                ?? throw new ArgumentException($"{xamlFile} not found in project");
+
+                            Dispatcher.UIThread.Invoke(() => Current = file);
+                        }
+
+                        xamlFile = Console.ReadLine();
                     }
-
-                    xamlFile = Console.ReadLine();
-                }
-            });
+                });
         }
+
+        public Assembly Assembly { get; set; }
     }
-
-    [ObservableProperty]
-    private string? _project;
-
-    [ObservableProperty]
-    private ObservableCollection<XamlFileViewModel> _files = new ObservableCollection<XamlFileViewModel>();
-
-    [ObservableProperty]
-    private XamlFileViewModel? _current;
-
-    public Assembly Assembly { get; set; }
-
 }
-
-
