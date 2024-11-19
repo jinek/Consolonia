@@ -40,14 +40,14 @@ namespace Consolonia.Core.Tests
             PixelBuffer buffer = consoleWindow.PixelBuffer;
 
             for (ushort y = 0; y < buffer.Height; y++)
-            for (ushort x = 0; x < buffer.Width; x++)
-            {
-                Pixel pixel = buffer[x, y];
-                Assert.IsTrue(pixel.Width == 1);
-                Assert.IsTrue(pixel.Foreground.Symbol.Text == " ");
-                Assert.IsTrue(pixel.Foreground.Color == Colors.Transparent);
-                Assert.IsTrue(pixel.Background.Color == Colors.Transparent);
-            }
+                for (ushort x = 0; x < buffer.Width; x++)
+                {
+                    Pixel pixel = buffer[x, y];
+                    Assert.IsTrue(pixel.Width == 1);
+                    Assert.IsTrue(pixel.Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(pixel.Foreground.Color == Colors.Transparent);
+                    Assert.IsTrue(pixel.Background.Color == Colors.Transparent);
+                }
         }
 
         [Test]
@@ -56,12 +56,11 @@ namespace Consolonia.Core.Tests
             var consoleWindow = new ConsoleWindow();
             PixelBuffer buffer = consoleWindow.PixelBuffer;
             var dc = new DrawingContextImpl(consoleWindow);
-
-            for (ushort x = 0; x < 10; x++) DrawText(dc, x, 0, x.ToString(), Brushes.White);
-            for (ushort x = 0; x < 10; x++)
+            for (ushort x = 1; x < 6; x++) DrawText(dc, x, 2, x.ToString(), Brushes.White);
+            for (ushort x = 1; x < 6; x++)
             {
-                Assert.IsTrue(buffer[x, 0].Width == 1);
-                Assert.IsTrue(buffer[x, 0].Foreground.Symbol.Text == x.ToString());
+                Assert.IsTrue(buffer[x, 2].Width == 1);
+                Assert.IsTrue(buffer[x, 2].Foreground.Symbol.Text == x.ToString());
             }
         }
 
@@ -71,20 +70,19 @@ namespace Consolonia.Core.Tests
             var consoleWindow = new ConsoleWindow();
             PixelBuffer buffer = consoleWindow.PixelBuffer;
             var dc = new DrawingContextImpl(consoleWindow);
-
-            for (ushort x = 0; x < 10; x++) DrawText(dc, x, 0, x.ToString(), Brushes.White);
-            DrawText(dc, 5, 0, "X", Brushes.Blue);
+            for (ushort x = 0; x < 10; x++) DrawText(dc, x, 1, x.ToString(), Brushes.White);
+            DrawText(dc, 5, 1, "X", Brushes.Blue);
             for (ushort x = 0; x < 10; x++)
                 if (x == 5)
                 {
-                    Assert.IsTrue(buffer[5, 0].Width == 1);
-                    Assert.IsTrue(buffer[5, 0].Foreground.Symbol.Text == "X");
-                    Assert.IsTrue(buffer[5, 0].Foreground.Color == Colors.Blue);
+                    Assert.IsTrue(buffer[x, 1].Width == 1);
+                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Text == "X");
+                    Assert.IsTrue(buffer[x, 1].Foreground.Color == Colors.Blue);
                 }
                 else
                 {
-                    Assert.IsTrue(buffer[x, 0].Width == 1);
-                    Assert.IsTrue(buffer[x, 0].Foreground.Symbol.Text == x.ToString());
+                    Assert.IsTrue(buffer[x, 1].Width == 1);
+                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Text == x.ToString());
                 }
         }
 
@@ -184,24 +182,64 @@ namespace Consolonia.Core.Tests
             }
         }
 
+
+        [Test]
+        public void DrawLineStrikethrough()
+        {
+            var consoleWindow = new ConsoleWindow();
+            PixelBuffer buffer = consoleWindow.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleWindow);
+
+            DrawText(dc, 1, 0, "hello", Brushes.Blue);
+            SetOrigin(dc, 1, 0);
+            dc.DrawLine(new Pen(Brushes.White, DrawingContextImpl.StrikethroughThickness), new Point(0, 0), new Point(6, 0));
+            Assert.IsTrue(buffer[0, 0].Foreground.TextDecoration == null);
+            Assert.IsTrue(buffer[1, 0].Foreground.TextDecoration == TextDecorationLocation.Strikethrough);
+            Assert.IsTrue(buffer[2, 0].Foreground.TextDecoration == TextDecorationLocation.Strikethrough);
+            Assert.IsTrue(buffer[3, 0].Foreground.TextDecoration == TextDecorationLocation.Strikethrough);
+            Assert.IsTrue(buffer[4, 0].Foreground.TextDecoration == TextDecorationLocation.Strikethrough);
+            Assert.IsTrue(buffer[5, 0].Foreground.TextDecoration == TextDecorationLocation.Strikethrough);
+            Assert.IsTrue(buffer[6, 0].Foreground.TextDecoration == null);
+        }
+
+        [Test]
+        public void DrawLineUnderline()
+        {
+            var consoleWindow = new ConsoleWindow();
+            PixelBuffer buffer = consoleWindow.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleWindow);
+
+            DrawText(dc, 1, 1, "hello", Brushes.Blue);
+            SetOrigin(dc, 1, 1);
+            dc.DrawLine(new Pen(Brushes.White, DrawingContextImpl.UnderlineThickness), new Point(0, 0), new Point(6, 0));
+            Assert.IsTrue(buffer[0, 1].Foreground.TextDecoration == null);
+            Assert.IsTrue(buffer[1, 1].Foreground.TextDecoration == TextDecorationLocation.Underline);
+            Assert.IsTrue(buffer[2, 1].Foreground.TextDecoration == TextDecorationLocation.Underline);
+            Assert.IsTrue(buffer[3, 1].Foreground.TextDecoration == TextDecorationLocation.Underline);
+            Assert.IsTrue(buffer[4, 1].Foreground.TextDecoration == TextDecorationLocation.Underline);
+            Assert.IsTrue(buffer[5, 1].Foreground.TextDecoration == TextDecorationLocation.Underline);
+            Assert.IsTrue(buffer[6, 1].Foreground.TextDecoration == null);
+        }
+
+
         [Test]
         public void DrawHorizontalLine()
         {
             var consoleWindow = new ConsoleWindow();
             PixelBuffer buffer = consoleWindow.PixelBuffer;
             var dc = new DrawingContextImpl(consoleWindow);
-
-            dc.DrawLine(new Pen(Brushes.White), new Point(1, 0), new Point(5, 0));
-            for (ushort x = 0; x <= 5; x++)
-                if (x == 0 || x == 5)
+            SetOrigin(dc, 1, 1);
+            dc.DrawLine(new Pen(Brushes.White), new Point(0, 0), new Point(4, 0));
+            for (ushort x = 0; x <= 6; x++)
+                if (x == 0 || x == 6)
                 {
-                    Assert.IsTrue(buffer[x, 0].Foreground.Symbol.Text == " ");
-                    Assert.IsTrue(buffer[x, 0].Foreground.Color == Colors.Transparent);
+                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(buffer[x, 1].Foreground.Color == Colors.Transparent);
                 }
                 else
                 {
-                    Assert.IsTrue(buffer[x, 0].Foreground.Symbol.Text == "─");
-                    Assert.IsTrue(buffer[x, 0].Foreground.Color == Colors.White);
+                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Text == "─");
+                    Assert.IsTrue(buffer[x, 1].Foreground.Color == Colors.White);
                 }
         }
 
@@ -211,18 +249,19 @@ namespace Consolonia.Core.Tests
             var consoleWindow = new ConsoleWindow();
             PixelBuffer buffer = consoleWindow.PixelBuffer;
             var dc = new DrawingContextImpl(consoleWindow);
+            SetOrigin(dc, 1, 1);
 
-            dc.DrawLine(new Pen(Brushes.White), new Point(0, 1), new Point(0, 5));
-            for (ushort y = 0; y <= 5; y++)
-                if (y == 0 || y == 5)
+            dc.DrawLine(new Pen(Brushes.White), new Point(0, 0), new Point(0, 4));
+            for (ushort y = 0; y <= 6; y++)
+                if (y == 0 || y == 6)
                 {
-                    Assert.IsTrue(buffer[0, y].Foreground.Symbol.Text == " ");
-                    Assert.IsTrue(buffer[0, y].Foreground.Color == Colors.Transparent);
+                    Assert.IsTrue(buffer[1, y].Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(buffer[1, y].Foreground.Color == Colors.Transparent);
                 }
                 else
                 {
-                    Assert.IsTrue(buffer[0, y].Foreground.Symbol.Text == "│");
-                    Assert.IsTrue(buffer[0, y].Foreground.Color == Colors.White);
+                    Assert.IsTrue(buffer[1, y].Foreground.Symbol.Text == "│");
+                    Assert.IsTrue(buffer[1, y].Foreground.Color == Colors.White);
                 }
         }
 
@@ -233,29 +272,48 @@ namespace Consolonia.Core.Tests
             PixelBuffer buffer = consoleWindow.PixelBuffer;
             var dc = new DrawingContextImpl(consoleWindow);
 
-            for (int y = 1; y < 4; y++)
-                dc.DrawLine(new Pen(Brushes.White), new Point(1, y), new Point(4, y));
+            SetOrigin(dc, 1, 1);
+            for (int y = 0; y < 5; y += 2)
+                dc.DrawLine(new Pen(Brushes.White), new Point(0, y), new Point(4, y));
 
-            for (int x = 1; x < 4; x++)
-                dc.DrawLine(new Pen(Brushes.White), new Point(x, 1), new Point(x, 4));
+            for (int x = 0; x < 5; x += 2)
+                dc.DrawLine(new Pen(Brushes.White), new Point(x, 0), new Point(x, 4));
 
-            // assert every line was crossed
-            for (ushort y = 1; y < 4; y++)
-            for (ushort x = 1; x < 4; x++)
-            {
-                Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "┼");
-                Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.White);
-            }
+            // line 1
+            Assert.IsTrue(buffer[1, 1].Foreground.Symbol.Text == "┌");
+            Assert.IsTrue(buffer[2, 1].Foreground.Symbol.Text == "─");
+            Assert.IsTrue(buffer[3, 1].Foreground.Symbol.Text == "┬");
+            Assert.IsTrue(buffer[4, 1].Foreground.Symbol.Text == "─");
+            Assert.IsTrue(buffer[5, 1].Foreground.Symbol.Text == "┐");
+
+            // line 2 
+            Assert.IsTrue(buffer[1, 2].Foreground.Symbol.Text == "│");
+            Assert.IsTrue(buffer[2, 2].Foreground.Symbol.Text == " ");
+            Assert.IsTrue(buffer[3, 2].Foreground.Symbol.Text == "│");
+            Assert.IsTrue(buffer[4, 2].Foreground.Symbol.Text == " ");
+            Assert.IsTrue(buffer[5, 2].Foreground.Symbol.Text == "│");
+
+            // line 3
+            Assert.IsTrue(buffer[1, 3].Foreground.Symbol.Text == "├");
+            Assert.IsTrue(buffer[2, 3].Foreground.Symbol.Text == "─");
+            Assert.IsTrue(buffer[3, 3].Foreground.Symbol.Text == "┼");
+            Assert.IsTrue(buffer[4, 3].Foreground.Symbol.Text == "─");
+            Assert.IsTrue(buffer[5, 3].Foreground.Symbol.Text == "┤");
 
 
-            // make sure no lines outside the bounds
-            for (ushort i = 0; i < 5; i++)
-            {
-                Assert.IsTrue(buffer[0, i].Foreground.Symbol.Text == " ");
-                Assert.IsTrue(buffer[i, 0].Foreground.Symbol.Text == " ");
-                Assert.IsTrue(buffer[5, i].Foreground.Symbol.Text == " ");
-                Assert.IsTrue(buffer[i, 5].Foreground.Symbol.Text == " ");
-            }
+            // line 4
+            Assert.IsTrue(buffer[1, 4].Foreground.Symbol.Text == "│");
+            Assert.IsTrue(buffer[2, 4].Foreground.Symbol.Text == " ");
+            Assert.IsTrue(buffer[3, 4].Foreground.Symbol.Text == "│");
+            Assert.IsTrue(buffer[4, 4].Foreground.Symbol.Text == " ");
+            Assert.IsTrue(buffer[5, 4].Foreground.Symbol.Text == "│");
+
+            // line 5
+            Assert.IsTrue(buffer[1, 5].Foreground.Symbol.Text == "└");
+            Assert.IsTrue(buffer[2, 5].Foreground.Symbol.Text == "─");
+            Assert.IsTrue(buffer[3, 5].Foreground.Symbol.Text == "┴");
+            Assert.IsTrue(buffer[4, 5].Foreground.Symbol.Text == "─");
+            Assert.IsTrue(buffer[5, 5].Foreground.Symbol.Text == "┘");
         }
 
         [Test]
@@ -264,34 +322,39 @@ namespace Consolonia.Core.Tests
             var consoleWindow = new ConsoleWindow();
             PixelBuffer buffer = consoleWindow.PixelBuffer;
             var dc = new DrawingContextImpl(consoleWindow);
-            ushort left = 1;
-            ushort top = 1;
+            SetOrigin(dc, 1, 1);
+            ushort left = 0;
+            ushort top = 0;
             int width = 3;
             int height = 3;
             int right = left + width;
             int bottom = top + height;
             dc.DrawRectangle(Brushes.Blue, null, new Rect(left, top, width, height));
 
-            for (ushort y = 0; y <= right; y++)
-            for (ushort x = 0; x <= right; x++)
-                if (x == 0 || x == right)
-                {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
-                }
-                else if (y == 0 || y == bottom)
-                {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
-                }
-                else
-                {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
+            top++;
+            left++;
+            bottom++;
+            right++;
+            for (ushort y = 0; y <= bottom; y++)
+                for (ushort x = 0; x <= right; x++)
+                    if (x == 0 || x == right)
+                    {
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
+                    }
+                    else if (y == 0 || y == bottom)
+                    {
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
+                    }
+                    else
+                    {
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
         }
 
         [Test]
@@ -300,87 +363,93 @@ namespace Consolonia.Core.Tests
             var consoleWindow = new ConsoleWindow();
             PixelBuffer buffer = consoleWindow.PixelBuffer;
             var dc = new DrawingContextImpl(consoleWindow);
-            ushort left = 1;
-            ushort top = 1;
+            SetOrigin(dc, 1, 1);
+            ushort left = 0;
+            ushort top = 0;
             int width = 3;
             int height = 3;
             int right = left + width;
             int bottom = top + height;
             dc.DrawRectangle(Brushes.Blue, new Pen(Brushes.Red), new Rect(left, top, width, height));
 
-            for (ushort y = 0; y <= height + 1; y++)
-            for (ushort x = 0; x <= width + 1; x++)
-                if (x == 0 || x == right + 1 ||
-                    y == 0 || y == bottom + 1)
-                {
-                    // outside of box
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
-                }
-                else if (x == left && y == top)
-                {
-                    // upper left corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "┌");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == right && y == top)
-                {
-                    // upper right corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "┐");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == right && y == bottom)
-                {
-                    // lower right corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "┘");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == left && y == bottom)
-                {
-                    // lower left corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "└");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == left && y >= top && y < bottom)
-                {
-                    // left side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "│");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (y == top && x >= left && x < right)
-                {
-                    //top side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "─");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == right && y >= top && y < bottom)
-                {
-                    // right side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "│");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (y == bottom && x >= left && x < right)
-                {
-                    // bottom side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "─");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else
-                {
-                    // inside
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
+            top++;
+            left++;
+            bottom++;
+            right++;
+            for (ushort y = 0; y <= bottom; y++)
+                for (ushort x = 0; x <= right; x++)
+                    if (x == 0 || x == right +1||
+                        y == 0 || y == bottom + 1)
+                    {
+                        // outside of box
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
+                    }
+                    else if (x == left && y == top)
+                    {
+                        // upper left corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "┌");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (x == right && y == top)
+                    {
+                        // upper right corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "┐");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (x == right && y == bottom)
+                    {
+                        // lower right corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "┘");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (x == left && y == bottom)
+                    {
+                        // lower left corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "└");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (x == left && y >= top && y < bottom)
+                    {
+                        // left side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "│");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (y == top && x >= left + 1 && x < right - 1)
+                    {
+                        //top side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "─");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (x == right && y >= top && y < bottom)
+                    {
+                        // right side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "│");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (y == bottom && x >= left && x < right)
+                    {
+                        // bottom side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "─");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if ((x >= left+1 && x < right - 1) ||
+                             (y >= top+1 && y < bottom-1))
+                    {
+                        // inside
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
         }
 
         [Test]
@@ -389,8 +458,9 @@ namespace Consolonia.Core.Tests
             var consoleWindow = new ConsoleWindow();
             PixelBuffer buffer = consoleWindow.PixelBuffer;
             var dc = new DrawingContextImpl(consoleWindow);
-            ushort left = 1;
-            ushort top = 1;
+            SetOrigin(dc, 1, 1);
+            ushort left = 0;
+            ushort top = 0;
             int width = 3;
             int height = 3;
             int right = left + width;
@@ -398,84 +468,89 @@ namespace Consolonia.Core.Tests
             var brush = new LineBrush { Brush = Brushes.Red, LineStyle = LineStyle.DoubleLine };
             dc.DrawRectangle(Brushes.Blue, new Pen(brush), new Rect(left, top, width, height));
 
-            for (ushort y = 0; y <= height + 1; y++)
-            for (ushort x = 0; x <= width + 1; x++)
-                if (x == 0 || x == right + 1 ||
-                    y == 0 || y == bottom + 1)
-                {
-                    // outside of box
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
-                }
-                else if (x == left && y == top)
-                {
-                    // upper left corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "╔");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == right && y == top)
-                {
-                    // upper right corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "╗");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == right && y == bottom)
-                {
-                    // lower right corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "╝");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == left && y == bottom)
-                {
-                    // lower left corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "╚");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == left && y >= top && y < bottom)
-                {
-                    // left side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "║");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (y == top && x >= left && x < right)
-                {
-                    //top side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "═");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == right && y >= top && y < bottom)
-                {
-                    // right side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "║");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (y == bottom && x >= left && x < right)
-                {
-                    // bottom side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "═");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else
-                {
-                    // inside
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
+            top++;
+            left++;
+            bottom++;
+            right++;
+            for (ushort y = 0; y <= bottom; y++)
+                for (ushort x = 0; x <= right; x++)
+                    if (x == 0 || x == right + 1 ||
+                        y == 0 || y == bottom + 1)
+                    {
+                        // outside of box
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
+                    }
+                    else if (x == left && y == top)
+                    {
+                        // upper left corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "╔");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (x == right && y == top)
+                    {
+                        // upper right corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "╗");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (x == right && y == bottom)
+                    {
+                        // lower right corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "╝");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (x == left && y == bottom)
+                    {
+                        // lower left corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "╚");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (x == left && y >= top && y < bottom)
+                    {
+                        // left side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "║");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (y == top && x >= left && x < right)
+                    {
+                        //top side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "═");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (x == right && y >= top && y < bottom)
+                    {
+                        // right side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "║");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if (y == bottom && x >= left && x < right)
+                    {
+                        // bottom side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "═");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
+                    else if ((x >= left + 1 && x < right - 1) ||
+                             (y >= top + 1 && y < bottom - 1))
+                    {
+                        // inside
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    }
         }
 
         internal static void DrawText(DrawingContextImpl dc, ushort x, ushort y, string text, IBrush brush)
         {
-            dc.Transform = new Matrix(1, 0, 0, 1, x, y);
+            SetOrigin(dc, x, y);
             var platformRender = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>();
             var textShaper = AvaloniaLocator.Current.GetService<ITextShaperImpl>();
             var fontManager = AvaloniaLocator.Current.GetService<IFontManagerImpl>();
@@ -494,6 +569,11 @@ namespace Consolonia.Core.Tests
             dc.DrawGlyphRun(brush, glyphRunImpl);
         }
 
+        internal static PixelBufferCoordinate SetOrigin(DrawingContextImpl dc, ushort x, ushort y)
+        {
+            dc.Transform = new Matrix(1, 0, 0, 1, x, y);
+            return new PixelBufferCoordinate(x, y);
+        }
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)

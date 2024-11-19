@@ -304,35 +304,25 @@ namespace Consolonia.Core.Drawing
         {
             if (pen.Thickness == 0) return;
 
+            if (pen.Thickness == UnderlineThickness || pen.Thickness == StrikethroughThickness)
+            {
+                if (line.Vertical)
+                    throw new NotSupportedException("Vertical strikethrough or underline text decorations is not supported.");
+
+                // horizontal lines with thickness larger than one are text decorations
+                ApplyTextDecorationLineInternal(pen, line);
+                return;
+            }
+
+            DrawRectangleLineInternal(pen, line);
+        }
+
+        private void ApplyTextDecorationLineInternal(IPen pen, Line line)
+        {
             line = TransformLineInternal(line);
 
             Point head = line.PStart;
-            if (pen.Brush is MoveConsoleCaretToPositionBrush)
-            {
-                CurrentClip.ExecuteWithClipping(head,
-                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
-                return;
-            }
 
-            if (line.Vertical == false && pen.Thickness > 2)
-            {
-                // horizontal lines with thickness larger than one are text decorations
-                ApplyTextDecorationLineInternal(ref head, pen, line);
-                return;
-            }
-
-            var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
-            if (extractColorCheckPlatformSupported == null)
-                return;
-
-            var color = (Color)extractColorCheckPlatformSupported;
-
-            byte pattern = (byte)(line.Vertical ? 0b1010 : 0b0101);
-            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length); //line
-        }
-
-        private void ApplyTextDecorationLineInternal(ref Point head, IPen pen, Line line)
-        {
             TextDecorationLocation textDecoration = pen.Thickness switch
             {
                 UnderlineThickness => TextDecorationLocation.Underline,
