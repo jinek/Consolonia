@@ -1,8 +1,8 @@
 #nullable enable
 using Avalonia;
 using Avalonia.Controls;
-using Consolonia.PreviewHost;
 #if DEBUG
+using Consolonia.PreviewHost;
 using System;
 using System.Diagnostics;
 using System.IO;
