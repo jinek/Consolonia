@@ -93,7 +93,7 @@ namespace Consolonia.Designer
             set => SetValue(MonitorChangesProperty, value);
         }
 
-  
+
         protected void Dispose(bool disposing)
         {
             if (!_disposedValue)
@@ -245,10 +245,7 @@ namespace Consolonia.Designer
                             Debug.WriteLine($"Error deserializing pixel buffer: {ex.Message}");
                             if (_process != null)
                             {
-                                if (!_process.HasExited)
-                                {
-                                    _process.Kill();
-                                }
+                                if (!_process.HasExited) _process.Kill();
                                 _process.Dispose();
                                 _process = null;
                                 return;
@@ -330,6 +327,7 @@ namespace Consolonia.Designer
                 _charWidth = Math.Ceiling(runMeasure.Size.Width);
                 _charHeight = Math.Ceiling(runMeasure.Size.Height);
             }
+
             if (_charWidth == 0)
                 _charWidth = 10;
             if (_charHeight == 0)
@@ -353,7 +351,7 @@ namespace Consolonia.Designer
                     iStart += 16;
                     iEnd = xaml.IndexOf("\"", iStart, StringComparison.Ordinal);
                     num = xaml.Substring(iStart, iEnd - iStart);
-                    _ = ushort.TryParse(num, result: out designHeight);
+                    _ = ushort.TryParse(num, out designHeight);
                 }
             }
 
@@ -449,7 +447,5 @@ namespace Consolonia.Designer
             }
         }
 #endif
-
     }
 }
-
