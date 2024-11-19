@@ -4,7 +4,6 @@ using Avalonia.Controls;
 #if DEBUG
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -107,7 +106,20 @@ namespace Consolonia.Designer
             else
                 xamlPath = FileName;
 
-            string xaml = File.ReadAllText(xamlPath);
+
+            string? xaml;
+#pragma warning disable CA1031 // Do not catch general exception types
+            try
+            {
+                xaml = File.ReadAllText(xamlPath);
+                ArgumentNullException.ThrowIfNull(xaml);
+            }
+            catch (Exception ex)
+            {
+                Content = new TextBlock { Text = $"Unable to load XAML file. {ex.Message}", Foreground = Brushes.Red };
+                return;
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
 
             ComputeCharWidth();
             var (designWidth, designHeight) = GetDesignWidthAndHeight(xaml);
@@ -178,9 +190,20 @@ namespace Consolonia.Designer
                             var buffer = JsonConvert.DeserializeObject<PixelBuffer>(line)!;
                             Dispatcher.UIThread.Invoke(() => this.Content = RenderPixelBuffer(buffer));
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             // process was probably shut down, we continue to check the proces.
+                            Debug.WriteLine($"Error deserializing pixel buffer: {ex.Message}");
+                            if (_process != null)
+                            {
+                                if (!_process.HasExited)
+                                {
+                                    _process.Kill();
+                                }
+                                _process.Dispose();
+                                _process = null;
+                                return;
+                            }
                         }
 #pragma warning restore CA1031 // Do not catch general exception types
                     }
@@ -258,6 +281,10 @@ namespace Consolonia.Designer
                 _charWidth = Math.Ceiling(runMeasure.Size.Width);
                 _charHeight = Math.Ceiling(runMeasure.Size.Height);
             }
+            if (_charWidth == 0)
+                _charWidth = 10;
+            if (_charHeight == 0)
+                _charHeight = 20;
         }
 
 
@@ -271,13 +298,13 @@ namespace Consolonia.Designer
                 iStart += 15;
                 var iEnd = xaml.IndexOf("\"", iStart, StringComparison.Ordinal);
                 string num = xaml.Substring(iStart, iEnd - iStart);
-                designWidth = ushort.Parse(num, CultureInfo.InvariantCulture);
+                _ = ushort.TryParse(num, out designWidth);
                 iStart = xaml.IndexOf("d:DesignHeight=\"", StringComparison.Ordinal);
                 {
                     iStart += 16;
                     iEnd = xaml.IndexOf("\"", iStart, StringComparison.Ordinal);
                     num = xaml.Substring(iStart, iEnd - iStart);
-                    designHeight = ushort.Parse(num, CultureInfo.InvariantCulture);
+                    _ = ushort.TryParse(num, result: out designHeight);
                 }
             }
             return (designWidth, designHeight);
@@ -372,7 +399,7 @@ namespace Consolonia.Designer
             }
         }
 #endif
-        protected virtual void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (!_disposedValue)
             {
@@ -396,11 +423,11 @@ namespace Consolonia.Designer
         }
 
         // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        ~ConsolePreview()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: false);
-        }
+        //~ConsolePreview()
+        //{
+        //    // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //    Dispose(disposing: false);
+        //}
 
         public void Dispose()
         {

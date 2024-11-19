@@ -20,8 +20,8 @@ namespace Consolonia.Gallery
         public App()
         {
             // Styles.Add(new TurboVisionTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/TurboVisionDark/TurboVisionDark.axaml")));
-            // Styles.Add(new MaterialTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/Material/Material.axaml")));
-            Styles.Add(new MaterialTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/Fluent/Fluent.axaml")));
+            Styles.Add(new MaterialTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/Material/Material.axaml")));
+            // Styles.Add(new FluentTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/Fluent/Fluent.axaml")));
         }
 
         public override void OnFrameworkInitializationCompleted()
