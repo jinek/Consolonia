@@ -1,5 +1,6 @@
 using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -12,13 +13,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (reader != null && reader.Value != null)
-            {
-                if (reader.ValueType == typeof(string))
-                    return new SimpleSymbol((string)reader.Value);
-                else if (reader.ValueType == typeof(long))
-                    return new DrawingBoxSymbol((byte)(long)reader.Value);
-            }
+            if (reader.ValueType == typeof(string))
+                return new SimpleSymbol((string)reader.Value);
+            else if (reader.ValueType == typeof(long))
+                return new DrawingBoxSymbol((byte)(long)reader.Value);
             return null;
         }
 

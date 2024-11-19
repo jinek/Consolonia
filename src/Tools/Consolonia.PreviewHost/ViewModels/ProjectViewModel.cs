@@ -53,12 +53,11 @@ public partial class ProjectViewModel : ObservableObject
                 {
                     if (!String.IsNullOrEmpty(xamlFile) && xamlFile.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
                     {
-                        Dispatcher.UIThread.Invoke(() =>
-                        {
-                            this.Current = _files.SingleOrDefault(f => f.FullName!.Equals(xamlFile, StringComparison.OrdinalIgnoreCase))
-                                ?? _files.SingleOrDefault(f => f.Name!.Equals(Path.GetFileName(xamlFile), StringComparison.OrdinalIgnoreCase))
-                                ?? throw new ArgumentException($"{xamlFile} not found in project");
-                        });
+                        var file = _files.SingleOrDefault(f => f.FullName!.Equals(xamlFile, StringComparison.OrdinalIgnoreCase))
+                            ?? _files.SingleOrDefault(f => f.Name!.Equals(Path.GetFileName(xamlFile), StringComparison.OrdinalIgnoreCase))
+                            ?? throw new ArgumentException($"{xamlFile} not found in project");
+                     
+                        Dispatcher.UIThread.Invoke(() => this.Current = file);
                     }
 
                     xamlFile = Console.ReadLine();

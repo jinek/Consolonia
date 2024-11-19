@@ -52,6 +52,7 @@ namespace Consolonia.Designer
         public ConsolePreview()
         {
 #if DEBUG
+            _process = null;
             this.FontFamily = FontFamily.Parse("Cascadia Mono");
             Initialized += (_, _) => LoadXaml();
 
@@ -211,7 +212,7 @@ namespace Consolonia.Designer
                     var pixel = buffer[x, y];
 
                     composer.WritePixel(pixel);
-                    var widthAdjust = (pixel.Foreground.Symbol.Width == 0) ? (ushort)1 : (ushort)pixel.Foreground.Symbol.Width;
+                    ushort widthAdjust = (pixel.Foreground.Symbol.Width == 0) ? (ushort)1 : pixel.Foreground.Symbol.Width;
                     x += widthAdjust;
                 }
                 composer.Flush();

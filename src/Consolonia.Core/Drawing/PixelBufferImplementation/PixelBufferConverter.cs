@@ -24,7 +24,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             {
                 for (ushort x = 0; x < width; x++)
                 {
-                    var pixel = serializer.Deserialize<Pixel>(pixels[i++]!.CreateReader());
+                    var rdr = pixels[i++]!.CreateReader()!;
+                    var pixel = serializer.Deserialize<Pixel>(rdr);
                     ArgumentNullException.ThrowIfNull(pixel);
                     pixelBuffer[x, y] = pixel;
                 }
