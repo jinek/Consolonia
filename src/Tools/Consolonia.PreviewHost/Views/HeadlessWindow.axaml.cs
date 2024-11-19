@@ -23,15 +23,21 @@ public partial class HeadlessWindow : Window
             this.Close();
         else if (e.Key == Avalonia.Input.Key.Left)
         {
-            var i = Model.Project.Files.IndexOf(Model.Project.Current);
-            if (i > 0)
-                Model.Project.Current = Model.Project.Files[i - 1];
+            if (Model.Project != null && Model.Project.Files != null && Model.Project.Current != null)
+            {
+                var i = Model.Project.Files.IndexOf(Model.Project.Current);
+                if (i >= 0)
+                    Model.Project.Current = Model.Project.Files[i - 1];
+            }
         }
         else if (e.Key == Avalonia.Input.Key.Right)
         {
-            var i = Model.Project.Files.IndexOf(Model.Project.Current);
-            if (i < Model.Project.Files.Count - 1)
-                Model.Project.Current = Model.Project.Files[i + 1];
+            if (Model.Project != null && Model.Project.Files != null && Model.Project.Current != null)
+            {
+                var i = Model.Project.Files.IndexOf(Model.Project.Current);
+                if (i >= 0 && i < Model.Project.Files.Count - 1)
+                    Model.Project.Current = Model.Project.Files[i + 1];
+            }
         }
     }
 

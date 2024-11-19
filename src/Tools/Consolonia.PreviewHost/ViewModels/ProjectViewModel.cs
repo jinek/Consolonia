@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Runtime.Loader;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -41,23 +43,26 @@ public partial class ProjectViewModel : ObservableObject
             }
         };
 
-        Task.Run(() =>
+        var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
+        if (lifetime.Args!.Contains("--buffer"))
         {
-            while (true)
+            Task.Run(() =>
             {
-                var xamlFile = Console.ReadLine();
-                if (xamlFile.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
+                while (true)
                 {
-                    Dispatcher.UIThread.Invoke(() =>
+                    var xamlFile = Console.ReadLine();
+                    if (!String.IsNullOrEmpty(xamlFile) && xamlFile.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
                     {
-                        this.Current = _files.SingleOrDefault(f => f.FullName!.Equals(xamlFile, StringComparison.OrdinalIgnoreCase))
-                            ?? _files.SingleOrDefault(f => f.Name!.Equals(Path.GetFileName(xamlFile), StringComparison.OrdinalIgnoreCase))
-                            ?? throw new ArgumentException($"{xamlFile} not found in project", nameof(xamlFile));
-                    });
+                        Dispatcher.UIThread.Invoke(() =>
+                        {
+                            this.Current = _files.SingleOrDefault(f => f.FullName!.Equals(xamlFile, StringComparison.OrdinalIgnoreCase))
+                                ?? _files.SingleOrDefault(f => f.Name!.Equals(Path.GetFileName(xamlFile), StringComparison.OrdinalIgnoreCase))
+                                ?? throw new ArgumentException($"{xamlFile} not found in project");
+                        });
+                    }
                 }
-            }
-        });
-
+            });
+        }
     }
 
     [ObservableProperty]
@@ -67,7 +72,7 @@ public partial class ProjectViewModel : ObservableObject
     private ObservableCollection<XamlFileViewModel> _files = new ObservableCollection<XamlFileViewModel>();
 
     [ObservableProperty]
-    private XamlFileViewModel _current;
+    private XamlFileViewModel? _current;
 
     public Assembly Assembly { get; set; }
 

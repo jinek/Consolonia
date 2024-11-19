@@ -1,11 +1,8 @@
 using Avalonia.Controls;
-using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Avalonia.Threading;
-using System.Xml;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia;
 using Avalonia.Media;
 
@@ -13,7 +10,6 @@ namespace Consolonia.PreviewHost.ViewModels;
 
 public partial class XamlFileViewModel : ObservableObject, IDisposable
 {
-    private bool _loaded;
     private FileSystemWatcher? _fileWatcher;
     private bool _disposedValue;
 

@@ -19,7 +19,7 @@
         <Grid Grid.Row="1" RowDefinitions="*" ColumnDefinitions="Auto 2 *" Background="#ff09161e">
             <ListBox x:Name="FilesListBox" Background="{DynamicResource ThemeBackgroundBrush}"
                      ItemsSource="{Binding Project.Files}"
-                     MinWidth="30"
+                     MinWidth="30" SelectedItem="{Binding Project.Current}"
                      VerticalAlignment="Stretch" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -33,7 +33,7 @@
 
             <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" >
                 <ContentControl Grid.Column="2" Content="{Binding Content}" Background="{DynamicResource ThemeBackgroundBrush}"
-                            DataContext="{Binding Current}"/>
+                            DataContext="{Binding Project.Current}"/>
             </StackPanel>
         </Grid>
     </Grid>

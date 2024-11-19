@@ -117,7 +117,6 @@ namespace Consolonia.Designer
 
             if (_process == null)
             {
-
                 var previewHostPath = typeof(Consolonia.PreviewHost.App).Assembly.Location.Replace(".dll", ".exe", StringComparison.OrdinalIgnoreCase);
                 var processStartInfo = new ProcessStartInfo()
                 {
@@ -129,20 +128,29 @@ namespace Consolonia.Designer
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     RedirectStandardError = false,
-                    CreateNoWindow = false,
+                    CreateNoWindow = true,
                 };
                 _process = Process.Start(processStartInfo);
 
-                _process!.Exited += (_, _) =>
+                if (Design.IsDesignMode)
                 {
-                    // restart the process
-                    _process.Start();
-                    ListenForChanges();
-                };
+                    var line = _process!.StandardOutput.ReadLine();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        Debug.WriteLine("BUFFER RECEIVED");
+                        var buffer = JsonConvert.DeserializeObject<PixelBuffer>(line)!;
+                        Dispatcher.UIThread.Invoke(() => this.Content = RenderPixelBuffer(buffer));
+                    }
+                    _process.Kill();
+                    _process.Dispose();
+                    _process = null;
+                    return;
+                }
                 ListenForChanges();
             }
             else
             {
+                // send request to previewHost to load the new xaml file.
                 _process.StandardInput.WriteLine(xamlPath);
             }
         }

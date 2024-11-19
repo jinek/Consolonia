@@ -6,7 +6,7 @@
                     mc:Ignorable="d" 
                     xmlns:v="using:Consolonia.Designer" >
     <Design.PreviewWith>
-        <dh:ConsolePreview Columns="50" Rows="50" FileName="GalleryTextBlock.axaml"/>
+        <dh:ConsolePreview Columns="80" Rows="40" FileName="GalleryTextBlock.axaml"/>
     </Design.PreviewWith>
 
 </ResourceDictionary>
