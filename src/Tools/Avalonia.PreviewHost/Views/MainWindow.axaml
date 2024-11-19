@@ -8,7 +8,7 @@
         x:Class="Avalonia.PreviewHost.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/consolonia-logo.ico"
-        Title="PreviewHost">
+        Title="{Binding Project}">
 
     <Grid RowDefinitions="Auto *" Background="#ff09161e">
         <Menu Background="LightGray" >
@@ -24,7 +24,7 @@
                      MinWidth="100" 
                      VerticalAlignment="Stretch" >
                 <ListBox.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate d:DataType="vm:FileViewModel">
                         <TextBlock Text="{Binding Name}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -36,8 +36,8 @@
 
             <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"> 
                 <v:ConsolePreview x:Name="PreviewPane" Background="#FF101020" 
-                                  Grid.Column="2"
                                   DataContext="{Binding SelectedItem, ElementName=FilesListBox}"
+                                  d:DataType="vm:FileViewModel"
                                   FileName="{Binding FullName}"
                                   Columns="80" Rows="40" MonitorChanges="true"
                                   HorizontalAlignment="Center" VerticalAlignment="Center" />

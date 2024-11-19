@@ -29,7 +29,7 @@
             </ListBox>
 
             <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" >
-                <ContentControl Grid.Column="2" Content="{Binding Content}" Background="{DynamicResource ThemeBackgroundBrush}"
+                <ContentControl Content="{Binding Content}" Background="{DynamicResource ThemeBackgroundBrush}"
                             DataContext="{Binding Project.Current}"/>
             </StackPanel>
         </Grid>
