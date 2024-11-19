@@ -114,10 +114,9 @@ namespace Consolonia.Designer
             var cols = Columns;
             var rows = Rows;
             if (cols == 0)
-                cols = designWidth /= (ushort)_charWidth;
+                cols = (ushort)(designWidth / (ushort)_charWidth);
             if (rows == 0)
-                rows = designHeight /= (ushort)_charHeight;
-            Debug.WriteLine($"{cols} {rows}");
+                rows = (ushort)(designHeight / (ushort)_charHeight);
 
             if (_process == null)
             {

@@ -19,6 +19,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             var height = jObject[nameof(PixelBuffer.Height)]!.Value<ushort>();
             var pixelBuffer = new PixelBuffer(width, height);
             var pixels = jObject["Pixels"];
+            ArgumentNullException.ThrowIfNull(pixels);
             int i = 0;
             for (ushort y = 0; y < height; y++)
             {
