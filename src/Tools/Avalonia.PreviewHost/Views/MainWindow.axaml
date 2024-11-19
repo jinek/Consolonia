@@ -24,13 +24,13 @@
                      MinWidth="100" 
                      VerticalAlignment="Stretch" >
                 <ListBox.ItemTemplate>
-                    <DataTemplate d:DataType="vm:FileViewModel">
-                        <TextBlock Text="{Binding Name}"/>
+                    <DataTemplate >
+                        <TextBlock Text="{Binding Name}" d:DataType="vm:FIleViewModel"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
             
-            <GridSplitter 
+            <GridSplitter Grid.Column="1"
                 Width="5" ShowsPreview="True"
                 HorizontalAlignment="Stretch" Background="Black"/>
 
