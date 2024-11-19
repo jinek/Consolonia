@@ -1,6 +1,6 @@
 using Avalonia;
-using Avalonia.Controls.Primitives;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Styling;
@@ -26,21 +26,21 @@ namespace Consolonia.Core.Infrastructure
                 // For previewing in Visual Studio designer without Design.PreviewWith tag we need to set default font and colors
                 // get anything to render. This is not perfect, but nicer than getting a big error screen.
                 IBrush foregroundBrush = Brushes.White;
-                if (this.Styles.TryGetResource("ThemeForegroundBrush", null, out var brush))
+                if (Styles.TryGetResource("ThemeForegroundBrush", null, out object brush))
                     foregroundBrush = (IBrush)brush;
 
                 IBrush backgroundBrush = Brushes.Black;
-                if (!this.Styles.TryGetResource("ThemeBackgroundBrush", null, out brush))
+                if (!Styles.TryGetResource("ThemeBackgroundBrush", null, out brush))
                     backgroundBrush = (IBrush)brush;
 
-                this.Styles.Add(new Style(x => x.Is<TemplatedControl>())
+                Styles.Add(new Style(x => x.Is<TemplatedControl>())
                 {
                     Setters =
                     {
                         new Setter(TemplatedControl.FontSizeProperty, 16.0),
                         new Setter(TemplatedControl.FontFamilyProperty, new FontFamily("Cascadia Mono")),
                         new Setter(TemplatedControl.ForegroundProperty, foregroundBrush),
-                        new Setter(TemplatedControl.BackgroundProperty, backgroundBrush),
+                        new Setter(TemplatedControl.BackgroundProperty, backgroundBrush)
                     }
                 });
 
@@ -57,8 +57,6 @@ namespace Consolonia.Core.Infrastructure
                 //    }
                 //});
             }
-
-
         }
     }
 }

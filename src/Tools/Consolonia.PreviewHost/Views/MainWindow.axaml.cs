@@ -1,17 +1,20 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Consolonia.PreviewHost.ViewModels;
 
-namespace Consolonia.PreviewHost.Views;
-
-public partial class MainWindow : Window
+namespace Consolonia.PreviewHost.Views
 {
-    public MainWindow()
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
-    }
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
 
-    private void OnOpen(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
+        public ProjectViewModel Model => (ProjectViewModel)DataContext!;
+
+        private void OnOpen(object? sender, RoutedEventArgs e)
+        {
 #if IStorageProvider
         // Get top level from the current control. Alternatively, you can use Window reference instead.
         var topLevel = TopLevel.GetTopLevel(this);
@@ -25,7 +28,7 @@ public partial class MainWindow : Window
             {
                 new FilePickerFileType("C# Project")
                 {
-                    Patterns= new List<string> { "*.csproj" }
+                    Patterns = new List<string> { "*.csproj" }
                 },
             },
         }).ConfigureAwait(false);
@@ -44,13 +47,11 @@ public partial class MainWindow : Window
             Model.Files.Add(new XamlFileViewModel(file, null));
         }
 #endif
-    }
+        }
 
-    public ProjectViewModel Model => (ProjectViewModel)DataContext!;
-
-    private void OnExit(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        this.Close();
+        private void OnExit(object? sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
-

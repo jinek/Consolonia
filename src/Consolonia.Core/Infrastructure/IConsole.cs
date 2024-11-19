@@ -28,6 +28,7 @@ namespace Consolonia.Core.Infrastructure
 
         void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style,
             FontWeight weight, TextDecorationLocation? textDecoration, string str);
+
         void WriteText(string str);
 
         event Action Resized;

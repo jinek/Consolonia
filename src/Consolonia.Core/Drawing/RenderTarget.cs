@@ -36,6 +36,8 @@ namespace Consolonia.Core.Drawing
         {
         }
 
+        public PixelBuffer Buffer => _consoleWindow.PixelBuffer;
+
         public void Dispose()
         {
             _consoleWindow.Resized -= OnResized;
@@ -54,8 +56,6 @@ namespace Consolonia.Core.Drawing
         public Vector Dpi { get; } = Vector.One;
         public PixelSize PixelSize { get; } = new(1, 1);
         public int Version => 0;
-
-        public PixelBuffer Buffer => _consoleWindow.PixelBuffer;
 
         void IDrawingContextLayerImpl.Blit(IDrawingContextImpl context)
         {
@@ -87,11 +87,11 @@ namespace Consolonia.Core.Drawing
         private static Pixel?[,] InitializeCache(ushort width, ushort height)
         {
             var cache = new Pixel?[width, height];
-            
+
             // initalize the cache with Pixel.Empty as it literally means nothing
             for (ushort y = 0; y < height; y++)
-                for (ushort x = 0; x < width; x++)
-                    cache[x, y] = Pixel.Empty;
+            for (ushort x = 0; x < width; x++)
+                cache[x, y] = Pixel.Empty;
             return cache;
         }
 
@@ -105,34 +105,34 @@ namespace Consolonia.Core.Drawing
             var flushingBuffer = new FlushingBuffer(_console);
 
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-                for (ushort x = 0; x < pixelBuffer.Width;)
+            for (ushort x = 0; x < pixelBuffer.Width;)
+            {
+                Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
+
+                if (pixel.IsCaret)
                 {
-                    Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
-
-                    if (pixel.IsCaret)
-                    {
-                        if (caretPosition != null)
-                            throw new InvalidOperationException("Caret is already shown");
-                        caretPosition = new PixelBufferCoordinate(x, y);
-                    }
-
-                    /* todo: There is not IWindowImpl.Invalidate anymore.
-                         if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                            rect.ContainsExclusive(new Point(x, y)))) continue;*/
-
-                    //todo: indexOutOfRange during resize
-                    if (_cache[x, y] == pixel)
-                    {
-                        x++;
-                        continue;
-                    }
-
-                    _cache[x, y] = pixel;
-
-                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
-
-                    x++;
+                    if (caretPosition != null)
+                        throw new InvalidOperationException("Caret is already shown");
+                    caretPosition = new PixelBufferCoordinate(x, y);
                 }
+
+                /* todo: There is not IWindowImpl.Invalidate anymore.
+                     if (!_consoleWindow.InvalidatedRects.Any(rect =>
+                        rect.ContainsExclusive(new Point(x, y)))) continue;*/
+
+                //todo: indexOutOfRange during resize
+                if (_cache[x, y] == pixel)
+                {
+                    x++;
+                    continue;
+                }
+
+                _cache[x, y] = pixel;
+
+                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+
+                x++;
+            }
 
             flushingBuffer.Flush();
 

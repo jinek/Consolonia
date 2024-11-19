@@ -2,41 +2,42 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using Consolonia.Designer;
 using Avalonia.PreviewHost.ViewModels;
 using Avalonia.PreviewHost.Views;
+using Consolonia.Designer;
 
-namespace Avalonia.PreviewHost;
-
-public class App : Application
+namespace Avalonia.PreviewHost
 {
-    public override void Initialize()
+    public class App : Application
     {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    public override void OnFrameworkInitializationCompleted()
-    {
-        // Line below is needed to remove Avalonia data validation.
-        // Without this line you will get duplicate validations from both Avalonia and CT
-        BindingPlugins.DataValidators.RemoveAt(0);
-
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        public override void Initialize()
         {
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainViewModel()
-            };
-            desktop.Exit += Desktop_Exit;
+            AvaloniaXamlLoader.Load(this);
         }
 
-        base.OnFrameworkInitializationCompleted();
-    }
+        public override void OnFrameworkInitializationCompleted()
+        {
+            // Line below is needed to remove Avalonia data validation.
+            // Without this line you will get duplicate validations from both Avalonia and CT
+            BindingPlugins.DataValidators.RemoveAt(0);
 
-    private void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
-    {
-        var desktop = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = new MainViewModel()
+                };
+                desktop.Exit += Desktop_Exit;
+            }
 
-        desktop!.MainWindow!.FindControl<ConsolePreview>("PreviewPane")?.Dispose();
+            base.OnFrameworkInitializationCompleted();
+        }
+
+        private void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+        {
+            var desktop = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+
+            desktop!.MainWindow!.FindControl<ConsolePreview>("PreviewPane")?.Dispose();
+        }
     }
 }

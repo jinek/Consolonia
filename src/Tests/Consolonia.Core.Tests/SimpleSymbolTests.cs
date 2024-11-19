@@ -156,7 +156,7 @@ namespace Consolonia.Core.Tests
         {
             ISymbol symbol = new SimpleSymbol("a");
             string json = JsonConvert.SerializeObject(symbol);
-            ISymbol deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            var deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));
         }
 
@@ -170,7 +170,7 @@ namespace Consolonia.Core.Tests
         {
             ISymbol symbol = new SimpleSymbol(text);
             string json = JsonConvert.SerializeObject(symbol);
-            ISymbol deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            var deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));
         }
 
@@ -179,7 +179,7 @@ namespace Consolonia.Core.Tests
         {
             ISymbol symbol = new SimpleSymbol();
             string json = JsonConvert.SerializeObject(symbol);
-            ISymbol deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            var deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));
         }
     }

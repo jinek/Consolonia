@@ -173,7 +173,7 @@ namespace Consolonia.Core.Tests
         public void JsonSerialization()
         {
             var pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red);
-            var json = JsonConvert.SerializeObject(pixelForeground);
+            string json = JsonConvert.SerializeObject(pixelForeground);
             var pixelForeground2 = JsonConvert.DeserializeObject<PixelForeground>(json);
             Assert.That(pixelForeground.Equals(pixelForeground2));
         }
@@ -182,8 +182,9 @@ namespace Consolonia.Core.Tests
         [Test]
         public void JsonSerialization2()
         {
-            var pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red, FontWeight.Bold, FontStyle.Italic, TextDecorationLocation.Underline);
-            var json = JsonConvert.SerializeObject(pixelForeground);
+            var pixelForeground = new PixelForeground(new SimpleSymbol('a'), Colors.Red, FontWeight.Bold,
+                FontStyle.Italic, TextDecorationLocation.Underline);
+            string json = JsonConvert.SerializeObject(pixelForeground);
             var pixelForeground2 = JsonConvert.DeserializeObject<PixelForeground>(json);
             Assert.That(pixelForeground.Equals(pixelForeground2));
         }
@@ -192,10 +193,9 @@ namespace Consolonia.Core.Tests
         public void JsonSerializationDefault()
         {
             var pixelForeground = new PixelForeground();
-            var json = JsonConvert.SerializeObject(pixelForeground);
+            string json = JsonConvert.SerializeObject(pixelForeground);
             var pixelForeground2 = JsonConvert.DeserializeObject<PixelForeground>(json);
             Assert.That(pixelForeground.Equals(pixelForeground2));
         }
-
     }
 }

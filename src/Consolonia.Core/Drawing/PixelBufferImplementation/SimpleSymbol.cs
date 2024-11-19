@@ -23,7 +23,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
         }
 
-        
+
         public SimpleSymbol(string glyph)
         {
             Text = glyph;
@@ -36,10 +36,17 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Width = Text.MeasureText();
         }
 
-        public string Text { get;  } 
+        public bool Equals(SimpleSymbol other)
+        {
+            if ((object)other is null)
+                return false;
 
-        [JsonIgnore]
-        public ushort Width { get; init; }
+            return Text.Equals(other.Text, StringComparison.Ordinal);
+        }
+
+        public string Text { get; }
+
+        [JsonIgnore] public ushort Width { get; init; }
 
         public bool IsWhiteSpace()
         {
@@ -49,14 +56,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public ISymbol Blend(ref ISymbol symbolAbove)
         {
             return symbolAbove.IsWhiteSpace() ? this : symbolAbove;
-        }
-
-        public bool Equals(SimpleSymbol other)
-        {
-            if ((object)other is null)
-                return false;
-
-            return Text.Equals(other.Text, StringComparison.Ordinal);
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)
@@ -71,19 +70,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static bool operator ==(SimpleSymbol left, SimpleSymbol right)
         {
-            if ((object)left is null)
-            {
-                return (object)right is null;
-            }
+            if ((object)left is null) return (object)right is null;
             return left.Equals(right);
         }
 
         public static bool operator !=(SimpleSymbol left, SimpleSymbol right)
         {
-            if ((object)left is null)
-            {
-                return (object)right is not null;
-            }
+            if ((object)left is null) return (object)right is not null;
 
             return !left.Equals(right);
         }

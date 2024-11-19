@@ -100,7 +100,7 @@ namespace Consolonia.Core.Tests
         public void JsonSerialization()
         {
             var pixelBackground = new PixelBackground(Colors.Red);
-            var json = JsonConvert.SerializeObject(pixelBackground);
+            string json = JsonConvert.SerializeObject(pixelBackground);
             var pixelBackground2 = JsonConvert.DeserializeObject<PixelBackground>(json);
             Assert.That(pixelBackground.Equals(pixelBackground2));
         }

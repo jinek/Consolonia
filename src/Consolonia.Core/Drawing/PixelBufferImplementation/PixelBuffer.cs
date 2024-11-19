@@ -21,12 +21,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Width = width;
             Height = height;
             _buffer = new Pixel[width, height];
-            
+
             // initialize the buffer with space so it draws any background color
             // blended into it.
             for (ushort y = 0; y < height; y++)
-                for (ushort x = 0; x < width; x++)
-                    _buffer[x, y] = Pixel.Space;
+            for (ushort x = 0; x < width; x++)
+                _buffer[x, y] = Pixel.Space;
         }
 
         public ushort Width { get; }
@@ -64,11 +64,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             set => _buffer[x, y] = value;
         }
 
-        [JsonIgnore]
-        public int Length => _buffer.Length;
+        [JsonIgnore] public int Length => _buffer.Length;
 
-        [JsonIgnore]
-        public Rect Size => new(0, 0, Width, Height);
+        [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
 
 
         public void Set(PixelBufferCoordinate point, Func<Pixel, Pixel> changeAction)
@@ -95,11 +93,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public void ForeachReadonly(Action<PixelBufferCoordinate, Pixel> action)
         {
             for (ushort j = 0; j < Height; j++)
-                for (ushort i = 0; i < Width; i++)
-                {
-                    Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
-                    action(new PixelBufferCoordinate(i, j), pixel);
-                }
+            for (ushort i = 0; i < Width; i++)
+            {
+                Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
+                action(new PixelBufferCoordinate(i, j), pixel);
+            }
         }
 
         private (ushort x, ushort y) ToXY(int i)

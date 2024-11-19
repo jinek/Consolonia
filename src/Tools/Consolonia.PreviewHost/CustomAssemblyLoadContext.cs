@@ -5,8 +5,7 @@ namespace Consolonia.PreviewHost
 {
     public class CustomAssemblyLoadContext : AssemblyLoadContext
     {
-
-        public CustomAssemblyLoadContext() : base(isCollectible: true)
+        public CustomAssemblyLoadContext() : base(true)
         {
         }
 

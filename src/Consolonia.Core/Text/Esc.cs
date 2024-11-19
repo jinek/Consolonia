@@ -32,16 +32,30 @@ namespace Consolonia.Core.Text
         public const string ShowCursor = "\u001b[?25h";
 
         // move cursor
-        public static string MoveCursorUp(int n) => $"\u001b[{n}A";
+        public static string MoveCursorUp(int n)
+        {
+            return $"\u001b[{n}A";
+        }
 
-        public static string MoveCursorDown(int n) => $"\u001b[{n}B";
+        public static string MoveCursorDown(int n)
+        {
+            return $"\u001b[{n}B";
+        }
 
-        public static string MoveCursorRight(int n) => $"\u001b[{n}C";
+        public static string MoveCursorRight(int n)
+        {
+            return $"\u001b[{n}C";
+        }
 
-        public static string MoveCursorLeft(int n) => $"\u001b[{n}D";
+        public static string MoveCursorLeft(int n)
+        {
+            return $"\u001b[{n}D";
+        }
 
         public static string SetCursorPosition(int x, int y)
-            => $"\u001b[{y + 1};{x + 1}f";
+        {
+            return $"\u001b[{y + 1};{x + 1}f";
+        }
 
         public static string Foreground(Color color)
         {
