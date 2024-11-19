@@ -367,7 +367,7 @@ namespace Consolonia.Core.Tests
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
                     Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
                 }
-                else if (y == bottom && x >= left && x < bottom)
+                else if (y == bottom && x >= left && x < right)
                 {
                     // bottom side
                     Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == "─");
