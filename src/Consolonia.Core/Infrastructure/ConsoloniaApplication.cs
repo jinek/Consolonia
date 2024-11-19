@@ -30,7 +30,7 @@ namespace Consolonia.Core.Infrastructure
                     foregroundBrush = (IBrush)brush;
 
                 IBrush backgroundBrush = Brushes.Black;
-                if (!Styles.TryGetResource("ThemeBackgroundBrush", null, out brush))
+                if (Styles.TryGetResource("ThemeBackgroundBrush", null, out brush))
                     backgroundBrush = (IBrush)brush;
 
                 Styles.Add(new Style(x => x.Is<TemplatedControl>())
