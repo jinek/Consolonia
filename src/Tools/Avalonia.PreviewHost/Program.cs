@@ -1,6 +1,6 @@
 using System;
 
-namespace Avalonia.PreviewHost.Desktop;
+namespace Avalonia.PreviewHost;
 
 class Program
 {

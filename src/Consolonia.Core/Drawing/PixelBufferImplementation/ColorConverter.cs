@@ -8,14 +8,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     {
         public override Color ReadJson(JsonReader reader, Type objectType, Color existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            if (Color.TryParse(reader.Value.ToString(), out var color))
+            if (Color.TryParse(reader.Value!.ToString(), out var color))
                 return color;
-            return Colors.Transparent;;
+            return Colors.Transparent;
         }
 
         public override void WriteJson(JsonWriter writer, Color value, JsonSerializer serializer)
         {
-            writer.WriteValue(value.ToString());
+            writer.WriteValue(value!.ToString());
         }
     }
 }

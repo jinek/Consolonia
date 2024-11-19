@@ -23,7 +23,7 @@ public partial class HeadlessWindow : Window
             this.Close();
         else if (e.Key == Avalonia.Input.Key.Left)
         {
-            if (Model.Project != null && Model.Project.Files != null && Model.Project.Current != null)
+            if (Model.Project != null && Model.Project.Current != null)
             {
                 var i = Model.Project.Files.IndexOf(Model.Project.Current);
                 if (i >= 0)
@@ -32,7 +32,7 @@ public partial class HeadlessWindow : Window
         }
         else if (e.Key == Avalonia.Input.Key.Right)
         {
-            if (Model.Project != null && Model.Project.Files != null && Model.Project.Current != null)
+            if (Model.Project != null && Model.Project.Current != null)
             {
                 var i = Model.Project.Files.IndexOf(Model.Project.Current);
                 if (i >= 0 && i < Model.Project.Files.Count - 1)
@@ -44,6 +44,10 @@ public partial class HeadlessWindow : Window
 
     private void ContentControl_DataContextChanged(object? sender, System.EventArgs e)
     {
+        // This is bs linter. How Do I disable this?
+        if (sender == null)
+            sender = this; 
+
         base.OnDataContextEndUpdate();
 
         var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;

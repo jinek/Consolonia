@@ -7,9 +7,6 @@ using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using Consolonia.Core.Text;
-using HarfBuzzSharp;
-using TextShaper = Consolonia.Core.Text.TextShaper;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {

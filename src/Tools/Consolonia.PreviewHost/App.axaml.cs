@@ -7,7 +7,7 @@ using Consolonia.PreviewHost.ViewModels;
 
 namespace Consolonia.PreviewHost
 {
-    public partial class App : ConsoloniaApplication
+    public class App : ConsoloniaApplication
     {
         static App()
         {
@@ -80,7 +80,7 @@ namespace Consolonia.PreviewHost
         {
             ArgumentNullException.ThrowIfNull(path);
             string? projectFile = null;
-            string projectFolder = Directory.Exists(path) ? path : Path.GetDirectoryName(path)!;
+            string? projectFolder = Directory.Exists(path) ? path : Path.GetDirectoryName(path);
             while (projectFolder != null)
             {
                 projectFile = Directory.GetFiles(projectFolder, "*.csproj").FirstOrDefault();
@@ -88,7 +88,7 @@ namespace Consolonia.PreviewHost
                 {
                     break;
                 }
-                projectFolder = Path.GetDirectoryName(projectFolder)!;
+                projectFolder = Path.GetDirectoryName(projectFolder);
             }
             ArgumentNullException.ThrowIfNull(projectFile);
             return projectFile!;

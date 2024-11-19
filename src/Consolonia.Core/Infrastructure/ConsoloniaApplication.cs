@@ -4,7 +4,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Styling;
-using Consolonia.Core.Drawing;
 
 namespace Consolonia.Core.Infrastructure
 {

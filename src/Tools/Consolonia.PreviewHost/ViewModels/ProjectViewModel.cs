@@ -46,11 +46,12 @@ public partial class ProjectViewModel : ObservableObject
         var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
         if (lifetime.Args!.Contains("--buffer"))
         {
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
-                while (true)
+                string? xamlFile = null;
+                do
                 {
-                    var xamlFile = Console.ReadLine();
+                    xamlFile = Console.ReadLine();
                     if (!String.IsNullOrEmpty(xamlFile) && xamlFile.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
                     {
                         Dispatcher.UIThread.Invoke(() =>
@@ -60,7 +61,7 @@ public partial class ProjectViewModel : ObservableObject
                                 ?? throw new ArgumentException($"{xamlFile} not found in project");
                         });
                     }
-                }
+                } while (!String.IsNullOrEmpty(xamlFile));
             });
         }
     }

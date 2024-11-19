@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
@@ -19,20 +20,23 @@ namespace Consolonia.Core.Tests
     }
 
     [TestFixture]
-    public class DrawingContextImplTests
+    public class DrawingContextImplTests : IDisposable
     {
+        private IDisposable _scope;
         private ClassicDesktopStyleApplicationLifetime _lifetime;
+        private bool _disposedValue;
 
         [OneTimeSetUp]
         public void Setup()
         {
-            var scope = AvaloniaLocator.EnterScope();
+            _scope = AvaloniaLocator.EnterScope();
             _lifetime = ApplicationStartup.BuildLifetime<ContextApp>(new DummyConsole(), Array.Empty<string>());
         }
 
         [Test]
         public void BufferInitialized()
         {
+            ArgumentNullException.ThrowIfNull(_lifetime);
             var consoleWindow = new ConsoleWindow();
             var buffer = consoleWindow.PixelBuffer;
 
@@ -76,7 +80,7 @@ namespace Consolonia.Core.Tests
             {
                 DrawText(dc, x, 0, x.ToString(), Brushes.White);
             }
-            DrawText(dc, 5, 0, "X".ToString(), Brushes.Blue);
+            DrawText(dc, 5, 0, "X", Brushes.Blue);
             for (ushort x = 0; x < 10; x++)
             {
                 if (x == 5)
@@ -508,15 +512,47 @@ namespace Consolonia.Core.Tests
             ArgumentNullException.ThrowIfNull(typeface);
             ShapedBuffer glyphs =
                 textShaper.ShapeText(text.AsMemory(), new TextShaperOptions(typeface, typeface.Metrics.DesignEmHeight));
-            var shapedText = new GlyphRun(typeface,
-                1,
-                text.AsMemory(),
-                glyphs,
-                default(Point),
-                0);
+            //var shapedText = new GlyphRun(typeface,
+            //    1,
+            //    text.AsMemory(),
+            //    glyphs,
+            //    default(Point),
+            //    0);
             var glyphRunImpl = platformRender.CreateGlyphRun(typeface, 1, glyphs, default(Point));
             dc.DrawGlyphRun(brush, glyphRunImpl);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    // dispose managed state (managed objects)
+                    _scope?.Dispose();
+                    _lifetime?.Dispose();
+                    _scope = null;
+                    _lifetime = null;
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                _disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~DrawingContextImplTests()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

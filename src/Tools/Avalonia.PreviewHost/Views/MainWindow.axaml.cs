@@ -4,7 +4,6 @@ using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-using Consolonia.Designer;
 using Avalonia.PreviewHost.ViewModels;
 
 namespace Avalonia.PreviewHost.Views;
