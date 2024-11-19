@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
 using Avalonia.Media;
+using Newtonsoft.Json;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -20,11 +20,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         // and set the background color
         public static Pixel Space => new Pixel(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent), new PixelBackground(Colors.Transparent));
 
-        public PixelForeground Foreground { get; set; }
+        public PixelForeground Foreground { get; init; }
 
-        public PixelBackground Background { get; set; }
+        public PixelBackground Background { get; init; }
 
-        public bool IsCaret { get; set; }
+        public bool IsCaret { get; init; }
 
         protected Pixel()
         {
@@ -32,6 +32,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Background = new PixelBackground();
             IsCaret = false;
         }
+
         public Pixel(bool isCaret)
         {
             Foreground = new PixelForeground();
@@ -155,6 +156,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool Equals(Pixel other)
         {
+            if ((object)other == null)
+                return false;
+
             return Foreground.Equals(other.Foreground) &&
                    Background.Equals(other.Background) &&
                    IsCaret.Equals(other.IsCaret);
@@ -172,11 +176,20 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static bool operator ==(Pixel left, Pixel right)
         {
+            if ((object)left is null)
+            {
+                return (object)right is null;
+            }
+
             return left.Equals(right);
         }
 
         public static bool operator !=(Pixel left, Pixel right)
         {
+            if ((object)left is null)
+            {
+                return (object)right is not null;
+            }
             return !left.Equals(right);
         }
     }

@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Avalonia.PreviewHost.ViewModels;
+using Avalonia.Interactivity;
 
 namespace Avalonia.PreviewHost.Views;
 
@@ -15,7 +16,7 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private async void OnOpen(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private async void OnOpen(object? sender, RoutedEventArgs e)
     {
         // Get top level from the current control. Alternatively, you can use Window reference instead.
         var topLevel = GetTopLevel(this);
@@ -59,7 +60,7 @@ public partial class MainWindow : Window
 
     public MainViewModel Model => (MainViewModel)DataContext!;
 
-    private void OnExit(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnExit(object? sender, RoutedEventArgs e)
     {
         Close();
     }

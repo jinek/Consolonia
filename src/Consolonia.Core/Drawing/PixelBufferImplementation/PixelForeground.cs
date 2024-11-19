@@ -31,21 +31,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             TextDecoration = textDecoration;
         }
 
-        public ISymbol Symbol { get; set; } 
+        public ISymbol Symbol { get; init; } 
 
         [JsonConverter(typeof(ColorConverter))]
-        public Color Color { get; set; } 
+        public Color Color { get; init; } 
 
         [DefaultValue(FontWeight.Normal)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public FontWeight Weight { get; set; } 
+        public FontWeight Weight { get; init; } 
 
         [DefaultValue(FontStyle.Normal)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public FontStyle Style { get; set; } 
+        public FontStyle Style { get; init; } 
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public TextDecorationLocation? TextDecoration { get; set; } 
+        public TextDecorationLocation? TextDecoration { get; init; } 
 
         public PixelForeground Shade()
         {
@@ -67,6 +67,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool Equals(PixelForeground other)
         {
+            if ((object)other is null)
+            {
+                return false;
+            }
+
             return Symbol.Equals(other.Symbol) &&
                    Color.Equals(other.Color) &&
                    Weight == other.Weight &&
@@ -86,11 +91,19 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static bool operator ==(PixelForeground left, PixelForeground right)
         {
+            if ((object)left is null)
+            {
+                return (object)right is null;
+            }
             return left.Equals(right);
         }
 
         public static bool operator !=(PixelForeground left, PixelForeground right)
         {
+            if ((object)left is null)
+            {
+                return (object)right is not null;
+            }
             return !left.Equals(right);
         }
     }

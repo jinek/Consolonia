@@ -51,7 +51,7 @@ namespace Consolonia.PreviewHost
                         appViewModel.Project.Current = appViewModel.Project.Files.SingleOrDefault(f => f.FullName!.Equals(path, StringComparison.OrdinalIgnoreCase))
                                 ?? appViewModel.Project.Files.SingleOrDefault(f => f.Name!.Equals(Path.GetFileName(path), StringComparison.OrdinalIgnoreCase))
                                 ?? throw new ArgumentException($"{path} not found in project", nameof(path));
-                        applicationLifetime!.MainWindow = new HeadlessWindow()
+                        applicationLifetime.MainWindow = new HeadlessWindow()
                         {
                             DataContext = appViewModel
                         };
@@ -65,7 +65,7 @@ namespace Consolonia.PreviewHost
 
                 if (applicationLifetime.MainWindow == null)
                 {
-                    applicationLifetime!.MainWindow = new MainWindow()
+                    applicationLifetime.MainWindow = new MainWindow()
                     {
                         DataContext = appViewModel
                     };
@@ -91,7 +91,7 @@ namespace Consolonia.PreviewHost
                 projectFolder = Path.GetDirectoryName(projectFolder);
             }
             ArgumentNullException.ThrowIfNull(projectFile);
-            return projectFile!;
+            return projectFile;
         }
 
 

@@ -42,12 +42,8 @@ public partial class HeadlessWindow : Window
     }
 
 
-    private void ContentControl_DataContextChanged(object? sender, System.EventArgs e)
+    private void ContentControl_DataContextChanged(object? sender, EventArgs e)
     {
-        // This is bs linter. How Do I disable this?
-        if (sender == null)
-            sender = this; 
-
         base.OnDataContextEndUpdate();
 
         var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;

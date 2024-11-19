@@ -142,6 +142,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool Equals(DrawingBoxSymbol other)
         {
+            if ((object)other is null)
+            {
+                return false;
+            }
             return _upRightDownLeft == other!._upRightDownLeft;
         }
 
@@ -157,12 +161,20 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static bool operator ==(DrawingBoxSymbol left, DrawingBoxSymbol right)
         {
+            if ((object)left is null)
+            {
+                return (object)right is null;
+            }
             return left.Equals(right);
         }
 
         public static bool operator !=(DrawingBoxSymbol left, DrawingBoxSymbol right)
         {
-            return !left.Equals(right);
+            if ((object)left is null)
+            {
+                return (object)right is not null;
+            }
+            return !left!.Equals(right);
         }
     }
 }

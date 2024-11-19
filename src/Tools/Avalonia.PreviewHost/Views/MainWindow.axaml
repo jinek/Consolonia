@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:v="using:Consolonia.Designer"
-        xmlns:views="clr-namespace:Avalonia.PreviewHost.Views"
         mc:Ignorable="d" 
         x:Class="Avalonia.PreviewHost.Views.MainWindow"
         x:DataType="vm:MainViewModel"
@@ -31,7 +30,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             
-            <GridSplitter Grid.Column="1"
+            <GridSplitter 
                 Width="5" ShowsPreview="True"
                 HorizontalAlignment="Stretch" Background="Black"/>
 

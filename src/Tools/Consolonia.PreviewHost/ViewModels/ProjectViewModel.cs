@@ -19,12 +19,12 @@ public partial class ProjectViewModel : ObservableObject
         var projectFolder = Path.GetDirectoryName(_project)!;
         ArgumentNullException.ThrowIfNull(_project);
         var assemblyName = Path.GetFileNameWithoutExtension(_project) + ".dll";
-        var buildDirectory = Path.Combine(projectFolder!, "bin", "Debug");
+        var buildDirectory = Path.Combine(projectFolder, "bin", "Debug");
         var assemblyPath = Directory.EnumerateFiles(buildDirectory, assemblyName, SearchOption.AllDirectories).First();
 
         ArgumentNullException.ThrowIfNull(assemblyPath);
         // load assembly
-        Assembly = LoadContext!.LoadFromStream(new MemoryStream(File.ReadAllBytes(assemblyPath)));
+        Assembly = LoadContext.LoadFromStream(new MemoryStream(File.ReadAllBytes(assemblyPath)));
         ArgumentNullException.ThrowIfNull(Assembly);
 
         foreach (var xamlFile in Directory.GetFiles(projectFolder, "*.axaml", SearchOption.AllDirectories))
@@ -48,10 +48,9 @@ public partial class ProjectViewModel : ObservableObject
         {
             _ = Task.Run(() =>
             {
-                string? xamlFile = null;
-                do
+                string? xamlFile = Console.ReadLine();
+                while (!String.IsNullOrEmpty(xamlFile))
                 {
-                    xamlFile = Console.ReadLine();
                     if (!String.IsNullOrEmpty(xamlFile) && xamlFile.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
                     {
                         Dispatcher.UIThread.Invoke(() =>
@@ -61,7 +60,9 @@ public partial class ProjectViewModel : ObservableObject
                                 ?? throw new ArgumentException($"{xamlFile} not found in project");
                         });
                     }
-                } while (!String.IsNullOrEmpty(xamlFile));
+
+                    xamlFile = Console.ReadLine();
+                }
             });
         }
     }

@@ -1,4 +1,3 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
@@ -9,7 +8,7 @@ using Avalonia.PreviewHost.Views;
 
 namespace Avalonia.PreviewHost;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {
@@ -37,7 +36,7 @@ public partial class App : Application
     private void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
     {
         var desktop = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-        
+
         desktop!.MainWindow!.FindControl<ConsolePreview>("PreviewPane")?.Dispose();
     }
 }

@@ -28,9 +28,6 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <GridSplitter Grid.Column="2" Background="White"
-                Width="2" ShowsPreview="True" VerticalAlignment="Stretch" />
-
             <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" >
                 <ContentControl Grid.Column="2" Content="{Binding Content}" Background="{DynamicResource ThemeBackgroundBrush}"
                             DataContext="{Binding Project.Current}"/>

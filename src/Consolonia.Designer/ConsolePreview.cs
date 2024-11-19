@@ -333,12 +333,12 @@ namespace Consolonia.Designer
                     _textRunCharWidth += pixel.Foreground.Symbol.Width;
 
                     if (pixel.Foreground.Symbol.Width > 1)
-                        Flush(true);
+                        Flush();
 
                 }
             }
 
-            public void Flush(bool forceWidth = true)
+            public void Flush()
             {
                 if (_textBuilder.Length == 0)
                     return;
@@ -361,10 +361,7 @@ namespace Consolonia.Designer
                     },
                 };
 
-                if (forceWidth)
-                {
-                    textBlock.Width = _charWidth * _textRunCharWidth;
-                }
+                textBlock.Width = _charWidth * _textRunCharWidth;
 
                 _panel.Children.Add(textBlock);
                 _textBuilder.Clear();

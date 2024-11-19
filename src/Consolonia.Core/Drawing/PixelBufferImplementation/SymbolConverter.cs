@@ -12,10 +12,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (reader.ValueType == typeof(string))
-                return new SimpleSymbol((string)reader.Value);
-            else if (reader.ValueType == typeof(long))
-                return new DrawingBoxSymbol((byte)(long)reader.Value);
+            if (reader != null)
+            {
+                if (reader.ValueType == typeof(string))
+                    return new SimpleSymbol((string)reader.Value);
+                else if (reader.ValueType == typeof(long))
+                    return new DrawingBoxSymbol((byte)(long)reader.Value);
+            }
             return null;
         }
 
