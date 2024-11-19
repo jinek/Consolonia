@@ -117,7 +117,7 @@ namespace Consolonia.Designer
 
             if (_process == null)
             {
-                var previewHostPath = typeof(Consolonia.PreviewHost.App).Assembly.Location.Replace(".dll", ".exe", StringComparison.OrdinalIgnoreCase);
+                var previewHostPath = typeof(PreviewHost.App).Assembly.Location.Replace(".dll", ".exe", StringComparison.OrdinalIgnoreCase);
                 var processStartInfo = new ProcessStartInfo()
                 {
                     FileName = previewHostPath,

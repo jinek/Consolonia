@@ -18,7 +18,7 @@ public partial class MainWindow : Window
     private async void OnOpen(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         // Get top level from the current control. Alternatively, you can use Window reference instead.
-        var topLevel = TopLevel.GetTopLevel(this);
+        var topLevel = GetTopLevel(this);
 
         // Start async operation to open the dialog.
         var files = await topLevel!.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
@@ -61,7 +61,7 @@ public partial class MainWindow : Window
 
     private void OnExit(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        this.Close();
+        Close();
     }
 }
 

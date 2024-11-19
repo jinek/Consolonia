@@ -60,9 +60,7 @@ public partial class XamlFileViewModel : ObservableObject, IDisposable
                 {
                     if (nTries++ < 3)
                     {
-
                         Thread.Sleep(100);
-                        continue;
                     }
                     else
                         throw;
