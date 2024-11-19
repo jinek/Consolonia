@@ -38,9 +38,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool Equals(SimpleSymbol other)
         {
-            if ((object)other is null)
-                return false;
-
             return Text.Equals(other.Text, StringComparison.Ordinal);
         }
 
@@ -70,14 +67,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static bool operator ==(SimpleSymbol left, SimpleSymbol right)
         {
-            if ((object)left is null) return (object)right is null;
             return left.Equals(right);
         }
 
         public static bool operator !=(SimpleSymbol left, SimpleSymbol right)
         {
-            if ((object)left is null) return (object)right is not null;
-
             return !left.Equals(right);
         }
     }

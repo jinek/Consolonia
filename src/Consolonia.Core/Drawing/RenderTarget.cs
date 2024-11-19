@@ -198,7 +198,7 @@ namespace Consolonia.Core.Drawing
                 // want to output as they are already invisible and represented
                 // by the complex glyph coming before it (aka double-wide chars)
                 if (pixel.Foreground.Symbol.Width > 0)
-                    _stringBuilder.Append(pixel.Foreground.Symbol!.Text);
+                    _stringBuilder.Append(pixel.Foreground.Symbol.Text);
 
                 _currentBufferPoint = _currentBufferPoint.WithXpp();
             }

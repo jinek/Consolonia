@@ -88,9 +88,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool Equals(Pixel other)
         {
-            if ((object)other == null)
-                return false;
-
             return Foreground.Equals(other.Foreground) &&
                    Background.Equals(other.Background) &&
                    IsCaret.Equals(other.IsCaret);
@@ -179,14 +176,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static bool operator ==(Pixel left, Pixel right)
         {
-            if ((object)left is null) return (object)right is null;
-
             return left.Equals(right);
         }
 
         public static bool operator !=(Pixel left, Pixel right)
         {
-            if ((object)left is null) return (object)right is not null;
             return !left.Equals(right);
         }
     }

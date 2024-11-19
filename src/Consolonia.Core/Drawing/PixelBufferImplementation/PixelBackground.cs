@@ -35,7 +35,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool Equals(PixelBackground other)
         {
-            if ((object)other is null) return false;
             return Color.Equals(other.Color) && Mode == other.Mode;
         }
 
@@ -74,13 +73,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static bool operator ==(PixelBackground left, PixelBackground right)
         {
-            if ((object)left is null) return (object)right is null;
             return left.Equals(right);
         }
 
         public static bool operator !=(PixelBackground left, PixelBackground right)
         {
-            if ((object)left == null) return (object)right != null;
             return !left.Equals(right);
         }
     }

@@ -109,7 +109,7 @@ namespace Consolonia.Core.Tests
                 else if (x == 6)
                 {
                     Assert.IsTrue(pixel.Width == 0);
-                    Assert.IsTrue(pixel.Foreground.Symbol!.Text.Length == 0);
+                    Assert.IsTrue(pixel.Foreground.Symbol.Text.Length == 0);
                 }
                 else
                 {
@@ -141,7 +141,7 @@ namespace Consolonia.Core.Tests
                 else if (x == 6)
                 {
                     Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol!.Text == " ");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Text == " ");
                 }
                 else
                 {
@@ -173,7 +173,7 @@ namespace Consolonia.Core.Tests
                 else if (x == 6)
                 {
                     Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol!.Text == "X");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Text == "X");
                     Assert.IsTrue(pixel.Foreground.Color == Colors.Red);
                 }
                 else
