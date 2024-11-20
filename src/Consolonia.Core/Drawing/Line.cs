@@ -92,6 +92,11 @@ namespace Consolonia.Core.Drawing
         public IGeometryImpl SourceGeometry { get; }
         public Matrix Transform { get; }
 
+        public IGeometryImpl GetWidenedGeometry(IPen pen)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Line CreateMyLine(Point p1, Point p2)
         {
             (double x, double y) = p2 - p1;
@@ -104,11 +109,6 @@ namespace Consolonia.Core.Drawing
 
             // ReSharper disable once PatternIsRedundant todo: fix
             return x is 0 or 0d ? new Line(p1, true, (int)y) : new Line(p1, false, (int)x);
-        }
-
-        public IGeometryImpl GetWidenedGeometry(IPen pen)
-        {
-            throw new NotImplementedException();
         }
     }
 }

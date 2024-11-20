@@ -252,9 +252,14 @@ namespace Consolonia.Core.Infrastructure
             if (featureType == typeof(ITextInputMethodImpl)) return null;
 
             Debug.WriteLine($"Someone asked for {featureType.Name}");
-            
+
             // this is a TRY function, so we return null if we don't support it.
             return null;
+        }
+
+        public void GetWindowsZOrder(Span<Window> windows, Span<long> zOrder)
+        {
+            throw new NotImplementedException();
         }
 
         private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,
@@ -373,11 +378,6 @@ namespace Consolonia.Core.Infrastructure
                             keyChar.ToString()));
                     }, DispatcherPriority.Input);
             }
-        }
-
-        public void GetWindowsZOrder(Span<Window> windows, Span<long> zOrder)
-        {
-            throw new NotImplementedException();
         }
     }
 }

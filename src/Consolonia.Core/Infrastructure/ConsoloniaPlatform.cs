@@ -31,6 +31,11 @@ namespace Consolonia.Core.Infrastructure
             throw new NotImplementedException();
         }
 
+        public ITopLevelImpl CreateEmbeddableTopLevel()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Initialize()
         {
             NotSupported += InternalIgnore;
@@ -79,11 +84,6 @@ namespace Consolonia.Core.Infrastructure
                     //this is case of OverlayPopupHost.Render
                     break;
             }
-        }
-
-        public ITopLevelImpl CreateEmbeddableTopLevel()
-        {
-            throw new NotImplementedException();
         }
     }
 
