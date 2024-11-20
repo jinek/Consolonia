@@ -307,7 +307,8 @@ namespace Consolonia.Core.Drawing
             if (pen.Thickness.IsNearlyEqual(UnderlineThickness) || pen.Thickness.IsNearlyEqual(StrikethroughThickness))
             {
                 if (line.Vertical)
-                    throw new NotSupportedException("Vertical strikethrough or underline text decorations is not supported.");
+                    throw new NotSupportedException(
+                        "Vertical strikethrough or underline text decorations is not supported.");
 
                 // horizontal lines with thickness larger than one are text decorations
                 ApplyTextDecorationLineInternal(pen, line);

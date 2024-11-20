@@ -49,7 +49,6 @@ namespace Consolonia.Core.Tests
             Assert.That(pixelBackground.Equals((object)pixelBackground2));
             Assert.That(pixelBackground.Equals(pixelBackground2));
             Assert.That(pixelBackground == pixelBackground2);
-
         }
 
         [Test]
