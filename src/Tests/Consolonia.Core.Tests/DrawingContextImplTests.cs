@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
@@ -335,6 +336,7 @@ namespace Consolonia.Core.Tests
             left++;
             bottom++;
             right++;
+            Debug.WriteLine($"{top} {left} {bottom} {right}");
             for (ushort y = 0; y <= bottom; y++)
                 for (ushort x = 0; x <= right; x++)
                     if (x == 0 || x == right)
@@ -378,7 +380,7 @@ namespace Consolonia.Core.Tests
             right++;
             for (ushort y = 0; y <= bottom; y++)
                 for (ushort x = 0; x <= right; x++)
-                    if (x == 0 || x == right +1||
+                    if (x == 0 || x == right + 1 ||
                         y == 0 || y == bottom + 1)
                     {
                         // outside of box
@@ -442,8 +444,8 @@ namespace Consolonia.Core.Tests
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
                         Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
                     }
-                    else if ((x >= left+1 && x < right - 1) ||
-                             (y >= top+1 && y < bottom-1))
+                    else if ((x >= left + 1 && x < right - 1) ||
+                             (y >= top + 1 && y < bottom - 1))
                     {
                         // inside
                         Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
@@ -464,7 +466,7 @@ namespace Consolonia.Core.Tests
             int width = 3;
             int height = 3;
             int right = width;
-            int bottom =    height;
+            int bottom = height;
             var brush = new LineBrush { Brush = Brushes.Red, LineStyle = LineStyle.DoubleLine };
             dc.DrawRectangle(Brushes.Blue, new Pen(brush), new Rect(left, top, width, height));
 

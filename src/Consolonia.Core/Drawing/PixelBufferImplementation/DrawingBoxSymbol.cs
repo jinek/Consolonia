@@ -26,7 +26,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool Equals(DrawingBoxSymbol other)
         {
-            if ((object)other is null) return false;
             return UpRightDownLeft == other!.UpRightDownLeft;
         }
 
