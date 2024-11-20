@@ -72,7 +72,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         // ReSharper disable once MemberCanBeMadeStatic.Local
         private void Dg1_LoadingRow(object sender, DataGridRowEventArgs e)
         {
-            e.Row.Header = e.Row.GetIndex() + 1;
+            e.Row.Header = e.Row.Index + 1;
         }
 
         private void InitializeComponent()

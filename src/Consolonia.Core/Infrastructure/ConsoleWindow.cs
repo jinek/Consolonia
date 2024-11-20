@@ -152,7 +152,6 @@ namespace Consolonia.Core.Infrastructure
         public Size MaxAutoSizeHint { get; }
 
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
-        public IScreenImpl Screen => null!;
 
         public void SetTitle(string title)
         {

@@ -80,6 +80,11 @@ namespace Consolonia.Core.Infrastructure
                     break;
             }
         }
+
+        public ITopLevelImpl CreateEmbeddableTopLevel()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class ConsoloniaPlatformSettings : DefaultPlatformSettings
