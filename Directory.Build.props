@@ -11,6 +11,6 @@
         <Copyright>Copyright © Evgeny Gorbovoy 2021 - 2022</Copyright>
     </PropertyGroup>
     <PropertyGroup>
-        <AvaloniaVersion>11.0.9</AvaloniaVersion>
+        <AvaloniaVersion>11.1.5</AvaloniaVersion>
     </PropertyGroup>
 </Project>

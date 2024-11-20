@@ -215,7 +215,7 @@ namespace Consolonia.Core.Drawing
             DrawStringInternal(foreground, text, glyphRun.GlyphTypeface);
         }
 
-        public IDrawingContextLayerImpl CreateLayer(Size size)
+        public IDrawingContextLayerImpl CreateLayer(PixelSize size)
         {
             return new RenderTarget(_consoleWindow);
         }
@@ -232,6 +232,11 @@ namespace Consolonia.Core.Drawing
                 ConsoloniaPlatform.RaiseNotSupported(2);
 
             PushClip(clip.Rect);
+        }
+
+        public void PushClip(IPlatformRenderInterfaceRegion region)
+        {
+            throw new NotImplementedException();
         }
 
         public void PopClip()
@@ -774,6 +779,21 @@ namespace Consolonia.Core.Drawing
         private static double GetColorBrightness(SKColor color)
         {
             return 0.299 * color.Red + 0.587 * color.Green + 0.114 * color.Blue + color.Alpha;
+        }
+
+        public void DrawRegion(IBrush brush, IPen pen, IPlatformRenderInterfaceRegion region)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PushLayer(Rect bounds)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PopLayer()
+        {
+            throw new NotImplementedException();
         }
     }
 }

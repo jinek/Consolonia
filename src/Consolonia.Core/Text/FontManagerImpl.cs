@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using Avalonia.Media;
@@ -48,6 +49,11 @@ namespace Consolonia.Core.Text
         public static string GetTheOnlyFontFamilyName()
         {
             return "ConsoleDefault(F7D6533C-AC9D-4C4A-884F-7719A9B5DC0C)";
+        }
+
+        public bool TryCreateGlyphTypeface(Stream stream, FontSimulations fontSimulations, [NotNullWhen(true)] out IGlyphTypeface glyphTypeface)
+        {
+            throw new NotImplementedException();
         }
     }
 }

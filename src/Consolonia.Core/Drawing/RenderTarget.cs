@@ -69,7 +69,7 @@ namespace Consolonia.Core.Drawing
 
         bool IDrawingContextLayerImpl.CanBlit => true;
 
-        public IDrawingContextImpl CreateDrawingContext()
+        public IDrawingContextImpl CreateDrawingContext(bool useScaledDrawing)
         {
             return new DrawingContextImpl(_consoleWindow, _bufferBuffer);
         }

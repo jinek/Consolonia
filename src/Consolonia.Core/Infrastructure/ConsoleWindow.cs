@@ -76,7 +76,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTransparencyLevelHint(IReadOnlyList<WindowTransparencyLevel> transparencyLevels)
         {
-            throw new NotImplementedException("Consider this");
+            // I think we can ignore this.
         }
 
         public void SetFrameThemeVariant(PlatformThemeVariant themeVariant)
@@ -134,7 +134,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTopmost(bool value)
         {
-            throw new NotImplementedException();
+            // todo
         }
 
         public double DesktopScaling => 1d;
@@ -184,7 +184,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void CanResize(bool value)
         {
-            throw new NotImplementedException();
+            // todo, enable/dsiable resizing of window
         }
 
         public void BeginMoveDrag(PointerPressedEventArgs e)
@@ -210,22 +210,22 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetMinMaxSize(Size minSize, Size maxSize)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void SetExtendClientAreaToDecorationsHint(bool extendIntoClientAreaHint)
         {
-            throw new NotImplementedException();
+            // we don't support this, we can ignore
         }
 
         public void SetExtendClientAreaChromeHints(ExtendClientAreaChromeHints hints)
         {
-            throw new NotImplementedException();
+            // we don't support this, we can ignore
         }
 
         public void SetExtendClientAreaTitleBarHeightHint(double titleBarHeight)
         {
-            throw new NotImplementedException();
+            // we don't support this, we can ignore
         }
 
         public WindowState WindowState { get; set; }
@@ -251,7 +251,11 @@ namespace Consolonia.Core.Infrastructure
             if (featureType == typeof(ISystemNavigationManagerImpl))
                 return null;
             if (featureType == typeof(ITextInputMethodImpl)) return null;
-            throw new NotImplementedException("Consider this");
+
+            Debug.WriteLine($"Someone asked for {featureType.Name}");
+            
+            // this is a TRY function, so we return null if we don't support it.
+            return null;
         }
 
         private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,
@@ -370,6 +374,11 @@ namespace Consolonia.Core.Infrastructure
                             keyChar.ToString()));
                     }, DispatcherPriority.Input);
             }
+        }
+
+        public void GetWindowsZOrder(Span<Window> windows, Span<long> zOrder)
+        {
+            throw new NotImplementedException();
         }
     }
 }
