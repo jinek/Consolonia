@@ -302,9 +302,9 @@ namespace Consolonia.Core.Drawing
         /// <param name="line">line</param>
         private void DrawLineInternal(IPen pen, Line line)
         {
-            if (pen.Thickness == 0) return;
+            if (pen.Thickness.IsNearlyEqual(0)) return;
 
-            if (pen.Thickness == UnderlineThickness || pen.Thickness == StrikethroughThickness)
+            if (pen.Thickness.IsNearlyEqual(UnderlineThickness) || pen.Thickness.IsNearlyEqual(StrikethroughThickness))
             {
                 if (line.Vertical)
                     throw new NotSupportedException("Vertical strikethrough or underline text decorations is not supported.");
