@@ -1,0 +1,42 @@
+<dialogs:DialogWindow xmlns="https://github.com/avaloniaui"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:viewmodels="clr-namespace:Consolonia.Core.Controls.ViewModels"
+                     xmlns:views="clr-namespace:Consolonia.Core.Controls.Views"
+                     xmlns:storage="clr-namespace:Consolonia.Core.Infrastructure"
+                     xmlns:dialogs="clr-namespace:Consolonia.Core.Controls.Dialog"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Title="{Binding Title}"
+                     x:DataType="viewmodels:FileOpenPickerViewModel"
+                     x:Class="Consolonia.Core.Controls.Views.FileOpenPicker">
+    <Grid RowDefinitions="Auto * Auto Auto">
+        <StackPanel Orientation="Horizontal" Grid.Row="0">                  r
+            <TextBlock>📁</TextBlock>
+            <TextBox Text="{Binding CurrentFolder.Name}"/>
+        </StackPanel>
+        <ListBox Grid.Row="1" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" DoubleTapped="OnDoubleTapped">
+            <ListBox.DataTemplates>
+                <DataTemplate DataType="{x:Type storage:StorageFolder}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>📁</TextBlock>
+                        <TextBox Text="{Binding Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type storage:StorageFile}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>📰</TextBlock>
+                        <TextBox Text="{Binding Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.DataTemplates>
+        </ListBox>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <TextBlock>Selected:</TextBlock>
+            <SelectableTextBlock Text="{Binding SelectedItem}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="{Binding OKLabel}"/>
+            <Button Content="{Binding CancelLabel}"/>
+        </StackPanel>
+    </Grid>
+</dialogs:DialogWindow>
