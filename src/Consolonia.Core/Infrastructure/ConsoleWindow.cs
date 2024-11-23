@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Input.TextInput;
 using Avalonia.Platform;
+using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -251,6 +252,8 @@ namespace Consolonia.Core.Infrastructure
             if (featureType == typeof(ISystemNavigationManagerImpl))
                 return null;
             if (featureType == typeof(ITextInputMethodImpl)) return null;
+            if (featureType == typeof(IStorageProvider))
+                return AvaloniaLocator.Current.GetService<IStorageProvider>();
             throw new NotImplementedException("Consider this");
         }
 
