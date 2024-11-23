@@ -10,10 +10,10 @@
                      x:Class="Consolonia.Core.Controls.Views.FileOpenPicker"
                      Title="{Binding Options.Title}">
     <Grid RowDefinitions="Auto * Auto Auto">
-        <StackPanel Orientation="Horizontal" Grid.Row="0">                  
-            <TextBlock Text="📁" />
-            <TextBox Text="{Binding CurrentFolder.Name}"/>
-        </StackPanel>
+        <Grid ColumnDefinitions="Auto *">
+            <TextBlock Text="📁 " />
+            <TextBox Text="{Binding CurrentFolderPath, Mode=TwoWay}" Grid.Column="1" />
+        </Grid>
         <ListBox Grid.Row="1" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" DoubleTapped="OnDoubleTapped">
             <ListBox.DataTemplates>
                 <DataTemplate DataType="{x:Type storage:IStorageFolder}">
@@ -31,11 +31,11 @@
             </ListBox.DataTemplates>
         </ListBox>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
-            <TextBlock Text="Selected File:"/>
+            <TextBlock Text="File:" Margin="0 0 1 0"/>
             <TextBlock Text="{Binding SelectedItem.Name}"/>
         </StackPanel>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="OK" Click="OnOK"/>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="1">
+            <Button Content="OK" Click="OnOK" IsEnabled="{Binding SelectedItem.Exists}"/>
             <Button Content="Cancel" Click="OnCancel"/>
         </StackPanel>
     </Grid>

@@ -11,13 +11,15 @@ namespace Consolonia.Core.Infrastructure
     public class SystemStorageFolder : IStorageFolder
     {
         private DirectoryInfo _directoryInfo;
+        private bool _isParent;
 
-        public SystemStorageFolder(DirectoryInfo directoryInfo)
+        public SystemStorageFolder(DirectoryInfo directoryInfo, bool isParent = false)
         {
+            _isParent = isParent;
             _directoryInfo = directoryInfo;
         }
 
-        public string Name => _directoryInfo.Name;
+        public string Name => (_isParent) ? ".." : _directoryInfo.Name;
 
         public Uri Path => new Uri($"file://{_directoryInfo.FullName}");
 
@@ -59,15 +61,20 @@ namespace Consolonia.Core.Infrastructure
         public async IAsyncEnumerable<IStorageItem> GetItemsAsync()
         {
             await Task.CompletedTask.ConfigureAwait(false);
-            
-            foreach (var folder in _directoryInfo.GetDirectories())
-            {
-                yield return new SystemStorageFolder(folder);
-            }
 
-            foreach (var file in _directoryInfo.GetFiles())
+            if (_directoryInfo.Exists)
             {
-                yield return new SystemStorageFile(file);
+                yield return new SystemStorageFolder(_directoryInfo.Parent, isParent: true);
+
+                foreach (var folder in _directoryInfo.GetDirectories())
+                {
+                    yield return new SystemStorageFolder(folder);
+                }
+
+                foreach (var file in _directoryInfo.GetFiles())
+                {
+                    yield return new SystemStorageFile(file);
+                }
             }
         }
 

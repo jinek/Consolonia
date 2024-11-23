@@ -33,12 +33,13 @@ namespace Consolonia.Core.Controls.Views
 
         private void OnDoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
         {
-            if (e.Source is SystemStorageFolder folder)
+            var listbox = (ListBox)sender;
+            if (listbox.SelectedItem is SystemStorageFolder folder)
             {
                 var model = (FileOpenPickerViewModel)this.DataContext;
                 model.CurrentFolder = folder;
             }
-            if (e.Source is SystemStorageFile file)
+            else if (listbox.SelectedItem is SystemStorageFile file)
             {
                 var model = (FileOpenPickerViewModel)this.DataContext;
                 model.SelectedItem = file;

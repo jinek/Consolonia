@@ -48,7 +48,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                              } 
                         },
                     });
-                    if (results.Any())
+
+                    if (results != null && results.Any())
                     {
 
                     }

@@ -1,9 +1,11 @@
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Controls.ViewModels
 {
@@ -14,14 +16,18 @@ namespace Consolonia.Core.Controls.ViewModels
         public PickerViewModel(TPickerOptions options)
         {
             Options = options;
-            PropertyChanged += PickerViewModel_PropertyChanged;
+            CurrentFolderPath = options.SuggestedStartLocation?.Path.LocalPath;
             CurrentFolder = options.SuggestedStartLocation;
             _ = LoadCurrentFolder();
+            PropertyChanged += PickerViewModel_PropertyChanged;
         }
 
 
         [ObservableProperty]
         private TPickerOptions _options;
+
+        [ObservableProperty]
+        private string _currentFolderPath;
 
         [ObservableProperty]
         private IStorageFolder _currentFolder;
@@ -36,6 +42,17 @@ namespace Consolonia.Core.Controls.ViewModels
         {
             switch (e.PropertyName)
             {
+                case nameof(CurrentFolderPath):
+                    try
+                    {
+                        CurrentFolder = new SystemStorageFolder(new DirectoryInfo(this.CurrentFolderPath));
+                    }
+                    catch (DirectoryNotFoundException)
+                    {
+                        // ignore
+                    }
+                    break;
+
                 case nameof(CurrentFolder):
                     await LoadCurrentFolder();
                     break;
@@ -49,14 +66,7 @@ namespace Consolonia.Core.Controls.ViewModels
             {
                 await foreach (var item in CurrentFolder.GetItemsAsync())
                 {
-                    if (item is IStorageFolder)
-                        this.Items.Add(item);
-                }
-
-                await foreach (var item in CurrentFolder.GetItemsAsync())
-                {
-                    if (item is IStorageItem)
-                        this.Items.Add(item);
+                    this.Items.Add(item);
                 }
             }
         }
