@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -15,6 +16,7 @@ namespace Consolonia.Core.Controls.ViewModels
             Options = options;
             PropertyChanged += PickerViewModel_PropertyChanged;
             CurrentFolder = options.SuggestedStartLocation;
+            _ = LoadCurrentFolder();
         }
 
 
@@ -35,20 +37,27 @@ namespace Consolonia.Core.Controls.ViewModels
             switch (e.PropertyName)
             {
                 case nameof(CurrentFolder):
-                    Items.Clear();
-
-                    await foreach (var item in CurrentFolder.GetItemsAsync())
-                    {
-                        if (item is IStorageFolder)
-                            this.Items.Add(item);
-                    }
-
-                    await foreach (var item in CurrentFolder.GetItemsAsync())
-                    {
-                        if (item is IStorageItem)
-                            this.Items.Add(item);
-                    }
+                    await LoadCurrentFolder();
                     break;
+            }
+        }
+
+        private async Task LoadCurrentFolder()
+        {
+            Items.Clear();
+            if (CurrentFolder != null)
+            {
+                await foreach (var item in CurrentFolder.GetItemsAsync())
+                {
+                    if (item is IStorageFolder)
+                        this.Items.Add(item);
+                }
+
+                await foreach (var item in CurrentFolder.GetItemsAsync())
+                {
+                    if (item is IStorageItem)
+                        this.Items.Add(item);
+                }
             }
         }
     }

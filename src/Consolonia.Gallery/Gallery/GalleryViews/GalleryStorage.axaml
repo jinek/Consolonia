@@ -7,19 +7,19 @@
              x:DataType="gallery:GalleryStorageViewModel"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryStorage">
 
-    <Grid x:Name="MyGrid" RowDefinitions="Auto *">
+    <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Click="OnOpenFile" Background="Gray">Open File</Button>
             <Button Click="OnOpenFolder" Background="Gray">Open Folder</Button>
             <Button Click="OnSaveFile" Background="Gray">Save File</Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label>File:</Label>
-            <TextBlock Text="{Binding File.}"/>
+            <Label>File</Label>
+            <TextBlock Text="{Binding File.Name}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label>Folder:</Label>
-            <TextBlock Text="{Binding Folder}"/>
+            <TextBlock Text="{Binding Folder.Name}"/>
         </StackPanel>
-    </Grid>
+    </StackPanel>
 </UserControl>

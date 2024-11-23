@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Consolonia.Core.Controls.Views;
 using Consolonia.Core.Controls.ViewModels;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia;
+using System.Linq;
 
 namespace Consolonia.Core.Infrastructure
 {
-    public class StorageProvider : IStorageProvider
+    public class ConsoloniaStorageProvider : IStorageProvider
     {
         public bool CanOpen => true;
 
@@ -25,13 +27,13 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IReadOnlyList<IStorageFile>> OpenFilePickerAsync(FilePickerOpenOptions options)
         {
-            var model = new FileOpenPickerViewModel(options);
-            var picker = new FileOpenPicker(50,50)
-            {
-                DataContext = model
-            };
-            await picker.ShowDialog(null);
-            return new List<IStorageFile>() { (IStorageFile)model.SelectedItem };
+            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
+
+            var picker = new FileOpenPicker((ushort)(mainWindow.ClientSize.Width * .8), 
+                (ushort)(mainWindow.ClientSize.Height * .8), options);
+
+            var results = await picker.ShowDialogAsync<IStorageFile[]>(mainWindow).ConfigureAwait(false);
+            return results;
         }
 
         public Task<IStorageBookmarkFolder> OpenFolderBookmarkAsync(string bookmark)

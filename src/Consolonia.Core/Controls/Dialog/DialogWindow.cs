@@ -13,6 +13,7 @@ using Avalonia.VisualTree;
 
 namespace Consolonia.Core.Controls.Dialog
 {
+
     [TemplatePart("PART_ContentPresenter", typeof(ContentPresenter))]
     public class DialogWindow : UserControl
     {
@@ -27,7 +28,7 @@ namespace Consolonia.Core.Controls.Dialog
         private Size _contentSize;
         private ContentPresenter _partContentPresenter;
 
-        private TaskCompletionSource _taskCompletionSource;
+        private TaskCompletionSource<object?> _taskCompletionSource;
 
         static DialogWindow()
         {
@@ -83,31 +84,42 @@ namespace Consolonia.Core.Controls.Dialog
             return arrangeOverride;
         }
 
-        private void ShowDialogInternal(Visual parent)
+        protected void ShowDialogInternal(Visual parent)
         {
             DialogHost dialogHost = GetDialogHost(parent);
             dialogHost.OpenInternal(this);
         }
 
         // ReSharper disable once VirtualMemberNeverOverridden.Global overriden in other packages, why resharper suggests this?
-        public virtual void CloseDialog()
+        public virtual void CloseDialog(object? result=null)
         {
             DialogHost dialogHost = GetDialogHost(this);
             dialogHost.PopInternal(this);
-            _taskCompletionSource.SetResult();
+            _taskCompletionSource.SetResult(result);
         }
 
-        public Task ShowDialogAsync(Control parent)
+        public async Task ShowDialogAsync(Control parent)
         {
             if (_taskCompletionSource != null)
                 throw new NotImplementedException();
 
-            _taskCompletionSource = new TaskCompletionSource();
+            _taskCompletionSource = new TaskCompletionSource<object?>();
             ShowDialogInternal(parent);
-            return _taskCompletionSource.Task;
+            await _taskCompletionSource.Task.ConfigureAwait(false);
         }
 
-        private static DialogHost GetDialogHost(Visual parent)
+        public async Task<T> ShowDialogAsync<T>(Control parent)
+        {
+            if (_taskCompletionSource != null)
+                throw new NotImplementedException();
+
+            _taskCompletionSource = new TaskCompletionSource<object?>();
+            ShowDialogInternal(parent);
+            var result = await _taskCompletionSource.Task.ConfigureAwait(false);
+            return (T)result;
+        }
+
+        protected static DialogHost GetDialogHost(Visual parent)
         {
             var window = parent.FindAncestorOfType<Window>(true);
             DialogHost dialogHost = window!.GetValue(DialogHost.DialogHostProperty);

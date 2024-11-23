@@ -1,42 +1,42 @@
 <dialog:DialogWindow xmlns="https://github.com/avaloniaui"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
                      xmlns:viewmodels="clr-namespace:Consolonia.Core.Controls.ViewModels"
                      xmlns:views="clr-namespace:Consolonia.Core.Controls.Views"
-                     xmlns:storage="clr-namespace:Consolonia.Core.Infrastructure"
                      xmlns:dialog="clr-namespace:Consolonia.Core.Controls.Dialog"
                      HorizontalAlignment="Center"
                      VerticalAlignment="Center"
-                     Title="{Binding Title}"
                      x:DataType="viewmodels:FileOpenPickerViewModel"
-                     x:Class="Consolonia.Core.Controls.Views.FileOpenPicker">
+                     x:Class="Consolonia.Core.Controls.Views.FileOpenPicker"
+                     Title="{Binding Options.Title}">
     <Grid RowDefinitions="Auto * Auto Auto">
-        <StackPanel Orientation="Horizontal" Grid.Row="0">                  r
-            <TextBlock>📁</TextBlock>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">                  
+            <TextBlock Text="📁" />
             <TextBox Text="{Binding CurrentFolder.Name}"/>
         </StackPanel>
         <ListBox Grid.Row="1" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" DoubleTapped="OnDoubleTapped">
             <ListBox.DataTemplates>
-                <DataTemplate DataType="{x:Type storage:StorageFolder}">
+                <DataTemplate DataType="{x:Type storage:IStorageFolder}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock>📁</TextBlock>
+                        <TextBlock Text="📁" Margin="0 0 1 0"/>
                         <TextBox Text="{Binding Name}"/>
                     </StackPanel>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type storage:StorageFile}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock>📰</TextBlock>
-                        <TextBox Text="{Binding Name}"/>
+                <DataTemplate DataType="{x:Type storage:IStorageFile}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <TextBlock Text="📰" Margin="0 0 1 0"/>
+                        <TextBox Text="{Binding Name}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.DataTemplates>
         </ListBox>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
-            <TextBlock>Selected:</TextBlock>
-            <SelectableTextBlock Text="{Binding SelectedItem}"/>
+            <TextBlock Text="Selected File:"/>
+            <TextBlock Text="{Binding SelectedItem.Name}"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="{Binding OKLabel}"/>
-            <Button Content="{Binding CancelLabel}"/>
+            <Button Content="OK" Click="OnOK"/>
+            <Button Content="Cancel" Click="OnCancel"/>
         </StackPanel>
     </Grid>
 </dialog:DialogWindow>

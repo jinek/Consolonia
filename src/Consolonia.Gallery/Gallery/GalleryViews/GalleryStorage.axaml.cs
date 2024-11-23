@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using Avalonia;
@@ -8,6 +10,8 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Consolonia.Core.Infrastructure;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -35,6 +39,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     var results = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
                     {
                         Title = "Open File",
+                        SuggestedStartLocation = new SystemStorageFolder(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
                         FileTypeFilter = new List<FilePickerFileType>()
                         {
                              new FilePickerFileType("Text") 

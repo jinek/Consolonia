@@ -5,11 +5,11 @@ using Avalonia.Platform.Storage;
 
 namespace Consolonia.Core.Infrastructure
 {
-    public class StorageFile : IStorageFile
+    public class SystemStorageFile : IStorageFile
     {
         private FileInfo _fileInfo;
 
-        public StorageFile(FileInfo fileInfo)
+        public SystemStorageFile(FileInfo fileInfo)
         {
             _fileInfo = fileInfo;
         }
@@ -38,7 +38,7 @@ namespace Consolonia.Core.Infrastructure
 
         public Task<IStorageFolder> GetParentAsync()
         {
-            IStorageFolder result = new StorageFolder(_fileInfo.Directory!);
+            IStorageFolder result = new SystemStorageFolder(_fileInfo.Directory!);
             return Task.FromResult(result);
         }
 
