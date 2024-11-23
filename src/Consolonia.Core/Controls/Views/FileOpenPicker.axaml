@@ -17,25 +17,25 @@
         <ListBox Grid.Row="1" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" DoubleTapped="OnDoubleTapped">
             <ListBox.DataTemplates>
                 <DataTemplate DataType="{x:Type storage:IStorageFolder}">
-                    <StackPanel Orientation="Horizontal">
+                    <Grid ColumnDefinitions="Auto * " Background="Transparent">
                         <TextBlock Text="📁" Margin="0 0 1 0"/>
-                        <TextBox Text="{Binding Name}"/>
-                    </StackPanel>
+                        <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+                    </Grid>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type storage:IStorageFile}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <Grid ColumnDefinitions="Auto *"  Background="Transparent">
                         <TextBlock Text="📰" Margin="0 0 1 0"/>
-                        <TextBox Text="{Binding Name}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
-                    </StackPanel>
+                        <TextBlock Grid.Column="1" Text="{Binding Name}" />
+                    </Grid>
                 </DataTemplate>
             </ListBox.DataTemplates>
         </ListBox>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
             <TextBlock Text="File:" Margin="0 0 1 0"/>
-            <TextBlock Text="{Binding SelectedItem.Name}"/>
+            <TextBlock Text="{Binding SelectedFile.Path.LocalPath}"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="1">
-            <Button Content="OK" Click="OnOK" IsEnabled="{Binding SelectedItem.Exists}"/>
+            <Button Content="OK" Click="OnOK" IsEnabled="{Binding SelectedFile, Converter={x:Static ObjectConverters.IsNotNull}}"/>
             <Button Content="Cancel" Click="OnCancel"/>
         </StackPanel>
     </Grid>

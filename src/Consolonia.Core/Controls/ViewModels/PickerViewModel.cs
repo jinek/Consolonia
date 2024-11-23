@@ -36,7 +36,13 @@ namespace Consolonia.Core.Controls.ViewModels
         private ObservableCollection<IStorageItem> _items = new ObservableCollection<IStorageItem>();
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(SelectedFile))]
+        [NotifyPropertyChangedFor(nameof(SelectedFolder))]
         private IStorageItem _selectedItem;
+
+        public IStorageFile SelectedFile => _selectedItem as IStorageFile;
+
+        public IStorageFolder SelectedFolder => _selectedItem as IStorageFolder;
 
         private async void PickerViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
