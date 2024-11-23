@@ -29,9 +29,7 @@ namespace Consolonia.Core.Infrastructure
         {
             var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
 
-            var picker = new FileOpenPicker((ushort)(mainWindow.ClientSize.Width * .8), 
-                (ushort)(mainWindow.ClientSize.Height * .8), options);
-
+            var picker = new FileOpenPicker(options);
             var results = await picker.ShowDialogAsync<IStorageFile[]>(mainWindow).ConfigureAwait(false);
             return results;
         }

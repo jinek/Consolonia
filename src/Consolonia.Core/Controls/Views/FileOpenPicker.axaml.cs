@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
@@ -12,10 +9,10 @@ namespace Consolonia.Core.Controls.Views
 {
     public partial class FileOpenPicker : DialogWindow
     {
-        public FileOpenPicker(ushort width, ushort height, FilePickerOpenOptions options)
+        public FileOpenPicker(FilePickerOpenOptions options)
         {
-            Width = width;
-            Height = height;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
             Loaded += (_, _) =>
             {
                 this.FindControl<Button>("Button")?.Focus();

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -25,10 +26,20 @@ namespace Consolonia.Core.Controls.Dialog
         public static readonly StyledProperty<bool> IsCloseButtonVisibleProperty =
             AvaloniaProperty.Register<DialogWindow, bool>(nameof(IsCloseButtonVisible), true);
 
+        public static readonly StyledProperty<WindowStartupLocation> WindowStartupLocationProperty =
+            AvaloniaProperty.Register<Window, WindowStartupLocation>(nameof(WindowStartupLocation));
+
+        public static readonly StyledProperty<bool> CanResizeProperty =
+            AvaloniaProperty.Register<Window, bool>(nameof(CanResize), true);
+
+        public static readonly StyledProperty<string?> IconProperty =
+            AvaloniaProperty.Register<DialogWindow, string?>(nameof(Icon));
+
         private Size _contentSize;
         private ContentPresenter _partContentPresenter;
 
         private TaskCompletionSource<object?> _taskCompletionSource;
+
 
         static DialogWindow()
         {
@@ -62,6 +73,43 @@ namespace Consolonia.Core.Controls.Dialog
         // ReSharper disable once MemberCanBePrivate.Global
         public bool CancelOnEscape { get; set; } = true;
 
+
+        /// <summary>
+        /// Enables or disables resizing of the window.
+        /// </summary>
+        public bool CanResize
+        {
+            get => GetValue(CanResizeProperty);
+            set => SetValue(CanResizeProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the icon of the window.
+        /// </summary>
+        public string? Icon
+        {
+            get => GetValue(IconProperty);
+            set => SetValue(IconProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the startup location of the window.
+        /// </summary>
+        public WindowStartupLocation WindowStartupLocation
+        {
+            get => GetValue(WindowStartupLocationProperty);
+            set => SetValue(WindowStartupLocationProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the window position in screen coordinates.
+        /// </summary>
+        //public PixelPoint Position
+        //{
+        //    get => PlatformImpl?.Position ?? PixelPoint.Origin;
+        //    set => PlatformImpl?.Move(value);
+        //}
+
         // ReSharper disable once UnusedMember.Global Used by template
         public void CloseClick()
         {
@@ -86,15 +134,38 @@ namespace Consolonia.Core.Controls.Dialog
 
         protected void ShowDialogInternal(Visual parent)
         {
+            if (this.WindowStartupLocation == WindowStartupLocation.CenterScreen)
+            {
+                this.Width = (ushort)(parent.Bounds.Width * .9);
+                this.Height = (ushort)(parent.Bounds.Height * .9);
+                if (parent is Window window)
+                {
+                    window.SizeChanged += Window_SizeChanged;
+                }
+            }
             DialogHost dialogHost = GetDialogHost(parent);
             dialogHost.OpenInternal(this);
         }
 
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var window = sender as Window;
+            if (window != null)
+            {
+                this.Width = (ushort)(window.Bounds.Width * .9);
+                this.Height = (ushort)(window.Bounds.Height * .9);
+            }
+        }
+
         // ReSharper disable once VirtualMemberNeverOverridden.Global overriden in other packages, why resharper suggests this?
-        public virtual void CloseDialog(object? result=null)
+        public virtual void CloseDialog(object? result = null)
         {
             DialogHost dialogHost = GetDialogHost(this);
             dialogHost.PopInternal(this);
+            if (this.Parent is Window window)
+            {
+                window.SizeChanged -= Window_SizeChanged;
+            }
             _taskCompletionSource.SetResult(result);
         }
 
