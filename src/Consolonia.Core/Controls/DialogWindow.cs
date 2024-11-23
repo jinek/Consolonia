@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -9,10 +8,11 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
+using Consolonia.Core.Controls.Dialog;
 
 // ReSharper disable MemberCanBeProtected.Global
 
-namespace Consolonia.Core.Controls.Dialog
+namespace Consolonia.Core.Controls
 {
 
     [TemplatePart("PART_ContentPresenter", typeof(ContentPresenter))]

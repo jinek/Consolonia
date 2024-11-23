@@ -1,10 +1,10 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:dialog="clr-namespace:Consolonia.Core.Controls.Dialog;assembly=Consolonia.Core"
+        xmlns:controls="clr-namespace:Consolonia.Core.Controls;assembly=Consolonia.Core"
         xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
         xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
 
-    <Style Selector=":is(dialog|DialogWindow)">
+    <Style Selector=":is(controls|DialogWindow)">
         <Style.Resources>
             <Thickness x:Key="ConsoloniaDialogWindowBorderMargin">1,0</Thickness>
         </Style.Resources>
@@ -22,7 +22,7 @@
                 Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="dialog:DialogWindow">
+                <ControlTemplate TargetType="controls:DialogWindow">
                     <Panel>
                         <!--Centered layout-->
                         <!--Panel shade Mode=Shaded-->
