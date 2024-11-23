@@ -2,7 +2,7 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Consolonia.Themes.TurboVision.Templates.Controls.Dialog;
+using Consolonia.Core.Controls.Dialog;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {

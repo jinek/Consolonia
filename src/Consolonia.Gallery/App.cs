@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Threading;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
@@ -19,6 +20,11 @@ namespace Consolonia.Gallery
         public App()
         {
             Styles.Add(new TurboVisionTheme(new Uri("avares://Consolonia.Gallery")));
+        }
+
+        public override void RegisterServices()
+        {
+            base.RegisterServices();
         }
 
         public override void OnFrameworkInitializationCompleted()
