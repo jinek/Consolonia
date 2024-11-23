@@ -57,27 +57,27 @@
                                     IsHitTestVisible="False"
                                     Margin="{TemplateBinding Padding}" />
                             </Border>
-                            <StackPanel HorizontalAlignment="Center"
+                            <StackPanel HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
                                         Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
                                         ZIndex="10"
                                         Orientation="Horizontal">
-                                <helpers:SymbolsControl Text=" "
+                                <helpers:SymbolsControl Text="{TemplateBinding Icon}"
                                                         Foreground="{TemplateBinding BorderBrush}" />
-                                <TextBlock Text="{TemplateBinding Title}" />
+                                <TextBlock Text="{TemplateBinding Title}" Margin="1 0 0 0" />
                                 <helpers:SymbolsControl Text=" "
                                                         Foreground="{TemplateBinding BorderBrush}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal"
                                         ZIndex="10"
                                         VerticalAlignment="Top"
+                                        HorizontalAlignment="Right"
                                         Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
                                         IsVisible="{TemplateBinding IsCloseButtonVisible}">
-                                <Button Content="x"
+                                <Button Content="×"
                                         Background="{x:Null}"
                                         IsTabStop="False"
                                         Padding="0"
-                                        Margin="2,0,0,0"
                                         Command="{Binding Path=CloseClick, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Styles>
                                         <Style Selector="Button">

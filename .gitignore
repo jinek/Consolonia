@@ -766,6 +766,3 @@ fabric.properties
 .idea/
 *.sln.iml
 
-/src/Consolonia.Core/Controls/filesavepicker.axaml
-/src/Consolonia.Core/Controls/filesavepicker.axaml.cs
-/src/Consolonia.Core/Controls/folderopenpicker.axaml

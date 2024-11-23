@@ -7,7 +7,7 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Core.Infrastructure;
 
-namespace Consolonia.Core.Controls.ViewModels
+namespace Consolonia.Core.Controls
 {
 
     public partial class PickerViewModel<TPickerOptions> : ObservableObject

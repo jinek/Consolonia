@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
-using Consolonia.Core.Controls.Views;
-using Consolonia.Core.Controls.ViewModels;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia;
-using System.Linq;
+using System.IO;
+using Consolonia.Core.Controls;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -21,8 +20,7 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IStorageBookmarkFile> OpenFileBookmarkAsync(string bookmark)
         {
-            await Task.CompletedTask.ConfigureAwait(false);
-            return null;
+            throw new NotImplementedException();
         }
 
         public async Task<IReadOnlyList<IStorageFile>> OpenFilePickerAsync(FilePickerOpenOptions options)
@@ -39,29 +37,53 @@ namespace Consolonia.Core.Infrastructure
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<IStorageFolder>> OpenFolderPickerAsync(FolderPickerOpenOptions options)
+        public async Task<IReadOnlyList<IStorageFolder>> OpenFolderPickerAsync(FolderPickerOpenOptions options)
         {
-            throw new NotImplementedException();
+            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
+
+            var picker = new FolderOpenPicker(options);
+            var results = await picker.ShowDialogAsync<IStorageFolder[]>(mainWindow).ConfigureAwait(false);
+            return results;
         }
 
-        public Task<IStorageFile> SaveFilePickerAsync(FilePickerSaveOptions options)
+        public async Task<IStorageFile> SaveFilePickerAsync(FilePickerSaveOptions options)
         {
-            throw new NotImplementedException();
+            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
+
+            var picker = new FileSavePicker(options);
+            var results = await picker.ShowDialogAsync<IStorageFile>(mainWindow).ConfigureAwait(false);
+            return results;
         }
 
         public Task<IStorageFile> TryGetFileFromPathAsync(Uri filePath)
         {
-            throw new NotImplementedException();
+            if (File.Exists(filePath.LocalPath))
+                return Task.FromResult<IStorageFile>(new SystemStorageFile(filePath));
+            return Task.FromResult<IStorageFile>(null);
         }
 
         public Task<IStorageFolder> TryGetFolderFromPathAsync(Uri folderPath)
         {
-            throw new NotImplementedException();
+            if (Directory.Exists(folderPath.LocalPath))
+                return Task.FromResult<IStorageFolder>(new SystemStorageFolder(folderPath));
+            return Task.FromResult<IStorageFolder>(null);
         }
 
         public Task<IStorageFolder> TryGetWellKnownFolderAsync(WellKnownFolder wellKnownFolder)
         {
-            throw new NotImplementedException();
+            var dir = wellKnownFolder switch
+            {
+                WellKnownFolder.Desktop => Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                WellKnownFolder.Documents => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                WellKnownFolder.Downloads => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                WellKnownFolder.Pictures => Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+                WellKnownFolder.Music => Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
+                WellKnownFolder.Videos => Environment.GetFolderPath(Environment.SpecialFolder.MyVideos),
+                _ => null
+            };
+            if (dir == null)
+                return Task.FromResult<IStorageFolder>(null);
+            return Task.FromResult<IStorageFolder>(new SystemStorageFolder(dir));
         }
     }
 }

@@ -13,6 +13,16 @@ namespace Consolonia.Core.Infrastructure
         private DirectoryInfo _directoryInfo;
         private bool _isParent;
 
+        public SystemStorageFolder(string path)
+        {
+            _directoryInfo = new DirectoryInfo(path);
+        }
+
+        public SystemStorageFolder(Uri uri)
+        {
+            _directoryInfo = new DirectoryInfo(uri.LocalPath);  
+        }
+
         public SystemStorageFolder(DirectoryInfo directoryInfo, bool isParent = false)
         {
             _isParent = isParent;
@@ -33,7 +43,7 @@ namespace Consolonia.Core.Infrastructure
             using (var stream = File.Create(path))
             {
             }
-            return new SystemStorageFile(new FileInfo(path));
+            return new SystemStorageFile(path);
         }
 
         public Task<IStorageFolder> CreateFolderAsync(string name)

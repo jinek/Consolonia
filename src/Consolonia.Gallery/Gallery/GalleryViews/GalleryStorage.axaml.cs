@@ -36,40 +36,83 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 var storageProvider = lifetime.MainWindow.StorageProvider;
                 if (storageProvider.CanOpen)
                 {
-                    var results = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
+                    var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
                     {
                         Title = "Open File",
                         SuggestedStartLocation = new SystemStorageFolder(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
                         FileTypeFilter = new List<FilePickerFileType>()
                         {
-                             new FilePickerFileType("Text") 
+                             new FilePickerFileType("Text")
                              {
-                                 Patterns = new List<string>() { "*.txt" } 
-                             } 
+                                 Patterns = new List<string>() { "*.txt" }
+                             }
                         },
                     });
 
-                    if (results != null && results.Any())
-                    {
-
-                    }
+                    var model = (GalleryStorageViewModel)this.DataContext;
+                    model.Files = files;
                 }
             }
         }
 
-        private void OnOpenFolder(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-        { }
-        private void OnSaveFile(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private async void OnOpenFolder(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
+            IClassicDesktopStyleApplicationLifetime lifetime = App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+            if (lifetime != null)
+            {
+                var storageProvider = lifetime.MainWindow.StorageProvider;
+                if (storageProvider.CanOpen)
+                {
+                    var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions()
+                    {
+                        Title = "Select a folder",
+                        AllowMultiple = false
+                    });
+                    var model = (GalleryStorageViewModel)this.DataContext;
+                    model.Folders = folders;
+                }
+            }
+        }
+        private async void OnSaveFile(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            IClassicDesktopStyleApplicationLifetime lifetime = App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+            if (lifetime != null)
+            {
+                var storageProvider = lifetime.MainWindow.StorageProvider;
+                if (storageProvider.CanOpen)
+                {
+                    var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+                    {
+                        Title = "Save File",
+                        SuggestedStartLocation = new SystemStorageFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)),
+                        DefaultExtension = "txt",
+                        SuggestedFileName = "NewFile.txt",
+                        FileTypeChoices = new List<FilePickerFileType>()
+                        {
+                             new FilePickerFileType("Text")
+                             {
+                                 Patterns = new List<string>() { "*.txt" }
+                             },
+                             new FilePickerFileType("Comma delimited values")
+                             {
+                                 Patterns = new List<string>() { "*.csv" }
+                             },
+                        },
+                    });
+
+                    var model = (GalleryStorageViewModel)this.DataContext;
+                    model.Files = new List<IStorageFile>() { file };
+                }
+            }
         }
     }
 
     public partial class GalleryStorageViewModel : ObservableObject
     {
         [ObservableProperty]
-        private IStorageFile _file;
+        private IReadOnlyList<IStorageFile> _files;
 
         [ObservableProperty]
-        private IStorageFolder _folder;
+        private IReadOnlyList<IStorageFolder> _folders;
     }
 }

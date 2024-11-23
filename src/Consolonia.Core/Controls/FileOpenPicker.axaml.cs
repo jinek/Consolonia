@@ -2,11 +2,17 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Consolonia.Core.Controls.Dialog;
-using Consolonia.Core.Controls.ViewModels;
 using Consolonia.Core.Infrastructure;
 
-namespace Consolonia.Core.Controls.Views
+namespace Consolonia.Core.Controls
 {
+    public class FileOpenPickerViewModel : PickerViewModel<FilePickerOpenOptions>
+    {
+        public FileOpenPickerViewModel(FilePickerOpenOptions options)
+            : base(options)
+        {
+        }
+    }
     public partial class FileOpenPicker : DialogWindow
     {
         public FileOpenPicker(FilePickerOpenOptions options)
@@ -35,18 +41,19 @@ namespace Consolonia.Core.Controls.Views
             {
                 var model = (FileOpenPickerViewModel)this.DataContext;
                 model.CurrentFolder = folder;
+                model.CurrentFolderPath = folder.Path.LocalPath;
             }
             else if (listbox.SelectedItem is SystemStorageFile file)
             {
                 var model = (FileOpenPickerViewModel)this.DataContext;
-                model.SelectedItem = file;
+                this.CloseDialog(new IStorageFile[] { file });
             }
         }
 
         private void OnOK(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             var model = (FileOpenPickerViewModel)this.DataContext;
-            this.CloseDialog(new IStorageFile[] { (IStorageFile)model.SelectedItem });
+            this.CloseDialog(new IStorageFile[] { model.SelectedFile });
         }
 
         private void OnCancel(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

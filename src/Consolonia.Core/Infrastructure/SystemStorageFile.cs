@@ -9,6 +9,17 @@ namespace Consolonia.Core.Infrastructure
     {
         private FileInfo _fileInfo;
 
+
+        public SystemStorageFile(string file)
+        {
+            _fileInfo = new FileInfo(file);
+        }
+
+        public SystemStorageFile(Uri uri)
+        {
+            _fileInfo = new FileInfo(uri.LocalPath);
+        }
+
         public SystemStorageFile(FileInfo fileInfo)
         {
             _fileInfo = fileInfo;
