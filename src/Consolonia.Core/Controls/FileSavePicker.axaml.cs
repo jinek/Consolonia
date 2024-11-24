@@ -1,16 +1,42 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Core.Controls.Dialog;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Controls
 {
-    public class FileSavePickerViewModel : PickerViewModel<FilePickerSaveOptions>
+    public partial class FileSavePickerViewModel : PickerViewModel<FilePickerSaveOptions>
     {
         public FileSavePickerViewModel(FilePickerSaveOptions options)
             : base(options)
         {
+        }
+
+        [ObservableProperty]
+        private FilePickerFileType? _selectedFileType;
+
+        protected override bool FilterItem(IStorageItem item)
+        {
+            if (_selectedFileType != null)
+            {
+                if (item is IStorageFolder folder)
+                {
+                    return true;
+                }
+                if (item is IStorageFile file)
+                {
+                    foreach (var pattern in _selectedFileType.Patterns)
+                    {
+                        if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))
+                            return true;
+                    }
+                    return false;
+                }
+            }
+            return true;
         }
     }
     public partial class FileSavePicker : DialogWindow

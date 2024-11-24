@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
-using Consolonia.Core.Controls.Dialog;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Controls
@@ -12,7 +11,13 @@ namespace Consolonia.Core.Controls
             : base(options)
         {
         }
+
+        protected override bool FilterItem(IStorageItem item)
+        {
+            return item is IStorageFolder;
+        }
     }
+
     public partial class FolderOpenPicker : DialogWindow
     {
         public FolderOpenPicker(FolderPickerOpenOptions options)

@@ -29,10 +29,17 @@
                 </DataTemplate>
             </ListBox.DataTemplates>
         </ListBox>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
-            <TextBlock Text="File:" Margin="0 0 1 0"/>
-            <TextBlock Text="{Binding SelectedFile.Path.LocalPath}"/>
-        </StackPanel>
+        <Grid Grid.Row="2" ColumnDefinitions="Auto * Auto">
+            <TextBlock Text="File name:" Margin="0 0 1 0"/>
+            <TextBlock Text="{Binding SelectedFile.Path.LocalPath}" Grid.Column="1"/>
+            <ComboBox ItemsSource="{Binding Options.FileTypeFilter}" SelectedIndex="{Binding SelectedFilterIndex}" Grid.Column="2">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="1">
             <Button Content="OK" Click="OnOK" IsEnabled="{Binding SelectedFile, Converter={x:Static ObjectConverters.IsNotNull}}"/>
             <Button Content="Cancel" Click="OnCancel"/>

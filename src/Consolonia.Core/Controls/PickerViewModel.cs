@@ -1,7 +1,5 @@
-using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -10,7 +8,7 @@ using Consolonia.Core.Infrastructure;
 namespace Consolonia.Core.Controls
 {
 
-    public partial class PickerViewModel<TPickerOptions> : ObservableObject
+    public abstract partial class PickerViewModel<TPickerOptions> : ObservableObject
         where TPickerOptions : PickerOptions
     {
         public PickerViewModel(TPickerOptions options)
@@ -72,9 +70,12 @@ namespace Consolonia.Core.Controls
             {
                 await foreach (var item in CurrentFolder.GetItemsAsync())
                 {
-                    this.Items.Add(item);
+                    if (this.FilterItem(item))
+                        this.Items.Add(item);
                 }
             }
         }
+
+        protected abstract bool FilterItem(IStorageItem item);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Joins;
 using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -42,9 +43,21 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                         SuggestedStartLocation = new SystemStorageFolder(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
                         FileTypeFilter = new List<FilePickerFileType>()
                         {
+                             new FilePickerFileType("All files")
+                             {
+                                 Patterns = new List<string>() { "*" }
+                             },
                              new FilePickerFileType("Text")
                              {
                                  Patterns = new List<string>() { "*.txt" }
+                             },
+                             new FilePickerFileType("Comma Delimited Files")
+                             {
+                                 Patterns = new List<string>() { "*.csv" }
+                             },
+                             new FilePickerFileType("PDF")
+                             {
+                                 Patterns = new List<string>() { "*.pdf" }
                              }
                         },
                     });

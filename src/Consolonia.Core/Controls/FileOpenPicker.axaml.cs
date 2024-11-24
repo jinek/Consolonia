@@ -1,18 +1,43 @@
+using System;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
-using Consolonia.Core.Controls.Dialog;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Controls
 {
-    public class FileOpenPickerViewModel : PickerViewModel<FilePickerOpenOptions>
+    public partial class FileOpenPickerViewModel : PickerViewModel<FilePickerOpenOptions>
     {
         public FileOpenPickerViewModel(FilePickerOpenOptions options)
             : base(options)
         {
         }
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(CurrentFolderPath))]
+        private int _selectedFilterIndex;
+
+        protected override bool FilterItem(IStorageItem item)
+        {
+            if (!Options.FileTypeFilter.Any())
+                return true;
+
+            if (item is IStorageFile file)
+            {
+                var selectedFileType = Options.FileTypeFilter[SelectedFilterIndex]!;
+                foreach (var pattern in selectedFileType.Patterns)
+                {
+                    if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+                return false;
+            }
+            return true;
+        }
     }
+
     public partial class FileOpenPicker : DialogWindow
     {
         public FileOpenPicker(FilePickerOpenOptions options)
@@ -31,8 +56,6 @@ namespace Consolonia.Core.Controls
         {
             AvaloniaXamlLoader.Load(this);
         }
-
-        public FilePickerOpenOptions Options => ((FileOpenPickerViewModel)DataContext).Options;
 
         private void OnDoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
         {
