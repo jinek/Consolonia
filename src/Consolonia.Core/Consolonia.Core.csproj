@@ -1,10 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    <PropertyGroup>
+        <NoWarn>CA2007;</NoWarn>
+    </PropertyGroup>
     <ItemGroup>
-      <AvaloniaXaml Remove="Controls\FileOpen\**" />
-      <Compile Remove="Controls\FileOpen\**" />
-      <EmbeddedResource Remove="Controls\FileOpen\**" />
-      <None Remove="Controls\FileOpen\**" />
+        <AvaloniaXaml Remove="Controls\FileOpen\**" />
+        <Compile Remove="Controls\FileOpen\**" />
+        <EmbeddedResource Remove="Controls\FileOpen\**" />
+        <None Remove="Controls\FileOpen\**" />
     </ItemGroup>
 
     <ItemGroup>

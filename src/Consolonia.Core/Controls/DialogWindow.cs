@@ -32,13 +32,13 @@ namespace Consolonia.Core.Controls
         public static readonly StyledProperty<bool> CanResizeProperty =
             AvaloniaProperty.Register<Window, bool>(nameof(CanResize), true);
 
-        public static readonly StyledProperty<string?> IconProperty =
-            AvaloniaProperty.Register<DialogWindow, string?>(nameof(Icon));
+        public static readonly StyledProperty<string> IconProperty =
+            AvaloniaProperty.Register<DialogWindow, string>(nameof(Icon));
 
         private Size _contentSize;
         private ContentPresenter _partContentPresenter;
 
-        private TaskCompletionSource<object?> _taskCompletionSource;
+        private TaskCompletionSource<object> _taskCompletionSource;
 
 
         static DialogWindow()
@@ -86,7 +86,7 @@ namespace Consolonia.Core.Controls
         /// <summary>
         /// Gets or sets the icon of the window.
         /// </summary>
-        public string? Icon
+        public string Icon
         {
             get => GetValue(IconProperty);
             set => SetValue(IconProperty, value);
@@ -158,7 +158,7 @@ namespace Consolonia.Core.Controls
         }
 
         // ReSharper disable once VirtualMemberNeverOverridden.Global overriden in other packages, why resharper suggests this?
-        public virtual void CloseDialog(object? result = null)
+        public virtual void CloseDialog(object result = null)
         {
             DialogHost dialogHost = GetDialogHost(this);
             dialogHost.PopInternal(this);
@@ -174,9 +174,9 @@ namespace Consolonia.Core.Controls
             if (_taskCompletionSource != null)
                 throw new NotImplementedException();
 
-            _taskCompletionSource = new TaskCompletionSource<object?>();
+            _taskCompletionSource = new TaskCompletionSource<object>();
             ShowDialogInternal(parent);
-            await _taskCompletionSource.Task.ConfigureAwait(false);
+            await _taskCompletionSource.Task;
         }
 
         public async Task<T> ShowDialogAsync<T>(Control parent)
@@ -184,9 +184,9 @@ namespace Consolonia.Core.Controls
             if (_taskCompletionSource != null)
                 throw new NotImplementedException();
 
-            _taskCompletionSource = new TaskCompletionSource<object?>();
+            _taskCompletionSource = new TaskCompletionSource<object>();
             ShowDialogInternal(parent);
-            var result = await _taskCompletionSource.Task.ConfigureAwait(false);
+            var result = await _taskCompletionSource.Task;
             return (T)result;
         }
 

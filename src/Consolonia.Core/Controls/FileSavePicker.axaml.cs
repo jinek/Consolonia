@@ -13,14 +13,15 @@ namespace Consolonia.Core.Controls
         public FileSavePickerViewModel(FilePickerSaveOptions options)
             : base(options)
         {
+
         }
 
         [ObservableProperty]
-        private FilePickerFileType? _selectedFileType;
+        private FilePickerFileType _selectedFileType;
 
         protected override bool FilterItem(IStorageItem item)
         {
-            if (_selectedFileType != null)
+            if (SelectedFileType != null)
             {
                 if (item is IStorageFolder folder)
                 {
@@ -28,7 +29,7 @@ namespace Consolonia.Core.Controls
                 }
                 if (item is IStorageFile file)
                 {
-                    foreach (var pattern in _selectedFileType.Patterns)
+                    foreach (var pattern in SelectedFileType.Patterns)
                     {
                         if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))
                             return true;
@@ -60,7 +61,7 @@ namespace Consolonia.Core.Controls
 
         public FilePickerSaveOptions Options => ((FileSavePickerViewModel)DataContext).Options;
 
-        private void OnDoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+        private void OnDoubleTapped(object sender, Avalonia.Input.TappedEventArgs e)
         {
             var listbox = (ListBox)sender;
             if (listbox.SelectedItem is SystemStorageFolder folder)
@@ -76,13 +77,13 @@ namespace Consolonia.Core.Controls
             }
         }
 
-        private void OnOK(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void OnOK(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             var model = (FileSavePickerViewModel)this.DataContext;
             this.CloseDialog(new IStorageFile[] { (IStorageFile)model.SelectedItem });
         }
 
-        private void OnCancel(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void OnCancel(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             this.CloseDialog(null);
         }

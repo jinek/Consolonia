@@ -11,7 +11,7 @@ namespace Consolonia.Core.Controls
     public abstract partial class PickerViewModel<TPickerOptions> : ObservableObject
         where TPickerOptions : PickerOptions
     {
-        public PickerViewModel(TPickerOptions options)
+        protected PickerViewModel(TPickerOptions options)
         {
             Options = options;
             CurrentFolderPath = options.SuggestedStartLocation?.Path.LocalPath;
@@ -38,9 +38,9 @@ namespace Consolonia.Core.Controls
         [NotifyPropertyChangedFor(nameof(SelectedFolder))]
         private IStorageItem _selectedItem;
 
-        public IStorageFile SelectedFile => _selectedItem as IStorageFile;
+        public IStorageFile SelectedFile => SelectedItem as IStorageFile;
 
-        public IStorageFolder SelectedFolder => _selectedItem as IStorageFolder;
+        public IStorageFolder SelectedFolder => SelectedItem as IStorageFolder;
 
         private async void PickerViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

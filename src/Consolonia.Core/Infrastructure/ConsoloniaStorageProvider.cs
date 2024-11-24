@@ -18,7 +18,7 @@ namespace Consolonia.Core.Infrastructure
         public bool CanPickFolder => true;
 
 
-        public async Task<IStorageBookmarkFile> OpenFileBookmarkAsync(string bookmark)
+        public Task<IStorageBookmarkFile> OpenFileBookmarkAsync(string bookmark)
         {
             throw new NotImplementedException();
         }
@@ -28,7 +28,7 @@ namespace Consolonia.Core.Infrastructure
             var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
 
             var picker = new FileOpenPicker(options);
-            var results = await picker.ShowDialogAsync<IStorageFile[]>(mainWindow).ConfigureAwait(false);
+            var results = await picker.ShowDialogAsync<IStorageFile[]>(mainWindow);
             return results;
         }
 
@@ -42,7 +42,7 @@ namespace Consolonia.Core.Infrastructure
             var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
 
             var picker = new FolderOpenPicker(options);
-            var results = await picker.ShowDialogAsync<IStorageFolder[]>(mainWindow).ConfigureAwait(false);
+            var results = await picker.ShowDialogAsync<IStorageFolder[]>(mainWindow);
             return results;
         }
 
@@ -51,7 +51,7 @@ namespace Consolonia.Core.Infrastructure
             var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
 
             var picker = new FileSavePicker(options);
-            var results = await picker.ShowDialogAsync<IStorageFile>(mainWindow).ConfigureAwait(false);
+            var results = await picker.ShowDialogAsync<IStorageFile>(mainWindow);
             return results;
         }
 

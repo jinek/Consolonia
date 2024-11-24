@@ -8,7 +8,7 @@ using Avalonia.Platform.Storage;
 namespace Consolonia.Core.Infrastructure
 {
     [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
-    public class SystemStorageFolder : IStorageFolder
+    public sealed class SystemStorageFolder : IStorageFolder
     {
         private DirectoryInfo _directoryInfo;
         private bool _isParent;
@@ -37,7 +37,7 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IStorageFile> CreateFileAsync(string name)
         {
-            await Task.CompletedTask.ConfigureAwait(false);
+            await Task.CompletedTask;
 
             var path = System.IO.Path.Combine(_directoryInfo.FullName, name);
             using (var stream = File.Create(path))
@@ -70,7 +70,7 @@ namespace Consolonia.Core.Infrastructure
 
         public async IAsyncEnumerable<IStorageItem> GetItemsAsync()
         {
-            await Task.CompletedTask.ConfigureAwait(false);
+            await Task.CompletedTask;
 
             if (_directoryInfo.Exists)
             {

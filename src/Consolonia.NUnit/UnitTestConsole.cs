@@ -94,9 +94,9 @@ namespace Consolonia.NUnit
                 // todo: check why Yield is not enough: https://github.com/jinek/Consolonia/runs/7055199426?check_suite_focus=true
                 const ulong interval = 50;
                 KeyEvent?.Invoke(key, c, RawInputModifiers.None, true, timestamp);
-                await Task.Delay((int)interval).ConfigureAwait(false);
+                await Task.Delay((int)interval);
                 KeyEvent?.Invoke(key, c, RawInputModifiers.None, false, timestamp + interval);
-                await Task.Delay((int)interval).ConfigureAwait(false);
+                await Task.Delay((int)interval);
             }
 
             await WaitRendered().ConfigureAwait(true);

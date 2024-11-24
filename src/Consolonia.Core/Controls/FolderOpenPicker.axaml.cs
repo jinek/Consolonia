@@ -39,7 +39,7 @@ namespace Consolonia.Core.Controls
 
         public FolderPickerOpenOptions Options => ((FolderPickerViewModel)DataContext).Options;
 
-        private void OnDoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+        private void OnDoubleTapped(object sender, Avalonia.Input.TappedEventArgs e)
         {
             var listbox = (ListBox)sender;
             if (listbox.SelectedItem is SystemStorageFolder folder)
@@ -55,13 +55,13 @@ namespace Consolonia.Core.Controls
             }
         }
 
-        private void OnOK(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void OnOK(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             var model = (FileSavePickerViewModel)this.DataContext;
             this.CloseDialog(new IStorageFolder[] { model.SelectedFolder });
         }
 
-        private void OnCancel(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void OnCancel(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             this.CloseDialog(null);
         }

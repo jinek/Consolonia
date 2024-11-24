@@ -57,7 +57,7 @@ namespace Consolonia.Core.Controls
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void OnDoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+        private void OnDoubleTapped(object sender, Avalonia.Input.TappedEventArgs e)
         {
             var listbox = (ListBox)sender;
             if (listbox.SelectedItem is SystemStorageFolder folder)
@@ -73,13 +73,13 @@ namespace Consolonia.Core.Controls
             }
         }
 
-        private void OnOK(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void OnOK(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             var model = (FileOpenPickerViewModel)this.DataContext;
             this.CloseDialog(new IStorageFile[] { model.SelectedFile });
         }
 
-        private void OnCancel(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void OnCancel(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             this.CloseDialog(null);
         }

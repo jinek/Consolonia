@@ -5,7 +5,7 @@ using Avalonia.Platform.Storage;
 
 namespace Consolonia.Core.Infrastructure
 {
-    public class SystemStorageFile : IStorageFile
+    public sealed class SystemStorageFile : IStorageFile
     {
         private FileInfo _fileInfo;
 
@@ -62,13 +62,13 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<Stream> OpenReadAsync()
         {
-            await Task.CompletedTask.ConfigureAwait(false);
+            await Task.CompletedTask;
             return _fileInfo.OpenRead();
         }
 
         public async Task<Stream> OpenWriteAsync()
         {
-            await Task.CompletedTask.ConfigureAwait(false);
+            await Task.CompletedTask;
             return _fileInfo.OpenWrite();
         }
 
