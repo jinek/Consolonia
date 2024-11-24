@@ -8,10 +8,10 @@ using Consolonia.Core.Infrastructure;
 namespace Consolonia.Core.Controls
 {
 
-    public abstract partial class PickerViewModel<TPickerOptions> : ObservableObject
+    public abstract partial class PickerViewModelBase<TPickerOptions> : ObservableObject
         where TPickerOptions : PickerOptions
     {
-        protected PickerViewModel(TPickerOptions options)
+        protected PickerViewModelBase(TPickerOptions options)
         {
             Options = options;
             CurrentFolderPath = options.SuggestedStartLocation?.Path.LocalPath;
@@ -33,14 +33,6 @@ namespace Consolonia.Core.Controls
         [ObservableProperty]
         private ObservableCollection<IStorageItem> _items = new ObservableCollection<IStorageItem>();
 
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(SelectedFile))]
-        [NotifyPropertyChangedFor(nameof(SelectedFolder))]
-        private IStorageItem _selectedItem;
-
-        public IStorageFile SelectedFile => SelectedItem as IStorageFile;
-
-        public IStorageFolder SelectedFolder => SelectedItem as IStorageFolder;
 
         private async void PickerViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

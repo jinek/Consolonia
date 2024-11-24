@@ -5,15 +5,16 @@
                      HorizontalAlignment="Center"
                      VerticalAlignment="Center"
                      x:DataType="controls:FolderPickerViewModel"
-                     x:Class="Consolonia.Core.Controls.FolderOpenPicker"
-                     Icon="📁"
+                     x:Class="Consolonia.Core.Controls.FolderPicker"
+                     Icon="📁"  CancelOnEscape="True"
                      Title="{Binding Options.Title}">
-    <Grid RowDefinitions="Auto * Auto Auto">
+    <Grid RowDefinitions="Auto * Auto">
         <Grid ColumnDefinitions="Auto *">
             <TextBlock Text="📁" Margin="0 0 1 0" />
             <TextBox Text="{Binding CurrentFolderPath, Mode=TwoWay}" Grid.Column="1" />
         </Grid>
-        <ListBox Grid.Row="1" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" DoubleTapped="OnDoubleTapped">
+        <ListBox x:Name="ItemsListBox" Grid.Row="1" ItemsSource="{Binding Items}" SelectionMode="{Binding SelectionMode}"
+                 SelectionChanged="ListBox_SelectionChanged" DoubleTapped="OnDoubleTapped">
             <ListBox.DataTemplates>
                 <DataTemplate DataType="{x:Type storage:IStorageFolder}">
                     <Grid ColumnDefinitions="Auto * " Background="Transparent">
@@ -29,13 +30,9 @@
                 </DataTemplate>
             </ListBox.DataTemplates>
         </ListBox>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
-            <TextBlock Text="Folder:" Margin="0 0 1 0"/>
-            <TextBlock Text="{Binding SelectedFolder.Path.LocalPath}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="1">
-            <Button Content="OK" Click="OnOK" IsEnabled="{Binding SelectedFolder, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-            <Button Content="Cancel" Click="OnCancel"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="1">
+            <Button x:Name="OKButton" Content="OK" Click="OnOK" IsEnabled="{Binding HasSelection}"/>
+            <Button x:Name="CancelButton" Content="Cancel" Click="OnCancel"/>
         </StackPanel>
     </Grid>
 </controls:DialogWindow>

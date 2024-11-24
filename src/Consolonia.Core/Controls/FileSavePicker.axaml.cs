@@ -1,45 +1,9 @@
-using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Consolonia.Core.Controls.Dialog;
-using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Controls
 {
-    public partial class FileSavePickerViewModel : PickerViewModel<FilePickerSaveOptions>
-    {
-        public FileSavePickerViewModel(FilePickerSaveOptions options)
-            : base(options)
-        {
-
-        }
-
-        [ObservableProperty]
-        private FilePickerFileType _selectedFileType;
-
-        protected override bool FilterItem(IStorageItem item)
-        {
-            if (SelectedFileType != null)
-            {
-                if (item is IStorageFolder folder)
-                {
-                    return true;
-                }
-                if (item is IStorageFile file)
-                {
-                    foreach (var pattern in SelectedFileType.Patterns)
-                    {
-                        if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))
-                            return true;
-                    }
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
     public partial class FileSavePicker : DialogWindow
     {
         public FileSavePicker(FilePickerSaveOptions options)
@@ -48,7 +12,7 @@ namespace Consolonia.Core.Controls
 
             Loaded += (_, _) =>
             {
-                this.FindControl<Button>("Button")?.Focus();
+                this.FindControl<Button>("CancelButton")?.Focus();
             };
             DataContext = new FileSavePickerViewModel(options);
             InitializeComponent();
@@ -61,26 +25,26 @@ namespace Consolonia.Core.Controls
 
         public FilePickerSaveOptions Options => ((FileSavePickerViewModel)DataContext).Options;
 
+        public FileSavePickerViewModel ViewModel => (FileSavePickerViewModel)DataContext;
+
         private void OnDoubleTapped(object sender, Avalonia.Input.TappedEventArgs e)
         {
             var listbox = (ListBox)sender;
-            if (listbox.SelectedItem is SystemStorageFolder folder)
+            if (listbox.SelectedItem is IStorageFolder folder)
             {
-                var model = (FileSavePickerViewModel)this.DataContext;
-                model.CurrentFolder = folder;
-                model.CurrentFolderPath = folder.Path.LocalPath;
+                ViewModel.CurrentFolder = folder;
+                ViewModel.CurrentFolderPath = folder.Path.LocalPath;
             }
-            else if (listbox.SelectedItem is SystemStorageFile file)
+            else if (listbox.SelectedItem is IStorageFile file)
             {
-                var model = (FileSavePickerViewModel)this.DataContext;
-                this.CloseDialog(new IStorageFile[] { file });
+                this.CloseDialog(file);
             }
         }
 
         private void OnOK(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             var model = (FileSavePickerViewModel)this.DataContext;
-            this.CloseDialog(new IStorageFile[] { (IStorageFile)model.SelectedItem });
+            this.CloseDialog(model.SelectedFile);
         }
 
         private void OnCancel(object sender, Avalonia.Interactivity.RoutedEventArgs e)

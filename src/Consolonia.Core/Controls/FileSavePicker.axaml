@@ -6,14 +6,14 @@
                      VerticalAlignment="Center"
                      x:DataType="controls:FileSavePickerViewModel"
                      x:Class="Consolonia.Core.Controls.FileSavePicker"
-                     Icon="📰"
+                     Icon="📰" CancelOnEscape="True"
                      Title="{Binding Options.Title}">
     <Grid RowDefinitions="Auto * Auto Auto">
         <Grid ColumnDefinitions="Auto *">
             <TextBlock Text="📁 " />
             <TextBox Text="{Binding CurrentFolderPath, Mode=TwoWay}" Grid.Column="1" />
         </Grid>
-        <ListBox Grid.Row="1" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" DoubleTapped="OnDoubleTapped">
+        <ListBox x:Name="ItemsListBox" Grid.Row="1" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" DoubleTapped="OnDoubleTapped">
             <ListBox.DataTemplates>
                 <DataTemplate DataType="{x:Type storage:IStorageFolder}">
                     <Grid ColumnDefinitions="Auto * " Background="Transparent">
@@ -34,8 +34,8 @@
             <TextBox Text="{Binding SelectedFile.Path.LocalPath}" Grid.Column="1"/>
         </Grid>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="1">
-            <Button Content="Save" Click="OnOK" IsEnabled="{Binding SelectedFile, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-            <Button Content="Cancel" Click="OnCancel"/>
+            <Button x:Name="SaveButton" Content="Save" Click="OnOK" IsEnabled="{Binding SelectedFile, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+            <Button x:Name="CancelButton" Content="Cancel" Click="OnCancel"/>
         </StackPanel>
     </Grid>
 </controls:DialogWindow>

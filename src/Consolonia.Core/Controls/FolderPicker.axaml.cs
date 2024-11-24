@@ -1,13 +1,15 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Controls
 {
 
-    public partial class FileOpenPicker : DialogWindow
+    public partial class FolderPicker : DialogWindow
     {
-        public FileOpenPicker(FilePickerOpenOptions options)
+        public FolderPicker(FolderPickerOpenOptions options)
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
@@ -15,35 +17,34 @@ namespace Consolonia.Core.Controls
             {
                 this.FindControl<Button>("CancelButton")?.Focus();
             };
-            DataContext = new FileOpenPickerViewModel(options);
+            DataContext = new FolderPickerViewModel(options);
             InitializeComponent();
         }
 
-        public FileOpenPickerViewModel ViewModel => (FileOpenPickerViewModel)DataContext;
+        public FolderPickerViewModel ViewModel => (FolderPickerViewModel)DataContext;
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
 
+        public FolderPickerOpenOptions Options => ((FolderPickerViewModel)DataContext).Options;
+
         private void OnDoubleTapped(object sender, Avalonia.Input.TappedEventArgs e)
         {
             var listbox = (ListBox)sender;
-            if (listbox.SelectedItem is IStorageFolder folder)
+            if (listbox.SelectedItem is SystemStorageFolder folder)
             {
                 ViewModel.CurrentFolder = folder;
                 ViewModel.CurrentFolderPath = folder.Path.LocalPath;
-                ViewModel.SelectedFiles.Clear();
-            }
-            else if (listbox.SelectedItem is IStorageFile file)
-            {
-                this.CloseDialog(new IStorageFile[] { file });
+                ViewModel.SelectedFolders.Clear();
+                ViewModel.HasSelection = false;
             }
         }
 
         private void OnOK(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            this.CloseDialog(ViewModel.SelectedFiles);
+            this.CloseDialog(ViewModel.SelectedFolders);
         }
 
         private void OnCancel(object sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -56,27 +57,27 @@ namespace Consolonia.Core.Controls
             if (ViewModel.SelectionMode == SelectionMode.Single)
             {
                 if ((e.AddedItems.Count > 0) &&
-                    (e.AddedItems[0] is IStorageFile file))
+                    (e.AddedItems[0] is IStorageFolder folder))
                 {
-                    ViewModel.SelectedFiles.Clear();
-                    ViewModel.SelectedFiles.Add(file);
+                    ViewModel.SelectedFolders.Clear();
+                    ViewModel.SelectedFolders.Add(folder);
                 }
             }
             else
             {
                 foreach (var item in e.AddedItems)
                 {
-                    if (item is IStorageFile file)
-                        ViewModel.SelectedFiles.Add(file);
+                    if (item is IStorageFolder folder)
+                        ViewModel.SelectedFolders.Add(folder);
                 }
 
                 foreach (var item in e.RemovedItems)
                 {
-                    if (item is IStorageFile file)
-                        ViewModel.SelectedFiles.Remove(file);
+                    if (item is IStorageFolder folder)
+                        ViewModel.SelectedFolders.Remove(folder);
                 }
             }
-            ViewModel.HasSelection = ViewModel.SelectedFiles.Count > 0;
+            ViewModel.HasSelection = ViewModel.SelectedFolders.Count > 0;
         }
     }
 }

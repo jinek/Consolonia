@@ -28,7 +28,7 @@ namespace Consolonia.Core.Infrastructure
             var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
 
             var picker = new FileOpenPicker(options);
-            var results = await picker.ShowDialogAsync<IStorageFile[]>(mainWindow);
+            var results = await picker.ShowDialogAsync<IReadOnlyList<IStorageFile>>(mainWindow);
             return results;
         }
 
@@ -41,8 +41,8 @@ namespace Consolonia.Core.Infrastructure
         {
             var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
 
-            var picker = new FolderOpenPicker(options);
-            var results = await picker.ShowDialogAsync<IStorageFolder[]>(mainWindow);
+            var picker = new FolderPicker(options);
+            var results = await picker.ShowDialogAsync<IReadOnlyList<IStorageFolder>>(mainWindow);
             return results;
         }
 

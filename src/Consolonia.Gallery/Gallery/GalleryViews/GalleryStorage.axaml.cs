@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -26,6 +27,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
         }
 
+        public GalleryStorageViewModel ViewModel => (GalleryStorageViewModel)DataContext;
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -33,6 +36,15 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
         private async void OnOpenFile(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            await OpenFiles("Open file", allowMultiple: false);
+        }
+        private async void OnOpenMultipleFiles(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            await OpenFiles("Open files", allowMultiple: true);
+        }
+
+        private async Task OpenFiles(string title, bool allowMultiple)
         {
             IClassicDesktopStyleApplicationLifetime lifetime = App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
             if (lifetime != null)
@@ -42,7 +54,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 {
                     var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
                     {
-                        Title = "Open File",
+                        Title = title,
+                        AllowMultiple = allowMultiple,
                         SuggestedStartLocation = new SystemStorageFolder(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
                         FileTypeFilter = new List<FilePickerFileType>()
                         {
@@ -65,13 +78,22 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                         },
                     });
 
-                    var model = (GalleryStorageViewModel)this.DataContext;
-                    model.Files = files;
+                    ViewModel.Files = files;
                 }
             }
         }
 
         private async void OnOpenFolder(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            await OpenFolders(title: "Selecct a folder", allowMultiple: false);
+        }
+
+        private async void OnOpenMultipleFolders(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            await OpenFolders(title: "Select folder(s)", allowMultiple: true);
+        }
+
+        private async Task OpenFolders(string title, bool allowMultiple)
         {
             IClassicDesktopStyleApplicationLifetime lifetime = App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
             if (lifetime != null)
@@ -81,14 +103,15 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 {
                     var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions()
                     {
-                        Title = "Select a folder",
-                        AllowMultiple = false
+                        Title = title,
+                        SuggestedStartLocation = new SystemStorageFolder(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
+                        AllowMultiple = allowMultiple
                     });
-                    var model = (GalleryStorageViewModel)this.DataContext;
-                    model.Folders = folders;
+                    ViewModel.Folders = folders;
                 }
             }
         }
+
         private async void OnSaveFile(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             IClassicDesktopStyleApplicationLifetime lifetime = App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
@@ -116,11 +139,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                         },
                     });
 
-                    var model = (GalleryStorageViewModel)this.DataContext;
-                    model.Files = new List<IStorageFile>() { file };
+                    ViewModel.Files = new List<IStorageFile>() { file };
                 }
             }
         }
     }
-  
+
 }
