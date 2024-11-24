@@ -60,6 +60,9 @@ namespace Consolonia.Core.Controls
             Items.Clear();
             if (CurrentFolder != null)
             {
+
+                this.Items.Add(new SystemStorageFolder(new DirectoryInfo(Path.Combine(CurrentFolder.Path.LocalPath, "..")), true));
+
                 await foreach (var item in CurrentFolder.GetItemsAsync())
                 {
                     if (this.FilterItem(item))

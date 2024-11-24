@@ -58,8 +58,9 @@ namespace Consolonia.Core.Infrastructure
         public Task<IStorageItem> MoveAsync(IStorageFolder destination)
         {
             var path = destination.Path.LocalPath;
-            _fileInfo.MoveTo(path);
-            return Task.FromResult((IStorageItem)this);
+            var targetPath = System.IO.Path.Combine(path, _fileInfo.Name);
+            _fileInfo.MoveTo(targetPath);
+            return Task.FromResult((IStorageItem)new SystemStorageFile(targetPath));
         }
 
         public async Task<Stream> OpenReadAsync()

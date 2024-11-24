@@ -75,8 +75,6 @@ namespace Consolonia.Core.Infrastructure
 
             if (_directoryInfo.Exists)
             {
-                yield return new SystemStorageFolder(_directoryInfo.Parent, isParent: true);
-
                 foreach (var folder in _directoryInfo.GetDirectories())
                 {
                     yield return new SystemStorageFolder(folder);
@@ -99,8 +97,9 @@ namespace Consolonia.Core.Infrastructure
 
         public Task<IStorageItem> MoveAsync(IStorageFolder destination)
         {
-            _directoryInfo.MoveTo(destination.Path.LocalPath);
-            return Task.FromResult((IStorageItem)new SystemStorageFolder(new DirectoryInfo(destination.Path.LocalPath)));
+            var targetPath = System.IO.Path.Combine(destination.Path.LocalPath, _directoryInfo.Name);
+            _directoryInfo.MoveTo(targetPath);
+            return Task.FromResult((IStorageItem)new SystemStorageFolder(targetPath));
         }
 
         public Task<string> SaveBookmarkAsync()
