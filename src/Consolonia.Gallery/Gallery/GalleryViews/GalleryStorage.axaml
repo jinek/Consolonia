@@ -9,17 +9,29 @@
 
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Click="OnOpenFile" Background="Gray">Open File</Button>
-            <Button Click="OnOpenFolder" Background="Gray">Open Folder</Button>
-            <Button Click="OnSaveFile" Background="Gray">Save File</Button>
+            <Button Click="OnOpenFile" Background="Gray">Open File Dialog</Button>
+            <Button Click="OnOpenFolder" Background="Gray">Open Folder Dialog</Button>
+            <Button Click="OnSaveFile" Background="Gray">Save File Dialog</Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label>File</Label>
-            <TextBlock Text="{Binding File.Name}"/>
+            <TextBlock>Files:</TextBlock>
+            <ItemsControl ItemsSource="{Binding Files}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label>Folder:</Label>
-            <TextBlock Text="{Binding Folder.Name}"/>
+            <TextBlock>Folders:</TextBlock>
+            <ItemsControl ItemsSource="{Binding Folders}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
     </StackPanel>
 </UserControl>

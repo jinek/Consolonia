@@ -1,21 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reactive.Joins;
-using System.Reactive.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Core.Infrastructure;
-using Microsoft.VisualBasic.FileIO;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
+    public partial class GalleryStorageViewModel : ObservableObject
+    {
+        [ObservableProperty]
+        private IReadOnlyList<IStorageFile> _files;
+
+        [ObservableProperty]
+        private IReadOnlyList<IStorageFolder> _folders;
+    }
+
     public partial class GalleryStorage : UserControl
     {
         public GalleryStorage()
@@ -119,13 +122,5 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             }
         }
     }
-
-    public partial class GalleryStorageViewModel : ObservableObject
-    {
-        [ObservableProperty]
-        private IReadOnlyList<IStorageFile> _files;
-
-        [ObservableProperty]
-        private IReadOnlyList<IStorageFolder> _folders;
-    }
+  
 }
