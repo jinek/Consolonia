@@ -8,7 +8,7 @@ using Avalonia.Platform.Storage;
 
 namespace Consolonia.Core.Infrastructure
 {
-    [DebuggerDisplay("{Name}")]
+    [DebuggerDisplay("Folder: {Name}")]
     public sealed class SystemStorageFolder : IStorageFolder
     {
         private DirectoryInfo _directoryInfo;
