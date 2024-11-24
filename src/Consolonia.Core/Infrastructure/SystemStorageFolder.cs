@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 
 namespace Consolonia.Core.Infrastructure
 {
-    [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
+    [DebuggerDisplay("{Name}")]
     public sealed class SystemStorageFolder : IStorageFolder
     {
         private DirectoryInfo _directoryInfo;
@@ -105,11 +106,6 @@ namespace Consolonia.Core.Infrastructure
         public Task<string> SaveBookmarkAsync()
         {
             throw new NotImplementedException();
-        }
-
-        private string GetDebuggerDisplay()
-        {
-            return _directoryInfo.FullName;
         }
     }
 }

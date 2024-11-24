@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 
 namespace Consolonia.Core.Infrastructure
 {
+    [DebuggerDisplay("{Name}")]
     public sealed class SystemStorageFile : IStorageFile
     {
         private FileInfo _fileInfo;
