@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -23,21 +23,18 @@ namespace Consolonia.Core.Controls
 
         protected override bool FilterItem(IStorageItem item)
         {
-            if (SelectedFileType != null)
+            if (item is IStorageFolder)
             {
-                if (item is IStorageFolder folder)
+                return true;
+            }
+            if (item is IStorageFile file)
+            {
+                foreach (var pattern in SelectedFileType.Patterns)
                 {
-                    return true;
+                    if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))
+                        return true;
                 }
-                if (item is IStorageFile file)
-                {
-                    foreach (var pattern in SelectedFileType.Patterns)
-                    {
-                        if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))
-                            return true;
-                    }
-                    return false;
-                }
+                return false;
             }
             return true;
         }

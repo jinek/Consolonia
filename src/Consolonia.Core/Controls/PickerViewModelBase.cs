@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Consolonia.Core.Controls
         protected PickerViewModelBase(TPickerOptions options)
         {
             Options = options;
-            CurrentFolderPath = options.SuggestedStartLocation?.Path.LocalPath;
+            CurrentFolderPath = options.SuggestedStartLocation?.Path.LocalPath ?? Environment.CurrentDirectory;
             CurrentFolder = options.SuggestedStartLocation;
             _ = LoadCurrentFolder();
             PropertyChanged += PickerViewModel_PropertyChanged;
@@ -58,16 +59,13 @@ namespace Consolonia.Core.Controls
         private async Task LoadCurrentFolder()
         {
             Items.Clear();
-            if (CurrentFolder != null)
+
+            this.Items.Add(new SystemStorageFolder(new DirectoryInfo(Path.Combine(CurrentFolder.Path.LocalPath, "..")), true));
+
+            await foreach (var item in CurrentFolder.GetItemsAsync())
             {
-
-                this.Items.Add(new SystemStorageFolder(new DirectoryInfo(Path.Combine(CurrentFolder.Path.LocalPath, "..")), true));
-
-                await foreach (var item in CurrentFolder.GetItemsAsync())
-                {
-                    if (this.FilterItem(item))
-                        this.Items.Add(item);
-                }
+                if (this.FilterItem(item))
+                    this.Items.Add(item);
             }
         }
 

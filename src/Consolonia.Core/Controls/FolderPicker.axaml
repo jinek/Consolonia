@@ -31,7 +31,7 @@
             </ListBox.DataTemplates>
         </ListBox>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="1">
-            <Button x:Name="OKButton" Content="OK" Click="OnOK" IsEnabled="{Binding HasSelection}"/>
+            <Button x:Name="OkButton" Content="OK" Click="OnOK" IsEnabled="{Binding HasSelection}"/>
             <Button x:Name="CancelButton" Content="Cancel" Click="OnCancel"/>
         </StackPanel>
     </Grid>

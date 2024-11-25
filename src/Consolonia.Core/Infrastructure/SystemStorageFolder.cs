@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 
@@ -43,6 +42,7 @@ namespace Consolonia.Core.Infrastructure
             var path = System.IO.Path.Combine(_directoryInfo.FullName, name);
             using (var stream = File.Create(path))
             {
+                await stream.WriteAsync(Array.Empty<byte>().AsMemory(0, 0));    
             }
             return new SystemStorageFile(path);
         }

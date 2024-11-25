@@ -34,7 +34,7 @@ namespace Consolonia.Core.Tests
             {
                 using (var streamWriter = new StreamWriter(stream))
                 {
-                    streamWriter.Write("Hello world");
+                    await streamWriter.WriteAsync("Hello world");
                 }
             }
             Assert.True(File.Exists(tempFile));
@@ -62,7 +62,7 @@ namespace Consolonia.Core.Tests
             Assert.IsNotNull(parentFolder);
             Assert.AreEqual(Path.GetDirectoryName(tempFile), parentFolder.Path.LocalPath);
 
-            var subPath = Path.Combine(Path.GetDirectoryName(tempFile), nameof(TestFileSemantics));
+            var subPath = Path.Combine(Path.GetDirectoryName(tempFile)!, nameof(TestFileSemantics));
             if (Directory.Exists(subPath))
                 Directory.Delete(subPath);
 
@@ -114,7 +114,7 @@ namespace Consolonia.Core.Tests
             var storageProvider = new ConsoloniaStorageProvider();
             var tempPath = Environment.GetEnvironmentVariable("TEMP"); 
             var tempFolder = await storageProvider.TryGetFolderFromPathAsync(new Uri($"file://{tempPath}"));
-            var testPath = Path.Combine(Environment.GetEnvironmentVariable("TEMP"), nameof(TestFolderSemantics));
+            var testPath = Path.Combine(Environment.GetEnvironmentVariable("TEMP")!, nameof(TestFolderSemantics))!;
             var testFolder  = await tempFolder.CreateFolderAsync(nameof(TestFolderSemantics));
 
             Assert.IsNotNull(testFolder);

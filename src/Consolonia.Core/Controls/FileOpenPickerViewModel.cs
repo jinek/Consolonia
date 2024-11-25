@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -31,7 +29,7 @@ namespace Consolonia.Core.Controls
 
         protected override bool FilterItem(IStorageItem item)
         {
-            if (!Options.FileTypeFilter.Any())
+            if (Options.FileTypeFilter.Count == 0)
                 return true;
 
             if (item is IStorageFile file)
@@ -44,6 +42,7 @@ namespace Consolonia.Core.Controls
                 }
                 return false;
             }
+            // show folders
             return true;
         }
 

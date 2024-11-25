@@ -17,12 +17,12 @@
                  SelectionChanged="ListBox_SelectionChanged" DoubleTapped="OnDoubleTapped">
             <ListBox.DataTemplates>
                 <DataTemplate DataType="{x:Type storage:IStorageFolder}">
-                    <Grid ColumnDefinitions="Auto * " Background="Transparent">
+                    <Grid ColumnDefinitions="Auto * " Background="Transparent"  x:DataType="storage:IStorageFolder">
                         <TextBlock Text="📁" Margin="0 0 1 0"/>
                         <TextBlock Grid.Column="1" Text="{Binding Name}"/>
                     </Grid>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type storage:IStorageFile}">
+                <DataTemplate DataType="{x:Type storage:IStorageFile}"  x:DataType="storage:IStorageFile">
                     <Grid ColumnDefinitions="Auto *"  Background="Transparent">
                         <TextBlock Text="📰" Margin="0 0 1 0"/>
                         <TextBlock Grid.Column="1" Text="{Binding Name}" />
@@ -38,7 +38,7 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="1">
-            <Button x:Name="OKButton" Content="OK" Click="OnOK" IsEnabled="{Binding HasSelection}"/>
+            <Button x:Name="OkButton" Content="OK" Click="OnOK" IsEnabled="{Binding HasSelection}"/>
             <Button x:Name="CancelButton" Content="Cancel" Click="OnCancel"/>
         </StackPanel>
     </Grid>
