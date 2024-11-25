@@ -112,7 +112,8 @@ namespace Consolonia.Core.Tests
 
             folder = await storageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Downloads);
             if (folder != null)
-                Assert.AreEqual(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"),
+                Assert.AreEqual(
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"),
                     folder.Path.LocalPath);
 
             folder = await storageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Desktop);
