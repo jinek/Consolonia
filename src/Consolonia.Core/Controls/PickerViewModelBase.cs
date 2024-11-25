@@ -16,7 +16,7 @@ namespace Consolonia.Core.Controls
         {
             Options = options;
             CurrentFolderPath = options.SuggestedStartLocation?.Path.LocalPath ?? Environment.CurrentDirectory;
-            CurrentFolder = options.SuggestedStartLocation;
+            CurrentFolder = options.SuggestedStartLocation ?? new SystemStorageFolder(Environment.CurrentDirectory);
             _ = LoadCurrentFolder();
             PropertyChanged += PickerViewModel_PropertyChanged;
         }

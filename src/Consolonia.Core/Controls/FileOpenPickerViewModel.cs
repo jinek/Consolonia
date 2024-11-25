@@ -29,12 +29,15 @@ namespace Consolonia.Core.Controls
 
         protected override bool FilterItem(IStorageItem item)
         {
-            if (Options.FileTypeFilter.Count == 0)
+            if (Options.FileTypeFilter == null || Options.FileTypeFilter.Count == 0)
                 return true;
 
             if (item is IStorageFile file)
             {
                 var selectedFileType = Options.FileTypeFilter[SelectedFilterIndex]!;
+                if (selectedFileType.Patterns == null)
+                    return true;
+
                 foreach (var pattern in selectedFileType.Patterns)
                 {
                     if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -29,6 +30,9 @@ namespace Consolonia.Core.Controls
             }
             if (item is IStorageFile file)
             {
+                if (SelectedFileType.Patterns == null || SelectedFileType.Patterns.Count == 0)
+                    return true;
+
                 foreach (var pattern in SelectedFileType.Patterns)
                 {
                     if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))

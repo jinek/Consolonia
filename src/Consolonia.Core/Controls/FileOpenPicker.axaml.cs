@@ -37,18 +37,18 @@ namespace Consolonia.Core.Controls
             }
             else if (listbox.SelectedItem is IStorageFile file)
             {
-                this.CloseDialog(new IStorageFile[] { file });
+                CloseDialog(new [] { file });
             }
         }
 
         private void OnOK(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            this.CloseDialog(ViewModel.SelectedFiles);
+            CloseDialog(ViewModel.SelectedFiles);
         }
 
         private void OnCancel(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            this.CloseDialog(null);
+            CloseDialog();
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
@@ -23,7 +24,7 @@ namespace Consolonia.Core.Controls
             AvaloniaXamlLoader.Load(this);
         }
 
-        public FilePickerSaveOptions Options => ((FileSavePickerViewModel)DataContext).Options;
+        public FilePickerSaveOptions Options => ((FileSavePickerViewModel)DataContext)?.Options ?? throw new ArgumentNullException();
 
         public FileSavePickerViewModel ViewModel => (FileSavePickerViewModel)DataContext;
 
@@ -37,19 +38,18 @@ namespace Consolonia.Core.Controls
             }
             else if (listbox.SelectedItem is IStorageFile file)
             {
-                this.CloseDialog(file);
+                CloseDialog(file);
             }
         }
 
         private void OnOK(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            var model = (FileSavePickerViewModel)this.DataContext;
-            this.CloseDialog(model.SelectedFile);
+            CloseDialog(ViewModel.SelectedFile);
         }
 
         private void OnCancel(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            this.CloseDialog(null);
+            CloseDialog();
         }
     }
 }

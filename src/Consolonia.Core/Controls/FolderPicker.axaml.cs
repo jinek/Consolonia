@@ -43,12 +43,12 @@ namespace Consolonia.Core.Controls
 
         private void OnOK(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            this.CloseDialog(ViewModel.SelectedFolders);
+            CloseDialog(ViewModel.SelectedFolders);
         }
 
         private void OnCancel(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            this.CloseDialog(null);
+            CloseDialog();
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

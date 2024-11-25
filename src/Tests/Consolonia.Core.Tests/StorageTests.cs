@@ -40,8 +40,8 @@ namespace Consolonia.Core.Tests
             Assert.True(File.Exists(tempFile));
             Assert.True(File.Exists(file.Path.LocalPath));
             var props = await file.GetBasicPropertiesAsync();
-            Assert.AreEqual((DateTimeOffset)File.GetCreationTime(tempFile), props.DateCreated);
-            Assert.AreEqual((DateTimeOffset)File.GetLastWriteTime(tempFile), props.DateModified);
+            Assert.AreEqual(File.GetCreationTime(tempFile), props.DateCreated.Value.DateTime);
+            Assert.AreEqual(File.GetLastWriteTime(tempFile), props.DateModified.Value.DateTime);
             Assert.AreEqual(new FileInfo(tempFile).Length, (long)props.Size);
 
             using (var stream = await file.OpenReadAsync())
@@ -54,8 +54,8 @@ namespace Consolonia.Core.Tests
             }
 
             props = await file.GetBasicPropertiesAsync();
-            Assert.AreEqual((DateTimeOffset)File.GetCreationTime(tempFile), props.DateCreated);
-            Assert.AreEqual((DateTimeOffset)File.GetLastWriteTime(tempFile), props.DateModified);
+            Assert.AreEqual(File.GetCreationTime(tempFile), props.DateCreated.Value.DateTime);
+            Assert.AreEqual(File.GetLastWriteTime(tempFile), props.DateModified.Value.DateTime);
             Assert.AreEqual(new FileInfo(tempFile).Length, (long)props.Size);
 
             var parentFolder = await file.GetParentAsync();
@@ -74,7 +74,7 @@ namespace Consolonia.Core.Tests
             Assert.IsTrue(new DirectoryInfo(subFolder.Path.LocalPath).Exists);
 
             var newFile = await file.MoveAsync(subFolder);
-            Assert.True(File.Exists(newFile.Path.LocalPath));
+            Assert.True(File.Exists(newFile.Path?.LocalPath!));
             Assert.False(File.Exists(tempFile));
             Assert.AreEqual(new Uri($"file://{parentFolder.Path.LocalPath}/{nameof(TestFileSemantics)}/{Path.GetFileName(tempFile)}"), newFile.Path);
             await newFile.DeleteAsync();
@@ -128,20 +128,20 @@ namespace Consolonia.Core.Tests
             Assert.IsFalse(testFolder.CanBookmark);
             Assert.AreEqual(nameof(TestFolderSemantics), testFolder.Name);
             var file = await testFolder.CreateFileAsync($"{nameof(TestFolderSemantics)}.txt");
-            Assert.IsTrue(File.Exists(file.Path.LocalPath));
+            Assert.IsTrue(File.Exists(file.Path?.LocalPath!));
 
             var props = await testFolder.GetBasicPropertiesAsync();
-            Assert.AreEqual((DateTimeOffset)Directory.GetCreationTime(testPath), props.DateCreated);
-            Assert.AreEqual(((DateTimeOffset)Directory.GetLastWriteTime(testPath)).ToString(), props.DateModified.ToString());
+            Assert.AreEqual(Directory.GetCreationTime(testPath), props.DateCreated.Value.DateTime);
+            Assert.AreEqual(Directory.GetLastWriteTime(testPath), props.DateModified.Value.DateTime);
 
             await file.DeleteAsync();
             Assert.IsFalse(File.Exists(file.Path.LocalPath));
 
             var subFolder = await testFolder.CreateFolderAsync("sub");
-            Assert.IsTrue(Directory.Exists(subFolder.Path.LocalPath));
+            Assert.IsTrue(Directory.Exists(subFolder.Path?.LocalPath!));
 
             file = await subFolder.CreateFileAsync($"{nameof(TestFolderSemantics)}.txt");
-            Assert.IsTrue(File.Exists(file.Path.LocalPath));
+            Assert.IsTrue(File.Exists(file.Path?.LocalPath!));
 
             await foreach (var item in subFolder.GetItemsAsync())
             {
