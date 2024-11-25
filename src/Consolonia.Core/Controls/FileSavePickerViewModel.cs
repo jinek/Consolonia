@@ -25,7 +25,7 @@ namespace Consolonia.Core.Controls
             if (item is IStorageFile file)
             {
                 // ReSharper disable ConstantConditionalAccessQualifier
-                if (SelectedFileType == null || SelectedFileType.Patterns == null || SelectedFileType.Patterns.Count == 0)
+                if (SelectedFileType == null)
                     return true;
 
                 foreach (string pattern in SelectedFileType.Patterns)
