@@ -56,8 +56,7 @@ namespace Consolonia.Core.Infrastructure
 
         public Task DeleteAsync()
         {
-            _directoryInfo.Delete();
-            return Task.CompletedTask;
+            return Task.Run(() => _directoryInfo.Delete());
         }
 
         public void Dispose()
