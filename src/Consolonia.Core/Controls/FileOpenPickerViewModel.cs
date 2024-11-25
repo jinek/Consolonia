@@ -20,6 +20,7 @@ namespace Consolonia.Core.Controls
         public FileOpenPickerViewModel(FilePickerOpenOptions options)
             : base(options)
         {
+            ArgumentNullException.ThrowIfNull(options, nameof(options));
             SelectionMode = options.AllowMultiple ? SelectionMode.Multiple : SelectionMode.Single;
         }
 

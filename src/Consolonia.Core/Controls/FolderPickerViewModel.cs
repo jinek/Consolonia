@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
@@ -16,6 +17,7 @@ namespace Consolonia.Core.Controls
         public FolderPickerViewModel(FolderPickerOpenOptions options)
             : base(options)
         {
+            ArgumentNullException.ThrowIfNull(options, nameof(options));
             SelectionMode = options.AllowMultiple ? SelectionMode.Multiple : SelectionMode.Single;
         }
 

@@ -23,6 +23,7 @@ namespace Consolonia.Core.Controls
 
         protected PickerViewModelBase(TPickerOptions options)
         {
+            ArgumentNullException.ThrowIfNull(options, nameof(options));
             Options = options;
             CurrentFolderPath = options.SuggestedStartLocation?.Path.LocalPath ?? Environment.CurrentDirectory;
             CurrentFolder = options.SuggestedStartLocation ?? new SystemStorageFolder(Environment.CurrentDirectory);

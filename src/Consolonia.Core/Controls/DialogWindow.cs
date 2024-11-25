@@ -26,10 +26,10 @@ namespace Consolonia.Core.Controls
             AvaloniaProperty.Register<DialogWindow, bool>(nameof(IsCloseButtonVisible), true);
 
         public static readonly StyledProperty<WindowStartupLocation> WindowStartupLocationProperty =
-            AvaloniaProperty.Register<Window, WindowStartupLocation>(nameof(WindowStartupLocation));
+            AvaloniaProperty.Register<DialogWindow, WindowStartupLocation>(nameof(WindowStartupLocation));
 
         public static readonly StyledProperty<bool> CanResizeProperty =
-            AvaloniaProperty.Register<Window, bool>(nameof(CanResize), true);
+            AvaloniaProperty.Register<DialogWindow, bool>(nameof(CanResize), true);
 
         public static readonly StyledProperty<string> IconProperty =
             AvaloniaProperty.Register<DialogWindow, string>(nameof(Icon));

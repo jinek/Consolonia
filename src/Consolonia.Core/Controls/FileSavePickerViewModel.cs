@@ -14,6 +14,7 @@ namespace Consolonia.Core.Controls
         public FileSavePickerViewModel(FilePickerSaveOptions options)
             : base(options)
         {
+            ArgumentNullException.ThrowIfNull(options, nameof(options));
         }
 
         public IStorageFile SelectedFile => SelectedItem as IStorageFile;
