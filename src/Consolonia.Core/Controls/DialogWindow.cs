@@ -166,7 +166,7 @@ namespace Consolonia.Core.Controls
         public async Task ShowDialogAsync(Control parent)
         {
             if (_taskCompletionSource != null)
-                throw new NotImplementedException();
+                throw new InvalidOperationException("Dialog is already shown.");
 
             _taskCompletionSource = new TaskCompletionSource<object>();
             ShowDialogInternal(parent);
@@ -176,7 +176,7 @@ namespace Consolonia.Core.Controls
         public async Task<T> ShowDialogAsync<T>(Control parent)
         {
             if (_taskCompletionSource != null)
-                throw new NotImplementedException();
+                throw new InvalidOperationException("Dialog is already shown.");
 
             _taskCompletionSource = new TaskCompletionSource<object>();
             ShowDialogInternal(parent);

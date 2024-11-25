@@ -106,7 +106,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             if (lifetime != null)
             {
                 var storageProvider = lifetime.MainWindow.StorageProvider;
-                if (storageProvider.CanOpen)
+                if (storageProvider.CanSave)
                 {
                     var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
                     {

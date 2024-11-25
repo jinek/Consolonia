@@ -82,7 +82,7 @@ namespace Consolonia.Core.Infrastructure
             {
                 WellKnownFolder.Desktop => Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 WellKnownFolder.Documents => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                WellKnownFolder.Downloads => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                WellKnownFolder.Downloads => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"),
                 WellKnownFolder.Pictures => Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
                 WellKnownFolder.Music => Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
                 WellKnownFolder.Videos => Environment.GetFolderPath(Environment.SpecialFolder.MyVideos),
