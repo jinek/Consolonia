@@ -21,18 +21,18 @@ namespace Consolonia.Core.Controls
 
         protected override bool FilterItem(IStorageItem item)
         {
-            if (item is IStorageFolder) return true;
-            if (item is IStorageFile file)
-            {
-                // ReSharper disable ConstantConditionalAccessQualifier
-                if (SelectedFileType == null)
-                    return true;
+            //if (item is IStorageFolder) return true;
+            //if (item is IStorageFile file)
+            //{
+            //    // ReSharper disable ConstantConditionalAccessQualifier
+            //    if (SelectedFileType == null)
+            //        return true;
 
-                foreach (string pattern in SelectedFileType.Patterns)
-                    if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))
-                        return true;
-                return false;
-            }
+            //    foreach (string pattern in SelectedFileType.Patterns)
+            //        if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))
+            //            return true;
+            //    return false;
+            //}
 
             return true;
         }
