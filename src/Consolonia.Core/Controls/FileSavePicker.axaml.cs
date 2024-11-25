@@ -58,8 +58,9 @@ namespace Consolonia.Core.Controls
 
         private async void OnOK(object sender, RoutedEventArgs e)
         {
-            var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime;
+            var lifetime = Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
             ArgumentNullException.ThrowIfNull(lifetime);
+            ArgumentNullException.ThrowIfNull(lifetime.MainWindow);
 
             var savePath = ViewModel.SavePath;
             if (!Path.IsPathFullyQualified(ViewModel.SavePath))

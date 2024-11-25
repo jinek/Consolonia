@@ -6,7 +6,7 @@ namespace Consolonia.Core.Controls
 {
     public partial class FileSavePickerViewModel : PickerViewModelBase<FilePickerSaveOptions>
     {
-        [ObservableProperty] private string _savePath;
+        [ObservableProperty] private string _savePath=string.Empty;
 
         [ObservableProperty] [NotifyPropertyChangedFor(nameof(SelectedFile))]
         private IStorageItem _selectedItem;
@@ -15,14 +15,14 @@ namespace Consolonia.Core.Controls
             : base(options)
         {
             ArgumentNullException.ThrowIfNull(options, nameof(options));
-            this.PropertyChanged += FileSavePickerViewModel_PropertyChanged; ;    
+            this.PropertyChanged += FileSavePickerViewModel_PropertyChanged; 
         }
 
         private void FileSavePickerViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(SelectedFile))
             {
-                SavePath = SelectedFile?.Path.LocalPath;
+                SavePath = SelectedFile.Path.LocalPath;
             }
         }
 
@@ -30,19 +30,6 @@ namespace Consolonia.Core.Controls
 
         protected override bool FilterItem(IStorageItem item)
         {
-            //if (item is IStorageFolder) return true;
-            //if (item is IStorageFile file)
-            //{
-            //    // ReSharper disable ConstantConditionalAccessQualifier
-            //    if (SelectedFileType == null)
-            //        return true;
-
-            //    foreach (string pattern in SelectedFileType.Patterns)
-            //        if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))
-            //            return true;
-            //    return false;
-            //}
-
             return true;
         }
     }
