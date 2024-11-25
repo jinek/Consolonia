@@ -112,9 +112,9 @@ namespace Consolonia.Core.Tests
         public async Task TestFolderSemantics()
         {
             var storageProvider = new ConsoloniaStorageProvider();
-            var tempPath = Environment.GetEnvironmentVariable("TEMP"); 
+            var tempPath = Path.GetTempPath(); 
             var tempFolder = await storageProvider.TryGetFolderFromPathAsync(new Uri($"file://{tempPath}"));
-            var testPath = Path.Combine(Environment.GetEnvironmentVariable("TEMP")!, nameof(TestFolderSemantics))!;
+            var testPath = Path.Combine(tempPath, nameof(TestFolderSemantics))!;
             var testFolder  = await tempFolder.CreateFolderAsync(nameof(TestFolderSemantics));
 
             Assert.IsNotNull(testFolder);
