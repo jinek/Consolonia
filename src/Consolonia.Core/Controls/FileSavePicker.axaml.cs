@@ -63,23 +63,26 @@ namespace Consolonia.Core.Controls
             ArgumentNullException.ThrowIfNull(lifetime.MainWindow);
             ArgumentNullException.ThrowIfNull(lifetime.MainWindow.StorageProvider);
 
-            var savePath = ViewModel.SavePath;
+            string savePath = ViewModel.SavePath;
             if (!Path.IsPathFullyQualified(ViewModel.SavePath))
-            {
                 savePath = Path.GetFullPath(Path.Combine(ViewModel.CurrentFolder.Path.LocalPath, ViewModel.SavePath));
-            }
 
-            var file = await lifetime.MainWindow.StorageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));
+            IStorageFile file =
+                await lifetime.MainWindow.StorageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));
             if (file == null)
             {
-                var folder = await lifetime.MainWindow.StorageProvider.TryGetFolderFromPathAsync(new Uri($"file://{Path.GetDirectoryName(savePath)}"));
+                IStorageFolder folder =
+                    await lifetime.MainWindow.StorageProvider.TryGetFolderFromPathAsync(
+                        new Uri($"file://{Path.GetDirectoryName(savePath)}"));
                 if (folder == null)
                 {
                     CloseDialog();
                     return;
                 }
-                file = await folder.CreateFileAsync(Path.GetFileName(savePath));    
+
+                file = await folder.CreateFileAsync(Path.GetFileName(savePath));
             }
+
             CloseDialog(file);
         }
 
