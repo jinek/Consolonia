@@ -25,7 +25,7 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IReadOnlyList<IStorageFile>> OpenFilePickerAsync(FilePickerOpenOptions options)
         {
-            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
+            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)?.MainWindow;
             ArgumentNullException.ThrowIfNull(mainWindow);
 
             var picker = new FileOpenPicker(options);
@@ -40,7 +40,7 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IReadOnlyList<IStorageFolder>> OpenFolderPickerAsync(FolderPickerOpenOptions options)
         {
-            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
+            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)?.MainWindow;
             ArgumentNullException.ThrowIfNull(mainWindow);
 
             var picker = new FolderPicker(options);
@@ -50,7 +50,7 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IStorageFile> SaveFilePickerAsync(FilePickerSaveOptions options)
         {
-            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
+            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)?.MainWindow;
             ArgumentNullException.ThrowIfNull(mainWindow);
 
             var picker = new FileSavePicker(options);

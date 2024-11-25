@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 

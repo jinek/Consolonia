@@ -27,7 +27,7 @@ namespace Consolonia.Core.Controls
             AvaloniaXamlLoader.Load(this);
         }
 
-        public FolderPickerOpenOptions Options => ((FolderPickerViewModel)DataContext).Options;
+        public FolderPickerOpenOptions Options => ((FolderPickerViewModel)DataContext)?.Options ?? new FolderPickerOpenOptions();
 
         private void OnDoubleTapped(object sender, Avalonia.Input.TappedEventArgs e)
         {
