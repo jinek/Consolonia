@@ -81,7 +81,7 @@ namespace Consolonia.Core.Infrastructure
                 WellKnownFolder.Videos => Environment.GetFolderPath(Environment.SpecialFolder.MyVideos),
                 _ => null
             };
-            if (dir == null)
+            if (String.IsNullOrEmpty(dir))
                 return Task.FromResult<IStorageFolder>(null);
             return Task.FromResult<IStorageFolder>(new SystemStorageFolder(dir));
         }
