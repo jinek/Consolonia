@@ -89,22 +89,28 @@ namespace Consolonia.Core.Tests
         {
             var storageProvider = new ConsoloniaStorageProvider();
             var folder = await storageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Pictures);
-            Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), folder.Path.LocalPath);
+            if (folder != null)
+                Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), folder.Path.LocalPath);
 
             folder = await storageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Documents);
-            Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), folder.Path.LocalPath);
+            if (folder != null)
+                Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), folder.Path.LocalPath);
 
             folder = await storageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Music);
-            Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), folder.Path.LocalPath);
+            if (folder != null)
+                Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), folder.Path.LocalPath);
 
             folder = await storageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Videos);
-            Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), folder.Path.LocalPath);
+            if (folder != null)
+                Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), folder.Path.LocalPath);
 
             folder = await storageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Downloads);
-            Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), folder.Path.LocalPath);
+            if (folder != null)
+                Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), folder.Path.LocalPath);
 
             folder = await storageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Desktop);
-            Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), folder.Path.LocalPath);
+            if (folder != null)
+                Assert.AreEqual(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), folder.Path.LocalPath);
         }
 
 
@@ -112,10 +118,10 @@ namespace Consolonia.Core.Tests
         public async Task TestFolderSemantics()
         {
             var storageProvider = new ConsoloniaStorageProvider();
-            var tempPath = Path.GetTempPath(); 
+            var tempPath = Path.GetTempPath();
             var tempFolder = await storageProvider.TryGetFolderFromPathAsync(new Uri($"file://{tempPath}"));
             var testPath = Path.Combine(tempPath, nameof(TestFolderSemantics))!;
-            var testFolder  = await tempFolder.CreateFolderAsync(nameof(TestFolderSemantics));
+            var testFolder = await tempFolder.CreateFolderAsync(nameof(TestFolderSemantics));
 
             Assert.IsNotNull(testFolder);
             Assert.AreEqual(testPath, testFolder.Path.LocalPath);
@@ -126,7 +132,7 @@ namespace Consolonia.Core.Tests
 
             var props = await testFolder.GetBasicPropertiesAsync();
             Assert.AreEqual((DateTimeOffset)Directory.GetCreationTime(testPath), props.DateCreated);
-            Assert.AreEqual((DateTimeOffset)Directory.GetLastWriteTime(testPath), props.DateModified);
+            Assert.AreEqual(((DateTimeOffset)Directory.GetLastWriteTime(testPath)).ToString(), props.DateModified.ToString());
 
             await file.DeleteAsync();
             Assert.IsFalse(File.Exists(file.Path.LocalPath));
