@@ -16,13 +16,13 @@
         <ListBox x:Name="ItemsListBox" Grid.Row="1" ItemsSource="{Binding Items}" SelectionMode="{Binding SelectionMode}"
                  SelectionChanged="ListBox_SelectionChanged" DoubleTapped="OnDoubleTapped">
             <ListBox.DataTemplates>
-                <DataTemplate DataType="{x:Type storage:IStorageFolder}">
-                    <Grid ColumnDefinitions="Auto * " Background="Transparent"  x:DataType="storage:IStorageFolder">
+                <DataTemplate DataType="{x:Type storage:IStorageFolder}"> x:DataType="storage:IStorageFolder">
+                    <Grid ColumnDefinitions="Auto * " Background="Transparent" >
                         <TextBlock Text="📁" Margin="0 0 1 0"/>
                         <TextBlock Grid.Column="1" Text="{Binding Name}"/>
                     </Grid>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type storage:IStorageFile}"  x:DataType="storage:IStorageFile">
+                <DataTemplate DataType="{x:Type storage:IStorageFile}"  x:DataType="storage:IStorageFolder">
                     <Grid ColumnDefinitions="Auto *"  Background="Transparent">
                         <TextBlock Text="📰" Margin="0 0 1 0"/>
                         <TextBlock Grid.Column="1" Text="{Binding Name}" />
