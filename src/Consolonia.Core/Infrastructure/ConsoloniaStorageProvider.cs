@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Avalonia.Platform.Storage;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia;
 using System.IO;
+using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Platform.Storage;
 using Consolonia.Core.Controls;
 
 namespace Consolonia.Core.Infrastructure
@@ -25,7 +26,8 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IReadOnlyList<IStorageFile>> OpenFilePickerAsync(FilePickerOpenOptions options)
         {
-            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)?.MainWindow;
+            Window mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)
+                ?.MainWindow;
             ArgumentNullException.ThrowIfNull(mainWindow);
 
             var picker = new FileOpenPicker(options);
@@ -40,7 +42,8 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IReadOnlyList<IStorageFolder>> OpenFolderPickerAsync(FolderPickerOpenOptions options)
         {
-            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)?.MainWindow;
+            Window mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)
+                ?.MainWindow;
             ArgumentNullException.ThrowIfNull(mainWindow);
 
             var picker = new FolderPicker(options);
@@ -50,7 +53,8 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IStorageFile> SaveFilePickerAsync(FilePickerSaveOptions options)
         {
-            var mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)?.MainWindow;
+            Window mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)
+                ?.MainWindow;
             ArgumentNullException.ThrowIfNull(mainWindow);
 
             var picker = new FileSavePicker(options);
@@ -74,7 +78,7 @@ namespace Consolonia.Core.Infrastructure
 
         public Task<IStorageFolder> TryGetWellKnownFolderAsync(WellKnownFolder wellKnownFolder)
         {
-            var dir = wellKnownFolder switch
+            string dir = wellKnownFolder switch
             {
                 WellKnownFolder.Desktop => Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 WellKnownFolder.Documents => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -84,7 +88,7 @@ namespace Consolonia.Core.Infrastructure
                 WellKnownFolder.Videos => Environment.GetFolderPath(Environment.SpecialFolder.MyVideos),
                 _ => null
             };
-            if (String.IsNullOrEmpty(dir))
+            if (string.IsNullOrEmpty(dir))
                 return Task.FromResult<IStorageFolder>(null);
             return Task.FromResult<IStorageFolder>(new SystemStorageFolder(dir));
         }

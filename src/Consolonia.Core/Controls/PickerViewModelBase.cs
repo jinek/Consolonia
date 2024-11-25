@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
@@ -8,10 +9,18 @@ using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Controls
 {
-
     public abstract partial class PickerViewModelBase<TPickerOptions> : ObservableObject
         where TPickerOptions : PickerOptions
     {
+        [ObservableProperty] private IStorageFolder _currentFolder;
+
+        [ObservableProperty] private string _currentFolderPath;
+
+        [ObservableProperty] private ObservableCollection<IStorageItem> _items = new();
+
+
+        [ObservableProperty] private TPickerOptions _options;
+
         protected PickerViewModelBase(TPickerOptions options)
         {
             Options = options;
@@ -22,32 +31,20 @@ namespace Consolonia.Core.Controls
         }
 
 
-        [ObservableProperty]
-        private TPickerOptions _options;
-
-        [ObservableProperty]
-        private string _currentFolderPath;
-
-        [ObservableProperty]
-        private IStorageFolder _currentFolder;
-
-        [ObservableProperty]
-        private ObservableCollection<IStorageItem> _items = new ObservableCollection<IStorageItem>();
-
-
-        private async void PickerViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private async void PickerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
                 case nameof(CurrentFolderPath):
                     try
                     {
-                        CurrentFolder = new SystemStorageFolder(new DirectoryInfo(this.CurrentFolderPath));
+                        CurrentFolder = new SystemStorageFolder(new DirectoryInfo(CurrentFolderPath));
                     }
                     catch (DirectoryNotFoundException)
                     {
                         // ignore
                     }
+
                     break;
 
                 case nameof(CurrentFolder):
@@ -60,13 +57,12 @@ namespace Consolonia.Core.Controls
         {
             Items.Clear();
 
-            this.Items.Add(new SystemStorageFolder(new DirectoryInfo(Path.Combine(CurrentFolder.Path.LocalPath, "..")), true));
+            Items.Add(
+                new SystemStorageFolder(new DirectoryInfo(Path.Combine(CurrentFolder.Path.LocalPath, "..")), true));
 
-            await foreach (var item in CurrentFolder.GetItemsAsync())
-            {
-                if (this.FilterItem(item))
-                    this.Items.Add(item);
-            }
+            await foreach (IStorageItem item in CurrentFolder.GetItemsAsync())
+                if (FilterItem(item))
+                    Items.Add(item);
         }
 
         protected abstract bool FilterItem(IStorageItem item);

@@ -9,7 +9,7 @@ namespace Consolonia.Core.Infrastructure
     [DebuggerDisplay("File: {Name}")]
     public sealed class SystemStorageFile : IStorageFile
     {
-        private FileInfo _fileInfo;
+        private readonly FileInfo _fileInfo;
 
 
         public SystemStorageFile(string file)
@@ -29,7 +29,7 @@ namespace Consolonia.Core.Infrastructure
 
         public string Name => _fileInfo.Name;
 
-        public Uri Path => new Uri($"file://{_fileInfo.FullName}");
+        public Uri Path => new($"file://{_fileInfo.FullName}");
 
         public bool CanBookmark => false;
 
@@ -45,7 +45,8 @@ namespace Consolonia.Core.Infrastructure
 
         public Task<StorageItemProperties> GetBasicPropertiesAsync()
         {
-            var result = new StorageItemProperties((ulong)_fileInfo.Length, _fileInfo.CreationTime, _fileInfo.LastWriteTime);
+            var result = new StorageItemProperties((ulong)_fileInfo.Length, _fileInfo.CreationTime,
+                _fileInfo.LastWriteTime);
             return Task.FromResult(result);
         }
 
@@ -57,8 +58,8 @@ namespace Consolonia.Core.Infrastructure
 
         public Task<IStorageItem> MoveAsync(IStorageFolder destination)
         {
-            var path = destination.Path.LocalPath;
-            var targetPath = System.IO.Path.Combine(path, _fileInfo.Name);
+            string path = destination.Path.LocalPath;
+            string targetPath = System.IO.Path.Combine(path, _fileInfo.Name);
             _fileInfo.MoveTo(targetPath);
             return Task.FromResult((IStorageItem)new SystemStorageFile(targetPath));
         }

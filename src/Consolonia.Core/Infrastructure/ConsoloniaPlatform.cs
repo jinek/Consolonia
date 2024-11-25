@@ -6,11 +6,11 @@ using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Media;
 using Avalonia.Platform;
-using Avalonia.Threading;
+using Avalonia.Platform.Storage;
 using Avalonia.Rendering;
+using Avalonia.Threading;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Text;
-using Avalonia.Platform.Storage;
 
 namespace Consolonia.Core.Infrastructure
 {

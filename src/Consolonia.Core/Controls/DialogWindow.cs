@@ -14,7 +14,6 @@ using Consolonia.Core.Controls.Dialog;
 
 namespace Consolonia.Core.Controls
 {
-
     [TemplatePart("PART_ContentPresenter", typeof(ContentPresenter))]
     public class DialogWindow : UserControl
     {
@@ -75,7 +74,7 @@ namespace Consolonia.Core.Controls
 
 
         /// <summary>
-        /// Enables or disables resizing of the window.
+        ///     Enables or disables resizing of the window.
         /// </summary>
         public bool CanResize
         {
@@ -84,7 +83,7 @@ namespace Consolonia.Core.Controls
         }
 
         /// <summary>
-        /// Gets or sets the icon of the window.
+        ///     Gets or sets the icon of the window.
         /// </summary>
         public string Icon
         {
@@ -93,7 +92,7 @@ namespace Consolonia.Core.Controls
         }
 
         /// <summary>
-        /// Gets or sets the startup location of the window.
+        ///     Gets or sets the startup location of the window.
         /// </summary>
         public WindowStartupLocation WindowStartupLocation
         {
@@ -102,7 +101,7 @@ namespace Consolonia.Core.Controls
         }
 
         /// <summary>
-        /// Gets or sets the window position in screen coordinates.
+        ///     Gets or sets the window position in screen coordinates.
         /// </summary>
         //public PixelPoint Position
         //{
@@ -134,15 +133,13 @@ namespace Consolonia.Core.Controls
 
         protected void ShowDialogInternal(Visual parent)
         {
-            if (this.WindowStartupLocation == WindowStartupLocation.CenterScreen)
+            if (WindowStartupLocation == WindowStartupLocation.CenterScreen)
             {
-                this.Width = (ushort)(parent.Bounds.Width * .9);
-                this.Height = (ushort)(parent.Bounds.Height * .9);
-                if (parent is Window window)
-                {
-                    window.SizeChanged += Window_SizeChanged;
-                }
+                Width = (ushort)(parent.Bounds.Width * .9);
+                Height = (ushort)(parent.Bounds.Height * .9);
+                if (parent is Window window) window.SizeChanged += Window_SizeChanged;
             }
+
             DialogHost dialogHost = GetDialogHost(parent);
             dialogHost.OpenInternal(this);
         }
@@ -152,8 +149,8 @@ namespace Consolonia.Core.Controls
             var window = sender as Window;
             if (window != null)
             {
-                this.Width = (ushort)(window.Bounds.Width * .9);
-                this.Height = (ushort)(window.Bounds.Height * .9);
+                Width = (ushort)(window.Bounds.Width * .9);
+                Height = (ushort)(window.Bounds.Height * .9);
             }
         }
 
@@ -162,10 +159,7 @@ namespace Consolonia.Core.Controls
         {
             DialogHost dialogHost = GetDialogHost(this);
             dialogHost.PopInternal(this);
-            if (this.Parent is Window window)
-            {
-                window.SizeChanged -= Window_SizeChanged;
-            }
+            if (Parent is Window window) window.SizeChanged -= Window_SizeChanged;
             _taskCompletionSource.SetResult(result);
         }
 
@@ -186,7 +180,7 @@ namespace Consolonia.Core.Controls
 
             _taskCompletionSource = new TaskCompletionSource<object>();
             ShowDialogInternal(parent);
-            var result = await _taskCompletionSource.Task;
+            object result = await _taskCompletionSource.Task;
             return (T)result;
         }
 

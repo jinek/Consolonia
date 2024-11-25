@@ -1,20 +1,18 @@
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 
 namespace Consolonia.Core.Controls
 {
-
     public partial class FileOpenPicker : DialogWindow
     {
         public FileOpenPicker(FilePickerOpenOptions options)
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            Loaded += (_, _) =>
-            {
-                this.FindControl<Button>("CancelButton")?.Focus();
-            };
+            Loaded += (_, _) => { this.FindControl<Button>("CancelButton")?.Focus(); };
             DataContext = new FileOpenPickerViewModel(options);
             InitializeComponent();
         }
@@ -26,7 +24,7 @@ namespace Consolonia.Core.Controls
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void OnDoubleTapped(object sender, Avalonia.Input.TappedEventArgs e)
+        private void OnDoubleTapped(object sender, TappedEventArgs e)
         {
             var listbox = (ListBox)sender;
             if (listbox.SelectedItem is IStorageFolder folder)
@@ -37,16 +35,16 @@ namespace Consolonia.Core.Controls
             }
             else if (listbox.SelectedItem is IStorageFile file)
             {
-                CloseDialog(new [] { file });
+                CloseDialog(new[] { file });
             }
         }
 
-        private void OnOK(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void OnOK(object sender, RoutedEventArgs e)
         {
             CloseDialog(ViewModel.SelectedFiles);
         }
 
-        private void OnCancel(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void OnCancel(object sender, RoutedEventArgs e)
         {
             CloseDialog();
         }
@@ -55,8 +53,8 @@ namespace Consolonia.Core.Controls
         {
             if (ViewModel.SelectionMode == SelectionMode.Single)
             {
-                if ((e.AddedItems.Count > 0) &&
-                    (e.AddedItems[0] is IStorageFile file))
+                if (e.AddedItems.Count > 0 &&
+                    e.AddedItems[0] is IStorageFile file)
                 {
                     ViewModel.SelectedFiles.Clear();
                     ViewModel.SelectedFiles.Add(file);
@@ -64,18 +62,15 @@ namespace Consolonia.Core.Controls
             }
             else
             {
-                foreach (var item in e.AddedItems)
-                {
+                foreach (object item in e.AddedItems)
                     if (item is IStorageFile file)
                         ViewModel.SelectedFiles.Add(file);
-                }
 
-                foreach (var item in e.RemovedItems)
-                {
+                foreach (object item in e.RemovedItems)
                     if (item is IStorageFile file)
                         ViewModel.SelectedFiles.Remove(file);
-                }
             }
+
             ViewModel.HasSelection = ViewModel.SelectedFiles.Count > 0;
         }
     }

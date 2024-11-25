@@ -64,7 +64,8 @@
                                         Orientation="Horizontal">
                                 <helpers:SymbolsControl Text="{TemplateBinding Icon}"
                                                         Foreground="{TemplateBinding BorderBrush}" />
-                                <TextBlock Text="{TemplateBinding Title}" Margin="1 0 0 0" />
+                                <TextBlock Text="{TemplateBinding Title}"
+                                           Margin="1 0 0 0" />
                                 <helpers:SymbolsControl Text=" "
                                                         Foreground="{TemplateBinding BorderBrush}" />
                             </StackPanel>

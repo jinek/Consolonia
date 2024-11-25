@@ -1,45 +1,69 @@
 <controls:DialogWindow xmlns="https://github.com/avaloniaui"
-                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
-                     xmlns:controls="clr-namespace:Consolonia.Core.Controls"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"
-                     x:DataType="controls:FileOpenPickerViewModel"
-                     x:Class="Consolonia.Core.Controls.FileOpenPicker"
-                     Icon="📰" CancelOnEscape="True"
-                     Title="{Binding Options.Title}">
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
+                       xmlns:controls="clr-namespace:Consolonia.Core.Controls"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       x:DataType="controls:FileOpenPickerViewModel"
+                       x:Class="Consolonia.Core.Controls.FileOpenPicker"
+                       Icon="📰"
+                       CancelOnEscape="True"
+                       Title="{Binding Options.Title}">
     <Grid RowDefinitions="Auto * Auto Auto">
         <Grid ColumnDefinitions="Auto *">
             <TextBlock Text="📁 " />
-            <TextBox Text="{Binding CurrentFolderPath, Mode=TwoWay}" Grid.Column="1" />
+            <TextBox Text="{Binding CurrentFolderPath, Mode=TwoWay}"
+                     Grid.Column="1" />
         </Grid>
-        <ListBox x:Name="ItemsListBox" Grid.Row="1" ItemsSource="{Binding Items}" SelectionMode="{Binding SelectionMode}"
-                 SelectionChanged="ListBox_SelectionChanged" DoubleTapped="OnDoubleTapped">
+        <ListBox x:Name="ItemsListBox"
+                 Grid.Row="1"
+                 ItemsSource="{Binding Items}"
+                 SelectionMode="{Binding SelectionMode}"
+                 SelectionChanged="ListBox_SelectionChanged"
+                 DoubleTapped="OnDoubleTapped">
             <ListBox.DataTemplates>
-                <DataTemplate DataType="{x:Type storage:IStorageFolder}" >
-                    <Grid ColumnDefinitions="Auto * " Background="Transparent" >
-                        <TextBlock Text="📁" Margin="0 0 1 0"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+                <DataTemplate DataType="{x:Type storage:IStorageFolder}">
+                    <Grid ColumnDefinitions="Auto * "
+                          Background="Transparent">
+                        <TextBlock Text="📁"
+                                   Margin="0 0 1 0" />
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Name}" />
                     </Grid>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type storage:IStorageFile}" >
-                    <Grid ColumnDefinitions="Auto *"  Background="Transparent">
-                        <TextBlock Text="📰" Margin="0 0 1 0"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Name}" />
+                <DataTemplate DataType="{x:Type storage:IStorageFile}">
+                    <Grid ColumnDefinitions="Auto *"
+                          Background="Transparent">
+                        <TextBlock Text="📰"
+                                   Margin="0 0 1 0" />
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Name}" />
                     </Grid>
                 </DataTemplate>
             </ListBox.DataTemplates>
         </ListBox>
-        <ComboBox Grid.Row="2" ItemsSource="{Binding Options.FileTypeFilter}" SelectedIndex="{Binding SelectedFilterIndex}" HorizontalAlignment="Right" >
+        <ComboBox Grid.Row="2"
+                  ItemsSource="{Binding Options.FileTypeFilter}"
+                  SelectedIndex="{Binding SelectedFilterIndex}"
+                  HorizontalAlignment="Right">
             <ComboBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type storage:FilePickerFileType}">
-                    <TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" />
+                    <TextBlock Text="{Binding Name}"
+                               HorizontalAlignment="Stretch" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="1">
-            <Button x:Name="OkButton" Content="OK" Click="OnOK" IsEnabled="{Binding HasSelection}"/>
-            <Button x:Name="CancelButton" Content="Cancel" Click="OnCancel"/>
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="1">
+            <Button x:Name="OkButton"
+                    Content="OK"
+                    Click="OnOK"
+                    IsEnabled="{Binding HasSelection}" />
+            <Button x:Name="CancelButton"
+                    Content="Cancel"
+                    Click="OnCancel" />
         </StackPanel>
     </Grid>
 </controls:DialogWindow>

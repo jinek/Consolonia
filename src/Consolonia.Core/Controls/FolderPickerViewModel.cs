@@ -7,20 +7,17 @@ namespace Consolonia.Core.Controls
 {
     public partial class FolderPickerViewModel : PickerViewModelBase<FolderPickerOpenOptions>
     {
+        [ObservableProperty] private bool _hasSelection;
+
+        [ObservableProperty] private ObservableCollection<IStorageFolder> _selectedFolders = new();
+
+        [ObservableProperty] private SelectionMode _selectionMode;
+
         public FolderPickerViewModel(FolderPickerOpenOptions options)
             : base(options)
         {
-            this.SelectionMode = options.AllowMultiple ? SelectionMode.Multiple : SelectionMode.Single;
+            SelectionMode = options.AllowMultiple ? SelectionMode.Multiple : SelectionMode.Single;
         }
-
-        [ObservableProperty]
-        private ObservableCollection<IStorageFolder> _selectedFolders = new ObservableCollection<IStorageFolder>();
-
-        [ObservableProperty]
-        private SelectionMode _selectionMode;
-
-        [ObservableProperty]
-        private bool _hasSelection;
 
         protected override bool FilterItem(IStorageItem item)
         {

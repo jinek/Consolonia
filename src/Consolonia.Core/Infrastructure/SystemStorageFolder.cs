@@ -10,8 +10,8 @@ namespace Consolonia.Core.Infrastructure
     [DebuggerDisplay("Folder: {Name}")]
     public sealed class SystemStorageFolder : IStorageFolder
     {
-        private DirectoryInfo _directoryInfo;
-        private bool _isParent;
+        private readonly DirectoryInfo _directoryInfo;
+        private readonly bool _isParent;
 
         public SystemStorageFolder(string path)
         {
@@ -20,7 +20,7 @@ namespace Consolonia.Core.Infrastructure
 
         public SystemStorageFolder(Uri uri)
         {
-            _directoryInfo = new DirectoryInfo(uri.LocalPath);  
+            _directoryInfo = new DirectoryInfo(uri.LocalPath);
         }
 
         public SystemStorageFolder(DirectoryInfo directoryInfo, bool isParent = false)
@@ -29,9 +29,9 @@ namespace Consolonia.Core.Infrastructure
             _directoryInfo = directoryInfo;
         }
 
-        public string Name => (_isParent) ? ".." : _directoryInfo.Name;
+        public string Name => _isParent ? ".." : _directoryInfo.Name;
 
-        public Uri Path => new Uri($"file://{_directoryInfo.FullName}");
+        public Uri Path => new($"file://{_directoryInfo.FullName}");
 
         public bool CanBookmark => false;
 
@@ -39,17 +39,18 @@ namespace Consolonia.Core.Infrastructure
         {
             await Task.CompletedTask;
 
-            var path = System.IO.Path.Combine(_directoryInfo.FullName, name);
-            using (var stream = File.Create(path))
+            string path = System.IO.Path.Combine(_directoryInfo.FullName, name);
+            using (FileStream stream = File.Create(path))
             {
-                await stream.WriteAsync(Array.Empty<byte>().AsMemory(0, 0));    
+                await stream.WriteAsync(Array.Empty<byte>().AsMemory(0, 0));
             }
+
             return new SystemStorageFile(path);
         }
 
         public Task<IStorageFolder> CreateFolderAsync(string name)
         {
-            var dirInfo = Directory.CreateDirectory(System.IO.Path.Combine(_directoryInfo.FullName, name));
+            DirectoryInfo dirInfo = Directory.CreateDirectory(System.IO.Path.Combine(_directoryInfo.FullName, name));
             return Task.FromResult((IStorageFolder)new SystemStorageFolder(dirInfo));
         }
 
@@ -65,7 +66,8 @@ namespace Consolonia.Core.Infrastructure
 
         public Task<StorageItemProperties> GetBasicPropertiesAsync()
         {
-            var properties = new StorageItemProperties(dateCreated: _directoryInfo.CreationTime, dateModified: _directoryInfo.LastAccessTime);
+            var properties = new StorageItemProperties(dateCreated: _directoryInfo.CreationTime,
+                dateModified: _directoryInfo.LastAccessTime);
             return Task.FromResult(properties);
         }
 
@@ -75,15 +77,10 @@ namespace Consolonia.Core.Infrastructure
 
             if (_directoryInfo.Exists)
             {
-                foreach (var folder in _directoryInfo.GetDirectories())
-                {
+                foreach (DirectoryInfo folder in _directoryInfo.GetDirectories())
                     yield return new SystemStorageFolder(folder);
-                }
 
-                foreach (var file in _directoryInfo.GetFiles())
-                {
-                    yield return new SystemStorageFile(file);
-                }
+                foreach (FileInfo file in _directoryInfo.GetFiles()) yield return new SystemStorageFile(file);
             }
         }
 
@@ -97,7 +94,7 @@ namespace Consolonia.Core.Infrastructure
 
         public Task<IStorageItem> MoveAsync(IStorageFolder destination)
         {
-            var targetPath = System.IO.Path.Combine(destination.Path.LocalPath, _directoryInfo.Name);
+            string targetPath = System.IO.Path.Combine(destination.Path.LocalPath, _directoryInfo.Name);
             _directoryInfo.MoveTo(targetPath);
             return Task.FromResult((IStorageItem)new SystemStorageFolder(targetPath));
         }
