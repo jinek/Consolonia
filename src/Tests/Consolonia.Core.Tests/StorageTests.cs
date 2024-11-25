@@ -131,8 +131,8 @@ namespace Consolonia.Core.Tests
             Assert.IsTrue(File.Exists(file.Path.LocalPath));
 
             var props = await testFolder.GetBasicPropertiesAsync();
-            Assert.AreEqual((DateTimeOffset)Directory.GetCreationTime(testPath), props.DateCreated);
-            Assert.AreEqual(((DateTimeOffset)Directory.GetLastWriteTime(testPath)).ToString(), props.DateModified.ToString());
+            Assert.AreEqual(Directory.GetCreationTime(testPath), props.DateCreated.Value.DateTime);
+            Assert.AreEqual(Directory.GetLastWriteTime(testPath), props.DateModified.Value.DateTime);
 
             await file.DeleteAsync();
             Assert.IsFalse(File.Exists(file.Path.LocalPath));
