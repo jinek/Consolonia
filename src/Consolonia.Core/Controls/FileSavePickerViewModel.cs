@@ -24,7 +24,7 @@ namespace Consolonia.Core.Controls
             if (item is IStorageFolder) return true;
             if (item is IStorageFile file)
             {
-                if (SelectedFileType?.Patterns == null || SelectedFileType.Patterns.Count == 0)
+                if (SelectedFileType == null || SelectedFileType.Patterns == null || SelectedFileType.Patterns.Count == 0)
                     return true;
 
                 foreach (string pattern in SelectedFileType.Patterns)
