@@ -22,20 +22,20 @@ namespace Consolonia.Core.Controls
         }
 
         /// <summary>
-        /// Gets the file picker save options associated with this dialog.
+        ///     Gets the file picker save options associated with this dialog.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when DataContext is null or of incorrect type.</exception>
         public FilePickerSaveOptions Options =>
-            (DataContext as FileSavePickerViewModel)?.Options 
-                ?? throw new InvalidOperationException($"Invalid DataContext. Expected {nameof(FileSavePickerViewModel)}");
+            (DataContext as FileSavePickerViewModel)?.Options
+            ?? throw new InvalidOperationException($"Invalid DataContext. Expected {nameof(FileSavePickerViewModel)}");
 
         /// <summary>
-        /// Gets the view model associated with this dialog.
+        ///     Gets the view model associated with this dialog.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when DataContext is null or of incorrect type.</exception>
-        public FileSavePickerViewModel ViewModel => 
-            DataContext as FileSavePickerViewModel 
-                ?? throw new InvalidOperationException($"Invalid DataContext. Expected {nameof(FileSavePickerViewModel)}");
+        public FileSavePickerViewModel ViewModel =>
+            DataContext as FileSavePickerViewModel
+            ?? throw new InvalidOperationException($"Invalid DataContext. Expected {nameof(FileSavePickerViewModel)}");
 
         private void InitializeComponent()
         {
