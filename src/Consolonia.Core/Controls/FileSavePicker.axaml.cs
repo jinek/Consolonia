@@ -1,5 +1,8 @@
 using System;
+using System.IO;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -53,9 +56,29 @@ namespace Consolonia.Core.Controls
             }
         }
 
-        private void OnOK(object sender, RoutedEventArgs e)
+        private async void OnOK(object sender, RoutedEventArgs e)
         {
-            CloseDialog(ViewModel.SelectedFile);
+            var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime;
+            ArgumentNullException.ThrowIfNull(lifetime);
+
+            var savePath = ViewModel.SavePath;
+            if (!Path.IsPathFullyQualified(ViewModel.SavePath))
+            {
+                savePath = Path.GetFullPath(Path.Combine(ViewModel.CurrentFolder.Path.LocalPath, ViewModel.SavePath));
+            }
+
+            var file = await lifetime.MainWindow.StorageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));
+            if (file == null)
+            {
+                var folder = await lifetime.MainWindow.StorageProvider.TryGetFolderFromPathAsync(new Uri($"file://{Path.GetDirectoryName(savePath)}"));
+                if (folder == null)
+                {
+                    CloseDialog();
+                    return;
+                }
+                file = await folder.CreateFileAsync(Path.GetFileName(savePath));    
+            }
+            CloseDialog(file);
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)

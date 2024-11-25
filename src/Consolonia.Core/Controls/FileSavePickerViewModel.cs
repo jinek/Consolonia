@@ -6,7 +6,7 @@ namespace Consolonia.Core.Controls
 {
     public partial class FileSavePickerViewModel : PickerViewModelBase<FilePickerSaveOptions>
     {
-        [ObservableProperty] private FilePickerFileType _selectedFileType;
+        [ObservableProperty] private string _savePath;
 
         [ObservableProperty] [NotifyPropertyChangedFor(nameof(SelectedFile))]
         private IStorageItem _selectedItem;
@@ -15,6 +15,15 @@ namespace Consolonia.Core.Controls
             : base(options)
         {
             ArgumentNullException.ThrowIfNull(options, nameof(options));
+            this.PropertyChanged += FileSavePickerViewModel_PropertyChanged; ;    
+        }
+
+        private void FileSavePickerViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SelectedFile))
+            {
+                SavePath = SelectedFile?.Path.LocalPath;
+            }
         }
 
         public IStorageFile SelectedFile => SelectedItem as IStorageFile;

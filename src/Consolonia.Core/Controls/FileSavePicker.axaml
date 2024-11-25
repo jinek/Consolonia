@@ -45,7 +45,7 @@
               ColumnDefinitions="Auto *">
             <TextBlock Text="File:"
                        Margin="0 0 1 0" />
-            <TextBox Text="{Binding SelectedFile.Path.LocalPath}"
+            <TextBox Text="{Binding SavePath, Mode=TwoWay}"
                      Grid.Column="1" />
         </Grid>
         <StackPanel Grid.Row="3"
@@ -55,7 +55,7 @@
             <Button x:Name="SaveButton"
                     Content="Save"
                     Click="OnOK"
-                    IsEnabled="{Binding SelectedFile, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                    IsEnabled="{Binding SavePath, Converter={x:Static ObjectConverters.IsNotNull}}" />
             <Button x:Name="CancelButton"
                     Content="Cancel"
                     Click="OnCancel" />
