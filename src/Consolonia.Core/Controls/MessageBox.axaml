@@ -1,6 +1,5 @@
 <controls:DialogWindow xmlns="https://github.com/avaloniaui"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                       xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
                        xmlns:controls="clr-namespace:Consolonia.Core.Controls"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"

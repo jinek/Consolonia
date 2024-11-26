@@ -1,11 +1,9 @@
-using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Consolonia.Core.Helpers;
 
 namespace Consolonia.Core.Controls
 {
@@ -42,14 +40,6 @@ namespace Consolonia.Core.Controls
 
             InitializeComponent();
         }
-
-        /// <summary>
-        ///     Gets the view model associated with this picker.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the DataContext is null or not of type FileOpenPickerViewModel.</exception>
-        private MessageBoxViewModel ViewModel =>
-            DataContext as MessageBoxViewModel
-            ?? throw new InvalidOperationException("DataContext is not properly initialized.");
 
         private Mode _mode = Mode.Ok;
         public Mode Mode
