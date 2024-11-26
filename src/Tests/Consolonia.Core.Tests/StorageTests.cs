@@ -2,6 +2,7 @@
 // ReSharper disable PossibleNullReferenceException
 // ReSharper disable ConstantConditionalAccessQualifier
 using System;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
@@ -42,8 +43,8 @@ namespace Consolonia.Core.Tests
             Assert.True(File.Exists(tempFile));
             Assert.True(File.Exists(file.Path.LocalPath));
             StorageItemProperties props = await file.GetBasicPropertiesAsync();
-            Assert.AreEqual(File.GetCreationTime(tempFile), props.DateCreated?.DateTime);
-            Assert.AreEqual(File.GetLastWriteTime(tempFile), props.DateModified?.DateTime);
+            Assert.AreEqual(File.GetCreationTime(tempFile).ToString("G", CultureInfo.InvariantCulture), props.DateCreated?.DateTime.ToString("G", CultureInfo.InvariantCulture));
+            Assert.AreEqual(File.GetLastWriteTime(tempFile).ToString("G", CultureInfo.InvariantCulture), props.DateModified?.DateTime.ToString("G", CultureInfo.InvariantCulture));
             Assert.AreEqual(new FileInfo(tempFile).Length, (long)(props.Size ?? 0));
 
             using (Stream stream = await file.OpenReadAsync())
@@ -56,8 +57,8 @@ namespace Consolonia.Core.Tests
             }
 
             props = await file.GetBasicPropertiesAsync();
-            Assert.AreEqual(File.GetCreationTime(tempFile), props.DateCreated?.DateTime);
-            Assert.AreEqual(File.GetLastWriteTime(tempFile), props.DateModified?.DateTime);
+            Assert.AreEqual(File.GetCreationTime(tempFile).ToString("G", CultureInfo.InvariantCulture), props.DateCreated?.DateTime.ToString("G", CultureInfo.InvariantCulture));
+            Assert.AreEqual(File.GetLastWriteTime(tempFile).ToString("G", CultureInfo.InvariantCulture), props.DateModified?.DateTime.ToString("G", CultureInfo.InvariantCulture));
             Assert.AreEqual(new FileInfo(tempFile).Length, (long)(props.Size ?? 0));
 
             IStorageFolder parentFolder = await file.GetParentAsync();
@@ -139,8 +140,8 @@ namespace Consolonia.Core.Tests
             Assert.IsTrue(File.Exists(file.Path?.LocalPath));
 
             StorageItemProperties props = await testFolder.GetBasicPropertiesAsync();
-            Assert.AreEqual(Directory.GetCreationTime(testPath), props.DateCreated?.DateTime);
-            Assert.AreEqual(Directory.GetLastWriteTime(testPath), props.DateModified?.DateTime);
+            Assert.AreEqual(Directory.GetCreationTime(testPath).ToString("G", CultureInfo.InvariantCulture), props.DateCreated?.DateTime.ToString("G", CultureInfo.InvariantCulture));
+            Assert.AreEqual(Directory.GetLastWriteTime(testPath).ToString("G", CultureInfo.InvariantCulture), props.DateModified?.DateTime.ToString("G", CultureInfo.InvariantCulture));
 
             await file.DeleteAsync();
             Assert.IsFalse(File.Exists(file.Path?.LocalPath));
