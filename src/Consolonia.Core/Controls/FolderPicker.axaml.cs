@@ -9,6 +9,11 @@ namespace Consolonia.Core.Controls
 {
     public partial class FolderPicker : DialogWindow
     {
+        public FolderPicker()
+            : this(new FolderPickerOpenOptions())
+        {
+        }
+
         public FolderPicker(FolderPickerOpenOptions options)
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;

@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -9,6 +10,11 @@ namespace Consolonia.Core.Controls
 {
     public partial class FileOpenPicker : DialogWindow
     {
+        public FileOpenPicker()
+            : this(new FilePickerOpenOptions())
+        {
+        }
+
         public FileOpenPicker(FilePickerOpenOptions options)
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
