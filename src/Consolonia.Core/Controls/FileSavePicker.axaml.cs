@@ -5,7 +5,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 
 namespace Consolonia.Core.Controls
@@ -20,9 +19,9 @@ namespace Consolonia.Core.Controls
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            Loaded += (_, _) => { this.FindControl<Button>("CancelButton")?.Focus(); };
             DataContext = new FileSavePickerViewModel(options);
             InitializeComponent();
+            this.CancelButton.Focus();
         }
 
         /// <summary>
@@ -40,11 +39,6 @@ namespace Consolonia.Core.Controls
         private FileSavePickerViewModel ViewModel =>
             DataContext as FileSavePickerViewModel
             ?? throw new InvalidOperationException($"Invalid DataContext. Expected {nameof(FileSavePickerViewModel)}");
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
 
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {

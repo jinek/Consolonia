@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
@@ -12,14 +11,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
         private void Linear_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            this.FindControl<Grid>("MyGrid").Background = new LinearGradientBrush
+            this.MyGrid.Background = new LinearGradientBrush
             {
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative),
@@ -33,7 +27,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private void Radial_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            this.FindControl<Grid>("MyGrid").Background = new RadialGradientBrush
+            this.MyGrid.Background = new RadialGradientBrush
             {
                 Center = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
                 GradientOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
@@ -48,7 +42,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private void Conic_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
 
-            this.FindControl<Grid>("MyGrid").Background = new ConicGradientBrush
+            this.MyGrid.Background = new ConicGradientBrush
             {
                 Center = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
                 Angle = 0,

@@ -1,7 +1,5 @@
 using System;
-using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Consolonia.Core.Controls;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
@@ -15,10 +13,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
             Width = width;
             Height = height;
-            Loaded += (_, _) =>
-            {
-                this.FindControl<Button>("Button")!.Focus();
-            };
+            this.Button.Focus();
         }
 
         // ReSharper disable once MemberCanBePrivate.Global Can be used by constructor
@@ -26,14 +21,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
         // ReSharper disable UnusedParameter.Local
         private async void OneMore_Clicked(object sender, RoutedEventArgs e)
-            // ReSharper restore UnusedParameter.Local
+        // ReSharper restore UnusedParameter.Local
         {
             await new SomeDialogWindow().ShowDialogAsync(this);
         }

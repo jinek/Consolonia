@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
 using Avalonia.Reactive;
 using Avalonia.VisualTree;
 
@@ -49,11 +48,6 @@ namespace Consolonia.Core.Controls.Dialog
         {
             Width = newSize.Width;
             Height = newSize.Height;
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         public void SetContent(DialogWindow dialogWindow)

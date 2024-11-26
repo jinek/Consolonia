@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Consolonia.Core.Controls
@@ -42,17 +41,16 @@ namespace Consolonia.Core.Controls
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            Loaded += (_, _) =>
-            {
-                (
-                    this.FindControl<Button>(nameof(OkButton)) ??
-                    this.FindControl<Button>(nameof(CancelButton)) ??
-                    this.FindControl<Button>(nameof(YesButton)) ??
-                    this.FindControl<Button>(nameof(NoButton))
-                )?.Focus();
-            };
-
             InitializeComponent();
+
+            if (OkButton.IsVisible)
+                OkButton.Focus();
+            else if (CancelButton.IsVisible)
+                CancelButton.Focus();
+            else if (YesButton.IsVisible)
+                YesButton.Focus();
+            else if (NoButton.IsVisible)
+                NoButton.Focus();
         }
 
         public Mode Mode
@@ -94,12 +92,6 @@ namespace Consolonia.Core.Controls
             return MessageBoxResult.Cancel;
 #nullable disable
         }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
 
         private void OnOk(object sender, RoutedEventArgs e)
         {

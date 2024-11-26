@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Core.Infrastructure;
@@ -25,15 +24,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public GalleryStorage()
         {
             InitializeComponent();
+            this.DataContext = new GalleryStorageViewModel();
         }
 
         private GalleryStorageViewModel ViewModel => (GalleryStorageViewModel)DataContext;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-            this.DataContext = new GalleryStorageViewModel();
-        }
 
         private async void OnOpenFile(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {

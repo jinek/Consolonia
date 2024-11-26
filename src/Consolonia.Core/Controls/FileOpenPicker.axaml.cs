@@ -2,7 +2,6 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 
 namespace Consolonia.Core.Controls
@@ -18,9 +17,9 @@ namespace Consolonia.Core.Controls
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            Loaded += (_, _) => { this.FindControl<Button>("CancelButton")?.Focus(); };
             DataContext = new FileOpenPickerViewModel(options);
             InitializeComponent();
+            CancelButton.Focus();
         }
 
         /// <summary>
@@ -30,11 +29,6 @@ namespace Consolonia.Core.Controls
         private FileOpenPickerViewModel ViewModel =>
             DataContext as FileOpenPickerViewModel
             ?? throw new InvalidOperationException("DataContext is not properly initialized.");
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
 
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {

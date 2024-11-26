@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Consolonia.Core.Infrastructure;
 
@@ -18,20 +17,15 @@ namespace Consolonia.Core.Controls
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            Loaded += (_, _) => { this.FindControl<Button>("CancelButton")?.Focus(); };
             DataContext = new FolderPickerViewModel(options);
             InitializeComponent();
+            CancelButton.Focus();
         }
 
         private FolderPickerViewModel ViewModel => (FolderPickerViewModel)DataContext;
 
         public FolderPickerOpenOptions Options =>
             ((FolderPickerViewModel)DataContext)?.Options ?? new FolderPickerOpenOptions();
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
 
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {

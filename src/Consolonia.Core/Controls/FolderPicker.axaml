@@ -51,7 +51,7 @@
                     Content="OK"
                     Click="OnOK"
                     IsEnabled="{Binding HasSelection}" />
-            <Button x:Name="CancelButton"
+            <Button Name="CancelButton"
                     Content="Cancel"
                     Click="OnCancel" />
         </StackPanel>

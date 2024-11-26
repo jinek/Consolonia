@@ -1,6 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Core.Controls;
@@ -18,15 +16,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public GalleryMessageBox()
         {
             InitializeComponent();
+            this.DataContext = new GalleryMessageBoxViewModel();
         }
 
         private GalleryMessageBoxViewModel ViewModel => (GalleryMessageBoxViewModel)DataContext;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-            this.DataContext = new GalleryMessageBoxViewModel();
-        }
 
         private async void OnOk(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
