@@ -15,6 +15,7 @@ namespace Consolonia.Core.Controls
             : this(new FilePickerSaveOptions())
         {
         }
+
         public FileSavePicker(FilePickerSaveOptions options)
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
