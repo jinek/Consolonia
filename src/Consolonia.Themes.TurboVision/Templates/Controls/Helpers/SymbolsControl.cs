@@ -97,11 +97,11 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                 {
                     // Draw the text as a repeating pattern
                     var formattedText = new FormattedText(
-                    string.Concat(
-                        Enumerable.Repeat(Text, (int)Bounds.Width / Text.MeasureText())),
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    Typeface.Default, 1, Foreground);
+                        string.Concat(
+                            Enumerable.Repeat(Text, (int)Bounds.Width / Text.MeasureText())),
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        Typeface.Default, 1, Foreground);
                     for (int y = 0; y < Bounds.Height; y++)
                         context.DrawText(formattedText, new Point(0, y));
                 }
