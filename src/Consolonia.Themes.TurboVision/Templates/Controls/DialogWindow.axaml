@@ -62,7 +62,8 @@
                                         Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
                                         ZIndex="10"
                                         Orientation="Horizontal">
-                                <helpers:SymbolsControl Text="{TemplateBinding Icon}" IsVisible="{Binding Icon.Length}"
+                                <helpers:SymbolsControl Text="{TemplateBinding Icon}"
+                                                        IsVisible="{Binding Icon.Length}"
                                                         Foreground="{TemplateBinding BorderBrush}" />
                                 <TextBlock Text="{TemplateBinding Title}"
                                            Margin="1 0 0 0" />

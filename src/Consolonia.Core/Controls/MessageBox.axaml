@@ -9,14 +9,17 @@
                        WindowStartupLocation="CenterOwner"
                        Title="{Binding Title}">
     <Grid RowDefinitions="Auto Auto">
-        
-        <TextBlock Text="{Binding Text}" Margin="1"/>
-        
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
+
+        <TextBlock Text="{Binding Text}"
+                   Margin="1" />
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Grid.Row="1">
             <Button x:Name="OkButton"
                     Content="{Binding OkContent}"
                     IsVisible="{Binding ShowOkButton}"
-                    Click="OnOk"/>
+                    Click="OnOk" />
             <Button x:Name="YesButton"
                     Content="{Binding YesContent}"
                     IsVisible="{Binding ShowYesButton}"
@@ -28,7 +31,7 @@
             <Button x:Name="CancelButton"
                     Content="{Binding CancelContent}"
                     IsVisible="{Binding ShowCancelButton}"
-                    Click="OnCancel"/>
+                    Click="OnCancel" />
         </StackPanel>
     </Grid>
 </controls:DialogWindow>
