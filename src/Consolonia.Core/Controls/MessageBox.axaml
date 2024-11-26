@@ -13,7 +13,7 @@
         
         <TextBlock Text="{Binding Text}" Margin="1"/>
         
-        <WrapPanel HorizontalAlignment="Right" Grid.Row="1">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
             <Button x:Name="OkButton"
                     Content="{Binding OkContent}"
                     IsVisible="{Binding ShowOkButton}"
@@ -30,6 +30,6 @@
                     Content="{Binding CancelContent}"
                     IsVisible="{Binding ShowCancelButton}"
                     Click="OnCancel"/>
-        </WrapPanel>
+        </StackPanel>
     </Grid>
 </controls:DialogWindow>
