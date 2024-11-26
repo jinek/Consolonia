@@ -147,7 +147,7 @@ namespace Consolonia.Core.Controls
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var window = sender as Window;
-            if (window != null)
+            if (window != null && WindowStartupLocation == WindowStartupLocation.CenterScreen)
             {
                 Width = (ushort)(window.Bounds.Width * .9);
                 Height = (ushort)(window.Bounds.Height * .9);

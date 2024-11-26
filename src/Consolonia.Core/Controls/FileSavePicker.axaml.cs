@@ -33,7 +33,7 @@ namespace Consolonia.Core.Controls
         ///     Gets the view model associated with this dialog.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when DataContext is null or of incorrect type.</exception>
-        public FileSavePickerViewModel ViewModel =>
+        private FileSavePickerViewModel ViewModel =>
             DataContext as FileSavePickerViewModel
             ?? throw new InvalidOperationException($"Invalid DataContext. Expected {nameof(FileSavePickerViewModel)}");
 

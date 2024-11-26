@@ -27,7 +27,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
         }
 
-        public GalleryStorageViewModel ViewModel => (GalleryStorageViewModel)DataContext;
+        private GalleryStorageViewModel ViewModel => (GalleryStorageViewModel)DataContext;
 
         private void InitializeComponent()
         {
@@ -73,7 +73,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private async void OnOpenFolder(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            await OpenFolders(title: "Selecct a folder", allowMultiple: false);
+            await OpenFolders(title: "Select a folder", allowMultiple: false);
         }
 
         private async void OnOpenMultipleFolders(object sender, Avalonia.Interactivity.RoutedEventArgs e)

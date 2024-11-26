@@ -18,7 +18,7 @@ namespace Consolonia.Core.Controls
             InitializeComponent();
         }
 
-        public FolderPickerViewModel ViewModel => (FolderPickerViewModel)DataContext;
+        private FolderPickerViewModel ViewModel => (FolderPickerViewModel)DataContext;
 
         public FolderPickerOpenOptions Options =>
             ((FolderPickerViewModel)DataContext)?.Options ?? new FolderPickerOpenOptions();

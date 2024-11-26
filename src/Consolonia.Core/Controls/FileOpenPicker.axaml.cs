@@ -22,7 +22,7 @@ namespace Consolonia.Core.Controls
         ///     Gets the view model associated with this picker.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the DataContext is null or not of type FileOpenPickerViewModel.</exception>
-        public FileOpenPickerViewModel ViewModel =>
+        private FileOpenPickerViewModel ViewModel =>
             DataContext as FileOpenPickerViewModel
             ?? throw new InvalidOperationException("DataContext is not properly initialized.");
 

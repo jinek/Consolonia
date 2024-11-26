@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Text;
 using TextShaper = Consolonia.Core.Text.TextShaper;
 
@@ -92,15 +93,18 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             }
             else
             {
-                var formattedText = new FormattedText(
+                if (Text != null && Text.Length > 0)
+                {
+                    // Draw the text as a repeating pattern
+                    var formattedText = new FormattedText(
                     string.Concat(
-                        Enumerable.Repeat(
-                            Text?[0] ?? ' ', (int)Bounds.Width)),
+                        Enumerable.Repeat(Text, (int)Bounds.Width / Text.MeasureText())),
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     Typeface.Default, 1, Foreground);
-                for (int y = 0; y < Bounds.Height; y++)
-                    context.DrawText(formattedText, new Point(0, y));
+                    for (int y = 0; y < Bounds.Height; y++)
+                        context.DrawText(formattedText, new Point(0, y));
+                }
             }
         }
 
