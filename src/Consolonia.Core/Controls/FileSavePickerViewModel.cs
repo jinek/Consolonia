@@ -23,7 +23,7 @@ namespace Consolonia.Core.Controls
 
         private void FileSavePickerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(SelectedFile)) SavePath = SelectedFile?.Path.LocalPath ?? String.Empty;
+            if (e.PropertyName == nameof(SelectedFile)) SavePath = SelectedFile?.Path.LocalPath ?? string.Empty;
         }
 
         protected override bool FilterItem(IStorageItem item)
