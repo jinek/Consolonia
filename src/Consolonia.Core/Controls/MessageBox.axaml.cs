@@ -45,16 +45,18 @@ namespace Consolonia.Core.Controls
 
             InitializeComponent();
 
-            this.AttachedToVisualTree += (s, e) =>
+            this.AttachedToVisualTree += (_, _) =>
             {
+                // we don't hook this up until the dialog is shown as the visible state is driven off of the DataContext
+                // which is set at ShowDialogAsync() time. 
                 if (OkButton.IsVisible)
-                    OkButton.AttachedToVisualTree += (s2, e2) => OkButton.Focus();
+                    OkButton.AttachedToVisualTree += (_, _) => OkButton.Focus();
                 else if (YesButton.IsVisible)
-                    YesButton.AttachedToVisualTree += (s2, e2) => YesButton.Focus();
+                    YesButton.AttachedToVisualTree += (_, _) => YesButton.Focus();
                 else if (CancelButton.IsVisible)
-                    CancelButton.AttachedToVisualTree += (s2, e2) => CancelButton.Focus();
+                    CancelButton.AttachedToVisualTree += (_, _) => CancelButton.Focus();
                 else if (NoButton.IsVisible)
-                    NoButton.AttachedToVisualTree += (s2, e2) => NoButton.Focus();
+                    NoButton.AttachedToVisualTree += (_, _) => NoButton.Focus();
             };
         }
 
