@@ -76,12 +76,21 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTransparencyLevelHint(IReadOnlyList<WindowTransparencyLevel> transparencyLevels)
         {
-            // I think we can ignore this.
+            Debug.WriteLine($"ConsoleWindow.SetTransparencyLevelHint({transparencyLevels}) called, not implemented");
         }
 
         public void SetFrameThemeVariant(PlatformThemeVariant themeVariant)
         {
-            //todo:
+            //todo: Light or dark
+            switch(themeVariant)
+            {
+                case PlatformThemeVariant.Dark:
+                    Debug.WriteLine($"ConsoleWindow.SetFrameThemeVariant({themeVariant}) called, not implemented");
+                    break;
+                case PlatformThemeVariant.Light:
+                    Debug.WriteLine($"ConsoleWindow.SetFrameThemeVariant({themeVariant}) called, not implemented");
+                    break;
+            }
         }
 
         public Size ClientSize
@@ -135,6 +144,7 @@ namespace Consolonia.Core.Infrastructure
         public void SetTopmost(bool value)
         {
             // todo
+            Debug.WriteLine($"WARNING: ConsoleWindow.SetTopmost({value}) called, not implemented");
         }
 
         public double DesktopScaling => 1d;
