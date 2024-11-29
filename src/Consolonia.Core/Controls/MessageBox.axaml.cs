@@ -1,6 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -43,14 +45,17 @@ namespace Consolonia.Core.Controls
 
             InitializeComponent();
 
-            if (OkButton.IsVisible)
-                OkButton.Focus();
-            else if (CancelButton.IsVisible)
-                CancelButton.Focus();
-            else if (YesButton.IsVisible)
-                YesButton.Focus();
-            else if (NoButton.IsVisible)
-                NoButton.Focus();
+            this.AttachedToVisualTree += (s, e) =>
+            {
+                if (OkButton.IsVisible)
+                    OkButton.AttachedToVisualTree += (s2, e2) => OkButton.Focus();
+                else if (YesButton.IsVisible)
+                    YesButton.AttachedToVisualTree += (s2, e2) => YesButton.Focus();
+                else if (CancelButton.IsVisible)
+                    CancelButton.AttachedToVisualTree += (s2, e2) => CancelButton.Focus();
+                else if (NoButton.IsVisible)
+                    NoButton.AttachedToVisualTree += (s2, e2) => NoButton.Focus();
+            };
         }
 
         public Mode Mode
