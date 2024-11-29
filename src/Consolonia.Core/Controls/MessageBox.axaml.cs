@@ -43,7 +43,7 @@ namespace Consolonia.Core.Controls
 
             InitializeComponent();
 
-            this.AttachedToVisualTree += (_, _) =>
+            AttachedToVisualTree += (_, _) =>
             {
                 // we don't hook this up until the dialog is shown as the visible state is driven off of the DataContext
                 // which is set at ShowDialogAsync() time. 
