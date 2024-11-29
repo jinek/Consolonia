@@ -1,6 +1,7 @@
 #nullable enable
 using Avalonia;
 using Avalonia.Controls;
+
 #if DEBUG
 using Consolonia.PreviewHost;
 using System;
@@ -161,7 +162,12 @@ namespace Consolonia.Designer
                 xaml = File.ReadAllText(xamlPath);
                 ArgumentNullException.ThrowIfNull(xaml);
             }
-            catch (Exception ex)
+            catch (UnauthorizedAccessException ex)
+            {
+                Content = new TextBlock { Text = $"Unable to access XAML file. {ex.Message}", Foreground = Brushes.Red };
+                return;
+            }
+            catch (IOException ex)
             {
                 Content = new TextBlock { Text = $"Unable to load XAML file. {ex.Message}", Foreground = Brushes.Red };
                 return;
@@ -239,7 +245,7 @@ namespace Consolonia.Designer
                             var buffer = JsonConvert.DeserializeObject<PixelBuffer>(line)!;
                             Dispatcher.UIThread.Invoke(() => Content = RenderPixelBuffer(buffer));
                         }
-                        catch (Exception ex)
+                        catch (JsonException ex)
                         {
                             // process was probably shut down, we continue to check the proces.
                             Debug.WriteLine($"Error deserializing pixel buffer: {ex.Message}");

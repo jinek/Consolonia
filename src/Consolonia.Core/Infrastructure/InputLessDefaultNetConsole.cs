@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
@@ -53,27 +54,18 @@ namespace Consolonia.Core.Infrastructure
             {
                 if (_supportEmoji == null)
                 {
-#pragma warning disable CA1031 // Do not catch general exception types
-                    try
-                    {
-                        // Detect complex emoji support by writing a complex emoji and checking cursor position.
-                        // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
-                        (int left, int top) = Console.GetCursorPosition();
-                        WriteText(
-                            $"{Esc.Foreground(Colors.Transparent)}{Esc.Background(Colors.Transparent)}{TestEmoji}");
+                    // Detect complex emoji support by writing a complex emoji and checking cursor position.
+                    // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
+                    (int left, int top) = Console.GetCursorPosition();
+                    WriteText(
+                        $"{Esc.Foreground(Colors.Transparent)}{Esc.Background(Colors.Transparent)}{TestEmoji}");
 
-                        // TODO, escape sequence
-                        (int left2, _) = Console.GetCursorPosition();
-                        _supportEmoji = left2 - left == 2;
-                        Console.SetCursorPosition(left, top);
-                    }
-                    catch (Exception)
-                    {
-                        _supportEmoji = true;
-                    }
+                    // TODO, escape sequence
+                    (int left2, _) = Console.GetCursorPosition();
+                    _supportEmoji = left2 - left == 2;
+                    Console.SetCursorPosition(left, top);
 
                     WriteText(Esc.ClearScreen);
-#pragma warning restore CA1031 // Do not catch general exception types
                 }
 
                 return _supportEmoji ?? true;
@@ -82,16 +74,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTitle(string title)
         {
-#pragma warning disable CA1031 // Do not catch general exception types
-            try
-            {
-                Console.Title = title;
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-#pragma warning restore CA1031 // Do not catch general exception types
+            Console.Title = title;
         }
 
         public void SetCaretPosition(PixelBufferCoordinate bufferPoint)

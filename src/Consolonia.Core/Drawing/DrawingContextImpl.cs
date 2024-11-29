@@ -210,8 +210,7 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            var shapedBuffer = glyphRunImpl.GlyphInfos as ShapedBuffer;
-            ArgumentNullException.ThrowIfNull(shapedBuffer);
+            var shapedBuffer = (ShapedBuffer)glyphRunImpl.GlyphInfos;
             string text = shapedBuffer.Text.ToString();
             DrawStringInternal(foreground, text, glyphRun.GlyphTypeface);
         }
