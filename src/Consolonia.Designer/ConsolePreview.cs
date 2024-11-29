@@ -156,7 +156,6 @@ namespace Consolonia.Designer
 
 
             string? xaml;
-#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 xaml = File.ReadAllText(xamlPath);
@@ -172,7 +171,6 @@ namespace Consolonia.Designer
                 Content = new TextBlock { Text = $"Unable to load XAML file. {ex.Message}", Foreground = Brushes.Red };
                 return;
             }
-#pragma warning restore CA1031 // Do not catch general exception types
 
             ComputeCharWidth();
             (ushort designWidth, ushort designHeight) = GetDesignWidthAndHeight(xaml);
