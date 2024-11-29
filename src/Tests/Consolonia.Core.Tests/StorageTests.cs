@@ -1,6 +1,6 @@
-#pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
 // ReSharper disable PossibleNullReferenceException
 // ReSharper disable ConstantConditionalAccessQualifier
+
 using System;
 using System.Globalization;
 using System.IO;

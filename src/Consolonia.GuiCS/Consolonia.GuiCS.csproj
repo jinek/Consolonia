@@ -3,6 +3,5 @@
     <WarningsAsErrors>false</WarningsAsErrors>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
-    <NoWarn>CA2007;</NoWarn>
   </PropertyGroup>
 </Project>

@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <IsPackable>false</IsPackable>
-        <NoWarn>CA2007;</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
