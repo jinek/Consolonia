@@ -22,7 +22,7 @@ namespace Consolonia.Core.Controls
 
             DataContext = new FileSavePickerViewModel(options);
             InitializeComponent();
-            this.CancelButton.Focus();
+            CancelButton.Focus();
         }
 
         /// <summary>
