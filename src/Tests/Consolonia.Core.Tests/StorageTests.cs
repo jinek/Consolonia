@@ -1,5 +1,6 @@
 // ReSharper disable PossibleNullReferenceException
 // ReSharper disable ConstantConditionalAccessQualifier
+
 using System;
 using System.Globalization;
 using System.IO;
