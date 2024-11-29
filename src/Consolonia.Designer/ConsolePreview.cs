@@ -1,7 +1,7 @@
 #nullable enable
+
 using Avalonia;
 using Avalonia.Controls;
-
 #if DEBUG
 using Consolonia.PreviewHost;
 using System;
@@ -168,7 +168,8 @@ namespace Consolonia.Designer
             }
             catch (UnauthorizedAccessException ex)
             {
-                Content = new TextBlock { Text = $"Unable to access XAML file. {ex.Message}", Foreground = Brushes.Red };
+                Content = new TextBlock
+                    { Text = $"Unable to access XAML file. {ex.Message}", Foreground = Brushes.Red };
                 return;
             }
             catch (IOException ex)
