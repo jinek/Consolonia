@@ -1,10 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
     
-    <PropertyGroup>
-        <NoWarn>CA2007;</NoWarn>
-    </PropertyGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
         <ProjectReference Include="..\Consolonia.GuiCS\Consolonia.GuiCS.csproj" />        
