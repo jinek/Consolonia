@@ -161,6 +161,11 @@ namespace Consolonia.Designer
                 xaml = File.ReadAllText(xamlPath);
                 ArgumentNullException.ThrowIfNull(xaml);
             }
+            catch (FileNotFoundException ex)
+            {
+                Content = new TextBlock { Text = $"XAML file not found. {ex.Message}", Foreground = Brushes.Red };
+                return;
+            }
             catch (UnauthorizedAccessException ex)
             {
                 Content = new TextBlock { Text = $"Unable to access XAML file. {ex.Message}", Foreground = Brushes.Red };
