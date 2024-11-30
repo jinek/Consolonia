@@ -38,13 +38,16 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                                     var focusedControl =
                                         (Control)AvaloniaLocator.Current.GetRequiredService<IFocusManager>()!
                                             .GetFocusedElement();
-                                    var menuItems = visual.GetLogicalAncestors().OfType<MenuItem>();
 
-                                    var focusedTree = focusedControl!.GetLogicalAncestors();
+                                    if (focusedControl != null)
+                                    {
+                                        var focusedTree = focusedControl.GetLogicalAncestors();
+                                        var menuItems = visual.GetLogicalAncestors().OfType<MenuItem>();
 
-                                    foreach (MenuItem menuItem in menuItems.Where(item => !focusedTree.Contains(item))
-                                                 .ToArray())
-                                        menuItem.Close();
+                                        foreach (MenuItem menuItem in menuItems.Where(item => !focusedTree.Contains(item))
+                                                     .ToArray())
+                                            menuItem.Close();
+                                    }
                                 });
                         }));
                     visual.SetValue(DisposablesProperty, new[] { disposable });
