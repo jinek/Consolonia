@@ -26,7 +26,7 @@ namespace Consolonia.Core.Helpers
                 pixel.Foreground.Color,
                 pixel.Foreground.Style,
                 pixel.Foreground.Weight,
-                pixel.Foreground.TextDecorations,
+                pixel.Foreground.TextDecoration,
                 pixel.Foreground.Symbol.Text);
         }
 
@@ -94,7 +94,7 @@ namespace Consolonia.Core.Helpers
         public static ushort MeasureText(this string text)
         {
             var console = AvaloniaLocator.Current.GetService<IConsole>();
-            bool supportsComplexEmoji = console != null ? console.SupportsComplexEmoji : false;
+            bool supportsComplexEmoji = console != null ? console.SupportsComplexEmoji : true;
             ushort width = 0;
             ushort lastWidth = 0;
             foreach (Rune rune in text.EnumerateRunes())

@@ -1,0 +1,43 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+    <!-- Material Design Color Scheme -->
+    <!-- Grey 900 -->
+    <drawing:ConsoleBrush x:Key="ThemeForegroundBrush"
+                          Color="#212121" />
+    <!-- White -->
+    <drawing:ConsoleBrush x:Key="ThemeBackgroundBrush"
+                          Color="#FFFFFF" />
+    <!-- Light Blue 700 -->
+    <drawing:ConsoleBrush x:Key="ThemeChooserBackgroundBrush"
+                          Color="#0288D1" />
+    <!-- Green 500 -->
+    <drawing:ConsoleBrush x:Key="ThemeActionBackgroundBrush"
+                          Color="#4CAF50" />
+    <!-- Blue Grey 200 -->
+    <drawing:ConsoleBrush x:Key="ThemeSelectionBackgroundBrush"
+                          Color="#B0BEC5" />
+    <!-- White -->
+    <drawing:ConsoleBrush x:Key="ThemeSelectionForegroundBrush"
+                          Color="#FFFFFF" />
+    <!-- Blue Grey 100 -->
+    <drawing:ConsoleBrush x:Key="ThemeAlternativeBackgroundBrush"
+                          Color="#CFD8DC" />
+    <!-- Grey 400 -->
+    <drawing:ConsoleBrush x:Key="ThemeBorderBrush"
+                          Color="#BDBDBD" />
+    <!-- Amber 500 -->
+    <drawing:ConsoleBrush x:Key="ThemeNoDisturbBrush"
+                          Color="#FFC107" />
+    <!-- Grey 600 with opacity -->
+    <drawing:ConsoleBrush x:Key="ThemeShadeBrush"
+                          Color="#80757575"
+                          Mode="Shaded" />
+    <!-- Blue Grey 300 -->
+    <drawing:ConsoleBrush x:Key="ThemePseudoShadeBrush"
+                          Color="#90A4AE" />
+    <!-- Red 500 -->
+    <drawing:ConsoleBrush x:Key="ThemeErrorBrush"
+                          Color="#F44336" />
+
+</ResourceDictionary>
