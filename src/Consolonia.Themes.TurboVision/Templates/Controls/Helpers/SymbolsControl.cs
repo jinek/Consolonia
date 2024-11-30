@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
+using Consolonia.Core.Helpers;
 using Avalonia.Platform;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
@@ -99,10 +100,11 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             }
             else
             {
+                if (Text is not { Length: > 0 }) return;
+                // Draw the text as a repeating pattern
                 var formattedText = new FormattedText(
                     string.Concat(
-                        Enumerable.Repeat(
-                            Text?[0] ?? ' ', (int)Bounds.Width)),
+                        Enumerable.Repeat(Text, (int)Bounds.Width / Text.MeasureText())),
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     Typeface.Default, 1, Foreground);

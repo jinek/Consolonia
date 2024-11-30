@@ -11,7 +11,7 @@ using Avalonia.Input;
 using Avalonia.VisualTree;
 using Consolonia.Core.Helpers;
 
-namespace Consolonia.Themes.TurboVision.Templates.Controls.Dialog
+namespace Consolonia.Core.Controls.Dialog
 {
     public class DialogHost
     {

@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -20,9 +19,5 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             cal2.BlackoutDates.Add(new CalendarDateRange(today.AddDays(6)));
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
     }
 }

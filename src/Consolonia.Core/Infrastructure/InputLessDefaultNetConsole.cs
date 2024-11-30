@@ -228,10 +228,10 @@ namespace Consolonia.Core.Infrastructure
                 {
                     Task pauseTask = PauseTask;
                     if (pauseTask != null)
-                        await pauseTask.ConfigureAwait(false);
+                        await pauseTask;
 
                     int timeout = (int)(CheckActualizeTheSize() ? 1 : slowInterval);
-                    await Task.Delay(timeout).ConfigureAwait(false);
+                    await Task.Delay(timeout);
                 }
             });
         }

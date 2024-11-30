@@ -248,7 +248,8 @@ namespace Consolonia.Core.Infrastructure
             if (featureType == typeof(ISystemNavigationManagerImpl))
                 return null;
             if (featureType == typeof(ITextInputMethodImpl)) return null;
-            if (featureType == typeof(IStorageProvider)) return null;
+            if (featureType == typeof(IStorageProvider))
+                return AvaloniaLocator.Current.GetService<IStorageProvider>();
             throw new NotImplementedException("Consider this");
         }
 
@@ -328,7 +329,7 @@ namespace Consolonia.Core.Infrastructure
                 try
                 {
                     // Wait for the delay period, this task will be canceled if another refresh comes in.
-                    await Task.Delay(_resizeDelay, _resizeCancellationTokenSource.Token).ConfigureAwait(false);
+                    await Task.Delay(_resizeDelay, _resizeCancellationTokenSource.Token);
 
                     // dispatch to the UI thread 
                     Dispatcher.UIThread.Post(() =>
@@ -373,7 +374,7 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning restore CS0618 // Type or member is obsolete
                     Input!(rawInputEventArgs);
                     handled = rawInputEventArgs.Handled;
-                }, DispatcherPriority.Input).GetTask().ConfigureAwait(true);
+                }, DispatcherPriority.Input);
 
                 if (!handled && !char.IsControl(keyChar))
                     Dispatcher.UIThread.Post(() =>

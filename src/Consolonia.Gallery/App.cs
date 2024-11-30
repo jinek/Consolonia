@@ -24,6 +24,11 @@ namespace Consolonia.Gallery
             // Styles.Add(new FluentTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/Fluent/Fluent.axaml")));
         }
 
+        public override void RegisterServices()
+        {
+            base.RegisterServices();
+        }
+
         public override void OnFrameworkInitializationCompleted()
         {
             var lifetime = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;

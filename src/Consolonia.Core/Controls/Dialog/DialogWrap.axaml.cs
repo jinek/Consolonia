@@ -4,12 +4,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
 using Avalonia.Reactive;
 using Avalonia.VisualTree;
-using Consolonia.Themes.TurboVision.Templates.Controls.Dialog;
 
-namespace Consolonia.Themes.TurboVision.Templates.Controls
+namespace Consolonia.Core.Controls.Dialog
 {
     [SuppressMessage("Usage", "PartialTypeWithSinglePart",
         Justification = "Partial class required for XAML code generation.")]
@@ -50,11 +48,6 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls
         {
             Width = newSize.Width;
             Height = newSize.Height;
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         public void SetContent(DialogWindow dialogWindow)
