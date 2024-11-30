@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.Platform;
 using Avalonia.Input;
@@ -63,6 +64,26 @@ namespace Consolonia.Core.Infrastructure
                 //.Bind<IPlatformSettings>().ToConstant(new PlatformSettingsStub())
                 //.Bind<ISystemDialogImpl>().ToConstant(new GtkSystemDialog())
                 /*.Bind<IMountedVolumeInfoProvider>().ToConstant(new LinuxMountedVolumeInfoProvider())*/;
+
+            if (OperatingSystem.IsWindows())
+            {
+                AvaloniaLocator.CurrentMutable.Bind<IClipboard>()
+                    .ToFunc<IClipboard>(() =>
+                    {
+                        var assembly = Assembly.Load("Avalonia.Win32");
+                        var type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
+                        var clipboard = (IClipboard)Activator.CreateInstance(type);
+                        return clipboard;
+                    });
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                // TODO: Implement or reuse MacOS clipboard
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                // TODO: Implement or reuse X11 Clipboard
+            }
         }
 
         [DebuggerStepThrough]

@@ -15,9 +15,9 @@ namespace Consolonia.Core.Infrastructure
         //todo: check XTFocus https://github.com/jinek/Consolonia/issues/105#issuecomment-2089015880
         private IInputRoot _owner;
 
-        public ArrowsAndKeyboardNavigationHandler(IKeyboardNavigationHandler keyboardNavigationHandler)
+        public ArrowsAndKeyboardNavigationHandler()
         {
-            _keyboardNavigationHandler = keyboardNavigationHandler;
+            _keyboardNavigationHandler = new KeyboardNavigationHandler();
         }
 
         public void SetOwner(IInputRoot owner)

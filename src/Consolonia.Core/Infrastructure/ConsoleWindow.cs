@@ -6,7 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Platform;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
 using Avalonia.Input.TextInput;
 using Avalonia.Platform;
@@ -83,7 +85,7 @@ namespace Consolonia.Core.Infrastructure
         public void SetFrameThemeVariant(PlatformThemeVariant themeVariant)
         {
             //todo: Light or dark
-            switch(themeVariant)
+            switch (themeVariant)
             {
                 case PlatformThemeVariant.Dark:
                     Debug.WriteLine($"ConsoleWindow.SetFrameThemeVariant({themeVariant}) called, not implemented");
@@ -145,7 +147,7 @@ namespace Consolonia.Core.Infrastructure
         public void SetTopmost(bool value)
         {
             // todo
-            Debug.WriteLine($"WARNING: ConsoleWindow.SetTopmost({value}) called, not implemented");
+            Debug.WriteLine($"ConsoleWindow.SetTopmost({value}) called, not implemented");
         }
 
         public double DesktopScaling => 1d;
@@ -258,15 +260,27 @@ namespace Consolonia.Core.Infrastructure
 
         public object TryGetFeature(Type featureType)
         {
-            if (featureType == typeof(ISystemNavigationManagerImpl))
-                return null;
-            if (featureType == typeof(ITextInputMethodImpl)) return null;
             if (featureType == typeof(IStorageProvider))
                 return AvaloniaLocator.Current.GetService<IStorageProvider>();
-            throw new NotImplementedException("Consider this");
+
+            if (featureType == typeof(IInsetsManager))
+                // IInsetsManager doesn't apply to console applications.
+                return null;
+
+            if (featureType == typeof(IClipboard))
+            {
+                var clipboard = AvaloniaLocator.CurrentMutable.GetService<IClipboard>();
+                if (clipboard != null)
+                    return clipboard;
+            }
+
+            // TODO ISystemNavigationManagerImpl should be implemented to handle BACK navigation between pages of controls like mobile apps do.
+            // TODO ITextInputMethodImplshould be implemented to handle text IME input
+            Debug.WriteLine($"Missing Feature: {featureType.Name} is not implemented but someone is asking for it!");
+            return null;
         }
 
-         public void GetWindowsZOrder(Span<Window> windows, Span<long> zOrder)
+        public void GetWindowsZOrder(Span<Window> windows, Span<long> zOrder)
         {
             throw new NotImplementedException();
         }
