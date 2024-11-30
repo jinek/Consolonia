@@ -70,11 +70,11 @@ namespace Consolonia.Core.Infrastructure
                 AvaloniaLocator.CurrentMutable.Bind<IClipboard>()
                     .ToFunc(() =>
                     {
-                        var assembly = Assembly.Load("Avalonia.Win32");
+                        Assembly assembly = Assembly.Load("Avalonia.Win32");
                         ArgumentNullException.ThrowIfNull(assembly, "Avalonia.Win32");
-                        var type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
+                        Type type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
                         ArgumentNullException.ThrowIfNull(type, "ClipboardImpl");
-                        IClipboard clipboard = Activator.CreateInstance(type) as IClipboard;
+                        var clipboard = Activator.CreateInstance(type) as IClipboard;
                         ArgumentNullException.ThrowIfNull(clipboard, nameof(clipboard));
                         return clipboard;
                     });

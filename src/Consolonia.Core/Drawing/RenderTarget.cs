@@ -72,6 +72,13 @@ namespace Consolonia.Core.Drawing
 
         public bool IsCorrupted => false;
 
+        public IDrawingContextImpl CreateDrawingContext(bool useScaledDrawing)
+        {
+            if (useScaledDrawing)
+                throw new NotImplementedException("Consolonia doesn't support useScaledDrawing");
+            return new DrawingContextImpl(_consoleWindow);
+        }
+
 
         private void OnResized(Size size, WindowResizeReason reason)
         {
@@ -140,13 +147,6 @@ namespace Consolonia.Core.Drawing
             {
                 _console.CaretVisible = false;
             }
-        }
-
-        public IDrawingContextImpl CreateDrawingContext(bool useScaledDrawing)
-        {
-            if (useScaledDrawing)
-                throw new NotImplementedException($"Consolonia doesn't support useScaledDrawing");
-            return new DrawingContextImpl(_consoleWindow);
         }
 
         private struct FlushingBuffer

@@ -28,6 +28,6 @@ namespace Consolonia.Core.Drawing
 
         public bool IsLost => false;
 
-        public IReadOnlyDictionary<Type, object> PublicFeatures { get; private set; } = new Dictionary<Type, object>();
+        public IReadOnlyDictionary<Type, object> PublicFeatures { get; } = new Dictionary<Type, object>();
     }
 }
