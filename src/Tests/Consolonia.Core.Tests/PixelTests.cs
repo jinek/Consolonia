@@ -145,7 +145,8 @@ namespace Consolonia.Core.Tests
         [Test]
         public void BlendShadedBackground()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray), new PixelBackground(Colors.White));
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+                new PixelBackground(Colors.White));
             var pixel2 = new Pixel(new PixelBackground(PixelBackgroundMode.Shaded));
             Pixel newPixel = pixel.Blend(pixel2);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
@@ -162,7 +163,8 @@ namespace Consolonia.Core.Tests
         [Test]
         public void BlendShadedBackground2()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray), new PixelBackground(Colors.Black));
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+                new PixelBackground(Colors.Black));
             var pixel2 = new Pixel(new PixelBackground(PixelBackgroundMode.Shaded));
             Pixel newPixel = pixel.Blend(pixel2);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
