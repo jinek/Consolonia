@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 using Consolonia.Core.InternalHelpers;
@@ -123,6 +124,21 @@ namespace Consolonia.Core.Infrastructure
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Handled) return;
+
+            if (e.Key == Key.Escape)
+            {
+                // if there is a overlay popup, close it
+                var overlay = ((Visual)sender).FindDescendantOfType<OverlayPopupHost>();
+                if (overlay != null)
+                {
+                    // it will have a popup as the parent.
+                    var popup = overlay.Parent as Popup;
+                    if (popup != null)
+                        popup.Close();
+                    e.Handled = true;
+                    return;
+                }
+            }
 
             //see FocusManager.GetFocusManager
             IInputElement current = TopLevel.GetTopLevel((Visual)sender)!.FocusManager!.GetFocusedElement();
