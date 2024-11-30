@@ -39,12 +39,9 @@ namespace Consolonia.Core.Drawing
             _consoleWindow = consoleWindow;
             _pixelBuffer = consoleWindow.PixelBuffer;
             _clipStack.Push(_pixelBuffer.Size);
-            RenderOptions = new RenderOptions();
         }
 
         private Rect CurrentClip => _clipStack.Peek();
-
-        public RenderOptions RenderOptions { get; set; }
 
         public void Dispose()
         {
