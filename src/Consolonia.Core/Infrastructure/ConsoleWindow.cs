@@ -334,6 +334,7 @@ namespace Consolonia.Core.Infrastructure
                     // dispatch to the UI thread 
                     Dispatcher.UIThread.Post(() =>
                     {
+                        (PixelBuffer as IDisposable)?.Dispose();
                         PixelBuffer = new PixelBuffer(Console.Size);
                         var size = new Size(Console.Size.Width, Console.Size.Height);
                         Resized!(size, WindowResizeReason.Unspecified);
