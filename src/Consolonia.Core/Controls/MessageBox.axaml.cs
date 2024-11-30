@@ -43,19 +43,29 @@ namespace Consolonia.Core.Controls
 
             InitializeComponent();
 
-            AttachedToVisualTree += (_, _) =>
-            {
-                // we don't hook this up until the dialog is shown as the visible state is driven off of the DataContext
-                // which is set at ShowDialogAsync() time. 
-                if (OkButton.IsVisible)
-                    OkButton.AttachedToVisualTree += (_, _) => OkButton.Focus();
-                else if (YesButton.IsVisible)
-                    YesButton.AttachedToVisualTree += (_, _) => YesButton.Focus();
-                else if (CancelButton.IsVisible)
-                    CancelButton.AttachedToVisualTree += (_, _) => CancelButton.Focus();
-                else if (NoButton.IsVisible)
-                    NoButton.AttachedToVisualTree += (_, _) => NoButton.Focus();
-            };
+            AttachedToVisualTree += OnShowDialog;
+        }
+
+        private void OnShowDialog(object sender, VisualTreeAttachmentEventArgs e)
+        {
+            // we don't hook this up until the dialog is shown as the visible state is driven off of the DataContext
+            // which is set at ShowDialogAsync() time. 
+            AttachedToVisualTree -= OnShowDialog;
+            if (OkButton.IsVisible)
+                OkButton.AttachedToVisualTree += ButtonAttached;
+            else if (YesButton.IsVisible)
+                YesButton.AttachedToVisualTree += ButtonAttached;
+            else if (CancelButton.IsVisible)
+                CancelButton.AttachedToVisualTree += ButtonAttached;
+            else if (NoButton.IsVisible)
+                NoButton.AttachedToVisualTree += ButtonAttached;
+        }
+
+        private void ButtonAttached(object sender, VisualTreeAttachmentEventArgs e)
+        {
+            var button = (Button)sender;
+            button.AttachedToVisualTree -= ButtonAttached;
+            button.Focus();
         }
 
         public Mode Mode
