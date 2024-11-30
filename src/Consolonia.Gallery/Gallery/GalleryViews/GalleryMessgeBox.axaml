@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery.GalleryViews"
+             mc:Ignorable="d"
+             x:DataType="gallery:GalleryMessageBoxViewModel"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryMessageBox">
+
+    <StackPanel Orientation="Vertical">
+        <WrapPanel Orientation="Vertical" HorizontalAlignment="Left">
+            <Button Click="OnOk" >Show Ok</Button>
+            <Button Click="OnOkCancel" >Show Ok/Cancel</Button>
+            <Button Click="OnYesNo" >Show Yes/No</Button>
+            <Button Click="OnYesNoCancel" >Show Yes/No/Cancel</Button>
+            <Button Click="OnCustom" >Show Custom</Button>
+        </WrapPanel>
+        <TextBlock Text="{Binding Result}"/>
+    </StackPanel>
+</UserControl>

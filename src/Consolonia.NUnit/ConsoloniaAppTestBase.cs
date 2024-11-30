@@ -70,7 +70,7 @@ namespace Consolonia.NUnit
                     {
                         Window mainWindow = _lifetime?.MainWindow;
                         return mainWindow != null;
-                    }).GetTask().ConfigureAwait(false);
+                    });
                     if (windowFound)
                         return;
                 }

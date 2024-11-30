@@ -3,7 +3,6 @@ using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
@@ -14,11 +13,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public GalleryAnimatedLines()
         {
             InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         // ReSharper disable UnusedParameter.Local

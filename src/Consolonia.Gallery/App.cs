@@ -21,6 +21,11 @@ namespace Consolonia.Gallery
             Styles.Add(new TurboVisionTheme(new Uri("avares://Consolonia.Gallery")));
         }
 
+        public override void RegisterServices()
+        {
+            base.RegisterServices();
+        }
+
         public override void OnFrameworkInitializationCompleted()
         {
             ((IClassicDesktopStyleApplicationLifetime)ApplicationLifetime)!.MainWindow = new ControlsListView();

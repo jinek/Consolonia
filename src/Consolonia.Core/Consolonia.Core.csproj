@@ -1,15 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />    
+    <ItemGroup>
+        <AvaloniaXaml Remove="Controls\FileOpen\**" />
+        <Compile Remove="Controls\FileOpen\**" />
+        <EmbeddedResource Remove="Controls\FileOpen\**" />
+        <None Remove="Controls\FileOpen\**" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.FreeDesktop" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8" />
         <PackageReference Include="Unicode.net" Version="2.0.0" />
         <PackageReference Include="Wcwidth" Version="2.0.0" />
     </ItemGroup>
 
+
 </Project>
- 

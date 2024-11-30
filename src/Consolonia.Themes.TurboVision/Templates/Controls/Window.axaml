@@ -1,5 +1,5 @@
 <Style xmlns="https://github.com/avaloniaui"
-       xmlns:dialog="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Dialog"
+       xmlns:dialog="clr-namespace:Consolonia.Core.Controls.Dialog;assembly=Consolonia.Core"
        Selector="Window">
     <Setter Property="Background"
             Value="{DynamicResource ThemeBackgroundBrush}" />

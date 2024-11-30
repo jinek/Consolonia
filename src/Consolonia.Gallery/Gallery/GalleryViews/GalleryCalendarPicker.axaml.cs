@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -27,10 +26,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             dp4.TemplateApplied += (_, _) => { dp4.BlackoutDates?.AddDatesInPast(); };
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
     }
 
     public sealed class GalleryCalendarPickerDataContext : INotifyPropertyChanged
