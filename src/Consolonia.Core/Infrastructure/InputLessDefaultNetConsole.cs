@@ -18,7 +18,6 @@ namespace Consolonia.Core.Infrastructure
         private bool _caretVisible;
         private PixelBufferCoordinate _headBufferPoint;
 
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
         protected InputLessDefaultNetConsole()
         {
             Console.OutputEncoding = Encoding.UTF8;
@@ -38,7 +37,6 @@ namespace Consolonia.Core.Infrastructure
 
             ActualizeSize();
         }
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
         protected bool Disposed { get; private set; }
 
@@ -143,9 +141,7 @@ namespace Consolonia.Core.Infrastructure
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
             Console.Write(ConsoleUtils.DisableAlternateBuffer);
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
         public void ClearOutput()

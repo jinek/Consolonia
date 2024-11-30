@@ -79,6 +79,7 @@ dotnet_diagnostic.ca2213.severity = none # keeping field does not mean necessari
 dotnet_diagnostic.ca2248.severity = none # https://github.com/dotnet/roslyn-analyzers/issues/4432
 dotnet_diagnostic.ca1062.severity = none # we are fine with NRE - no need for additional checks
 dotnet_diagnostic.ca1065.severity = none # senseless rules. Any code in .NET is executed in context of possible exceptions. Exception can happen anywhere
+dotnet_diagnostic.CA1303.severity = none # we are assuming not to display any user-text. For the moment we are not supporting localization for exception messages
 dotnet_diagnostic.cs0067.severity = warning
 dotnet_diagnostic.cs0078.severity = warning
 dotnet_diagnostic.cs0108.severity = warning
