@@ -68,11 +68,11 @@ namespace Consolonia.Core.Infrastructure
             if (OperatingSystem.IsWindows())
             {
                 AvaloniaLocator.CurrentMutable.Bind<IClipboard>()
-                    .ToFunc<IClipboard>(() =>
+                    .ToFunc(() =>
                     {
                         var assembly = Assembly.Load("Avalonia.Win32");
                         var type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
-                        var clipboard = (IClipboard)Activator.CreateInstance(type);
+                        var clipboard = (IClipboard)Activator.CreateInstance(type)!;
                         return clipboard;
                     });
             }
