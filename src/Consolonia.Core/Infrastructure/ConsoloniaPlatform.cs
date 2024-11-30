@@ -71,8 +71,11 @@ namespace Consolonia.Core.Infrastructure
                     .ToFunc(() =>
                     {
                         var assembly = Assembly.Load("Avalonia.Win32");
+                        ArgumentNullException.ThrowIfNull(assembly, "Avalonia.Win32");
                         var type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
-                        var clipboard = (IClipboard)Activator.CreateInstance(type)!;
+                        ArgumentNullException.ThrowIfNull(type, "ClipboardImpl");
+                        IClipboard clipboard = Activator.CreateInstance(type) as IClipboard;
+                        ArgumentNullException.ThrowIfNull(clipboard, nameof(clipboard));
                         return clipboard;
                     });
             }
