@@ -4,14 +4,12 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
 using Consolonia.Gallery.Gallery;
 
 namespace Consolonia.Gallery.View
 {
     public partial class ControlsListView : Window
     {
-        private readonly DataGrid _grid;
         private string[] _commandLineArgs;
         private readonly IEnumerable<GalleryItem> _items;
 
@@ -21,9 +19,7 @@ namespace Consolonia.Gallery.View
 #if DEBUG
             this.AttachDevTools();
 #endif
-            _grid = this.FindControl<DataGrid>("Grid");
-            
-            _grid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
+            this.Grid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
 
             _commandLineArgs = ((ClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!.Args!;
             TrySetupSelected();
@@ -33,7 +29,7 @@ namespace Consolonia.Gallery.View
         {
             if (_commandLineArgs.Length is not 1 and not 2)
             {
-                _grid.SelectedIndex = 0;
+                this.Grid.SelectedIndex = 0;
                 return;
             }
 
@@ -53,15 +49,10 @@ namespace Consolonia.Gallery.View
                     $"Several gallery items found with provided name {itemToSelectName}");
             }
 
-            _grid.SelectedItem = itemToSelect;
-            _grid.Focus();
+            this.Grid.SelectedItem = itemToSelect;
+            this.Grid.Focus();
         }
 
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
 
         public void ChangeTo(string[] args)
         {

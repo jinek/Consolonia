@@ -1,13 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 
 // ReSharper disable UnusedMember.Global
 
@@ -25,10 +20,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             DataContext = new ScrollViewerPageViewModel();
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
     }
 
     public class ScrollViewerPageViewModel : ViewModelBase

@@ -94,7 +94,7 @@
                             Grid.ColumnSpan="2"
                             Grid.Column="0"
                             HorizontalAlignment="Center"
-                            Click="delete_Clicked" />
+                            Click="Delete_Clicked" />
 
                 </Grid>
             </Border>

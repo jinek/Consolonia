@@ -8,7 +8,6 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Consolonia.Core.Drawing;
 
@@ -30,10 +29,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 ListSortDirection.Ascending, new ReversedStringComparer());
             var collectionView1 = new DataGridCollectionView(Countries.All);
             collectionView1.SortDescriptions.Add(dataGridSortDescription);
-            var dg1 = this.FindControl<DataGrid>("DataGrid1");
-            dg1.IsReadOnly = true;
-            dg1.LoadingRow += Dg1_LoadingRow;
-            dg1.Sorting += (_, a) =>
+            DataGrid1.IsReadOnly = true;
+            DataGrid1.LoadingRow += DataGrid1_LoadingRow;
+            DataGrid1.Sorting += (_, a) =>
             {
                 var binding = (a.Column as DataGridBoundColumn)?.Binding as Binding;
 
@@ -42,18 +40,16 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     && !collectionView1.SortDescriptions.Contains(dataGridSortDescription))
                     collectionView1.SortDescriptions.Add(dataGridSortDescription);
             };
-            dg1.ItemsSource = collectionView1;
+            DataGrid1.ItemsSource = collectionView1;
 
-            var dg2 = this.FindControl<DataGrid>("DataGridGrouping");
-            dg2.IsReadOnly = true;
+            DataGridGrouping.IsReadOnly = true;
 
             var collectionView2 = new DataGridCollectionView(Countries.All);
             collectionView2.GroupDescriptions.Add(new DataGridPathGroupDescription("Region"));
 
-            dg2.ItemsSource = collectionView2;
+            DataGridGrouping.ItemsSource = collectionView2;
 
-            var dg3 = this.FindControl<DataGrid>("DataGridEdit");
-            dg3.IsReadOnly = false;
+            DataGridEdit.IsReadOnly = false;
 
             var items = new List<Person>
             {
@@ -63,21 +59,15 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             };
             var collectionView3 = new DataGridCollectionView(items);
 
-            dg3.ItemsSource = collectionView3;
+            DataGridEdit.ItemsSource = collectionView3;
 
-            var addButton = this.FindControl<Button>("BtnAdd");
-            addButton.Click += (_, _) => collectionView3.AddNew();
+            BtnAdd.Click += (_, _) => collectionView3.AddNew();
         }
 
         // ReSharper disable once MemberCanBeMadeStatic.Local
-        private void Dg1_LoadingRow(object sender, DataGridRowEventArgs e)
+        private void DataGrid1_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = e.Row.Index + 1;
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         private class ReversedStringComparer : IComparer<object>, IComparer

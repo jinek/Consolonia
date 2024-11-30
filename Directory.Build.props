@@ -9,6 +9,7 @@
         <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
         <Description>Text User Interface implementation of Avalonia UI (GUI Framework)</Description>
         <Copyright>Copyright © Evgeny Gorbovoy 2021 - 2022</Copyright>
+        <NoWarn>AVA3001</NoWarn>
     </PropertyGroup>
     <PropertyGroup>
         <AvaloniaVersion>11.2.1</AvaloniaVersion>

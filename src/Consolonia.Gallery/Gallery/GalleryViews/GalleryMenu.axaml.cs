@@ -1,6 +1,5 @@
 using System;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -12,11 +11,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             InitializeComponent();
             DataContext = new MenuPageViewModel();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         protected override void OnDataContextChanged(EventArgs e)

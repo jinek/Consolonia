@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
@@ -36,10 +35,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             };
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
     }
 
     public class PageViewModel : ViewModelBase
