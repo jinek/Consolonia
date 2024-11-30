@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests
@@ -111,6 +112,15 @@ namespace Consolonia.Core.Tests
             set2.Add(new DrawingBoxSymbol(0b0000_1111));
             set2.Add(new DrawingBoxSymbol(0b0000_1111));
             Assert.That(set2.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void JsonSerialization()
+        {
+            var symbol = new DrawingBoxSymbol(0b0000_1111);
+            string json = JsonConvert.SerializeObject(symbol);
+            var deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            Assert.That(symbol.Equals(deserializedSymbol));
         }
     }
 }

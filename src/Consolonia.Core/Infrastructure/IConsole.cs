@@ -27,8 +27,9 @@ namespace Consolonia.Core.Infrastructure
         PixelBufferCoordinate GetCaretPosition();
 
         void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style,
-            FontWeight weight, TextDecorationCollection textDecorations, string str);
+            FontWeight weight, TextDecorationLocation? textDecoration, string str);
 
+        void WriteText(string str);
 
         event Action Resized;
         event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;

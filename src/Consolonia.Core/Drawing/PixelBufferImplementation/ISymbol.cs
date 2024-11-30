@@ -1,5 +1,8 @@
+using Newtonsoft.Json;
+
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
+    [JsonConverter(typeof(SymbolConverter))]
     public interface ISymbol
     {
         /// <summary>

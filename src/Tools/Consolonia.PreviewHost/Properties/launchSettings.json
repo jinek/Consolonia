@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "Consolonia.PreviewHost": {
+      "commandName": "Project",
+      "commandLineArgs": ".",
+      "workingDirectory": "S:\\github\\Consolonia\\src\\Consolonia.Gallery"
+    }
+  }
+}
