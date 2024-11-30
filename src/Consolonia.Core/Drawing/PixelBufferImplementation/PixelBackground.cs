@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
-using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -27,16 +26,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Mode = mode;
         }
 
-        [JsonConverter(typeof(ColorConverter))]
-        public Color Color { get; init; }
-
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public PixelBackgroundMode Mode { get; init; }
-
-        public bool Equals(PixelBackground other)
-        {
-            return Color.Equals(other.Color) && Mode == other.Mode;
-        }
+        public Color Color { get; }
+        public PixelBackgroundMode Mode { get; }
 
         public PixelBackground Shade()
         {
@@ -59,6 +50,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
 
             return new PixelBackground(newMode, newColor);
+        }
+
+        public bool Equals(PixelBackground other)
+        {
+            return Color.Equals(other.Color) && Mode == other.Mode;
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)

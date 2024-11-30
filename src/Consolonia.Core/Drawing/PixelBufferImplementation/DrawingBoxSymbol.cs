@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -9,47 +8,22 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     ///     https://en.wikipedia.org/wiki/Box-drawing_character
     /// </summary>
     [DebuggerDisplay("DrawingBox {Text}")]
-    [JsonConverter(typeof(SymbolConverter))]
-    public readonly struct DrawingBoxSymbol : ISymbol, IEquatable<DrawingBoxSymbol>
+    public struct DrawingBoxSymbol : ISymbol, IEquatable<DrawingBoxSymbol>
     {
         // all 0bXXXX_0000 are special values
         private const byte BoldSymbol = 0b0001_0000;
         private const byte EmptySymbol = 0b0;
+        private readonly byte _upRightDownLeft;
 
         public DrawingBoxSymbol(byte upRightDownLeft)
         {
-            UpRightDownLeft = upRightDownLeft;
-            Text = GetBoxSymbol(UpRightDownLeft).ToString();
+            _upRightDownLeft = upRightDownLeft;
+            Text = GetBoxSymbol(_upRightDownLeft).ToString();
         }
 
-        public byte UpRightDownLeft { get; init; }
+        public string Text { get; private init; }
 
-        public bool Equals(DrawingBoxSymbol other)
-        {
-            return UpRightDownLeft == other!.UpRightDownLeft;
-        }
-
-        [JsonIgnore] public string Text { get; init; }
-
-        [JsonIgnore] public ushort Width { get; } = 1;
-
-        public bool IsWhiteSpace()
-        {
-            return UpRightDownLeft == EmptySymbol;
-        }
-
-        public ISymbol Blend(ref ISymbol symbolAbove)
-        {
-            if (symbolAbove.IsWhiteSpace()) return this;
-
-            if (symbolAbove is not DrawingBoxSymbol drawingBoxSymbol)
-                return symbolAbove;
-
-            if (drawingBoxSymbol.UpRightDownLeft == BoldSymbol || UpRightDownLeft == BoldSymbol)
-                return new DrawingBoxSymbol(BoldSymbol);
-
-            return new DrawingBoxSymbol((byte)(UpRightDownLeft | drawingBoxSymbol.UpRightDownLeft));
-        }
+        public ushort Width { get; } = 1;
 
         /// <summary>
         ///     https://en.wikipedia.org/wiki/Code_page_437
@@ -125,6 +99,24 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
         }
 
+        public bool IsWhiteSpace()
+        {
+            return _upRightDownLeft == EmptySymbol;
+        }
+
+        public ISymbol Blend(ref ISymbol symbolAbove)
+        {
+            if (symbolAbove.IsWhiteSpace()) return this;
+
+            if (symbolAbove is not DrawingBoxSymbol drawingBoxSymbol)
+                return symbolAbove;
+
+            if (drawingBoxSymbol._upRightDownLeft == BoldSymbol || _upRightDownLeft == BoldSymbol)
+                return new DrawingBoxSymbol(BoldSymbol);
+
+            return new DrawingBoxSymbol((byte)(_upRightDownLeft | drawingBoxSymbol._upRightDownLeft));
+        }
+
         public static DrawingBoxSymbol UpRightDownLeftFromPattern(byte pattern, LineStyle lineStyle)
         {
             if (pattern == EmptySymbol) return new DrawingBoxSymbol(EmptySymbol);
@@ -142,6 +134,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
         }
 
+        public bool Equals(DrawingBoxSymbol other)
+        {
+            return _upRightDownLeft == other._upRightDownLeft;
+        }
+
         public override bool Equals([NotNullWhen(true)] object obj)
         {
             return obj is DrawingBoxSymbol other && Equals(other);
@@ -149,7 +146,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override int GetHashCode()
         {
-            return UpRightDownLeft.GetHashCode();
+            return _upRightDownLeft.GetHashCode();
         }
 
         public static bool operator ==(DrawingBoxSymbol left, DrawingBoxSymbol right)
@@ -159,7 +156,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static bool operator !=(DrawingBoxSymbol left, DrawingBoxSymbol right)
         {
-            return !left!.Equals(right);
+            return !left.Equals(right);
         }
     }
 }

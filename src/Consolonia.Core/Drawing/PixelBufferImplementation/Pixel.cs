@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
-using Newtonsoft.Json;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -12,12 +11,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [DebuggerDisplay("'{Foreground.Symbol.Text}' [{Foreground.Color}, {Background.Color}]")]
     public readonly struct Pixel : IEquatable<Pixel>
     {
-        public Pixel()
-        {
-            Foreground = new PixelForeground();
-            Background = new PixelBackground();
-            IsCaret = false;
-        }
+        public PixelForeground Foreground { get; }
+
+        public PixelBackground Background { get; }
+
+        public bool IsCaret { get; }
 
         public Pixel(bool isCaret)
         {
@@ -38,7 +36,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Color foregroundColor,
             FontStyle style = FontStyle.Normal,
             FontWeight weight = FontWeight.Normal,
-            TextDecorationLocation? textDecorations = null) : this(
+            TextDecorationCollection textDecorations = null) : this(
             new PixelForeground(symbol, foregroundColor, weight, style, textDecorations),
             new PixelBackground(PixelBackgroundMode.Transparent))
         {
@@ -49,7 +47,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// </summary>
         /// <param name="background"></param>
         public Pixel(PixelBackground background) :
-            this(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent),
+            this(new PixelForeground(new SimpleSymbol(), Colors.Transparent),
                 background)
         {
         }
@@ -67,30 +65,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Foreground = foreground;
             Background = background;
             IsCaret = isCaret;
-        }
-
-        // Pixel empty is a non-pixel. It has no symbol, no color, no weight, no style, no text decoration, and no background.
-        // it is used only when a multichar sequence overlaps a pixel making it a non-entity.
-        public static Pixel Empty => new();
-
-        // pixel space is a pixel with a space symbol, but could have color blended into. it is used to advance the cursor
-        // and set the background color
-        public static Pixel Space => new(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent),
-            new PixelBackground(Colors.Transparent));
-
-        public PixelForeground Foreground { get; init; }
-
-        public PixelBackground Background { get; init; }
-
-        public bool IsCaret { get; init; }
-
-        [JsonIgnore] public ushort Width => Foreground.Symbol.Width;
-
-        public bool Equals(Pixel other)
-        {
-            return Foreground.Equals(other.Foreground) &&
-                   Background.Equals(other.Background) &&
-                   IsCaret.Equals(other.IsCaret);
         }
 
         /// <summary>
@@ -136,11 +110,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return new Pixel(newForeground, newBackground, newIsCaret);
         }
 
-        public bool IsEmpty()
-        {
-            return Foreground.Symbol.Width == 0;
-        }
-
         private (PixelForeground, PixelBackground) Shade()
         {
             return (Foreground.Shade(), Background.Shade());
@@ -164,9 +133,16 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return new Color(0xFF, red, green, blue);
         }
 
+        public bool Equals(Pixel other)
+        {
+            return Foreground.Equals(other.Foreground) &&
+                   Background.Equals(other.Background) &&
+                   IsCaret.Equals(other.IsCaret);
+        }
+
         public override bool Equals([NotNullWhen(true)] object obj)
         {
-            return obj is Pixel && Equals((Pixel)obj);
+            return obj is Pixel other && Equals(other);
         }
 
         public override int GetHashCode()

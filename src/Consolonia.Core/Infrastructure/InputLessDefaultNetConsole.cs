@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
@@ -17,13 +18,22 @@ namespace Consolonia.Core.Infrastructure
         private bool _caretVisible;
         private PixelBufferCoordinate _headBufferPoint;
 
-        private bool? _supportEmoji;
-
         protected InputLessDefaultNetConsole()
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            PrepareConsole();
+            // enable alternate screen so original console screen is not affected by the app
+            Console.Write(ConsoleUtils.EnableAlternateBuffer);
+
+            // Detect complex emoji support by writing a complex emoji and checking cursor position.
+            // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
+            Console.SetCursorPosition(0, 0);
+            Console.Write(TestEmoji);
+            (int left, _) = Console.GetCursorPosition();
+            SupportsComplexEmoji = left == 2;
+
+            Console.CursorVisible = false;
+            Console.Clear();
 
             ActualizeSize();
         }
@@ -35,41 +45,17 @@ namespace Consolonia.Core.Infrastructure
         public bool CaretVisible
         {
             get => _caretVisible;
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
             set
             {
                 if (_caretVisible == value) return;
-                WriteText(value ? Esc.ShowCursor : Esc.HideCursor);
+                Console.CursorVisible = value;
                 _caretVisible = value;
             }
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
         public PixelBufferSize Size { get; private set; }
 
-        public bool SupportsComplexEmoji
-        {
-            get
-            {
-                if (_supportEmoji == null)
-                {
-                    // Detect complex emoji support by writing a complex emoji and checking cursor position.
-                    // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
-                    (int left, int top) = Console.GetCursorPosition();
-                    WriteText(
-                        $"{Esc.Foreground(Colors.Transparent)}{Esc.Background(Colors.Transparent)}{TestEmoji}");
-
-                    // TODO, escape sequence
-                    (int left2, _) = Console.GetCursorPosition();
-                    _supportEmoji = left2 - left == 2;
-                    Console.SetCursorPosition(left, top);
-
-                    WriteText(Esc.ClearScreen);
-                }
-
-                return _supportEmoji ?? true;
-            }
-        }
+        public bool SupportsComplexEmoji { get; }
 
         public void SetTitle(string title)
         {
@@ -83,7 +69,7 @@ namespace Consolonia.Core.Infrastructure
 
             try
             {
-                WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+                Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
             }
             catch (ArgumentOutOfRangeException argumentOutOfRangeException)
             {
@@ -98,24 +84,24 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style,
-            FontWeight weight, TextDecorationLocation? textDecoration, string str)
+            FontWeight weight, TextDecorationCollection textDecorations, string str)
         {
             PauseTask?.Wait();
             SetCaretPosition(bufferPoint);
 
             var sb = new StringBuilder();
-            if (textDecoration == TextDecorationLocation.Underline)
-                sb.Append(Esc.Underline);
+            if (HasTextDecoration(textDecorations, TextDecorationLocation.Underline))
+                sb.Append(ConsoleUtils.Underline);
 
-            if (textDecoration == TextDecorationLocation.Strikethrough)
-                sb.Append(Esc.Strikethrough);
+            if (HasTextDecoration(textDecorations, TextDecorationLocation.Strikethrough))
+                sb.Append(ConsoleUtils.Strikethrough);
 
             if (style == FontStyle.Italic)
-                sb.Append(Esc.Italic);
+                sb.Append(ConsoleUtils.Italic);
 
-            sb.Append(Esc.Background(background));
+            sb.Append(ConsoleUtils.Background(background));
 
-            sb.Append(Esc.Foreground(weight switch
+            sb.Append(ConsoleUtils.Foreground(weight switch
             {
                 FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black
                     or FontWeight.ExtraBlack
@@ -126,9 +112,9 @@ namespace Consolonia.Core.Infrastructure
             }));
 
             sb.Append(str);
-            sb.Append(Esc.Reset);
+            sb.Append(ConsoleUtils.Reset);
 
-            WriteText(sb.ToString());
+            Console.Write(sb.ToString());
 
             ushort textWidth = str.MeasureText();
             if (_headBufferPoint.X < Size.Width - textWidth)
@@ -136,12 +122,6 @@ namespace Consolonia.Core.Infrastructure
                     new PixelBufferCoordinate((ushort)(_headBufferPoint.X + textWidth), _headBufferPoint.Y);
             else
                 _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
-        }
-
-        public virtual void WriteText(string str)
-        {
-            PauseTask?.Wait();
-            Console.Write(str);
         }
 
         public event Action Resized;
@@ -156,16 +136,13 @@ namespace Consolonia.Core.Infrastructure
         }
 
 #pragma warning disable CA1063 // Implement IDisposable Correctly
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
         public void Dispose()
+#pragma warning restore CA1063 // Implement IDisposable Correctly
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-            WriteText(Esc.DisableAlternateBuffer);
-            WriteText(Esc.ShowCursor);
+            Console.Write(ConsoleUtils.DisableAlternateBuffer);
         }
-#pragma warning restore CA1063 // Implement IDisposable Correctly
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
         public void ClearOutput()
         {
@@ -174,21 +151,15 @@ namespace Consolonia.Core.Infrastructure
             Resized?.Invoke();
         }
 
-        private void PrepareConsole()
+        private static bool HasTextDecoration(TextDecorationCollection textDecorations, TextDecorationLocation location)
         {
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
-            // enable alternate screen so original console screen is not affected by the app
-            WriteText(Esc.EnableAlternateBuffer);
-            WriteText(Esc.HideCursor);
-            WriteText(Esc.ClearScreen);
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
+            return textDecorations?.Any(td => td.Location == location) ?? false;
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
         protected bool CheckActualizeTheSize()
         {
             if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
-
             ActualizeSize();
             return true;
         }

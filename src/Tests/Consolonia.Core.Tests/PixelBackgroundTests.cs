@@ -1,6 +1,5 @@
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests
@@ -81,15 +80,6 @@ namespace Consolonia.Core.Tests
             pixelBackground = new PixelBackground(Colors.Red);
             pixelBackground2 = new PixelBackground(Colors.Blue);
             Assert.That(pixelBackground.GetHashCode(), Is.Not.EqualTo(pixelBackground2.GetHashCode()));
-        }
-
-        [Test]
-        public void JsonSerialization()
-        {
-            var pixelBackground = new PixelBackground(Colors.Red);
-            string json = JsonConvert.SerializeObject(pixelBackground);
-            var pixelBackground2 = JsonConvert.DeserializeObject<PixelBackground>(json);
-            Assert.That(pixelBackground.Equals(pixelBackground2));
         }
     }
 }

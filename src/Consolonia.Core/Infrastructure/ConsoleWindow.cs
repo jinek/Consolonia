@@ -15,16 +15,14 @@ using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
-    public class ConsoleWindow : IWindowImpl
+    internal class ConsoleWindow : IWindowImpl
     {
         private readonly IKeyboardDevice _myKeyboardDevice;
         private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(100);
         [NotNull] internal readonly IConsole Console;
-        private bool _disposedValue;
         private IInputRoot _inputRoot;
         private CancellationTokenSource _resizeCancellationTokenSource;
 
@@ -38,13 +36,19 @@ namespace Consolonia.Core.Infrastructure
             Console.MouseEvent += ConsoleOnMouseEvent;
             Console.FocusEvent += ConsoleOnFocusEvent;
             Handle = null!;
-            PixelBuffer = new PixelBuffer(Console.Size);
         }
-
-        public PixelBuffer PixelBuffer { get; set; }
 
         private IMouseDevice MouseDevice { get; }
 
+        public void Dispose()
+        {
+            Closed?.Invoke();
+            Console.Resized -= OnConsoleOnResized;
+            Console.KeyEvent -= ConsoleOnKeyEvent;
+            Console.MouseEvent -= ConsoleOnMouseEvent;
+            Console.FocusEvent -= ConsoleOnFocusEvent;
+            Console.Dispose();
+        }
 
         public void SetInputRoot(IInputRoot inputRoot)
         {
@@ -282,20 +286,6 @@ namespace Consolonia.Core.Infrastructure
                 zOrder[i] = 0;
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~ConsoleWindow()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,
             RawInputModifiers modifiers)
         {
@@ -342,9 +332,7 @@ namespace Consolonia.Core.Infrastructure
         private void OnConsoleOnResized()
         {
             // clear screen so we don't see crazy while resizing.
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
-            System.Console.Write(Esc.ClearScreen);
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
+            System.Console.Clear();
 
             // Cancel previous task if there is one and start a new one
             CancellationTokenSource oldCts = _resizeCancellationTokenSource;
@@ -363,8 +351,8 @@ namespace Consolonia.Core.Infrastructure
                     // dispatch to the UI thread 
                     Dispatcher.UIThread.Post(() =>
                     {
-                        PixelBuffer = new PixelBuffer(Console.Size);
-                        var size = new Size(Console.Size.Width, Console.Size.Height);
+                        PixelBufferSize pixelBufferSize = Console.Size;
+                        var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
                         Resized!(size, WindowResizeReason.Unspecified);
                     });
                 }
@@ -413,27 +401,6 @@ namespace Consolonia.Core.Infrastructure
                             _inputRoot,
                             keyChar.ToString()));
                     }, DispatcherPriority.Input);
-            }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects)
-                    Closed?.Invoke();
-                    Console.Resized -= OnConsoleOnResized;
-                    Console.KeyEvent -= ConsoleOnKeyEvent;
-                    Console.MouseEvent -= ConsoleOnMouseEvent;
-                    Console.FocusEvent -= ConsoleOnFocusEvent;
-                    Console.Dispose();
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                _disposedValue = true;
             }
         }
     }

@@ -21,12 +21,7 @@ namespace Consolonia.Gallery.View
 #endif
             this.Grid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
 
-            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            if (lifetime != null)
-                _commandLineArgs = lifetime!.Args!;
-            else
-                _commandLineArgs = Array.Empty<string>();
-
+            _commandLineArgs = ((ClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!.Args!;
             TrySetupSelected();
         }
 

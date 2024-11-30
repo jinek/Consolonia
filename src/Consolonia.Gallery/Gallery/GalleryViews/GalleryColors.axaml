@@ -1,14 +1,16 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" 
+             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryColors">
     <UserControl.Resources>
         <LinearGradientBrush x:Key="ColorGalleryBackgroundBrush" EndPoint="0%,0%" StartPoint="0%,100%">
             <GradientStop Color="Black" Offset="0" />
-            <GradientStop Color="Blue" Offset="1" />
+            <GradientStop Color="DarkRed" Offset="1" />
         </LinearGradientBrush>
     </UserControl.Resources>
 
@@ -24,7 +26,7 @@
 
         <StackPanel Orientation="Horizontal">
             <TextBlock Foreground="{Binding Brush}" >Hello world!</TextBlock>
-            <TextBlock Foreground="{Binding Brush}" FontWeight="Bold" > Something bold!</TextBlock>
+            <TextBlock Foreground="{Binding Brush}" FontWeight="Bold" >Something bold!</TextBlock>
         </StackPanel>
 
         <WrapPanel Grid.Row="1"  ItemWidth="18" Background="{StaticResource ColorGalleryBackgroundBrush}">
