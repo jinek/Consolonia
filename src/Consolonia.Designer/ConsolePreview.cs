@@ -241,7 +241,7 @@ namespace Consolonia.Designer
 
                     string? line = await _process!.StandardOutput.ReadLineAsync().ConfigureAwait(false);
                     if (string.IsNullOrEmpty(line)) continue;
-                    
+
                     Debug.WriteLine("BUFFER RECEIVED");
                     try
                     {
