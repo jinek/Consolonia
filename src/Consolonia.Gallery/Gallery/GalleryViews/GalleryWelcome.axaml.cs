@@ -11,4 +11,5 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
     }
+
 }

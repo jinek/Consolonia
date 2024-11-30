@@ -3,23 +3,26 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Consolonia.Core.Helpers;
+using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("'{Text}'")]
+    [JsonConverter(typeof(SymbolConverter))]
     public readonly struct SimpleSymbol : ISymbol, IEquatable<SimpleSymbol>
     {
         public SimpleSymbol()
         {
-            // we use String.Empty to represent an empty symbol. It still takes up space, but it's invisible
+            // we use String.Empty to represent an empty symbol
             Text = string.Empty;
-            Width = 1;
+            Width = 0;
         }
 
         public SimpleSymbol(char character)
             : this(character.ToString())
         {
         }
+
 
         public SimpleSymbol(string glyph)
         {
@@ -33,9 +36,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Width = Text.MeasureText();
         }
 
-        public string Text { get; } = string.Empty;
+        public bool Equals(SimpleSymbol other)
+        {
+            return Text.Equals(other.Text, StringComparison.Ordinal);
+        }
 
-        public ushort Width { get; }
+        public string Text { get; }
+
+        [JsonIgnore] public ushort Width { get; init; }
 
         public bool IsWhiteSpace()
         {
@@ -45,11 +53,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public ISymbol Blend(ref ISymbol symbolAbove)
         {
             return symbolAbove.IsWhiteSpace() ? this : symbolAbove;
-        }
-
-        public bool Equals(SimpleSymbol other)
-        {
-            return Text.Equals(other.Text, StringComparison.Ordinal);
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)

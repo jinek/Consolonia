@@ -34,11 +34,11 @@ namespace Consolonia.Core.Drawing
         private readonly Matrix _postTransform = Matrix.Identity;
         private Matrix _transform = Matrix.Identity;
 
-        public DrawingContextImpl(ConsoleWindow consoleWindow, PixelBuffer pixelBuffer)
+        public DrawingContextImpl(ConsoleWindow consoleWindow)
         {
             _consoleWindow = consoleWindow;
-            _pixelBuffer = pixelBuffer;
-            _clipStack.Push(pixelBuffer.Size);
+            _pixelBuffer = consoleWindow.PixelBuffer;
+            _clipStack.Push(_pixelBuffer.Size);
             RenderOptions = new RenderOptions();
         }
 
@@ -104,7 +104,7 @@ namespace Consolonia.Core.Drawing
                     () =>
                     {
                         _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            (existingPixel, _) => existingPixel.Blend(imagePixel), imagePixel.Background.Color);
+                            existingPixel => existingPixel.Blend(imagePixel));
                     });
             }
         }
@@ -178,8 +178,8 @@ namespace Consolonia.Core.Drawing
                     CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                     {
                         _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            (pixel, bb) => pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))),
-                            backgroundBrush);
+                            pixel => pixel.Blend(new Pixel(new PixelBackground(backgroundBrush.Mode,
+                                backgroundBrush.Color))));
                     });
                 }
             }
@@ -322,41 +322,32 @@ namespace Consolonia.Core.Drawing
         /// <param name="line">line</param>
         private void DrawLineInternal(IPen pen, Line line)
         {
-            if (pen.Thickness == 0) return;
+            if (pen.Thickness.IsNearlyEqual(0)) return;
 
+            if (pen.Thickness.IsNearlyEqual(UnderlineThickness) || pen.Thickness.IsNearlyEqual(StrikethroughThickness))
+            {
+                if (line.Vertical)
+                    throw new NotSupportedException(
+                        "Vertical strikethrough or underline text decorations is not supported.");
+
+                // horizontal lines with thickness larger than one are text decorations
+                ApplyTextDecorationLineInternal(pen, line);
+                return;
+            }
+
+            DrawRectangleLineInternal(pen, line);
+        }
+
+        private void ApplyTextDecorationLineInternal(IPen pen, Line line)
+        {
             line = TransformLineInternal(line);
 
             Point head = line.PStart;
-            if (pen.Brush is MoveConsoleCaretToPositionBrush)
+
+            TextDecorationLocation textDecoration = pen.Thickness switch
             {
-                CurrentClip.ExecuteWithClipping(head,
-                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
-                return;
-            }
-
-            if (line.Vertical == false && pen.Thickness > 1)
-            {
-                // horizontal lines with thickness larger than one are text decorations
-                ApplyTextDecorationLineInternal(ref head, pen, line);
-                return;
-            }
-
-            var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
-            if (extractColorCheckPlatformSupported == null)
-                return;
-
-            var color = (Color)extractColorCheckPlatformSupported;
-
-            byte pattern = (byte)(line.Vertical ? 0b1010 : 0b0101);
-            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length); //line
-        }
-
-        private void ApplyTextDecorationLineInternal(ref Point head, IPen pen, Line line)
-        {
-            TextDecorationCollection textDecoration = pen.Thickness switch
-            {
-                UnderlineThickness => TextDecorations.Underline,
-                StrikethroughThickness => TextDecorations.Strikethrough,
+                UnderlineThickness => TextDecorationLocation.Underline,
+                StrikethroughThickness => TextDecorationLocation.Strikethrough,
                 _ => throw new ArgumentOutOfRangeException($"Unsupported thickness {pen.Thickness}")
             };
 
@@ -538,7 +529,7 @@ namespace Consolonia.Core.Drawing
                             CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
                             {
                                 _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
-                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                                    oldPixel => oldPixel.Blend(consolePixel));
                             });
                         }
 
@@ -554,17 +545,63 @@ namespace Consolonia.Core.Drawing
                     default:
                     {
                         var symbol = new SimpleSymbol(glyph);
-                        var consolePixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
+                        // if we are attempting to draw a wide glyph we need to make sure that the clipping point
+                        // is for the last physical char. Aka a double char should be clipped if it's second rendered 
+                        // char would break the boundary of the clip.
+                        // var clippingPoint = new Point(characterPoint.X + symbol.Width - 1, characterPoint.Y);
+                        var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
                         CurrentClip.ExecuteWithClipping(characterPoint, () =>
                         {
                             _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                                oldPixel =>
+                                {
+                                    if (oldPixel.Width == 0)
+                                    {
+                                        // if the oldPixel was empty, we need to set the previous pixel to space
+                                        double targetX = characterPoint.X - 1;
+                                        if (targetX >= 0)
+                                            _pixelBuffer.Set(
+                                                (PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
+                                                oldPixel2 =>
+                                                    new Pixel(
+                                                        new PixelForeground(new SimpleSymbol(' '), Colors.Transparent),
+                                                        oldPixel2.Background));
+                                    }
+                                    else if (oldPixel.Width > 1)
+                                    {
+                                        // if oldPixel was wide we need to reset overlapped symbols from empty to space
+                                        for (ushort i = 1; i < oldPixel.Width; i++)
+                                        {
+                                            double targetX = characterPoint.X + i;
+                                            if (targetX < _pixelBuffer.Size.Width)
+                                                _pixelBuffer.Set(
+                                                    (PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
+                                                    oldPixel2 =>
+                                                        new Pixel(
+                                                            new PixelForeground(new SimpleSymbol(' '),
+                                                                Colors.Transparent), oldPixel2.Background));
+                                        }
+                                    }
+
+                                    // if the pixel was a wide character, we need to set the overlapped pixels to empty pixels.
+                                    if (newPixel.Width > 1)
+                                        for (int i = 1; i < symbol.Width; i++)
+                                        {
+                                            double targetX = characterPoint.X + i;
+                                            if (targetX < _pixelBuffer.Size.Width)
+                                                _pixelBuffer.Set(
+                                                    (PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
+                                                    oldPixel2 =>
+                                                        new Pixel(
+                                                            new PixelForeground(new SimpleSymbol(), Colors.Transparent),
+                                                            oldPixel2.Background));
+                                        }
+
+                                    return oldPixel.Blend(newPixel);
+                                });
                         });
 
-                        if (symbol.Width > 1)
-                            currentXPosition += symbol.Width;
-                        else
-                            currentXPosition++;
+                        currentXPosition += symbol.Width;
                     }
                         break;
                 }

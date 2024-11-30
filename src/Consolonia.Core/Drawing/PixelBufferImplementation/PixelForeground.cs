@@ -1,7 +1,9 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
+using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -10,39 +12,54 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     {
         public PixelForeground()
         {
-            Symbol = new SimpleSymbol();
+            Symbol = new SimpleSymbol(" ");
             Color = Colors.Transparent;
             Weight = FontWeight.Normal;
             Style = FontStyle.Normal;
-            TextDecorations = null;
+            TextDecoration = null;
         }
 
         public PixelForeground(ISymbol symbol, Color color,
             FontWeight weight = FontWeight.Normal, FontStyle style = FontStyle.Normal,
-            TextDecorationCollection textDecorations = null)
+            TextDecorationLocation? textDecoration = null)
         {
             ArgumentNullException.ThrowIfNull(symbol);
             Symbol = symbol;
             Color = color;
             Weight = weight;
             Style = style;
-            TextDecorations = textDecorations;
+            TextDecoration = textDecoration;
         }
 
-        public ISymbol Symbol { get; } //now working with 16 bit unicode only for simplicity //todo: reference here
+        public ISymbol Symbol { get; init; }
 
-        public Color Color { get; }
+        [JsonConverter(typeof(ColorConverter))]
+        public Color Color { get; init; }
 
-        public FontWeight Weight { get; }
+        [DefaultValue(FontWeight.Normal)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public FontWeight Weight { get; init; }
 
-        public FontStyle Style { get; }
+        [DefaultValue(FontStyle.Normal)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public FontStyle Style { get; init; }
 
-        public TextDecorationCollection TextDecorations { get; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public TextDecorationLocation? TextDecoration { get; init; }
+
+        public bool Equals(PixelForeground other)
+        {
+            return Symbol.Equals(other.Symbol) &&
+                   Color.Equals(other.Color) &&
+                   Weight.Equals(other.Weight) &&
+                   Style.Equals(other.Style) &&
+                   TextDecoration == other.TextDecoration;
+        }
 
         public PixelForeground Shade()
         {
             Color newColor = Color.Shade();
-            return new PixelForeground(Symbol, newColor, Weight, Style, TextDecorations);
+            return new PixelForeground(Symbol, newColor, Weight, Style, TextDecoration);
         }
 
         public PixelForeground Blend(PixelForeground pixelAboveForeground)
@@ -54,16 +71,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             ISymbol newSymbol = Symbol.Blend(ref symbolAbove);
 
             return new PixelForeground(newSymbol, pixelAboveForeground.Color, pixelAboveForeground.Weight,
-                pixelAboveForeground.Style, pixelAboveForeground.TextDecorations);
-        }
-
-        public bool Equals(PixelForeground other)
-        {
-            return Symbol.Equals(other.Symbol) &&
-                   Color.Equals(other.Color) &&
-                   Weight == other.Weight &&
-                   Style == other.Style &&
-                   Equals(TextDecorations, other.TextDecorations);
+                pixelAboveForeground.Style, pixelAboveForeground.TextDecoration);
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)
@@ -73,7 +81,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Symbol, Color, (int)Weight, (int)Style, TextDecorations);
+            return HashCode.Combine(Symbol, Color, (int)Weight, (int)Style, TextDecoration);
         }
 
         public static bool operator ==(PixelForeground left, PixelForeground right)
