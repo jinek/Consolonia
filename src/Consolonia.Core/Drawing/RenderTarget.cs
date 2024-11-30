@@ -70,13 +70,6 @@ namespace Consolonia.Core.Drawing
 
         bool IDrawingContextLayerImpl.CanBlit => true;
 
-        public IDrawingContextImpl CreateDrawingContext(bool useScaledDrawing)
-        {
-            if (useScaledDrawing)
-                throw new NotImplementedException($"Consolonia doesn't support useScaledDrawing");
-            return new DrawingContextImpl(_consoleWindow);
-        }
-
         public bool IsCorrupted => false;
 
 
@@ -151,6 +144,8 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextImpl CreateDrawingContext(bool useScaledDrawing)
         {
+            if (useScaledDrawing)
+                throw new NotImplementedException($"Consolonia doesn't support useScaledDrawing");
             return new DrawingContextImpl(_consoleWindow);
         }
 

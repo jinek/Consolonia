@@ -125,10 +125,16 @@ namespace Consolonia.Core.Infrastructure
         {
             if (e.Handled) return;
 
+            if (e.Source is MenuItem)
+            {
+                return;
+            }
+
             if (e.Key == Key.Escape)
             {
                 // if there is a overlay popup, close it
-                var overlay = ((Visual)sender).FindDescendantOfType<OverlayPopupHost>();
+                var overlay = sender as OverlayPopupHost ??
+                        ((Visual)sender).FindDescendantOfType<OverlayPopupHost>();
                 if (overlay != null)
                 {
                     // it will have a popup as the parent.
@@ -141,7 +147,7 @@ namespace Consolonia.Core.Infrastructure
             }
 
             //see FocusManager.GetFocusManager
-            IInputElement current = TopLevel.GetTopLevel((Visual)sender)!.FocusManager!.GetFocusedElement();
+            IInputElement current = TopLevel.GetTopLevel((Visual)sender)?.FocusManager?.GetFocusedElement();
 
             if (e.KeyModifiers != KeyModifiers.None)
                 return;

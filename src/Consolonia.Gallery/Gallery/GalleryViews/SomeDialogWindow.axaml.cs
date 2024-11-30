@@ -24,7 +24,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             OneMoreButton.AttachedToVisualTree += OnButtonAttached;
         }
 
-        private void OnButtonAttached(object? sender, VisualTreeAttachmentEventArgs e)
+        private void OnButtonAttached(object sender, VisualTreeAttachmentEventArgs e)
         {
             OneMoreButton.AttachedToVisualTree -= OnButtonAttached;
             OneMoreButton.Focus();
