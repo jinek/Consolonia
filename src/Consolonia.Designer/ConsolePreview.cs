@@ -240,28 +240,23 @@ namespace Consolonia.Designer
                         return;
 
                     string? line = await _process!.StandardOutput.ReadLineAsync().ConfigureAwait(false);
-                    if (!string.IsNullOrEmpty(line))
+                    if (string.IsNullOrEmpty(line)) continue;
+                    
+                    Debug.WriteLine("BUFFER RECEIVED");
+                    try
                     {
-                        Debug.WriteLine("BUFFER RECEIVED");
-#pragma warning disable CA1031 // Do not catch general exception types
-                        try
-                        {
-                            var buffer = JsonConvert.DeserializeObject<PixelBuffer>(line)!;
-                            Dispatcher.UIThread.Invoke(() => Content = RenderPixelBuffer(buffer));
-                        }
-                        catch (JsonException ex)
-                        {
-                            // process was probably shut down, we continue to check the proces.
-                            Debug.WriteLine($"Error deserializing pixel buffer: {ex.Message}");
-                            if (_process != null)
-                            {
-                                if (!_process.HasExited) _process.Kill();
-                                _process.Dispose();
-                                _process = null;
-                                return;
-                            }
-                        }
-#pragma warning restore CA1031 // Do not catch general exception types
+                        var buffer = JsonConvert.DeserializeObject<PixelBuffer>(line)!;
+                        Dispatcher.UIThread.Invoke(() => Content = RenderPixelBuffer(buffer));
+                    }
+                    catch (JsonException ex)
+                    {
+                        // process was probably shut down, we continue to check the proces.
+                        Debug.WriteLine($"Error deserializing pixel buffer: {ex.Message}");
+                        if (_process == null) continue;
+                        if (!_process.HasExited) _process.Kill();
+                        _process.Dispose();
+                        _process = null;
+                        return;
                     }
                 }
             });
