@@ -44,7 +44,8 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
                                         var focusedTree = focusedControl.GetLogicalAncestors();
                                         var menuItems = visual.GetLogicalAncestors().OfType<MenuItem>();
 
-                                        foreach (MenuItem menuItem in menuItems.Where(item => !focusedTree.Contains(item))
+                                        foreach (MenuItem menuItem in menuItems
+                                                     .Where(item => !focusedTree.Contains(item))
                                                      .ToArray())
                                             menuItem.Close();
                                     }
