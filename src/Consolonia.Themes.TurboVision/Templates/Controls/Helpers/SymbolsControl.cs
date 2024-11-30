@@ -6,8 +6,8 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
-using Consolonia.Core.Helpers;
 using Avalonia.Platform;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
