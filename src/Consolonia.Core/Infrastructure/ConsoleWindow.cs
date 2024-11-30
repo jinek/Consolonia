@@ -281,7 +281,9 @@ namespace Consolonia.Core.Infrastructure
 
         public void GetWindowsZOrder(Span<Window> windows, Span<long> zOrder)
         {
-            throw new NotImplementedException();
+            // In console mode, all windows are considered to be at the same z-order level
+            for (int i = 0; i < zOrder.Length; i++)
+                zOrder[i] = 0;
         }
 
         private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,

@@ -8,7 +8,7 @@ namespace Consolonia.Core.Infrastructure
         public override void RegisterServices()
         {
             base.RegisterServices();
-            
+
             AvaloniaLocator.CurrentMutable.Bind<IKeyboardNavigationHandler>()
                 .ToTransient<ArrowsAndKeyboardNavigationHandler>();
         }

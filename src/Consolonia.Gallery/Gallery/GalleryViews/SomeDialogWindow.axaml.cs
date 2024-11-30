@@ -13,7 +13,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
             Width = width;
             Height = height;
-            this.Button.Focus();
+
+            AttachedToVisualTree += (_, _) 
+                => OneMoreButton.AttachedToVisualTree += (_, _) 
+                    => OneMoreButton.Focus();
         }
 
         // ReSharper disable once MemberCanBePrivate.Global Can be used by constructor
