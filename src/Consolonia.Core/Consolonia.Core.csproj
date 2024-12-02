@@ -1,12 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />    
-    <ItemGroup>
-        <AvaloniaXaml Remove="Controls\FileOpen\**" />
-        <Compile Remove="Controls\FileOpen\**" />
-        <EmbeddedResource Remove="Controls\FileOpen\**" />
-        <None Remove="Controls\FileOpen\**" />
-    </ItemGroup>   
-        
+
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
