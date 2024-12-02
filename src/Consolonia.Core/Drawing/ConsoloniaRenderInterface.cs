@@ -176,10 +176,17 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
+        public IPlatformRenderInterfaceRegion CreateRegion()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool SupportsIndividualRoundRects => false;
 
         public AlphaFormat DefaultAlphaFormat => throw new NotImplementedException();
 
         public PixelFormat DefaultPixelFormat => throw new NotImplementedException();
+
+        public bool SupportsRegions => false;
     }
 }

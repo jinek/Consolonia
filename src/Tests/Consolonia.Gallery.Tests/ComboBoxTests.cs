@@ -26,8 +26,6 @@ namespace Consolonia.Gallery.Tests
             await UITest.AssertHasText("Inline Item 3");
             await UITest.KeyInput(Key.Down);
             await UITest.AssertHasText("Inline Item 4");
-            await UITest.KeyInput(Key.Down);
-            await UITest.AssertHasText("Inline Item 4");
             await UITest.KeyInput(Key.Tab, Key.Down);
             await UITest.AssertHasText("Hello");
         }

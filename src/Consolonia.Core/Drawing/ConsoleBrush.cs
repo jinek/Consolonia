@@ -126,10 +126,16 @@ namespace Consolonia.Core.Drawing
                     // Calculate the distance from the center
                     double dx = x - centerX;
                     double dy = y - centerY;
-                    double distance = Math.Sqrt(dx * dx + dy * dy);
 
-                    // Normalize the distance based on the brush radius
-                    double normalizedDistance = distance / (Math.Min(width, height) * radialBrush.Radius);
+                    // Calculate the distance based on separate X and Y radii
+                    double distanceX = dx / (width * radialBrush.RadiusX.Scalar);
+                    double distanceY = dy / (height * radialBrush.RadiusY.Scalar);
+                    double distance = Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
+
+                    // Normalize the distance
+                    double normalizedDistance = distance /
+                                                Math.Sqrt(radialBrush.RadiusX.Scalar * radialBrush.RadiusX.Scalar +
+                                                          radialBrush.RadiusY.Scalar * radialBrush.RadiusY.Scalar);
 
                     // Clamp the normalized distance to [0, 1]
                     normalizedDistance = Math.Min(Math.Max(normalizedDistance, 0), 1);

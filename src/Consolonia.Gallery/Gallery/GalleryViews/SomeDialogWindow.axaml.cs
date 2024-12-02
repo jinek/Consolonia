@@ -1,4 +1,5 @@
 using System;
+using Avalonia;
 using Avalonia.Interactivity;
 using Consolonia.Core.Controls;
 
@@ -13,7 +14,20 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
             Width = width;
             Height = height;
-            this.Button.Focus();
+
+            AttachedToVisualTree += OnShowDialog;
+        }
+
+        private void OnShowDialog(object sender, Avalonia.VisualTreeAttachmentEventArgs e)
+        {
+            AttachedToVisualTree -= OnShowDialog;
+            OneMoreButton.AttachedToVisualTree += OnButtonAttached;
+        }
+
+        private void OnButtonAttached(object sender, VisualTreeAttachmentEventArgs e)
+        {
+            OneMoreButton.AttachedToVisualTree -= OnButtonAttached;
+            OneMoreButton.Focus();
         }
 
         // ReSharper disable once MemberCanBePrivate.Global Can be used by constructor

@@ -31,7 +31,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             {
                 Center = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
                 GradientOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
-                Radius = 0.5,
+                RadiusX = RelativeScalar.Parse("50%"),
+                RadiusY = RelativeScalar.Parse("50%"),
                 GradientStops = new GradientStops
                 {
                     new GradientStop { Color = Colors.Black, Offset = 0 },
