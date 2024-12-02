@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using Avalonia.Media;
@@ -38,6 +39,12 @@ namespace Consolonia.Core.Text
                 Style = style
             };
             return true;
+        }
+
+        public bool TryCreateGlyphTypeface(Stream stream, FontSimulations fontSimulations,
+            [NotNullWhen(true)] out IGlyphTypeface glyphTypeface)
+        {
+            throw new NotImplementedException();
         }
 
         public bool TryCreateGlyphTypeface(Stream stream, out IGlyphTypeface glyphTypeface)

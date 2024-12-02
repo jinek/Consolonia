@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 using Consolonia.Core.InternalHelpers;
@@ -15,9 +16,9 @@ namespace Consolonia.Core.Infrastructure
         //todo: check XTFocus https://github.com/jinek/Consolonia/issues/105#issuecomment-2089015880
         private IInputRoot _owner;
 
-        public ArrowsAndKeyboardNavigationHandler(IKeyboardNavigationHandler keyboardNavigationHandler)
+        public ArrowsAndKeyboardNavigationHandler()
         {
-            _keyboardNavigationHandler = keyboardNavigationHandler;
+            _keyboardNavigationHandler = new KeyboardNavigationHandler();
         }
 
         public void SetOwner(IInputRoot owner)
@@ -124,8 +125,26 @@ namespace Consolonia.Core.Infrastructure
         {
             if (e.Handled) return;
 
+            if (e.Source is MenuItem) return;
+
+            if (e.Key == Key.Escape)
+            {
+                // if there is a overlay popup, close it
+                OverlayPopupHost overlay = sender as OverlayPopupHost ??
+                                           ((Visual)sender).FindDescendantOfType<OverlayPopupHost>();
+                if (overlay != null)
+                {
+                    // it will have a popup as the parent.
+                    var popup = overlay.Parent as Popup;
+                    if (popup != null)
+                        popup.Close();
+                    e.Handled = true;
+                    return;
+                }
+            }
+
             //see FocusManager.GetFocusManager
-            IInputElement current = TopLevel.GetTopLevel((Visual)sender)!.FocusManager!.GetFocusedElement();
+            IInputElement current = TopLevel.GetTopLevel((Visual)sender)?.FocusManager?.GetFocusedElement();
 
             if (e.KeyModifiers != KeyModifiers.None)
                 return;

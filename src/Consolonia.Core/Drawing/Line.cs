@@ -92,6 +92,11 @@ namespace Consolonia.Core.Drawing
         public IGeometryImpl SourceGeometry { get; }
         public Matrix Transform { get; }
 
+        public IGeometryImpl GetWidenedGeometry(IPen pen)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Line CreateMyLine(Point p1, Point p2)
         {
             (double x, double y) = p2 - p1;

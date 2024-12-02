@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.Platform;
 using Avalonia.Input;
@@ -32,6 +33,11 @@ namespace Consolonia.Core.Infrastructure
             throw new NotImplementedException();
         }
 
+        public ITopLevelImpl CreateEmbeddableTopLevel()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Initialize()
         {
             NotSupported += InternalIgnore;
@@ -58,6 +64,29 @@ namespace Consolonia.Core.Infrastructure
                 //.Bind<IPlatformSettings>().ToConstant(new PlatformSettingsStub())
                 //.Bind<ISystemDialogImpl>().ToConstant(new GtkSystemDialog())
                 /*.Bind<IMountedVolumeInfoProvider>().ToConstant(new LinuxMountedVolumeInfoProvider())*/;
+
+            if (OperatingSystem.IsWindows())
+            {
+                AvaloniaLocator.CurrentMutable.Bind<IClipboard>()
+                    .ToFunc(() =>
+                    {
+                        Assembly assembly = Assembly.Load("Avalonia.Win32");
+                        ArgumentNullException.ThrowIfNull(assembly, "Avalonia.Win32");
+                        Type type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
+                        ArgumentNullException.ThrowIfNull(type, "ClipboardImpl");
+                        var clipboard = Activator.CreateInstance(type) as IClipboard;
+                        ArgumentNullException.ThrowIfNull(clipboard, nameof(clipboard));
+                        return clipboard;
+                    });
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                // TODO: Implement or reuse MacOS clipboard
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                // TODO: Implement or reuse X11 Clipboard
+            }
         }
 
         [DebuggerStepThrough]
