@@ -3,7 +3,6 @@
 @inject IClassicDesktopStyleApplicationLifetime lifetime
 
 @namespace Example.Blazor.Components
-@using Avalonia.Controls.ApplicationLifetimes
 
 <Window Title="Blazor Bindings for Consolonia" Topmost="true">
      <StackPanel Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center">
@@ -12,7 +11,7 @@
             <TextBlock HorizontalAlignment="HorizontalAlignment.Center">Counter: @CounterText</TextBlock>
         }
         <StackPanel Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" Margin="@Thickness.Parse("4")">
-            <Button OnClick="@OnIncrement">Increment</Button>
+            <Button OnClick="@OnIncrement">Increment counter support</Button>
             <Button OnClick="@OnToggleCounter">@ToggleText</Button>
             <Button OnClick="@OnMessageBox">Message Box</Button>
             <Button OnClick="@OnGotoSubPage">Go to SubPage</Button>
