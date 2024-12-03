@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Avalonia;
-using Avalonia.Controls.Primitives;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Reactive;
 using Avalonia.Styling;
@@ -61,7 +61,6 @@ namespace Consolonia.Core.Helpers
                 //    }
                 //});
             }
-
         }
 
         public static void Print(this IConsole console, PixelBufferCoordinate point, Pixel pixel)

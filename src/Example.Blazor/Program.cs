@@ -17,10 +17,11 @@ namespace Example.Blazor
         }
 
         public static AppBuilder BuildAvaloniaApp()
-         => AppBuilder.Configure<App>()
-            .UseConsoloniaBlazor()
-            .UseAutoDetectedConsole()
-            .LogToException()
-;
+        {
+            return AppBuilder.Configure<App>()
+                .UseConsoloniaBlazor()
+                .UseAutoDetectedConsole()
+                .LogToException();
+        }
     }
 }
