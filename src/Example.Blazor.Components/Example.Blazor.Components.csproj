@@ -6,15 +6,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
-    <!--<ItemGroup>
-        <SupportedPlatform Include="browser" />
-    </ItemGroup>-->
-
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.10" />
-        <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="BlazorBindingsAvalonia" Version="0.1.2" />
+        <PackageReference Include="Consolonia.Blazor" Version="11.2" />
     </ItemGroup>
 
     <ItemGroup>

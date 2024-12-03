@@ -1,11 +1,11 @@
 ﻿<Project>
     <PropertyGroup>
         <!--todo: add mono-->
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>disable</Nullable>
     </PropertyGroup>
     <PropertyGroup>
-        <VersionPrefix>11.0.9</VersionPrefix>
+        <VersionPrefix>11.2</VersionPrefix>
         <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
         <Description>Text User Interface implementation of Avalonia UI (GUI Framework)</Description>
         <Copyright>Copyright © Evgeny Gorbovoy 2021 - 2022</Copyright>

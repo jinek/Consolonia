@@ -8,13 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="BlazorBindingsAvalonia" Version="0.1.2" />
+        <PackageReference Include="Consolonia.Blazor" Version="11.2" />
+        <PackageReference Include="Consolonia.Themes.TurboVision" Version="11.2" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Blazor\Consolonia.Blazor.csproj" />
+        <ProjectReference Include="..\Consolonia.Themes.TurboVision\Consolonia.Themes.TurboVision.csproj" />
         <ProjectReference Include="..\Example.Blazor.Components\Example.Blazor.Components.csproj" />
     </ItemGroup>
 

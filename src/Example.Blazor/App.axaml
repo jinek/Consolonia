@@ -4,7 +4,6 @@
     x:Class="Example.Blazor.App"
     xmlns:local="using:Example.Blazor"
     xmlns:theme="clr-namespace:Consolonia.Themes.TurboVision.Themes.Material;assembly=Consolonia.Themes.TurboVision"
-    xmlns:infrastructure="clr-namespace:Consolonia.Core.Infrastructure;assembly=Consolonia.Core"
 	RequestedThemeVariant="Default">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 

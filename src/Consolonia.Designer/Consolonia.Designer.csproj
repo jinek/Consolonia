@@ -8,6 +8,8 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Consolonia.Core" Version="11.2" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Consolonia.PreviewHost" Version="11.2" />
     </ItemGroup>
 
     <ItemGroup>

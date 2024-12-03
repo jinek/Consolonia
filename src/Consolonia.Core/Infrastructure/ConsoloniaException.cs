@@ -12,10 +12,6 @@ namespace Consolonia.Core.Infrastructure
         {
         }
 
-        protected ConsoloniaException([NotNull] SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
         public ConsoloniaException(string message) : base(message)
         {
         }

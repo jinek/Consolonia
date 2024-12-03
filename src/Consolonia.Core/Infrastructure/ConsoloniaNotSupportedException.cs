@@ -11,12 +11,6 @@ namespace Consolonia.Core.Infrastructure
             Request = request;
         }
 
-        protected ConsoloniaNotSupportedException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context)
-        {
-        }
-
         public NotSupportedRequest Request { get; }
     }
 }

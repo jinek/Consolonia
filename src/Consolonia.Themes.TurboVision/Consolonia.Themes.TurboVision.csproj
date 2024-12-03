@@ -3,11 +3,12 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="Consolonia.Core" Version="11.2" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
+        <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 using Avalonia;
-using BlazorBindingsAvalonia;
+using Consolonia.Blazor;
 using Consolonia.Core;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
@@ -18,11 +18,9 @@ namespace Example.Blazor
 
         public static AppBuilder BuildAvaloniaApp()
          => AppBuilder.Configure<App>()
-            .UseConsolonia()
+            .UseConsoloniaBlazor()
             .UseAutoDetectedConsole()
             .LogToException()
-            .UseAvaloniaBlazorBindings(services =>
-            {
-            });
+;
     }
 }
