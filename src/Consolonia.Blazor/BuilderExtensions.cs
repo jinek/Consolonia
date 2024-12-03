@@ -24,7 +24,7 @@ namespace Consolonia.Blazor
                     // Register services for injectoin
                     sc.AddSingleton((_) =>
                     {
-                        var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime;
+                        var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime;
                         ArgumentNullException.ThrowIfNull(lifetime);
                         return lifetime;
                     });
