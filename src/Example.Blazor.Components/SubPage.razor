@@ -1,0 +1,20 @@
+@page "/sub"
+
+@namespace Example.Blazor.Components
+
+@inject INavigation navigation
+
+<ScrollViewer>
+    <StackPanel HorizontalAlignment="HorizontalAlignment.Center"
+                VerticalAlignment="VerticalAlignment.Center">
+        <Button OnClick="Back">Back</Button>
+        <TextBlock Text="This a second page." Foreground="Brushes.Blue"></TextBlock>
+    </StackPanel>
+</ScrollViewer>
+
+@code {
+    public async Task Back()
+    {
+        await navigation.PopAsync();
+    }
+}

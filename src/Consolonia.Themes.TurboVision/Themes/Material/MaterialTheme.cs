@@ -7,6 +7,10 @@ namespace Consolonia.Themes.TurboVision.Themes.Material
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class MaterialTheme : ResourceIncludeBase
     {
+        public MaterialTheme() : base(new Uri("avares://Consolonia.Themes.TurboVision/Themes/Material/Material.axaml"))
+        {
+        }
+
         public MaterialTheme(Uri baseUri) : base(baseUri)
         {
         }

@@ -3,11 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     x:Class="Example.Blazor.App"
     xmlns:local="using:Example.Blazor"
-    xmlns:turboVisionBlack="clr-namespace:Consolonia.Themes.TurboVision.Themes.TurboVisionBlack;assembly=Consolonia.Themes.TurboVision"
+    xmlns:theme="clr-namespace:Consolonia.Themes.TurboVision.Themes.Material;assembly=Consolonia.Themes.TurboVision"
     xmlns:infrastructure="clr-namespace:Consolonia.Core.Infrastructure;assembly=Consolonia.Core"
 	RequestedThemeVariant="Default">
-	<!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
-	<local:App.Styles>
+    <local:App.Styles>
+        <theme:MaterialTheme />
     </local:App.Styles>
 </local:App>

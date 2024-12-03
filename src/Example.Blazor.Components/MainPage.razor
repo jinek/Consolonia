@@ -1,0 +1,48 @@
+@page "/"
+@inject INavigation navigation
+
+@namespace Example.Blazor.Components
+
+<Window Title="Blazor Bindings for Consolonia" Topmost="true">
+    <StackPanel Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center">
+        @if (showCounter)
+        {
+            <TextBlock HorizontalAlignment="HorizontalAlignment.Center">Counter: @CounterText</TextBlock>
+        }
+        <StackPanel Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" Margin="@Thickness.Parse("4")">
+            <Button OnClick="@OnIncrement">Increment</Button>
+            <Button OnClick="@OnToggleCounter">@ToggleText</Button>
+            <Button OnClick="@OnMessageBox">Message Box</Button>
+            <Button OnClick="@OnGotoSubPage">Go to SubPage</Button>
+        </StackPanel>
+    </StackPanel>
+</Window>
+
+@code {
+    int counter = 0;
+    bool showCounter = true;
+
+    string CounterText => counter switch
+    {
+        0 => "Not clicked",
+        1 => $"Clicked 1 time",
+        _ => $"Clicked {counter} times"
+    };
+
+    string ToggleText => showCounter ? "Hide Counter" : "Show Counter";
+
+    void OnIncrement()
+        => counter++;
+
+    void OnToggleCounter()
+        => showCounter = !showCounter;
+
+    void OnGotoSubPage()
+        => navigation.PushAsync<SubPage>();
+
+    async void OnMessageBox(RoutedEventArgs args)
+    {
+        await new MessageBox()
+            .ShowDialogAsync((AC.Control)args.Source, "Hello, Blazor!", "Blazor Bindings for Consolonia");
+    }
+}
