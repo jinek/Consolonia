@@ -1,12 +1,12 @@
 @page "/"
-@inject INavigation navigation
-@inject IClassicDesktopStyleApplicationLifetime lifetime
+@inject INavigation Navigation
+@inject IClassicDesktopStyleApplicationLifetime Lifetime
 
 @namespace Example.Blazor.Components
 
 <Window Title="Blazor Bindings for Consolonia" Topmost="true">
      <StackPanel Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center">
-        @if (showCounter)
+        @if (_showCounter)
         {
             <TextBlock HorizontalAlignment="HorizontalAlignment.Center">Counter: @CounterText</TextBlock>
         }
@@ -21,26 +21,26 @@
 </Window>
 
 @code {
-    int counter = 0;
-    bool showCounter = true;
+    int _counter;
+    bool _showCounter = true;
 
-    string CounterText => counter switch
+    string CounterText => _counter switch
     {
         0 => "Not clicked",
         1 => $"Clicked 1 time",
-        _ => $"Clicked {counter} times"
+        _ => $"Clicked {_counter} times"
     };
 
-    string ToggleText => showCounter ? "Hide Counter" : "Show Counter";
+    string ToggleText => _showCounter ? "Hide Counter" : "Show Counter";
 
     void OnIncrement()
-        => counter++;
+        => _counter++;
 
     void OnToggleCounter()
-        => showCounter = !showCounter;
+        => _showCounter = !_showCounter;
 
     void OnGotoSubPage()
-        => navigation.PushAsync<SubPage>();
+        => Navigation.PushAsync<SubPage>();
 
     async void OnMessageBox(RoutedEventArgs args)
     {
@@ -49,5 +49,5 @@
     }
 
     void OnExit()
-       => lifetime.Shutdown();
+       => Lifetime.Shutdown();
 }

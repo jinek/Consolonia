@@ -22,7 +22,12 @@ namespace Consolonia.Blazor
                 .UseAvaloniaBlazorBindings((sc) =>
                 {
                     // Register services for injectoin
-                    sc.AddSingleton((_) => Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime);
+                    sc.AddSingleton((_) =>
+                    {
+                        var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime;
+                        ArgumentNullException.ThrowIfNull(lifetime);
+                        return lifetime;
+                    });
                     sc.AddTransient((sp) => sp.GetRequiredService<IClassicDesktopStyleApplicationLifetime>().MainWindow?.StorageProvider);
                     sc.AddTransient((sp) => sp.GetRequiredService<IClassicDesktopStyleApplicationLifetime>().MainWindow?.Clipboard);
                     sc.AddTransient((sp) => sp.GetRequiredService<IClassicDesktopStyleApplicationLifetime>().MainWindow?.InsetsManager);

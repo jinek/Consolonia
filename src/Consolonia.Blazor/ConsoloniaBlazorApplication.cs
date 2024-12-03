@@ -4,7 +4,6 @@ using BlazorBindingsAvalonia;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 using Microsoft.AspNetCore.Components;
-using Avalonia.Platform;
 
 namespace Consolonia.Blazor
 {

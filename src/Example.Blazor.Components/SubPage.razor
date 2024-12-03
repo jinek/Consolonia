@@ -2,7 +2,7 @@
 
 @namespace Example.Blazor.Components
 
-@inject INavigation navigation
+@inject INavigation Navigation
 
 <ScrollViewer>
     <StackPanel HorizontalAlignment="HorizontalAlignment.Center"
@@ -15,6 +15,6 @@
 @code {
     public async Task Back()
     {
-        await navigation.PopAsync();
+        await Navigation.PopAsync();
     }
 }
