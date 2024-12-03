@@ -4,7 +4,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
-        <ProjectReference Include="..\Consolonia.PlatformSupport\Consolonia.PlatformSupport.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -12,6 +11,5 @@
         <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
         <PackageReference Include="BlazorBindingsAvalonia" Version="0.1.2" />
         <PackageReference Include="Consolonia.Core" Version="11.2" />
-        <PackageReference Include="Consolonia.PlatformSupport" Version="11.2" />
     </ItemGroup>
 </Project>

@@ -3,7 +3,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using BlazorBindingsAvalonia;
 using Consolonia.Core;
-using Consolonia.Core.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Consolonia.Blazor
