@@ -1,6 +1,12 @@
 using System;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Platform;
+using Avalonia.Input.Platform;
+using Avalonia.Input;
+using Avalonia.Platform.Storage;
+using Avalonia.Platform;
 using BlazorBindingsAvalonia;
 using Consolonia.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,10 +27,16 @@ namespace Consolonia.Blazor
                 .UseConsolonia()
                 .UseAvaloniaBlazorBindings((sp) =>
                 {
-                    // register IApplicationLifetime interfaces, making it so you can just @inject do IClassicDesktopStyleApplicationLifetime lifetime;
-                    //sp.AddSingleton((sp) => Application.Current.ApplicationLifetime as ISingleViewApplicationLifetime);
-                    //sp.AddSingleton((sp) => Application.Current.ApplicationLifetime as IControlledApplicationLifetime);
+                    // Register services for injectoin
                     sp.AddSingleton((sp) => Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime);
+                    sp.AddTransient((sp) => sp.GetService<IClassicDesktopStyleApplicationLifetime>().MainWindow.StorageProvider);
+                    sp.AddTransient((sp) => sp.GetService<IClassicDesktopStyleApplicationLifetime>().MainWindow.Clipboard);
+                    sp.AddTransient((sp) => sp.GetService<IClassicDesktopStyleApplicationLifetime>().MainWindow.InsetsManager);
+                    sp.AddTransient((sp) => sp.GetService<IClassicDesktopStyleApplicationLifetime>().MainWindow.InputPane);
+                    sp.AddTransient((sp) => sp.GetService<IClassicDesktopStyleApplicationLifetime>().MainWindow.Launcher);
+                    sp.AddTransient((sp) => sp.GetService<IClassicDesktopStyleApplicationLifetime>().MainWindow.Screens);
+                    sp.AddTransient((sp) => sp.GetService<IClassicDesktopStyleApplicationLifetime>().MainWindow.FocusManager);
+                    sp.AddTransient((sp) => sp.GetService<IClassicDesktopStyleApplicationLifetime>().MainWindow.PlatformSettings);
 
                     if (configureServices != null)
                     {
