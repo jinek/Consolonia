@@ -66,15 +66,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             ArgumentNullException.ThrowIfNull(symbolAbove);
 
             if (pixelAboveForeground.Color == Colors.Transparent)
-            {
                 // if pixelAbove is transparent then the foreground below should be unchanged.
                 return this;
-            }
 
-            return new PixelForeground(Symbol.Blend(ref symbolAbove), 
-                pixelAboveForeground.Color, 
+            return new PixelForeground(Symbol.Blend(ref symbolAbove),
+                pixelAboveForeground.Color,
                 pixelAboveForeground.Weight ?? Weight,
-                pixelAboveForeground.Style ?? Style, 
+                pixelAboveForeground.Style ?? Style,
                 pixelAboveForeground.TextDecoration ?? TextDecoration);
         }
 
@@ -85,7 +83,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Symbol, Color, (int)(Weight ?? FontWeight.Normal), (int)(Style ?? FontStyle.Normal), TextDecoration);
+            return HashCode.Combine(Symbol, Color, (int)(Weight ?? FontWeight.Normal), (int)(Style ?? FontStyle.Normal),
+                TextDecoration);
         }
 
         public static bool operator ==(PixelForeground left, PixelForeground right)

@@ -44,7 +44,7 @@ namespace Consolonia.Core.Tests
             Assert.That(pixelForeground.Weight, Is.EqualTo(FontWeight.Bold));
             Assert.IsNull(pixelForeground.Style);
             Assert.IsNull(pixelForeground.TextDecoration);
-        }        
+        }
 
         [Test]
         public void ConstructorWithSymbolAndStyle()
