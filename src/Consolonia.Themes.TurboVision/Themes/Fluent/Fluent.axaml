@@ -7,9 +7,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/Themes/Material/MaterialColors.axaml" />
+                <ResourceInclude Source="/Templates/TurboVision.axaml" />
+                <ResourceInclude Source="/Themes/TurboVisionBlack/Controls/Button.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
-    <StyleInclude Source="/Templates/TurboVision.axaml" />
-    <StyleInclude Source="/Themes/TurboVisionBlack/Controls/Button.axaml" />
 </Styles>

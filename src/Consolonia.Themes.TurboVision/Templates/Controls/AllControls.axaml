@@ -1,0 +1,42 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Templates/Controls/TextBlock.axaml" />
+                <ResourceInclude Source="/Templates/Controls/Window.axaml" />
+                <ResourceInclude Source="/Templates/Controls/Button.axaml" />
+                <ResourceInclude Source="/Templates/Controls/TextBox.axaml" />
+                <ResourceInclude Source="/Templates/Controls/CheckBox.axaml" />
+                <ResourceInclude Source="/Templates/Controls/ScrollViewer.axaml" />
+                <ResourceInclude Source="/Templates/Controls/ScrollBar.axaml" />
+                <ResourceInclude Source="/Templates/Controls/ComboBoxItem.axaml" />
+                <ResourceInclude Source="/Templates/Controls/ComboBox.axaml" />
+                <ResourceInclude Source="/Templates/Controls/ToggleButton.axaml" />
+                <ResourceInclude Source="/Templates/Controls/Popup.axaml" />
+                <ResourceInclude Source="/Templates/Controls/OverlayPopupHost.axaml" />
+                <ResourceInclude Source="/Templates/Controls/ContentControl.axaml" />
+                <ResourceInclude Source="/Templates/Controls/DataGrid.axaml" />
+                <ResourceInclude Source="/Templates/Controls/CaretControl.axaml" />
+                <ResourceInclude Source="/Templates/Controls/DialogWindow.axaml" />
+                <ResourceInclude Source="/Templates/Controls/ItemsControl.axaml" />
+                <ResourceInclude Source="/Templates/Controls/LightDismissOverlaylayer.axaml" />
+                <ResourceInclude Source="/Templates/Controls/DataValidationErrors.axaml" />
+                <ResourceInclude Source="/Templates/Controls/TabControl.axaml" />
+                <ResourceInclude Source="/Templates/Controls/TabItem.axaml" />
+                <ResourceInclude Source="/Templates/Controls/RadioButton.axaml" />
+                <ResourceInclude Source="/Templates/Controls/ListBox.axaml" />
+                <ResourceInclude Source="/Templates/Controls/ListBoxItem.axaml" />
+                <ResourceInclude Source="/Templates/Controls/Menu.axaml" />
+                <ResourceInclude Source="/Templates/Controls/MenuItem.axaml" />
+                <ResourceInclude Source="/Templates/Controls/SymbolsControl.axaml" />
+                <ResourceInclude Source="/Templates/Controls/Separator.axaml" />
+                <ResourceInclude Source="/Templates/Controls/ProgressBar.axaml" />
+                <ResourceInclude Source="/Templates/Controls/FlyoutPresenter.axaml" />
+                <ResourceInclude Source="/Templates/Controls/MenuFlyoutPresenter.axaml" />
+                <ResourceInclude Source="/Templates/Controls/Calendar.axaml" />
+                <ResourceInclude Source="/Templates/Controls/CalendarItem.axaml" />
+                <ResourceInclude Source="/Templates/Controls/CalendarButton.axaml" />
+                <ResourceInclude Source="/Templates/Controls/CalendarDatePicker.axaml" />
+                <ResourceInclude Source="/Templates/Controls/CalendarDayButton.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+    <!--todo: <StyleInclude Source="/Templates/Controls/UserControl.axaml" />-->
+</ResourceDictionary>

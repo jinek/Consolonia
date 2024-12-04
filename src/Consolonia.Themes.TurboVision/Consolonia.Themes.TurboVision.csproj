@@ -3,11 +3,20 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
+        <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Templates\Controls\DialogWrap.axaml.cs">
+            <DependentUpon>DialogWrap.axaml</DependentUpon>
+        </Compile>
+        <Compile Update="Templates\TurboVisionTheme.cs">
+            <DependentUpon>TurboVisionTheme.axaml</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>

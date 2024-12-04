@@ -5,8 +5,9 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="/Templates/TurboVisionDefaultColors.axaml" />
+        <ResourceInclude Source="/Templates/Controls/AllControls.axaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--<StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml" />-->
-    <!--<StyleInclude Source="/Templates/Controls/AllControls.axaml" />-->
+    
 </ResourceDictionary>

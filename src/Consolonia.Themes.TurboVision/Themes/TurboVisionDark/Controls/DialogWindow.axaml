@@ -1,9 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:dialog="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Dialog"
-            xmlns:controls="clr-namespace:Consolonia.Core.Controls;assembly=Consolonia.Core"
-            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision"
-            xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+            xmlns:controls="clr-namespace:Consolonia.Core.Controls;assembly=Consolonia.Core">
     <ControlTheme x:Key="{x:Type controls:DialogWindow}" TargetType="controls:DialogWindow">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
