@@ -4,10 +4,10 @@
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="/Templates/TurboVisionDefaultColors.axaml" />
-                <ResourceInclude Source="/Templates/Controls/AllControls.axaml" />
+                <MergeResourceInclude Source="/Templates/TurboVisionDefaultColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
     
+    <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
 </Styles>
