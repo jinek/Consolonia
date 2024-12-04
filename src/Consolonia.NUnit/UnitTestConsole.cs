@@ -55,8 +55,8 @@ namespace Consolonia.NUnit
             return _fakeCaretPosition;
         }
 
-        void IConsole.Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style,
-            FontWeight weight, TextDecorationLocation? textDecoration, string str)
+        void IConsole.Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
+            FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
             (ushort x, ushort y) = bufferPoint;
 

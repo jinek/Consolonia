@@ -373,9 +373,9 @@ namespace Consolonia.Designer
             private readonly StringBuilder _textBuilder;
             private Color _lastBackgroundColor;
             private Color _lastForegroundColor;
-            private FontStyle _lastStyle = FontStyle.Normal;
+            private FontStyle? _lastStyle;
             private TextDecorationLocation? _lastTextDecorations;
-            private FontWeight _lastWeight = FontWeight.Normal;
+            private FontWeight? _lastWeight;
             private double _textRunCharWidth;
 
             public TextBlockComposer(StackPanel panel, double charWidth)
@@ -433,8 +433,8 @@ namespace Consolonia.Designer
                     Text = text,
                     Foreground = new SolidColorBrush(_lastForegroundColor),
                     Background = new SolidColorBrush(_lastBackgroundColor),
-                    FontWeight = _lastWeight,
-                    FontStyle = _lastStyle,
+                    FontWeight = _lastWeight ?? FontWeight.Normal,
+                    FontStyle = _lastStyle ?? FontStyle.Normal,
                     FontSize = 17,
                     TextDecorations = _lastTextDecorations switch
                     {
