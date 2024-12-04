@@ -6,8 +6,8 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
-using Consolonia.Core.Text;
-using TextShaper = Consolonia.Core.Text.TextShaper;
+using Avalonia.Platform;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
 {
@@ -69,11 +69,19 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             {
                 _text = value;
 
+                var platformRender = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>();
+                var textShaper = AvaloniaLocator.Current.GetService<ITextShaperImpl>();
+                var fontManager = AvaloniaLocator.Current.GetService<IFontManagerImpl>();
+                fontManager.TryCreateGlyphTypeface("Cascadia Mono", FontStyle.Normal, FontWeight.Normal,
+                    FontStretch.Normal, out IGlyphTypeface typeface);
+                ArgumentNullException.ThrowIfNull(typeface);
                 ShapedBuffer glyphs =
-                    new TextShaper().ShapeText(value.AsMemory(), new TextShaperOptions(new GlyphTypeface(), 1));
-                _shapedText = new GlyphRun(new GlyphTypeface(),
-                    1,
-                    (_text ?? string.Empty).AsMemory(),
+                    textShaper.ShapeText(value.AsMemory(),
+                        new TextShaperOptions(typeface, typeface.Metrics.DesignEmHeight));
+                IGlyphRunImpl glyphRunImpl = platformRender.CreateGlyphRun(typeface, 1, glyphs, default);
+                _shapedText = new GlyphRun(glyphRunImpl.GlyphTypeface,
+                    glyphRunImpl.FontRenderingEmSize,
+                    _text.AsMemory(),
                     glyphs,
                     default(Point));
             }
@@ -92,10 +100,11 @@ namespace Consolonia.Themes.TurboVision.Templates.Controls.Helpers
             }
             else
             {
+                if (Text is not { Length: > 0 }) return;
+                // Draw the text as a repeating pattern
                 var formattedText = new FormattedText(
                     string.Concat(
-                        Enumerable.Repeat(
-                            Text?[0] ?? ' ', (int)Bounds.Width)),
+                        Enumerable.Repeat(Text, (int)Bounds.Width / Text.MeasureText())),
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     Typeface.Default, 1, Foreground);

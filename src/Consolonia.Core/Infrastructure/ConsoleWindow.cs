@@ -6,21 +6,25 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Platform;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
-using Avalonia.Input.TextInput;
 using Avalonia.Platform;
+using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
-    internal class ConsoleWindow : IWindowImpl
+    public class ConsoleWindow : IWindowImpl
     {
         private readonly IKeyboardDevice _myKeyboardDevice;
         private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(100);
         [NotNull] internal readonly IConsole Console;
+        private bool _disposedValue;
         private IInputRoot _inputRoot;
         private CancellationTokenSource _resizeCancellationTokenSource;
 
@@ -34,19 +38,13 @@ namespace Consolonia.Core.Infrastructure
             Console.MouseEvent += ConsoleOnMouseEvent;
             Console.FocusEvent += ConsoleOnFocusEvent;
             Handle = null!;
+            PixelBuffer = new PixelBuffer(Console.Size);
         }
+
+        public PixelBuffer PixelBuffer { get; set; }
 
         private IMouseDevice MouseDevice { get; }
 
-        public void Dispose()
-        {
-            Closed?.Invoke();
-            Console.Resized -= OnConsoleOnResized;
-            Console.KeyEvent -= ConsoleOnKeyEvent;
-            Console.MouseEvent -= ConsoleOnMouseEvent;
-            Console.FocusEvent -= ConsoleOnFocusEvent;
-            Console.Dispose();
-        }
 
         public void SetInputRoot(IInputRoot inputRoot)
         {
@@ -76,12 +74,21 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTransparencyLevelHint(IReadOnlyList<WindowTransparencyLevel> transparencyLevels)
         {
-            throw new NotImplementedException("Consider this");
+            Debug.WriteLine($"ConsoleWindow.SetTransparencyLevelHint({transparencyLevels}) called, not implemented");
         }
 
         public void SetFrameThemeVariant(PlatformThemeVariant themeVariant)
         {
-            //todo:
+            //todo: Light or dark
+            switch (themeVariant)
+            {
+                case PlatformThemeVariant.Dark:
+                    Debug.WriteLine($"ConsoleWindow.SetFrameThemeVariant({themeVariant}) called, not implemented");
+                    break;
+                case PlatformThemeVariant.Light:
+                    Debug.WriteLine($"ConsoleWindow.SetFrameThemeVariant({themeVariant}) called, not implemented");
+                    break;
+            }
         }
 
         public Size ClientSize
@@ -134,7 +141,8 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetTopmost(bool value)
         {
-            throw new NotImplementedException();
+            // todo
+            Debug.WriteLine($"ConsoleWindow.SetTopmost({value}) called, not implemented");
         }
 
         public double DesktopScaling => 1d;
@@ -152,7 +160,6 @@ namespace Consolonia.Core.Infrastructure
         public Size MaxAutoSizeHint { get; }
 
         // ReSharper disable once UnassignedGetOnlyAutoProperty todo: what is this property
-        public IScreenImpl Screen => null!;
 
         public void SetTitle(string title)
         {
@@ -184,7 +191,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void CanResize(bool value)
         {
-            throw new NotImplementedException();
+            // todo, enable/dsiable resizing of window
         }
 
         public void BeginMoveDrag(PointerPressedEventArgs e)
@@ -210,22 +217,22 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetMinMaxSize(Size minSize, Size maxSize)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void SetExtendClientAreaToDecorationsHint(bool extendIntoClientAreaHint)
         {
-            throw new NotImplementedException();
+            // we don't support this, we can ignore
         }
 
         public void SetExtendClientAreaChromeHints(ExtendClientAreaChromeHints hints)
         {
-            throw new NotImplementedException();
+            // we don't support this, we can ignore
         }
 
         public void SetExtendClientAreaTitleBarHeightHint(double titleBarHeight)
         {
-            throw new NotImplementedException();
+            // we don't support this, we can ignore
         }
 
         public WindowState WindowState { get; set; }
@@ -248,10 +255,45 @@ namespace Consolonia.Core.Infrastructure
 
         public object TryGetFeature(Type featureType)
         {
-            if (featureType == typeof(ISystemNavigationManagerImpl))
+            if (featureType == typeof(IStorageProvider))
+                return AvaloniaLocator.Current.GetService<IStorageProvider>();
+
+            if (featureType == typeof(IInsetsManager))
+                // IInsetsManager doesn't apply to console applications.
                 return null;
-            if (featureType == typeof(ITextInputMethodImpl)) return null;
-            throw new NotImplementedException("Consider this");
+
+            if (featureType == typeof(IClipboard))
+            {
+                var clipboard = AvaloniaLocator.CurrentMutable.GetService<IClipboard>();
+                if (clipboard != null)
+                    return clipboard;
+            }
+
+            // TODO ISystemNavigationManagerImpl should be implemented to handle BACK navigation between pages of controls like mobile apps do.
+            // TODO ITextInputMethodImplshould be implemented to handle text IME input
+            Debug.WriteLine($"Missing Feature: {featureType.Name} is not implemented but someone is asking for it!");
+            return null;
+        }
+
+        public void GetWindowsZOrder(Span<Window> windows, Span<long> zOrder)
+        {
+            // In console mode, all windows are considered to be at the same z-order level
+            for (int i = 0; i < zOrder.Length; i++)
+                zOrder[i] = 0;
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~ConsoleWindow()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,
@@ -300,7 +342,9 @@ namespace Consolonia.Core.Infrastructure
         private void OnConsoleOnResized()
         {
             // clear screen so we don't see crazy while resizing.
-            System.Console.Clear();
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+            System.Console.Write(Esc.ClearScreen);
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
             // Cancel previous task if there is one and start a new one
             CancellationTokenSource oldCts = _resizeCancellationTokenSource;
@@ -314,13 +358,13 @@ namespace Consolonia.Core.Infrastructure
                 try
                 {
                     // Wait for the delay period, this task will be canceled if another refresh comes in.
-                    await Task.Delay(_resizeDelay, _resizeCancellationTokenSource.Token).ConfigureAwait(false);
+                    await Task.Delay(_resizeDelay, _resizeCancellationTokenSource.Token);
 
                     // dispatch to the UI thread 
                     Dispatcher.UIThread.Post(() =>
                     {
-                        PixelBufferSize pixelBufferSize = Console.Size;
-                        var size = new Size(pixelBufferSize.Width, pixelBufferSize.Height);
+                        PixelBuffer = new PixelBuffer(Console.Size);
+                        var size = new Size(Console.Size.Width, Console.Size.Height);
                         Resized!(size, WindowResizeReason.Unspecified);
                     });
                 }
@@ -359,7 +403,7 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning restore CS0618 // Type or member is obsolete
                     Input!(rawInputEventArgs);
                     handled = rawInputEventArgs.Handled;
-                }, DispatcherPriority.Input).GetTask().ConfigureAwait(true);
+                }, DispatcherPriority.Input);
 
                 if (!handled && !char.IsControl(keyChar))
                     Dispatcher.UIThread.Post(() =>
@@ -369,6 +413,27 @@ namespace Consolonia.Core.Infrastructure
                             _inputRoot,
                             keyChar.ToString()));
                     }, DispatcherPriority.Input);
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                    Closed?.Invoke();
+                    Console.Resized -= OnConsoleOnResized;
+                    Console.KeyEvent -= ConsoleOnKeyEvent;
+                    Console.MouseEvent -= ConsoleOnMouseEvent;
+                    Console.FocusEvent -= ConsoleOnFocusEvent;
+                    Console.Dispose();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                _disposedValue = true;
             }
         }
     }

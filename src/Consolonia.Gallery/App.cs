@@ -2,9 +2,10 @@ using System;
 using System.Globalization;
 using System.Threading;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Styling;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
-using Consolonia.Themes.TurboVision.Templates;
+using Consolonia.Themes.TurboVision.Themes.Material;
 
 namespace Consolonia.Gallery
 {
@@ -18,12 +19,22 @@ namespace Consolonia.Gallery
 
         public App()
         {
-            Styles.Add(new TurboVisionTheme(new Uri("avares://Consolonia.Gallery")));
+            // Styles.Add(new TurboVisionTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/TurboVisionDark/TurboVisionDark.axaml")));
+            Styles.Add(new MaterialTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/Material/Material.axaml")));
+            // Styles.Add(new FluentTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/Fluent/Fluent.axaml")));
+        }
+
+        public override void RegisterServices()
+        {
+            base.RegisterServices();
         }
 
         public override void OnFrameworkInitializationCompleted()
         {
-            ((IClassicDesktopStyleApplicationLifetime)ApplicationLifetime)!.MainWindow = new ControlsListView();
+            var lifetime = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+            if (lifetime != null)
+                lifetime.MainWindow = new ControlsListView();
+
             base.OnFrameworkInitializationCompleted();
         }
     }

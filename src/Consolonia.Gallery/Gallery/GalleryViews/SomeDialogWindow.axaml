@@ -1,7 +1,9 @@
-<dialog:DialogWindow xmlns="https://github.com/avaloniaui"
+<controls:DialogWindow xmlns="https://github.com/avaloniaui"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
-                     xmlns:dialog="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Dialog;assembly=Consolonia.Themes.TurboVision"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     mc:Ignorable="d" 
+                     xmlns:controls="clr-namespace:Consolonia.Core.Controls;assembly=Consolonia.Core"
                      HorizontalAlignment="Center"
                      VerticalAlignment="Center"
                      Title="Dialog"
@@ -26,9 +28,9 @@ _____/          :--'
 Bill Ames
 </TextBlock>
         <Button Content="One More"
-                Name="Button"
+                Name="OneMoreButton"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Click="OneMore_Clicked" />
     </Panel>
-</dialog:DialogWindow>
+</controls:DialogWindow>

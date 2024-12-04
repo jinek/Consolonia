@@ -1,11 +1,12 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:dialog="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Dialog"
+            xmlns:controls="clr-namespace:Consolonia.Core.Controls;assembly=Consolonia.Core"
             xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers"
             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
     <Thickness x:Key="ConsoloniaDialogWindowBorderMargin">1,0</Thickness>
     
-    <ControlTheme x:Key="{x:Type dialog:DialogWindow}" TargetType="dialog:DialogWindow">
+    <ControlTheme x:Key="{x:Type controls:DialogWindow}" TargetType="controls:DialogWindow">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="BorderBrush"
@@ -20,7 +21,7 @@
                 Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="dialog:DialogWindow">
+                <ControlTemplate TargetType="controls:DialogWindow">
                     <Panel>
                         <!--Centered layout-->
                         <!--Panel shade Mode=Shaded-->
@@ -55,27 +56,27 @@
                                     IsHitTestVisible="False"
                                     Margin="{TemplateBinding Padding}" />
                             </Border>
-                            <StackPanel HorizontalAlignment="Center"
+                            <StackPanel HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
                                         Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
                                         ZIndex="10"
                                         Orientation="Horizontal">
-                                <helpers:SymbolsControl Text=" "
+                                <helpers:SymbolsControl Text="{TemplateBinding Icon}"
+                                                        IsVisible="{Binding Icon.Length}"
                                                         Foreground="{TemplateBinding BorderBrush}" />
-                                <TextBlock Text="{TemplateBinding Title}" />
-                                <helpers:SymbolsControl Text=" "
-                                                        Foreground="{TemplateBinding BorderBrush}" />
+                                <TextBlock Text="{TemplateBinding Title}"
+                                           Margin="1 0 0 0" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal"
                                         ZIndex="10"
                                         VerticalAlignment="Top"
+                                        HorizontalAlignment="Right"
                                         Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
                                         IsVisible="{TemplateBinding IsCloseButtonVisible}">
-                                <Button Content="x"
+                                <Button Content="×"
                                         Background="{x:Null}"
                                         IsTabStop="False"
                                         Padding="0"
-                                        Margin="2,0,0,0"
                                         Command="{Binding Path=CloseClick, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Styles>
                                         <Style Selector="Button">

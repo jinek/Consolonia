@@ -1,28 +1,39 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Avalonia;
+using Newtonsoft.Json;
 
 // ReSharper disable UnusedMember.Global
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    public class PixelBuffer : IEnumerable<Pixel>
+    [JsonConverter(typeof(PixelBufferConverter))]
+    public class PixelBuffer
     {
         private readonly Pixel[,] _buffer;
+
+        public PixelBuffer(PixelBufferSize size)
+            : this(size.Width, size.Height)
+        {
+        }
 
         public PixelBuffer(ushort width, ushort height)
         {
             Width = width;
             Height = height;
             _buffer = new Pixel[width, height];
+
+            // initialize the buffer with space so it draws any background color
+            // blended into it.
+            for (ushort y = 0; y < height; y++)
+            for (ushort x = 0; x < width; x++)
+                _buffer[x, y] = Pixel.Space;
         }
 
         public ushort Width { get; }
         public ushort Height { get; }
 
         // ReSharper disable once UnusedMember.Global
+        [JsonIgnore]
         public Pixel this[int i]
         {
             get
@@ -37,6 +48,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
         }
 
+        [JsonIgnore]
         public Pixel this[PixelBufferCoordinate point]
         {
             get => _buffer[point.X, point.Y];
@@ -44,18 +56,18 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             set => _buffer[point.X, point.Y] = value;
         }
 
-        public int Length => _buffer.Length;
-        public Rect Size => new(0, 0, Width, Height);
-
-        public IEnumerator<Pixel> GetEnumerator()
+        [JsonIgnore]
+        public Pixel this[ushort x, ushort y]
         {
-            return _buffer.OfType<Pixel>().GetEnumerator();
+            get => _buffer[x, y];
+            // ReSharper disable once MemberCanBePrivate.Global
+            set => _buffer[x, y] = value;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        [JsonIgnore] public int Length => _buffer.Length;
+
+        [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
+
 
         public void Set(PixelBufferCoordinate point, Func<Pixel, Pixel> changeAction)
         {

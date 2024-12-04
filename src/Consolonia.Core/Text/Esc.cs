@@ -5,8 +5,12 @@ namespace Consolonia.Core.Text
     /// <summary>
     ///     ANSI escape definitions and utility methods.
     /// </summary>
-    internal static class ConsoleUtils
+    internal static class Esc
     {
+        // Control
+        public const string EndOfText = "\u0003";
+        public const string EndOfTransmission = "\u0004";
+
         // style modifiers
         public const string Reset = "\u001b[0m";
         public const string Normal = "\u001b[22m";
@@ -21,6 +25,37 @@ namespace Consolonia.Core.Text
         // screen buffer
         public const string EnableAlternateBuffer = "\u001b[?1049h";
         public const string DisableAlternateBuffer = "\u001b[?1049l";
+        public const string ClearScreen = "\u001b[2J";
+
+        // cursor
+        public const string HideCursor = "\u001b[?25l";
+        public const string ShowCursor = "\u001b[?25h";
+
+        // move cursor
+        public static string MoveCursorUp(int n)
+        {
+            return $"\u001b[{n}A";
+        }
+
+        public static string MoveCursorDown(int n)
+        {
+            return $"\u001b[{n}B";
+        }
+
+        public static string MoveCursorRight(int n)
+        {
+            return $"\u001b[{n}C";
+        }
+
+        public static string MoveCursorLeft(int n)
+        {
+            return $"\u001b[{n}D";
+        }
+
+        public static string SetCursorPosition(int x, int y)
+        {
+            return $"\u001b[{y + 1};{x + 1}f";
+        }
 
         public static string Foreground(Color color)
         {

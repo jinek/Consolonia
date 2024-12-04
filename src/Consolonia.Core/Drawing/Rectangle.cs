@@ -67,6 +67,11 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
+        public IGeometryImpl GetWidenedGeometry(IPen pen)
+        {
+            throw new NotImplementedException();
+        }
+
         public Rect Bounds => _rect;
         public double ContourLength => (_rect.Width + _rect.Height) * 2;
         public IGeometryImpl SourceGeometry { get; }
