@@ -1,0 +1,106 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ice="using:Iciclecreek.Avalonia.Controls"
+             xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
+             mc:Ignorable="d"
+             x:DataType="local:GallerySpinnersViewModel"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GallerySpinners">
+
+    <StackPanel Orientation="Vertical"
+                Spacing="1">
+        <Button Click="Button_Click" HorizontalAlignment="Left">Toggle Busy</Button>
+        <TextBlock Text="Spinners!" TextDecorations="Underline" FontWeight="Bold" HorizontalAlignment="Center"/>
+        <WrapPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Arcs</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Arcs"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Ballons</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Balloons"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Boxes</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Boxes"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Bouncing</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Bouncing"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Braille</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Braille"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Dots</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Dots"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>DotDotDot</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="DotDotDot"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>HorizontalBar</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="HorizontalBar"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Lines</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Lines"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Pulse</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Pulse"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>QuarterBall</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="QuarterBall"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>RightArrows</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="RightArrows"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Sparkle</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Sparkle"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>SpinArrows</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="SpinArrows"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Staves</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Staves"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Triangles</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Triangles"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>VerticalBar</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="VerticalBar"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>Wave</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="Wave"/>
+            </StackPanel>
+            <StackPanel Margin="1">
+                <TextBlock>LeftArrows</TextBlock>
+                <ice:TextBlockSpinner HorizontalAlignment="Center" IsActive="{Binding IsBusy}" AnimationType="LeftArrows"/>
+            </StackPanel>
+        </WrapPanel>
+        <TextBlock Text="Big Spinners!" TextDecorations="Underline" FontWeight="Bold" HorizontalAlignment="Center"/>
+        <WrapPanel>
+            <StackPanel Margin="1" >
+                <TextBlock>Dots</TextBlock>
+                <ice:BigTextBlockSpinner IsActive="{Binding IsBusy}" Columns="5" Rows="3" Length="6" Foreground="Black" FontFamily="Cascadia Mono"/>
+            </StackPanel>
+            <StackPanel Margin="1" >
+                <TextBlock>Blocks</TextBlock>
+                <ice:BigTextBlockSpinner IsActive="{Binding IsBusy}" Columns="5" Rows="3" Length="6" AnimationChar="█" Foreground="Black" FontFamily="Cascadia Mono"/>
+            </StackPanel>
+        </WrapPanel>
+    </StackPanel>
+
+</UserControl>
