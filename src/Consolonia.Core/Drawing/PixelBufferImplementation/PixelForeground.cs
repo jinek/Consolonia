@@ -14,13 +14,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             Symbol = new SimpleSymbol(" ");
             Color = Colors.Transparent;
-            Weight = FontWeight.Normal;
-            Style = FontStyle.Normal;
+            Weight = null;
+            Style = null;
             TextDecoration = null;
         }
 
         public PixelForeground(ISymbol symbol, Color color,
-            FontWeight weight = FontWeight.Normal, FontStyle style = FontStyle.Normal,
+            FontWeight? weight = null, FontStyle? style = null,
             TextDecorationLocation? textDecoration = null)
         {
             ArgumentNullException.ThrowIfNull(symbol);
@@ -36,15 +36,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         [JsonConverter(typeof(ColorConverter))]
         public Color Color { get; init; }
 
-        [DefaultValue(FontWeight.Normal)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public FontWeight Weight { get; init; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public FontWeight? Weight { get; init; }
 
-        [DefaultValue(FontStyle.Normal)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public FontStyle Style { get; init; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public FontStyle? Style { get; init; }
 
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public TextDecorationLocation? TextDecoration { get; init; }
 
         public bool Equals(PixelForeground other)
@@ -68,10 +66,17 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             ISymbol symbolAbove = pixelAboveForeground.Symbol;
             ArgumentNullException.ThrowIfNull(symbolAbove);
 
-            ISymbol newSymbol = Symbol.Blend(ref symbolAbove);
+            if (pixelAboveForeground.Color == Colors.Transparent)
+            {
+                // if pixelAbove is transparent then the foreground below should be unchanged.
+                return this;
+            }
 
-            return new PixelForeground(newSymbol, pixelAboveForeground.Color, pixelAboveForeground.Weight,
-                pixelAboveForeground.Style, pixelAboveForeground.TextDecoration);
+            return new PixelForeground(Symbol.Blend(ref symbolAbove), 
+                pixelAboveForeground.Color, 
+                pixelAboveForeground.Weight ?? Weight,
+                pixelAboveForeground.Style ?? Style, 
+                pixelAboveForeground.TextDecoration ?? TextDecoration);
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)
@@ -81,7 +86,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Symbol, Color, (int)Weight, (int)Style, TextDecoration);
+            return HashCode.Combine(Symbol, Color, (int)(Weight ?? FontWeight.Normal), (int)(Style ?? FontStyle.Normal), TextDecoration);
         }
 
         public static bool operator ==(PixelForeground left, PixelForeground right)

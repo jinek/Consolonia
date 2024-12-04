@@ -26,8 +26,8 @@ namespace Consolonia.Core.Infrastructure
         void SetCaretPosition(PixelBufferCoordinate bufferPoint);
         PixelBufferCoordinate GetCaretPosition();
 
-        void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style,
-            FontWeight weight, TextDecorationLocation? textDecoration, string str);
+        void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
+            FontWeight? weight, TextDecorationLocation? textDecoration, string str);
 
         void WriteText(string str);
 

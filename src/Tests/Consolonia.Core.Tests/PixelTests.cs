@@ -59,9 +59,9 @@ namespace Consolonia.Core.Tests
                 new PixelBackground(Colors.Blue));
             Assert.That(pixel.Foreground.Symbol.Text, Is.EqualTo("┼"));
             Assert.That(pixel.Foreground.Color, Is.EqualTo(Colors.Red));
-            Assert.That(pixel.Foreground.Style, Is.EqualTo(FontStyle.Normal));
-            Assert.That(pixel.Foreground.Weight, Is.EqualTo(FontWeight.Normal));
-            Assert.That(pixel.Foreground.TextDecoration, Is.Null);
+            Assert.IsNull(pixel.Foreground.Style);
+            Assert.IsNull(pixel.Foreground.Weight);
+            Assert.IsNull(pixel.Foreground.TextDecoration);
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Blue));
             Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Colored));
         }
