@@ -23,7 +23,7 @@ jobs:
   
       - name: dotnet pack 
         run: |
-          dotnet pack --no-build src/Consolonia.sln -c Release -o packages --include-symbols --property WarningLevel=0
+          dotnet pack src/Consolonia.sln -c Release -o packages --include-symbols --property WarningLevel=0
 
       - name: Publish NuGet and symbols
         id: nuget-push

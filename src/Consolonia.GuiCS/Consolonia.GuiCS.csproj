@@ -5,11 +5,7 @@
     <WarningsAsErrors>false</WarningsAsErrors>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <None Include="../../Icon.png" Pack="True" PackagePath="\" />
-    <None Include="readme.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
 
 </Project>
