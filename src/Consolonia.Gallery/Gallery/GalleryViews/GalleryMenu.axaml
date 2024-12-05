@@ -37,6 +37,9 @@
                             <helpers:SymbolsControl Text="&#9818;" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="ToggleType Checked" IsChecked="True" ToggleType="CheckBox"/>
+                    <MenuItem Header="ToggleType Radio" IsChecked="True" ToggleType="Radio"/>
+                    <MenuItem Header="ToggleType None" IsChecked="True" ToggleType="None"/>
                     <MenuItem Header="Menu Item with _Checkbox">
                         <MenuItem.Icon>
                             <CheckBox BorderThickness="0"

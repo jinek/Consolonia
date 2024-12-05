@@ -4,10 +4,25 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
+using Consolonia.Themes.TurboVision.Templates;
+using Consolonia.Themes.TurboVision.Themes.Fluent;
+using Consolonia.Themes.TurboVision.Themes.Material;
+using Consolonia.Themes.TurboVision.Themes.TurboVisionBlack;
+using Consolonia.Themes.TurboVision.Themes.TurboVisionDark;
 
 namespace Consolonia.Gallery.View
 {
+    public enum Themes
+    {
+        Material,
+        Fluent,
+        TurboVision,
+        TurboVisionDark,
+        TurboVisionBlack
+    }
+
     public partial class ControlsListView : Window
     {
         private string[] _commandLineArgs;
@@ -16,6 +31,9 @@ namespace Consolonia.Gallery.View
         public ControlsListView()
         {
             InitializeComponent();
+
+            this.DataContext = new ControlsListViewModel();
+
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -27,8 +45,12 @@ namespace Consolonia.Gallery.View
             else
                 _commandLineArgs = Array.Empty<string>();
 
+            this.Styles.Add(new MaterialTheme());
+
             TrySetupSelected();
         }
+
+        public ControlsListViewModel Model => (ControlsListViewModel)DataContext;
 
         private void TrySetupSelected()
         {
@@ -69,5 +91,52 @@ namespace Consolonia.Gallery.View
         {
             this.Close();
         }
+
+        private void MaterialTheme_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            Model.SelectedTheme = Themes.Material;
+            this.Styles[0] = new MaterialTheme();
+        }
+
+        private void FluentTheme_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            Model.SelectedTheme = Themes.Fluent;
+            this.Styles[0] = new FluentTheme();
+        }
+
+        private void TurboVisionTheme_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            Model.SelectedTheme = Themes.TurboVision;
+            this.Styles[0] = new TurboVisionTheme();
+        }
+
+        private void TurboVisionDarkTheme_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            Model.SelectedTheme = Themes.TurboVisionDark;
+            this.Styles[0] = new TurboVisionDarkTheme();
+        }
+
+        private void TurboVisionBlackTheme_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            Model.SelectedTheme = Themes.TurboVisionBlack;
+            this.Styles[0] = new TurboVisionBlackTheme();
+        }
+    }
+
+    public partial class ControlsListViewModel : ObservableObject
+    {
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsTuroboVisionDark))]
+        [NotifyPropertyChangedFor(nameof(IsTuroboVisionBlack))]
+        [NotifyPropertyChangedFor(nameof(IsTurboVision))]
+        [NotifyPropertyChangedFor(nameof(IsFluent))]
+        [NotifyPropertyChangedFor(nameof(IsMaterial))]
+        private Themes _selectedTheme;
+
+        public bool IsMaterial => SelectedTheme == Themes.Material;
+        public bool IsFluent => SelectedTheme == Themes.Fluent;
+        public bool IsTurboVision => SelectedTheme == Themes.TurboVision;
+        public bool IsTuroboVisionDark => SelectedTheme == Themes.TurboVisionDark;
+        public bool IsTuroboVisionBlack => SelectedTheme == Themes.TurboVisionBlack;
     }
 }

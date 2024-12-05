@@ -10,6 +10,18 @@
         <gallery:GalleryItemConverter x:Key="GalleryItemConverter" />
     </Window.Resources>
     <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit" Click="Exit_Click" />
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem x:Name="MaterialMenu" Header="Material Theme" Click="MaterialTheme_Click" IsChecked="{Binding IsMaterial}" ToggleType="CheckBox" />
+                <MenuItem x:Name="FluentMenu" Header="Fluent Theme" Click ="FluentTheme_Click" IsChecked="{Binding IsFluent}" ToggleType="CheckBox"/>
+                <MenuItem x:Name="TurboVisionMenu" Header="Turbo Vision Theme" Click="TurboVisionTheme_Click" IsChecked="{Binding IsTurboVision}" ToggleType="CheckBox"/>
+                <MenuItem x:Name="TurboVisionDarkMenu" Header="Turbo Vision Dark Theme" Click="TurboVisionDarkTheme_Click" IsChecked="{Binding IsTurboVisionDark}" ToggleType="CheckBox"/>
+                <MenuItem x:Name="TurboVisionBlackMenu" Header="Turbo Vision Black Theme" Click="TurboVisionBlackTheme_Click" IsChecked="{Binding IsTurboVisionBlack}" ToggleType="CheckBox"/>
+            </MenuItem>
+        </Menu>
         <Grid RowDefinitions="* Auto" DockPanel.Dock="Left">
             <DataGrid x:Name="Grid"
                       SelectedIndex="0"
@@ -19,7 +31,6 @@
                                         Binding="{Binding Name}" />
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Grid.Row="1" Content="Exit" Click="Exit_Click" KeyboardNavigation.IsTabStop="False"/>
         </Grid>
         <Border Child="{Binding ElementName=Grid,Path=SelectedItem, Converter={StaticResource GalleryItemConverter}}"
                 BorderThickness="1"
