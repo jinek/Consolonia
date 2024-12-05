@@ -67,7 +67,7 @@
                     Value="True" />
         </Style>
 
-        <Style Selector="CalendarButton /template/ ContentControl#Content">
+        <Style Selector="^ /template/ ContentControl#Content">
             <Setter Property="Foreground"
                     Value="{DynamicResource ThemeForegroundBrush}" />
         </Style>
@@ -77,7 +77,7 @@
         </Style>
 
 
-        <Style Selector="CalendarButton /template/ Rectangle#FocusVisual">
+        <Style Selector="^ /template/ Rectangle#FocusVisual">
             <Setter Property="IsVisible"
                     Value="False" />
         </Style>

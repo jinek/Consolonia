@@ -17,7 +17,7 @@
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^ > Separator, ContextMenu > Separator">
+        <Style Selector="^">
             <Setter Property="Foreground"
                     Value="{DynamicResource ThemeNoDisturbBrush}" />
             <Setter Property="BorderThickness"

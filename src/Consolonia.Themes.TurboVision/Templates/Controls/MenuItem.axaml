@@ -107,7 +107,7 @@
             </Setter>
         </Style>
 
-        <Style Selector="Menu > MenuItem">
+        <Style Selector="^">
             <Setter Property="Padding"
                     Value="1 0" />
             <Setter Property="Template">
