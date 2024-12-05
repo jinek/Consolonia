@@ -1,14 +1,15 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
-            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
     <!--TODO: Validation and Focus-->
 
 
     <Thickness x:Key="DataGridTextColumnCellTextBlockMargin">1,0</Thickness>
 
 
-    <ControlTheme x:Key="{x:Type DataGridCell}" TargetType="DataGridCell">
+    <ControlTheme x:Key="{x:Type DataGridCell}"
+                  TargetType="DataGridCell">
         <Setter Property="HorizontalContentAlignment"
                 Value="Stretch" />
         <Setter Property="VerticalContentAlignment"
@@ -40,7 +41,8 @@
         </Setter>
     </ControlTheme>
 
-    <ControlTheme x:Key="{x:Type DataGridColumnHeader}" TargetType="DataGridColumnHeader">
+    <ControlTheme x:Key="{x:Type DataGridColumnHeader}"
+                  TargetType="DataGridColumnHeader">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="HorizontalContentAlignment"
@@ -105,8 +107,8 @@
     </ControlTheme>
 
 
-
-    <ControlTheme x:Key="{x:Type DataGridRow}" TargetType="DataGridRow">
+    <ControlTheme x:Key="{x:Type DataGridRow}"
+                  TargetType="DataGridRow">
         <Setter Property="Template">
             <ControlTemplate>
                 <DataGridFrozenGrid Name="PART_Root"
@@ -143,7 +145,7 @@
                             <MultiBinding Converter="{x:Static BoolConverters.And}">
                                 <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=DataGrid}"
                                          Path="IsFocused" />
-                                <TemplateBinding Property="(helpers:DataGridExtensions.IsSelected)"/>
+                                <TemplateBinding Property="(helpers:DataGridExtensions.IsSelected)" />
                                 <!--<Binding RelativeSource="{RelativeSource Self}"
                                          ElementName="FocusControl"
                                          Path="(asdf:DataGridExtensions.IsSelected)" />-->
@@ -180,13 +182,13 @@
     </ControlTheme>
 
 
-
     <!--<Style Selector="DataGridRow:selected">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
     </Style>-->
 
-    <ControlTheme x:Key="{x:Type DataGridRowHeader}" TargetType="DataGridRowHeader">
+    <ControlTheme x:Key="{x:Type DataGridRowHeader}"
+                  TargetType="DataGridRowHeader">
         <Setter Property="Focusable"
                 Value="False" />
         <Setter Property="Template">
@@ -273,7 +275,8 @@
     </Setter>
   </Style>-->
 
-    <ControlTheme x:Key="{x:Type DataGrid}" TargetType="DataGrid">
+    <ControlTheme x:Key="{x:Type DataGrid}"
+                  TargetType="DataGrid">
         <Setter Property="Focusable"
                 Value="True" />
         <Setter Property="RowBackground">

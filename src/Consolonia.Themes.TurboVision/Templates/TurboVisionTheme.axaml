@@ -8,6 +8,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
-    
+
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
 </Styles>

@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:dialog="clr-namespace:Consolonia.Core.Controls.Dialog;assembly=Consolonia.Core">
-    <ControlTheme x:Key="{x:Type Window}" TargetType="Window">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dialog="clr-namespace:Consolonia.Core.Controls.Dialog;assembly=Consolonia.Core">
+    <ControlTheme x:Key="{x:Type Window}"
+                  TargetType="Window">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
         <!--<Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource HighlightForegroundColor}" />-->

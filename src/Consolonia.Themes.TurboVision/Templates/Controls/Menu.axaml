@@ -60,7 +60,7 @@
                 </Border>
             </ControlTemplate>
         </Setter>
-        
+
         <!--todo: Copypaste from MenuItem-->
         <Style Selector="^:selected /template/ Border#root">
             <Setter Property="Background"
@@ -92,7 +92,8 @@
                   TargetType="Menu">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-        <Setter Property="ItemContainerTheme" Value="{StaticResource TurboVisionTopLevelMenuItem}"/>
+        <Setter Property="ItemContainerTheme"
+                Value="{StaticResource TurboVisionTopLevelMenuItem}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}"

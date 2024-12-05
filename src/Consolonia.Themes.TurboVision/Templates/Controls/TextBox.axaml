@@ -1,12 +1,13 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
-    
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
+
     <helpers:BooleanAndConverter x:Key="BooleanAndConverter" />
-    
+
     <helpers:AreIntegersEqualConverter x:Key="AreIntegersEqualConverter" />
 
-    <ControlTheme x:Key="{x:Type TextBox}" TargetType="TextBox">
+    <ControlTheme x:Key="{x:Type TextBox}"
+                  TargetType="TextBox">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
         <Setter Property="Foreground"

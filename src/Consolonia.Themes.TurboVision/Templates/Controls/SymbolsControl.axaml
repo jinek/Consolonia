@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:helpers1="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
-    <ControlTheme x:Key="{x:Type helpers1:SymbolsControl}" TargetType="helpers1:SymbolsControl">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers1="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
+    <ControlTheme x:Key="{x:Type helpers1:SymbolsControl}"
+                  TargetType="helpers1:SymbolsControl">
         <!--<Setter Property="Foreground"
                 Value="{DynamicResource ThemeForegroundBrush}" />-->
     </ControlTheme>

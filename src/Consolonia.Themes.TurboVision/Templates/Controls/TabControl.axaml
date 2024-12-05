@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ControlTheme x:Key="{x:Type TabControl}" TargetType="TabControl">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ControlTheme x:Key="{x:Type TabControl}"
+                  TargetType="TabControl">
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="BorderBrush"
@@ -34,7 +35,7 @@
             <Setter Property="DockPanel.Dock"
                     Value="Bottom" />
         </Style>
-        
+
         <Style Selector="^[TabStripPlacement=Left] /template/ ItemsPresenter#PART_ItemsPresenter">
             <Setter Property="DockPanel.Dock"
                     Value="Left" />
@@ -52,6 +53,6 @@
             <Setter Property="Orientation"
                     Value="Vertical" />
         </Style>
-        
+
     </ControlTheme>
 </ResourceDictionary>

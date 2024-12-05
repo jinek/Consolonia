@@ -42,6 +42,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
-    
+
     <StyleInclude Source="/Templates/Controls/UserControl.axaml" />
 </Styles>

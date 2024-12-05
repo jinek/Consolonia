@@ -8,7 +8,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
-    <ControlTheme x:Key="{x:Type CalendarDatePicker}" TargetType="CalendarDatePicker">
+    <ControlTheme x:Key="{x:Type CalendarDatePicker}"
+                  TargetType="CalendarDatePicker">
 
         <Setter Property="(helpers:CalendarDatePickerExtensions.OpenOnEnter)"
                 Value="True" />

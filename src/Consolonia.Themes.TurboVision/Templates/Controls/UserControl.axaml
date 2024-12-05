@@ -19,6 +19,7 @@
             </Setter>
         </ControlTheme>
     </Style.Resources>
-    
-    <Setter Property="Theme" Value="{StaticResource TurboVisionUserControl}" />
+
+    <Setter Property="Theme"
+            Value="{StaticResource TurboVisionUserControl}" />
 </Style>
