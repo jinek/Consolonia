@@ -27,10 +27,7 @@
                 </Border>
             </ControlTemplate>
         </Setter>
-        <Style Selector="^[TabStripPlacement=Top] TabItem">
-            <Setter Property="Margin"
-                    Value="0,0,-1,-1" />
-        </Style>
+
         <Style Selector="^[TabStripPlacement=Top] /template/ ItemsPresenter#PART_ItemsPresenter">
             <Setter Property="DockPanel.Dock"
                     Value="Top" />
@@ -39,10 +36,7 @@
             <Setter Property="DockPanel.Dock"
                     Value="Bottom" />
         </Style>
-        <Style Selector="^[TabStripPlacement=Bottom] TabItem">
-            <Setter Property="Margin"
-                    Value="0 -1 -1 0" />
-        </Style>
+        
         <Style Selector="^[TabStripPlacement=Left] /template/ ItemsPresenter#PART_ItemsPresenter">
             <Setter Property="DockPanel.Dock"
                     Value="Left" />
@@ -51,10 +45,7 @@
             <Setter Property="Orientation"
                     Value="Vertical" />
         </Style>
-        <Style Selector="^[TabStripPlacement=Left] TabItem">
-            <Setter Property="Margin"
-                    Value="0 0 -1 -1" />
-        </Style>
+
         <Style Selector="^[TabStripPlacement=Right] /template/ ItemsPresenter#PART_ItemsPresenter">
             <Setter Property="DockPanel.Dock"
                     Value="Right" />
@@ -63,9 +54,6 @@
             <Setter Property="Orientation"
                     Value="Vertical" />
         </Style>
-        <Style Selector="^[TabStripPlacement=Right] TabItem">
-            <Setter Property="Margin"
-                    Value="-1 0 0 -1" />
-        </Style>
+        
     </ControlTheme>
 </ResourceDictionary>

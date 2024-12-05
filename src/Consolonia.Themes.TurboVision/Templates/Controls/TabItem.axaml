@@ -43,5 +43,27 @@
             <Setter Property="HorizontalContentAlignment"
                     Value="Right" />
         </Style>
+        
+        
+        <!--TabStripPlacement-->
+        <Style Selector="^[TabStripPlacement=Top]">
+            <Setter Property="Margin"
+                    Value="0,0,-1,-1" />
+        </Style>
+        
+        <Style Selector="^[TabStripPlacement=Bottom]">
+            <Setter Property="Margin"
+                    Value="0 -1 -1 0" />
+        </Style>
+        
+        <Style Selector="^[TabStripPlacement=Left]">
+            <Setter Property="Margin"
+                    Value="0 0 -1 -1" />
+        </Style>
+        
+        <Style Selector="^[TabStripPlacement=Right]">
+            <Setter Property="Margin"
+                    Value="-1 0 0 -1" />
+        </Style>
     </ControlTheme>
 </ResourceDictionary>
