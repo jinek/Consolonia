@@ -92,34 +92,17 @@ namespace Consolonia.Gallery.View
             this.Close();
         }
 
-        private void MaterialTheme_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void ComboBox_SelectionChanged(object? sender, Avalonia.Controls.SelectionChangedEventArgs e)
         {
-            Model.SelectedTheme = Themes.Material;
-            this.Styles[0] = new MaterialTheme();
-        }
-
-        private void FluentTheme_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
-            Model.SelectedTheme = Themes.Fluent;
-            this.Styles[0] = new FluentTheme();
-        }
-
-        private void TurboVisionTheme_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
-            Model.SelectedTheme = Themes.TurboVision;
-            this.Styles[0] = new TurboVisionTheme();
-        }
-
-        private void TurboVisionDarkTheme_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
-            Model.SelectedTheme = Themes.TurboVisionDark;
-            this.Styles[0] = new TurboVisionDarkTheme();
-        }
-
-        private void TurboVisionBlackTheme_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
-            Model.SelectedTheme = Themes.TurboVisionBlack;
-            this.Styles[0] = new TurboVisionBlackTheme();
+            Styles[0] = ((ComboBoxItem)ThemeCombo.SelectedItem).Content.ToString() switch 
+            {
+                nameof (Themes.Material) => new MaterialTheme(),
+                nameof (Themes.Fluent) => new FluentTheme(),
+                nameof (Themes.TurboVision) => new TurboVisionTheme(),
+                nameof (Themes.TurboVisionDark) => new TurboVisionDarkTheme(),
+                nameof (Themes.TurboVisionBlack) => new TurboVisionBlackTheme(),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
     }
 
@@ -131,12 +114,12 @@ namespace Consolonia.Gallery.View
         [NotifyPropertyChangedFor(nameof(IsTurboVision))]
         [NotifyPropertyChangedFor(nameof(IsFluent))]
         [NotifyPropertyChangedFor(nameof(IsMaterial))]
-        private Themes _selectedTheme;
+        private string _selectedTheme;
 
-        public bool IsMaterial => SelectedTheme == Themes.Material;
-        public bool IsFluent => SelectedTheme == Themes.Fluent;
-        public bool IsTurboVision => SelectedTheme == Themes.TurboVision;
-        public bool IsTurboVisionDark => SelectedTheme == Themes.TurboVisionDark;
-        public bool IsTurboVisionBlack => SelectedTheme == Themes.TurboVisionBlack;
+        public bool IsMaterial => SelectedTheme == nameof(Themes.Material);
+        public bool IsFluent => SelectedTheme == nameof(Themes.Fluent);
+        public bool IsTurboVision => SelectedTheme == nameof(Themes.TurboVision);
+        public bool IsTurboVisionDark => SelectedTheme == nameof(Themes.TurboVisionDark);
+        public bool IsTurboVisionBlack => SelectedTheme == nameof(Themes.TurboVisionBlack);
     }
 }
