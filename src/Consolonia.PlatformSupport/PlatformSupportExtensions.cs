@@ -4,9 +4,10 @@ using Avalonia.Controls;
 using Consolonia.Core;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
+using Consolonia.PlatformSupport;
 
 #pragma warning disable IDE0161
-namespace Consolonia.PlatformSupport
+namespace Consolonia
 #pragma warning restore IDE0161
 {
     public static class PlatformSupportExtensions

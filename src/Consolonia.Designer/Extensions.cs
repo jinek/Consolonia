@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Consolonia.Core;
 
-namespace Consolonia.Designer
+namespace Consolonia
 {
     public static class Extensions
     {

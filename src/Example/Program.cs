@@ -1,7 +1,5 @@
 using Avalonia;
-using Consolonia.Core;
-using Consolonia.Core.Infrastructure;
-using Consolonia.PlatformSupport;
+using Consolonia;
 using Example.Views;
 
 namespace Example

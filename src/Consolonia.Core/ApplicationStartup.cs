@@ -9,7 +9,7 @@ using Consolonia.Core.Infrastructure;
 
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Consolonia.Core
+namespace Consolonia
 {
     public static class ApplicationStartup
     {
