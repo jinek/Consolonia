@@ -6,7 +6,10 @@ using Avalonia.Styling;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
 using Consolonia.Themes.TurboVision.Templates;
+using Consolonia.Themes.TurboVision.Themes.Fluent;
 using Consolonia.Themes.TurboVision.Themes.Material;
+using Consolonia.Themes.TurboVision.Themes.TurboVisionBlack;
+using Consolonia.Themes.TurboVision.Themes.TurboVisionDark;
 
 namespace Consolonia.Gallery
 {
@@ -20,10 +23,11 @@ namespace Consolonia.Gallery
 
         public App()
         {
-            Styles.Add(new TurboVisionTheme());
-            // Styles.Add(new TurboVisionTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/TurboVisionDark/TurboVisionDark.axaml")));
-            /*Styles.Add(new MaterialTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/Material/Material.axaml")));*/
-            // Styles.Add(new FluentTheme(new Uri("avares://Consolonia.Themes.TurboVision/Themes/Fluent/Fluent.axaml")));
+            /*Styles.Add(new TurboVisionTheme());*/
+            /*Styles.Add(new TurboVisionBlackTheme());*/
+            /*Styles.Add(new TurboVisionDarkTheme());*/
+            /*Styles.Add(new FluentTheme());*/
+            Styles.Add(new MaterialTheme());
         }
 
         public override void OnFrameworkInitializationCompleted()

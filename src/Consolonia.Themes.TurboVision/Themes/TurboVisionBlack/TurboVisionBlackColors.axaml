@@ -1,7 +1,9 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+                    xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
     <!--https://www.mikrocontroller.net/attachment/483578/Turbo_Vision.gif-->
+    <system:Double x:Key="FontSizeNormal">1</system:Double>
     <drawing:ConsoleBrush x:Key="ThemeForegroundBrush"
                           Color="Gray" />
     <drawing:ConsoleBrush x:Key="ThemeBackgroundBrush"

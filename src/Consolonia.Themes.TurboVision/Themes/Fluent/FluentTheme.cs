@@ -1,21 +1,16 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Avalonia.Markup.Xaml;
+using Avalonia.Styling;
 using Consolonia.Core.Styles;
 
 namespace Consolonia.Themes.TurboVision.Themes.Fluent
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class FluentTheme : ResourceIncludeBase
+    public class FluentTheme : Styles
     {
-        public FluentTheme(Uri baseUri) : base(baseUri)
+        public FluentTheme(IServiceProvider sp = null)
         {
+            AvaloniaXamlLoader.Load(sp, this);
         }
-
-        public FluentTheme(IServiceProvider serviceProvider) : base(serviceProvider)
-        {
-        }
-
-        protected override Uri Uri =>
-            new("avares://Consolonia.Themes.TurboVision/Themes/Fluent/Fluent.axaml");
     }
 }
