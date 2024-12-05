@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{18168988-BF8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia.Gallery", "Consolonia.Gallery\Consolonia.Gallery.csproj", "{70643248-718D-46F8-8775-E1674787B195}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia.Themes.TurboVision", "Consolonia.Themes.TurboVision\Consolonia.Themes.TurboVision.csproj", "{850A3EF5-2E1F-4876-B3DE-D5C99FDFC135}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia.Themes", "Consolonia.Themes\Consolonia.Themes.csproj", "{850A3EF5-2E1F-4876-B3DE-D5C99FDFC135}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{476E1582-855A-4BEB-BA7D-55302428EE62}"
 	ProjectSection(SolutionItems) = preProject

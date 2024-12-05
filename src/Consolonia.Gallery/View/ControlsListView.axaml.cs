@@ -6,11 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
-using Consolonia.Themes.TurboVision.Templates;
-using Consolonia.Themes.TurboVision.Themes.Fluent;
-using Consolonia.Themes.TurboVision.Themes.Material;
-using Consolonia.Themes.TurboVision.Themes.TurboVisionBlack;
-using Consolonia.Themes.TurboVision.Themes.TurboVisionDark;
+using Consolonia.Themes;
 
 namespace Consolonia.Gallery.View
 {
