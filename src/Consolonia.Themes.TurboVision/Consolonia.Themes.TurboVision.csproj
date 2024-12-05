@@ -4,11 +4,31 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="Consolonia.Core" Version="11.2" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Templates\Controls\DialogWrap.axaml.cs">
+            <DependentUpon>DialogWrap.axaml</DependentUpon>
+        </Compile>
+        <Compile Update="Templates\TurboVisionTheme.cs">
+            <DependentUpon>TurboVisionTheme.axaml</DependentUpon>
+        </Compile>        
+        <Compile Update="Themes\TurboVisionBlack\TurboVisionBlackTheme.cs">
+          <DependentUpon>TurboVisionBlackTheme.axaml</DependentUpon>
+        </Compile>        
+        <Compile Update="Themes\TurboVisionDark\TurboVisionDarkTheme.cs">
+          <DependentUpon>TurboVisionDarkTheme.axaml</DependentUpon>
+        </Compile>        
+        <Compile Update="Themes\Fluent\FluentTheme.cs">
+          <DependentUpon>FluentTheme.axaml</DependentUpon>
+        </Compile>        
+        <Compile Update="Themes\Material\MaterialTheme.cs">
+          <DependentUpon>MaterialTheme.axaml</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>

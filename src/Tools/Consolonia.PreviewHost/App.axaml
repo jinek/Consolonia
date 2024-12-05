@@ -3,6 +3,6 @@
              x:Class="Consolonia.PreviewHost.App">
     <Application.Styles>
         <!--<StyleInclude Source="avares://Consolonia.Themes.TurboVision/Themes/TurboVisionDark/TurboVisionDark.axaml"/>-->
-        <StyleInclude Source="avares://Consolonia.Themes.TurboVision/Themes/Material/Material.axaml" />
+        <StyleInclude Source="avares://Consolonia.Themes.TurboVision/Themes/Material/MaterialTheme.axaml" />
     </Application.Styles>
 </Application>

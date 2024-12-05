@@ -1,6 +1,8 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
-    <Style Selector="ListBoxItem">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
+    <ControlTheme x:Key="{x:Type ListBoxItem}"
+                  TargetType="ListBoxItem">
         <Setter Property="Padding"
                 Value="1 0" />
         <!--ThemeTransparentBrush is used to make hit test visible-->
@@ -23,17 +25,17 @@
                 </Panel>
             </ControlTemplate>
         </Setter>
-    </Style>
 
-    <Style Selector="ListBoxItem:selected">
-        <!--<Setter Property="Background"
+        <Style Selector="^:selected">
+            <!--<Setter Property="Background"
                 Value="{DynamicResource ThemeSelectionBackgroundBrush}" />-->
-        <Setter Property="Background"
-                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
-    </Style>
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        </Style>
 
-    <Style Selector="ListBoxItem:focus">
-        <Setter Property="Background"
-                Value="{DynamicResource ThemeActionBackgroundBrush}" />
-    </Style>
-</Styles>
+        <Style Selector="^:focus">
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeActionBackgroundBrush}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

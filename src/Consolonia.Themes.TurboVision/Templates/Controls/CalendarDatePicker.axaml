@@ -5,10 +5,11 @@
 // All other rights reserved.
 -->
 
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
-    <Style Selector="CalendarDatePicker">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
+    <ControlTheme x:Key="{x:Type CalendarDatePicker}"
+                  TargetType="CalendarDatePicker">
 
         <Setter Property="(helpers:CalendarDatePickerExtensions.OpenOnEnter)"
                 Value="True" />
@@ -81,11 +82,11 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
-    </Style>
+    </ControlTheme>
 
     <!--<Style Selector="CalendarDatePicker:focus /template/ TextBox#PART_TextBox">
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeSelectionForegroundBrush}" />
     </Style>-->
 
-</Styles>
+</ResourceDictionary>
