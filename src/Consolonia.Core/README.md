@@ -18,9 +18,8 @@ HelloWorldWindow.axaml
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="HelloWorldWindow">
-    <TextBlock Text="Hello World">
+    <TextBlock Text="Hello World" />
 </Window>
-```
 
 ## Define an application 
 You need to define an application that defines a theme and sets the main window.

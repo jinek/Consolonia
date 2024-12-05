@@ -63,7 +63,7 @@ namespace Consolonia.Core.Infrastructure
     }
 
     public class ConsoloniaApplication<TMainWindow> : ConsoloniaApplication
-        where TMainWindow: Window
+        where TMainWindow: Window, new()
     {
         public override void OnFrameworkInitializationCompleted()
         {
