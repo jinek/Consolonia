@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
-using Consolonia.Core.Styles;
 
 namespace Consolonia.Themes.TurboVision.Themes.Fluent
 {

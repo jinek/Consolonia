@@ -1,15 +1,9 @@
-using System;
 using System.Globalization;
 using System.Threading;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Styling;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
-using Consolonia.Themes.TurboVision.Templates;
 using Consolonia.Themes.TurboVision.Themes.Fluent;
-using Consolonia.Themes.TurboVision.Themes.Material;
-using Consolonia.Themes.TurboVision.Themes.TurboVisionBlack;
-using Consolonia.Themes.TurboVision.Themes.TurboVisionDark;
 
 namespace Consolonia.Gallery
 {
@@ -26,8 +20,8 @@ namespace Consolonia.Gallery
             /*Styles.Add(new TurboVisionTheme());*/
             /*Styles.Add(new TurboVisionBlackTheme());*/
             /*Styles.Add(new TurboVisionDarkTheme());*/
-            /*Styles.Add(new FluentTheme());*/
-            Styles.Add(new MaterialTheme());
+            Styles.Add(new FluentTheme());
+            /*Styles.Add(new MaterialTheme());*/
         }
 
         public override void OnFrameworkInitializationCompleted()

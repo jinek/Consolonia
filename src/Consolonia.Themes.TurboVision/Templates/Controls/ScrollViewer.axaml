@@ -1,8 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
-            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision"
-            xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
     <ControlTheme x:Key="{x:Type ScrollViewer}" TargetType="ScrollViewer">
         <Setter Property="(helpers:ScrollViewerExtensions.ScrollOnArrows)"
                 Value="True" />
