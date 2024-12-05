@@ -1,20 +1,14 @@
 using System;
-using Consolonia.Core.Styles;
+using Avalonia.Markup.Xaml;
+using Avalonia.Styling;
 
 namespace Consolonia.Themes.TurboVision.Themes.TurboVisionDark
 {
-    // ReSharper disable once UnusedType.Global
-    public class TurboVisionDarkTheme : ResourceIncludeBase
+    public class TurboVisionDarkTheme : Styles
     {
-        public TurboVisionDarkTheme(Uri baseUri) : base(baseUri)
+        public TurboVisionDarkTheme(IServiceProvider sp = null)
         {
+            AvaloniaXamlLoader.Load(sp, this);
         }
-
-        public TurboVisionDarkTheme(IServiceProvider serviceProvider) : base(serviceProvider)
-        {
-        }
-
-        protected override Uri Uri =>
-            new("avares://Consolonia.Themes.TurboVision/Themes/TurboVisionDark/TurboVisionDark.axaml");
     }
 }

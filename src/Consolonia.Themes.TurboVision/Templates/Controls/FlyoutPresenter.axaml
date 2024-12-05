@@ -1,6 +1,7 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style Selector="FlyoutPresenter">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ControlTheme x:Key="{x:Type FlyoutPresenter}"
+                  TargetType="FlyoutPresenter">
         <Setter Property="HorizontalContentAlignment"
                 Value="Stretch" />
         <Setter Property="VerticalContentAlignment"
@@ -37,5 +38,5 @@
                 </Panel>
             </ControlTemplate>
         </Setter>
-    </Style>
-</Styles>
+    </ControlTheme>
+</ResourceDictionary>
