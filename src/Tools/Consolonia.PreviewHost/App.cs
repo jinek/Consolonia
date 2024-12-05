@@ -1,9 +1,9 @@
 using System.Globalization;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PreviewHost.ViewModels;
 using Consolonia.PreviewHost.Views;
+using Consolonia.Themes;
 
 namespace Consolonia.PreviewHost
 {
@@ -17,12 +17,7 @@ namespace Consolonia.PreviewHost
 
         public App()
         {
-            InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
+            this.Styles.Add(new MaterialTheme());
         }
 
         public override void OnFrameworkInitializationCompleted()

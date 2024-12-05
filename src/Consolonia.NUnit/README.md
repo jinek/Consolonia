@@ -1,15 +1,13 @@
-# Consolonia UI
+# Consolonia.NUnit
+This package provides testing support for testing consolonia controls using NUnit.
 
-TUI (Text User Interface) (GUI Framework) implementation for [Avalonia UI](https://github.com/AvaloniaUI)
+## Background
+Consolonia is a TUI (Text User Interface) (GUI Framework) implementation for [Avalonia UI](https://github.com/AvaloniaUI)
 
 Supports XAML, data bindings, animation, styling and the rest from Avalonia.
 
-> Project is in proof of concept state and is looking for collaboration.
-
 ## Showcase (click picture to see video)
 [![datagridpic](https://user-images.githubusercontent.com/10516222/141980173-4eb4057a-6996-45bf-83f6-931316c98d88.png)](https://youtu.be/ttgZmbruk3Y)
-
-This package provides testing support for testing consolonia controls using NUnit.
 
 ## Usage
 To create a unit test against your consolonia application your test class should derive from ConsoloniaAppTestBase&lt;App$gt;.

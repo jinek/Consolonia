@@ -1,15 +1,13 @@
-using System;
 using System.Globalization;
 using System.Threading;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Styling;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
-using Consolonia.Themes.TurboVision.Themes;
+using Consolonia.Themes;
 
 namespace Consolonia.Gallery
 {
-    internal class App : ConsoloniaApplication
+    internal class App : ConsoloniaApplication<ControlsListView>
     {
         static App()
         {
@@ -27,15 +25,6 @@ namespace Consolonia.Gallery
         public override void RegisterServices()
         {
             base.RegisterServices();
-        }
-
-        public override void OnFrameworkInitializationCompleted()
-        {
-            var lifetime = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            if (lifetime != null)
-                lifetime.MainWindow = new ControlsListView();
-
-            base.OnFrameworkInitializationCompleted();
         }
     }
 }

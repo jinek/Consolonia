@@ -1,5 +1,5 @@
 using Consolonia.Core.Infrastructure;
-using Consolonia.Themes.TurboVision.Themes;
+using Consolonia.Themes;
 using Example.Views;
 
 namespace Example
@@ -9,12 +9,11 @@ namespace Example
     {
         public App()
         {
-            Styles.Add(new TurboVisionTheme());
-            Styles.Add(new TurboVisionBlackTheme());
-            Styles.Add(new TurboVisionBlackTheme());
-            Styles.Add(new TurboVisionBlackTheme());
-            // Styles.Add(new FluentTheme());
-            // Styles.Add(new TurboVisionTheme());
+            //Styles.Add(new TurboVisionTheme());
+            //Styles.Add(new TurboVisionBlackTheme());
+            //Styles.Add(new TurboVisionDarkTheme());
+            //Styles.Add(new FluentTheme());
+            Styles.Add(new MaterialTheme());
         }
     }
 }
