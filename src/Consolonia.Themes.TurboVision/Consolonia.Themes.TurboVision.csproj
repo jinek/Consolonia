@@ -10,4 +10,9 @@
       <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="../../Icon.png" Pack="True" PackagePath="\" />
+        <None Include="readme.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
 </Project>

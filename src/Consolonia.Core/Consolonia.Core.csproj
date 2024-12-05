@@ -12,4 +12,9 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="../../Icon.png" Pack="True" PackagePath="\" />
+        <None Include="readme.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
 </Project>

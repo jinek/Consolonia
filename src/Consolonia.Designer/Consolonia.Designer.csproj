@@ -15,4 +15,9 @@
       <ProjectReference Condition="'$(Configuration)' == 'Debug'" Include="..\Tools\Consolonia.PreviewHost\Consolonia.PreviewHost.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="../../Icon.png" Pack="True" PackagePath="\" />
+        <None Include="readme.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
 </Project>

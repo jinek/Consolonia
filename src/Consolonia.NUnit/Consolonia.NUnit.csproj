@@ -2,9 +2,6 @@
 
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
-    <PropertyGroup>
-        <IsPackable>true</IsPackable>
-    </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="NUnit" Version="3.13.1" />
@@ -13,4 +10,10 @@
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+        <None Include="../../Icon.png" Pack="True" PackagePath="\" />
+        <None Include="readme.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
 </Project>

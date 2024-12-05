@@ -24,14 +24,14 @@ jobs:
           version: bump-build
   
       - name: Restore dependencies
-        run: dotnet restore source/Consolonia.sln
+        run: dotnet restore src/Consolonia.sln
 
       - name: Build
-        run: dotnet build source/Consolonia.sln -c Release --no-restore 
+        run: dotnet build src/Consolonia.sln -c Release --no-restore 
   
       - name: dotnet pack 
         run: |
-          dotnet pack --no-build source/Consolonia.sln -c Release -o packages --include-symbols --property WarningLevel=0
+          dotnet pack --no-build src/Consolonia.sln -c Release -o packages --include-symbols --property WarningLevel=0
 
       - name: Publish NuGet and symbols
         id: nuget-push

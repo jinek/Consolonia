@@ -9,11 +9,6 @@
         <ToolCommandName>Consolonia.PreviewHost</ToolCommandName>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <PackageIcon>Icon.png</PackageIcon>
-        <PackageReadmeFile>readme.md</PackageReadmeFile>
-    </PropertyGroup>
-    
     <ItemGroup>
         <None Include="..\..\..\Icon.png" Pack="True" PackagePath="\" />
         <None Include="readme.md" Pack="true" PackagePath="\" />
