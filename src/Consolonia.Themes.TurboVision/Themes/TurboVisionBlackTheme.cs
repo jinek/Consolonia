@@ -2,11 +2,14 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Consolonia.Core.Styles;
 
-namespace Consolonia.Themes.TurboVision.Themes.TurboVisionBlack
+namespace Consolonia.Themes
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class TurboVisionBlackTheme : ResourceIncludeBase
     {
+        public TurboVisionBlackTheme() : base(new Uri("avares://Consolonia.Themes.TurboVision/Themes/TurboVisionBlack/TurboVisionBlack.axaml"))
+        {
+        }
         public TurboVisionBlackTheme(Uri baseUri) : base(baseUri)
         {
         }

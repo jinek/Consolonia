@@ -1,18 +1,23 @@
 using Avalonia;
 using Consolonia.Core;
 using Consolonia.Core.Infrastructure;
+using Consolonia.PlatformSupport;
+using Example.Views;
 
 namespace Example
 {
-    internal static class Program
+    public static class Program
     {
-        public static int Main()
+        private static void Main(string[] args)
         {
-            return AppBuilder.Configure<App>()
-                .UseConsolonia()
-                .UseStandardConsole()
-                .LogToException()
-                .StartWithConsoleLifetime(null);
+            BuildAvaloniaApp()
+                .StartWithConsoleLifetime(args);
         }
+
+        public static AppBuilder BuildAvaloniaApp()
+         => AppBuilder.Configure<App>()
+                .UseConsolonia()
+                .UseAutoDetectedConsole()
+                .LogToException();
     }
 }

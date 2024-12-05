@@ -19,13 +19,11 @@ namespace Consolonia.Designer
         /// </remarks>
         public static AppBuilder UseConsoloniaDesigner(this AppBuilder builder)
         {
-#if DEBUG
-            if (Design.IsDesignMode) //AppDomain.CurrentDomain.FriendlyName == "Avalonia.Designer.HostApp")
+            if (Design.IsDesignMode) 
                 return builder
                     .UsePlatformDetect()
                     .WithInterFont()
                     .LogToTrace();
-#endif
 
             return builder.UseConsolonia();
         }

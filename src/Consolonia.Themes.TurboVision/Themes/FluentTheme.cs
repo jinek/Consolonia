@@ -2,11 +2,14 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Consolonia.Core.Styles;
 
-namespace Consolonia.Themes.TurboVision.Themes.Fluent
+namespace Consolonia.Themes
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class FluentTheme : ResourceIncludeBase
     {
+        public FluentTheme() : base(new Uri("avares://Consolonia.Themes.TurboVision/Themes/Fluent/Fluent.axaml"))
+        {
+        }
         public FluentTheme(Uri baseUri) : base(baseUri)
         {
         }

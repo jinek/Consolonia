@@ -1,5 +1,7 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -57,6 +59,18 @@ namespace Consolonia.Core.Infrastructure
                 //    }
                 //});
             }
+        }
+    }
+
+    public class ConsoloniaApplication<TMainWindow> : ConsoloniaApplication
+        where TMainWindow: Window
+    {
+        public override void OnFrameworkInitializationCompleted()
+        {
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                desktop.MainWindow = Activator.CreateInstance<TMainWindow>();
+
+            base.OnFrameworkInitializationCompleted();
         }
     }
 }
