@@ -1,7 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
-            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers">
+            xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
     <!--TODO: Validation and Focus-->
 
 
@@ -143,8 +143,10 @@
                             <MultiBinding Converter="{x:Static BoolConverters.And}">
                                 <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=DataGrid}"
                                          Path="IsFocused" />
-                                <Binding RelativeSource="{RelativeSource Self}"
-                                         Path="[helpers:DataGridExtensions.IsSelected]" />
+                                <TemplateBinding Property="(helpers:DataGridExtensions.IsSelected)"/>
+                                <!--<Binding RelativeSource="{RelativeSource Self}"
+                                         ElementName="FocusControl"
+                                         Path="(asdf:DataGridExtensions.IsSelected)" />-->
                             </MultiBinding>
                         </helpers:CaretControl.IsCaretShown>
                         <DataGridCellsPresenter Name="PART_CellsPresenter"
@@ -171,7 +173,7 @@
                     Value="True" />
         </Style>
 
-        <Style Selector="^:selected /template/ helpers|CaretControl">
+        <Style Selector="^:selected">
             <Setter Property="(helpers:DataGridExtensions.IsSelected)"
                     Value="True" />
         </Style>
