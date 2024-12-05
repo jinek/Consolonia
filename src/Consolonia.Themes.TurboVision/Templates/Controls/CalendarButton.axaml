@@ -5,8 +5,10 @@
 // All other rights reserved.
 -->
 
-<Styles xmlns="https://github.com/avaloniaui">
-    <Style Selector="CalendarButton">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ControlTheme x:Key="{x:Type CalendarButton}"
+                  TargetType="CalendarButton">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="HorizontalContentAlignment"
@@ -42,46 +44,46 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
-    </Style>
 
-    <Style Selector="CalendarButton /template/ Rectangle#Background">
-        <Setter Property="IsVisible"
-                Value="False" />
-    </Style>
-    <Style Selector="CalendarButton:pointerover /template/ Rectangle#Background">
-        <Setter Property="IsVisible"
-                Value="True" />
-    </Style>
-    <Style Selector="CalendarButton:pressed /template/ Rectangle#Background">
-        <Setter Property="IsVisible"
-                Value="True" />
-    </Style>
+        <Style Selector="^ /template/ Rectangle#Background">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:pointerover /template/ Rectangle#Background">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+        <Style Selector="^:pressed /template/ Rectangle#Background">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
 
-    <Style Selector="CalendarButton /template/ Rectangle#SelectedBackground">
-        <Setter Property="IsVisible"
-                Value="False" />
-    </Style>
-    <Style Selector="CalendarButton:selected /template/ Rectangle#SelectedBackground">
-        <Setter Property="IsVisible"
-                Value="True" />
-    </Style>
+        <Style Selector="^ /template/ Rectangle#SelectedBackground">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:selected /template/ Rectangle#SelectedBackground">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
 
-    <Style Selector="CalendarButton /template/ ContentControl#Content">
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeForegroundBrush}" />
-    </Style>
-    <Style Selector="CalendarButton:inactive /template/ ContentControl#Content">
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeBorderBrush}" />
-    </Style>
+        <Style Selector="^ /template/ ContentControl#Content">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeForegroundBrush}" />
+        </Style>
+        <Style Selector="^:inactive /template/ ContentControl#Content">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeBorderBrush}" />
+        </Style>
 
 
-    <Style Selector="CalendarButton /template/ Rectangle#FocusVisual">
-        <Setter Property="IsVisible"
-                Value="False" />
-    </Style>
-    <Style Selector="CalendarButton:btnfocused /template/ Rectangle#FocusVisual">
-        <Setter Property="IsVisible"
-                Value="True" />
-    </Style>
-</Styles>
+        <Style Selector="^ /template/ Rectangle#FocusVisual">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:btnfocused /template/ Rectangle#FocusVisual">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

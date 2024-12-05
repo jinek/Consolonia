@@ -1,9 +1,9 @@
 using System.Globalization;
 using System.Threading;
-using Avalonia.Styling;
+using Avalonia.Controls.ApplicationLifetimes;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
-using Consolonia.Themes;
+using Consolonia.Themes.TurboVision.Themes.Fluent;
 
 namespace Consolonia.Gallery
 {
@@ -17,14 +17,11 @@ namespace Consolonia.Gallery
 
         public App()
         {
-            // Styles.Add(new TurboVisionTheme());
-            Styles.Add(new MaterialTheme());
-            // Styles.Add(new FluentTheme());
-        }
-
-        public override void RegisterServices()
-        {
-            base.RegisterServices();
+            /*Styles.Add(new TurboVisionTheme());*/
+            /*Styles.Add(new TurboVisionBlackTheme());*/
+            /*Styles.Add(new TurboVisionDarkTheme());*/
+            Styles.Add(new FluentTheme());
+            /*Styles.Add(new MaterialTheme());*/
         }
     }
 }

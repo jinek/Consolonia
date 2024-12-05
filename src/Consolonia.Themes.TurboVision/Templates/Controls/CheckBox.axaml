@@ -1,7 +1,8 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
-    <Style Selector="CheckBox">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.TurboVision.Templates.Controls.Helpers;assembly=Consolonia.Themes.TurboVision">
+    <ControlTheme x:Key="{x:Type CheckBox}"
+                  TargetType="CheckBox">
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeBorderBrush}" />
         <!--<Setter Property="Background"
@@ -48,39 +49,39 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
-    </Style>
-    <Style Selector="CheckBox:focus">
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeForegroundBrush}" />
-    </Style>
-    <!--<Style Selector="CheckBox /template/ Panel helpers|SymbolsControl">
+        <Style Selector="^:focus">
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ThemeForegroundBrush}" />
+        </Style>
+        <!--<Style Selector="^ /template/ Panel helpers|SymbolsControl">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeAccentBackgroundBrush}" />
     </Style>-->
-    <Style Selector="CheckBox /template/ helpers|SymbolsControl#checkMark">
-        <Setter Property="IsVisible"
-                Value="False" />
-    </Style>
-    <Style Selector="CheckBox /template/ helpers|SymbolsControl#indeterminateMark">
-        <Setter Property="IsVisible"
-                Value="False" />
-    </Style>
-    <Style Selector="CheckBox:checked /template/ helpers|SymbolsControl#checkMark">
-        <Setter Property="IsVisible"
-                Value="True" />
-    </Style>
-    <Style Selector="CheckBox:indeterminate /template/ helpers|SymbolsControl#indeterminateMark">
-        <Setter Property="IsVisible"
-                Value="True" />
-    </Style>
-    <!--<Style Selector="CheckBox:disabled /template/ helpers|SymbolsControl">
+        <Style Selector="^ /template/ helpers|SymbolsControl#checkMark">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^ /template/ helpers|SymbolsControl#indeterminateMark">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:checked /template/ helpers|SymbolsControl#checkMark">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+        <Style Selector="^:indeterminate /template/ helpers|SymbolsControl#indeterminateMark">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+        <!--<Style Selector="^:disabled /template/ helpers|SymbolsControl">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeNoDisturbBrush}" />
     </Style>-->
-    <Style Selector="CheckBox:disabled">
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeNoDisturbBrush}" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeNoDisturbBrush}" />
-    </Style>
-</Styles>
+        <Style Selector="^:disabled">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>
