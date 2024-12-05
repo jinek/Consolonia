@@ -63,12 +63,16 @@ namespace Consolonia.Core.Infrastructure
     }
 
     public class ConsoloniaApplication<TMainWindow> : ConsoloniaApplication
-        where TMainWindow: Window, new()
+        where TMainWindow : Window, new()
     {
         public override void OnFrameworkInitializationCompleted()
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                desktop.MainWindow = Activator.CreateInstance<TMainWindow>();
+            {
+                var window = Activator.CreateInstance<TMainWindow>();
+                ArgumentNullException.ThrowIfNull(window, typeof(TMainWindow).Name);
+                desktop.MainWindow = window;
+            }
 
             base.OnFrameworkInitializationCompleted();
         }
