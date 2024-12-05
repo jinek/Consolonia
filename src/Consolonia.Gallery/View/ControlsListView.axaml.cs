@@ -126,8 +126,8 @@ namespace Consolonia.Gallery.View
     public partial class ControlsListViewModel : ObservableObject
     {
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsTuroboVisionDark))]
-        [NotifyPropertyChangedFor(nameof(IsTuroboVisionBlack))]
+        [NotifyPropertyChangedFor(nameof(IsTurboVisionDark))]
+        [NotifyPropertyChangedFor(nameof(IsTurboVisionBlack))]
         [NotifyPropertyChangedFor(nameof(IsTurboVision))]
         [NotifyPropertyChangedFor(nameof(IsFluent))]
         [NotifyPropertyChangedFor(nameof(IsMaterial))]
@@ -136,7 +136,7 @@ namespace Consolonia.Gallery.View
         public bool IsMaterial => SelectedTheme == Themes.Material;
         public bool IsFluent => SelectedTheme == Themes.Fluent;
         public bool IsTurboVision => SelectedTheme == Themes.TurboVision;
-        public bool IsTuroboVisionDark => SelectedTheme == Themes.TurboVisionDark;
-        public bool IsTuroboVisionBlack => SelectedTheme == Themes.TurboVisionBlack;
+        public bool IsTurboVisionDark => SelectedTheme == Themes.TurboVisionDark;
+        public bool IsTurboVisionBlack => SelectedTheme == Themes.TurboVisionBlack;
     }
 }
