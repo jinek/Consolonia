@@ -15,7 +15,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
-        <ProjectReference Condition="'$(Configuration)' == 'Debug'" Include="..\Tools\Consolonia.PreviewHost\Consolonia.PreviewHost.csproj" />
+        <ProjectReference Include="..\Tools\Consolonia.PreviewHost\Consolonia.PreviewHost.csproj" />
     </ItemGroup>
 
     <ItemGroup>
