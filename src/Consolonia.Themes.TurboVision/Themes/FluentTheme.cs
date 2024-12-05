@@ -2,7 +2,7 @@ using System;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 
-namespace Consolonia.Themes
+namespace Consolonia.Themes.TurboVision.Themes.Fluent
 {
     public class FluentTheme : Styles
     {

@@ -1,5 +1,5 @@
 using Consolonia.Core.Infrastructure;
-using Consolonia.Themes;
+using Consolonia.Themes.TurboVision.Themes.Material;
 using Example.Views;
 
 namespace Example
