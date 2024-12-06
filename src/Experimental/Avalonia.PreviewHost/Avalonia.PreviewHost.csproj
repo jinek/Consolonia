@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
+        <!-- This won't be packed unless we release it -->
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
@@ -25,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Consolonia.Designer\Consolonia.Designer.csproj" />
+      <ProjectReference Include="..\Consolonia.Designer\Consolonia.Designer.csproj" />
     </ItemGroup>
 
 </Project>
