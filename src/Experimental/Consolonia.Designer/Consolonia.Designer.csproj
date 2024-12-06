@@ -1,11 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
-    <PropertyGroup>
-        <!-- this won't be packed unless we release it -->
-        <IsPackable>false</IsPackable>
-    </PropertyGroup>
-    
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.FreeDesktop" Version="$(AvaloniaVersion)" />
