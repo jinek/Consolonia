@@ -1,11 +1,11 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
-using Consolonia.Core;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
 
+// ReSharper disable CheckNamespace
 #pragma warning disable IDE0161
 namespace Consolonia
 #pragma warning restore IDE0161

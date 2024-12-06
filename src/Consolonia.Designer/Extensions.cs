@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
-using Consolonia.Core;
 
+// ReSharper disable CheckNamespace
 namespace Consolonia
 {
     public static class Extensions

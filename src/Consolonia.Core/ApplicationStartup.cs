@@ -6,7 +6,7 @@ using Consolonia.Core.Drawing;
 using Consolonia.Core.Infrastructure;
 
 // ReSharper disable UnusedMember.Global //todo: how to disable it for public methods?
-
+// ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Consolonia

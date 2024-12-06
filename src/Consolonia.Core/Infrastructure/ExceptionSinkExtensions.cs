@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Logging;
 using Consolonia.Core.Infrastructure;
 
+// ReSharper disable CheckNamespace
 namespace Consolonia
 // ReSharper disable once ArrangeNamespaceBody
 {

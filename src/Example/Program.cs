@@ -1,6 +1,5 @@
 using Avalonia;
 using Consolonia;
-using Example.Views;
 
 namespace Example
 {

@@ -1,10 +1,7 @@
 using System.Globalization;
 using System.Text;
 using Avalonia;
-using Consolonia.Core;
 using Consolonia.Core.Dummy;
-using Consolonia.Core.Infrastructure;
-using Consolonia.PlatformSupport;
 
 namespace Consolonia.PreviewHost
 {
