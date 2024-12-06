@@ -47,7 +47,7 @@ namespace Consolonia.Core.Infrastructure
 
         public PixelBufferSize Size { get; private set; }
 
-        public bool SupportsComplexEmoji { get => _supportEmoji ?? false; }
+        public bool SupportsComplexEmoji => _supportEmoji ?? false;
 
         public void SetTitle(string title)
         {
@@ -162,10 +162,10 @@ namespace Consolonia.Core.Infrastructure
             // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
             (int left, int top) = Console.GetCursorPosition();
             WriteText(
-                $"{Esc.Foreground(Colors.Transparent)}{Esc.Background(Colors.Transparent)}{TestEmoji}"); 
-             (int left2, _) = Console.GetCursorPosition();
+                $"{Esc.Foreground(Colors.Transparent)}{Esc.Background(Colors.Transparent)}{TestEmoji}");
+            (int left2, _) = Console.GetCursorPosition();
             _supportEmoji = left2 - left == 2;
-             Console.SetCursorPosition(left, top);
+            Console.SetCursorPosition(left, top);
 
             WriteText(Esc.ClearScreen);
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
@@ -182,7 +182,6 @@ namespace Consolonia.Core.Infrastructure
 
         protected void ActualizeSize()
         {
-
             Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
             Resized?.Invoke();
         }
