@@ -19,7 +19,7 @@ namespace Consolonia
         /// </remarks>
         public static AppBuilder UseConsoloniaDesigner(this AppBuilder builder)
         {
-            if (Design.IsDesignMode) 
+            if (Design.IsDesignMode)
                 return builder
                     .UsePlatformDetect()
                     .WithInterFont()
