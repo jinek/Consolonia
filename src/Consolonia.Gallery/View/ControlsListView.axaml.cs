@@ -4,6 +4,8 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Primitives;
+using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
 using Consolonia.Themes;
@@ -88,16 +90,23 @@ namespace Consolonia.Gallery.View
             this.Close();
         }
 
-        private void ComboBox_SelectionChanged(object? sender, Avalonia.Controls.SelectionChangedEventArgs e)
+        private void ComboBox_SelectionChanged(object sender, Avalonia.Controls.SelectionChangedEventArgs e)
         {
-            Styles[0] = ((ComboBoxItem)ThemeCombo.SelectedItem).Content.ToString() switch 
+            if (ThemeCombo?.SelectedItem is not ComboBoxItem selectedItem ||
+                selectedItem.Content is not string themeName ||
+                !Enum.TryParse<Themes>(themeName, out var selectedTheme))
             {
-                nameof (Themes.Material) => new MaterialTheme(),
-                nameof (Themes.Fluent) => new FluentTheme(),
-                nameof (Themes.TurboVision) => new TurboVisionTheme(),
-                nameof (Themes.TurboVisionDark) => new TurboVisionDarkTheme(),
-                nameof (Themes.TurboVisionBlack) => new TurboVisionBlackTheme(),
-                _ => throw new ArgumentOutOfRangeException()
+                return;
+            }
+
+            Styles[0] = selectedTheme switch
+            {
+                Themes.Material => new MaterialTheme(),
+                Themes.Fluent => new FluentTheme(),
+                Themes.TurboVision => new TurboVisionTheme(),
+                Themes.TurboVisionDark => new TurboVisionDarkTheme(),
+                Themes.TurboVisionBlack => new TurboVisionBlackTheme(),
+                _ => throw new ArgumentOutOfRangeException(nameof(selectedTheme))
             };
         }
     }

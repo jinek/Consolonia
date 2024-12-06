@@ -15,4 +15,8 @@
     <PropertyGroup>
         <AvaloniaVersion>11.2.1</AvaloniaVersion>
     </PropertyGroup>
+    <ItemGroup Condition="'$(IsPackable)' != 'false'">
+        <None Include="$(SolutionDir)/../Icon.png" Pack="True" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 </Project>
