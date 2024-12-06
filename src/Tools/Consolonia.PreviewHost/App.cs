@@ -17,7 +17,7 @@ namespace Consolonia.PreviewHost
 
         public App()
         {
-            this.Styles.Add(new MaterialTheme());
+            Styles.Add(new MaterialTheme());
         }
 
         public override void OnFrameworkInitializationCompleted()

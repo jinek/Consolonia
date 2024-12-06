@@ -6,7 +6,7 @@
     <!-- Fluent Design Color Scheme -->
     <!-- Fluent: Black -->
     <drawing:ConsoleBrush x:Key="ThemeForegroundBrush"
-                       Color="#323130" />
+                          Color="#323130" />
     <!-- Fluent: White -->
     <drawing:ConsoleBrush x:Key="ThemeBackgroundBrush"
                           Color="#FFFFFF" />
