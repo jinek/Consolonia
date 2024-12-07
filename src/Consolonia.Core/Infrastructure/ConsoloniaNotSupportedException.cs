@@ -8,6 +8,7 @@ namespace Consolonia.Core.Infrastructure
         {
             Request = request;
         }
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public NotSupportedRequest Request { get; }
     }

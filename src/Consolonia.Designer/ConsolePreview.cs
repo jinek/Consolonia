@@ -1,18 +1,18 @@
 #nullable enable
 
-using Avalonia;
-using Avalonia.Controls;
-using Consolonia.PreviewHost;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.PreviewHost;
 using Newtonsoft.Json;
 
 namespace Consolonia.Designer
@@ -39,7 +39,13 @@ namespace Consolonia.Designer
         public static readonly StyledProperty<bool> MonitorChangesProperty =
             AvaloniaProperty.Register<ConsolePreview, bool>(nameof(MonitorChanges));
 
+        private readonly Typeface _typeface = new("Cascadia Mono");
+        private double _charHeight;
+        private double _charWidth;
+
         private bool _disposedValue;
+
+        private Process? _process;
 
         public ConsolePreview()
         {
@@ -118,11 +124,6 @@ namespace Consolonia.Designer
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(true);
         }
-
-        private Process? _process;
-        private readonly Typeface _typeface = new("Cascadia Mono");
-        private double _charWidth;
-        private double _charHeight;
 
         private void LoadXaml()
         {

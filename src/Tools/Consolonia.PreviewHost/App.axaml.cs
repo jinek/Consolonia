@@ -44,7 +44,10 @@ namespace Consolonia.PreviewHost
                             folder = Path.GetDirectoryName(path)!;
                     }
                     else
+                    {
                         folder = Environment.CurrentDirectory;
+                    }
+
                     ArgumentNullException.ThrowIfNull(folder);
                     string projectFile = FindProjectFileFromPath(folder);
 
