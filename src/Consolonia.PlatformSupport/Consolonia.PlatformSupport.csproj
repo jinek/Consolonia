@@ -2,11 +2,6 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
     <ItemGroup>
-        <PackageReference Include="Consolonia.Core" Version="11.2" />
-        <PackageReference Include="Consolonia.GuiCS" Version="11.2" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
         <ProjectReference Include="..\Consolonia.GuiCS\Consolonia.GuiCS.csproj" />        
     </ItemGroup>

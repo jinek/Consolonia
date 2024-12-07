@@ -2,7 +2,6 @@
 
 using Avalonia;
 using Avalonia.Controls;
-#if DEBUG
 using Consolonia.PreviewHost;
 using System;
 using System.Diagnostics;
@@ -15,7 +14,6 @@ using Avalonia.Media.TextFormatting;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Newtonsoft.Json;
-#endif
 
 namespace Consolonia.Designer
 {
@@ -45,7 +43,6 @@ namespace Consolonia.Designer
 
         public ConsolePreview()
         {
-#if DEBUG
             _process = null;
             FontFamily = FontFamily.Parse("Cascadia Mono");
             Initialized += (_, _) => LoadXaml();
@@ -54,7 +51,6 @@ namespace Consolonia.Designer
             {
                 if (e.Property == FileNameProperty) LoadXaml();
             };
-#endif
         }
 
 
@@ -102,7 +98,6 @@ namespace Consolonia.Designer
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
-#if DEBUG
 #pragma warning disable CA1416 // Validate platform compatibility
                     if (_process != null)
                     {
@@ -111,7 +106,6 @@ namespace Consolonia.Designer
                         _process = null;
                     }
 #pragma warning restore CA1416 // Validate platform compatibility
-#endif
                 }
 
                 _disposedValue = true;
@@ -125,14 +119,10 @@ namespace Consolonia.Designer
             Dispose(true);
         }
 
-#if DEBUG
         private Process? _process;
         private readonly Typeface _typeface = new("Cascadia Mono");
         private double _charWidth;
         private double _charHeight;
-#endif
-
-#if DEBUG
 
         private void LoadXaml()
         {
@@ -451,6 +441,5 @@ namespace Consolonia.Designer
                 _textRunCharWidth = 0;
             }
         }
-#endif
     }
 }

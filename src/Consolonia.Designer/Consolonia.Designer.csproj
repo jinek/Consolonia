@@ -5,16 +5,14 @@
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.FreeDesktop" Version="$(AvaloniaVersion)" />
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Consolonia.Core" Version="11.2" />
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Consolonia.PreviewHost" Version="11.2" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
-      <ProjectReference Condition="'$(Configuration)' == 'Debug'" Include="..\Tools\Consolonia.PreviewHost\Consolonia.PreviewHost.csproj" />
+      <ProjectReference Include="..\Tools\Consolonia.PreviewHost\Consolonia.PreviewHost.csproj" />
     </ItemGroup>
 
 </Project>
