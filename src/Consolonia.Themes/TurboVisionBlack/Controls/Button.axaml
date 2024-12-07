@@ -1,0 +1,15 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+    <Styles.Resources>
+        <ControlTheme x:Key="{x:Type Button}"
+                      TargetType="Button">
+
+            <ControlTheme.BasedOn>
+                <StaticResource ResourceKey="{x:Type Button}" />
+            </ControlTheme.BasedOn>
+            <Setter Property="(helpers:ButtonExtensions.Shadow)"
+                    Value="False" />
+        </ControlTheme>
+    </Styles.Resources>
+</Styles>
