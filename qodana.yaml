@@ -2,8 +2,8 @@ version: "1.0"
 linter: jetbrains/qodana-dotnet:2024.1
 profile:
   name: qodana.recommended
-environment:
-  QODANA_DOTNET_SOLUTION: "Consolonia.sln"
+dotnet:
+  solution: ./src/Consolonia.sln
 include:
   - name: CheckDependencyLicenses
 exclude:
