@@ -1,4 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <!-- we need this because it needs avalonia access-->
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    <PropertyGroup>
+        <!-- but we don't want it packed-->
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
