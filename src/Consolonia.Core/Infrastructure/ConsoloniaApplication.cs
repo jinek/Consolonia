@@ -6,6 +6,7 @@ using Avalonia.Input;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 
+// ReSharper disable once CheckNamespace
 namespace Consolonia
 {
     public class ConsoloniaApplication : Application

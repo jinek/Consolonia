@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using BlazorBindingsAvalonia;
 using Microsoft.Extensions.DependencyInjection;
 
+// ReSharper disable once CheckNamespace
 namespace Consolonia
 {
     public static class BuilderExtensions
