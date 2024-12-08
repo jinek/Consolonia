@@ -3,7 +3,7 @@ linter: jetbrains/qodana-dotnet:2024.1
 profile:
   name: qodana.recommended
 dotnet:
-  solution: ./src/Consolonia.sln
+  solution: src/Consolonia.sln
 include:
   - name: CheckDependencyLicenses
 exclude:
