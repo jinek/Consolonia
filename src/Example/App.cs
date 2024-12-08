@@ -1,4 +1,4 @@
-using Consolonia.Core.Infrastructure;
+using Consolonia;
 using Consolonia.Themes;
 using Example.Views;
 

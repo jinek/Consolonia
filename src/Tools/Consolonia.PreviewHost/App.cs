@@ -1,6 +1,5 @@
 using System.Globalization;
 using Avalonia.Controls.ApplicationLifetimes;
-using Consolonia.Core.Infrastructure;
 using Consolonia.PreviewHost.ViewModels;
 using Consolonia.PreviewHost.Views;
 using Consolonia.Themes;
@@ -32,9 +31,17 @@ namespace Consolonia.PreviewHost
                 {
                     string folder;
                     if (Path.IsPathFullyQualified(path))
-                        folder = Path.GetDirectoryName(path)!;
+                    {
+                        if (Directory.Exists(path))
+                            folder = path;
+                        else
+                            folder = Path.GetDirectoryName(path)!;
+                    }
                     else
+                    {
                         folder = Environment.CurrentDirectory;
+                    }
+
                     ArgumentNullException.ThrowIfNull(folder);
                     string projectFile = FindProjectFileFromPath(folder);
 

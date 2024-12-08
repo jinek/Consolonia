@@ -4,7 +4,6 @@
     <WarningsAsErrors>false</WarningsAsErrors>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
 </Project>

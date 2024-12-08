@@ -766,3 +766,4 @@ fabric.properties
 .idea/
 *.sln.iml
 
+/src/Tools/Consolonia.PreviewHost/Properties/launchSettings.json

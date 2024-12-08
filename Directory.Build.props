@@ -1,7 +1,7 @@
 ﻿<Project>
     <PropertyGroup>
         <!--todo: add mono-->
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>disable</Nullable>
     </PropertyGroup>
     <PropertyGroup>
@@ -11,6 +11,7 @@
         <Copyright>Copyright © Evgeny Gorbovoy 2021 - 2022</Copyright>
         <PackageIcon>Icon.png</PackageIcon>
         <NoWarn>AVA3001</NoWarn>
+        <IsPackable>False</IsPackable>
     </PropertyGroup>
     <PropertyGroup>
         <AvaloniaVersion>11.2.1</AvaloniaVersion>
