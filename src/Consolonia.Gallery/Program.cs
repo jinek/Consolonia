@@ -1,8 +1,5 @@
 using System;
 using Avalonia;
-using Consolonia.Core;
-using Consolonia.Core.Infrastructure;
-using Consolonia.PlatformSupport;
 
 namespace Consolonia.Gallery
 {

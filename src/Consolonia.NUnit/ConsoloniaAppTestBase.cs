@@ -6,7 +6,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
-using Consolonia.Core;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using NUnit.Framework;
 

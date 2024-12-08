@@ -1,9 +1,0 @@
-<infrastructure:ConsoloniaApplication xmlns="https://github.com/avaloniaui"
-                                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                                      xmlns:turboVisionBlack="clr-namespace:Consolonia.Themes.TurboVision.Themes.TurboVisionBlack;assembly=Consolonia.Themes.TurboVision"
-                                      xmlns:infrastructure="clr-namespace:Consolonia.Core.Infrastructure;assembly=Consolonia.Core"
-                                      x:Class="Example.App">
-    <infrastructure:ConsoloniaApplication.Styles>
-        <turboVisionBlack:TurboVisionBlackTheme />
-    </infrastructure:ConsoloniaApplication.Styles>
-</infrastructure:ConsoloniaApplication>

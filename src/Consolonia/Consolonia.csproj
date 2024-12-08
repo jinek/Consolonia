@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    <ItemGroup>
+      <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
+      <ProjectReference Include="..\Consolonia.PlatformSupport\Consolonia.PlatformSupport.csproj" />
+      <ProjectReference Include="..\Consolonia.Themes\Consolonia.Themes.csproj" />
+    </ItemGroup>
+
+</Project>
