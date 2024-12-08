@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <IsPackable>False</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
