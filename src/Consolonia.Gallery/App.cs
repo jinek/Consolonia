@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Threading;
-using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
 using Consolonia.Themes;
 

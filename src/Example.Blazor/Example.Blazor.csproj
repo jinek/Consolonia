@@ -9,8 +9,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Blazor\Consolonia.Blazor.csproj" />
-        <ProjectReference Include="..\Consolonia.PlatformSupport\Consolonia.PlatformSupport.csproj" />
-        <ProjectReference Include="..\Consolonia.Themes.TurboVision\Consolonia.Themes.TurboVision.csproj" />
         <ProjectReference Include="..\Example.Blazor.Components\Example.Blazor.Components.csproj" />
     </ItemGroup>
 

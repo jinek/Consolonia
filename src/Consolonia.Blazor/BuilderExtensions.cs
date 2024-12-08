@@ -2,10 +2,9 @@ using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using BlazorBindingsAvalonia;
-using Consolonia.Core;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Consolonia.Blazor
+namespace Consolonia
 {
     public static class BuilderExtensions
     {

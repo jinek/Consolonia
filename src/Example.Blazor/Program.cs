@@ -1,8 +1,5 @@
 using Avalonia;
-using Consolonia.Blazor;
-using Consolonia.Core;
-using Consolonia.Core.Infrastructure;
-using Consolonia.PlatformSupport;
+using Consolonia;
 
 namespace Example.Blazor
 {
