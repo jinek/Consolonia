@@ -1,0 +1,35 @@
+name: Publish Nuget Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v4
+  
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+  
+      - name: Restore dependencies
+        run: dotnet restore src/Consolonia.sln
+
+      - name: Build
+        run: dotnet build src/Consolonia.sln -c Release --no-restore 
+  
+      - name: dotnet pack 
+        run: |
+          dotnet pack src/Consolonia.sln -c Release -o packages --include-symbols --property WarningLevel=0
+
+      - name: Publish NuGet and symbols
+        id: nuget-push
+        uses: edumserrano/nuget-push@v1
+        with:
+          api-key: '${{ secrets.NUGET_KEY }}' 
+          working-directory: 'packages'
+          fail-if-exists: false
+        

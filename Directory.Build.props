@@ -5,13 +5,18 @@
         <Nullable>disable</Nullable>
     </PropertyGroup>
     <PropertyGroup>
-        <VersionPrefix>11.0.9</VersionPrefix>
+        <VersionPrefix>11.2.1</VersionPrefix>
         <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
         <Description>Text User Interface implementation of Avalonia UI (GUI Framework)</Description>
         <Copyright>Copyright © Evgeny Gorbovoy 2021 - 2022</Copyright>
+        <PackageIcon>Icon.png</PackageIcon>
         <NoWarn>AVA3001</NoWarn>
     </PropertyGroup>
     <PropertyGroup>
         <AvaloniaVersion>11.2.1</AvaloniaVersion>
     </PropertyGroup>
+    <ItemGroup Condition="'$(IsPackable)' != 'false'">
+        <None Include="$(SolutionDir)/../Icon.png" Pack="True" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 </Project>

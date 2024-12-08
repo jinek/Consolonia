@@ -1,0 +1,49 @@
+name: Publish Incremental Nuget Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v4
+  
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+  
+      - name: Bump build version
+        id: bump
+        uses: vers-one/dotnet-project-version-updater@v1.5
+        with:
+          files: |
+            "**/Consolonia.csproj"
+          version: bump-build
+  
+      - name: Restore dependencies
+        run: dotnet restore src/Consolonia.sln
+
+      - name: Build
+        run: dotnet build src/Consolonia.sln -c Release --no-restore 
+  
+      - name: dotnet pack 
+        run: |
+          dotnet pack src/Consolonia.sln -c Release -o packages --include-symbols --property WarningLevel=0
+
+      - name: Publish NuGet and symbols
+        id: nuget-push
+        uses: edumserrano/nuget-push@v1
+        with:
+          api-key: '${{ secrets.NUGET_KEY }}' 
+          working-directory: 'packages'
+          fail-if-exists: false
+        
+      - name: Commit new version changes
+        run: |
+          git config --global user.name "Github Action"
+          git config --global user.email "jinek@users.noreply.github.com"
+          git commit -a -m "Bumped version for published nuget artifacts"
+          git push

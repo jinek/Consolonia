@@ -1,0 +1,107 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Consolonia.Core.Controls;assembly=Consolonia.Core"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers"
+                    xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+    <Thickness x:Key="ConsoloniaDialogWindowBorderMargin">1,0</Thickness>
+
+    <ControlTheme x:Key="{x:Type controls:DialogWindow}"
+                  TargetType="controls:DialogWindow">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Margin"
+                Value="0" />
+        <Setter Property="Padding"
+                Value="0" />
+        <Setter Property="IsCloseButtonVisible"
+                Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:DialogWindow">
+                    <Panel>
+                        <!--Centered layout-->
+                        <!--Panel shade Mode=Shaded-->
+                        <Border Background="{drawing:ConsoleBrush Mode=Shaded}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom">
+                            <Border BorderBrush="{drawing:ConsoleBrush Mode=Transparent}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}">
+                                <Control
+                                    Width="{Binding Path=ContentSize.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Height="{Binding Path=ContentSize.Height, RelativeSource={RelativeSource TemplatedParent}}"
+                                    IsHitTestVisible="False"
+                                    Margin="{TemplateBinding Padding}" />
+                            </Border>
+                        </Border>
+
+                        <!--Panel-->
+                        <Panel Background="{TemplateBinding Background}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                            <Border BorderThickness="{TemplateBinding BorderThickness}"
+                                    Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}">
+                                <Border.BorderBrush>
+                                    <drawing:LineBrush
+                                        Brush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                        LineStyle="DoubleLine" />
+                                </Border.BorderBrush>
+                                <Control
+                                    Width="{Binding Path=ContentSize.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Height="{Binding Path=ContentSize.Height, RelativeSource={RelativeSource TemplatedParent}}"
+                                    IsHitTestVisible="False"
+                                    Margin="{TemplateBinding Padding}" />
+                            </Border>
+                            <StackPanel HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
+                                        ZIndex="10"
+                                        Orientation="Horizontal">
+                                <helpers:SymbolsControl Text="{TemplateBinding Icon}"
+                                                        IsVisible="{Binding Icon.Length}"
+                                                        Foreground="{TemplateBinding BorderBrush}" />
+                                <TextBlock Text="{TemplateBinding Title}"
+                                           Margin="1 0 0 0" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        ZIndex="10"
+                                        VerticalAlignment="Top"
+                                        HorizontalAlignment="Right"
+                                        Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
+                                        IsVisible="{TemplateBinding IsCloseButtonVisible}">
+                                <Button Content="×"
+                                        Background="{x:Null}"
+                                        IsTabStop="False"
+                                        Padding="0"
+                                        Command="{Binding Path=CloseClick, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Button.Styles>
+                                        <Style Selector="Button">
+                                            <Setter Property="helpers:ButtonExtensions.Shadow"
+                                                    Value="False" />
+                                        </Style>
+                                    </Button.Styles>
+                                </Button>
+                            </StackPanel>
+                        </Panel>
+
+                        <!--Content-->
+                        <Panel Margin="2,1,2,1">
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
+                                              Padding="{TemplateBinding Padding}"
+                                              BorderThickness="{TemplateBinding BorderThickness}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Content="{TemplateBinding Content}" />
+                        </Panel>
+                    </Panel>
+
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>
