@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -11,9 +10,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
     }
+
 }

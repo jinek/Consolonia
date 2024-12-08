@@ -1,30 +1,44 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
+using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
+using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
 {
     internal class DrawingContextImpl : IDrawingContextImpl
     {
+        private const byte VerticalStartPattern = 0b0010;
+        private const byte VerticalLinePattern = 0b1010;
+        private const byte VerticalEndPattern = 0b1000;
+        private const byte HorizontalStartPattern = 0b0100;
+        private const byte HorizontalLinePattern = 0b0101;
+        private const byte HorizontalEndPattern = 0b0001;
+
+        public const int UnderlineThickness = 10;
+        public const int StrikethroughThickness = 11;
+
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
         private readonly PixelBuffer _pixelBuffer;
         private readonly Matrix _postTransform = Matrix.Identity;
         private Matrix _transform = Matrix.Identity;
 
-        public DrawingContextImpl(ConsoleWindow consoleWindow, PixelBuffer pixelBuffer)
+        public DrawingContextImpl(ConsoleWindow consoleWindow)
         {
             _consoleWindow = consoleWindow;
-            _pixelBuffer = pixelBuffer;
-            _clipStack.Push(pixelBuffer.Size);
+            _pixelBuffer = consoleWindow.PixelBuffer;
+            _clipStack.Push(_pixelBuffer.Size);
         }
 
         private Rect CurrentClip => _clipStack.Peek();
@@ -47,27 +61,49 @@ namespace Consolonia.Core.Drawing
 
         public void DrawBitmap(IBitmapImpl source, double opacity, Rect sourceRect, Rect destRect)
         {
-            throw new NotImplementedException();
-            /*
-           //  prototype
-            Rect clip = _currentClip.Intersect(destRect);
-           for (int x = 0; x < sourceRect.Width; x++)
-           for (int y = 0; y < sourceRect.Height; y++)
-           {
-               var myRenderTarget = (RenderTarget)source.Item;
+            // resize bitmap to destination rect size
+            var targetRect = new Rect(Transform.Transform(new Point(destRect.TopLeft.X, destRect.TopLeft.Y)),
+                Transform.Transform(new Point(destRect.BottomRight.X, destRect.BottomRight.Y)));
+            var bmp = (BitmapImpl)source;
 
-               int left = (int)(x + destRect.Left);
-               int top = (int)(y + destRect.Top);
-               clip.ExecuteWithClipping(new Point(left, top), () =>
-               {
-                   _pixelBuffer.Set(new PixelBufferCoordinate((ushort)left, (ushort)top), destPixel =>
-                   {
-                       return destPixel.Blend(
-                           myRenderTarget._bufferBuffer[new PixelBufferCoordinate((ushort)(x + sourceRect.Left),
-                               (ushort)(y + sourceRect.Top))]);
-                   });
-               });
-           }*/
+            // resize source to be target rect * 2 so we can map to quad pixels
+            using var bitmap = new SKBitmap((int)targetRect.Width * 2, (int)targetRect.Height * 2);
+            using var canvas = new SKCanvas(bitmap);
+            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, bitmap.Width, bitmap.Height),
+                new SKPaint { FilterQuality = SKFilterQuality.Medium });
+
+            for (int y = 0; y < bitmap.Info.Height; y += 2)
+            for (int x = 0; x < bitmap.Info.Width; x += 2)
+            {
+                // NOTE: we divide by 2 because we are working with quad pixels,
+                // // the bitmap has twice the horizontal and twice the vertical of the target rect.
+                int px = (int)targetRect.TopLeft.X + x / 2;
+                int py = (int)targetRect.TopLeft.Y + y / 2;
+
+                // get the quad pixel the bitmap
+                var quadColors = new[]
+                {
+                    bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
+                    bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
+                };
+
+                // map it to a single char to represet the 4 pixels
+                char quadPixel = GetQuadPixelCharacter(quadColors);
+
+                // get the combined colors for the quad pixel
+                Color foreground = GetForegroundColorForQuadPixel(quadColors, quadPixel);
+                Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
+
+                var imagePixel = new Pixel(
+                    new PixelForeground(new SimpleSymbol(quadPixel), foreground),
+                    new PixelBackground(background));
+                CurrentClip.ExecuteWithClipping(new Point(px, py),
+                    () =>
+                    {
+                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                            existingPixel => existingPixel.Blend(imagePixel));
+                    });
+            }
         }
 
         public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
@@ -139,8 +175,8 @@ namespace Consolonia.Core.Drawing
                     CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                     {
                         _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            (pixel, bb) => { return pixel.Blend(new Pixel(new PixelBackground(bb.Mode, bb.Color))); },
-                            backgroundBrush);
+                            pixel => pixel.Blend(new Pixel(new PixelBackground(backgroundBrush.Mode,
+                                backgroundBrush.Color))));
                     });
                 }
             }
@@ -148,10 +184,10 @@ namespace Consolonia.Core.Drawing
             if (pen is null or { Thickness: 0 }
                 or { Brush: null }) return;
 
-            DrawLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width));
-            DrawLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width));
-            DrawLineInternal(pen, new Line(r.TopLeft, true, (int)r.Height));
-            DrawLineInternal(pen, new Line(r.TopRight, true, (int)r.Height));
+            DrawRectangleLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width));
+            DrawRectangleLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width));
+            DrawRectangleLineInternal(pen, new Line(r.TopLeft, true, (int)r.Height));
+            DrawRectangleLineInternal(pen, new Line(r.TopRight, true, (int)r.Height));
         }
 
         public void DrawEllipse(IBrush brush, IPen pen, Rect rect)
@@ -174,12 +210,12 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            string charactersDoDraw =
-                string.Concat(glyphRunImpl.GlyphIndices.Select(us => (char)us).ToArray());
-            DrawStringInternal(foreground, charactersDoDraw, glyphRun.GlyphTypeface);
+            var shapedBuffer = (ShapedBuffer)glyphRunImpl.GlyphInfos;
+            string text = shapedBuffer.Text.ToString();
+            DrawStringInternal(foreground, text, glyphRun.GlyphTypeface);
         }
 
-        public IDrawingContextLayerImpl CreateLayer(Size size)
+        public IDrawingContextLayerImpl CreateLayer(PixelSize size)
         {
             return new RenderTarget(_consoleWindow);
         }
@@ -196,6 +232,11 @@ namespace Consolonia.Core.Drawing
                 ConsoloniaPlatform.RaiseNotSupported(2);
 
             PushClip(clip.Rect);
+        }
+
+        public void PushClip(IPlatformRenderInterfaceRegion region)
+        {
+            throw new NotImplementedException();
         }
 
         public void PopClip()
@@ -250,21 +291,147 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
-        public RenderOptions RenderOptions { get; set; }
-
         public Matrix Transform
         {
             get => _transform;
             set => _transform = value * _postTransform;
         }
 
+        public void DrawRegion(IBrush brush, IPen pen, IPlatformRenderInterfaceRegion region)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PushLayer(Rect bounds)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PopLayer()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///     Draw a straight horizontal line or vertical line
+        /// </summary>
+        /// <param name="pen">pen</param>
+        /// <param name="line">line</param>
+        private void DrawLineInternal(IPen pen, Line line)
+        {
+            if (pen.Thickness.IsNearlyEqual(0)) return;
+
+            if (pen.Thickness.IsNearlyEqual(UnderlineThickness) || pen.Thickness.IsNearlyEqual(StrikethroughThickness))
+            {
+                if (line.Vertical)
+                    throw new NotSupportedException(
+                        "Vertical strikethrough or underline text decorations is not supported.");
+
+                // horizontal lines with thickness larger than one are text decorations
+                ApplyTextDecorationLineInternal(pen, line);
+                return;
+            }
+
+            DrawRectangleLineInternal(pen, line);
+        }
+
+        private void ApplyTextDecorationLineInternal(IPen pen, Line line)
+        {
+            line = TransformLineInternal(line);
+
+            Point head = line.PStart;
+
+            TextDecorationLocation textDecoration = pen.Thickness switch
+            {
+                UnderlineThickness => TextDecorationLocation.Underline,
+                StrikethroughThickness => TextDecorationLocation.Strikethrough,
+                _ => throw new ArgumentOutOfRangeException($"Unsupported thickness {pen.Thickness}")
+            };
+
+            for (int x = 0; x < line.Length; x++)
+            {
+                Point h = head;
+                CurrentClip.ExecuteWithClipping(h, () =>
+                {
+                    // ReSharper disable once AccessToModifiedClosure todo: pass as a parameter
+                    _pixelBuffer.Set((PixelBufferCoordinate)h,
+                        pixel =>
+                        {
+                            var newPixelForeground = new PixelForeground(pixel.Foreground.Symbol,
+                                pixel.Foreground.Color,
+                                pixel.Foreground.Weight,
+                                pixel.Foreground.Style,
+                                textDecoration);
+                            return pixel.Blend(new Pixel(newPixelForeground, pixel.Background));
+                        });
+                });
+                head = head.WithX(head.X + 1);
+            }
+        }
+
+        /// <summary>
+        ///     Draw a rectangle line with corners
+        /// </summary>
+        /// <param name="pen">pen</param>
+        /// <param name="line">line</param>
+        private void DrawRectangleLineInternal(IPen pen, Line line)
+        {
+            if (pen.Thickness == 0) return;
+
+            line = TransformLineInternal(line);
+
+            Point head = line.PStart;
+
+            if (pen.Brush is MoveConsoleCaretToPositionBrush)
+            {
+                CurrentClip.ExecuteWithClipping(head,
+                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
+                return;
+            }
+
+            var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
+            if (extractColorCheckPlatformSupported == null)
+                return;
+
+            var color = (Color)extractColorCheckPlatformSupported;
+
+            byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
+            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //beginning
+
+            pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
+            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length - 1); //line
+
+            pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
+            DrawPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //ending 
+        }
+
+        /// <summary>
+        ///     Transform line coordinates
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        private Line TransformLineInternal(Line line)
+        {
+            if (!Transform.NoRotation()) ConsoloniaPlatform.RaiseNotSupported(16);
+
+            line = (Line)line.WithTransform(Transform);
+            return line;
+        }
+
+        /// <summary>
+        ///     Extract color from pen brush
+        /// </summary>
+        /// <param name="pen"></param>
+        /// <param name="lineStyle"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         private static Color? ExtractColorOrNullWithPlatformCheck(IPen pen, out LineStyle? lineStyle)
         {
             lineStyle = null;
             if (pen is not
                 {
                     Brush: ConsoleBrush or LineBrush or ImmutableSolidColorBrush,
-                    Thickness: 1,
+                    // Thickness: 1,
                     DashStyle: null or { Dashes: { Count: 0 } },
                     LineCap: PenLineCap.Flat,
                     LineJoin: PenLineJoin.Miter
@@ -277,12 +444,12 @@ namespace Consolonia.Core.Drawing
             if (pen.Brush is LineBrush lineBrush)
                 lineStyle = lineBrush.LineStyle;
 
-            ConsoleBrush consoleColorBrush = ConsoleBrush.FromBrush(pen.Brush);
+            ConsoleBrush consoleBrush = ConsoleBrush.FromBrush(pen.Brush);
 
-            switch (consoleColorBrush.Mode)
+            switch (consoleBrush.Mode)
             {
                 case PixelBackgroundMode.Colored:
-                    return consoleColorBrush.Color;
+                    return consoleBrush.Color;
                 case PixelBackgroundMode.Transparent:
                     return null;
                 case PixelBackgroundMode.Shaded:
@@ -293,125 +460,375 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawLineInternal(IPen pen, Line line)
+        /// <summary>
+        ///     Draw pixels for a line with linestyle and a pattern
+        /// </summary>
+        /// <param name="head">the current caret position</param>
+        /// <param name="line">line to render</param>
+        /// <param name="lineStyle">line style</param>
+        /// <param name="pattern">pattern of character to use</param>
+        /// <param name="color">color for char</param>
+        /// <param name="count">number of chars</param>
+        private void DrawPixelAndMoveHead(ref Point head, Line line, LineStyle? lineStyle, byte pattern, Color color,
+            int count)
         {
-            if (pen.Thickness == 0) return;
-
-            if (!Transform.NoRotation()) ConsoloniaPlatform.RaiseNotSupported(16);
-
-            line = (Line)line.WithTransform(Transform);
-
-            Point head = line.PStart;
-
-            if (pen.Brush is MoveConsoleCaretToPositionBrush)
+            for (int i = 0; i < count; i++)
             {
-                CurrentClip.ExecuteWithClipping(head,
-                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
-
-                return;
-            }
-
-            var extractColorCheckPlatformSupported =
-                ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
-            if (extractColorCheckPlatformSupported == null)
-                return;
-
-            var consoleColor = (Color)extractColorCheckPlatformSupported;
-
-            byte pattern = (byte)(line.Vertical ? 0b0010 : 0b0100);
-            DrawPixelAndMoveHead(1); //beginning
-
-            pattern = (byte)(line.Vertical ? 0b1010 : 0b0101);
-            DrawPixelAndMoveHead(line.Length - 1); //line
-
-            pattern = (byte)(line.Vertical ? 0b1000 : 0b0001);
-            DrawPixelAndMoveHead(1); //ending 
-            return;
-
-            void DrawPixelAndMoveHead(int count)
-            {
-                for (int i = 0; i < count; i++)
+                Point h = head;
+                CurrentClip.ExecuteWithClipping(h, () =>
                 {
-                    CurrentClip.ExecuteWithClipping(head, () =>
-                    {
-                        // ReSharper disable once AccessToModifiedClosure todo: pass as a parameter
-                        _pixelBuffer.Set((PixelBufferCoordinate)head,
-                            (pixel, mcC) => pixel.Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(
-                                mcC.pattern,
-                                lineStyle ?? LineStyle.SingleLine), mcC.consoleColor)),
-                            (pattern, consoleColor));
-                    });
-                    head = line.Vertical
-                        ? head.WithY(head.Y + 1)
-                        : head.WithX(head.X + 1);
-                }
+                    // ReSharper disable once AccessToModifiedClosure todo: pass as a parameter
+                    _pixelBuffer.Set((PixelBufferCoordinate)h,
+                        (pixel, mcC) => pixel.Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(
+                            mcC.pattern,
+                            lineStyle ?? LineStyle.SingleLine), mcC.consoleColor)),
+                        (pattern, consoleColor: color));
+                });
+                head = line.Vertical
+                    ? head.WithY(head.Y + 1)
+                    : head.WithX(head.X + 1);
             }
         }
 
-        private void DrawStringInternal(IBrush foreground, string str, IGlyphTypeface typeface, Point origin = new())
+        private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
         {
             foreground = ConsoleBrush.FromBrush(foreground);
-            if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleColorBrush)
+            if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleBrush)
             {
                 ConsoloniaPlatform.RaiseNotSupported(4);
                 return;
             }
 
-            if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
+            // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
 
             Point whereToDraw = origin.Transform(Transform);
             int currentXPosition = 0;
+            int currentYPosition = 0;
 
-            //todo: support surrogates
-            foreach (char c in str)
+            // Each glyph maps to a pixel as a starting point.
+            // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
+            // the x and y are adjusted accodingly.
+            foreach (string glyph in text.GetGlyphs(_consoleWindow.Console.SupportsComplexEmoji))
             {
-                Point characterPoint = whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition++, 0));
-                Color foregroundColor = consoleColorBrush.Color;
+                Point characterPoint =
+                    whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));
+                Color foregroundColor = consoleBrush.Color;
 
-                switch (c)
+                switch (glyph)
                 {
-                    case '\t':
+                    case "\t":
                     {
                         const int tabSize = 8;
-                        var consolePixel = new Pixel(' ', foregroundColor);
+                        var consolePixel = new Pixel(new SimpleSymbol(' '), foregroundColor);
                         for (int j = 0; j < tabSize; j++)
                         {
                             Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
                             CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
                             {
                                 _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
-                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
+                                    oldPixel => oldPixel.Blend(consolePixel));
                             });
                         }
 
                         currentXPosition += tabSize - 1;
                     }
                         break;
-                    case '\n':
-                    {
-                        /* it's not clear if we need to draw anything. Cursor can be placed at the end of the line
-                         var consolePixel =  new Pixel(' ', foregroundColor);
-
-                        _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                            (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);*/
-                    }
-                        break;
-                    case '\u200B':
-                        currentXPosition--;
+                    case "\r":
+                    case "\f":
+                    case "\n":
+                        currentXPosition = 0;
+                        currentYPosition++;
                         break;
                     default:
                     {
-                        var consolePixel = new Pixel(c, foregroundColor, typeface.Style, typeface.Weight);
+                        var symbol = new SimpleSymbol(glyph);
+                        // if we are attempting to draw a wide glyph we need to make sure that the clipping point
+                        // is for the last physical char. Aka a double char should be clipped if it's second rendered 
+                        // char would break the boundary of the clip.
+                        // var clippingPoint = new Point(characterPoint.X + symbol.Width - 1, characterPoint.Y);
+                        var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
                         CurrentClip.ExecuteWithClipping(characterPoint, () =>
-                            {
-                                _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                    (oldPixel, cp) => oldPixel.Blend(cp), consolePixel);
-                            }
-                        );
+                        {
+                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                oldPixel =>
+                                {
+                                    if (oldPixel.Width == 0)
+                                    {
+                                        // if the oldPixel was empty, we need to set the previous pixel to space
+                                        double targetX = characterPoint.X - 1;
+                                        if (targetX >= 0)
+                                            _pixelBuffer.Set(
+                                                (PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
+                                                oldPixel2 =>
+                                                    new Pixel(
+                                                        new PixelForeground(new SimpleSymbol(' '), Colors.Transparent),
+                                                        oldPixel2.Background));
+                                    }
+                                    else if (oldPixel.Width > 1)
+                                    {
+                                        // if oldPixel was wide we need to reset overlapped symbols from empty to space
+                                        for (ushort i = 1; i < oldPixel.Width; i++)
+                                        {
+                                            double targetX = characterPoint.X + i;
+                                            if (targetX < _pixelBuffer.Size.Width)
+                                                _pixelBuffer.Set(
+                                                    (PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
+                                                    oldPixel2 =>
+                                                        new Pixel(
+                                                            new PixelForeground(new SimpleSymbol(' '),
+                                                                Colors.Transparent), oldPixel2.Background));
+                                        }
+                                    }
+
+                                    // if the pixel was a wide character, we need to set the overlapped pixels to empty pixels.
+                                    if (newPixel.Width > 1)
+                                        for (int i = 1; i < symbol.Width; i++)
+                                        {
+                                            double targetX = characterPoint.X + i;
+                                            if (targetX < _pixelBuffer.Size.Width)
+                                                _pixelBuffer.Set(
+                                                    (PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
+                                                    oldPixel2 =>
+                                                        new Pixel(
+                                                            new PixelForeground(new SimpleSymbol(), Colors.Transparent),
+                                                            oldPixel2.Background));
+                                        }
+
+                                    return oldPixel.Blend(newPixel);
+                                });
+                        });
+
+                        currentXPosition += symbol.Width;
                     }
                         break;
                 }
             }
+        }
+
+        /// <summary>
+        ///     given 4 colors return quadPixel character which is suitable to represent the colors
+        /// </summary>
+        /// <param name="colors"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private static char GetQuadPixelCharacter(params SKColor[] colors)
+        {
+            char character = GetColorsPattern(colors) switch
+            {
+                "FFFF" => ' ',
+                "TFFF" => '▘',
+                "FTFF" => '▝',
+                "FFTF" => '▖',
+                "FFFT" => '▗',
+                "TFFT" => '▚',
+                "FTTF" => '▞',
+                "TFTF" => '▌',
+                "FTFT" => '▐',
+                "FFTT" => '▄',
+                "TTFF" => '▀',
+                "TTTF" => '▛',
+                "TTFT" => '▜',
+                "TFTT" => '▙',
+                "FTTT" => '▟',
+                "TTTT" => '█',
+                _ => throw new NotImplementedException()
+            };
+            return character;
+        }
+
+
+        /// <summary>
+        ///     Combine the colors for the white part of the quad pixel character.
+        /// </summary>
+        /// <param name="pixelColors">4 colors</param>
+        /// <param name="quadPixel"></param>
+        /// <returns>foreground color</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private static Color GetForegroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
+        {
+            if (pixelColors.Length != 4)
+                throw new ArgumentException($"{nameof(pixelColors)} must have 4 elements.");
+
+            SKColor skColor = quadPixel switch
+            {
+                ' ' => SKColors.Transparent,
+                '▘' => pixelColors[0],
+                '▝' => pixelColors[1],
+                '▖' => pixelColors[2],
+                '▗' => pixelColors[3],
+                '▚' => CombineColors(pixelColors[0], pixelColors[2]),
+                '▞' => CombineColors(pixelColors[1], pixelColors[3]),
+                '▌' => CombineColors(pixelColors[0], pixelColors[2]),
+                '▐' => CombineColors(pixelColors[1], pixelColors[3]),
+                '▄' => CombineColors(pixelColors[2], pixelColors[3]),
+                '▀' => CombineColors(pixelColors[0], pixelColors[1]),
+                '▛' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[2]),
+                '▜' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[3]),
+                '▙' => CombineColors(pixelColors[0], pixelColors[2], pixelColors[3]),
+                '▟' => CombineColors(pixelColors[1], pixelColors[2], pixelColors[3]),
+                '█' => CombineColors(pixelColors.ToArray()),
+                _ => throw new NotImplementedException()
+            };
+
+            return Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
+        }
+
+
+        /// <summary>
+        ///     Combine the colors for the black part of the quad pixel character.
+        /// </summary>
+        /// <param name="pixelColors"></param>
+        /// <param name="quadPixel"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private static Color GetBackgroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
+        {
+            SKColor skColor = quadPixel switch
+            {
+                ' ' => CombineColors(pixelColors.ToArray()),
+                '▘' => CombineColors(pixelColors[1], pixelColors[2], pixelColors[3]),
+                '▝' => CombineColors(pixelColors[0], pixelColors[2], pixelColors[3]),
+                '▖' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[3]),
+                '▗' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[2]),
+                '▚' => CombineColors(pixelColors[1], pixelColors[2]),
+                '▞' => CombineColors(pixelColors[0], pixelColors[3]),
+                '▌' => CombineColors(pixelColors[1], pixelColors[3]),
+                '▐' => CombineColors(pixelColors[0], pixelColors[2]),
+                '▄' => CombineColors(pixelColors[0], pixelColors[1]),
+                '▀' => CombineColors(pixelColors[2], pixelColors[3]),
+                '▛' => pixelColors[3],
+                '▜' => pixelColors[2],
+                '▙' => pixelColors[1],
+                '▟' => pixelColors[0],
+                '█' => SKColors.Transparent,
+                _ => throw new NotImplementedException()
+            };
+            return Color.FromArgb(skColor.Alpha, skColor.Red, skColor.Green, skColor.Blue);
+        }
+
+        //private static SKColor CombineColors(params SKColor[] colors)
+        //{
+        //    return new SKColor((byte)colors.Average(c => c.Red),
+        //                       (byte)colors.Average(c => c.Green),
+        //                       (byte)colors.Average(c => c.Blue),
+        //                       (byte)colors.Average(c => c.Alpha));
+        //}
+
+        private static SKColor CombineColors(params SKColor[] colors)
+        {
+            float finalRed = 0;
+            float finalGreen = 0;
+            float finalBlue = 0;
+            float finalAlpha = 0;
+
+            foreach (SKColor color in colors)
+            {
+                float alphaRatio = color.Alpha / 255.0f;
+                finalRed = (finalRed * finalAlpha + color.Red * alphaRatio) / (finalAlpha + alphaRatio);
+                finalGreen = (finalGreen * finalAlpha + color.Green * alphaRatio) / (finalAlpha + alphaRatio);
+                finalBlue = (finalBlue * finalAlpha + color.Blue * alphaRatio) / (finalAlpha + alphaRatio);
+                finalAlpha += alphaRatio * (1 - finalAlpha);
+            }
+
+            byte red = (byte)Math.Clamp(finalRed, 0, 255);
+            byte green = (byte)Math.Clamp(finalGreen, 0, 255);
+            byte blue = (byte)Math.Clamp(finalBlue, 0, 255);
+            byte alpha = (byte)Math.Clamp(finalAlpha * 255, 0, 255);
+
+            return new SKColor(red, green, blue, alpha);
+        }
+
+        /// <summary>
+        ///     Cluster quad colors into a pattern (like: TTFF) based on relative closeness
+        /// </summary>
+        /// <param name="colors"></param>
+        /// <returns>T or F for each color as a string</returns>
+        /// <exception cref="ArgumentException"></exception>
+        private static string GetColorsPattern(SKColor[] colors)
+        {
+            if (colors.Length != 4) throw new ArgumentException("Array must contain exactly 4 colors.");
+
+            // Initial guess: two clusters with the first two colors as centers
+            SKColor[] clusterCenters = { colors[0], colors[1] };
+            int[] clusters = new int[colors.Length];
+
+            for (int iteration = 0; iteration < 10; iteration++) // limit iterations to avoid infinite loop
+            {
+                // Assign colors to the closest cluster center
+                for (int i = 0; i < colors.Length; i++) clusters[i] = GetColorCluster(colors[i], clusterCenters);
+
+                // Recalculate cluster centers
+                var newClusterCenters = new SKColor[2];
+                for (int cluster = 0; cluster < 2; cluster++)
+                {
+                    var clusteredColors = colors.Where((_, i) => clusters[i] == cluster).ToList();
+                    if (clusteredColors.Any())
+                        newClusterCenters[cluster] = GetAverageColor(clusteredColors);
+                    if (clusteredColors.Count == 4)
+                        if (clusteredColors.All(c => c.Alpha == 0))
+                            return "FFFF";
+                    //    return "TTTT";
+                }
+
+                // Check for convergence
+                if (newClusterCenters.SequenceEqual(clusterCenters))
+                    break;
+
+                clusterCenters = newClusterCenters;
+            }
+
+            // Determine which cluster is lower and which is higher
+            int lowerCluster = GetColorBrightness(clusterCenters[0]) < GetColorBrightness(clusterCenters[1]) ? 0 : 1;
+            int higherCluster = 1 - lowerCluster;
+
+            // Replace colors with 0 for lower cluster and 1 for higher cluster
+            var sb = new StringBuilder();
+            for (int i = 0; i < colors.Length; i++) sb.Append(clusters[i] == higherCluster ? 'T' : 'F');
+
+            return sb.ToString();
+        }
+
+        private static int GetColorCluster(SKColor color, SKColor[] clusterCenters)
+        {
+            double minDistance = double.MaxValue;
+            int closestCluster = -1;
+
+            for (int i = 0; i < clusterCenters.Length; i++)
+            {
+                double distance = GetColorDistance(color, clusterCenters[i]);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestCluster = i;
+                }
+            }
+
+            return closestCluster;
+        }
+
+        private static double GetColorDistance(SKColor c1, SKColor c2)
+        {
+            return Math.Sqrt(
+                Math.Pow(c1.Red - c2.Red, 2) +
+                Math.Pow(c1.Green - c2.Green, 2) +
+                Math.Pow(c1.Blue - c2.Blue, 2) +
+                Math.Pow(c1.Alpha - c2.Alpha, 2)
+            );
+        }
+
+        private static SKColor GetAverageColor(List<SKColor> colors)
+        {
+            byte averageRed = (byte)colors.Average(c => c.Red);
+            byte averageGreen = (byte)colors.Average(c => c.Green);
+            byte averageBlue = (byte)colors.Average(c => c.Blue);
+            byte averageAlpha = (byte)colors.Average(c => c.Alpha);
+
+            return new SKColor(averageRed, averageGreen, averageBlue, averageAlpha);
+        }
+
+        private static double GetColorBrightness(SKColor color)
+        {
+            return 0.299 * color.Red + 0.587 * color.Green + 0.114 * color.Blue + color.Alpha;
         }
     }
 }

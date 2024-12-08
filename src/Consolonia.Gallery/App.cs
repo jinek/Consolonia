@@ -1,14 +1,11 @@
-using System;
 using System.Globalization;
 using System.Threading;
-using Avalonia.Controls.ApplicationLifetimes;
-using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
-using Consolonia.Themes.TurboVision.Templates;
+using Consolonia.Themes;
 
 namespace Consolonia.Gallery
 {
-    internal class App : ConsoloniaApplication
+    internal class App : ConsoloniaApplication<ControlsListView>
     {
         static App()
         {
@@ -18,13 +15,11 @@ namespace Consolonia.Gallery
 
         public App()
         {
-            Styles.Add(new TurboVisionTheme(new Uri("avares://Consolonia.Gallery")));
-        }
-
-        public override void OnFrameworkInitializationCompleted()
-        {
-            ((IClassicDesktopStyleApplicationLifetime)ApplicationLifetime)!.MainWindow = new ControlsListView();
-            base.OnFrameworkInitializationCompleted();
+            /*Styles.Add(new TurboVisionTheme());*/
+            /*Styles.Add(new TurboVisionBlackTheme());*/
+            /*Styles.Add(new TurboVisionDarkTheme());*/
+            Styles.Add(new FluentTheme());
+            /*Styles.Add(new MaterialTheme());*/
         }
     }
 }

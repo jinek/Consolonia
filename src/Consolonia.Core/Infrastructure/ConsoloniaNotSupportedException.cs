@@ -1,9 +1,7 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Consolonia.Core.Infrastructure
 {
-    [Serializable]
     public class ConsoloniaNotSupportedException : Exception
     {
         internal ConsoloniaNotSupportedException(NotSupportedRequest request)
@@ -11,12 +9,7 @@ namespace Consolonia.Core.Infrastructure
             Request = request;
         }
 
-        protected ConsoloniaNotSupportedException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context)
-        {
-        }
-
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public NotSupportedRequest Request { get; }
     }
 }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 
 namespace Example.Views
 {
@@ -20,8 +19,7 @@ namespace Example.Views
             this.AttachDevTools();
 #endif
 
-            var comboBox = this.FindControl<ComboBox>("Combo");
-            comboBox.ItemsSource = TheItem.Genres;
+            Combo.ItemsSource = TheItem.Genres;
             var rnd = new Random();
 
             DataContext = _items = new ObservableCollection<TheItem>(Enumerable.Range(1, 50).Select(i => new TheItem
@@ -43,13 +41,9 @@ namespace Example.Views
             grid.Focus();
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
 
         // ReSharper disable once UnusedParameter.Local //todo: think to remove this rule
-        private void delete_Clicked(object sender, RoutedEventArgs _)
+        private void Delete_Clicked(object sender, RoutedEventArgs _)
         {
             _items.Remove((TheItem)((Control)sender).DataContext);
         }

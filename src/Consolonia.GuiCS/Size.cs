@@ -206,7 +206,7 @@ namespace Terminal.Gui {
 
 		public override int GetHashCode ()
 		{
-			return width^height;
+			return HashCode.Combine(width, height);
 		}
 
 		/// <summary>

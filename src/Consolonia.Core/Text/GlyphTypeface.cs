@@ -1,11 +1,15 @@
 using System;
-using System.Linq;
 using Avalonia.Media;
+using Consolonia.Core.Drawing;
 
 namespace Consolonia.Core.Text
 {
     public sealed class GlyphTypeface : IGlyphTypeface
     {
+        // NOTE: We are using this placeholder glyph since we are pushing
+        // raw text to the console and not using a font system to render the text
+        internal const ushort Glyph = 21; // ASCII NAK
+
         public void Dispose()
         {
         }
@@ -25,24 +29,20 @@ namespace Consolonia.Core.Text
 
         public ushort GetGlyph(uint codepoint)
         {
-            checked
-            {
-                return (ushort)codepoint;
-            }
+            return Glyph;
         }
 
         public bool TryGetGlyph(uint codepoint, out ushort glyph)
         {
-            glyph = (ushort)codepoint;
+            glyph = Glyph;
             return true;
         }
 
         public ushort[] GetGlyphs(ReadOnlySpan<uint> codepoints)
         {
-            checked
-            {
-                return codepoints.ToArray().Select(u => (ushort)u).ToArray();
-            }
+            ushort[] glyphs = new ushort[codepoints.Length];
+            Array.Fill(glyphs, Glyph);
+            return glyphs;
         }
 
         public int GetGlyphAdvance(ushort glyph)
@@ -52,7 +52,9 @@ namespace Consolonia.Core.Text
 
         public int[] GetGlyphAdvances(ReadOnlySpan<ushort> glyphs)
         {
-            return Enumerable.Repeat(1, glyphs.Length).ToArray();
+            int[] advances = new int[glyphs.Length];
+            Array.Fill(advances, 1);
+            return advances;
         }
 
         public bool TryGetTable(uint tag, out byte[] table)
@@ -73,11 +75,10 @@ namespace Consolonia.Core.Text
             Ascent = -1, //var height = (GlyphTypeface.Descent - GlyphTypeface.Ascent + GlyphTypeface.LineGap) * Scale; //todo: need to consult Avalonia guys
             Descent = 0,
             LineGap = 0,
-            UnderlinePosition =
-                -1, // this turns on TextDecorations="Underline", -1 is so it draws over the top of the text.
-            UnderlineThickness = 1, // this is the thickness of the underline, aka 1 char thick.
-            StrikethroughPosition = 0,
-            StrikethroughThickness = 0,
+            UnderlinePosition = -1,
+            UnderlineThickness = DrawingContextImpl.UnderlineThickness,
+            StrikethroughPosition = -1,
+            StrikethroughThickness = DrawingContextImpl.StrikethroughThickness,
             IsFixedPitch = true
         };
 

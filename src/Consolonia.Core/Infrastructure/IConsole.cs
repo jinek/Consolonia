@@ -15,14 +15,21 @@ namespace Consolonia.Core.Infrastructure
     {
         PixelBufferSize Size { get; }
         bool CaretVisible { get; set; }
+
+        /// <summary>
+        ///     This is true if console supports composing multiple emojis together (like: 👨‍👩‍👧‍👦).
+        /// </summary>
+        bool SupportsComplexEmoji { get; }
+
         void SetTitle(string title);
 
         void SetCaretPosition(PixelBufferCoordinate bufferPoint);
         PixelBufferCoordinate GetCaretPosition();
 
-        void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style,
-            FontWeight weight, TextDecorationCollection textDecorations, string str);
+        void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
+            FontWeight? weight, TextDecorationLocation? textDecoration, string str);
 
+        void WriteText(string str);
 
         event Action Resized;
         event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;

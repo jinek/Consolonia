@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
@@ -14,12 +13,12 @@ namespace Consolonia.Core.Text
             FontRenderingEmSize = glyphTypeface.Metrics.DesignEmHeight;
             GlyphTypeface = glyphTypeface;
             BaselineOrigin = baselineOrigin;
-            GlyphIndices = glyphInfos.Select(info => info.GlyphIndex).ToArray();
+            GlyphInfos = glyphInfos;
             Bounds = new Rect(new Point(0, 0),
-                new Size(glyphInfos.Sum(info => info.GlyphAdvance), FontRenderingEmSize));
+                new Size(glyphInfos.Count, FontRenderingEmSize));
         }
 
-        public ushort[] GlyphIndices { get; }
+        public IReadOnlyList<GlyphInfo> GlyphInfos { get; }
 
         public void Dispose()
         {
@@ -27,6 +26,7 @@ namespace Consolonia.Core.Text
 
         public IReadOnlyList<float> GetIntersections(float lowerLimit, float upperLimit)
         {
+            // empty intersections defaults to entire span.
             return new List<float>();
         }
 

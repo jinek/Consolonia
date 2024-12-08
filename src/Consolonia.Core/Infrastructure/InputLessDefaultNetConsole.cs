@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
@@ -7,19 +6,25 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Crayon;
-using NullLib.ConsoleEx;
+using Consolonia.Core.Helpers;
+using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
     public class InputLessDefaultNetConsole : IConsole
     {
+        private const string TestEmoji = "👨‍👩‍👧‍👦";
         private bool _caretVisible;
         private PixelBufferCoordinate _headBufferPoint;
 
+        private bool? _supportEmoji;
+
         protected InputLessDefaultNetConsole()
         {
-            Console.CursorVisible = false;
+            Console.OutputEncoding = Encoding.UTF8;
+
+            PrepareConsole();
+
             ActualizeSize();
         }
 
@@ -30,15 +35,19 @@ namespace Consolonia.Core.Infrastructure
         public bool CaretVisible
         {
             get => _caretVisible;
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
             set
             {
                 if (_caretVisible == value) return;
-                Console.CursorVisible = value;
+                WriteText(value ? Esc.ShowCursor : Esc.HideCursor);
                 _caretVisible = value;
             }
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
         public PixelBufferSize Size { get; private set; }
+
+        public bool SupportsComplexEmoji => _supportEmoji ?? false;
 
         public void SetTitle(string title)
         {
@@ -52,7 +61,7 @@ namespace Consolonia.Core.Infrastructure
 
             try
             {
-                Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
+                WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
             }
             catch (ArgumentOutOfRangeException argumentOutOfRangeException)
             {
@@ -66,39 +75,51 @@ namespace Consolonia.Core.Infrastructure
             return _headBufferPoint;
         }
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style,
-            FontWeight weight, TextDecorationCollection textDecorations, string str)
+        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
+            FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
             PauseTask?.Wait();
             SetCaretPosition(bufferPoint);
 
-            if (!str.IsNormalized(NormalizationForm.FormKC))
-                throw new NotSupportedException("Is not supposed to be rendered");
+            var sb = new StringBuilder();
+            if (textDecoration == TextDecorationLocation.Underline)
+                sb.Append(Esc.Underline);
 
-            if (str.Any(
-                    c => ConsoleText.IsWideChar(c) &&
-                         char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
-                throw new NotSupportedException("Is not supposed to be rendered");
+            if (textDecoration == TextDecorationLocation.Strikethrough)
+                sb.Append(Esc.Strikethrough);
 
-            if (textDecorations != null && textDecorations.Any(td => td.Location == TextDecorationLocation.Underline))
-                str = Output.Underline(str);
+            if (style == FontStyle.Italic)
+                sb.Append(Esc.Italic);
 
-            if (weight == FontWeight.Normal)
-                foreground = foreground.Shade(background);
-            else if (weight == FontWeight.Thin || weight == FontWeight.ExtraLight || weight == FontWeight.Light)
-                foreground = foreground.Shade(background).Shade(background);
-            else if (weight == FontWeight.Medium || weight == FontWeight.SemiBold || weight == FontWeight.Bold ||
-                     weight == FontWeight.ExtraBold || weight == FontWeight.Black || weight == FontWeight.ExtraBlack)
-                foreground = foreground.Brighten(background);
-            Console.Write(Output.Rgb(foreground.R, foreground.G, foreground.B)
-                .Background.Rgb(background.R, background.G, background.B)
-                .Text(str));
+            sb.Append(Esc.Background(background));
 
+            sb.Append(Esc.Foreground(weight switch
+            {
+                FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black
+                    or FontWeight.ExtraBlack
+                    => foreground.Brighten(background),
+                FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light
+                    => foreground.Shade(background),
+                _ => foreground
+            }));
 
-            if (_headBufferPoint.X < Size.Width - str.Length)
+            sb.Append(str);
+            sb.Append(Esc.Reset);
+
+            WriteText(sb.ToString());
+
+            ushort textWidth = str.MeasureText();
+            if (_headBufferPoint.X < Size.Width - textWidth)
                 _headBufferPoint =
-                    new PixelBufferCoordinate((ushort)(_headBufferPoint.X + str.Length), _headBufferPoint.Y);
-            else _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
+                    new PixelBufferCoordinate((ushort)(_headBufferPoint.X + textWidth), _headBufferPoint.Y);
+            else
+                _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
+        }
+
+        public virtual void WriteText(string str)
+        {
+            PauseTask?.Wait();
+            Console.Write(str);
         }
 
         public event Action Resized;
@@ -112,11 +133,17 @@ namespace Consolonia.Core.Infrastructure
             PauseTask = task;
         }
 
+#pragma warning disable CA1063 // Implement IDisposable Correctly
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+            WriteText(Esc.DisableAlternateBuffer);
+            WriteText(Esc.ShowCursor);
         }
+#pragma warning restore CA1063 // Implement IDisposable Correctly
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
         public void ClearOutput()
         {
@@ -125,10 +152,30 @@ namespace Consolonia.Core.Infrastructure
             Resized?.Invoke();
         }
 
+        private void PrepareConsole()
+        {
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+            // enable alternate screen so original console screen is not affected by the app
+            WriteText(Esc.EnableAlternateBuffer);
+            WriteText(Esc.HideCursor);
+            // Detect complex emoji support by writing a complex emoji and checking cursor position.
+            // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
+            (int left, int top) = Console.GetCursorPosition();
+            WriteText(
+                $"{Esc.Foreground(Colors.Transparent)}{Esc.Background(Colors.Transparent)}{TestEmoji}");
+            (int left2, _) = Console.GetCursorPosition();
+            _supportEmoji = left2 - left == 2;
+            Console.SetCursorPosition(left, top);
+
+            WriteText(Esc.ClearScreen);
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
+        }
+
         // ReSharper disable once MemberCanBePrivate.Global
         protected bool CheckActualizeTheSize()
         {
             if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
+
             ActualizeSize();
             return true;
         }
@@ -168,10 +215,10 @@ namespace Consolonia.Core.Infrastructure
                 {
                     Task pauseTask = PauseTask;
                     if (pauseTask != null)
-                        await pauseTask.ConfigureAwait(false);
+                        await pauseTask;
 
                     int timeout = (int)(CheckActualizeTheSize() ? 1 : slowInterval);
-                    await Task.Delay(timeout).ConfigureAwait(false);
+                    await Task.Delay(timeout);
                 }
             });
         }

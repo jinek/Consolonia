@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -6,6 +7,7 @@ using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
+    [DebuggerDisplay("{Color} [{Mode}]")]
     public class ConsoleBrush : AvaloniaObject, IImmutableBrush
     {
         public static readonly StyledProperty<Color> ColorProperty =
@@ -94,15 +96,15 @@ namespace Consolonia.Core.Drawing
                 throw new ArgumentOutOfRangeException(nameof(x), "x is out bounds");
             if (y < 0 || y > height)
                 throw new ArgumentOutOfRangeException(nameof(y), "y is out bounds");
-            if (width <= 0)
-                throw new ArgumentOutOfRangeException(nameof(width), "Width must be positive");
-            if (height <= 0)
-                throw new ArgumentOutOfRangeException(nameof(height), "Height must be positive");
 
             switch (brush)
             {
                 case ILinearGradientBrush gradientBrush:
                 {
+                    if (width <= 0)
+                        width = 1;
+                    if (height <= 0)
+                        height = 1;
                     // Calculate the relative position within the gradient
                     double horizontalRelativePosition = (double)x / width;
                     double verticalRelativePosition = (double)y / height;
@@ -124,10 +126,16 @@ namespace Consolonia.Core.Drawing
                     // Calculate the distance from the center
                     double dx = x - centerX;
                     double dy = y - centerY;
-                    double distance = Math.Sqrt(dx * dx + dy * dy);
 
-                    // Normalize the distance based on the brush radius
-                    double normalizedDistance = distance / (Math.Min(width, height) * radialBrush.Radius);
+                    // Calculate the distance based on separate X and Y radii
+                    double distanceX = dx / (width * radialBrush.RadiusX.Scalar);
+                    double distanceY = dy / (height * radialBrush.RadiusY.Scalar);
+                    double distance = Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
+
+                    // Normalize the distance
+                    double normalizedDistance = distance /
+                                                Math.Sqrt(radialBrush.RadiusX.Scalar * radialBrush.RadiusX.Scalar +
+                                                          radialBrush.RadiusY.Scalar * radialBrush.RadiusY.Scalar);
 
                     // Clamp the normalized distance to [0, 1]
                     normalizedDistance = Math.Min(Math.Max(normalizedDistance, 0), 1);
@@ -138,6 +146,10 @@ namespace Consolonia.Core.Drawing
                 }
                 case IConicGradientBrush conicBrush:
                 {
+                    if (width <= 0)
+                        width = 1;
+                    if (height <= 0)
+                        height = 1;
                     // Calculate the relative position within the gradient
                     double horizontalRelativePosition = (double)x / width;
                     double verticalRelativePosition = (double)y / height;

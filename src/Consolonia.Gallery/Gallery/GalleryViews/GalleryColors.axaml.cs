@@ -2,13 +2,11 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Consolonia.Core.Drawing;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    [GalleryOrder(1000)]
     public partial class GalleryColors : UserControl
     {
         public GalleryColors()
@@ -16,11 +14,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
             var rnd = Random.Shared;
             this.DataContext = new RGBModel() { Color = Color.FromRgb((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255)) };
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         private void Random_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)

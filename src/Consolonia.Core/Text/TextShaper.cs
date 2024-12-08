@@ -1,9 +1,9 @@
 using System;
-using System.Linq;
-using System.Text;
+using Avalonia;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using NullLib.ConsoleEx;
+using Consolonia.Core.Helpers;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Text
 {
@@ -11,35 +11,19 @@ namespace Consolonia.Core.Text
     {
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
-            var glyphInfos = Convert(text.Span.ToString());
+            var console = AvaloniaLocator.Current.GetRequiredService<IConsole>();
 
-            var shapedBuffer = new ShapedBuffer(text, glyphInfos.Length,
+            var glyphs = text.Span.ToString().GetGlyphs(console.SupportsComplexEmoji);
+
+            var shapedBuffer = new ShapedBuffer(text, glyphs.Count,
                 options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);
 
-            for (int i = 0; i < shapedBuffer.Length; i++) shapedBuffer[i] = glyphInfos[i];
+            for (int i = 0; i < shapedBuffer.Length; i++)
+                // NOTE: We are using the placeholder glyph since we are pushing
+                // raw text to the console and not using a font system to render the text
+                shapedBuffer[i] = new GlyphInfo(GlyphTypeface.Glyph, i, glyphs[i].MeasureText());
+
             return shapedBuffer;
-        }
-
-        public static GlyphInfo[] Convert(string str)
-        {
-            if (!str.IsNormalized(NormalizationForm.FormKC))
-                str = str.Normalize(NormalizationForm.FormKC);
-
-            // ReSharper disable once InvertIf
-            if (str.Any(
-                    c => ConsoleText.IsWideChar(c) &&
-                         char.IsLetterOrDigit(c) /*todo: https://github.com/SlimeNull/NullLib.ConsoleEx/issues/2*/))
-            {
-                StringBuilder stringBuilder = new();
-                foreach (char c in str)
-                    stringBuilder.Append(ConsoleText.IsWideChar(c) && char.IsLetterOrDigit(c)
-                        ? '?' //todo: support wide characters
-                        : c);
-
-                str = stringBuilder.ToString();
-            }
-
-            return str.Select((c, index) => new GlyphInfo(c, index, 1)).ToArray();
         }
     }
 }

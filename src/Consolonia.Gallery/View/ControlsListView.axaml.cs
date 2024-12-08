@@ -4,36 +4,55 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
+using Consolonia.Themes;
 
 namespace Consolonia.Gallery.View
 {
+    public enum Themes
+    {
+        Material,
+        Fluent,
+        TurboVision,
+        TurboVisionDark,
+        TurboVisionBlack
+    }
+
     public partial class ControlsListView : Window
     {
-        private readonly DataGrid _grid;
         private string[] _commandLineArgs;
         private readonly IEnumerable<GalleryItem> _items;
 
         public ControlsListView()
         {
             InitializeComponent();
+
+            this.DataContext = new ControlsListViewModel();
+
 #if DEBUG
             this.AttachDevTools();
 #endif
-            _grid = this.FindControl<DataGrid>("Grid");
-            
-            _grid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
+            this.Grid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
 
-            _commandLineArgs = ((ClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!.Args!;
+            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+            if (lifetime != null)
+                _commandLineArgs = lifetime!.Args!;
+            else
+                _commandLineArgs = Array.Empty<string>();
+
+            this.Styles.Add(new MaterialTheme());
+
             TrySetupSelected();
         }
+
+        public ControlsListViewModel Model => (ControlsListViewModel)DataContext;
 
         private void TrySetupSelected()
         {
             if (_commandLineArgs.Length is not 1 and not 2)
             {
-                _grid.SelectedIndex = 0;
+                this.Grid.SelectedIndex = 0;
                 return;
             }
 
@@ -53,20 +72,57 @@ namespace Consolonia.Gallery.View
                     $"Several gallery items found with provided name {itemToSelectName}");
             }
 
-            _grid.SelectedItem = itemToSelect;
-            _grid.Focus();
+            this.Grid.SelectedItem = itemToSelect;
+            this.Grid.Focus();
         }
 
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
 
         public void ChangeTo(string[] args)
         {
             _commandLineArgs = args;
             TrySetupSelected();
         }
+
+        private void Exit_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, Avalonia.Controls.SelectionChangedEventArgs e)
+        {
+            if (ThemeCombo?.SelectedItem is not ComboBoxItem selectedItem ||
+                selectedItem.Content is not string themeName ||
+                !Enum.TryParse<Themes>(themeName, out var selectedTheme))
+            {
+                return;
+            }
+
+            Styles[0] = selectedTheme switch
+            {
+                Themes.Material => new MaterialTheme(),
+                Themes.Fluent => new FluentTheme(),
+                Themes.TurboVision => new TurboVisionTheme(),
+                Themes.TurboVisionDark => new TurboVisionDarkTheme(),
+                Themes.TurboVisionBlack => new TurboVisionBlackTheme(),
+                _ => throw new ArgumentOutOfRangeException(nameof(selectedTheme))
+            };
+        }
+    }
+
+    public partial class ControlsListViewModel : ObservableObject
+    {
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsTurboVisionDark))]
+        [NotifyPropertyChangedFor(nameof(IsTurboVisionBlack))]
+        [NotifyPropertyChangedFor(nameof(IsTurboVision))]
+        [NotifyPropertyChangedFor(nameof(IsFluent))]
+        [NotifyPropertyChangedFor(nameof(IsMaterial))]
+        private string _selectedTheme;
+
+        public bool IsMaterial => SelectedTheme == nameof(Themes.Material);
+        public bool IsFluent => SelectedTheme == nameof(Themes.Fluent);
+        public bool IsTurboVision => SelectedTheme == nameof(Themes.TurboVision);
+        public bool IsTurboVisionDark => SelectedTheme == nameof(Themes.TurboVisionDark);
+        public bool IsTurboVisionBlack => SelectedTheme == nameof(Themes.TurboVisionBlack);
     }
 }

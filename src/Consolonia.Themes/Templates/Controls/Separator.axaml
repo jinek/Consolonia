@@ -1,0 +1,31 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ControlTheme x:Key="{x:Type Separator}"
+                  TargetType="Separator">
+        <Setter Property="Focusable"
+                Value="False" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border BorderBrush="{TemplateBinding Foreground}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Height="2"
+                        Margin="-1,0"
+                        Background="{TemplateBinding Background}"
+                        HorizontalAlignment="Stretch" />
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Margin"
+                    Value="1,0" />
+            <Setter Property="Height"
+                    Value="1" />
+        </Style>
+
+    </ControlTheme>
+</ResourceDictionary>

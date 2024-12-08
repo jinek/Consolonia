@@ -1,18 +1,42 @@
 using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
+using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    public readonly struct PixelBackground
+    [DebuggerDisplay("[{Color}, {Mode}]")]
+    public readonly struct PixelBackground : IEquatable<PixelBackground>
     {
+        public PixelBackground()
+        {
+            Mode = PixelBackgroundMode.Transparent;
+            Color = Colors.Transparent;
+        }
+
+        public PixelBackground(Color color)
+        {
+            Mode = color.A == 0 ? PixelBackgroundMode.Transparent : PixelBackgroundMode.Colored;
+            Color = color;
+        }
+
         public PixelBackground(PixelBackgroundMode mode, Color? color = null)
         {
-            Color = color ?? Colors.Black;
+            Color = color ?? Colors.Transparent;
             Mode = mode;
         }
 
-        public Color Color { get; }
-        public PixelBackgroundMode Mode { get; }
+        [JsonConverter(typeof(ColorConverter))]
+        public Color Color { get; init; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public PixelBackgroundMode Mode { get; init; }
+
+        public bool Equals(PixelBackground other)
+        {
+            return Color.Equals(other.Color) && Mode == other.Mode;
+        }
 
         public PixelBackground Shade()
         {
@@ -35,6 +59,26 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
 
             return new PixelBackground(newMode, newColor);
+        }
+
+        public override bool Equals([NotNullWhen(true)] object obj)
+        {
+            return obj is PixelBackground other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Color, Mode);
+        }
+
+        public static bool operator ==(PixelBackground left, PixelBackground right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(PixelBackground left, PixelBackground right)
+        {
+            return !left.Equals(right);
         }
     }
 }

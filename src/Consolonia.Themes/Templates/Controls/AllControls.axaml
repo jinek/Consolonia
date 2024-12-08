@@ -1,0 +1,47 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <MergeResourceInclude Source="/Templates/Controls/TextBlock.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Window.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Button.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/TextBox.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/CheckBox.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/ScrollViewer.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/ScrollBar.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/ComboBoxItem.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/ComboBox.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/ToggleButton.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Popup.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/OverlayPopupHost.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/ContentControl.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/DataGrid.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/CaretControl.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/DialogWindow.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/ItemsControl.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/LightDismissOverlaylayer.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/DataValidationErrors.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/TabControl.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/TabItem.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/RadioButton.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/ListBox.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/ListBoxItem.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Menu.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/MenuItem.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/SymbolsControl.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Separator.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/ProgressBar.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/FlyoutPresenter.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/MenuFlyoutPresenter.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Calendar.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/CalendarItem.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/CalendarButton.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/CalendarDatePicker.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/CalendarDayButton.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <StyleInclude Source="/Templates/Controls/UserControl.axaml" />
+</Styles>

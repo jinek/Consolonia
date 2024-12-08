@@ -1,0 +1,89 @@
+<!--
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+-->
+
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ControlTheme x:Key="{x:Type CalendarButton}"
+                  TargetType="CalendarButton">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeBackgroundBrush}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="MinWidth"
+                Value="4" />
+        <Setter Property="Margin"
+                Value="1,1,1,0" />
+        <Setter Property="Focusable"
+                Value="False" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid>
+                    <Rectangle Name="Background"
+                               Fill="{TemplateBinding Background}" />
+
+                    <Rectangle Name="SelectedBackground"
+                               Fill="{DynamicResource ThemeChooserBackgroundBrush}" />
+
+                    <Rectangle Name="FocusVisual"
+                               Fill="{DynamicResource ThemeActionBackgroundBrush}" />
+
+                    <!--Focusable="False"-->
+                    <ContentControl Name="Content"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Margin="0" />
+
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^ /template/ Rectangle#Background">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:pointerover /template/ Rectangle#Background">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+        <Style Selector="^:pressed /template/ Rectangle#Background">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+
+        <Style Selector="^ /template/ Rectangle#SelectedBackground">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:selected /template/ Rectangle#SelectedBackground">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+
+        <Style Selector="^ /template/ ContentControl#Content">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeForegroundBrush}" />
+        </Style>
+        <Style Selector="^:inactive /template/ ContentControl#Content">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeBorderBrush}" />
+        </Style>
+
+
+        <Style Selector="^ /template/ Rectangle#FocusVisual">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:btnfocused /template/ Rectangle#FocusVisual">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

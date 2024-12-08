@@ -1,35 +1,62 @@
 using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
+using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    public readonly struct PixelForeground
+    [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
+    public readonly struct PixelForeground : IEquatable<PixelForeground>
     {
-        public PixelForeground(ISymbol symbol, FontWeight weight = FontWeight.Normal,
-            FontStyle style = FontStyle.Normal, TextDecorationCollection textDecorations = null, Color? color = null)
+        public PixelForeground()
+        {
+            Symbol = new SimpleSymbol(" ");
+            Color = Colors.Transparent;
+            Weight = null;
+            Style = null;
+            TextDecoration = null;
+        }
+
+        public PixelForeground(ISymbol symbol, Color color,
+            FontWeight? weight = null, FontStyle? style = null,
+            TextDecorationLocation? textDecoration = null)
         {
             ArgumentNullException.ThrowIfNull(symbol);
             Symbol = symbol;
-            Color = color ?? Colors.White;
+            Color = color;
             Weight = weight;
             Style = style;
-            TextDecorations = textDecorations;
+            TextDecoration = textDecoration;
         }
 
-        public ISymbol Symbol { get; } //now working with 16 bit unicode only for simplicity //todo: reference here
+        public ISymbol Symbol { get; init; }
 
-        public Color Color { get; }
+        [JsonConverter(typeof(ColorConverter))]
+        public Color Color { get; init; }
 
-        public FontWeight Weight { get; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public FontWeight? Weight { get; init; }
 
-        public FontStyle Style { get; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public FontStyle? Style { get; init; }
 
-        public TextDecorationCollection TextDecorations { get; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public TextDecorationLocation? TextDecoration { get; init; }
+
+        public bool Equals(PixelForeground other)
+        {
+            return Symbol.Equals(other.Symbol) &&
+                   Color.Equals(other.Color) &&
+                   Weight.Equals(other.Weight) &&
+                   Style.Equals(other.Style) &&
+                   TextDecoration == other.TextDecoration;
+        }
 
         public PixelForeground Shade()
         {
             Color newColor = Color.Shade();
-            return new PixelForeground(Symbol, Weight, Style, TextDecorations, newColor);
+            return new PixelForeground(Symbol, newColor, Weight, Style, TextDecoration);
         }
 
         public PixelForeground Blend(PixelForeground pixelAboveForeground)
@@ -38,12 +65,36 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             ISymbol symbolAbove = pixelAboveForeground.Symbol;
             ArgumentNullException.ThrowIfNull(symbolAbove);
 
-            if (symbolAbove.IsWhiteSpace()) return this;
+            if (pixelAboveForeground.Color == Colors.Transparent)
+                // if pixelAbove is transparent then the foreground below should be unchanged.
+                return this;
 
-            ISymbol newSymbol = Symbol.Blend(ref symbolAbove);
+            return new PixelForeground(Symbol.Blend(ref symbolAbove),
+                pixelAboveForeground.Color,
+                pixelAboveForeground.Weight ?? Weight,
+                pixelAboveForeground.Style ?? Style,
+                pixelAboveForeground.TextDecoration ?? TextDecoration);
+        }
 
-            return new PixelForeground(newSymbol, pixelAboveForeground.Weight, pixelAboveForeground.Style,
-                pixelAboveForeground.TextDecorations, pixelAboveForeground.Color);
+        public override bool Equals([NotNullWhen(true)] object obj)
+        {
+            return obj is PixelForeground other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Symbol, Color, (int)(Weight ?? FontWeight.Normal), (int)(Style ?? FontStyle.Normal),
+                TextDecoration);
+        }
+
+        public static bool operator ==(PixelForeground left, PixelForeground right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(PixelForeground left, PixelForeground right)
+        {
+            return !left.Equals(right);
         }
     }
 }
