@@ -6,6 +6,6 @@ namespace Consolonia.Core.Drawing
         DoubleLine,
         Bold,
         Edge,
-        Quarter
+        EdgeWide
     }
 }
