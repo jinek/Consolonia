@@ -380,7 +380,7 @@ namespace Consolonia.Core.Drawing
         [
             // LineStyle=Edge
             ['▕', '▁', '▏', '▔'],
-            // LineStyle=Quarter
+            // LineStyle=EdgeWide
             ['▐', '▄', '▌', '▀'],
         ];
 
@@ -390,7 +390,7 @@ namespace Consolonia.Core.Drawing
         {
             // LineStyle=Edge we don't draw chars for edge corners
             [' ', ' ',  ' ', ' ' ],
-            // LineStyle=Quarter
+            // LineStyle=EdgeWide
             ['▗', '▖',  '▘', '▝'],
         };
 
