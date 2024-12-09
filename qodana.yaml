@@ -1,0 +1,13 @@
+version: "1.0"
+linter: jetbrains/qodana-dotnet:2024.1
+profile:
+  name: qodana.recommended
+dotnet:
+  solution: src/Consolonia.sln
+include:
+  - name: CheckDependencyLicenses
+exclude:
+  - name: All
+    paths:
+      - Consolonia.GuiCS
+      - Example
