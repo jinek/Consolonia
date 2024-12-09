@@ -4,6 +4,8 @@ namespace Consolonia.Core.Drawing
     {
         SingleLine = 0,
         DoubleLine,
-        Bold
+        Bold,
+        Edge,
+        Quarter
     }
 }
