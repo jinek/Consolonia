@@ -7,11 +7,14 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public partial class SomeDialogWindow : DialogWindow
     {
+        internal const string DialogTitle = "Dialog popup";
+        
         private static readonly Random Random = new();
 
         public SomeDialogWindow(double width, double height)
         {
             InitializeComponent();
+            Title = DialogTitle;
             Width = width;
             Height = height;
 

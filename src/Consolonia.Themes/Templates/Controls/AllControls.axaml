@@ -18,7 +18,6 @@
                 <MergeResourceInclude Source="/Templates/Controls/ContentControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/DataGrid.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/CaretControl.axaml" />
-                <MergeResourceInclude Source="/Templates/Controls/DialogWindow.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ItemsControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/LightDismissOverlaylayer.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/DataValidationErrors.axaml" />
@@ -44,4 +43,5 @@
     </Styles.Resources>
 
     <StyleInclude Source="/Templates/Controls/UserControl.axaml" />
+    <StyleInclude Source="/Templates/Controls/DialogWindow.axaml" />
 </Styles>
