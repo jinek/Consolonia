@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Avalonia;
 using Avalonia.Media;
@@ -7,6 +8,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.Text;
+using Newtonsoft.Json.Converters;
 using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
@@ -30,7 +32,7 @@ namespace Consolonia.Core.Drawing
 
         public IStreamGeometryImpl CreateStreamGeometry()
         {
-            throw new NotImplementedException();
+            return new StreamGeometryImpl();
         }
 
         public IGeometryImpl CreateGeometryGroup(FillRule fillRule, IReadOnlyList<IGeometryImpl> children)
@@ -40,7 +42,86 @@ namespace Consolonia.Core.Drawing
 
         public IGeometryImpl CreateCombinedGeometry(GeometryCombineMode combineMode, IGeometryImpl g1, IGeometryImpl g2)
         {
-            throw new NotImplementedException();
+            // this is handcrafted to only combine single thickness line strokes for borders.
+            // This needs to be much more robust to handle general cases.
+
+            if (combineMode != GeometryCombineMode.Exclude)
+                throw new NotImplementedException("Only GeometryCombineMode.Exclude is supported");
+
+            if (g1 is not StreamGeometryImpl stream1 || g2 is not StreamGeometryImpl stream2)
+                throw new ArgumentException("Only StreamGeometryImpl is supported");
+
+            Debug.WriteLine("=====");
+            Debug.WriteLine($"Stream1 Bounds: {stream1.Bounds}");
+            Debug.WriteLine($"Stream2 Bounds: {stream2.Bounds}");
+
+            var newGeometry = CreateStreamGeometry();
+            using (var ctx = newGeometry.Open())
+            {
+                var hasLeftStroke = stream2.Bounds.X == 1;
+                var hasTopStroke = stream2.Bounds.Y == 1;
+                var hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width) == stream2.Bounds.X + 1;
+                var hasBottomStroke = (stream1.Bounds.Height - stream2.Bounds.Height) == stream2.Bounds.Y + 1;
+                //hasLeftStroke = hasTopStroke = hasRightStroke = hasBottomStroke = true;
+
+
+                Debug.WriteLine($"Stream1 {stream1.Bounds.Width}x{stream1.Bounds.Height}");
+                Debug.WriteLine($"Stream2 {stream2.Bounds.Width}x{stream2.Bounds.Height}");
+
+                // topStroke
+                var topLeft = new Point(0, 0);
+                var topRight = new Point(stream2.Bounds.Width, 0);
+                var bottomRight = new Point(stream2.Bounds.Width, stream2.Bounds.Height);
+                var bottomLeft = new Point(0, stream2.Bounds.Height);
+                if (hasLeftStroke)
+                {
+                    topRight = AdjustX(topRight, 1);
+                    bottomRight = AdjustX(bottomRight, 1);
+                }
+                if (hasRightStroke)
+                {
+                    topRight = AdjustX(topRight, 1);
+                    bottomRight = AdjustX(bottomRight, 1);
+                }
+                if (hasBottomStroke)
+                {
+                    bottomLeft = AdjustY(bottomLeft, 1);
+                    bottomRight = AdjustY(bottomRight, 1);
+                }
+                if (hasTopStroke)
+                {
+                    bottomLeft = AdjustY(bottomLeft, 1);
+                    bottomRight = AdjustY(bottomRight, 1);
+                }
+
+                if (hasTopStroke)
+                    AddStroke(ctx, topLeft, topRight);
+                if (hasRightStroke)
+                    AddStroke(ctx, topRight, bottomRight);
+                if (hasBottomStroke)
+                    AddStroke(ctx, bottomLeft, bottomRight);
+                if (hasLeftStroke)
+                    AddStroke(ctx, topLeft, bottomLeft);
+
+                Point AdjustXY(Point p, int deltaX, int deltaY) => p.WithX(Math.Max(0, p.X + deltaX)).WithY(Math.Max(0, p.Y + deltaY));
+                Point AdjustX(Point p, int deltaX) => p.WithX(Math.Max(0, p.X + deltaX));
+                Point AdjustY(Point p, int deltaY) => p.WithY(Math.Max(0, p.Y + deltaY));
+            }
+
+            var newg = newGeometry as StreamGeometryImpl;
+            foreach (var stroke in newg.Strokes)
+            {
+                Debug.WriteLine($"New.Stroke: {stroke.PStart} - {stroke.PEnd}");
+            }
+
+            return newGeometry;
+        }
+
+        private static void AddStroke(IStreamGeometryContextImpl ctx, Point start, Point end)
+        {
+            ctx.BeginFigure(start, false);
+            ctx.LineTo(end);
+            ctx.EndFigure(true);
         }
 
         public IGeometryImpl BuildGlyphRunGeometry(GlyphRun glyphRun)

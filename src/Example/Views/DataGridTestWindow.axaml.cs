@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Consolonia.Core.Drawing;
 
 namespace Example.Views
 {
@@ -15,37 +17,9 @@ namespace Example.Views
         public DataGridTestWindow()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-
-            Combo.ItemsSource = TheItem.Genres;
-            var rnd = new Random();
-
-            DataContext = _items = new ObservableCollection<TheItem>(Enumerable.Range(1, 50).Select(i => new TheItem
-            {
-                Id = i.ToString(),
-                Title = TheItem.Titles[rnd.Next(TheItem.Titles.Length)],
-                Genre = TheItem.Genres[rnd.Next(TheItem.Genres.Length)],
-                IsListed = i % 2 == 0
-            }).ToArray());
-
-            SetSelectedAsync();
-        }
-
-        private async void SetSelectedAsync()
-        {
-            await Task.Delay(100);
-            var grid = this.Get<DataGrid>("Grid");
-            grid.SelectedIndex = 0;
-            grid.Focus();
         }
 
 
-        // ReSharper disable once UnusedParameter.Local //todo: think to remove this rule
-        private void Delete_Clicked(object sender, RoutedEventArgs _)
-        {
-            _items.Remove((TheItem)((Control)sender).DataContext);
-        }
     }
+
 }

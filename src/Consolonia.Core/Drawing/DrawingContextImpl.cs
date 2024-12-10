@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Avalonia;
@@ -127,10 +126,80 @@ namespace Consolonia.Core.Drawing
                 case Line myLine:
                     DrawLineInternal(pen, myLine);
                     break;
+                case StreamGeometryImpl streamGeometry:
+                    {
+                        pen = pen ?? new Pen(brush);
+
+                        var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
+                        if (extractColorCheckPlatformSupported == null)
+                            return;
+
+                        var color = (Color)extractColorCheckPlatformSupported;
+
+                        if (lineStyle == null)
+                            lineStyle = LineStyle.SingleLine;
+
+                        var strokePostions = InferStrokePositions(streamGeometry);
+
+                        bool hasTop = strokePostions.Contains(RectangleLinePosition.Top);
+                        bool hasRight = strokePostions.Contains(RectangleLinePosition.Right);
+                        bool hasBottom = strokePostions.Contains(RectangleLinePosition.Bottom);
+                        bool hasLeft = strokePostions.Contains(RectangleLinePosition.Left);
+
+                        if (lineStyle == LineStyle.Edge || lineStyle == LineStyle.EdgeWide)
+                        {
+                            for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
+                            {
+                                var stroke = TransformLineInternal(streamGeometry.Strokes[iStroke]);
+
+                                if (stroke.Vertical)
+                                    DrawEdgeLine(stroke, strokePostions[iStroke], lineStyle.Value, color, hasLeft, hasRight);
+                                else
+                                    DrawEdgeLine(stroke, strokePostions[iStroke], lineStyle.Value, color, hasTop, hasBottom);
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < streamGeometry.Strokes.Count; i++)
+                            {
+                                DrawBoxLineInternal(pen, streamGeometry.Strokes[i], strokePostions[i]);
+                            }
+                        }
+                    }
+                    break;
                 default:
                     ConsoloniaPlatform.RaiseNotSupported(5);
                     break;
             }
+        }
+
+        private static RectangleLinePosition[] InferStrokePositions(StreamGeometryImpl streamGeometry)
+        {
+            // infer rectangle hints by using focolpoint
+            var focalPointX = streamGeometry.Strokes.Average(stroke => stroke.PStart.X + Math.Abs(stroke.PStart.X - stroke.PEnd.X) / 2);
+            var focalPointY = streamGeometry.Strokes.Average(stroke => stroke.PStart.Y + Math.Abs(stroke.PStart.Y - stroke.PEnd.Y) / 2);
+            var focalPoint = new Point(focalPointX, focalPointY);
+            var strokePositions = new RectangleLinePosition[4];
+
+            for (int i = 0; i < streamGeometry.Strokes.Count; i++)
+            {
+                var stroke = streamGeometry.Strokes[i];
+                if (stroke.Vertical)
+                {
+                    if (stroke.PStart.X <= focalPoint.X)
+                        strokePositions[i] = RectangleLinePosition.Left;
+                    else if (stroke.PStart.X >= focalPoint.X)
+                        strokePositions[i] = RectangleLinePosition.Right;
+                }
+                else
+                {
+                    if (stroke.PStart.Y <= focalPoint.Y)
+                        strokePositions[i] = RectangleLinePosition.Top;
+                    else if (stroke.PStart.Y >= focalPoint.Y)
+                        strokePositions[i] = RectangleLinePosition.Bottom;
+                }
+            }
+            return strokePositions;
         }
 
         public void DrawRectangle(IBrush brush, IPen pen, RoundedRect rect, BoxShadows boxShadows = new())
@@ -397,7 +466,7 @@ namespace Consolonia.Core.Drawing
         private const int TopLeft = 0;
         private const int TopRight = 1;
         private const int BottomRight = 2;
-        private const int BottomLeft= 3;
+        private const int BottomLeft = 3;
 
         /// <summary>
         ///     Draw a rectangle line with corners
@@ -425,51 +494,13 @@ namespace Consolonia.Core.Drawing
 
             var color = (Color)extractColorCheckPlatformSupported;
 
-            if (lineStyle == null)
+            if (lineStyle == null || linePosition == RectangleLinePosition.Unknown)
                 lineStyle = LineStyle.SingleLine;
-
-            if (RectangleLinePosition.Unknown == linePosition)
-            {
-                lineStyle = LineStyle.SingleLine;
-            }
 
             if (lineStyle == LineStyle.Edge || lineStyle == LineStyle.EdgeWide)
             {
-                // LIneStyle.Edge and LineStyle.Quarter are drawn with simple symbols since they can't merge like box chars can.
-                ISymbol startSymbol;
-                ISymbol middleSymbol;
-                ISymbol endSymbol;
-                var iStyle = (int)lineStyle - (int)LineStyle.Edge;
-
-                switch (linePosition)
-                {
-                    case RectangleLinePosition.Left:
-                        startSymbol = new SimpleSymbol(_cornerChars[iStyle][TopLeft]);
-                        middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Left]);
-                        endSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomLeft]);
-                        break;
-                    case RectangleLinePosition.Top:
-                        startSymbol = new SimpleSymbol(_cornerChars[iStyle][TopLeft]);
-                        middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Top]);
-                        endSymbol = new SimpleSymbol(_cornerChars[iStyle][TopRight]);
-                        break;
-                    case RectangleLinePosition.Right:
-                        startSymbol = new SimpleSymbol(_cornerChars[iStyle][TopRight]);
-                        middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Right]);
-                        endSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomRight]);
-                        break;
-                    case RectangleLinePosition.Bottom:
-                        startSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomLeft]);
-                        middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Bottom]);
-                        endSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomRight]);
-                        break;
-                    default:
-                        throw new NotImplementedException("This shouldn't happen");
-                };
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, startSymbol, color, 1);
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, middleSymbol, color, line.Length - 1);
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, endSymbol, color, 1);
-                return;
+                // LineStyle.Edge and LineStyle.EdgeBold are drawn with simple symbols since they can't merge like box chars can.
+                DrawEdgeLine(line, linePosition, lineStyle.Value, color, includeStartSymbol: true, includeEndSymbol: true);
             }
             else
             {
@@ -482,6 +513,57 @@ namespace Consolonia.Core.Drawing
                 pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
                 DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, 1); //ending 
             }
+        }
+
+        private void DrawEdgeLine(Line line, RectangleLinePosition linePosition, LineStyle lineStyle, Color color, bool includeStartSymbol, bool includeEndSymbol)
+        {
+            if (line.Length == 0)
+                return;
+            ISymbol startSymbol;
+            ISymbol middleSymbol;
+            ISymbol endSymbol;
+            var iStyle = (int)lineStyle - (int)LineStyle.Edge;
+
+            switch (linePosition)
+            {
+                case RectangleLinePosition.Left:
+                    startSymbol = new SimpleSymbol(_cornerChars[iStyle][TopLeft]);
+                    middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Left]);
+                    endSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomLeft]);
+                    break;
+                case RectangleLinePosition.Top:
+                    startSymbol = new SimpleSymbol(_cornerChars[iStyle][TopLeft]);
+                    middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Top]);
+                    endSymbol = new SimpleSymbol(_cornerChars[iStyle][TopRight]);
+                    break;
+                case RectangleLinePosition.Right:
+                    startSymbol = new SimpleSymbol(_cornerChars[iStyle][TopRight]);
+                    middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Right]);
+                    endSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomRight]);
+                    break;
+                case RectangleLinePosition.Bottom:
+                    startSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomLeft]);
+                    middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Bottom]);
+                    endSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomRight]);
+                    break;
+                default:
+                    throw new NotImplementedException("This shouldn't happen");
+            };
+
+            Point head = line.PStart;
+
+            var length = line.Length;
+            if (includeStartSymbol)
+            {
+                DrawLineSymbolAndMoveHead(ref head, line.Vertical, startSymbol, color, 1);
+            }
+            else
+                length++;
+
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, middleSymbol, color, length - 1);
+
+            if (includeEndSymbol)
+                DrawLineSymbolAndMoveHead(ref head, line.Vertical, endSymbol, color, 1);
         }
 
         /// <summary>

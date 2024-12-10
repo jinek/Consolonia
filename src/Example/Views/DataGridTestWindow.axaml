@@ -4,104 +4,205 @@
         xmlns:views="clr-namespace:Example.Views"
         x:Class="Example.Views.DataGridTestWindow"
         Title="Movie Catalog">
-    <Grid ColumnDefinitions="* 35">
-        <Grid>
-            <DataGrid ItemsSource="{Binding}"
-                      Name="Grid"
-                      SelectionMode="Single"
-                      Focusable="True"
-                      AutoGenerateColumns="False"
-                      HorizontalScrollBarVisibility="Disabled">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Id"
-                                        Binding="{Binding Id}"
-                                        MaxWidth="5"
-                                        Width="5" />
-                    <DataGridTextColumn Header="Title"
-                                        Binding="{Binding Title}"
-                                        Width="*" />
-                </DataGrid.Columns>
-            </DataGrid>
-            <TextBlock Text="movies"
-                       VerticalAlignment="Top"
-                       HorizontalAlignment="Left"
-                       Margin="4,0,0,0" />
-        </Grid>
-        <Grid Grid.Column="1">
-            <Border BorderThickness="1" BorderBrush="DarkGray"
-                    DataContext="{Binding ElementName=Grid, Path=SelectedItem}">
-                <Grid ColumnDefinitions="Auto *" x:DataType="views:TheItem">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Vertical"
-                                Margin="1,0">
-                        <StackPanel.Styles>
-                            <Style Selector="TextBlock">
-                                <Setter Property="Foreground">
-                                    <Setter.Value>
-                                        <drawing:ConsoleBrush Color="Gray" />
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </StackPanel.Styles>
-                        <TextBlock Text="Id" />
-                        <TextBlock Text="Title" />
-                        <TextBlock Text="Genre(ALT+DOWN)" />
 
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical"
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="1,0">
-                        <TextBlock Text="{Binding Id}" />
-                        <TextBox Text="{Binding Title, Mode=TwoWay}"
-                                 Height="1" />
-                        <ComboBox SelectedItem="{Binding Genre, Mode=TwoWay}"
-                                  Name="Combo" />
-                    </StackPanel>
-
-                    <Rectangle Height="1"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Top"
-                               Stroke="{DynamicResource ThemeBorderLowBrush}"
-                               StrokeThickness="1"
-                               Grid.Row="1"
-                               Margin="-1,0"
-                               Grid.ColumnSpan="2"
-                               Grid.Column="0" />
-                    <CheckBox IsChecked="{Binding IsListed, Mode=TwoWay}"
-                              Content="Listed"
-                              Grid.Row="2"
-                              Grid.Column="0"
-                              Margin="1,0,0,0" />
-                    <Rectangle Height="1"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Top"
-                               Stroke="{DynamicResource ThemeBorderLowBrush}"
-                               StrokeThickness="1"
-                               Grid.Row="3"
-                               Margin="-1,0"
-                               Grid.ColumnSpan="2"
-                               Grid.Column="0" />
-                    <Button Content="Delete"
-                            Grid.Row="4"
-                            Grid.ColumnSpan="2"
-                            Grid.Column="0"
-                            HorizontalAlignment="Center"
-                            Click="Delete_Clicked" />
-
-                </Grid>
+    <StackPanel>
+        <!--<TextBlock>SingleLine</TextBlock>
+        <WrapPanel HorizontalAlignment="Left" Margin="1">
+            <Border BorderThickness="1 1 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 1 1</TextBlock>
             </Border>
-            <TextBlock Text="details"
-                       VerticalAlignment="Top"
-                       HorizontalAlignment="Left"
-                       Margin="4,0,0,0" />
-        </Grid>
-    </Grid>
+            <Border BorderThickness="0 1 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >0 1 1 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 0 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 0 1 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 1 0 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 0 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 1 1 0">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 1 0</TextBlock>
+            </Border>
+        </WrapPanel>-->
+        <!--<TextBlock>DoubleLine</TextBlock>
+        <WrapPanel>
+            <Border BorderThickness="1 1 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="DoubleLine" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 1 1</TextBlock>
+            </Border>
+            <Border BorderThickness="0 1 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="DoubleLine" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >0 1 1 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 0 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="DoubleLine" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 0 1 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 1 0 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="DoubleLine" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 0 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 1 1 0">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="DoubleLine" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 1 0</TextBlock>
+            </Border>
+        </WrapPanel>
+        <TextBlock>Bold</TextBlock>
+        <WrapPanel>
+            <Border BorderThickness="1 1 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Bold" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 1 1</TextBlock>
+            </Border>
+            <Border BorderThickness="0 1 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Bold" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >0 1 1 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 0 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Bold" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 0 1 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 1 0 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Bold" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 0 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 1 1 0">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Bold" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 1 0</TextBlock>
+            </Border>
+        </WrapPanel>-->
+        <TextBlock>Edge</TextBlock>
+        <WrapPanel>
+            <Border BorderThickness="1 1 1 1" Margin="2">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+            </Border>
+            <Border BorderThickness="0 1 1 1" Margin="2">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+            </Border>
+            <Border BorderThickness="1 0 1 1" Margin="2">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Cyan"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+            </Border>
+            <Border BorderThickness="1 1 0 1" Margin="2">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Purple"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+            </Border>
+            <Border BorderThickness="1 1 1 0" Margin="2">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Green"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+            </Border>
+        </WrapPanel>
+        <WrapPanel>
+            <Border BorderThickness="1 1 1 1" Margin="2">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+            </Border>
+            <Border BorderThickness="1 0 0 0" Margin="2">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+            </Border>
+            <Border BorderThickness="0 1 0 0" Margin="2">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Cyan"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+            </Border>
+            <Border BorderThickness="0 0 1 0" Margin="2">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Purple"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+            </Border>
+            <Border BorderThickness="0 0 0 1" Margin="2">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Green"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+            </Border>
+        </WrapPanel>
+        <!--<TextBlock>EdgeWide</TextBlock>
+        <WrapPanel>
+            <Border BorderThickness="1 1 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="EdgeWide" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 1 1</TextBlock>
+            </Border>
+            <Border BorderThickness="0 1 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="EdgeWide" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >0 1 1 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 0 1 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="EdgeWide" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 0 1 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 1 0 1">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="EdgeWide" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 0 1</TextBlock>
+            </Border>
+            <Border BorderThickness="1 1 1 0">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="EdgeWide" Brush="Blue"/>
+                </Border.BorderBrush>
+                <TextBlock Background="AntiqueWhite" >1 1 1 0</TextBlock>
+            </Border>
+        </WrapPanel>-->
+    </StackPanel>
+
 </Window>
