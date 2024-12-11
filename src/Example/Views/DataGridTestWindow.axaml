@@ -105,100 +105,128 @@
                 <TextBlock Background="AntiqueWhite" >1 1 1 0</TextBlock>
             </Border>
         </WrapPanel>-->
-        <TextBlock>Edge</TextBlock>
-        <WrapPanel>
-            <Border BorderThickness="1 1 1 1" Margin="2">
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Orientation="Horizontal">
+            <Border BorderThickness="0 0 0 1" Margin="2" >
                 <Border.BorderBrush>
                     <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
-                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
             </Border>
-            <Border BorderThickness="0 1 1 1" Margin="2">
+            <Border BorderThickness="0 0 1 0" Margin="2" >
                 <Border.BorderBrush>
                     <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
-                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
             </Border>
-            <Border BorderThickness="1 0 1 1" Margin="2">
-                <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Edge" Brush="Cyan"/>
-                </Border.BorderBrush>
-                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
-            </Border>
-            <Border BorderThickness="1 1 0 1" Margin="2">
-                <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Edge" Brush="Purple"/>
-                </Border.BorderBrush>
-                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
-            </Border>
-            <Border BorderThickness="1 1 1 0" Margin="2">
-                <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Edge" Brush="Green"/>
-                </Border.BorderBrush>
-                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
-            </Border>
-        </WrapPanel>
-        <WrapPanel>
-            <Border BorderThickness="1 1 1 1" Margin="2">
+            <Border BorderThickness="0 0 1 1" Margin="2" >
                 <Border.BorderBrush>
                     <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
-                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
             </Border>
-            <Border BorderThickness="1 0 0 0" Margin="2">
+            <Border BorderThickness="0 1 0 0" Margin="2" >
                 <Border.BorderBrush>
                     <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
-                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
             </Border>
-            <Border BorderThickness="0 1 0 0" Margin="2">
+            <Border BorderThickness="0 1 0 1" Margin="2" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Edge" Brush="Cyan"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
-                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
             </Border>
-            <Border BorderThickness="0 0 1 0" Margin="2">
+            <Border BorderThickness="0 1 1 0" Margin="2" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Edge" Brush="Purple"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
-                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
             </Border>
-            <Border BorderThickness="0 0 0 1" Margin="2">
+            <Border BorderThickness="0 1 1 1" Margin="2" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Edge" Brush="Green"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
-                <Rectangle Fill="AntiqueWhite" Width="2" Height="2"/>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
             </Border>
-        </WrapPanel>
-        <!--<TextBlock>EdgeWide</TextBlock>
+            <Border BorderThickness="1 0 0 0" Margin="2" >
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
+            </Border>
+            <Border BorderThickness="1 0 0 1" Margin="2" >
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
+            </Border>
+            <Border BorderThickness="1 0 1 0" Margin="2" >
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
+            </Border>
+            <Border BorderThickness="1 0 1 1" Margin="2" >
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
+            </Border>
+            <Border BorderThickness="1 1 0 0" Margin="2" >
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
+            </Border>
+            <Border BorderThickness="1 1 0 1" Margin="2" >
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
+            </Border>
+            <Border BorderThickness="1 1 1 0" Margin="2" >
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
+            </Border>
+            <Border BorderThickness="1 1 1 1" Margin="2" >
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
+                </Border.BorderBrush>
+                <Rectangle Fill="AntiqueWhite" Width="4" Height="2"/>
+            </Border>
+
+        </StackPanel>
+        <!--<TextBlock>Edge</TextBlock>
         <WrapPanel>
             <Border BorderThickness="1 1 1 1">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="EdgeWide" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite" >1 1 1 1</TextBlock>
             </Border>
             <Border BorderThickness="0 1 1 1">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="EdgeWide" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite" >0 1 1 1</TextBlock>
             </Border>
             <Border BorderThickness="1 0 1 1">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="EdgeWide" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite" >1 0 1 1</TextBlock>
             </Border>
             <Border BorderThickness="1 1 0 1">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="EdgeWide" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite" >1 1 0 1</TextBlock>
             </Border>
             <Border BorderThickness="1 1 1 0">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="EdgeWide" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite" >1 1 1 0</TextBlock>
             </Border>

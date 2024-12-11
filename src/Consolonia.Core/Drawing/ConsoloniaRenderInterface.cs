@@ -64,7 +64,7 @@ namespace Consolonia.Core.Drawing
                 var hasTopStroke = stream2.Bounds.Y == 1;
                 var hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width) == stream2.Bounds.X + 1;
                 var hasBottomStroke = (stream1.Bounds.Height - stream2.Bounds.Height) == stream2.Bounds.Y + 1;
-
+#if PATCH
                 var flags = 0;
                 if (hasLeftStroke)
                     flags |= 0b0001;
@@ -75,13 +75,12 @@ namespace Consolonia.Core.Drawing
                 if (hasBottomStroke)
                     flags |= 0b1000;
                 var patchValue = _patchTable[flags];
+                patchValue = 0;
                 var targetLayout = new Rect(stream2.Bounds.Left, stream2.Bounds.Top, stream2.Bounds.Width, stream2.Bounds.Height - patchValue);
 
                 Debug.WriteLine($"Stream1 {stream1.Bounds.Width}x{stream1.Bounds.Height}");
                 Debug.WriteLine($"Stream2 {stream2.Bounds.Width}x{stream2.Bounds.Height}");
                 Debug.WriteLine($"TargetLayout {targetLayout.Width}x{targetLayout.Height}");
-                if (targetLayout.Width != 8 || targetLayout.Height != 4)
-                    throw new NotImplementedException();
 
                 var topLeft = new Point(0, 0);
                 var topRight = new Point(targetLayout.Width + 1, 0);
@@ -99,23 +98,28 @@ namespace Consolonia.Core.Drawing
                 {
                     topLeft = AdjustY(topLeft, -1);
                     bottomLeft = AdjustY(bottomLeft, -1);
-                    topRight = AdjustY(topRight, -1 );
+                    topRight = AdjustY(topRight, -1);
                     bottomRight = AdjustY(bottomRight, -1);
                 }
 
-                //if (!hasRightStroke)
-                //{
-                //    topRight = AdjustX(topRight, -1);
-                //    bottomRight = AdjustX(bottomRight, -1);
-                //}
+                if (!hasRightStroke)
+                {
+                    topRight = AdjustX(topRight, -1);
+                    bottomRight = AdjustX(bottomRight, -1);
+                }
 
-                //if (!hasBottomStroke)
-                //{
-                //    bottomLeft = AdjustY(bottomLeft, -1);
-                //    bottomRight = AdjustY(bottomRight, -1);
-                //}
-                
+                if (!hasBottomStroke)
+                {
+                    bottomLeft = AdjustY(bottomLeft, -1);
+                    bottomRight = AdjustY(bottomRight, -1);
+                }
+#else
                 // add "null" strokes to establish boundries of box.
+                var topLeft = stream1.Bounds.TopLeft;
+                var topRight = stream1.Bounds.TopRight;
+                var bottomLeft = stream1.Bounds.BottomLeft;
+                var bottomRight = stream1.Bounds.BottomRight;
+#endif
                 AddStroke(ctx, topLeft, topLeft);
                 AddStroke(ctx, bottomRight, bottomRight);
 
@@ -128,7 +132,6 @@ namespace Consolonia.Core.Drawing
                 if (hasLeftStroke)
                     AddStroke(ctx, topLeft, bottomLeft);
 
-                Point AdjustXY(Point p, int deltaX, int deltaY) => p.WithX(Math.Max(0, p.X + deltaX)).WithY(Math.Max(0, p.Y + deltaY));
                 Point AdjustX(Point p, int deltaX) => p.WithX(Math.Max(0, p.X + deltaX));
                 Point AdjustY(Point p, int deltaY) => p.WithY(Math.Max(0, p.Y + deltaY));
             }
