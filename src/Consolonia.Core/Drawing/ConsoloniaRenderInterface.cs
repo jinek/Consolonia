@@ -8,7 +8,6 @@ using Avalonia.Media.Imaging;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.Text;
-using Newtonsoft.Json.Converters;
 using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
@@ -40,8 +39,6 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
-        private static int[] _patchTable = [0, 2, 1, 1, 2, 2, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0];
-
         public IGeometryImpl CreateCombinedGeometry(GeometryCombineMode combineMode, IGeometryImpl g1, IGeometryImpl g2)
         {
             // this is handcrafted to only combine single thickness line strokes for borders.
@@ -54,8 +51,8 @@ namespace Consolonia.Core.Drawing
                 throw new ArgumentException("Only StreamGeometryImpl is supported");
 
             Debug.WriteLine($"=====");
-            //Debug.WriteLine($"Stream1 Bounds: {stream1.Bounds}");
-            //Debug.WriteLine($"Stream2 Bounds: {stream2.Bounds}");
+            Debug.WriteLine($"Stream1 Bounds: {stream1.Bounds}");
+            Debug.WriteLine($"Stream2 Bounds: {stream2.Bounds}");
 
             var newGeometry = CreateStreamGeometry();
             using (var ctx = newGeometry.Open())
@@ -64,64 +61,49 @@ namespace Consolonia.Core.Drawing
                 var hasTopStroke = stream2.Bounds.Y == 1;
                 var hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width) == stream2.Bounds.X + 1;
                 var hasBottomStroke = (stream1.Bounds.Height - stream2.Bounds.Height) == stream2.Bounds.Y + 1;
-#if PATCH
-                var flags = 0;
-                if (hasLeftStroke)
-                    flags |= 0b0001;
-                if (hasTopStroke)
-                    flags |= 0b0010;
-                if (hasRightStroke)
-                    flags |= 0b0100;
-                if (hasBottomStroke)
-                    flags |= 0b1000;
-                var patchValue = _patchTable[flags];
-                patchValue = 0;
-                var targetLayout = new Rect(stream2.Bounds.Left, stream2.Bounds.Top, stream2.Bounds.Width, stream2.Bounds.Height - patchValue);
 
-                Debug.WriteLine($"Stream1 {stream1.Bounds.Width}x{stream1.Bounds.Height}");
-                Debug.WriteLine($"Stream2 {stream2.Bounds.Width}x{stream2.Bounds.Height}");
-                Debug.WriteLine($"TargetLayout {targetLayout.Width}x{targetLayout.Height}");
-
-                var topLeft = new Point(0, 0);
-                var topRight = new Point(targetLayout.Width + 1, 0);
-                var bottomRight = new Point(targetLayout.Width + 1, targetLayout.Height + 1);
-                var bottomLeft = new Point(0, targetLayout.Height + 1);
-                if (!hasLeftStroke)
-                {
-                    topLeft = AdjustX(topLeft, -1);
-                    bottomLeft = AdjustX(bottomLeft, -1);
-                    topRight = AdjustX(topRight, -1);
-                    bottomRight = AdjustX(bottomRight, -1);
-                }
-
-                if (!hasTopStroke)
-                {
-                    topLeft = AdjustY(topLeft, -1);
-                    bottomLeft = AdjustY(bottomLeft, -1);
-                    topRight = AdjustY(topRight, -1);
-                    bottomRight = AdjustY(bottomRight, -1);
-                }
-
-                if (!hasRightStroke)
-                {
-                    topRight = AdjustX(topRight, -1);
-                    bottomRight = AdjustX(bottomRight, -1);
-                }
-
-                if (!hasBottomStroke)
-                {
-                    bottomLeft = AdjustY(bottomLeft, -1);
-                    bottomRight = AdjustY(bottomRight, -1);
-                }
-#else
                 // add "null" strokes to establish boundries of box.
                 var topLeft = stream1.Bounds.TopLeft;
                 var topRight = stream1.Bounds.TopRight;
                 var bottomLeft = stream1.Bounds.BottomLeft;
                 var bottomRight = stream1.Bounds.BottomRight;
-#endif
+                Debug.WriteLine($"Stream1 {stream1.Bounds.Width}x{stream1.Bounds.Height}");
+                Debug.WriteLine($"Stream2 {stream2.Bounds.Width}x{stream2.Bounds.Height}");
                 AddStroke(ctx, topLeft, topLeft);
                 AddStroke(ctx, bottomRight, bottomRight);
+
+                #region LAYOUT_PATCHES
+                // Layout patches. This is a mess, see avalonia bug https://github.com/AvaloniaUI/Avalonia/issues/17752
+                if (hasBottomStroke && !hasTopStroke && (hasLeftStroke || hasRightStroke))
+                {
+                    bottomLeft = AdjustY(bottomLeft, -1);
+                    bottomRight = AdjustY(bottomRight, -1);
+                }
+
+                if (hasBottomStroke && !hasTopStroke && !hasLeftStroke && !hasRightStroke)
+                {
+                    bottomLeft = AdjustY(bottomLeft, -.99); // Sigh. -1 doesn't work, but -.99 does.
+                    bottomRight = AdjustY(bottomRight, -.99);
+                }
+                
+                if (hasRightStroke && !hasLeftStroke)
+                {
+                    topRight = AdjustX(topRight, -1);
+                    bottomRight = AdjustX(bottomRight, -1);
+                }
+                
+                if (hasTopStroke && hasBottomStroke)
+                {
+                    bottomLeft = AdjustY(bottomLeft, -1);
+                    bottomRight = AdjustY(bottomRight, -1);
+                }
+
+                if (hasLeftStroke && hasRightStroke)
+                {
+                    topRight= AdjustX(topRight, -1);
+                    bottomRight = AdjustX(bottomRight, -1);
+                }
+                #endregion
 
                 if (hasTopStroke)
                     AddStroke(ctx, topLeft, topRight);
@@ -132,8 +114,9 @@ namespace Consolonia.Core.Drawing
                 if (hasLeftStroke)
                     AddStroke(ctx, topLeft, bottomLeft);
 
-                Point AdjustX(Point p, int deltaX) => p.WithX(Math.Max(0, p.X + deltaX));
-                Point AdjustY(Point p, int deltaY) => p.WithY(Math.Max(0, p.Y + deltaY));
+                Point AdjustXY(Point p, double deltaX, int deltaY) => new Point(p.X + deltaX, p.Y + deltaY);
+                Point AdjustX(Point p, double deltaX) => p.WithX(p.X + deltaX);
+                Point AdjustY(Point p, double deltaY) => p.WithY(p.Y + deltaY);
             }
 
             var newg = newGeometry as StreamGeometryImpl;

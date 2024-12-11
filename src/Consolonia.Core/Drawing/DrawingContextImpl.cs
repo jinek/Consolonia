@@ -163,10 +163,40 @@ namespace Consolonia.Core.Drawing
                         }
                         else
                         {
-                            for (int i = 0; i < streamGeometry.Strokes.Count; i++)
+                            Line strokeTop = null;
+                            Line strokeLeft = null;
+                            Line strokeRight = null;
+                            Line strokeBottom = null;
+                            for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
                             {
-                                DrawBoxLineInternal(pen, streamGeometry.Strokes[i], strokePostions[i]);
+                                var stroke = streamGeometry.Strokes[iStroke];
+                                var strokePosition = strokePostions[iStroke];
+                                if (strokePosition == RectangleLinePosition.Left)
+                                    strokeLeft = stroke;
+                                else if (strokePosition == RectangleLinePosition.Right)
+                                    strokeRight = stroke;
+                                else if (strokePosition == RectangleLinePosition.Top)
+                                    strokeTop = stroke;
+                                else if (strokePosition == RectangleLinePosition.Bottom)
+                                    strokeBottom = stroke;
                             }
+
+                            // make sure strokes are connected  
+                            if (strokeTop != null && strokeRight != null && strokeTop.PEnd != strokeRight.PStart)
+                                strokeTop = new Line(strokeTop.PStart, strokeRight.PStart);
+                            else if (strokeRight != null && strokeBottom != null && strokeRight.PEnd != strokeBottom.PEnd)
+                                strokeRight = new Line(strokeRight.PStart, strokeBottom.PEnd);
+                            else if (strokeLeft != null && strokeBottom != null && strokeLeft.PEnd != strokeBottom.PStart)
+                                strokeLeft = new Line(strokeLeft.PStart, strokeBottom.PStart);
+
+                            if (strokeLeft != null)
+                                DrawBoxLineInternal(pen, strokeLeft, RectangleLinePosition.Left);
+                            if (strokeTop != null)
+                                DrawBoxLineInternal(pen, strokeTop, RectangleLinePosition.Top);
+                            if (strokeRight != null)
+                                DrawBoxLineInternal(pen, strokeRight, RectangleLinePosition.Right);
+                            if (strokeBottom != null)
+                                DrawBoxLineInternal(pen, strokeBottom, RectangleLinePosition.Bottom);
                         }
                     }
                     break;
@@ -187,7 +217,7 @@ namespace Consolonia.Core.Drawing
             for (int i = 0; i < streamGeometry.Strokes.Count; i++)
             {
                 var stroke = streamGeometry.Strokes[i];
-                if (stroke.Bounds.Width ==0 && stroke.Bounds.Height == 0)
+                if (stroke.Bounds.Width == 0 && stroke.Bounds.Height == 0)
                 {
                     // ignore zero length strokes
                     strokePositions[i] = RectangleLinePosition.Unknown;
@@ -517,11 +547,17 @@ namespace Consolonia.Core.Drawing
                 byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
                 DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, 1); //beginning
 
-                pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, line.Length - 1); //line
+                if (line.Length > 2)
+                {
+                    pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
+                    DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, line.Length - 1); //line
+                }
 
-                pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, 1); //ending 
+                if (line.Length >= 1)
+                {
+                    pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
+                    DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, 1); //ending 
+                }
             }
         }
 
