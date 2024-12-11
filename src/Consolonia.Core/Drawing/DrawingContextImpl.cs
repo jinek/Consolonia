@@ -152,10 +152,13 @@ namespace Consolonia.Core.Drawing
                             {
                                 var stroke = TransformLineInternal(streamGeometry.Strokes[iStroke]);
 
-                                if (stroke.Vertical)
-                                    DrawEdgeLine(stroke, strokePostions[iStroke], lineStyle.Value, color, hasLeft, hasRight);
-                                else
-                                    DrawEdgeLine(stroke, strokePostions[iStroke], lineStyle.Value, color, hasTop, hasBottom);
+                                if (stroke.Bounds.Width > 0 || stroke.Bounds.Height > 0)
+                                {
+                                    if (stroke.Vertical)
+                                        DrawEdgeLine(stroke, strokePostions[iStroke], lineStyle.Value, color, hasTop, hasBottom);
+                                    else
+                                        DrawEdgeLine(stroke, strokePostions[iStroke], lineStyle.Value, color, hasLeft, hasRight);
+                                }
                             }
                         }
                         else
@@ -179,11 +182,18 @@ namespace Consolonia.Core.Drawing
             var focalPointX = streamGeometry.Strokes.Average(stroke => stroke.PStart.X + Math.Abs(stroke.PStart.X - stroke.PEnd.X) / 2);
             var focalPointY = streamGeometry.Strokes.Average(stroke => stroke.PStart.Y + Math.Abs(stroke.PStart.Y - stroke.PEnd.Y) / 2);
             var focalPoint = new Point(focalPointX, focalPointY);
-            var strokePositions = new RectangleLinePosition[4];
+            var strokePositions = new RectangleLinePosition[streamGeometry.Strokes.Count];
 
             for (int i = 0; i < streamGeometry.Strokes.Count; i++)
             {
                 var stroke = streamGeometry.Strokes[i];
+                if (stroke.Bounds.Width ==0 && stroke.Bounds.Height == 0)
+                {
+                    // ignore zero length strokes
+                    strokePositions[i] = RectangleLinePosition.Unknown;
+                    continue;
+                }
+
                 if (stroke.Vertical)
                 {
                     if (stroke.PStart.X <= focalPoint.X)

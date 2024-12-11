@@ -40,6 +40,8 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
+        private static int[] _patchTable = [0, 2, 1, 1, 2, 2, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0];
+
         public IGeometryImpl CreateCombinedGeometry(GeometryCombineMode combineMode, IGeometryImpl g1, IGeometryImpl g2)
         {
             // this is handcrafted to only combine single thickness line strokes for borders.
@@ -51,9 +53,9 @@ namespace Consolonia.Core.Drawing
             if (g1 is not StreamGeometryImpl stream1 || g2 is not StreamGeometryImpl stream2)
                 throw new ArgumentException("Only StreamGeometryImpl is supported");
 
-            Debug.WriteLine("=====");
-            Debug.WriteLine($"Stream1 Bounds: {stream1.Bounds}");
-            Debug.WriteLine($"Stream2 Bounds: {stream2.Bounds}");
+            Debug.WriteLine($"=====");
+            //Debug.WriteLine($"Stream1 Bounds: {stream1.Bounds}");
+            //Debug.WriteLine($"Stream2 Bounds: {stream2.Bounds}");
 
             var newGeometry = CreateStreamGeometry();
             using (var ctx = newGeometry.Open())
@@ -62,37 +64,60 @@ namespace Consolonia.Core.Drawing
                 var hasTopStroke = stream2.Bounds.Y == 1;
                 var hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width) == stream2.Bounds.X + 1;
                 var hasBottomStroke = (stream1.Bounds.Height - stream2.Bounds.Height) == stream2.Bounds.Y + 1;
-                //hasLeftStroke = hasTopStroke = hasRightStroke = hasBottomStroke = true;
 
+                var flags = 0;
+                if (hasLeftStroke)
+                    flags |= 0b0001;
+                if (hasTopStroke)
+                    flags |= 0b0010;
+                if (hasRightStroke)
+                    flags |= 0b0100;
+                if (hasBottomStroke)
+                    flags |= 0b1000;
+                var patchValue = _patchTable[flags];
+                var targetLayout = new Rect(stream2.Bounds.Left, stream2.Bounds.Top, stream2.Bounds.Width, stream2.Bounds.Height - patchValue);
 
                 Debug.WriteLine($"Stream1 {stream1.Bounds.Width}x{stream1.Bounds.Height}");
                 Debug.WriteLine($"Stream2 {stream2.Bounds.Width}x{stream2.Bounds.Height}");
+                Debug.WriteLine($"TargetLayout {targetLayout.Width}x{targetLayout.Height}");
+                if (targetLayout.Width != 8 || targetLayout.Height != 4)
+                    throw new NotImplementedException();
 
-                // topStroke
                 var topLeft = new Point(0, 0);
-                var topRight = new Point(stream2.Bounds.Width, 0);
-                var bottomRight = new Point(stream2.Bounds.Width, stream2.Bounds.Height);
-                var bottomLeft = new Point(0, stream2.Bounds.Height);
-                if (hasLeftStroke)
+                var topRight = new Point(targetLayout.Width + 1, 0);
+                var bottomRight = new Point(targetLayout.Width + 1, targetLayout.Height + 1);
+                var bottomLeft = new Point(0, targetLayout.Height + 1);
+                if (!hasLeftStroke)
                 {
-                    topRight = AdjustX(topRight, 1);
-                    bottomRight = AdjustX(bottomRight, 1);
+                    topLeft = AdjustX(topLeft, -1);
+                    bottomLeft = AdjustX(bottomLeft, -1);
+                    topRight = AdjustX(topRight, -1);
+                    bottomRight = AdjustX(bottomRight, -1);
                 }
-                if (hasRightStroke)
+
+                if (!hasTopStroke)
                 {
-                    topRight = AdjustX(topRight, 1);
-                    bottomRight = AdjustX(bottomRight, 1);
+                    topLeft = AdjustY(topLeft, -1);
+                    bottomLeft = AdjustY(bottomLeft, -1);
+                    topRight = AdjustY(topRight, -1 );
+                    bottomRight = AdjustY(bottomRight, -1);
                 }
-                if (hasBottomStroke)
-                {
-                    bottomLeft = AdjustY(bottomLeft, 1);
-                    bottomRight = AdjustY(bottomRight, 1);
-                }
-                if (hasTopStroke)
-                {
-                    bottomLeft = AdjustY(bottomLeft, 1);
-                    bottomRight = AdjustY(bottomRight, 1);
-                }
+
+                //if (!hasRightStroke)
+                //{
+                //    topRight = AdjustX(topRight, -1);
+                //    bottomRight = AdjustX(bottomRight, -1);
+                //}
+
+                //if (!hasBottomStroke)
+                //{
+                //    bottomLeft = AdjustY(bottomLeft, -1);
+                //    bottomRight = AdjustY(bottomRight, -1);
+                //}
+                
+                // add "null" strokes to establish boundries of box.
+                AddStroke(ctx, topLeft, topLeft);
+                AddStroke(ctx, bottomRight, bottomRight);
 
                 if (hasTopStroke)
                     AddStroke(ctx, topLeft, topRight);
