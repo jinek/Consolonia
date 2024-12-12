@@ -603,17 +603,17 @@ namespace Consolonia.Core.Drawing
             Point head = line.PStart;
 
             var length = line.Length;
-            //if (includeStartSymbol)
-            //{
-            DrawLineSymbolAndMoveHead(ref head, line.Vertical, startSymbol, color, 1);
-            //}
-            //else
-            //    length++;
+            if (includeStartSymbol)
+                DrawLineSymbolAndMoveHead(ref head, line.Vertical, startSymbol, color, 1);
+            else
+                head += line.Vertical ? new Vector(0, 1) : new Vector(1, 0);
 
             DrawLineSymbolAndMoveHead(ref head, line.Vertical, middleSymbol, color, length - 1);
 
-            //            if (includeEndSymbol)
-            DrawLineSymbolAndMoveHead(ref head, line.Vertical, endSymbol, color, 1);
+            if (includeEndSymbol)
+                DrawLineSymbolAndMoveHead(ref head, line.Vertical, endSymbol, color, 1);
+            else
+                head += line.Vertical ? new Vector(0, 1) : new Vector(1, 0);
         }
 
         /// <summary>
