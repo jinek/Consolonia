@@ -1,5 +1,3 @@
-using System;
-
 namespace Consolonia.Core.Drawing
 {
     internal enum RectangleLinePosition
