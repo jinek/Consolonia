@@ -61,63 +61,66 @@ namespace Consolonia.Core.Drawing
                 var hasTopStroke = stream2.Bounds.Y == 1;
                 var hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width) == stream2.Bounds.X + 1;
                 var hasBottomStroke = (stream1.Bounds.Height - stream2.Bounds.Height) == stream2.Bounds.Y + 1;
-
                 var topLeft = stream1.Bounds.TopLeft;
                 var topRight = stream1.Bounds.TopRight;
                 var bottomLeft = stream1.Bounds.BottomLeft;
                 var bottomRight = stream1.Bounds.BottomRight;
+                var topStroke = stream1.Strokes[0];
+                var rightStroke = stream1.Strokes[1];
+                var bottomStroke = stream1.Strokes[2];
+                var leftStroke = stream1.Strokes[3];
                 Debug.WriteLine($"Stream1 {stream2.Bounds.Width}x{stream1.Bounds.Height}");
                 Debug.WriteLine($"Stream2 {stream2.Bounds.Width}x{stream2.Bounds.Height}");
 
-                #region LAYOUT_PATCHES
                 // Layout patches. This is a mess, see avalonia bug https://github.com/AvaloniaUI/Avalonia/issues/17752
-                if (hasBottomStroke && !hasTopStroke && (hasLeftStroke || hasRightStroke))
-                {
-                    bottomLeft = AdjustY(bottomLeft, -1);
-                    bottomRight = AdjustY(bottomRight, -1);
-                }
+                //if (hasBottomStroke && !hasTopStroke && (hasLeftStroke || hasRightStroke))
+                //{
+                //    bottomLeft = bottomLeft + new Vector(0, -1);
+                //    bottomRight = bottomRight + new Vector(0, -1);
+                //}
 
-                if (hasBottomStroke && !hasTopStroke && !hasLeftStroke && !hasRightStroke)
-                {
-                    bottomLeft = AdjustY(bottomLeft, -.99); // Sigh. -1 doesn't work, but -.99 does. I don't know...the world is a strange place.
-                    bottomRight = AdjustY(bottomRight, -.99);
-                }
+                //if (hasBottomStroke && !hasTopStroke && !hasLeftStroke && !hasRightStroke)
+                //{
+                //    bottomLeft = bottomLeft + new Vector(0, -.99); // Sigh. -1 doesn't work, but -.99 does. I don't know...the world is a strange place.
+                //    bottomRight = bottomRight + new Vector(0, -.99);
+                //}
 
-                if (hasRightStroke && !hasLeftStroke)
-                {
-                    topRight = AdjustX(topRight, -1);
-                    bottomRight = AdjustX(bottomRight, -1);
-                }
+                //if (hasRightStroke && !hasLeftStroke)
+                //{
+                //    topRight = topRight + new Vector(-1, 0);
+                //    bottomRight = bottomRight + new Vector(-1, 0);
+                //}
 
-                if (hasTopStroke && hasBottomStroke)
-                {
-                    bottomLeft = AdjustY(bottomLeft, -1);
-                    bottomRight = AdjustY(bottomRight, -1);
-                }
+                //if (hasTopStroke && hasBottomStroke)
+                //{
+                //    bottomLeft = bottomLeft + new Vector(0, -1);
+                //    bottomRight = bottomRight + new Vector(0, -1);
+                //}
 
-                if (hasLeftStroke && hasRightStroke)
-                {
-                    topRight = AdjustX(topRight, -1);
-                    bottomRight = AdjustX(bottomRight, -1);
-                }
-                #endregion
+                //if (hasLeftStroke && hasRightStroke)
+                //{
+                //    topRight = topRight + new Vector(-1, 0);
+                //    bottomRight = bottomRight + new Vector(-1, 0);
+                //}
 
                 // add "null" strokes to establish boundries of box even when there is a single real stroke.
                 AddStroke(ctx, topLeft, topLeft);
                 AddStroke(ctx, bottomRight, bottomRight);
-
+                //foreach(var stroke in stream1.Strokes)
+                //{
+                //    Debug.WriteLine($"Stroke: {stroke.PStart} - {stroke.PEnd}");
+                //    if ()
+                //    AddStroke(ctx, stroke.PStart, stroke.PEnd);
+                //}
                 if (hasTopStroke)
-                    AddStroke(ctx, topLeft, topRight);
+                    AddStroke(ctx, topStroke.PStart, topStroke.PEnd + new Vector(-1, 0));
                 if (hasRightStroke)
-                    AddStroke(ctx, topRight, bottomRight);
+                    AddStroke(ctx, rightStroke.PStart + new Vector(-1, 0), rightStroke.PEnd + new Vector(-1, -1));
                 if (hasBottomStroke)
-                    AddStroke(ctx, bottomLeft, bottomRight);
+                    AddStroke(ctx, bottomStroke.PStart + new Vector(0,-1), bottomStroke.PEnd + new Vector(-1, -1));
                 if (hasLeftStroke)
-                    AddStroke(ctx, topLeft, bottomLeft);
+                    AddStroke(ctx, leftStroke.PStart, leftStroke.PEnd + new Vector(0, -1));
 
-                Point AdjustXY(Point p, double deltaX, int deltaY) => new Point(p.X + deltaX, p.Y + deltaY);
-                Point AdjustX(Point p, double deltaX) => p.WithX(p.X + deltaX);
-                Point AdjustY(Point p, double deltaY) => p.WithY(p.Y + deltaY);
             }
 
             var newg = newGeometry as StreamGeometryImpl;

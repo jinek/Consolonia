@@ -182,29 +182,29 @@ namespace Consolonia.Core.Drawing
                             }
                             if (strokeLeft != null)
                             {
-                                if (strokeBottom != null)
-                                    strokeLeft = new Line(strokeLeft.PStart, strokeBottom.PStart, strokeLeft.SourceGeometry, strokeLeft.Transform);
+                                //if (strokeBottom != null)
+                                //    strokeLeft = new Line(strokeLeft.PStart, strokeBottom.PStart, strokeLeft.SourceGeometry, strokeLeft.Transform);
                                 DrawBoxLineInternal(pen, strokeLeft, RectangleLinePosition.Left);
                             }
 
                             if (strokeTop != null)
                             {
-                                if (strokeRight != null)
-                                    strokeTop = new Line(strokeTop.PStart, strokeRight.PStart, strokeTop.SourceGeometry, strokeTop.Transform);
+                                //if (strokeRight != null)
+                                //    strokeTop = new Line(strokeTop.PStart, strokeRight.PStart, strokeTop.SourceGeometry, strokeTop.Transform);
                                 DrawBoxLineInternal(pen, strokeTop, RectangleLinePosition.Top);
                             }
 
                             if (strokeRight != null)
                             {
-                                if (strokeBottom != null)
-                                    strokeRight = new Line(strokeRight.PStart, strokeBottom.PEnd, strokeRight.SourceGeometry, strokeRight.Transform);
+                                //if (strokeBottom != null)
+                                //    strokeRight = new Line(strokeRight.PStart, strokeBottom.PEnd, strokeRight.SourceGeometry, strokeRight.Transform);
                                 DrawBoxLineInternal(pen, strokeRight, RectangleLinePosition.Right);
                             }
 
                             if (strokeBottom != null)
                             {
-                                if (strokeLeft != null)
-                                    strokeBottom = new Line(strokeLeft.PEnd, strokeBottom.PEnd, strokeBottom.SourceGeometry, strokeBottom.Transform);
+                                //if (strokeLeft != null)
+                                //    strokeBottom = new Line(strokeLeft.PEnd, strokeBottom.PEnd, strokeBottom.SourceGeometry, strokeBottom.Transform);
                                 DrawBoxLineInternal(pen, strokeBottom, RectangleLinePosition.Bottom);
                             }
                         }
@@ -550,7 +550,6 @@ namespace Consolonia.Core.Drawing
 
             if (lineStyle == LineStyle.Edge || lineStyle == LineStyle.EdgeWide)
             {
-                // LineStyle.Edge and LineStyle.EdgeBold are drawn with simple symbols since they can't merge like box chars can.
                 DrawEdgeLine(line, linePosition, lineStyle.Value, color, includeStartSymbol: true, includeEndSymbol: true);
             }
             else
@@ -558,17 +557,11 @@ namespace Consolonia.Core.Drawing
                 byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
                 DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, 1); //beginning
 
-                if (line.Length > 2)
-                {
-                    pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
-                    DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, line.Length - 1); //line
-                }
+                pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
+                DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, line.Length - 1); //line
 
-                if (line.Length >= 1)
-                {
-                    pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
-                    DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, 1); //ending 
-                }
+                pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
+                DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, 1); //ending 
             }
         }
 
@@ -610,17 +603,17 @@ namespace Consolonia.Core.Drawing
             Point head = line.PStart;
 
             var length = line.Length;
-            if (includeStartSymbol)
-            {
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, startSymbol, color, 1);
-            }
-            else
-                length++;
+            //if (includeStartSymbol)
+            //{
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, startSymbol, color, 1);
+            //}
+            //else
+            //    length++;
 
             DrawLineSymbolAndMoveHead(ref head, line.Vertical, middleSymbol, color, length - 1);
 
-            if (includeEndSymbol)
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, endSymbol, color, 1);
+            //            if (includeEndSymbol)
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, endSymbol, color, 1);
         }
 
         /// <summary>

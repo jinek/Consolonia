@@ -1,0 +1,76 @@
+@page "/borders"
+@namespace Example.Blazor.Components
+@inject INavigation Navigation
+
+<StackPanel Orientation="Orientation.Vertical">
+    <TextBlock>LineStyle=Edge</TextBlock>
+    @* @for (int i = 0; i < Thicknesses.Length; i++) *@
+    @* { *@
+    @{
+        int i = 0;
+    }
+    <Border BorderBrush="@MyBrush"
+            BorderThickness="@Thickness.Parse(Thicknesses[i])"
+            Padding="@Thickness.Parse(Paddings[i])">
+        <StackPanel Orientation="Orientation.Vertical">
+            <TextBlock Text="@Thicknesses[i]" />
+        </StackPanel>
+    </Border>
+    //}
+</StackPanel>
+
+@code {
+
+
+    public async Task Back()
+    {
+        await Navigation.PopAsync();
+    }
+
+    private IBrush MyBrush => new LineBrush()
+        {
+            LineStyle = LineStyle.Edge,
+            Brush = Brushes.Blue
+        };
+
+    private string[] Thicknesses = new string[]
+    {
+        "1 1 1 1",
+        "1 1 1 0",
+        "1 1 0 1",
+        "1 1 0 0",
+        "1 0 1 1",
+        "1 0 1 0",
+        "1 0 0 1",
+        "1 0 0 0",
+        "0 1 1 1",
+        "0 1 1 0",
+        "0 1 0 1",
+        "0 1 0 0",
+        "0 0 1 1",
+        "0 0 1 0",
+        "0 0 0 1",
+        // "0 0 0 0",
+    };
+
+    private string[] Paddings = new string[]
+    {
+
+        "0 0 0 0",
+        "0 0 0 1",
+        "0 0 1 0",
+        "0 0 1 1",
+        "0 1 0 0",
+        "0 1 0 1",
+        "0 1 1 0",
+        "0 1 1 1",
+        "1 0 0 0",
+        "1 0 0 1",
+        "1 0 1 0",
+        "1 0 1 1",
+        "1 1 0 0",
+        "1 1 0 1",
+        "1 1 1 0",
+        //"1 1 1 1",
+    };
+}
