@@ -31,7 +31,9 @@ namespace Consolonia.Core.Infrastructure
             { ConsoleKey.UpArrow, Key.Up },
             { ConsoleKey.DownArrow, Key.Down },
             { ConsoleKey.Backspace, Key.Back },
-            { (ConsoleKey)18, Key.LeftAlt }
+            { (ConsoleKey)18, Key.LeftAlt },
+            { (ConsoleKey)16, Key.LeftShift },
+            { (ConsoleKey)17, Key.LeftCtrl }
         };
 
         private static readonly FlagTranslator<ConsoleModifiers, RawInputModifiers> ModifiersFlagsTranslator = new([
