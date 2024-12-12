@@ -30,14 +30,14 @@ namespace Consolonia.Core.Infrastructure
             { ConsoleKey.LeftArrow, Key.Left },
             { ConsoleKey.UpArrow, Key.Up },
             { ConsoleKey.DownArrow, Key.Down },
-            { ConsoleKey.Backspace, Key.Back }
+            { ConsoleKey.Backspace, Key.Back },
+            { (ConsoleKey)18, Key.LeftAlt }
         };
 
-        private static readonly FlagTranslator<ConsoleModifiers, RawInputModifiers> ModifiersFlagsTranslator = new(new[]
-        {
+        private static readonly FlagTranslator<ConsoleModifiers, RawInputModifiers> ModifiersFlagsTranslator = new([
             (ConsoleModifiers.Control, RawInputModifiers.Control),
             (ConsoleModifiers.Shift, RawInputModifiers.Shift), (ConsoleModifiers.Alt, RawInputModifiers.Alt)
-        });
+        ]);
 
         public DefaultNetConsole()
         {
@@ -95,6 +95,9 @@ namespace Consolonia.Core.Infrastructure
         public static Key ConvertToKey(ConsoleKey consoleKey)
         {
             if (KeyMapping.TryGetValue(consoleKey, out Key key)) return key;
+
+            if(!Enum.IsDefined(consoleKey))
+                throw new NotImplementedException();
 
             if (!Enum.TryParse(consoleKey.ToString(), out key))
                 throw new NotImplementedException();
