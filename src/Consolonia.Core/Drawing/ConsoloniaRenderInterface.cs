@@ -69,49 +69,13 @@ namespace Consolonia.Core.Drawing
                 var rightStroke = stream1.Strokes[1];
                 var bottomStroke = stream1.Strokes[2];
                 var leftStroke = stream1.Strokes[3];
-                Debug.WriteLine($"Stream1 {stream2.Bounds.Width}x{stream1.Bounds.Height}");
-                Debug.WriteLine($"Stream2 {stream2.Bounds.Width}x{stream2.Bounds.Height}");
 
                 // Layout patches. This is a mess, see avalonia bug https://github.com/AvaloniaUI/Avalonia/issues/17752
-                //if (hasBottomStroke && !hasTopStroke && (hasLeftStroke || hasRightStroke))
-                //{
-                //    bottomLeft = bottomLeft + new Vector(0, -1);
-                //    bottomRight = bottomRight + new Vector(0, -1);
-                //}
-
-                //if (hasBottomStroke && !hasTopStroke && !hasLeftStroke && !hasRightStroke)
-                //{
-                //    bottomLeft = bottomLeft + new Vector(0, -.99); // Sigh. -1 doesn't work, but -.99 does. I don't know...the world is a strange place.
-                //    bottomRight = bottomRight + new Vector(0, -.99);
-                //}
-
-                //if (hasRightStroke && !hasLeftStroke)
-                //{
-                //    topRight = topRight + new Vector(-1, 0);
-                //    bottomRight = bottomRight + new Vector(-1, 0);
-                //}
-
-                //if (hasTopStroke && hasBottomStroke)
-                //{
-                //    bottomLeft = bottomLeft + new Vector(0, -1);
-                //    bottomRight = bottomRight + new Vector(0, -1);
-                //}
-
-                //if (hasLeftStroke && hasRightStroke)
-                //{
-                //    topRight = topRight + new Vector(-1, 0);
-                //    bottomRight = bottomRight + new Vector(-1, 0);
-                //}
 
                 // add "null" strokes to establish boundries of box even when there is a single real stroke.
                 AddStroke(ctx, topLeft, topLeft);
                 AddStroke(ctx, bottomRight, bottomRight);
-                //foreach(var stroke in stream1.Strokes)
-                //{
-                //    Debug.WriteLine($"Stroke: {stroke.PStart} - {stroke.PEnd}");
-                //    if ()
-                //    AddStroke(ctx, stroke.PStart, stroke.PEnd);
-                //}
+               
                 if (hasTopStroke)
                     AddStroke(ctx, topStroke.PStart, topStroke.PEnd + new Vector(-1, 0));
                 if (hasRightStroke)
@@ -121,12 +85,6 @@ namespace Consolonia.Core.Drawing
                 if (hasLeftStroke)
                     AddStroke(ctx, leftStroke.PStart, leftStroke.PEnd + new Vector(0, -1));
 
-            }
-
-            var newg = newGeometry as StreamGeometryImpl;
-            foreach (var stroke in newg.Strokes)
-            {
-                Debug.WriteLine($"New.Stroke: {stroke.PStart} - {stroke.PEnd}");
             }
 
             return newGeometry;
