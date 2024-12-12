@@ -524,6 +524,7 @@ namespace Consolonia.Core.Drawing
         /// </summary>
         /// <param name="pen">pen</param>
         /// <param name="line">line</param>
+        /// <param name="linePosition">The relative rectangle line position</param>
         private void DrawBoxLineInternal(IPen pen, Line line, RectangleLinePosition linePosition)
         {
             if (pen.Thickness == 0) return;

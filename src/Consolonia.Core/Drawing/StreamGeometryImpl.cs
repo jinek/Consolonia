@@ -107,7 +107,7 @@ namespace Consolonia.Core.Drawing
             private Point _lastPoint;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="StreamContext"/> class.
+            /// Initializes a new instance of the StreamGeometryContextImpl class.
             /// <param name="geometryImpl">Geometry to operate on.</param>
             /// </summary>
             public StreamGeometryContextImpl(StreamGeometryImpl geometryImpl)

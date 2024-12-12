@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
+using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
 using SkiaSharp;
 
@@ -54,10 +54,10 @@ namespace Consolonia.Core.Drawing
             using (var ctx = newGeometry.Open())
             {
                 // Resharper disable UnusedVariable
-                var hasLeftStroke = stream2.Bounds.X == 1;
-                var hasTopStroke = stream2.Bounds.Y == 1;
-                var hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width) == stream2.Bounds.X + 1;
-                var hasBottomStroke = (stream1.Bounds.Height - stream2.Bounds.Height) == stream2.Bounds.Y + 1;
+                var hasLeftStroke = stream2.Bounds.X.IsNearlyEqual(1);
+                var hasTopStroke = stream2.Bounds.Y.IsNearlyEqual(1);
+                var hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width).IsNearlyEqual(stream2.Bounds.X + 1);
+                var hasBottomStroke = (stream1.Bounds.Height - stream2.Bounds.Height).IsNearlyEqual(stream2.Bounds.Y + 1);
                 var topLeft = stream1.Bounds.TopLeft;
                 var topRight = stream1.Bounds.TopRight;
                 var bottomLeft = stream1.Bounds.BottomLeft;
@@ -67,8 +67,6 @@ namespace Consolonia.Core.Drawing
                 var bottomStroke = stream1.Strokes[2];
                 var leftStroke = stream1.Strokes[3];
                 // Resharper enable UnusedVariable
-
-                // Layout patches. This is a mess, see avalonia bug https://github.com/AvaloniaUI/Avalonia/issues/17752
 
                 // add "null" strokes to establish boundries of box even when there is a single real stroke.
                 AddStroke(ctx, topLeft, topLeft);
@@ -82,7 +80,6 @@ namespace Consolonia.Core.Drawing
                     AddStroke(ctx, bottomStroke.PStart + new Vector(0,-1), bottomStroke.PEnd + new Vector(-1, -1));
                 if (hasLeftStroke)
                     AddStroke(ctx, leftStroke.PStart, leftStroke.PEnd + new Vector(0, -1));
-
             }
 
             return newGeometry;
