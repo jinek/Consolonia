@@ -4,7 +4,7 @@ namespace Consolonia.Core.Drawing
     {
         Left,
         Top,
-        Right, 
+        Right,
         Bottom,
         Unknown,
     }

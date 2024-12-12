@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Avalonia;
 using Avalonia.Media;
@@ -30,7 +31,7 @@ namespace Consolonia.Core.Drawing
 
         public IStreamGeometryImpl CreateStreamGeometry()
         {
-            throw new NotImplementedException();
+            return new StreamGeometryImpl();
         }
 
         public IGeometryImpl CreateGeometryGroup(FillRule fillRule, IReadOnlyList<IGeometryImpl> children)
@@ -40,7 +41,102 @@ namespace Consolonia.Core.Drawing
 
         public IGeometryImpl CreateCombinedGeometry(GeometryCombineMode combineMode, IGeometryImpl g1, IGeometryImpl g2)
         {
-            throw new NotImplementedException();
+            // this is handcrafted to only combine single thickness line strokes for borders.
+            // This needs to be much more robust to handle general cases.
+
+            if (combineMode != GeometryCombineMode.Exclude)
+                throw new NotImplementedException("Only GeometryCombineMode.Exclude is supported");
+
+            if (g1 is not StreamGeometryImpl stream1 || g2 is not StreamGeometryImpl stream2)
+                throw new ArgumentException("Only StreamGeometryImpl is supported");
+
+            Debug.WriteLine($"=====");
+            Debug.WriteLine($"Stream1 Bounds: {stream1.Bounds}");
+            Debug.WriteLine($"Stream2 Bounds: {stream2.Bounds}");
+
+            var newGeometry = CreateStreamGeometry();
+            using (var ctx = newGeometry.Open())
+            {
+                var hasLeftStroke = stream2.Bounds.X == 1;
+                var hasTopStroke = stream2.Bounds.Y == 1;
+                var hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width) == stream2.Bounds.X + 1;
+                var hasBottomStroke = (stream1.Bounds.Height - stream2.Bounds.Height) == stream2.Bounds.Y + 1;
+                var topLeft = stream1.Bounds.TopLeft;
+                var topRight = stream1.Bounds.TopRight;
+                var bottomLeft = stream1.Bounds.BottomLeft;
+                var bottomRight = stream1.Bounds.BottomRight;
+                var topStroke = stream1.Strokes[0];
+                var rightStroke = stream1.Strokes[1];
+                var bottomStroke = stream1.Strokes[2];
+                var leftStroke = stream1.Strokes[3];
+                Debug.WriteLine($"Stream1 {stream2.Bounds.Width}x{stream1.Bounds.Height}");
+                Debug.WriteLine($"Stream2 {stream2.Bounds.Width}x{stream2.Bounds.Height}");
+
+                // Layout patches. This is a mess, see avalonia bug https://github.com/AvaloniaUI/Avalonia/issues/17752
+                //if (hasBottomStroke && !hasTopStroke && (hasLeftStroke || hasRightStroke))
+                //{
+                //    bottomLeft = bottomLeft + new Vector(0, -1);
+                //    bottomRight = bottomRight + new Vector(0, -1);
+                //}
+
+                //if (hasBottomStroke && !hasTopStroke && !hasLeftStroke && !hasRightStroke)
+                //{
+                //    bottomLeft = bottomLeft + new Vector(0, -.99); // Sigh. -1 doesn't work, but -.99 does. I don't know...the world is a strange place.
+                //    bottomRight = bottomRight + new Vector(0, -.99);
+                //}
+
+                //if (hasRightStroke && !hasLeftStroke)
+                //{
+                //    topRight = topRight + new Vector(-1, 0);
+                //    bottomRight = bottomRight + new Vector(-1, 0);
+                //}
+
+                //if (hasTopStroke && hasBottomStroke)
+                //{
+                //    bottomLeft = bottomLeft + new Vector(0, -1);
+                //    bottomRight = bottomRight + new Vector(0, -1);
+                //}
+
+                //if (hasLeftStroke && hasRightStroke)
+                //{
+                //    topRight = topRight + new Vector(-1, 0);
+                //    bottomRight = bottomRight + new Vector(-1, 0);
+                //}
+
+                // add "null" strokes to establish boundries of box even when there is a single real stroke.
+                AddStroke(ctx, topLeft, topLeft);
+                AddStroke(ctx, bottomRight, bottomRight);
+                //foreach(var stroke in stream1.Strokes)
+                //{
+                //    Debug.WriteLine($"Stroke: {stroke.PStart} - {stroke.PEnd}");
+                //    if ()
+                //    AddStroke(ctx, stroke.PStart, stroke.PEnd);
+                //}
+                if (hasTopStroke)
+                    AddStroke(ctx, topStroke.PStart, topStroke.PEnd + new Vector(-1, 0));
+                if (hasRightStroke)
+                    AddStroke(ctx, rightStroke.PStart + new Vector(-1, 0), rightStroke.PEnd + new Vector(-1, -1));
+                if (hasBottomStroke)
+                    AddStroke(ctx, bottomStroke.PStart + new Vector(0,-1), bottomStroke.PEnd + new Vector(-1, -1));
+                if (hasLeftStroke)
+                    AddStroke(ctx, leftStroke.PStart, leftStroke.PEnd + new Vector(0, -1));
+
+            }
+
+            var newg = newGeometry as StreamGeometryImpl;
+            foreach (var stroke in newg.Strokes)
+            {
+                Debug.WriteLine($"New.Stroke: {stroke.PStart} - {stroke.PEnd}");
+            }
+
+            return newGeometry;
+        }
+
+        private static void AddStroke(IStreamGeometryContextImpl ctx, Point start, Point end)
+        {
+            ctx.BeginFigure(start, false);
+            ctx.LineTo(end);
+            ctx.EndFigure(true);
         }
 
         public IGeometryImpl BuildGlyphRunGeometry(GlyphRun glyphRun)

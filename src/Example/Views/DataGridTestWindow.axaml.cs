@@ -1,10 +1,7 @@
-using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 
 namespace Example.Views
 {
@@ -15,37 +12,42 @@ namespace Example.Views
         public DataGridTestWindow()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
 
-            Combo.ItemsSource = TheItem.Genres;
-            var rnd = new Random();
-
-            DataContext = _items = new ObservableCollection<TheItem>(Enumerable.Range(1, 50).Select(i => new TheItem
-            {
-                Id = i.ToString(),
-                Title = TheItem.Titles[rnd.Next(TheItem.Titles.Length)],
-                Genre = TheItem.Genres[rnd.Next(TheItem.Genres.Length)],
-                IsListed = i % 2 == 0
-            }).ToArray());
-
-            SetSelectedAsync();
+            this.DataContext = new BorderViewModel();
         }
+    }
 
-        private async void SetSelectedAsync()
+    public class BorderViewModel
+    {
+        public BorderViewModel()
         {
-            await Task.Delay(100);
-            var grid = this.Get<DataGrid>("Grid");
-            grid.SelectedIndex = 0;
-            grid.Focus();
+
+            Borders = new List<ThicknessViewModel>();
+            for (int i = 0; i < 16; i++)
+                Borders.Add(new ThicknessViewModel(i));
         }
 
+        public List<ThicknessViewModel> Borders { get; set; }
+    }
 
-        // ReSharper disable once UnusedParameter.Local //todo: think to remove this rule
-        private void Delete_Clicked(object sender, RoutedEventArgs _)
+    public class ThicknessViewModel
+    {
+        public ThicknessViewModel(int i)
         {
-            _items.Remove((TheItem)((Control)sender).DataContext);
+            var left = (i & 8) >> 3;
+            var top = (i & 4) >> 2;
+            var right = (i & 2) >> 1;
+            var bottom = (i & 1);
+            ThicknessText = $"{left} {top} {right} {bottom}";
+            PaddingText = $"{1 - left} {1 - top} {1 - right} {1 - bottom}";
+            Thickness = Thickness.Parse(ThicknessText);
+            Padding = Thickness.Parse(PaddingText);
         }
+
+        public string ThicknessText { get; set; }
+        public string PaddingText { get; set; }
+
+        public Thickness Thickness { get; set; }
+        public Thickness? Padding { get; set; }
     }
 }
