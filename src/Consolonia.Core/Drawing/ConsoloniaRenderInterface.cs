@@ -50,13 +50,10 @@ namespace Consolonia.Core.Drawing
             if (g1 is not StreamGeometryImpl stream1 || g2 is not StreamGeometryImpl stream2)
                 throw new ArgumentException("Only StreamGeometryImpl is supported");
 
-            Debug.WriteLine($"=====");
-            Debug.WriteLine($"Stream1 Bounds: {stream1.Bounds}");
-            Debug.WriteLine($"Stream2 Bounds: {stream2.Bounds}");
-
             var newGeometry = CreateStreamGeometry();
             using (var ctx = newGeometry.Open())
             {
+                // Resharper disable UnusedVariable
                 var hasLeftStroke = stream2.Bounds.X == 1;
                 var hasTopStroke = stream2.Bounds.Y == 1;
                 var hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width) == stream2.Bounds.X + 1;
@@ -69,6 +66,7 @@ namespace Consolonia.Core.Drawing
                 var rightStroke = stream1.Strokes[1];
                 var bottomStroke = stream1.Strokes[2];
                 var leftStroke = stream1.Strokes[3];
+                // Resharper enable UnusedVariable
 
                 // Layout patches. This is a mess, see avalonia bug https://github.com/AvaloniaUI/Avalonia/issues/17752
 
