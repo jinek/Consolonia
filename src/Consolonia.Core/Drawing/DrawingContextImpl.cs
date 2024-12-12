@@ -599,7 +599,7 @@ namespace Consolonia.Core.Drawing
                     break;
                 default:
                     throw new NotImplementedException("This shouldn't happen");
-            };
+            }
 
             Point head = line.PStart;
 
