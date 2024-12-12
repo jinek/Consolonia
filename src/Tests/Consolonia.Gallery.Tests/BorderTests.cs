@@ -14,11 +14,11 @@ namespace Consolonia.Gallery.Tests
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText("┌───────┐┌────────────────────┐╔════════════════════╗",
-                                       "│Default││LineStyle=SingleLine│║LineStyle=DoubleLine║",
-                                       "└───────┘└────────────────────┘╚════════════════════╝",
-                                       " ▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ▗▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▖████████████████ ",
-                                       "▕LineStyle=Edge▏▐LineStyle=EdgeWide▌█LineStyle=Bold█ ",
-                                       " ▔▔▔▔▔▔▔▔▔▔▔▔▔▔ ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘████████████████ ");
+                "│Default││LineStyle=SingleLine│║LineStyle=DoubleLine║",
+                "└───────┘└────────────────────┘╚════════════════════╝",
+                " ▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ▗▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▖████████████████ ",
+                "▕LineStyle=Edge▏▐LineStyle=EdgeWide▌█LineStyle=Bold█ ",
+                " ▔▔▔▔▔▔▔▔▔▔▔▔▔▔ ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘████████████████ ");
         }
     }
 }

@@ -6,6 +6,6 @@ namespace Consolonia.Core.Drawing
         Top,
         Right,
         Bottom,
-        Unknown,
+        Unknown
     }
 }

@@ -10,18 +10,9 @@ namespace Consolonia.Core.Drawing
 {
     internal class StreamGeometryImpl : IStreamGeometryImpl
     {
-        private List<Line> _strokes;
-        private List<Rectangle> _fills;
+        private readonly List<Rectangle> _fills;
+        private readonly List<Line> _strokes;
         private Rect _bounds;
-        // private SKPath _path;
-
-        public Rect Bounds => _bounds;
-
-        public double ContourLength => _strokes.Sum(l => l.ContourLength);
-
-        public IReadOnlyList<Line> Strokes => _strokes;
-
-        public IReadOnlyList<Rectangle> Fills => _fills;
 
         public StreamGeometryImpl()
         {
@@ -29,18 +20,21 @@ namespace Consolonia.Core.Drawing
             _fills = new List<Rectangle>();
         }
 
+        public IReadOnlyList<Line> Strokes => _strokes;
+
+        public IReadOnlyList<Rectangle> Fills => _fills;
+        // private SKPath _path;
+
+        public Rect Bounds => _bounds;
+
+        public double ContourLength => _strokes.Sum(l => l.ContourLength);
+
 
         public IStreamGeometryImpl Clone()
         {
             var clone = new StreamGeometryImpl();
-            foreach(var line in _strokes)
-            {
-                clone._strokes.Add(line);
-            }
-            foreach (var rect in _fills)
-            {
-                clone._fills.Add(rect);
-            }
+            foreach (Line line in _strokes) clone._strokes.Add(line);
+            foreach (Rectangle rect in _fills) clone._fills.Add(rect);
             clone._bounds = _bounds;
             return clone;
         }
@@ -52,7 +46,7 @@ namespace Consolonia.Core.Drawing
 
         public Rect GetRenderBounds(IPen pen)
         {
-            var strokeBounds = _strokes.Aggregate(new Rect(), (rect, line) => rect.Union(line.GetRenderBounds(pen)));
+            Rect strokeBounds = _strokes.Aggregate(new Rect(), (rect, line) => rect.Union(line.GetRenderBounds(pen)));
             return _fills.Aggregate(strokeBounds, (rect, r) => rect.Union(r.GetRenderBounds(pen)));
         }
 
@@ -87,7 +81,8 @@ namespace Consolonia.Core.Drawing
             throw new NotImplementedException();
         }
 
-        public bool TryGetSegment(double startDistance, double stopDistance, bool startOnBeginFigure, [NotNullWhen(true)] out IGeometryImpl segmentGeometry)
+        public bool TryGetSegment(double startDistance, double stopDistance, bool startOnBeginFigure,
+            [NotNullWhen(true)] out IGeometryImpl segmentGeometry)
         {
             throw new NotImplementedException();
         }
@@ -98,7 +93,7 @@ namespace Consolonia.Core.Drawing
         }
 
         /// <summary>
-        /// A Conolonia implementation of a <see cref="IStreamGeometryContextImpl"/>.
+        ///     A Conolonia implementation of a <see cref="IStreamGeometryContextImpl" />.
         /// </summary>
         private class StreamGeometryContextImpl : IStreamGeometryContextImpl, IGeometryContext2
         {
@@ -107,8 +102,8 @@ namespace Consolonia.Core.Drawing
             private Point _lastPoint;
 
             /// <summary>
-            /// Initializes a new instance of the StreamGeometryContextImpl class.
-            /// <param name="geometryImpl">Geometry to operate on.</param>
+            ///     Initializes a new instance of the StreamGeometryContextImpl class.
+            ///     <param name="geometryImpl">Geometry to operate on.</param>
             /// </summary>
             public StreamGeometryContextImpl(StreamGeometryImpl geometryImpl)
             {
@@ -116,7 +111,33 @@ namespace Consolonia.Core.Drawing
             }
 
             /// <inheritdoc />
-            public void ArcTo(Point point, Size size, double rotationAngle, bool isLargeArc, SweepDirection sweepDirection)
+            public void LineTo(Point point, bool isStroked)
+            {
+                LineTo(point);
+            }
+
+            /// <inheritdoc />
+            public void ArcTo(Point point, Size size, double rotationAngle, bool isLargeArc,
+                SweepDirection sweepDirection, bool isStroked)
+            {
+                _lastPoint = point;
+            }
+
+            /// <inheritdoc />
+            public void CubicBezierTo(Point point1, Point point2, Point point3, bool isStroked)
+            {
+                throw new NotSupportedException();
+            }
+
+            /// <inheritdoc />
+            public void QuadraticBezierTo(Point point1, Point point2, bool isStroked)
+            {
+                throw new NotSupportedException();
+            }
+
+            /// <inheritdoc />
+            public void ArcTo(Point point, Size size, double rotationAngle, bool isLargeArc,
+                SweepDirection sweepDirection)
             {
                 // ignore arc instructions. It's attempt to draw rounded corners, we don't do that.
                 //_lastPoint = point;
@@ -155,7 +176,7 @@ namespace Consolonia.Core.Drawing
             /// <inheritdoc />
             public void EndFigure(bool isClosed)
             {
-                var bound = _geometryImpl._strokes.Aggregate(new Rect(), (rect, line) => rect.Union(line.Bounds));
+                Rect bound = _geometryImpl._strokes.Aggregate(new Rect(), (rect, line) => rect.Union(line.Bounds));
                 _geometryImpl._bounds = bound;
                 if (_isFilled)
                 {
@@ -168,35 +189,9 @@ namespace Consolonia.Core.Drawing
             {
             }
 
-            /// <inheritdoc />
-            public void LineTo(Point point, bool isStroked)
-            {
-                this.LineTo(point);
-            }
-
-            /// <inheritdoc />
-            public void ArcTo(Point point, Size size, double rotationAngle, bool isLargeArc, SweepDirection sweepDirection, bool isStroked)
-            {
-                _lastPoint = point;
-            }
-
-            /// <inheritdoc />
-            public void CubicBezierTo(Point point1, Point point2, Point point3, bool isStroked)
-            {
-                throw new NotSupportedException();
-
-            }
-
-            /// <inheritdoc />
-            public void QuadraticBezierTo(Point point1, Point point2, bool isStroked)
-            {
-                throw new NotSupportedException();
-            }
-
             public void Dispose()
             {
             }
         }
-
     }
 }
