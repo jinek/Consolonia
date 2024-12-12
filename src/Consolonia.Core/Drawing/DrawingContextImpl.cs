@@ -180,23 +180,33 @@ namespace Consolonia.Core.Drawing
                                 else if (strokePosition == RectangleLinePosition.Bottom)
                                     strokeBottom = stroke;
                             }
-
-                            // make sure strokes are connected  
-                            if (strokeTop != null && strokeRight != null && strokeTop.PEnd != strokeRight.PStart)
-                                strokeTop = new Line(strokeTop.PStart, strokeRight.PStart);
-                            else if (strokeRight != null && strokeBottom != null && strokeRight.PEnd != strokeBottom.PEnd)
-                                strokeRight = new Line(strokeRight.PStart, strokeBottom.PEnd);
-                            else if (strokeLeft != null && strokeBottom != null && strokeLeft.PEnd != strokeBottom.PStart)
-                                strokeLeft = new Line(strokeLeft.PStart, strokeBottom.PStart);
-
                             if (strokeLeft != null)
+                            {
+                                if (strokeBottom != null)
+                                    strokeLeft = new Line(strokeLeft.PStart, strokeBottom.PStart, strokeLeft.SourceGeometry, strokeLeft.Transform);
                                 DrawBoxLineInternal(pen, strokeLeft, RectangleLinePosition.Left);
+                            }
+
                             if (strokeTop != null)
+                            {
+                                if (strokeRight != null)
+                                    strokeTop = new Line(strokeTop.PStart, strokeRight.PStart, strokeTop.SourceGeometry, strokeTop.Transform);
                                 DrawBoxLineInternal(pen, strokeTop, RectangleLinePosition.Top);
+                            }
+
                             if (strokeRight != null)
+                            {
+                                if (strokeBottom != null)
+                                    strokeRight = new Line(strokeRight.PStart, strokeBottom.PEnd, strokeRight.SourceGeometry, strokeRight.Transform);
                                 DrawBoxLineInternal(pen, strokeRight, RectangleLinePosition.Right);
+                            }
+
                             if (strokeBottom != null)
+                            {
+                                if (strokeLeft != null)
+                                    strokeBottom = new Line(strokeLeft.PEnd, strokeBottom.PEnd, strokeBottom.SourceGeometry, strokeBottom.Transform);
                                 DrawBoxLineInternal(pen, strokeBottom, RectangleLinePosition.Bottom);
+                            }
                         }
                     }
                     break;
@@ -204,6 +214,7 @@ namespace Consolonia.Core.Drawing
                     ConsoloniaPlatform.RaiseNotSupported(5);
                     break;
             }
+
         }
 
         private static RectangleLinePosition[] InferStrokePositions(StreamGeometryImpl streamGeometry)

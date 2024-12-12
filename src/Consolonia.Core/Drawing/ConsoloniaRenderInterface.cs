@@ -62,15 +62,12 @@ namespace Consolonia.Core.Drawing
                 var hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width) == stream2.Bounds.X + 1;
                 var hasBottomStroke = (stream1.Bounds.Height - stream2.Bounds.Height) == stream2.Bounds.Y + 1;
 
-                // add "null" strokes to establish boundries of box.
                 var topLeft = stream1.Bounds.TopLeft;
                 var topRight = stream1.Bounds.TopRight;
                 var bottomLeft = stream1.Bounds.BottomLeft;
                 var bottomRight = stream1.Bounds.BottomRight;
-                Debug.WriteLine($"Stream1 {stream1.Bounds.Width}x{stream1.Bounds.Height}");
+                Debug.WriteLine($"Stream1 {stream2.Bounds.Width}x{stream1.Bounds.Height}");
                 Debug.WriteLine($"Stream2 {stream2.Bounds.Width}x{stream2.Bounds.Height}");
-                AddStroke(ctx, topLeft, topLeft);
-                AddStroke(ctx, bottomRight, bottomRight);
 
                 #region LAYOUT_PATCHES
                 // Layout patches. This is a mess, see avalonia bug https://github.com/AvaloniaUI/Avalonia/issues/17752
@@ -82,16 +79,16 @@ namespace Consolonia.Core.Drawing
 
                 if (hasBottomStroke && !hasTopStroke && !hasLeftStroke && !hasRightStroke)
                 {
-                    bottomLeft = AdjustY(bottomLeft, -.99); // Sigh. -1 doesn't work, but -.99 does.
+                    bottomLeft = AdjustY(bottomLeft, -.99); // Sigh. -1 doesn't work, but -.99 does. I don't know...the world is a strange place.
                     bottomRight = AdjustY(bottomRight, -.99);
                 }
-                
+
                 if (hasRightStroke && !hasLeftStroke)
                 {
                     topRight = AdjustX(topRight, -1);
                     bottomRight = AdjustX(bottomRight, -1);
                 }
-                
+
                 if (hasTopStroke && hasBottomStroke)
                 {
                     bottomLeft = AdjustY(bottomLeft, -1);
@@ -100,10 +97,14 @@ namespace Consolonia.Core.Drawing
 
                 if (hasLeftStroke && hasRightStroke)
                 {
-                    topRight= AdjustX(topRight, -1);
+                    topRight = AdjustX(topRight, -1);
                     bottomRight = AdjustX(bottomRight, -1);
                 }
                 #endregion
+
+                // add "null" strokes to establish boundries of box even when there is a single real stroke.
+                AddStroke(ctx, topLeft, topLeft);
+                AddStroke(ctx, bottomRight, bottomRight);
 
                 if (hasTopStroke)
                     AddStroke(ctx, topLeft, topRight);

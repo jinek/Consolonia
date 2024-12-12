@@ -11,184 +11,184 @@
                   Focusable="True">
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Vertical">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal">
-                <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 1 0 1" Margin="2 2 0 0" >
+                <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 1 1 1" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">0 0 0 1</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 0 1 0" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">0 0 1 0</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 0 1 1" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">0 0 1 1</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 1 0 0" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">0 1 0 0</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 1 0 1" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">0 1 0 1</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 1 1 0" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">0 1 1 0</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 1 1 1" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">0 1 1 1</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 0 0 0" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">1 0 0 0</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 0 0 1" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">1 0 0 1</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 0 1 0" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">1 0 1 0</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 0 1 1" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">1 0 1 1</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 1 0 0" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock  Background="AntiqueWhite">1 1 0 0</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 1 0 1" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">1 1 0 1</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 1 1 0" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">1 1 1 0</TextBlock>
                 </Border>
                 <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 1 1 1" Margin="2 2 0 0" >
                     <Border.BorderBrush>
-                        <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                        <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                     </Border.BorderBrush>
                     <TextBlock Background="AntiqueWhite">1 1 1 1</TextBlock>
                 </Border>
             </StackPanel>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 0 0 1" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">0 0 0 1</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 0 1 0" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">0 0 1 0</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 0 1 1" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">0 0 1 1</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 1 0 0" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">0 1 0 0</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 1 0 1" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">0 1 0 1</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 1 1 0" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">0 1 1 0</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="0 1 1 1" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">0 1 1 1</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 0 0 0" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">1 0 0 0</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 0 0 1" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">1 0 0 1</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 0 1 0" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">1 0 1 0</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 0 1 1" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">1 0 1 1</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 1 0 0" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">1 1 0 0</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 1 0 1" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">1 1 0 1</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 1 1 0" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">1 1 1 0</TextBlock>
             </Border>
             <Border HorizontalAlignment="Left" VerticalAlignment="Center" BorderThickness="1 1 1 1" Margin="2 2 0 0" >
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Blue"/>
                 </Border.BorderBrush>
                 <TextBlock Background="AntiqueWhite">1 1 1 1</TextBlock>
             </Border>
