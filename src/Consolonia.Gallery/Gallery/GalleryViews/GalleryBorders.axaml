@@ -54,24 +54,14 @@
                     <ComboBoxItem>Item 4</ComboBoxItem>
                 </ComboBox>
             </Border>
+            <Border BorderThickness="1 0 1 1" Padding="0 1 0 0">
+                <Border.BorderBrush>
+                    <drawing:LineBrush LineStyle="Edge" Brush="Gray"/>
+                </Border.BorderBrush>
+                <TextBlock Text="Partial borders" Background="AntiqueWhite"/>
+            </Border>
         </WrapPanel>
         <WrapPanel>
-            <Border BorderThickness="1" >
-                <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Gray"/>
-                </Border.BorderBrush>
-                <Panel Background="AntiqueWhite">
-                    <Image Source="avares://Consolonia.Gallery/Resources/happy.png" Width="40" Height="20" />
-                </Panel>
-            </Border>
-            <Border BorderThickness="1" >
-                <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="DoubleLine" Brush="Gray"/>
-                </Border.BorderBrush>
-                <Panel Background="AntiqueWhite">
-                    <Image Source="avares://Consolonia.Gallery/Resources/happy.png" Width="40" Height="20" />
-                </Panel>
-            </Border>
             <Border BorderThickness="1" >
                 <Border.BorderBrush>
                     <drawing:LineBrush LineStyle="Edge" Brush="Gray"/>
