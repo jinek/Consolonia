@@ -496,7 +496,7 @@ namespace Consolonia.Core.Drawing
                 }
         }
 
-        private static char[][] _lineChars =
+        private static char[][] EdgeChars =
         [
             // LineStyle=Edge
             ['▕', '▁', '▏', '▔'],
@@ -506,7 +506,7 @@ namespace Consolonia.Core.Drawing
 
 
         // top left, top right, bottom right, bottom left, 
-        private static char[][] _cornerChars =
+        private static char[][] CornerChars =
         {
             // LineStyle=Edge we don't draw chars for edge corners
             [' ', ' ',  ' ', ' ' ],
@@ -578,24 +578,24 @@ namespace Consolonia.Core.Drawing
             switch (linePosition)
             {
                 case RectangleLinePosition.Left:
-                    startSymbol = new SimpleSymbol(_cornerChars[iStyle][TopLeft]);
-                    middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Left]);
-                    endSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomLeft]);
+                    startSymbol = new SimpleSymbol(CornerChars[iStyle][TopLeft]);
+                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Left]);
+                    endSymbol = new SimpleSymbol(CornerChars[iStyle][BottomLeft]);
                     break;
                 case RectangleLinePosition.Top:
-                    startSymbol = new SimpleSymbol(_cornerChars[iStyle][TopLeft]);
-                    middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Top]);
-                    endSymbol = new SimpleSymbol(_cornerChars[iStyle][TopRight]);
+                    startSymbol = new SimpleSymbol(CornerChars[iStyle][TopLeft]);
+                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Top]);
+                    endSymbol = new SimpleSymbol(CornerChars[iStyle][TopRight]);
                     break;
                 case RectangleLinePosition.Right:
-                    startSymbol = new SimpleSymbol(_cornerChars[iStyle][TopRight]);
-                    middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Right]);
-                    endSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomRight]);
+                    startSymbol = new SimpleSymbol(CornerChars[iStyle][TopRight]);
+                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Right]);
+                    endSymbol = new SimpleSymbol(CornerChars[iStyle][BottomRight]);
                     break;
                 case RectangleLinePosition.Bottom:
-                    startSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomLeft]);
-                    middleSymbol = new SimpleSymbol(_lineChars[iStyle][(int)RectangleLinePosition.Bottom]);
-                    endSymbol = new SimpleSymbol(_cornerChars[iStyle][BottomRight]);
+                    startSymbol = new SimpleSymbol(CornerChars[iStyle][BottomLeft]);
+                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Bottom]);
+                    endSymbol = new SimpleSymbol(CornerChars[iStyle][BottomRight]);
                     break;
                 default:
                     throw new NotImplementedException("This shouldn't happen");
