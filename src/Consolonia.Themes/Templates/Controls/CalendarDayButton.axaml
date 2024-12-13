@@ -1,0 +1,130 @@
+<!--
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+-->
+
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ControlTheme x:Key="{x:Type CalendarDayButton}"
+                  TargetType="CalendarDayButton">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="MinWidth"
+                Value="2" />
+        <Setter Property="Margin"
+                Value="0,0,1,0" />
+        <Setter Property="MinHeight"
+                Value="1" />
+        <Setter Property="Focusable"
+                Value="False" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel Background="{TemplateBinding Background}">
+
+                    <Rectangle Name="TodayBackground"
+                               Fill="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+
+                    <Rectangle Name="SelectedBackground"
+                               Fill="{DynamicResource ThemeChooserBackgroundBrush}" />
+
+                    <Rectangle Name="FocusVisual"
+                               Fill="{DynamicResource ThemeActionBackgroundBrush}" />
+
+                    <Rectangle Name="Background"
+                               Fill="{DynamicResource ThemeSelectionBackgroundBrush}" />
+
+                    <ContentControl Name="Content"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Margin="0" />
+
+                    <TextBlock Name="BlackoutVisual"
+                               Text=" X"
+                               Margin="0"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Stretch"
+                               RenderTransformOrigin="0.5,0.5"
+                               Foreground="{DynamicResource ThemeForegroundBrush}" />
+
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^ /template/ Rectangle#Background">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:pointerover /template/ Rectangle#Background">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+        <Style Selector="^:pressed /template/ Rectangle#Background">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+
+        <Style Selector="^ /template/ Rectangle#SelectedBackground">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:selected /template/ Rectangle#SelectedBackground">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+
+        <Style Selector="^ /template/ ContentControl#Content">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeForegroundBrush}" />
+        </Style>
+        <Style Selector="^:disabled /template/ Rectangle#Background">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:disabled /template/ ContentControl#Content">
+            <!--<Setter Property="Opacity" Value="0.3"/>-->
+        </Style>
+
+        <Style Selector="^ /template/ Rectangle#FocusVisual">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:dayfocused /template/ Rectangle#FocusVisual">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+
+        <Style Selector="^ /template/ Rectangle#TodayBackground">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:today /template/ Rectangle#TodayBackground">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+
+        <Style Selector="^:inactive /template/ ContentControl#Content">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeBorderBrush}" />
+        </Style>
+        <!--<Style Selector="^:today /template/ ContentControl#Content">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeNoDisturbBrush}" />
+    </Style>-->
+
+        <Style Selector="^ /template/ TextBlock#BlackoutVisual">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+        <Style Selector="^:blackout /template/ TextBlock#BlackoutVisual">
+            <Setter Property="IsVisible"
+                    Value="True" />
+        </Style>
+    </ControlTheme>
+
+</ResourceDictionary>

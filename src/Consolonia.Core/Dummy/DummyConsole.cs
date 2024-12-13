@@ -54,8 +54,8 @@ namespace Consolonia.Core.Dummy
         {
         }
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle style,
-            FontWeight weight, TextDecorationLocation? textDecoration, string str)
+        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
+            FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
         }
 

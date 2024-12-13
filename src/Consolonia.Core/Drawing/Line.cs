@@ -18,9 +18,22 @@ namespace Consolonia.Core.Drawing
             Transform = transform;
         }
 
+        public Line(Point pStart, Point pEnd, IGeometryImpl sourceGeometry = default, Matrix transform = default)
+        {
+            pStart = new Point(pStart.X, pStart.Y);
+            PStart = pStart;
+            pEnd = new Point(pEnd.X, pEnd.Y);
+            if (!(pStart.X.IsNearlyEqual(pEnd.X) || pStart.Y.IsNearlyEqual(pEnd.Y)))
+                throw new ArgumentException("Consolonia can only draw horizontal or vertical lines");
+            Vertical = pStart.X.IsNearlyEqual(pEnd.X);
+            Length = Vertical ? (int)Math.Abs(pStart.Y - pEnd.Y) : (int)Math.Abs(pStart.X - pEnd.X);
+            SourceGeometry = sourceGeometry!;
+            Transform = transform;
+        }
+
         public Point PStart { get; }
 
-        private Point PEnd => Vertical ? PStart.WithY(PStart.Y + Length) : PStart.WithX(PStart.X + Length);
+        public Point PEnd => Vertical ? PStart.WithY(PStart.Y + Length) : PStart.WithX(PStart.X + Length);
         public bool Vertical { get; }
         public int Length { get; }
 

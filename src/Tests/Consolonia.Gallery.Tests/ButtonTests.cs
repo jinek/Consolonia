@@ -15,7 +15,7 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Enter);
             await UITest.AssertHasText("Standard _?XAML Button",
-                "Foreground",
+                "Custom",
                 "Disabled",
                 "Toggle Button",
                 "IsTabStop=False");

@@ -1,10 +1,9 @@
 using System;
 using System.Globalization;
-using Avalonia;
 using Avalonia.Logging;
 
 namespace Consolonia.Core.Infrastructure
-    // ReSharper disable once ArrangeNamespaceBody
+// ReSharper disable once ArrangeNamespaceBody
 {
     public class ExceptionSink : ILogSink
     {
@@ -53,15 +52,6 @@ namespace Consolonia.Core.Infrastructure
             }
 
             throw consoloniaException;
-        }
-    }
-
-    public static class ExceptionSinkExtensions
-    {
-        public static AppBuilder LogToException(this AppBuilder builder)
-        {
-            Logger.Sink = new ExceptionSink();
-            return builder;
         }
     }
     // ReSharper restore UnusedMember.Global

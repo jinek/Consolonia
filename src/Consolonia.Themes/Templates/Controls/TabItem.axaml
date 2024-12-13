@@ -1,0 +1,69 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+    <ControlTheme x:Key="{x:Type TabItem}"
+                  TargetType="TabItem">
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+        <!--<Setter Property="Background"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />-->
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="Padding"
+                Value="0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Background="{TemplateBinding Background}">
+                    <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          Content="{TemplateBinding Header}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </helpers:CaretControl>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:disabled">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
+        </Style>
+        <Style Selector="^:selected">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
+        </Style>
+        <Style Selector="^[TabStripPlacement=Right]">
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Right" />
+        </Style>
+
+
+        <!--TabStripPlacement-->
+        <Style Selector="^[TabStripPlacement=Top]">
+            <Setter Property="Margin"
+                    Value="0,0,-1,-1" />
+        </Style>
+
+        <Style Selector="^[TabStripPlacement=Bottom]">
+            <Setter Property="Margin"
+                    Value="0 -1 -1 0" />
+        </Style>
+
+        <Style Selector="^[TabStripPlacement=Left]">
+            <Setter Property="Margin"
+                    Value="0 0 -1 -1" />
+        </Style>
+
+        <Style Selector="^[TabStripPlacement=Right]">
+            <Setter Property="Margin"
+                    Value="-1 0 0 -1" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

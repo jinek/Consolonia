@@ -4,10 +4,21 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
+using Consolonia.Themes;
 
 namespace Consolonia.Gallery.View
 {
+    public enum Themes
+    {
+        Material,
+        Fluent,
+        TurboVision,
+        TurboVisionDark,
+        TurboVisionBlack
+    }
+
     public partial class ControlsListView : Window
     {
         private string[] _commandLineArgs;
@@ -16,6 +27,9 @@ namespace Consolonia.Gallery.View
         public ControlsListView()
         {
             InitializeComponent();
+
+            this.DataContext = new ControlsListViewModel();
+
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -27,8 +41,12 @@ namespace Consolonia.Gallery.View
             else
                 _commandLineArgs = Array.Empty<string>();
 
+            this.Styles.Add(new MaterialTheme());
+
             TrySetupSelected();
         }
+
+        public ControlsListViewModel Model => (ControlsListViewModel)DataContext;
 
         private void TrySetupSelected()
         {
@@ -69,5 +87,42 @@ namespace Consolonia.Gallery.View
         {
             this.Close();
         }
+
+        private void ComboBox_SelectionChanged(object sender, Avalonia.Controls.SelectionChangedEventArgs e)
+        {
+            if (ThemeCombo?.SelectedItem is not ComboBoxItem selectedItem ||
+                selectedItem.Content is not string themeName ||
+                !Enum.TryParse<Themes>(themeName, out var selectedTheme))
+            {
+                return;
+            }
+
+            Styles[0] = selectedTheme switch
+            {
+                Themes.Material => new MaterialTheme(),
+                Themes.Fluent => new FluentTheme(),
+                Themes.TurboVision => new TurboVisionTheme(),
+                Themes.TurboVisionDark => new TurboVisionDarkTheme(),
+                Themes.TurboVisionBlack => new TurboVisionBlackTheme(),
+                _ => throw new ArgumentOutOfRangeException(nameof(selectedTheme))
+            };
+        }
+    }
+
+    public partial class ControlsListViewModel : ObservableObject
+    {
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsTurboVisionDark))]
+        [NotifyPropertyChangedFor(nameof(IsTurboVisionBlack))]
+        [NotifyPropertyChangedFor(nameof(IsTurboVision))]
+        [NotifyPropertyChangedFor(nameof(IsFluent))]
+        [NotifyPropertyChangedFor(nameof(IsMaterial))]
+        private string _selectedTheme;
+
+        public bool IsMaterial => SelectedTheme == nameof(Themes.Material);
+        public bool IsFluent => SelectedTheme == nameof(Themes.Fluent);
+        public bool IsTurboVision => SelectedTheme == nameof(Themes.TurboVision);
+        public bool IsTurboVisionDark => SelectedTheme == nameof(Themes.TurboVisionDark);
+        public bool IsTurboVisionBlack => SelectedTheme == nameof(Themes.TurboVisionBlack);
     }
 }

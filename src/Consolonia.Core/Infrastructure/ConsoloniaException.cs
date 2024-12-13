@@ -1,6 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -9,10 +7,6 @@ namespace Consolonia.Core.Infrastructure
         // ReSharper disable UnusedMember.Global
         public ConsoloniaException()
 
-        {
-        }
-
-        protected ConsoloniaException([NotNull] SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
 

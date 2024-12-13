@@ -1,3 +1,4 @@
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 //
 // TODO:
 // * FindNCurses needs to remove the old probing code
@@ -328,8 +329,8 @@ namespace Unix.Terminal {
 	internal class Delegates {
 #pragma warning restore RCS1102 // Make class static.
 		public delegate IntPtr initscr ();
-		public delegate int endwin ();
-		public delegate bool isendwin ();
+        public delegate int endwin ();
+        public delegate bool isendwin ();
 		public delegate int cbreak ();
 		public delegate int nocbreak ();
 		public delegate int echo ();

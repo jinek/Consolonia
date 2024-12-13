@@ -14,8 +14,7 @@
             </Style>
         </StackPanel.Styles>
         <Button>Standard _XAML Button</Button>
-        <Button Foreground="DarkGoldenrod">Foreground</Button>
-        <Button Background="Yellow">Background</Button>
+        <Button Background="DarkBlue" Foreground="Yellow">Custom Colors</Button>
         <Button IsEnabled="False">Disabled</Button>
         <RepeatButton Name="RepeatButton">
             <TextBlock Name="RepeatButtonTextBlock"

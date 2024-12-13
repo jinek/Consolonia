@@ -125,9 +125,15 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     newBackground = Background;
                     break;
                 case PixelBackgroundMode.Shaded:
+                    // shade the current pixel
                     (newForeground, newBackground) = Shade();
+
+                    // blend the pixelAbove foreground into the shaded pixel
                     newForeground = newForeground.Blend(pixelAbove.Foreground);
-                    break;
+
+                    // resulting in new pixel with shaded background and blended foreground
+                    return new Pixel(newForeground, newBackground);
+
                 default: throw new ArgumentOutOfRangeException(nameof(pixelAbove));
             }
 

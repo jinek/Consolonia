@@ -156,8 +156,8 @@ namespace Consolonia.Core.Drawing
             private readonly StringBuilder _stringBuilder;
             private Color _lastBackgroundColor;
             private Color _lastForegroundColor;
-            private FontStyle _lastStyle = FontStyle.Normal;
-            private FontWeight _lastWeight = FontWeight.Normal;
+            private FontStyle? _lastStyle;
+            private FontWeight? _lastWeight;
             private TextDecorationLocation? _lastTextDecoration;
             private PixelBufferCoordinate _currentBufferPoint;
             private PixelBufferCoordinate _lastBufferPointStart;

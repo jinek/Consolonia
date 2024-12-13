@@ -1,9 +1,5 @@
 using System;
 using Avalonia;
-using Consolonia.Core;
-using Consolonia.Core.Infrastructure;
-using Consolonia.Designer;
-using Consolonia.PlatformSupport;
 
 namespace Consolonia.Gallery
 {
@@ -19,11 +15,7 @@ namespace Consolonia.Gallery
 
         public static AppBuilder BuildAvaloniaApp()
          => AppBuilder.Configure<App>()
-#if DEBUG
-                .UseConsoloniaDesigner()
-#else
                 .UseConsolonia()
-#endif
                 .UseAutoDetectedConsole()
                 .LogToException();
     }

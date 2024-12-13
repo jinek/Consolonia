@@ -59,9 +59,9 @@ namespace Consolonia.Core.Tests
                 new PixelBackground(Colors.Blue));
             Assert.That(pixel.Foreground.Symbol.Text, Is.EqualTo("┼"));
             Assert.That(pixel.Foreground.Color, Is.EqualTo(Colors.Red));
-            Assert.That(pixel.Foreground.Style, Is.EqualTo(FontStyle.Normal));
-            Assert.That(pixel.Foreground.Weight, Is.EqualTo(FontWeight.Normal));
-            Assert.That(pixel.Foreground.TextDecoration, Is.Null);
+            Assert.IsNull(pixel.Foreground.Style);
+            Assert.IsNull(pixel.Foreground.Weight);
+            Assert.IsNull(pixel.Foreground.TextDecoration);
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Blue));
             Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Colored));
         }
@@ -140,6 +140,42 @@ namespace Consolonia.Core.Tests
             Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
             Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(newPixel.Background.Color, Is.EqualTo(Colors.Blue));
+        }
+
+        [Test]
+        public void BlendShadedBackground()
+        {
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+                new PixelBackground(Colors.White));
+            var pixel2 = new Pixel(new PixelBackground(PixelBackgroundMode.Shaded));
+            Pixel newPixel = pixel.Blend(pixel2);
+            Assert.True(newPixel.Foreground.Symbol.Text == "x");
+            // foreground should be lighter than original
+            Assert.True(newPixel.Foreground.Color.R < pixel.Foreground.Color.R &&
+                        newPixel.Foreground.Color.G < pixel.Foreground.Color.G &&
+                        newPixel.Foreground.Color.B < pixel.Foreground.Color.B);
+            // background should be darker than original
+            Assert.True(newPixel.Background.Color.R < pixel.Background.Color.R &&
+                        newPixel.Background.Color.G < pixel.Background.Color.G &&
+                        newPixel.Background.Color.B < pixel.Background.Color.B);
+        }
+
+        [Test]
+        public void BlendShadedBackground2()
+        {
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+                new PixelBackground(Colors.Black));
+            var pixel2 = new Pixel(new PixelBackground(PixelBackgroundMode.Shaded));
+            Pixel newPixel = pixel.Blend(pixel2);
+            Assert.True(newPixel.Foreground.Symbol.Text == "x");
+            // foreground should be darker than original
+            Assert.True(newPixel.Foreground.Color.R < pixel.Foreground.Color.R &&
+                        newPixel.Foreground.Color.G < pixel.Foreground.Color.G &&
+                        newPixel.Foreground.Color.B < pixel.Foreground.Color.B);
+            // background should be darker than original
+            Assert.True(newPixel.Background.Color.R > pixel.Background.Color.R &&
+                        newPixel.Background.Color.G > pixel.Background.Color.G &&
+                        newPixel.Background.Color.B > pixel.Background.Color.B);
         }
 
         [Test]
