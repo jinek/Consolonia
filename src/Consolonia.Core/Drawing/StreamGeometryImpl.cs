@@ -12,7 +12,6 @@ namespace Consolonia.Core.Drawing
     {
         private readonly List<Rectangle> _fills;
         private readonly List<Line> _strokes;
-        private Rect _bounds;
 
         public StreamGeometryImpl()
         {
@@ -25,7 +24,7 @@ namespace Consolonia.Core.Drawing
         public IReadOnlyList<Rectangle> Fills => _fills;
         // private SKPath _path;
 
-        public Rect Bounds => _bounds;
+        public Rect Bounds { get; private set; }
 
         public double ContourLength => _strokes.Sum(l => l.ContourLength);
 
@@ -33,9 +32,11 @@ namespace Consolonia.Core.Drawing
         public IStreamGeometryImpl Clone()
         {
             var cloneGeometry = new StreamGeometryImpl();
-            foreach (Line cloneLine in _strokes.Select(l => new Line(l.PStart, l.PEnd, this, transform: l.Transform))) cloneGeometry._strokes.Add(cloneLine);
-            foreach (Rectangle cloneRect in _fills.Select(r => new Rectangle(r.Rect, r, r.Transform))) cloneGeometry._fills.Add(cloneRect);
-            cloneGeometry._bounds = _bounds;
+            foreach (Line cloneLine in _strokes.Select(l => new Line(l.PStart, l.PEnd, this, l.Transform)))
+                cloneGeometry._strokes.Add(cloneLine);
+            foreach (Rectangle cloneRect in _fills.Select(r => new Rectangle(r.Rect, r, r.Transform)))
+                cloneGeometry._fills.Add(cloneRect);
+            cloneGeometry.Bounds = Bounds;
             return cloneGeometry;
         }
 
@@ -177,11 +178,8 @@ namespace Consolonia.Core.Drawing
             public void EndFigure(bool isClosed)
             {
                 Rect bound = _geometryImpl._strokes.Aggregate(new Rect(), (rect, line) => rect.Union(line.Bounds));
-                _geometryImpl._bounds = bound;
-                if (_isFilled)
-                {
-                    _geometryImpl._fills.Add(new Rectangle(bound));
-                }
+                _geometryImpl.Bounds = bound;
+                if (_isFilled) _geometryImpl._fills.Add(new Rectangle(bound));
             }
 
             /// <inheritdoc />
