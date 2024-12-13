@@ -98,7 +98,7 @@ namespace Consolonia.Core.Infrastructure
         {
             if (KeyMapping.TryGetValue(consoleKey, out Key key)) return key;
 
-            if(!Enum.IsDefined(consoleKey))
+            if (!Enum.IsDefined(consoleKey))
                 throw new NotImplementedException();
 
             if (!Enum.TryParse(consoleKey.ToString(), out key))
