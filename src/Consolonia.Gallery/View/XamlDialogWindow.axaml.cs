@@ -1,4 +1,6 @@
+using System.Linq;
 using Avalonia;
+using Avalonia.Input;
 using Consolonia.Core.Controls;
 
 namespace Consolonia.Gallery.View
@@ -8,19 +10,25 @@ namespace Consolonia.Gallery.View
         public XamlDialogWindow()
         {
             InitializeComponent();
-            AttachedToVisualTree += OnShowDialog;
+
+            AttachedToVisualTree += DialogWindowAttachedToVisualTree;
         }
 
-        private void OnShowDialog(object sender, Avalonia.VisualTreeAttachmentEventArgs e)
+        private void DialogWindowAttachedToVisualTree(object sender, Avalonia.VisualTreeAttachmentEventArgs e)
         {
-            AttachedToVisualTree -= OnShowDialog;
-            Xaml.AttachedToVisualTree += OnButtonAttached;
+            AttachedToVisualTree -= DialogWindowAttachedToVisualTree;
+
+            var child = (InputElement)this.LogicalChildren.FirstOrDefault();
+            if (child != null)
+                child.AttachedToVisualTree += OnChildAttachedToVisualTree;
         }
 
-        private void OnButtonAttached(object sender, VisualTreeAttachmentEventArgs e)
+        private void OnChildAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
-            Xaml.AttachedToVisualTree -= OnButtonAttached;
-            Xaml.Focus();
+            var child = (InputElement)sender;
+            child.AttachedToVisualTree -= OnChildAttachedToVisualTree;
+            // Set focus to the first focusable element
+            child?.Focus();
         }
     }
 }
