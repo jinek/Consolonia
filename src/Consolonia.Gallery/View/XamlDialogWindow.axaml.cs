@@ -18,17 +18,18 @@ namespace Consolonia.Gallery.View
         {
             AttachedToVisualTree -= DialogWindowAttachedToVisualTree;
 
-            var child = (InputElement)this.LogicalChildren.FirstOrDefault();
-            if (child != null)
-                child.AttachedToVisualTree += OnChildAttachedToVisualTree;
+            var child = this.LogicalChildren.FirstOrDefault();
+            if (child is InputElement input)
+                input.AttachedToVisualTree += OnChildAttachedToVisualTree;
         }
 
         private void OnChildAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
-            var child = (InputElement)sender;
-            child.AttachedToVisualTree -= OnChildAttachedToVisualTree;
-            // Set focus to the first focusable element
-            child?.Focus();
+            if (sender is InputElement input)
+            {
+                input.AttachedToVisualTree -= OnChildAttachedToVisualTree;
+                input.Focus();
+            }
         }
     }
 }
