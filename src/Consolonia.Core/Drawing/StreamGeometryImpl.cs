@@ -32,16 +32,16 @@ namespace Consolonia.Core.Drawing
 
         public IStreamGeometryImpl Clone()
         {
-            var clone = new StreamGeometryImpl();
-            foreach (Line line in _strokes) clone._strokes.Add(line);
-            foreach (Rectangle rect in _fills) clone._fills.Add(rect);
-            clone._bounds = _bounds;
-            return clone;
+            var cloneGeometry = new StreamGeometryImpl();
+            foreach (Line cloneLine in _strokes.Select(l => new Line(l.PStart, l.PEnd, this, transform: l.Transform))) cloneGeometry._strokes.Add(cloneLine);
+            foreach (Rectangle cloneRect in _fills.Select(r => new Rectangle(r.Rect, r, r.Transform))) cloneGeometry._fills.Add(cloneRect);
+            cloneGeometry._bounds = _bounds;
+            return cloneGeometry;
         }
 
         public bool FillContains(Point point)
         {
-            return _bounds.Contains(point);
+            return _fills.Any(rect => rect.FillContains(point));
         }
 
         public Rect GetRenderBounds(IPen pen)
@@ -180,7 +180,7 @@ namespace Consolonia.Core.Drawing
                 _geometryImpl._bounds = bound;
                 if (_isFilled)
                 {
-                    // _geometryImpl._fills.Add(new Rectangle(bound));
+                    _geometryImpl._fills.Add(new Rectangle(bound));
                 }
             }
 
