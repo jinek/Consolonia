@@ -12,7 +12,6 @@ namespace Consolonia.Core.Drawing
     {
         private readonly List<Rectangle> _fills;
         private readonly List<Line> _strokes;
-        private Rect _bounds;
 
         public StreamGeometryImpl()
         {
@@ -25,23 +24,25 @@ namespace Consolonia.Core.Drawing
         public IReadOnlyList<Rectangle> Fills => _fills;
         // private SKPath _path;
 
-        public Rect Bounds => _bounds;
+        public Rect Bounds { get; private set; }
 
         public double ContourLength => _strokes.Sum(l => l.ContourLength);
 
 
         public IStreamGeometryImpl Clone()
         {
-            var clone = new StreamGeometryImpl();
-            foreach (Line line in _strokes) clone._strokes.Add(line);
-            foreach (Rectangle rect in _fills) clone._fills.Add(rect);
-            clone._bounds = _bounds;
-            return clone;
+            var cloneGeometry = new StreamGeometryImpl();
+            foreach (Line cloneLine in _strokes.Select(l => new Line(l.PStart, l.PEnd, this, l.Transform)))
+                cloneGeometry._strokes.Add(cloneLine);
+            foreach (Rectangle cloneRect in _fills.Select(r => new Rectangle(r.Rect, r, r.Transform)))
+                cloneGeometry._fills.Add(cloneRect);
+            cloneGeometry.Bounds = Bounds;
+            return cloneGeometry;
         }
 
         public bool FillContains(Point point)
         {
-            return _bounds.Contains(point);
+            return _fills.Any(rect => rect.FillContains(point));
         }
 
         public Rect GetRenderBounds(IPen pen)
@@ -177,11 +178,8 @@ namespace Consolonia.Core.Drawing
             public void EndFigure(bool isClosed)
             {
                 Rect bound = _geometryImpl._strokes.Aggregate(new Rect(), (rect, line) => rect.Union(line.Bounds));
-                _geometryImpl._bounds = bound;
-                if (_isFilled)
-                {
-                    // _geometryImpl._fills.Add(new Rectangle(bound));
-                }
+                _geometryImpl.Bounds = bound;
+                if (_isFilled) _geometryImpl._fills.Add(new Rectangle(bound));
             }
 
             /// <inheritdoc />
