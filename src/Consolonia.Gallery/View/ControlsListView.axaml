@@ -20,7 +20,7 @@
                 </DataGrid.Columns>
             </DataGrid>
             <Grid Grid.Row="1" RowDefinitions="Auto Auto" ColumnDefinitions="Auto *" Margin="0 0 0 1">
-                <Label Content="Theme" />
+                <Label Content="_Theme" />
                 <ComboBox  Grid.Column="1" x:Name="ThemeCombo" SelectionChanged="ComboBox_SelectionChanged" IsTabStop="false" HorizontalContentAlignment="Stretch" >
                     <ComboBoxItem Content="Material" IsSelected="True" />
                     <ComboBoxItem Content="Fluent"/>
@@ -36,8 +36,8 @@
                     BorderThickness="1"
                     BorderBrush="{DynamicResource ThemeBorderBrush}" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
-                <Button Click="OnShowXaml" IsTabStop="False" HorizontalAlignment="Right">Show XAML</Button>
-                <Button Click="Exit_Click" IsTabStop="False">Exit</Button>
+                <Button Click="OnShowXaml" IsTabStop="False" HorizontalAlignment="Right">_Show XAML</Button>
+                <Button Click="Exit_Click" IsTabStop="False">E_xit</Button>
             </StackPanel>
         </Grid>
     </DockPanel>

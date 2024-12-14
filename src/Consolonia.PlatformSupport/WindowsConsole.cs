@@ -10,6 +10,7 @@ using Avalonia.Input.Raw;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Terminal.Gui;
+using Key = Avalonia.Input.Key;
 using Point = Avalonia.Point;
 
 // ReSharper disable UnusedMember.Local
@@ -203,7 +204,10 @@ namespace Consolonia.PlatformSupport
             char character = keyEvent.UnicodeChar;
             RawInputModifiers modifiers =
                 ModifiersFlagTranslator.Translate(keyEvent.dwControlKeyState);
-            RaiseKeyPress(DefaultNetConsole.ConvertToKey((ConsoleKey)keyEvent.wVirtualKeyCode),
+            Key key = DefaultNetConsole.ConvertToKey((ConsoleKey)keyEvent.wVirtualKeyCode);
+            if (key == Key.LeftAlt || key == Key.RightAlt)
+                modifiers |= RawInputModifiers.Alt;
+            RaiseKeyPress(key,
                 character, modifiers, keyEvent.bKeyDown, (ulong)Stopwatch.GetTimestamp());
         }
 

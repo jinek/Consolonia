@@ -2,7 +2,9 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
+using Consolonia.Core.Controls;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 
@@ -21,6 +23,24 @@ namespace Consolonia
 
         public override void OnFrameworkInitializationCompleted()
         {
+            // override AccessText to use ConsoloniaAccessText as default contentpresenter for unknown data types (aka string)
+            DataTemplates.Add(new FuncDataTemplate<object>(
+                (data, _) =>
+                {
+                    if (data != null && data is string)
+                    {
+                        var result = new ConsoloniaAccessText();
+                        // ReSharper disable AccessToStaticMemberViaDerivedType
+                        result.Bind(TextBlock.TextProperty,
+                            result.GetObservable(Control.DataContextProperty));
+                        return result;
+                    }
+
+                    return null;
+                },
+                true)
+            );
+
             base.OnFrameworkInitializationCompleted();
 
             this.AddConsoloniaDesignMode();

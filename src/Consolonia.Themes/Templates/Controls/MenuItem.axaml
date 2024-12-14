@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=netstandard"
                     xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
                     xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls">
 
@@ -48,13 +47,7 @@
                                               Content="{TemplateBinding Header}"
                                               Margin="{TemplateBinding Padding}"
                                               VerticalAlignment="Center"
-                                              Grid.Column="2">
-                                <ContentPresenter.DataTemplates>
-                                    <DataTemplate DataType="sys:String">
-                                        <AccessText Text="{Binding}" />
-                                    </DataTemplate>
-                                </ContentPresenter.DataTemplates>
-                            </ContentPresenter>
+                                              Grid.Column="2" />
                             <TextBlock x:Name="PART_InputGestureText"
                                        Grid.Column="3"
                                        Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"

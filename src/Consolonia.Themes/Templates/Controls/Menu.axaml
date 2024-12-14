@@ -1,7 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
-                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
 
     <ControlTheme x:Key="TurboVisionTopLevelMenuItem"
                   TargetType="MenuItem">
@@ -20,15 +19,7 @@
                         <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
                             <ContentPresenter Name="PART_HeaderPresenter"
                                               Content="{TemplateBinding Header}"
-                                              Margin="{TemplateBinding Padding}">
-                                <ContentPresenter.DataTemplates>
-                                    <DataTemplate DataType="system:String">
-                                        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved Just workaround - Its not binding, it's TemplateBinding-->
-                                        <AccessText Text="{Binding}"
-                                                    Foreground="{TemplateBinding (TemplatedControl.Foreground)}" />
-                                    </DataTemplate>
-                                </ContentPresenter.DataTemplates>
-                            </ContentPresenter>
+                                              Margin="{TemplateBinding Padding}" />
                         </helpers:CaretControl>
                         <Popup Name="PART_Popup"
                                IsLightDismissEnabled="True"
