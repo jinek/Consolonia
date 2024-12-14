@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -33,7 +34,7 @@ namespace Consolonia.Gallery.View
 #if DEBUG
             this.AttachDevTools();
 #endif
-            this.Grid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
+            this.GalleryGrid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
 
             var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
             if (lifetime != null)
@@ -52,7 +53,7 @@ namespace Consolonia.Gallery.View
         {
             if (_commandLineArgs.Length is not 1 and not 2)
             {
-                this.Grid.SelectedIndex = 0;
+                this.GalleryGrid.SelectedIndex = 0;
                 return;
             }
 
@@ -72,8 +73,8 @@ namespace Consolonia.Gallery.View
                     $"Several gallery items found with provided name {itemToSelectName}");
             }
 
-            this.Grid.SelectedItem = itemToSelect;
-            this.Grid.Focus();
+            this.GalleryGrid.SelectedItem = itemToSelect;
+            this.GalleryGrid.Focus();
         }
 
 
@@ -86,6 +87,20 @@ namespace Consolonia.Gallery.View
         private void Exit_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private async void OnShowXaml(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime;
+
+            var selectedItem = GalleryGrid.SelectedItem as GalleryItem;
+            var path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..", "..", "..", "Gallery", "GalleryViews", $"{selectedItem.Type.Name}.axaml"));
+            var dialog = new XamlDialogWindow()
+            {
+                DataContext = File.ReadAllText(path)
+            };
+
+            await dialog.ShowDialogAsync(lifetime.MainWindow);
         }
 
         private void ComboBox_SelectionChanged(object sender, Avalonia.Controls.SelectionChangedEventArgs e)
