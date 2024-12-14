@@ -22,13 +22,6 @@
                             <ContentPresenter Name="PART_HeaderPresenter"
                                               Content="{TemplateBinding Header}"
                                               Margin="{TemplateBinding Padding}">
-                                <ContentPresenter.DataTemplates>
-                                    <DataTemplate DataType="system:String">
-                                        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved Just workaround - Its not binding, it's TemplateBinding-->
-                                        <core:ConsoloniaAccessText Text="{Binding}"
-                                                    Foreground="{TemplateBinding (TemplatedControl.Foreground)}" />
-                                    </DataTemplate>
-                                </ContentPresenter.DataTemplates>
                             </ContentPresenter>
                         </helpers:CaretControl>
                         <Popup Name="PART_Popup"

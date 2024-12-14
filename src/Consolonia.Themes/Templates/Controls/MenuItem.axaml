@@ -50,11 +50,6 @@
                                               Margin="{TemplateBinding Padding}"
                                               VerticalAlignment="Center"
                                               Grid.Column="2">
-                                <ContentPresenter.DataTemplates>
-                                    <DataTemplate DataType="sys:String">
-                                        <core:ConsoloniaAccessText Text="{Binding}" />
-                                    </DataTemplate>
-                                </ContentPresenter.DataTemplates>
                             </ContentPresenter>
                             <TextBlock x:Name="PART_InputGestureText"
                                        Grid.Column="3"

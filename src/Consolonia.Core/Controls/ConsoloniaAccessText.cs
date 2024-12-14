@@ -12,6 +12,11 @@ namespace Consolonia.Core.Controls
     {
         private Run _accessRun;
 
+        static ConsoloniaAccessText()
+        {
+            AffectsRender<ConsoloniaAccessText>(ShowAccessKeyProperty);
+        }
+
         public ConsoloniaAccessText()
         {
             this.PropertyChanged += OnPropertyChanged;

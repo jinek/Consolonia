@@ -25,9 +25,9 @@ namespace Consolonia
         {
             // override AccessText to use ConsoloniaAccessText as default contentpresenter for unknown data types (aka string)
             this.DataTemplates.Add(new FuncDataTemplate<object>(
-                (data, s) =>
+                (data, _) =>
                 {
-                    if (data != null && data is string str)
+                    if (data != null && data is string)
                     {
                         var result = new ConsoloniaAccessText();
                         result.Bind(TextBlock.TextProperty,
