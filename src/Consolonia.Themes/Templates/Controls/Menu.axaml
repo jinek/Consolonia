@@ -19,8 +19,7 @@
                         <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
                             <ContentPresenter Name="PART_HeaderPresenter"
                                               Content="{TemplateBinding Header}"
-                                              Margin="{TemplateBinding Padding}">
-                            </ContentPresenter>
+                                              Margin="{TemplateBinding Padding}" />
                         </helpers:CaretControl>
                         <Popup Name="PART_Popup"
                                IsLightDismissEnabled="True"
