@@ -9,20 +9,13 @@ namespace Consolonia.Core.Controls
     /// <summary>
     /// A text block that displays a character prefixed with an underscore as an access key.
     /// </summary>
-    public class ConsoloniaAccessText : AccessText, IDisposable
+    public sealed class ConsoloniaAccessText : AccessText
     {
-        private bool _disposed;
         private Run _accessRun;
 
         public ConsoloniaAccessText()
         {
             this.PropertyChanged += OnPropertyChanged;
-        }
-
-        public void Dispose()
-        {
-            this.PropertyChanged -= OnPropertyChanged;
-            _disposed = true;
         }
 
         private void OnPropertyChanged(object sender, Avalonia.AvaloniaPropertyChangedEventArgs e)
@@ -63,9 +56,6 @@ namespace Consolonia.Core.Controls
                         else
                             _accessRun.TextDecorations.Clear();
                     }
-                    break;
-
-                default:
                     break;
             }
         }
