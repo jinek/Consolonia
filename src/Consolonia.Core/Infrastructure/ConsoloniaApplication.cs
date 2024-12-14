@@ -30,6 +30,7 @@ namespace Consolonia
                     if (data != null && data is string)
                     {
                         var result = new ConsoloniaAccessText();
+                        // ReSharper disable AccessToStaticMemberViaDerivedType
                         result.Bind(TextBlock.TextProperty,
                             result.GetObservable(Control.DataContextProperty));
                         return result;
