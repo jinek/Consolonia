@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:core="clr-namespace:Consolonia.Core.Controls;assembly=Consolonia.Core"
                     xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
@@ -24,7 +25,7 @@
                                 <ContentPresenter.DataTemplates>
                                     <DataTemplate DataType="system:String">
                                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved Just workaround - Its not binding, it's TemplateBinding-->
-                                        <AccessText Text="{Binding}"
+                                        <core:ConsoloniaAccessText Text="{Binding}"
                                                     Foreground="{TemplateBinding (TemplatedControl.Foreground)}" />
                                     </DataTemplate>
                                 </ContentPresenter.DataTemplates>
