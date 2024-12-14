@@ -1,8 +1,12 @@
 using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
+using Consolonia.Core.Controls;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 
@@ -21,6 +25,25 @@ namespace Consolonia
 
         public override void OnFrameworkInitializationCompleted()
         {
+            // override AccessText to use ConsoloniaAccessText as default contentpresenter for unknown data types (aka string)
+            this.DataTemplates.Add(new FuncDataTemplate<object>(
+                (data, s) =>
+                {
+                    if (data != null && data is string str)
+                    {
+                        var result = new ConsoloniaAccessText();
+                        result.Bind(TextBlock.TextProperty,
+                            result.GetObservable(Control.DataContextProperty));
+                        return result;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                },
+                true)
+            );
+
             base.OnFrameworkInitializationCompleted();
 
             this.AddConsoloniaDesignMode();

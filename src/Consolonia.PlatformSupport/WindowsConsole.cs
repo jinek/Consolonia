@@ -203,7 +203,10 @@ namespace Consolonia.PlatformSupport
             char character = keyEvent.UnicodeChar;
             RawInputModifiers modifiers =
                 ModifiersFlagTranslator.Translate(keyEvent.dwControlKeyState);
-            RaiseKeyPress(DefaultNetConsole.ConvertToKey((ConsoleKey)keyEvent.wVirtualKeyCode),
+            var key = DefaultNetConsole.ConvertToKey((ConsoleKey)keyEvent.wVirtualKeyCode);
+            if (key == Avalonia.Input.Key.LeftAlt || key == Avalonia.Input.Key.RightAlt)
+                modifiers |= RawInputModifiers.Alt;
+            RaiseKeyPress(key,
                 character, modifiers, keyEvent.bKeyDown, (ulong)Stopwatch.GetTimestamp());
         }
 
