@@ -1,5 +1,4 @@
 using System;
-using Avalonia.Media;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Documents;
 
@@ -26,21 +25,18 @@ namespace Consolonia.Core.Controls
                     {
                         if (!String.IsNullOrEmpty(Text))
                         {
-                            _accessRun = null;
                             InlineCollection inlines = new InlineCollection();
                             var iPos = Text.IndexOf('_', StringComparison.Ordinal);
                             if (iPos >= 0 && iPos < Text.Length - 1)  
                             {
-                                inlines.Add(new Run(Text.Substring(0, iPos)));
-                                _accessRun = new Run(Text.Substring(++iPos, 1))
-                                {
-                                    TextDecorations = new TextDecorationCollection()
-                                };
+                                inlines.Add(new Run(Text[..iPos]));
+                                _accessRun = new Run(Text[++iPos..++iPos]);
                                 inlines.Add(_accessRun);
-                                inlines.Add(new Run(Text.Substring(iPos + 1)));
+                                inlines.Add(new Run(Text[iPos..]));
                             }
                             else
                             {
+                                _accessRun = null;
                                 inlines.Add(new Run(Text));
                             }
                             this.Inlines = inlines;
@@ -52,9 +48,9 @@ namespace Consolonia.Core.Controls
                     if (_accessRun != null)
                     {
                         if (this.ShowAccessKey)
-                            _accessRun.TextDecorations.Add(new TextDecoration { Location = TextDecorationLocation.Underline });
+                            _accessRun.TextDecorations = Avalonia.Media.TextDecorations.Underline;
                         else
-                            _accessRun.TextDecorations.Clear();
+                            _accessRun.TextDecorations = null;
                     }
                     break;
             }
