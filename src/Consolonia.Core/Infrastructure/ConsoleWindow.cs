@@ -405,7 +405,10 @@ namespace Consolonia.Core.Infrastructure
                     handled = rawInputEventArgs.Handled;
                 }, DispatcherPriority.Input);
 
-                if (!handled && !char.IsControl(keyChar))
+                if (!handled
+                    && !char.IsControl(keyChar)
+                    && !rawInputModifiers.HasFlag(RawInputModifiers.Alt)
+                    && !rawInputModifiers.HasFlag(RawInputModifiers.Control))
                     Dispatcher.UIThread.Post(() =>
                     {
                         Input!(new RawTextInputEventArgs(_myKeyboardDevice,
