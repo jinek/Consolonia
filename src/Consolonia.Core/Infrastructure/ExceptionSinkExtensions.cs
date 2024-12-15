@@ -3,7 +3,9 @@ using Avalonia.Logging;
 using Consolonia.Core.Infrastructure;
 
 // ReSharper disable CheckNamespace
+#pragma warning disable IDE0130
 namespace Consolonia
+#pragma warning restore IDE0130
 // ReSharper disable once ArrangeNamespaceBody
 {
     public static class ExceptionSinkExtensions

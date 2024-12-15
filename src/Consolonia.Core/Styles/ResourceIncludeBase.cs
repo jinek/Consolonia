@@ -9,20 +9,14 @@ using Avalonia.Styling;
 namespace Consolonia.Core.Styles
 {
     // Copy-paste from FluentTheme from Avalonia
-    public abstract class ResourceIncludeBase : IResourceProvider, IStyle
+    public abstract class ResourceIncludeBase(Uri baseUri) : IResourceProvider, IStyle
     {
-        private readonly Uri _baseUri;
         private bool _isLoading;
         private IStyle[] _loaded;
 
-        protected ResourceIncludeBase(Uri baseUri)
+        protected ResourceIncludeBase(IServiceProvider serviceProvider) : this(
+            ((IUriContext)serviceProvider.GetService(typeof(IUriContext)))!.BaseUri)
         {
-            _baseUri = baseUri;
-        }
-
-        protected ResourceIncludeBase(IServiceProvider serviceProvider)
-        {
-            _baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext)))!.BaseUri;
         }
 
         protected abstract Uri Uri { get; }
@@ -38,8 +32,8 @@ namespace Consolonia.Core.Styles
                 if (_loaded == null)
                 {
                     _isLoading = true;
-                    var loaded = (IStyle)AvaloniaXamlLoader.Load(Uri, _baseUri);
-                    _loaded = new[] { loaded };
+                    var loaded = (IStyle)AvaloniaXamlLoader.Load(Uri, baseUri);
+                    _loaded = [loaded];
                     _isLoading = false;
                 }
 
@@ -81,12 +75,6 @@ namespace Consolonia.Core.Styles
                 if (Loaded is IResourceProvider rp) rp.OwnerChanged -= value;
             }
         }
-
-        /*todo: remove
-         public SelectorMatchResult TryAttach(IStyleable target, IStyleHost host)
-        {
-            return Loaded.TryAttach(target, host);
-        }*/
 
         public IReadOnlyList<IStyle> Children => _loaded ?? Array.Empty<IStyle>();
     }

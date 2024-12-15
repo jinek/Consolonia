@@ -44,12 +44,12 @@ namespace Consolonia.Core.Drawing
 
         // top left, top right, bottom right, bottom left, 
         private static readonly char[][] CornerChars =
-        {
+        [
             // LineStyle=Edge we don't draw chars for edge corners
             [' ', ' ', ' ', ' '],
             // LineStyle=EdgeWide
             ['▗', '▖', '▘', '▝']
-        };
+        ];
 
         private readonly Stack<Rect> _clipStack = new(100);
         private readonly ConsoleWindow _consoleWindow;
@@ -110,7 +110,7 @@ namespace Consolonia.Core.Drawing
                     bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
                 };
 
-                // map it to a single char to represet the 4 pixels
+                // map it to a single char to represent the 4 pixels
                 char quadPixel = GetQuadPixelCharacter(quadColors);
 
                 // get the combined colors for the quad pixel
@@ -160,15 +160,14 @@ namespace Consolonia.Core.Drawing
 
                     var color = (Color)extractColorCheckPlatformSupported;
 
-                    if (lineStyle == null)
-                        lineStyle = LineStyle.SingleLine;
+                    lineStyle ??= LineStyle.SingleLine;
 
-                    var strokePostions = InferStrokePositions(streamGeometry);
+                    var strokePositions = InferStrokePositions(streamGeometry);
 
-                    bool hasTop = strokePostions.Contains(RectangleLinePosition.Top);
-                    bool hasRight = strokePostions.Contains(RectangleLinePosition.Right);
-                    bool hasBottom = strokePostions.Contains(RectangleLinePosition.Bottom);
-                    bool hasLeft = strokePostions.Contains(RectangleLinePosition.Left);
+                    bool hasTop = strokePositions.Contains(RectangleLinePosition.Top);
+                    bool hasRight = strokePositions.Contains(RectangleLinePosition.Right);
+                    bool hasBottom = strokePositions.Contains(RectangleLinePosition.Bottom);
+                    bool hasLeft = strokePositions.Contains(RectangleLinePosition.Left);
 
                     if (lineStyle == LineStyle.Edge || lineStyle == LineStyle.EdgeWide)
                     {
@@ -179,10 +178,10 @@ namespace Consolonia.Core.Drawing
                             if (stroke.Bounds.Width > 0 || stroke.Bounds.Height > 0)
                             {
                                 if (stroke.Vertical)
-                                    DrawEdgeLine(stroke, strokePostions[iStroke], lineStyle.Value, color, hasTop,
+                                    DrawEdgeLine(stroke, strokePositions[iStroke], lineStyle.Value, color, hasTop,
                                         hasBottom);
                                 else
-                                    DrawEdgeLine(stroke, strokePostions[iStroke], lineStyle.Value, color, hasLeft,
+                                    DrawEdgeLine(stroke, strokePositions[iStroke], lineStyle.Value, color, hasLeft,
                                         hasRight);
                             }
                         }
@@ -196,7 +195,7 @@ namespace Consolonia.Core.Drawing
                         for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
                         {
                             Line stroke = streamGeometry.Strokes[iStroke];
-                            RectangleLinePosition strokePosition = strokePostions[iStroke];
+                            RectangleLinePosition strokePosition = strokePositions[iStroke];
                             if (strokePosition == RectangleLinePosition.Left)
                                 strokeLeft = stroke;
                             else if (strokePosition == RectangleLinePosition.Right)
@@ -413,7 +412,7 @@ namespace Consolonia.Core.Drawing
             for (int i = 0; i < streamGeometry.Strokes.Count; i++)
             {
                 Line stroke = streamGeometry.Strokes[i];
-                if (stroke.Bounds.Width == 0 && stroke.Bounds.Height == 0)
+                if (stroke.Bounds is { Width: 0, Height: 0 })
                 {
                     // ignore zero length strokes
                     strokePositions[i] = RectangleLinePosition.Unknown;
@@ -549,7 +548,7 @@ namespace Consolonia.Core.Drawing
             if (lineStyle == null || linePosition == RectangleLinePosition.Unknown)
                 lineStyle = LineStyle.SingleLine;
 
-            if (lineStyle == LineStyle.Edge || lineStyle == LineStyle.EdgeWide)
+            if (lineStyle is LineStyle.Edge or LineStyle.EdgeWide)
             {
                 DrawEdgeLine(line, linePosition, lineStyle.Value, color, true, true);
             }
@@ -672,7 +671,7 @@ namespace Consolonia.Core.Drawing
         }
 
         /// <summary>
-        ///     Draw pixels for a line with linestyle and a pattern
+        ///     Draw pixels for a line with line style and a pattern
         /// </summary>
         /// <param name="head">the current caret position</param>
         /// <param name="line">line to render</param>
@@ -734,7 +733,7 @@ namespace Consolonia.Core.Drawing
 
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
-            // the x and y are adjusted accodingly.
+            // the x and y are adjusted accordingly.
             foreach (string glyph in text.GetGlyphs(_consoleWindow.Console.SupportsComplexEmoji))
             {
                 Point characterPoint =
@@ -842,6 +841,7 @@ namespace Consolonia.Core.Drawing
         {
             char character = GetColorsPattern(colors) switch
             {
+                // ReSharper disable StringLiteralTypo
                 "FFFF" => ' ',
                 "TFFF" => '▘',
                 "FTFF" => '▝',
@@ -858,6 +858,7 @@ namespace Consolonia.Core.Drawing
                 "TFTT" => '▙',
                 "FTTT" => '▟',
                 "TTTT" => '█',
+                // ReSharper restore StringLiteralTypo
                 _ => throw new NotImplementedException()
             };
             return character;
@@ -976,7 +977,7 @@ namespace Consolonia.Core.Drawing
             if (colors.Length != 4) throw new ArgumentException("Array must contain exactly 4 colors.");
 
             // Initial guess: two clusters with the first two colors as centers
-            SKColor[] clusterCenters = { colors[0], colors[1] };
+            SKColor[] clusterCenters = [colors[0], colors[1]];
             int[] clusters = new int[colors.Length];
 
             for (int iteration = 0; iteration < 10; iteration++) // limit iterations to avoid infinite loop
@@ -991,9 +992,9 @@ namespace Consolonia.Core.Drawing
                     var clusteredColors = colors.Where((_, i) => clusters[i] == cluster).ToList();
                     if (clusteredColors.Any())
                         newClusterCenters[cluster] = GetAverageColor(clusteredColors);
-                    if (clusteredColors.Count == 4)
-                        if (clusteredColors.All(c => c.Alpha == 0))
-                            return "FFFF";
+                    if (clusteredColors.Count != 4) continue;
+                    if (clusteredColors.All(c => c.Alpha == 0))
+                        return "FFFF";
                     //    return "TTTT";
                 }
 

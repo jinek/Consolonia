@@ -10,6 +10,7 @@
 
 using System;
 
+// ReSharper disable All
 namespace Terminal.Gui {
 	/// <summary>
 	/// Stores an ordered pair of integers, which specify a Height and Width.

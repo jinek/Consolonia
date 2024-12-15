@@ -18,6 +18,5 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             cal2.BlackoutDates.AddDatesInPast();
             cal2.BlackoutDates.Add(new CalendarDateRange(today.AddDays(6)));
         }
-
     }
 }

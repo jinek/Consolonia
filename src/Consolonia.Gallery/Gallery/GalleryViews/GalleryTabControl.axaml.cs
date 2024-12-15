@@ -34,7 +34,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 TabPlacement = Dock.Top
             };
         }
-
     }
 
     public class PageViewModel : ViewModelBase

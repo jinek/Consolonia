@@ -49,8 +49,8 @@ namespace Consolonia.Core.Helpers
                 });
 
                 // EXPERIMENTAL
-                // If you do RenderTRansform="scale(10.0,10.0) you can actually sort of see the UI get bigger
-                // but this doesn' seem to work when using these style setters. <sigh>
+                // If you do RenderTransform="scale(10.0,10.0) you can actually sort of see the UI get bigger
+                // but this doesn't seem to work when using these style setters. <sigh>
                 //this.Styles.Add(new Style(x => x.Is<Visual>())
                 //{
                 //    Setters =
@@ -138,7 +138,7 @@ namespace Consolonia.Core.Helpers
         public static ushort MeasureText(this string text)
         {
             var console = AvaloniaLocator.Current.GetService<IConsole>();
-            bool supportsComplexEmoji = console != null ? console.SupportsComplexEmoji : true;
+            bool supportsComplexEmoji = console == null || console.SupportsComplexEmoji;
             ushort width = 0;
             ushort lastWidth = 0;
             foreach (Rune rune in text.EnumerateRunes())

@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryAnimatedLines">
     <Panel>
@@ -48,8 +48,8 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Bold" Brush="Blue">
-                    </drawing:LineBrush>
+                    <drawing:LineBrush LineStyle="Bold"
+                                       Brush="Blue" />
                 </Border.BorderBrush>
                 <Border.Styles>
                     <Style Selector="Border">
@@ -88,7 +88,8 @@
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Right">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="DoubleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="DoubleLine"
+                                       Brush="Blue" />
                 </Border.BorderBrush>
                 <Border.Styles>
                     <Style Selector="Border">

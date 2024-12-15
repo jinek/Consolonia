@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Core.Infrastructure;
@@ -12,11 +14,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public partial class GalleryStorageViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private IReadOnlyList<IStorageFile> _files;
+        [ObservableProperty] private IReadOnlyList<IStorageFile> _files;
 
-        [ObservableProperty]
-        private IReadOnlyList<IStorageFolder> _folders;
+        [ObservableProperty] private IReadOnlyList<IStorageFolder> _folders;
     }
 
     public partial class GalleryStorage : UserControl
@@ -24,40 +24,41 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public GalleryStorage()
         {
             InitializeComponent();
-            this.DataContext = new GalleryStorageViewModel();
+            DataContext = new GalleryStorageViewModel();
         }
 
         private GalleryStorageViewModel ViewModel => (GalleryStorageViewModel)DataContext;
 
-        private async void OnOpenFile(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private async void OnOpenFile(object sender, RoutedEventArgs e)
         {
-            await OpenFiles("Open file", allowMultiple: false);
+            await OpenFiles("Open file", false);
         }
-        private async void OnOpenMultipleFiles(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+
+        private async void OnOpenMultipleFiles(object sender, RoutedEventArgs e)
         {
-            await OpenFiles("Open files", allowMultiple: true);
+            await OpenFiles("Open files", true);
         }
 
         private async Task OpenFiles(string title, bool allowMultiple)
         {
-            IClassicDesktopStyleApplicationLifetime lifetime = App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            if (lifetime != null)
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
             {
-                var storageProvider = lifetime.MainWindow.StorageProvider;
+                IStorageProvider storageProvider = lifetime.MainWindow.StorageProvider;
                 if (storageProvider.CanOpen)
                 {
-                    var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
+                    var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
                     {
                         Title = title,
                         AllowMultiple = allowMultiple,
-                        SuggestedStartLocation = new SystemStorageFolder(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
-                        FileTypeFilter = new List<FilePickerFileType>()
+                        SuggestedStartLocation = new SystemStorageFolder(
+                            new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
+                        FileTypeFilter = new List<FilePickerFileType>
                         {
-                             new FilePickerFileType("All files") { Patterns = new[] { "*" } },
-                             new FilePickerFileType("Text") { Patterns = new[] { "*.txt" } },
-                             new FilePickerFileType("Comma Delimited Files") { Patterns = new[] { "*.csv" } },
-                             new FilePickerFileType("PDF") { Patterns = new[] { "*.pdf" } }
-                        },
+                            new("All files") { Patterns = ["*"] },
+                            new("Text") { Patterns = ["*.txt"] },
+                            new("Comma Delimited Files") { Patterns = ["*.csv"] },
+                            new("PDF") { Patterns = ["*.pdf"] }
+                        }
                     });
 
                     ViewModel.Files = files;
@@ -65,28 +66,28 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             }
         }
 
-        private async void OnOpenFolder(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private async void OnOpenFolder(object sender, RoutedEventArgs e)
         {
-            await OpenFolders(title: "Select a folder", allowMultiple: false);
+            await OpenFolders("Select a folder", false);
         }
 
-        private async void OnOpenMultipleFolders(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private async void OnOpenMultipleFolders(object sender, RoutedEventArgs e)
         {
-            await OpenFolders(title: "Select folder(s)", allowMultiple: true);
+            await OpenFolders("Select folder(s)", true);
         }
 
         private async Task OpenFolders(string title, bool allowMultiple)
         {
-            IClassicDesktopStyleApplicationLifetime lifetime = App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            if (lifetime != null)
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
             {
-                var storageProvider = lifetime.MainWindow.StorageProvider;
+                IStorageProvider storageProvider = lifetime.MainWindow.StorageProvider;
                 if (storageProvider.CanOpen)
                 {
-                    var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions()
+                    var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
                     {
                         Title = title,
-                        SuggestedStartLocation = new SystemStorageFolder(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
+                        SuggestedStartLocation = new SystemStorageFolder(
+                            new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
                         AllowMultiple = allowMultiple
                     });
                     ViewModel.Folders = folders;
@@ -94,32 +95,31 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             }
         }
 
-        private async void OnSaveFile(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private async void OnSaveFile(object sender, RoutedEventArgs e)
         {
-            IClassicDesktopStyleApplicationLifetime lifetime = App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            if (lifetime != null)
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
             {
-                var storageProvider = lifetime.MainWindow.StorageProvider;
+                IStorageProvider storageProvider = lifetime.MainWindow.StorageProvider;
                 if (storageProvider.CanSave)
                 {
-                    var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+                    IStorageFile file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
                     {
                         Title = "Save File",
-                        SuggestedStartLocation = new SystemStorageFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)),
+                        SuggestedStartLocation =
+                            new SystemStorageFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)),
                         DefaultExtension = "txt",
                         SuggestedFileName = "NewFile.txt",
-                        FileTypeChoices = new List<FilePickerFileType>()
+                        FileTypeChoices = new List<FilePickerFileType>
                         {
-                             new FilePickerFileType("Text") { Patterns = new[] { "*.txt" } },
-                             new FilePickerFileType("Comma Delimited Files") { Patterns = new[] { "*.csv" } },
-                             new FilePickerFileType("PDF") { Patterns = new[] { "*.pdf" } }
-                        },
+                            new("Text") { Patterns = ["*.txt"] },
+                            new("Comma Delimited Files") { Patterns = ["*.csv"] },
+                            new("PDF") { Patterns = ["*.pdf"] }
+                        }
                     });
 
-                    ViewModel.Files = new List<IStorageFile>() { file };
+                    ViewModel.Files = new List<IStorageFile> { file };
                 }
             }
         }
     }
-
 }

@@ -2,15 +2,10 @@
 
 namespace Consolonia.Core.InternalHelpers
 {
-    public class FlagTranslator<TInput, TOutput> where TInput : Enum where TOutput : Enum
+    public class FlagTranslator<TInput, TOutput>((TInput inFlag, TOutput outFlag)[] mapping)
+        where TInput : Enum
+        where TOutput : Enum
     {
-        private readonly (TInput inFlag, TOutput outFlag)[] _mapping;
-
-        public FlagTranslator((TInput inFlag, TOutput outFlag)[] mapping)
-        {
-            _mapping = mapping;
-        }
-
         public TOutput Translate(TInput input)
         {
             return Translate(input, false);
@@ -19,7 +14,7 @@ namespace Consolonia.Core.InternalHelpers
         public TOutput Translate(TInput input, bool singleValueOnly)
         {
             TOutput output = default;
-            foreach ((TInput inFlag, TOutput outFlag) in _mapping)
+            foreach ((TInput inFlag, TOutput outFlag) in mapping)
                 if (singleValueOnly)
                 {
                     if (input.Equals(inFlag))

@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
@@ -11,9 +12,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
         }
 
-        private void Linear_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void Linear_Click(object sender, RoutedEventArgs e)
         {
-            this.MyGrid.Background = new LinearGradientBrush
+            MyGrid.Background = new LinearGradientBrush
             {
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative),
@@ -25,9 +26,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             };
         }
 
-        private void Radial_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void Radial_Click(object sender, RoutedEventArgs e)
         {
-            this.MyGrid.Background = new RadialGradientBrush
+            MyGrid.Background = new RadialGradientBrush
             {
                 Center = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
                 GradientOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
@@ -40,10 +41,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 }
             };
         }
-        private void Conic_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
 
-            this.MyGrid.Background = new ConicGradientBrush
+        private void Conic_Click(object sender, RoutedEventArgs e)
+        {
+            MyGrid.Background = new ConicGradientBrush
             {
                 Center = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
                 Angle = 0,
@@ -56,8 +57,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     new GradientStop { Color = Colors.Blue, Offset = 1 }
                 }
             };
-
         }
     }
-
 }

@@ -3,7 +3,7 @@
  */
 
 //#define XTERM1006
-
+// ReSharper disable All
 using System;
 
 namespace Unix.Terminal {
