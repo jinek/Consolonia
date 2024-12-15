@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #define GUICS
-
+// ReSharper disable All
 using System;
 using System.IO;
 using System.Reflection;
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 
 
-
+// ReSharper disable All
 namespace Unix.Terminal {
 	/// <summary>
 	/// Represents a dynamically loaded unmanaged library in a (partially) platform independent manner.

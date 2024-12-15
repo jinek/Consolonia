@@ -48,7 +48,7 @@ jobs:
 
       - name: resharper-cleanup
         run: |                    
-          jb cleanupcode Consolonia.sln --exclude="**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*;**Example/**.*"
+          jb cleanupcode Consolonia.sln --exclude="**Consolonia.GuiCS/**.*"
         working-directory: ./src
 
       - name: Commit files

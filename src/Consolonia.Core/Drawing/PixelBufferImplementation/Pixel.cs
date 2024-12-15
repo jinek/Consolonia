@@ -94,7 +94,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         /// <summary>
-        ///     Blend the pixelAbove with the this pixel.
+        ///     Blend the pixelAbove with this pixel.
         /// </summary>
         /// <param name="pixelAbove"></param>
         /// <returns></returns>
@@ -172,7 +172,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override bool Equals([NotNullWhen(true)] object obj)
         {
-            return obj is Pixel && Equals((Pixel)obj);
+            return obj is Pixel pixel && Equals(pixel);
         }
 
         public override int GetHashCode()

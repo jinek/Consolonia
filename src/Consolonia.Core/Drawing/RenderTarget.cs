@@ -90,7 +90,7 @@ namespace Consolonia.Core.Drawing
         {
             var cache = new Pixel?[width, height];
 
-            // initalize the cache with Pixel.Empty as it literally means nothing
+            // initialize the cache with Pixel.Empty as it literally means nothing
             for (ushort y = 0; y < height; y++)
             for (ushort x = 0; x < width; x++)
                 cache[x, y] = Pixel.Empty;

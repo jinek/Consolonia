@@ -396,9 +396,12 @@ namespace Consolonia.PlatformSupport
         {
             int keyValue = (int)key;
             RawInputModifiers modifiers = KeyModifiersFlagTranslator.Translate(key);
+
+            key = key & ~Key.CtrlMask & ~Key.ShiftMask & ~Key.AltMask;
+
             char character;
             ConsoleKey consoleKey =
-                KeyFlagTranslator.Translate(key & ~Key.CtrlMask & ~Key.ShiftMask & ~Key.AltMask, true);
+                KeyFlagTranslator.Translate(key, true);
 
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (consoleKey)

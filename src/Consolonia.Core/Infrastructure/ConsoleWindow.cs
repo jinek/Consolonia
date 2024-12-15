@@ -49,7 +49,7 @@ namespace Consolonia.Core.Infrastructure
                     AccessText.ShowAccessKeyProperty.Changed.SubscribeAction(OnShowAccessKeyPropertyChanged);
         }
 
-        public PixelBuffer PixelBuffer { get; set; }
+        public PixelBuffer PixelBuffer { get; private set; }
 
         private IMouseDevice MouseDevice { get; }
 
@@ -113,7 +113,7 @@ namespace Consolonia.Core.Infrastructure
         public Size? FrameSize => ClientSize;
 
         public double RenderScaling => 1;
-        public IEnumerable<object> Surfaces => new[] { this };
+        public IEnumerable<object> Surfaces => [this];
 
         public Action<RawInputEventArgs> Input { get; set; }
 
@@ -201,7 +201,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void CanResize(bool value)
         {
-            // todo, enable/dsiable resizing of window
+            // todo, enable/disable resizing of window
         }
 
         public void BeginMoveDrag(PointerPressedEventArgs e)
@@ -280,7 +280,7 @@ namespace Consolonia.Core.Infrastructure
             }
 
             // TODO ISystemNavigationManagerImpl should be implemented to handle BACK navigation between pages of controls like mobile apps do.
-            // TODO ITextInputMethodImplshould be implemented to handle text IME input
+            // TODO ITextInputMethodImpl should be implemented to handle text IME input
             Debug.WriteLine($"Missing Feature: {featureType.Name} is not implemented but someone is asking for it!");
             return null;
         }
@@ -370,7 +370,9 @@ namespace Consolonia.Core.Infrastructure
             oldCts?.Cancel();
             oldCts?.Dispose();
 
+            // ReSharper disable once GrammarMistakeInComment
             // start a task which if no resize event comes for _resizeDelay will post the resize to the window
+            // ReSharper disable once MethodSupportsCancellation
             Task.Run(async () =>
             {
                 try

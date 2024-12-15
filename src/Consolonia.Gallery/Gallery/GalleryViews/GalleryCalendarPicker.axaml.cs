@@ -25,7 +25,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             dp4.TemplateApplied += (_, _) => { dp4.BlackoutDates?.AddDatesInPast(); };
         }
-
     }
 
     public sealed class GalleryCalendarPickerDataContext : INotifyPropertyChanged
@@ -48,7 +47,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

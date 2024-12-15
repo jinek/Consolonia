@@ -3,47 +3,60 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery.GalleryViews"
+             xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
              mc:Ignorable="d"
              x:DataType="gallery:GalleryStorageViewModel"
+             d:DataContext="gallery:GalleryStorageViewModel"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryStorage">
 
     <StackPanel Orientation="Vertical">
-        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Click="OnOpenFile" >Open File Dialog</Button>
-            <Button Click="OnOpenMultipleFiles" >Open Multiple File Dialog</Button>
+        <WrapPanel Orientation="Horizontal"
+                   HorizontalAlignment="Center">
+            <Button Click="OnOpenFile">Open File Dialog</Button>
+            <Button Click="OnOpenMultipleFiles">Open Multiple File Dialog</Button>
         </WrapPanel>
-        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Click="OnSaveFile" >Save File Dialog</Button>
+        <WrapPanel Orientation="Horizontal"
+                   HorizontalAlignment="Center">
+            <Button Click="OnSaveFile">Save File Dialog</Button>
         </WrapPanel>
-        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Click="OnOpenFolder" >Select Folder Dialog</Button>
-            <Button Click="OnOpenMultipleFolders" >Select Multiple Folder Dialog</Button>
+        <WrapPanel Orientation="Horizontal"
+                   HorizontalAlignment="Center">
+            <Button Click="OnOpenFolder">Select Folder Dialog</Button>
+            <Button Click="OnOpenMultipleFolders">Select Multiple Folder Dialog</Button>
         </WrapPanel>
-        <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderBrush}" >
-            <StackPanel Orientation="Vertical" >
-                <TextBlock TextDecorations="Underline" Margin="0 -1 0 0">Files</TextBlock>
+        <Border BorderThickness="1"
+                BorderBrush="{DynamicResource ThemeBorderBrush}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock TextDecorations="Underline"
+                           Margin="0 -1 0 0">
+                    Files
+                </TextBlock>
                 <ItemsControl ItemsSource="{Binding Files}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="storage:IStorageFile">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="📰 "/>
-                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="📰 " />
+                                <TextBlock Text="{Binding Name}" />
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
         </Border>
-        <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderBrush}" >
+        <Border BorderThickness="1"
+                BorderBrush="{DynamicResource ThemeBorderBrush}">
 
-            <StackPanel Orientation="Vertical" >
-                <TextBlock TextDecorations="Underline" Margin="0 -1 0 0">Folders</TextBlock>
+            <StackPanel Orientation="Vertical">
+                <TextBlock TextDecorations="Underline"
+                           Margin="0 -1 0 0">
+                    Folders
+                </TextBlock>
                 <ItemsControl ItemsSource="{Binding Folders}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="storage:IStorageFolder">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="📁 "/>
-                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="📁 " />
+                                <TextBlock Text="{Binding Name}" />
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

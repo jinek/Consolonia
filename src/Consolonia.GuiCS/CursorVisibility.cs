@@ -7,6 +7,7 @@
 //
 // Define this to enable diagnostics drawing for Window Frames
 
+// ReSharper disable All
 namespace Terminal.Gui
 {
 	/// <summary>

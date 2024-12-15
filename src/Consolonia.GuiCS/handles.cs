@@ -1,3 +1,4 @@
+// ReSharper disable All
 //
 // handles.cs: OO wrappers for some curses objects
 //

@@ -1,13 +1,8 @@
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    public readonly struct PixelBufferSize
+    public readonly struct PixelBufferSize(ushort width, ushort height)
     {
-        public PixelBufferSize(ushort width, ushort height)
-        {
-            RightBottom = new PixelBufferCoordinate(width, height);
-        }
-
-        private PixelBufferCoordinate RightBottom { get; }
+        private PixelBufferCoordinate RightBottom { get; } = new(width, height);
         public ushort Width => RightBottom.X;
         public ushort Height => RightBottom.Y;
 

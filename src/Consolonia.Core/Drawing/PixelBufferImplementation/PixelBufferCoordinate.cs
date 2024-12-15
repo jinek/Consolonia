@@ -5,16 +5,10 @@ using Avalonia;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    public readonly struct PixelBufferCoordinate
+    public readonly struct PixelBufferCoordinate(ushort x, ushort y)
     {
-        public PixelBufferCoordinate(ushort x, ushort y)
-        {
-            X = x;
-            Y = y;
-        }
-
-        public ushort X { get; }
-        public ushort Y { get; }
+        public ushort X { get; } = x;
+        public ushort Y { get; } = y;
 
         public void Deconstruct(out ushort x, out ushort y)
         {

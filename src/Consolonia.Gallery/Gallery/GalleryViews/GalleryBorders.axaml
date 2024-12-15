@@ -3,49 +3,62 @@
              xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryBorders">
     <StackPanel Orientation="Vertical"
                 Spacing="1">
         <WrapPanel>
-            <Border BorderThickness="1" BorderBrush="Red">
-                <TextBlock Text="Default" Background="AntiqueWhite" />
+            <Border BorderThickness="1"
+                    BorderBrush="Red">
+                <TextBlock Text="Default"
+                           Background="AntiqueWhite" />
             </Border>
-            <Border BorderThickness="1" >
+            <Border BorderThickness="1">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="SingleLine" Brush="Green"/>
+                    <drawing:LineBrush LineStyle="SingleLine"
+                                       Brush="Green" />
                 </Border.BorderBrush>
-                <TextBlock Text="LineStyle=SingleLine" Background="AntiqueWhite" />
+                <TextBlock Text="LineStyle=SingleLine"
+                           Background="AntiqueWhite" />
             </Border>
-            <Border BorderThickness="1" >
+            <Border BorderThickness="1">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="DoubleLine" Brush="Blue"/>
+                    <drawing:LineBrush LineStyle="DoubleLine"
+                                       Brush="Blue" />
                 </Border.BorderBrush>
-                <TextBlock Text="LineStyle=DoubleLine" Background="AntiqueWhite" />
+                <TextBlock Text="LineStyle=DoubleLine"
+                           Background="AntiqueWhite" />
             </Border>
-            <Border BorderThickness="1" >
+            <Border BorderThickness="1">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Edge" Brush="DarkGreen"/>
+                    <drawing:LineBrush LineStyle="Edge"
+                                       Brush="DarkGreen" />
                 </Border.BorderBrush>
-                <TextBlock Text="LineStyle=Edge" Background="AntiqueWhite" />
+                <TextBlock Text="LineStyle=Edge"
+                           Background="AntiqueWhite" />
             </Border>
-            <Border BorderThickness="1" >
+            <Border BorderThickness="1">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="EdgeWide" Brush="Purple"/>
+                    <drawing:LineBrush LineStyle="EdgeWide"
+                                       Brush="Purple" />
                 </Border.BorderBrush>
-                <TextBlock Text="LineStyle=EdgeWide" Background="AntiqueWhite"/>
+                <TextBlock Text="LineStyle=EdgeWide"
+                           Background="AntiqueWhite" />
             </Border>
-            <Border BorderThickness="1" >
+            <Border BorderThickness="1">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Bold" Brush="DarkGray"/>
+                    <drawing:LineBrush LineStyle="Bold"
+                                       Brush="DarkGray" />
                 </Border.BorderBrush>
-                <TextBlock Text="LineStyle=Bold" Background="AntiqueWhite"/>
+                <TextBlock Text="LineStyle=Bold"
+                           Background="AntiqueWhite" />
             </Border>
         </WrapPanel>
         <WrapPanel>
-            <Border BorderThickness="1" >
+            <Border BorderThickness="1">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Edge" Brush="Gray"/>
+                    <drawing:LineBrush LineStyle="Edge"
+                                       Brush="Gray" />
                 </Border.BorderBrush>
                 <ComboBox Width="10">
                     <ComboBoxItem>Item 1</ComboBoxItem>
@@ -54,20 +67,26 @@
                     <ComboBoxItem>Item 4</ComboBoxItem>
                 </ComboBox>
             </Border>
-            <Border BorderThickness="1 0 1 1" Padding="0 1 0 0">
+            <Border BorderThickness="1 0 1 1"
+                    Padding="0 1 0 0">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Edge" Brush="Gray"/>
+                    <drawing:LineBrush LineStyle="Edge"
+                                       Brush="Gray" />
                 </Border.BorderBrush>
-                <TextBlock Text="Partial borders" Background="AntiqueWhite"/>
+                <TextBlock Text="Partial borders"
+                           Background="AntiqueWhite" />
             </Border>
         </WrapPanel>
         <WrapPanel>
-            <Border BorderThickness="1" >
+            <Border BorderThickness="1">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Edge" Brush="Gray"/>
+                    <drawing:LineBrush LineStyle="Edge"
+                                       Brush="Gray" />
                 </Border.BorderBrush>
                 <Panel Background="AntiqueWhite">
-                    <Image Source="avares://Consolonia.Gallery/Resources/happy.png" Width="40" Height="20" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/happy.png"
+                           Width="40"
+                           Height="20" />
                 </Panel>
             </Border>
 

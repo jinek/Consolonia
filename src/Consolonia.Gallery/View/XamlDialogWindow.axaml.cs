@@ -1,6 +1,7 @@
 using System.Linq;
 using Avalonia;
 using Avalonia.Input;
+using Avalonia.LogicalTree;
 using Consolonia.Core.Controls;
 
 namespace Consolonia.Gallery.View
@@ -14,11 +15,11 @@ namespace Consolonia.Gallery.View
             AttachedToVisualTree += DialogWindowAttachedToVisualTree;
         }
 
-        private void DialogWindowAttachedToVisualTree(object sender, Avalonia.VisualTreeAttachmentEventArgs e)
+        private void DialogWindowAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
             AttachedToVisualTree -= DialogWindowAttachedToVisualTree;
 
-            var child = this.LogicalChildren.FirstOrDefault();
+            ILogical child = LogicalChildren.FirstOrDefault();
             if (child is InputElement input)
                 input.AttachedToVisualTree += OnChildAttachedToVisualTree;
         }

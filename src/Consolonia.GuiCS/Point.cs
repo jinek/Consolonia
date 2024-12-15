@@ -10,7 +10,7 @@
 
 using System;
 using System.Globalization;
-
+// ReSharper disable All
 namespace Terminal.Gui
 {
 	/// <summary>

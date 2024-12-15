@@ -3,7 +3,7 @@
              xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryMenu">
     <StackPanel Orientation="Horizontal"
                 Margin="1"
@@ -37,9 +37,15 @@
                             <helpers:SymbolsControl Text="&#9818;" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="ToggleType Checked" IsChecked="True" ToggleType="CheckBox"/>
-                    <MenuItem Header="ToggleType Radio" IsChecked="True" ToggleType="Radio"/>
-                    <MenuItem Header="ToggleType None" IsChecked="True" ToggleType="None"/>
+                    <MenuItem Header="ToggleType Checked"
+                              IsChecked="True"
+                              ToggleType="CheckBox" />
+                    <MenuItem Header="ToggleType Radio"
+                              IsChecked="True"
+                              ToggleType="Radio" />
+                    <MenuItem Header="ToggleType None"
+                              IsChecked="True"
+                              ToggleType="None" />
                     <MenuItem Header="Menu Item with _Checkbox">
                         <MenuItem.Icon>
                             <CheckBox BorderThickness="0"

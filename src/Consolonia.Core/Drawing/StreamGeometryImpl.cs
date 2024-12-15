@@ -10,14 +10,8 @@ namespace Consolonia.Core.Drawing
 {
     internal class StreamGeometryImpl : IStreamGeometryImpl
     {
-        private readonly List<Rectangle> _fills;
-        private readonly List<Line> _strokes;
-
-        public StreamGeometryImpl()
-        {
-            _strokes = new List<Line>();
-            _fills = new List<Rectangle>();
-        }
+        private readonly List<Rectangle> _fills = [];
+        private readonly List<Line> _strokes = [];
 
         public IReadOnlyList<Line> Strokes => _strokes;
 
@@ -94,7 +88,7 @@ namespace Consolonia.Core.Drawing
         }
 
         /// <summary>
-        ///     A Conolonia implementation of a <see cref="IStreamGeometryContextImpl" />.
+        ///     A Consolonia implementation of a <see cref="IStreamGeometryContextImpl" />.
         /// </summary>
         private class StreamGeometryContextImpl : IStreamGeometryContextImpl, IGeometryContext2
         {

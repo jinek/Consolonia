@@ -10,6 +10,5 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
             DataContext = new ListBoxPageViewModel();
         }
-
     }
 }
