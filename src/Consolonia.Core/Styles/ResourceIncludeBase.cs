@@ -14,7 +14,8 @@ namespace Consolonia.Core.Styles
         private bool _isLoading;
         private IStyle[] _loaded;
 
-        protected ResourceIncludeBase(IServiceProvider serviceProvider) : this(((IUriContext)serviceProvider.GetService(typeof(IUriContext)))!.BaseUri)
+        protected ResourceIncludeBase(IServiceProvider serviceProvider) : this(
+            ((IUriContext)serviceProvider.GetService(typeof(IUriContext)))!.BaseUri)
         {
         }
 
@@ -74,7 +75,7 @@ namespace Consolonia.Core.Styles
                 if (Loaded is IResourceProvider rp) rp.OwnerChanged -= value;
             }
         }
-        
+
         public IReadOnlyList<IStyle> Children => _loaded ?? Array.Empty<IStyle>();
     }
 }
