@@ -23,15 +23,14 @@ namespace Consolonia.Core.Infrastructure
 {
     public class ConsoleWindow : IWindowImpl
     {
+        private readonly bool _accessKeysAlwaysOn;
+        private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
         private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(100);
         [NotNull] internal readonly IConsole Console;
         private bool _disposedValue;
         private IInputRoot _inputRoot;
         private CancellationTokenSource _resizeCancellationTokenSource;
-
-        private bool _accessKeysAlwaysOn;
-        private IDisposable _accessKeysAlwaysOnDisposable;
 
         public ConsoleWindow()
         {
@@ -45,16 +44,9 @@ namespace Consolonia.Core.Infrastructure
             Handle = null!;
             PixelBuffer = new PixelBuffer(Console.Size);
             _accessKeysAlwaysOn = !Console.SupportsAltSolo;
-            if(_accessKeysAlwaysOn)
-                _accessKeysAlwaysOnDisposable = AccessText.ShowAccessKeyProperty.Changed.SubscribeAction(OnShowAccessKeyPropertyChanged);
-        }
-
-        private void OnShowAccessKeyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> args)
-        {
-            if (args.Sender != _inputRoot) return;
-            if (args.GetNewValue<bool>()) return;
-            
-            _inputRoot.ShowAccessKeys = true;
+            if (_accessKeysAlwaysOn)
+                _accessKeysAlwaysOnDisposable =
+                    AccessText.ShowAccessKeyProperty.Changed.SubscribeAction(OnShowAccessKeyPropertyChanged);
         }
 
         public PixelBuffer PixelBuffer { get; set; }
@@ -65,7 +57,7 @@ namespace Consolonia.Core.Infrastructure
         public void SetInputRoot(IInputRoot inputRoot)
         {
             _inputRoot = inputRoot;
-            if(_accessKeysAlwaysOn)
+            if (_accessKeysAlwaysOn)
                 _inputRoot.ShowAccessKeys = true;
         }
 
@@ -312,6 +304,14 @@ namespace Consolonia.Core.Infrastructure
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        private void OnShowAccessKeyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> args)
+        {
+            if (args.Sender != _inputRoot) return;
+            if (args.GetNewValue<bool>()) return;
+
+            _inputRoot.ShowAccessKeys = true;
         }
 
         private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,

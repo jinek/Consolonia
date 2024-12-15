@@ -47,13 +47,13 @@ namespace Consolonia.Core.Infrastructure
             StartInputReading();
         }
 
+        public override bool SupportsAltSolo => false;
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
             RaiseFocusEvent(false);
         }
-
-        public override bool SupportsAltSolo => false;
 
         public override void PauseIO(Task task)
         {

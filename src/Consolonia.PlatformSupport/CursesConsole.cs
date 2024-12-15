@@ -115,6 +115,8 @@ namespace Consolonia.PlatformSupport
             StartEventLoop();
         }
 
+        public override bool SupportsAltSolo => false;
+
         private void StartEventLoop()
         {
             //todo: cleanup
@@ -139,8 +141,6 @@ namespace Consolonia.PlatformSupport
                 }
             });
         }
-
-        public override bool SupportsAltSolo => false;
 
         public override void PauseIO(Task task)
         {
