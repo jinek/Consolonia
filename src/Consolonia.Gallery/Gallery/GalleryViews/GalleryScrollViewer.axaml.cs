@@ -19,7 +19,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             DataContext = new ScrollViewerPageViewModel();
         }
-
     }
 
     public class ScrollViewerPageViewModel : ViewModelBase

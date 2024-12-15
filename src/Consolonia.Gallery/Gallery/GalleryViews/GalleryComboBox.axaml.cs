@@ -18,6 +18,5 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             VarsComboBox.SelectedIndex = 0;
         }
-
     }
 }

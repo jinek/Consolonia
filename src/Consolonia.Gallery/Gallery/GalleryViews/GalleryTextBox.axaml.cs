@@ -9,6 +9,5 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             InitializeComponent();
         }
-
     }
 }

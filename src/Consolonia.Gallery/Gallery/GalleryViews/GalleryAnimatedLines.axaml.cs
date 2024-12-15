@@ -15,7 +15,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
         }
 
-        // ReSharper disable UnusedParameter.Local
         private async void PauseButton_OnClick(object _, RoutedEventArgs _2)
             // ReSharper restore UnusedParameter.Local
         {
@@ -27,5 +26,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Console.ResetColor();
             Console.Clear();
         }
+
+
+        // ReSharper disable UnusedParameter.Local
     }
 }

@@ -28,9 +28,11 @@
                        Margin="4,0,0,0" />
         </Grid>
         <Grid Grid.Column="1">
-            <Border BorderThickness="1" BorderBrush="DarkGray"
+            <Border BorderThickness="1"
+                    BorderBrush="DarkGray"
                     DataContext="{Binding ElementName=Grid, Path=SelectedItem}">
-                <Grid ColumnDefinitions="Auto *" x:DataType="views:TheItem">
+                <Grid ColumnDefinitions="Auto *"
+                      x:DataType="views:TheItem">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -61,12 +63,12 @@
                                 Margin="1,0">
                         <!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
                         <TextBlock Text="{Binding Id}" />
-                        
+
                         <TextBox Text="{Binding Title, Mode=TwoWay}"
                                  Height="1" />
                         <ComboBox SelectedItem="{Binding Genre, Mode=TwoWay}"
                                   Name="Combo" />
-                        
+
                     </StackPanel>
 
                     <Rectangle Height="1"

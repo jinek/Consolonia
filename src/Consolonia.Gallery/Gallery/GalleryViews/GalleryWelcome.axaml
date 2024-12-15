@@ -4,5 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryWelcome">
-    <TextBlock Text="Welcome to Consolonia!" TextDecorations="Underline" FontWeight="Bold" HorizontalAlignment="Center"/>
+    <TextBlock Text="Welcome to Consolonia!"
+               TextDecorations="Underline"
+               FontWeight="Bold"
+               HorizontalAlignment="Center" />
 </UserControl>

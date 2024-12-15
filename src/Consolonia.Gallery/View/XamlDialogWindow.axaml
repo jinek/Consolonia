@@ -1,15 +1,16 @@
 <controls:DialogWindow xmlns="https://github.com/avaloniaui"
-                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                     mc:Ignorable="d" 
-                     xmlns:controls="clr-namespace:Consolonia.Core.Controls;assembly=Consolonia.Core"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"
-                     x:Class="Consolonia.Gallery.View.XamlDialogWindow">
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       mc:Ignorable="d"
+                       xmlns:controls="clr-namespace:Consolonia.Core.Controls;assembly=Consolonia.Core"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       x:Class="Consolonia.Gallery.View.XamlDialogWindow">
     <ScrollViewer HorizontalScrollBarVisibility="Visible"
                   VerticalScrollBarVisibility="Visible"
                   Focusable="True">
-        <SelectableTextBlock Name="Xaml" Text="{Binding}" />
+        <SelectableTextBlock Name="Xaml"
+                             Text="{Binding}" />
     </ScrollViewer>
 </controls:DialogWindow>

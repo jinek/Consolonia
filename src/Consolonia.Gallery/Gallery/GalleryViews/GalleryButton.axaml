@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryButton">
     <StackPanel Orientation="Vertical"
                 Spacing="1">
@@ -13,7 +13,10 @@
             </Style>
         </StackPanel.Styles>
         <Button>Standard _XAML Button</Button>
-        <Button Background="DarkBlue" Foreground="Yellow">Custom Colors</Button>
+        <Button Background="DarkBlue"
+                Foreground="Yellow">
+            Custom Colors
+        </Button>
         <Button IsEnabled="False">Disabled</Button>
         <RepeatButton Name="RepeatButton">
             <TextBlock Name="RepeatButtonTextBlock"
