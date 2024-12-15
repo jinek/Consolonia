@@ -266,8 +266,10 @@ namespace Consolonia.Core.Drawing
                 FillRectangleWithBrush(brush, pen, r);
             }
 
-            if (pen is null or { Thickness: 0 }
-                or { Brush: null }) return;
+            if (pen is null
+                or { Thickness: 0 }
+                or { Brush: null }
+                or { Brush: LineBrush { Brush: null } }) return;
             DrawBoxLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width), RectangleLinePosition.Top);
             DrawBoxLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width), RectangleLinePosition.Bottom);
             DrawBoxLineInternal(pen, new Line(r.TopLeft, true, (int)r.Height), RectangleLinePosition.Left);
