@@ -33,6 +33,7 @@ namespace Consolonia.Core.Dummy
         }
 
         public bool SupportsComplexEmoji => true;
+        public bool SupportsAltSolo => false;
 
         public void ClearOutput()
         {

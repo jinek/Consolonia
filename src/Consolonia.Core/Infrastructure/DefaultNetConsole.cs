@@ -53,6 +53,8 @@ namespace Consolonia.Core.Infrastructure
             RaiseFocusEvent(false);
         }
 
+        public override bool SupportsAltSolo => false;
+
         public override void PauseIO(Task task)
         {
             base.PauseIO(task);

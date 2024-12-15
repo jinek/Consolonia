@@ -11,7 +11,7 @@ using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
-    public class InputLessDefaultNetConsole : IConsole
+    public abstract class InputLessDefaultNetConsole : IConsole
     {
         private const string TestEmoji = "👨‍👩‍👧‍👦";
         private bool _caretVisible;
@@ -48,6 +48,7 @@ namespace Consolonia.Core.Infrastructure
         public PixelBufferSize Size { get; private set; }
 
         public bool SupportsComplexEmoji => _supportEmoji ?? false;
+        public abstract bool SupportsAltSolo { get; }
 
         public void SetTitle(string title)
         {

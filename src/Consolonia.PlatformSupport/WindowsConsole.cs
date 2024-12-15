@@ -61,6 +61,8 @@ namespace Consolonia.PlatformSupport
             StartEventLoop();
         }
 
+        public override bool SupportsAltSolo => true;
+
         public override void PauseIO(Task task)
         {
             base.PauseIO(task);
