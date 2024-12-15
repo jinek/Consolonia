@@ -445,7 +445,7 @@ namespace Consolonia.Core.Infrastructure
                 {
                     // TODO: dispose managed state (managed objects)
                     Closed?.Invoke();
-                    _accessKeysAlwaysOnDisposable.Dispose();
+                    _accessKeysAlwaysOnDisposable?.Dispose();
                     Console.Resized -= OnConsoleOnResized;
                     Console.KeyEvent -= ConsoleOnKeyEvent;
                     Console.MouseEvent -= ConsoleOnMouseEvent;
