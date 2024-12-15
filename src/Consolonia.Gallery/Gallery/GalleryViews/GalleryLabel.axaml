@@ -1,19 +1,17 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:system="clr-namespace:System;assembly=System.Runtime"
-             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" 
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryLabel">
     <!--Copied from https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Default/TextBox.xaml-->
     <Grid HorizontalAlignment="Left" VerticalAlignment="Top" RowDefinitions="Auto,Auto,Auto,Auto,Auto,*" ColumnDefinitions="Auto,6,*" Width="246">
-        <Label Target="firstNameEdit" Grid.Row="0" Grid.Column="0" >_First name</Label>
-        <TextBox Name="firstNameEdit" Grid.Column="2" Grid.Row="0" Text="{Binding FirstName}"></TextBox>
-        <Label Target="lastNameEdit" Grid.Row="1" Grid.Column="0">_Last name</Label>
-        <TextBox Name="lastNameEdit" Grid.Column="2" Grid.Row="1" Text="{Binding LastName}"></TextBox>
-        <Label Target="bannedCheck" Grid.Row="2" Grid.Column="0">_Banned</Label>
-        <CheckBox Name="bannedCheck" Grid.Column="2" Grid.Row="2" IsChecked="{Binding IsBanned}"></CheckBox>
+        <Label Target="FirstNameEdit" Grid.Row="0" Grid.Column="0" >_First name</Label>
+        <TextBox Name="FirstNameEdit" Grid.Column="2" Grid.Row="0" Text="{Binding FirstName}"></TextBox>
+        <Label Target="LastNameEdit" Grid.Row="1" Grid.Column="0">_Last name</Label>
+        <TextBox Name="LastNameEdit" Grid.Column="2" Grid.Row="1" Text="{Binding LastName}"></TextBox>
+        <Label Target="BannedCheck" Grid.Row="2" Grid.Column="0">_Banned</Label>
+        <CheckBox Name="BannedCheck" Grid.Column="2" Grid.Row="2" IsChecked="{Binding IsBanned}"></CheckBox>
     </Grid>
 
 </UserControl>

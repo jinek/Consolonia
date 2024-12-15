@@ -7,6 +7,7 @@
 //
 using System;
 
+// ReSharper disable All
 namespace Terminal.Gui {
 
 	/// <summary>
@@ -735,10 +736,10 @@ namespace Terminal.Gui {
 		/// </summary>
 		public int OfY;
 
-		/// <summary>
+		/*/// <summary>
 		/// The current view at the location for the mouse event.
 		/// </summary>
-		// public View View;
+		public View View;*/
 
 		/// <summary>
 		/// Returns a <see cref="T:System.String"/> that represents the current <see cref="MouseEvent"/>.

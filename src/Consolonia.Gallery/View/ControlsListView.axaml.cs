@@ -5,6 +5,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
 using Consolonia.Themes;
@@ -22,38 +23,35 @@ namespace Consolonia.Gallery.View
 
     public partial class ControlsListView : Window
     {
-        private string[] _commandLineArgs;
         private readonly IEnumerable<GalleryItem> _items;
+        private string[] _commandLineArgs;
 
         public ControlsListView()
         {
             InitializeComponent();
 
-            this.DataContext = new ControlsListViewModel();
+            DataContext = new ControlsListViewModel();
 
 #if DEBUG
             this.AttachDevTools();
 #endif
-            this.GalleryGrid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
+            GalleryGrid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
 
-            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            if (lifetime != null)
+            if (Application.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
                 _commandLineArgs = lifetime!.Args!;
             else
-                _commandLineArgs = Array.Empty<string>();
+                _commandLineArgs = [];
 
-            this.Styles.Add(new MaterialTheme());
+            Styles.Add(new MaterialTheme());
 
             TrySetupSelected();
         }
-
-        public ControlsListViewModel Model => (ControlsListViewModel)DataContext;
 
         private void TrySetupSelected()
         {
             if (_commandLineArgs.Length is not 1 and not 2)
             {
-                this.GalleryGrid.SelectedIndex = 0;
+                GalleryGrid.SelectedIndex = 0;
                 return;
             }
 
@@ -73,8 +71,8 @@ namespace Consolonia.Gallery.View
                     $"Several gallery items found with provided name {itemToSelectName}");
             }
 
-            this.GalleryGrid.SelectedItem = itemToSelect;
-            this.GalleryGrid.Focus();
+            GalleryGrid.SelectedItem = itemToSelect;
+            GalleryGrid.Focus();
         }
 
 
@@ -84,33 +82,33 @@ namespace Consolonia.Gallery.View
             TrySetupSelected();
         }
 
-        private void Exit_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
-        private async void OnShowXaml(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private async void OnShowXaml(object sender, RoutedEventArgs e)
         {
             var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime;
 
             var selectedItem = GalleryGrid.SelectedItem as GalleryItem;
-            var path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..", "..", "..", "Gallery", "GalleryViews", $"{selectedItem.Type.Name}.axaml"));
-            var dialog = new XamlDialogWindow()
+            string path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..", "..", "..", "Gallery",
+                "GalleryViews", $"{selectedItem.Type.Name}.axaml"));
+            var dialog = new XamlDialogWindow
             {
+                // ReSharper disable once MethodHasAsyncOverload
                 DataContext = File.ReadAllText(path)
             };
 
             await dialog.ShowDialogAsync(lifetime.MainWindow);
         }
 
-        private void ComboBox_SelectionChanged(object sender, Avalonia.Controls.SelectionChangedEventArgs e)
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ThemeCombo?.SelectedItem is not ComboBoxItem selectedItem ||
                 selectedItem.Content is not string themeName ||
-                !Enum.TryParse<Themes>(themeName, out var selectedTheme))
-            {
+                !Enum.TryParse(themeName, out Themes selectedTheme))
                 return;
-            }
 
             Styles[0] = selectedTheme switch
             {

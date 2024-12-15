@@ -33,7 +33,7 @@
             <TabControl ItemsSource="{Binding Tabs}"
                         TabStripPlacement="{Binding TabPlacement}">
                 <TabControl.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate DataType="galleryViews:TabItemViewModel">
                         <TextBlock Text="{Binding Header}" />
                     </DataTemplate>
                 </TabControl.ItemTemplate>

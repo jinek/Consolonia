@@ -59,11 +59,14 @@
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 Margin="1,0">
+                        <!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
                         <TextBlock Text="{Binding Id}" />
+                        
                         <TextBox Text="{Binding Title, Mode=TwoWay}"
                                  Height="1" />
                         <ComboBox SelectedItem="{Binding Genre, Mode=TwoWay}"
                                   Name="Combo" />
+                        
                     </StackPanel>
 
                     <Rectangle Height="1"
@@ -80,6 +83,7 @@
                               Grid.Row="2"
                               Grid.Column="0"
                               Margin="1,0,0,0" />
+                    <!-- ReSharper restore Xaml.BindingWithContextNotResolved -->
                     <Rectangle Height="1"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"

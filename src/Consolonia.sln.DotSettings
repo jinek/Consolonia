@@ -14,5 +14,6 @@
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingMode/@EntryValue">OnlyMarkers</s:String>
 	<s:Boolean x:Key="/Default/Environment/InlayHints/GeneralInlayHintsOptions/EnableInlayHints/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Avalonia/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=axaml/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Consolonia/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=trailingnumber/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
