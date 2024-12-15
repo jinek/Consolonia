@@ -9,7 +9,8 @@ namespace Consolonia.Core.Drawing
     {
         //todo: we don't really implement immutable brush
         public static readonly StyledProperty<IBrush> BrushProperty =
-            AvaloniaProperty.Register<LineBrush, IBrush>(CommonInternalHelper.GetStyledPropertyName()/*todo: re-use this method everywhere*/);
+            AvaloniaProperty.Register<LineBrush, IBrush>(
+                CommonInternalHelper.GetStyledPropertyName() /*todo: re-use this method everywhere*/);
 
         public static readonly StyledProperty<LineStyle> LineStyleProperty =
             AvaloniaProperty.Register<LineBrush, LineStyle>(CommonInternalHelper.GetStyledPropertyName());
