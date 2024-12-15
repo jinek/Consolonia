@@ -21,6 +21,8 @@ namespace Consolonia.Core.Infrastructure
         /// </summary>
         bool SupportsComplexEmoji { get; }
 
+        bool SupportsAltSolo { get; }
+
         void SetTitle(string title);
 
         void SetCaretPosition(PixelBufferCoordinate bufferPoint);

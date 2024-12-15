@@ -47,6 +47,8 @@ namespace Consolonia.Core.Infrastructure
             StartInputReading();
         }
 
+        public override bool SupportsAltSolo => false;
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

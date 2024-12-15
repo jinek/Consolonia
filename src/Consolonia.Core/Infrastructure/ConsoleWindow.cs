@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Platform;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
@@ -15,12 +16,15 @@ using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
     public class ConsoleWindow : IWindowImpl
     {
+        private readonly bool _accessKeysAlwaysOn;
+        private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
         private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(100);
         [NotNull] internal readonly IConsole Console;
@@ -39,6 +43,10 @@ namespace Consolonia.Core.Infrastructure
             Console.FocusEvent += ConsoleOnFocusEvent;
             Handle = null!;
             PixelBuffer = new PixelBuffer(Console.Size);
+            _accessKeysAlwaysOn = !Console.SupportsAltSolo;
+            if (_accessKeysAlwaysOn)
+                _accessKeysAlwaysOnDisposable =
+                    AccessText.ShowAccessKeyProperty.Changed.SubscribeAction(OnShowAccessKeyPropertyChanged);
         }
 
         public PixelBuffer PixelBuffer { get; private set; }
@@ -49,6 +57,8 @@ namespace Consolonia.Core.Infrastructure
         public void SetInputRoot(IInputRoot inputRoot)
         {
             _inputRoot = inputRoot;
+            if (_accessKeysAlwaysOn)
+                _inputRoot.ShowAccessKeys = true;
         }
 
         public Point PointToClient(PixelPoint point)
@@ -296,6 +306,14 @@ namespace Consolonia.Core.Infrastructure
             GC.SuppressFinalize(this);
         }
 
+        private void OnShowAccessKeyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> args)
+        {
+            if (args.Sender != _inputRoot) return;
+            if (args.GetNewValue<bool>()) return;
+
+            _inputRoot.ShowAccessKeys = true;
+        }
+
         private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,
             RawInputModifiers modifiers)
         {
@@ -429,6 +447,7 @@ namespace Consolonia.Core.Infrastructure
                 {
                     // TODO: dispose managed state (managed objects)
                     Closed?.Invoke();
+                    _accessKeysAlwaysOnDisposable?.Dispose();
                     Console.Resized -= OnConsoleOnResized;
                     Console.KeyEvent -= ConsoleOnKeyEvent;
                     Console.MouseEvent -= ConsoleOnMouseEvent;

@@ -39,6 +39,7 @@ namespace Consolonia.NUnit
         bool IConsole.CaretVisible { get; set; }
 
         public bool SupportsComplexEmoji => true;
+        public bool SupportsAltSolo => true;
 
         public void SetTitle(string title)
         {

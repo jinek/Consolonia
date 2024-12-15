@@ -115,6 +115,8 @@ namespace Consolonia.PlatformSupport
             StartEventLoop();
         }
 
+        public override bool SupportsAltSolo => false;
+
         private void StartEventLoop()
         {
             //todo: cleanup
