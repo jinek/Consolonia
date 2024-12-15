@@ -23,7 +23,7 @@ namespace Consolonia
 
         public override void OnFrameworkInitializationCompleted()
         {
-            // override AccessText to use ConsoloniaAccessText as default contentpresenter for unknown data types (aka string)
+            // override AccessText to use ConsoloniaAccessText as default ContentPresenter for unknown data types (aka string)
             DataTemplates.Add(new FuncDataTemplate<object>(
                 (data, _) =>
                 {

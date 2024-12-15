@@ -56,7 +56,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// </summary>
         private static char GetBoxSymbol(byte upRightDownLeft)
         {
-            //DOS linedraw characters are not ordered in any programmatic manner, and calculating a particular character shape needs to use a look-up table. from https://en.wikipedia.org/wiki/Box-drawing_character
+            //DOS line draw characters are not ordered in any programmatic manner, and calculating a particular character shape needs to use a look-up table. from https://en.wikipedia.org/wiki/Box-drawing_character
 
             byte leftPart = (byte)(upRightDownLeft & 0b1111_0000);
             bool hasLeftPart = leftPart > 0;

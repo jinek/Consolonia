@@ -9,9 +9,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public override Color ReadJson(JsonReader reader, Type objectType, Color existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
-            if (Color.TryParse(reader.Value!.ToString(), out Color color))
-                return color;
-            return Colors.Transparent;
+            return Color.TryParse(reader.Value!.ToString(), out Color color) ? color : Colors.Transparent;
         }
 
         public override void WriteJson(JsonWriter writer, Color value, JsonSerializer serializer)

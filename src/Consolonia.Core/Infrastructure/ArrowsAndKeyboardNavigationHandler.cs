@@ -9,17 +9,13 @@ using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Infrastructure
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ArrowsAndKeyboardNavigationHandler : IKeyboardNavigationHandler
     {
-        private readonly IKeyboardNavigationHandler _keyboardNavigationHandler;
+        private readonly IKeyboardNavigationHandler _keyboardNavigationHandler = new KeyboardNavigationHandler();
 
         //todo: check XTFocus https://github.com/jinek/Consolonia/issues/105#issuecomment-2089015880
         private IInputRoot _owner;
-
-        public ArrowsAndKeyboardNavigationHandler()
-        {
-            _keyboardNavigationHandler = new KeyboardNavigationHandler();
-        }
 
         public void SetOwner(IInputRoot owner)
         {
@@ -129,14 +125,13 @@ namespace Consolonia.Core.Infrastructure
 
             if (e.Key == Key.Escape)
             {
-                // if there is a overlay popup, close it
+                // if there is an overlay popup, close it
                 OverlayPopupHost overlay = sender as OverlayPopupHost ??
                                            ((Visual)sender).FindDescendantOfType<OverlayPopupHost>();
                 if (overlay != null)
                 {
                     // it will have a popup as the parent.
-                    var popup = overlay.Parent as Popup;
-                    if (popup != null)
+                    if (overlay.Parent is Popup popup)
                         popup.Close();
                     e.Handled = true;
                     return;

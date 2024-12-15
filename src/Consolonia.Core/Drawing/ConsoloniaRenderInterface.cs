@@ -51,37 +51,35 @@ namespace Consolonia.Core.Drawing
                 throw new ArgumentException("Only StreamGeometryImpl is supported");
 
             IStreamGeometryImpl newGeometry = CreateStreamGeometry();
-            using (IStreamGeometryContextImpl ctx = newGeometry.Open())
-            {
-                // Resharper disable UnusedVariable
-                bool hasLeftStroke = stream2.Bounds.X.IsNearlyEqual(1);
-                bool hasTopStroke = stream2.Bounds.Y.IsNearlyEqual(1);
-                bool hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width).IsNearlyEqual(stream2.Bounds.X + 1);
-                bool hasBottomStroke =
-                    (stream1.Bounds.Height - stream2.Bounds.Height).IsNearlyEqual(stream2.Bounds.Y + 1);
-                Point topLeft = stream1.Bounds.TopLeft;
-                Point topRight = stream1.Bounds.TopRight;
-                Point bottomLeft = stream1.Bounds.BottomLeft;
-                Point bottomRight = stream1.Bounds.BottomRight;
-                Line topStroke = stream1.Strokes[0];
-                Line rightStroke = stream1.Strokes[1];
-                Line bottomStroke = stream1.Strokes[2];
-                Line leftStroke = stream1.Strokes[3];
-                // Resharper enable UnusedVariable
+            using IStreamGeometryContextImpl ctx = newGeometry.Open();
+            // Resharper disable UnusedVariable
+            bool hasLeftStroke = stream2.Bounds.X.IsNearlyEqual(1);
+            bool hasTopStroke = stream2.Bounds.Y.IsNearlyEqual(1);
+            bool hasRightStroke = (stream1.Bounds.Width - stream2.Bounds.Width).IsNearlyEqual(stream2.Bounds.X + 1);
+            bool hasBottomStroke =
+                (stream1.Bounds.Height - stream2.Bounds.Height).IsNearlyEqual(stream2.Bounds.Y + 1);
+            Point topLeft = stream1.Bounds.TopLeft;
+            Point topRight = stream1.Bounds.TopRight;
+            Point bottomLeft = stream1.Bounds.BottomLeft;
+            Point bottomRight = stream1.Bounds.BottomRight;
+            Line topStroke = stream1.Strokes[0];
+            Line rightStroke = stream1.Strokes[1];
+            Line bottomStroke = stream1.Strokes[2];
+            Line leftStroke = stream1.Strokes[3];
+            // Resharper enable UnusedVariable
 
-                // add "null" strokes to establish boundries of box even when there is a single real stroke.
-                AddStroke(ctx, topLeft, topLeft);
-                AddStroke(ctx, bottomRight, bottomRight);
+            // add "null" strokes to establish boundaries of box even when there is a single real stroke.
+            AddStroke(ctx, topLeft, topLeft);
+            AddStroke(ctx, bottomRight, bottomRight);
 
-                if (hasTopStroke)
-                    AddStroke(ctx, topStroke.PStart, topStroke.PEnd + new Vector(-1, 0));
-                if (hasRightStroke)
-                    AddStroke(ctx, rightStroke.PStart + new Vector(-1, 0), rightStroke.PEnd + new Vector(-1, -1));
-                if (hasBottomStroke)
-                    AddStroke(ctx, bottomStroke.PStart + new Vector(0, -1), bottomStroke.PEnd + new Vector(-1, -1));
-                if (hasLeftStroke)
-                    AddStroke(ctx, leftStroke.PStart, leftStroke.PEnd + new Vector(0, -1));
-            }
+            if (hasTopStroke)
+                AddStroke(ctx, topStroke.PStart, topStroke.PEnd + new Vector(-1, 0));
+            if (hasRightStroke)
+                AddStroke(ctx, rightStroke.PStart + new Vector(-1, 0), rightStroke.PEnd + new Vector(-1, -1));
+            if (hasBottomStroke)
+                AddStroke(ctx, bottomStroke.PStart + new Vector(0, -1), bottomStroke.PEnd + new Vector(-1, -1));
+            if (hasLeftStroke)
+                AddStroke(ctx, leftStroke.PStart, leftStroke.PEnd + new Vector(0, -1));
 
             return newGeometry;
         }
@@ -112,10 +110,8 @@ namespace Consolonia.Core.Drawing
 
         public IBitmapImpl LoadBitmap(string fileName)
         {
-            using (FileStream stream = File.OpenRead(fileName))
-            {
-                return new BitmapImpl(stream);
-            }
+            using FileStream stream = File.OpenRead(fileName);
+            return new BitmapImpl(stream);
         }
 
         public IBitmapImpl LoadBitmap(Stream stream)
@@ -126,68 +122,56 @@ namespace Consolonia.Core.Drawing
         public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
             BitmapInterpolationMode interpolationMode)
         {
-            using (var skStream = new SKManagedStream(stream))
-            {
-                SKBitmap originalBitmap = SKBitmap.Decode(skStream);
-                int width = (int)(height * ((double)originalBitmap.Width / originalBitmap.Height));
-                SKBitmap resizedBitmap =
-                    originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
-                return new BitmapImpl(resizedBitmap);
-            }
+            using var skStream = new SKManagedStream(stream);
+            SKBitmap originalBitmap = SKBitmap.Decode(skStream);
+            int width = (int)(height * ((double)originalBitmap.Width / originalBitmap.Height));
+            SKBitmap resizedBitmap =
+                originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
+            return new BitmapImpl(resizedBitmap);
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
             BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
         {
-            using (var skStream = new SKManagedStream(stream))
-            {
-                SKBitmap originalBitmap = SKBitmap.Decode(skStream);
-                int height = (int)(width * ((double)originalBitmap.Height / originalBitmap.Width));
-                SKBitmap resizedBitmap =
-                    originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
-                return new BitmapImpl(resizedBitmap);
-            }
+            using var skStream = new SKManagedStream(stream);
+            SKBitmap originalBitmap = SKBitmap.Decode(skStream);
+            int height = (int)(width * ((double)originalBitmap.Height / originalBitmap.Width));
+            SKBitmap resizedBitmap =
+                originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
+            return new BitmapImpl(resizedBitmap);
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmap(string fileName)
         {
-            using (FileStream stream = File.OpenRead(fileName))
-            {
-                return LoadWriteableBitmap(stream);
-            }
+            using FileStream stream = File.OpenRead(fileName);
+            return LoadWriteableBitmap(stream);
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmap(Stream stream)
         {
-            using (var skStream = new SKManagedStream(stream))
-            {
-                SKBitmap originalBitmap = SKBitmap.Decode(skStream);
-                return new BitmapImpl(originalBitmap);
-            }
+            using var skStream = new SKManagedStream(stream);
+            SKBitmap originalBitmap = SKBitmap.Decode(skStream);
+            return new BitmapImpl(originalBitmap);
         }
 
         public IBitmapImpl LoadBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode)
         {
-            using (var skStream = new SKManagedStream(stream))
-            {
-                SKBitmap originalBitmap = SKBitmap.Decode(skStream);
-                int height = (int)(width * ((double)originalBitmap.Height / originalBitmap.Width));
-                SKBitmap resizedBitmap =
-                    originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
-                return new BitmapImpl(resizedBitmap);
-            }
+            using var skStream = new SKManagedStream(stream);
+            SKBitmap originalBitmap = SKBitmap.Decode(skStream);
+            int height = (int)(width * ((double)originalBitmap.Height / originalBitmap.Width));
+            SKBitmap resizedBitmap =
+                originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
+            return new BitmapImpl(resizedBitmap);
         }
 
         public IBitmapImpl LoadBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode)
         {
-            using (var skStream = new SKManagedStream(stream))
-            {
-                SKBitmap originalBitmap = SKBitmap.Decode(skStream);
-                int width = (int)(height * ((double)originalBitmap.Width / originalBitmap.Height));
-                SKBitmap resizedBitmap =
-                    originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
-                return new BitmapImpl(resizedBitmap);
-            }
+            using var skStream = new SKManagedStream(stream);
+            SKBitmap originalBitmap = SKBitmap.Decode(skStream);
+            int width = (int)(height * ((double)originalBitmap.Width / originalBitmap.Height));
+            SKBitmap resizedBitmap =
+                originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
+            return new BitmapImpl(resizedBitmap);
         }
 
         public IBitmapImpl ResizeBitmap(IBitmapImpl bitmapImpl, PixelSize destinationSize,
