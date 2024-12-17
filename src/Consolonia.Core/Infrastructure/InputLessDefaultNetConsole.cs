@@ -39,7 +39,6 @@ namespace Consolonia.Core.Infrastructure
             set
             {
                 if (_caretVisible == value) return;
-                WriteText(value ? Esc.ShowCursor : Esc.HideCursor);
                 _caretVisible = value;
             }
 #pragma warning restore CA1303 // Do not pass literals as localized parameters

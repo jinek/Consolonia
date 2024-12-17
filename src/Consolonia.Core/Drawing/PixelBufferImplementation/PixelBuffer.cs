@@ -32,6 +32,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public ushort Width { get; }
         public ushort Height { get; }
 
+        public CursorStyle CursorStyle { get; set; } = CursorStyle.BlinkingBar;
+
         // ReSharper disable once UnusedMember.Global
         [JsonIgnore]
         public Pixel this[int i]
