@@ -18,7 +18,7 @@
                                    IsHitTestVisible="False"
                                    IsVisible="{TemplateBinding IsCaretShown}">
                             <Rectangle.Fill>
-                                <drawing:MoveConsoleCaretToPositionBrush />
+                                <drawing:MoveConsoleCaretToPositionBrush CaretStyle="{Binding CaretStyle}"/>
                             </Rectangle.Fill>
                         </Rectangle>
                         <ContentPresenter Name="PART_ContentPresenter"

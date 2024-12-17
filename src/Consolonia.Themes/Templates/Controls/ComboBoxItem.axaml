@@ -13,7 +13,7 @@
                 Value="Left" />
         <Setter Property="Template">
             <ControlTemplate>
-                <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
+                <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}" CaretStyle="BlinkingBlock">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Background="{TemplateBinding Background}"
                                       BorderBrush="{TemplateBinding BorderBrush}"

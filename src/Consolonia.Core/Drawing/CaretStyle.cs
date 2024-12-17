@@ -1,6 +1,6 @@
 ﻿namespace Consolonia.Core.Drawing
 {
-    public enum CursorStyle
+    public enum CaretStyle
     {
         BlinkingBar,
         SteadyBar,

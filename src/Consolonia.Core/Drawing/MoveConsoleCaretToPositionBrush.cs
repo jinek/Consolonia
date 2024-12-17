@@ -13,6 +13,6 @@ namespace Consolonia.Core.Drawing
         /// <summary>
         /// style of curosr
         /// </summary>
-        public CursorStyle Style { get; set; } = CursorStyle.BlinkingBar;
+        public CaretStyle CaretStyle { get; set; } = CaretStyle.BlinkingBar;
     }
 }

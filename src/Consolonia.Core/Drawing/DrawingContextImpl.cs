@@ -264,7 +264,7 @@ namespace Consolonia.Core.Drawing
                     case MoveConsoleCaretToPositionBrush moveBrush:
                         {
                             Point head = r.TopLeft.Transform(Transform);
-                            _pixelBuffer.CursorStyle = moveBrush.Style;
+                            _pixelBuffer.CaretStyle = moveBrush.CaretStyle;
                             CurrentClip.ExecuteWithClipping(head,
                                 () =>
                                 {
@@ -471,7 +471,7 @@ namespace Consolonia.Core.Drawing
 
             if (pen.Brush is MoveConsoleCaretToPositionBrush moveBrush)
             {
-                _pixelBuffer.CursorStyle = moveBrush.Style;
+                _pixelBuffer.CaretStyle = moveBrush.CaretStyle;
                 Point head = line.PStart.Transform(Transform);
                 CurrentClip.ExecuteWithClipping(head,
                     () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
