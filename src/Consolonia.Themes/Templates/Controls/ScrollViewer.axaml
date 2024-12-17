@@ -22,21 +22,23 @@
                 <Grid x:Name="PART_Root"
                       RowDefinitions="*,Auto"
                       ColumnDefinitions="*,Auto">
-                    <ScrollContentPresenter Name="PART_ContentPresenter"
-                                            Padding="{TemplateBinding Padding}"
-                                            HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
-                                            VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
-                                            HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
-                                            VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
-                                            Background="{TemplateBinding Background}"
-                                            ScrollViewer.IsScrollInertiaEnabled="True">
-                        <ScrollContentPresenter.GestureRecognizers>
-                            <ScrollGestureRecognizer
-                                CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
-                                CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
-                                IsScrollInertiaEnabled="{Binding (ScrollViewer.IsScrollInertiaEnabled), ElementName=PART_ContentPresenter}" />
-                        </ScrollContentPresenter.GestureRecognizers>
-                    </ScrollContentPresenter>
+                    <Panel Background="{TemplateBinding Background}">
+                        <ScrollContentPresenter Name="PART_ContentPresenter"
+                                                Padding="{TemplateBinding Padding}"
+                                                HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                                VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                                HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                                VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+                                                Background="Transparent"
+                                                ScrollViewer.IsScrollInertiaEnabled="True">
+                            <ScrollContentPresenter.GestureRecognizers>
+                                <ScrollGestureRecognizer
+                                    CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
+                                    CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
+                                    IsScrollInertiaEnabled="{Binding (ScrollViewer.IsScrollInertiaEnabled), ElementName=PART_ContentPresenter}" />
+                            </ScrollContentPresenter.GestureRecognizers>
+                        </ScrollContentPresenter>
+                    </Panel>
                     <ScrollBar Name="PART_HorizontalScrollBar"
                                Orientation="Horizontal"
                                Grid.Row="1"

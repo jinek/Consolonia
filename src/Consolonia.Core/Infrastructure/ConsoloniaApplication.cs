@@ -27,13 +27,13 @@ namespace Consolonia
             DataTemplates.Add(new FuncDataTemplate<object>(
                 (data, _) =>
                 {
-                    if (data != null && data is string)
+                    if (data != null)
                     {
                         var result = new ConsoloniaAccessText();
                         // ReSharper disable AccessToStaticMemberViaDerivedType
                         result.Bind(TextBlock.TextProperty,
-                            result.GetObservable(Control.DataContextProperty));
-                        return result;
+                            result.GetObservable(Control.DataContextProperty).Select(x => x?.ToString()));
+                        return result; 
                     }
 
                     return null;

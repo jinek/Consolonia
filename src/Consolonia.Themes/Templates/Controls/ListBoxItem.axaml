@@ -10,10 +10,11 @@
                 Value="{DynamicResource ThemeTransparentBrush}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Panel Background="{TemplateBinding Background}">
+                <Panel Background="Transparent">
                     <helpers:CaretControl Foreground="{TemplateBinding Foreground}"
                                           IsCaretShown="{TemplateBinding IsFocused}">
                         <ContentPresenter Name="PART_ContentPresenter"
+                                          Background="{TemplateBinding Background}"
                                           BorderBrush="{TemplateBinding BorderBrush}"
                                           BorderThickness="{TemplateBinding BorderThickness}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"

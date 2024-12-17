@@ -12,52 +12,34 @@
             <CheckBox IsChecked="{Binding AllowAutoHide}"
                       Content="Allow auto hide" />
 
-            <StackPanel Orientation="Vertical"
+            <StackPanel Orientation="Horizontal"
                         Spacing="1">
-                <TextBlock Text="Horizontal Scroll" />
-                <ComboBox ItemsSource="{Binding AvailableVisibility}"
-                          SelectedItem="{Binding HorizontalScrollVisibility}" />
+                <Label Content="Horizontal Scroll" Target="HorizontalScrollOptions" />
+                <ComboBox Name="HorizontalScrollOptions" ItemsSource="{Binding AvailableVisibility}"
+                        Width="20" SelectedItem="{Binding HorizontalScrollVisibility}" />
             </StackPanel>
 
-            <StackPanel Orientation="Vertical"
+            <StackPanel Orientation="Horizontal"
                         Spacing="1">
-                <TextBlock Text="Vertical Scroll" />
-                <ComboBox ItemsSource="{Binding AvailableVisibility}"
-                          SelectedItem="{Binding VerticalScrollVisibility}" />
+                <Label Content="Vertical Scroll" Target="VerticalScrollOptions"/>
+                <ComboBox Name="VerticalScrollOptions" ItemsSource="{Binding AvailableVisibility}"
+                          Width="20" SelectedItem="{Binding VerticalScrollVisibility}" />
             </StackPanel>
         </StackPanel>
 
         <ScrollViewer x:Name="ScrollViewer"
-                      Grid.Row="1"
-                      Width="30"
-                      Height="20"
+                      Grid.Row="1" 
                       AllowAutoHide="{Binding AllowAutoHide}"
                       HorizontalScrollBarVisibility="{Binding HorizontalScrollVisibility}"
                       VerticalScrollBarVisibility="{Binding VerticalScrollVisibility}"
                       Focusable="True">
-            <TextBlock xml:space="preserve"
-                       Foreground="{DynamicResource ThemeForegroundBrush}">Focus to ScrollViewer
-                                       /;    ;\
-                                   __  \\____//
-                                  /{_\_/   `'\____
-                                  \___   (o)  (o  }
-       _____________________________/          :--'  
-   ,-,'`@@@@@@@@       @@@@@@         \_    `__\
-  ;:(  @@@@@@@@@        @@@             \___(o'o)
-  :: )  @@@@          @@@@@@        ,'@@(  `===='       
-  :: : @@@@@:          @@@@         `@@@:
-  :: \  @@@@@:       @@@@@@@)    (  '@@@'
-  ;; /\      /`,    @@@@@@@@@\   :@@@@@)
-  ::/  )    {_----------------:  :~`,~~;
- ;;'`; :   )                  :  / `; ;
-;;;; : :   ;                  :  ;  ; :              
-`'`' / :  :                   :  :  : :
-    )_ \__;      ";"          :_ ;  \_\       `,','
-    :__\  \    * `,'*         \  \  :  \   *  8`;'*  *
-        `^'     \ :/           `^'  `-^-'   \v/ :  \/ 
-Bill Ames
-</TextBlock>
-
+            <ItemsControl ItemsSource="{Binding Cows}" Width="200">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="{DynamicResource ThemeForegroundBrush}" Text="{Binding}" Padding="0" Margin="0"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
     </Grid>
 </UserControl>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -38,8 +39,35 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             };
 
             HorizontalScrollVisibility = ScrollBarVisibility.Auto;
-            VerticalScrollVisibility = ScrollBarVisibility.Auto;
+            VerticalScrollVisibility = ScrollBarVisibility.Visible;
             AllowAutoHide = true;
+            List<string> text = new List<string>();
+            for(int i=0; i< 30;i++)
+            {
+                text.AddRange("""
+                                                           /;    ;\
+                                                       __  \\____//
+                                                      /{_\_/   `'\____
+                                                      \___   (o)  (o  }
+                           _____________________________/          :--'  
+                       ,-,'`@@@@@@@@       @@@@@@         \_    `__\
+                      ;:(  @@@@@@@@@        @@@             \___(o'o)
+                      :: )  @@@@          @@@@@@        ,'@@(  `===='       
+                      :: : @@@@@:          @@@@         `@@@:
+                      :: \  @@@@@:       @@@@@@@)    (  '@@@'
+                      ;; /\      /`,    @@@@@@@@@\   :@@@@@)
+                      ::/  )    {_----------------:  :~`,~~;
+                     ;;'`; :   )                  :  / `; ;
+                    ;;;; : :   ;                  :  ;  ; :              
+                    `'`' / :  :                   :  :  : :
+                        )_ \__;      ";"          :_ ;  \_\       `,','
+                        :__\  \    * `,'*         \  \  :  \   *  8`;'*  *
+                            `^'     \ :/           `^'  `-^-'   \v/ :  \/ 
+                    Bill Ames
+
+                    """.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries));
+            }
+            Cows = text;
         }
 
         public bool AllowAutoHide
@@ -61,6 +89,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
         public List<ScrollBarVisibility> AvailableVisibility { get; }
+
+        private List<string> _cows = new List<string>();
+        public List<string> Cows { get => _cows; init => RaiseAndSetIfChanged(ref _cows, value); }
     }
 
     public class ViewModelBase : INotifyPropertyChanged
