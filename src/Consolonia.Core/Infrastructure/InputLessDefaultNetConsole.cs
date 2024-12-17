@@ -14,7 +14,6 @@ namespace Consolonia.Core.Infrastructure
     public abstract class InputLessDefaultNetConsole : IConsole
     {
         private const string TestEmoji = "👨‍👩‍👧‍👦";
-        private bool _caretVisible;
         private PixelBufferCoordinate _headBufferPoint;
 
         private bool? _supportEmoji;
@@ -32,11 +31,7 @@ namespace Consolonia.Core.Infrastructure
 
         protected Task PauseTask { get; private set; }
 
-        public bool CaretVisible
-        {
-            get => _caretVisible;
-            set => _caretVisible = value;
-        }
+        public bool CaretVisible { get; set; }
 
         public PixelBufferSize Size { get; private set; }
 

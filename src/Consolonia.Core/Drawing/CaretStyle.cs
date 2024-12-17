@@ -7,6 +7,6 @@
         BlinkingBlock,
         SteadyBlock,
         BlinkingUnderline,
-        SteadyUnderline,
+        SteadyUnderline
     }
 }
