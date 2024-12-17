@@ -25,6 +25,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     public class ScrollViewerPageViewModel : ViewModelBase
     {
         private readonly bool _allowAutoHide;
+
+        private readonly List<string> _cows = new();
         private readonly ScrollBarVisibility _horizontalScrollVisibility;
         private readonly ScrollBarVisibility _verticalScrollVisibility;
 
@@ -41,32 +43,30 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             HorizontalScrollVisibility = ScrollBarVisibility.Auto;
             VerticalScrollVisibility = ScrollBarVisibility.Visible;
             AllowAutoHide = true;
-            List<string> text = new List<string>();
-            for(int i=0; i< 30;i++)
-            {
+            var text = new List<string>();
+            for (int i = 0; i < 30; i++)
                 text.AddRange("""
-                                                           /;    ;\
-                                                       __  \\____//
-                                                      /{_\_/   `'\____
-                                                      \___   (o)  (o  }
-                           _____________________________/          :--'  
-                       ,-,'`@@@@@@@@       @@@@@@         \_    `__\
-                      ;:(  @@@@@@@@@        @@@             \___(o'o)
-                      :: )  @@@@          @@@@@@        ,'@@(  `===='       
-                      :: : @@@@@:          @@@@         `@@@:
-                      :: \  @@@@@:       @@@@@@@)    (  '@@@'
-                      ;; /\      /`,    @@@@@@@@@\   :@@@@@)
-                      ::/  )    {_----------------:  :~`,~~;
-                     ;;'`; :   )                  :  / `; ;
-                    ;;;; : :   ;                  :  ;  ; :              
-                    `'`' / :  :                   :  :  : :
-                        )_ \__;      ";"          :_ ;  \_\       `,','
-                        :__\  \    * `,'*         \  \  :  \   *  8`;'*  *
-                            `^'     \ :/           `^'  `-^-'   \v/ :  \/ 
-                    Bill Ames
+                                                                     /;    ;\
+                                                                 __  \\____//
+                                                                /{_\_/   `'\____
+                                                                \___   (o)  (o  }
+                                     _____________________________/          :--'  
+                                 ,-,'`@@@@@@@@       @@@@@@         \_    `__\
+                                ;:(  @@@@@@@@@        @@@             \___(o'o)
+                                :: )  @@@@          @@@@@@        ,'@@(  `===='       
+                                :: : @@@@@:          @@@@         `@@@:
+                                :: \  @@@@@:       @@@@@@@)    (  '@@@'
+                                ;; /\      /`,    @@@@@@@@@\   :@@@@@)
+                                ::/  )    {_----------------:  :~`,~~;
+                               ;;'`; :   )                  :  / `; ;
+                              ;;;; : :   ;                  :  ;  ; :              
+                              `'`' / :  :                   :  :  : :
+                                  )_ \__;      ";"          :_ ;  \_\       `,','
+                                  :__\  \    * `,'*         \  \  :  \   *  8`;'*  *
+                                      `^'     \ :/           `^'  `-^-'   \v/ :  \/ 
+                              Bill Ames
 
-                    """.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries));
-            }
+                              """.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries));
             Cows = text;
         }
 
@@ -90,8 +90,11 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         public List<ScrollBarVisibility> AvailableVisibility { get; }
 
-        private List<string> _cows = new List<string>();
-        public List<string> Cows { get => _cows; init => RaiseAndSetIfChanged(ref _cows, value); }
+        public List<string> Cows
+        {
+            get => _cows;
+            init => RaiseAndSetIfChanged(ref _cows, value);
+        }
     }
 
     public class ViewModelBase : INotifyPropertyChanged

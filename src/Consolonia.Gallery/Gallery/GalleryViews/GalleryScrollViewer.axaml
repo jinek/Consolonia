@@ -14,29 +14,39 @@
 
             <StackPanel Orientation="Horizontal"
                         Spacing="1">
-                <Label Content="Horizontal Scroll" Target="HorizontalScrollOptions" />
-                <ComboBox Name="HorizontalScrollOptions" ItemsSource="{Binding AvailableVisibility}"
-                        Width="20" SelectedItem="{Binding HorizontalScrollVisibility}" />
+                <Label Content="Horizontal Scroll"
+                       Target="HorizontalScrollOptions" />
+                <ComboBox Name="HorizontalScrollOptions"
+                          ItemsSource="{Binding AvailableVisibility}"
+                          Width="20"
+                          SelectedItem="{Binding HorizontalScrollVisibility}" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal"
                         Spacing="1">
-                <Label Content="Vertical Scroll" Target="VerticalScrollOptions"/>
-                <ComboBox Name="VerticalScrollOptions" ItemsSource="{Binding AvailableVisibility}"
-                          Width="20" SelectedItem="{Binding VerticalScrollVisibility}" />
+                <Label Content="Vertical Scroll"
+                       Target="VerticalScrollOptions" />
+                <ComboBox Name="VerticalScrollOptions"
+                          ItemsSource="{Binding AvailableVisibility}"
+                          Width="20"
+                          SelectedItem="{Binding VerticalScrollVisibility}" />
             </StackPanel>
         </StackPanel>
 
         <ScrollViewer x:Name="ScrollViewer"
-                      Grid.Row="1" 
+                      Grid.Row="1"
                       AllowAutoHide="{Binding AllowAutoHide}"
                       HorizontalScrollBarVisibility="{Binding HorizontalScrollVisibility}"
                       VerticalScrollBarVisibility="{Binding VerticalScrollVisibility}"
                       Focusable="True">
-            <ItemsControl ItemsSource="{Binding Cows}" Width="200">
+            <ItemsControl ItemsSource="{Binding Cows}"
+                          Width="200">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Foreground="{DynamicResource ThemeForegroundBrush}" Text="{Binding}" Padding="0" Margin="0"/>
+                        <TextBlock Foreground="{DynamicResource ThemeForegroundBrush}"
+                                   Text="{Binding}"
+                                   Padding="0"
+                                   Margin="0" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

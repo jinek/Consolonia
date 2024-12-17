@@ -3,15 +3,13 @@ using Avalonia.Reactive;
 
 namespace Consolonia.Core.Helpers
 {
-
     /// <summary>
-    /// Provides common observable methods as a replacement for the Rx framework.
+    ///     Provides common observable methods as a replacement for the Rx framework.
     /// </summary>
     /// <remarks>
-    /// COPIED FROM AVALONIA.BASE BECAUSE IT IS NOT PUBLICLY ACCESSIBLE, 
-    /// it's either do this or pull in all of Rx framework as a dependency
+    ///     COPIED FROM AVALONIA.BASE BECAUSE IT IS NOT PUBLICLY ACCESSIBLE,
+    ///     it's either do this or pull in all of Rx framework as a dependency
     /// </remarks>
-    /// 
     internal static class Observable
     {
         public static IObservable<TSource> Create<TSource>(Func<IObserver<TSource>, IDisposable> subscribe)
@@ -24,7 +22,8 @@ namespace Consolonia.Core.Helpers
             return source.Subscribe(new AnonymousObserver<T>(action));
         }
 
-        public static IObservable<TResult> Select<TSource, TResult>(this IObservable<TSource> source, Func<TSource, TResult> selector)
+        public static IObservable<TResult> Select<TSource, TResult>(this IObservable<TSource> source,
+            Func<TSource, TResult> selector)
         {
             return Create<TResult>(obs =>
             {
@@ -58,7 +57,8 @@ namespace Consolonia.Core.Helpers
             });
         }
 
-        public static IObservable<TSource> Where<TSource>(this IObservable<TSource> source, Func<TSource, bool> predicate)
+        public static IObservable<TSource> Where<TSource>(this IObservable<TSource> source,
+            Func<TSource, bool> predicate)
         {
             return Create<TSource>(obs =>
             {
@@ -77,35 +77,25 @@ namespace Consolonia.Core.Helpers
                             return;
                         }
 #pragma warning restore CA1031 // Do not catch general exception types
-                        if (shouldRun)
-                        {
-                            obs.OnNext(input);
-                        }
+                        if (shouldRun) obs.OnNext(input);
                     }, obs.OnError, obs.OnCompleted));
             });
         }
 
         public static IObservable<T> Skip<T>(this IObservable<T> source, int skipCount)
         {
-            if (skipCount <= 0)
-            {
-                throw new ArgumentException("Skip count must be bigger than zero", nameof(skipCount));
-            }
+            if (skipCount <= 0) throw new ArgumentException("Skip count must be bigger than zero", nameof(skipCount));
 
             return Create<T>(obs =>
             {
-                var remaining = skipCount;
+                int remaining = skipCount;
                 return source.Subscribe(new AnonymousObserver<T>(
                     input =>
                     {
                         if (remaining <= 0)
-                        {
                             obs.OnNext(input);
-                        }
                         else
-                        {
                             remaining--;
-                        }
                     }, obs.OnError, obs.OnCompleted));
             });
         }
