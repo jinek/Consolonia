@@ -21,10 +21,11 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid ColumnDefinitions="*,Auto"
-                      Background="{TemplateBinding Background}">
+                      Background="Transparent">
                     <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
                                       Content="{TemplateBinding Content}"
                                       Margin="{TemplateBinding Padding}"
+                                      Background="{TemplateBinding Background}"
                                       TextBlock.Foreground="{TemplateBinding Foreground}"
                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />

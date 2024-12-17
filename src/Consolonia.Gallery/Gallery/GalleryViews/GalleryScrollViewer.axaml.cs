@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -24,6 +25,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     public class ScrollViewerPageViewModel : ViewModelBase
     {
         private readonly bool _allowAutoHide;
+
+        private readonly string[] _cows = Array.Empty<string>();
         private readonly ScrollBarVisibility _horizontalScrollVisibility;
         private readonly ScrollBarVisibility _verticalScrollVisibility;
 
@@ -38,8 +41,33 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             };
 
             HorizontalScrollVisibility = ScrollBarVisibility.Auto;
-            VerticalScrollVisibility = ScrollBarVisibility.Auto;
+            VerticalScrollVisibility = ScrollBarVisibility.Visible;
             AllowAutoHide = true;
+            var text = new List<string>();
+            for (int i = 0; i < 30; i++)
+                text.AddRange("""
+                                                                     /;    ;\
+                                                                 __  \\____//
+                                                                /{_\_/   `'\____
+                                                                \___   (o)  (o  }
+                                     _____________________________/          :--'  
+                                 ,-,'`@@@@@@@@       @@@@@@         \_    `__\
+                                ;:(  @@@@@@@@@        @@@             \___(o'o)
+                                :: )  @@@@          @@@@@@        ,'@@(  `===='       
+                                :: : @@@@@:          @@@@         `@@@:
+                                :: \  @@@@@:       @@@@@@@)    (  '@@@'
+                                ;; /\      /`,    @@@@@@@@@\   :@@@@@)
+                                ::/  )    {_----------------:  :~`,~~;
+                               ;;'`; :   )                  :  / `; ;
+                              ;;;; : :   ;                  :  ;  ; :              
+                              `'`' / :  :                   :  :  : :
+                                  )_ \__;      ";"          :_ ;  \_\       `,','
+                                  :__\  \    * `,'*         \  \  :  \   *  8`;'*  *
+                                      `^'     \ :/           `^'  `-^-'   \v/ :  \/ 
+                              Bill Ames
+
+                              """.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries));
+            Cows = [.. text];
         }
 
         public bool AllowAutoHide
@@ -61,6 +89,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
         public List<ScrollBarVisibility> AvailableVisibility { get; }
+
+        public string[] Cows
+        {
+            get => _cows;
+            init => RaiseAndSetIfChanged(ref _cows, value);
+        }
     }
 
     public class ViewModelBase : INotifyPropertyChanged
