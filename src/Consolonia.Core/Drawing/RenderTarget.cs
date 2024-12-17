@@ -10,6 +10,7 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
+using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Drawing
 {
@@ -141,11 +142,23 @@ namespace Consolonia.Core.Drawing
             if (caretPosition != null)
             {
                 _console.SetCaretPosition((PixelBufferCoordinate)caretPosition);
+                _console.WriteText(pixelBuffer.CaretStyle switch
+                {
+                    CaretStyle.BlinkingBar => Esc.BlinkingBarCursor,
+                    CaretStyle.SteadyBar => Esc.SteadyBarCursor,
+                    CaretStyle.BlinkingBlock => Esc.BlinkingBlockCursor,
+                    CaretStyle.SteadyBlock => Esc.SteadyBlockCursor,
+                    CaretStyle.BlinkingUnderline => Esc.BlinkingUnderlineCursor,
+                    CaretStyle.SteadyUnderline => Esc.SteadyUnderlineCursor,
+                    _ => throw new ArgumentOutOfRangeException()
+                });
+                _console.WriteText(Esc.ShowCursor);
                 _console.CaretVisible = true;
             }
             else
             {
                 _console.CaretVisible = false;
+                _console.WriteText(Esc.HideCursor);
             }
         }
 

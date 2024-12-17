@@ -10,37 +10,23 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Grid Background="{TemplateBinding Background}">
-                        <TextBlock Width="1"
-                                   Height="1"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   IsHitTestVisible="False"
-                                   Background="{DynamicResource ThemeActionBackgroundBrush}"
-                                   IsVisible="{TemplateBinding IsCaretShown}"
-                                   Margin="{TemplateBinding Padding}"
-                                   Tag="This TextBlock is a hack. Otherwise Line below does not get redrawn in CheckBox">
-                            <!--<TextBlock.Background>
-                                <drawing:ConsoleBrush Mode="Transparent"/>
-                            </TextBlock.Background>-->
-                        </TextBlock>
                         <ContentPresenter Name="PART_ContentPresenter"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
                                           Content="{TemplateBinding Content}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
-                        <Line Margin="{TemplateBinding Padding}"
-                              HorizontalAlignment="Left"
-                              VerticalAlignment="Top"
-                              Name="PART_CaretLine"
-                              Width="1"
-                              Height="1"
-                              IsHitTestVisible="False"
-                              IsVisible="{TemplateBinding IsCaretShown}"
-                              StrokeThickness="1">
-                            <Line.Stroke>
-                                <drawing:MoveConsoleCaretToPositionBrush />
-                            </Line.Stroke>
-                        </Line>
+                        <!-- Caret should be drawn last so it is overlayed on top of any chars in the content -->
+                        <Rectangle Name="PART_CaretLine"
+                                   Width="1"
+                                   Height="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   IsHitTestVisible="False"
+                                   IsVisible="{TemplateBinding IsCaretShown}">
+                            <Rectangle.Fill>
+                                <drawing:MoveConsoleCaretToPositionBrush CaretStyle="{TemplateBinding CaretStyle}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
