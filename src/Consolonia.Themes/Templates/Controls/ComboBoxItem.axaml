@@ -4,7 +4,7 @@
     <ControlTheme x:Key="{x:Type ComboBoxItem}"
                   TargetType="ComboBoxItem">
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeForegroundBrush}" />
+          Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="Padding"
                 Value="1,0" />
         <Setter Property="HorizontalAlignment"
@@ -13,7 +13,7 @@
                 Value="Left" />
         <Setter Property="Template">
             <ControlTemplate>
-                <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}" CaretStyle="BlinkingBlock">
+                <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Background="{TemplateBinding Background}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
