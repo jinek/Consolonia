@@ -26,7 +26,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         private readonly bool _allowAutoHide;
 
-        private readonly List<string> _cows = new();
+        private readonly string[] _cows = Array.Empty<string>();
         private readonly ScrollBarVisibility _horizontalScrollVisibility;
         private readonly ScrollBarVisibility _verticalScrollVisibility;
 
@@ -67,7 +67,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                               Bill Ames
 
                               """.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries));
-            Cows = text;
+            Cows = [.. text];
         }
 
         public bool AllowAutoHide
@@ -90,7 +90,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         public List<ScrollBarVisibility> AvailableVisibility { get; }
 
-        public List<string> Cows
+        public string[] Cows
         {
             get => _cows;
             init => RaiseAndSetIfChanged(ref _cows, value);
