@@ -261,6 +261,17 @@ namespace Consolonia.Core.Drawing
                         if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
                         return;
                     }
+                    case MoveConsoleCaretToPositionBrush moveBrush:
+                    {
+                        Point head = r.TopLeft.Transform(Transform);
+                        _pixelBuffer.CaretStyle = moveBrush.CaretStyle;
+                        CurrentClip.ExecuteWithClipping(head,
+                            () =>
+                            {
+                                _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true)));
+                            });
+                        return;
+                    }
                 }
 
                 FillRectangleWithBrush(brush, pen, r);
@@ -458,6 +469,15 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
+            if (pen.Brush is MoveConsoleCaretToPositionBrush moveBrush)
+            {
+                _pixelBuffer.CaretStyle = moveBrush.CaretStyle;
+                Point head = line.PStart.Transform(Transform);
+                CurrentClip.ExecuteWithClipping(head,
+                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
+                return;
+            }
+
             DrawBoxLineInternal(pen, line, RectangleLinePosition.Unknown);
         }
 
@@ -531,13 +551,6 @@ namespace Consolonia.Core.Drawing
             line = TransformLineInternal(line);
 
             Point head = line.PStart;
-
-            if (pen.Brush is MoveConsoleCaretToPositionBrush)
-            {
-                CurrentClip.ExecuteWithClipping(head,
-                    () => { _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true))); });
-                return;
-            }
 
             var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
             if (extractColorCheckPlatformSupported == null)

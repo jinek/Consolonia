@@ -14,7 +14,6 @@ namespace Consolonia.Core.Infrastructure
     public abstract class InputLessDefaultNetConsole : IConsole
     {
         private const string TestEmoji = "👨‍👩‍👧‍👦";
-        private bool _caretVisible;
         private PixelBufferCoordinate _headBufferPoint;
 
         private bool? _supportEmoji;
@@ -32,18 +31,7 @@ namespace Consolonia.Core.Infrastructure
 
         protected Task PauseTask { get; private set; }
 
-        public bool CaretVisible
-        {
-            get => _caretVisible;
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
-            set
-            {
-                if (_caretVisible == value) return;
-                WriteText(value ? Esc.ShowCursor : Esc.HideCursor);
-                _caretVisible = value;
-            }
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
-        }
+        public bool CaretVisible { get; set; }
 
         public PixelBufferSize Size { get; private set; }
 

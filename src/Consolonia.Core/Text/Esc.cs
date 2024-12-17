@@ -31,6 +31,14 @@ namespace Consolonia.Core.Text
         public const string HideCursor = "\u001b[?25l";
         public const string ShowCursor = "\u001b[?25h";
 
+        // cursor shape
+        public const string BlinkingBlockCursor = "\u001b[1 q";
+        public const string SteadyBlockCursor = "\u001b[2 q";
+        public const string BlinkingUnderlineCursor = "\u001b[3 q";
+        public const string SteadyUnderlineCursor = "\u001b[4 q";
+        public const string BlinkingBarCursor = "\u001b[5 q";
+        public const string SteadyBarCursor = "\u001b[6 q";
+
         // move cursor
         public static string MoveCursorUp(int n)
         {
