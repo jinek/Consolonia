@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Avalonia.Reactive.Operators;
-using Avalonia.Threading;
-using global::Avalonia.Reactive;
+using Avalonia.Reactive;
 
 namespace Consolonia.Core.Helpers
 {
