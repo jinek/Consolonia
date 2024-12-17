@@ -35,13 +35,7 @@ namespace Consolonia.Core.Infrastructure
         public bool CaretVisible
         {
             get => _caretVisible;
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
-            set
-            {
-                if (_caretVisible == value) return;
-                _caretVisible = value;
-            }
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
+            set => _caretVisible = value;
         }
 
         public PixelBufferSize Size { get; private set; }

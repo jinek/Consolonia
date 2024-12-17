@@ -11,7 +11,6 @@ using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.Text;
-using Newtonsoft.Json.Linq;
 
 namespace Consolonia.Core.Drawing
 {
