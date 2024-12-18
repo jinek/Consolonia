@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Blazor", "Example.B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Blazor.Components", "Example.Blazor.Components\Example.Blazor.Components.csproj", "{F60897B7-2B53-4E2F-B7AE-C3706B928214}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "docs", "..\docs\Docs.shproj", "{939942DF-366B-4EDC-8145-825C3E7CE8BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,14 +131,6 @@ Global
 		{885704AD-F361-4CF5-9041-336945B0007E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{885704AD-F361-4CF5-9041-336945B0007E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{885704AD-F361-4CF5-9041-336945B0007E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Release|Any CPU.Build.0 = Release|Any CPU
 		{66726106-2ED4-4516-A912-1C0FE0ACDCBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{66726106-2ED4-4516-A912-1C0FE0ACDCBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66726106-2ED4-4516-A912-1C0FE0ACDCBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -164,5 +158,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {47D28717-CF68-421D-B547-585C16AE6DE7}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Docs\Docs.projitems*{939942df-366b-4edc-8145-825c3e7ce8ba}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
