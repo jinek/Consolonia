@@ -34,6 +34,8 @@ namespace Consolonia.Core.Dummy
 
         public bool SupportsComplexEmoji => true;
         public bool SupportsAltSolo => false;
+        public bool SupportsMouse => false;
+        public bool SupportsMouseMove => false;
 
         public void ClearOutput()
         {

@@ -116,6 +116,8 @@ namespace Consolonia.PlatformSupport
         }
 
         public override bool SupportsAltSolo => false;
+        public override bool SupportsMouse => true;
+        public override bool SupportsMouseMove => false;
 
         private void StartEventLoop()
         {

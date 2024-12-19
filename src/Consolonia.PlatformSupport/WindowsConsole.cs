@@ -62,6 +62,8 @@ namespace Consolonia.PlatformSupport
         }
 
         public override bool SupportsAltSolo => true;
+        public override bool SupportsMouse => true;
+        public override bool SupportsMouseMove => true;
 
         public override void PauseIO(Task task)
         {
