@@ -4,6 +4,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <MergeResourceInclude Source="/Templates/Controls/TextBlock.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/SelectableTextBlock.axaml"/>
                 <MergeResourceInclude Source="/Templates/Controls/Window.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Button.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/TextBox.axaml" />
