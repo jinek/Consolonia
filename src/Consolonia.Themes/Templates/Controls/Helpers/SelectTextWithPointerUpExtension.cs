@@ -20,8 +20,8 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
         {
             var console = AvaloniaLocator.Current.GetService<IConsole>();
             bool supportsMouse = console.SupportsMouse;
-            bool supportsMoveMove = console.SupportsMouseMove;
-            if (!supportsMouse || supportsMoveMove)
+            bool supportsMouseMove = console.SupportsMouseMove;
+            if (!supportsMouse || supportsMouseMove)
                 return;
 
             SelectOnMouseRightUpProperty.Changed.SubscribeAction(OnPropertyChanged);
@@ -41,6 +41,9 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             // simplified copy of SelectableTextBlock.PointerMove
             var tb = (SelectableTextBlock)sender;
 
+            if (e.InitialPressMouseButton != MouseButton.Left)
+                return;
+            
             Thickness padding = tb.Padding;
 
             Point point = e.GetPosition(tb) - new Point(padding.Left, padding.Top);
