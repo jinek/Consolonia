@@ -4,7 +4,7 @@
     <ControlTheme x:Key="{x:Type SelectableTextBlock}"
                   TargetType="SelectableTextBlock">
         <Setter Property="SelectionBrush"
-                Value="{StaticResource ThemeActionBackgroundBrush}" />
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
         <Setter Property="helpers:SelectTextWithPointerUpExtension.SelectOnMouseRightUp"
                 Value="True" />
     </ControlTheme>
