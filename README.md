@@ -12,3 +12,6 @@ Supports XAML, data bindings, animation, styling and the rest from Avalonia.
 Example of usage: https://github.com/jinek/ToolUI
 
 Solution contains one more readme file with coding information.
+
+## See wiki for more documentation
+https://github.com/jinek/Consolonia/wiki
