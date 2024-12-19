@@ -43,7 +43,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
 
             if (e.InitialPressMouseButton != MouseButton.Left)
                 return;
-            
+
             Thickness padding = tb.Padding;
 
             Point point = e.GetPosition(tb) - new Point(padding.Left, padding.Top);
