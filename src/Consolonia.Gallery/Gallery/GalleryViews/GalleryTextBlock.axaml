@@ -20,6 +20,10 @@
                    FontWeight="Bold"
                    Background="DarkMagenta"
                    Foreground="Chartreuse" />
+        <SelectableTextBlock SelectionStart="17"
+                             SelectionEnd="26">
+            Selectable text: Loreum ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis
+        </SelectableTextBlock>
 
         <StackPanel Orientation="Vertical"
                     Margin="0"

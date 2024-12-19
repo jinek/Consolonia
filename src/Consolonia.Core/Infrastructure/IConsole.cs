@@ -22,6 +22,8 @@ namespace Consolonia.Core.Infrastructure
         bool SupportsComplexEmoji { get; }
 
         bool SupportsAltSolo { get; }
+        bool SupportsMouse { get; }
+        bool SupportsMouseMove { get; }
 
         void SetTitle(string title);
 

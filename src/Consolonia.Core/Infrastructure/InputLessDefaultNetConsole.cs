@@ -37,6 +37,8 @@ namespace Consolonia.Core.Infrastructure
 
         public bool SupportsComplexEmoji => _supportEmoji ?? false;
         public abstract bool SupportsAltSolo { get; }
+        public abstract bool SupportsMouse { get; }
+        public abstract bool SupportsMouseMove { get; }
 
         public void SetTitle(string title)
         {

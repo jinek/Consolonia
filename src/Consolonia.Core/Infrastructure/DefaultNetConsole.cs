@@ -48,6 +48,8 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public override bool SupportsAltSolo => false;
+        public override bool SupportsMouse => false;
+        public override bool SupportsMouseMove => false;
 
         protected override void Dispose(bool disposing)
         {
