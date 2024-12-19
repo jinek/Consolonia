@@ -5,7 +5,7 @@
                   TargetType="SelectableTextBlock">
         <Setter Property="SelectionBrush"
                 Value="{DynamicResource ThemeActionBackgroundBrush}" />
-        <Setter Property="helpers:SelectTextWithPointerUpExtension.SelectOnMouseRightUp"
+        <Setter Property="helpers:SelectTextWithPointerUpExtension.SelectOnMouseLeftUp"
                 Value="True" />
     </ControlTheme>
 </ResourceDictionary>

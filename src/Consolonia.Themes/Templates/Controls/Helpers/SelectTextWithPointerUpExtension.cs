@@ -12,7 +12,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
 {
     internal static class SelectTextWithPointerUpExtension
     {
-        public static readonly AttachedProperty<bool> SelectOnMouseRightUpProperty =
+        public static readonly AttachedProperty<bool> SelectOnMouseLeftUpProperty =
             AvaloniaProperty.RegisterAttached<SelectableTextBlock, bool>(CommonInternalHelper.GetStyledPropertyName(),
                 typeof(SelectTextWithPointerUpExtension));
 
@@ -24,7 +24,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             if (!supportsMouse || supportsMouseMove)
                 return;
 
-            SelectOnMouseRightUpProperty.Changed.SubscribeAction(OnPropertyChanged);
+            SelectOnMouseLeftUpProperty.Changed.SubscribeAction(OnPropertyChanged);
         }
 
         private static void OnPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> args)
