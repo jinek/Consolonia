@@ -1,0 +1,11 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers">
+    <ControlTheme x:Key="{x:Type SelectableTextBlock}"
+                  TargetType="SelectableTextBlock">
+        <Setter Property="SelectionBrush"
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
+        <Setter Property="helpers:SelectTextWithPointerUpExtension.SelectOnMouseLeftUp"
+                Value="True" />
+    </ControlTheme>
+</ResourceDictionary>
