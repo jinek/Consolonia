@@ -1,8 +1,5 @@
-using Avalonia;
-using Avalonia.Input;
 using BlazorBindingsAvalonia;
 using Consolonia.Core.Helpers;
-using Consolonia.Core.Infrastructure;
 using Microsoft.AspNetCore.Components;
 
 namespace Consolonia.Blazor
@@ -14,14 +11,6 @@ namespace Consolonia.Blazor
     public class ConsoloniaBlazorApplication<TComponent> : BlazorBindingsApplication<TComponent>
         where TComponent : IComponent
     {
-        public override void RegisterServices()
-        {
-            base.RegisterServices();
-
-            AvaloniaLocator.CurrentMutable.Bind<IKeyboardNavigationHandler>()
-                .ToTransient<ArrowsAndKeyboardNavigationHandler>();
-        }
-
         public override void OnFrameworkInitializationCompleted()
         {
             base.OnFrameworkInitializationCompleted();
