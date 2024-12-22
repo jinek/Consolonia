@@ -26,7 +26,6 @@
             <Button.Flyout>
                 <Flyout Placement="Bottom">
                     <Panel Width="30"
-                           Focusable="True"
                            Height="10">
                         <TextBlock Text="Flyout Content!" />
                     </Panel>
