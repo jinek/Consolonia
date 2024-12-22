@@ -3,7 +3,7 @@ using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.InternalHelpers
 {
-    internal static class CommonInternalHelper
+    public static class CommonInternalHelper
     {
         public static bool IsNearlyEqual(this double value, double compareTo)
         {

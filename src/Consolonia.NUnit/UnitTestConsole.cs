@@ -40,6 +40,8 @@ namespace Consolonia.NUnit
 
         public bool SupportsComplexEmoji => true;
         public bool SupportsAltSolo => true;
+        public bool SupportsMouse => false;
+        public bool SupportsMouseMove => false;
 
         public void SetTitle(string title)
         {

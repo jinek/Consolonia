@@ -93,12 +93,12 @@ namespace Consolonia.PlatformSupport
                 (Curses.Event.Button1Pressed, RawPointerEventType.LeftButtonDown),
                 (Curses.Event.Button1Clicked, RawPointerEventType.LeftButtonDown),
                 (Curses.Event.Button1Released, RawPointerEventType.LeftButtonUp),
-                (Curses.Event.Button2Pressed, RawPointerEventType.RightButtonDown),
-                (Curses.Event.Button2Clicked, RawPointerEventType.RightButtonDown),
-                (Curses.Event.Button2Released, RawPointerEventType.RightButtonUp),
-                (Curses.Event.Button3Pressed, RawPointerEventType.MiddleButtonDown),
-                (Curses.Event.Button3Clicked, RawPointerEventType.MiddleButtonDown),
-                (Curses.Event.Button3Released, RawPointerEventType.MiddleButtonUp),
+                (Curses.Event.Button2Pressed, RawPointerEventType.MiddleButtonDown),
+                (Curses.Event.Button2Clicked, RawPointerEventType.MiddleButtonDown),
+                (Curses.Event.Button2Released, RawPointerEventType.MiddleButtonUp),
+                (Curses.Event.Button3Pressed, RawPointerEventType.RightButtonDown),
+                (Curses.Event.Button3Clicked, RawPointerEventType.RightButtonDown),
+                (Curses.Event.Button3Released, RawPointerEventType.RightButtonUp),
                 (Curses.Event.Button4Pressed, RawPointerEventType.XButton1Down),
                 (Curses.Event.Button4Clicked, RawPointerEventType.XButton1Down),
                 (Curses.Event.Button4Released, RawPointerEventType.XButton1Up),
@@ -116,6 +116,8 @@ namespace Consolonia.PlatformSupport
         }
 
         public override bool SupportsAltSolo => false;
+        public override bool SupportsMouse => true;
+        public override bool SupportsMouseMove => false;
 
         private void StartEventLoop()
         {
