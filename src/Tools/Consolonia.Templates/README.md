@@ -4,16 +4,16 @@ This is a package which adds Consolonia templates to dotnet.
 
 # Installation
 ```
-dotnet new -i Consolonia.Templates
+dotnet new install Consolonia.Templates
 ```
 
 # Templates
 
 ## Consolonia application template
-Creates a Consolonia console application.
+This template creates a Consolonia application project.
 
 ```
-dotnet new consolonia --name {appName}
+dotnet new consolonia.app --name {appName}
 ```
 
 # Consolonia UI
