@@ -13,7 +13,7 @@ namespace ConsoloniaAppTemplate.Views
 
         private void OnExit(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }
