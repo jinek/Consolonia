@@ -9,7 +9,6 @@
     
     <ItemGroup>
         <PackageReference Include="Consolonia" Version="11.2.1-alpha-606" />
-        <PackageReference Include="Avalonia" Version="11.2.1" />
     </ItemGroup>
 
 </Project>
