@@ -1,0 +1,8 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="ConsoloniaAppTemplate.Views.MainWindow">
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock  Text="Welcome to Conslonia!"/>
+        <Button Content="_Exit" Click="OnExit" />
+    </StackPanel>
+</Window>
