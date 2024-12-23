@@ -3,24 +3,14 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Templates;
-using Avalonia.Input;
 using Consolonia.Core.Controls;
 using Consolonia.Core.Helpers;
-using Consolonia.Core.Infrastructure;
 
 // ReSharper disable once CheckNamespace
 namespace Consolonia
 {
     public class ConsoloniaApplication : Application
     {
-        public override void RegisterServices()
-        {
-            base.RegisterServices();
-
-            AvaloniaLocator.CurrentMutable.Bind<IKeyboardNavigationHandler>()
-                .ToTransient<ArrowsAndKeyboardNavigationHandler>();
-        }
-
         public override void OnFrameworkInitializationCompleted()
         {
             // override AccessText to use ConsoloniaAccessText as default ContentPresenter for unknown data types (aka string)
