@@ -3,39 +3,49 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryLabel">
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryLabel"
+             XYFocus.NavigationModes="Keyboard">
     <!--Copied from https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Default/TextBox.xaml-->
     <Grid HorizontalAlignment="Left"
           VerticalAlignment="Top"
-          RowDefinitions="Auto,Auto,Auto,Auto,Auto,*"
           ColumnDefinitions="Auto,6,*"
-          Width="246">
+          RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*">
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="3"
+                   Text="Press ALT+F, ALT+L, ALT+B to focus on a field. Or use arrow keys to jump between fields with XYFocus"
+                   Margin="0,0,0,1"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource ThemeNoDisturbBrush}" />
         <Label Target="FirstNameEdit"
-               Grid.Row="0"
+               Grid.Row="1"
                Grid.Column="0">
             _First name
         </Label>
         <TextBox Name="FirstNameEdit"
                  Grid.Column="2"
-                 Grid.Row="0"
+                 Grid.Row="1"
+                 Width="20"
+                 HorizontalAlignment="Left"
                  Text="{Binding FirstName}" />
         <Label Target="LastNameEdit"
-               Grid.Row="1"
+               Grid.Row="2"
                Grid.Column="0">
             _Last name
         </Label>
         <TextBox Name="LastNameEdit"
                  Grid.Column="2"
-                 Grid.Row="1"
+                 Grid.Row="2"
+                 Width="20"
+                 HorizontalAlignment="Left"
                  Text="{Binding LastName}" />
         <Label Target="BannedCheck"
-               Grid.Row="2"
+               Grid.Row="3"
                Grid.Column="0">
             _Banned
         </Label>
         <CheckBox Name="BannedCheck"
                   Grid.Column="2"
-                  Grid.Row="2"
+                  Grid.Row="3"
                   IsChecked="{Binding IsBanned}" />
     </Grid>
 
