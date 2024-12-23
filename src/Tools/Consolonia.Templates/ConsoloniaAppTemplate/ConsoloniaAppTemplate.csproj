@@ -9,12 +9,7 @@
     
     <ItemGroup>
         <PackageReference Include="Consolonia" Version="11.2.1-alpha-606" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Views\MainWindow.axaml.cs">
-        <DependentUpon>MainWindow.axaml</DependentUpon>
-      </Compile>
+        <PackageReference Include="Avalonia" Version="11.2.1" />
     </ItemGroup>
 
 </Project>
