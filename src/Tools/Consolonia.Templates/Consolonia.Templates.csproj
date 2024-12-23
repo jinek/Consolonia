@@ -6,7 +6,7 @@
         <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
         <PackageType>Template</PackageType>
         <PackageId>Consolonia.Templates</PackageId>
-        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <Description>Templates for creating a consolonia application.</Description>
         <PackageTags>dotnet-new;templates;console</PackageTags>
         <IncludeContentInPack>true</IncludeContentInPack>
