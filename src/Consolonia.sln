@@ -71,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Blazor", "Example.B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Blazor.Components", "Example.Blazor.Components\Example.Blazor.Components.csproj", "{F60897B7-2B53-4E2F-B7AE-C3706B928214}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoloniaAppTemplate", "Tools\Consolonia.Templates\ConsoloniaAppTemplate\ConsoloniaAppTemplate.csproj", "{534305E5-8C1F-4173-B15B-421894B9C859}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoloniaAppTemplate", "Tools\Consolonia.Templates\ConsoloniaAppTemplate\ConsoloniaAppTemplate.csproj", "{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,10 +143,10 @@ Global
 		{F60897B7-2B53-4E2F-B7AE-C3706B928214}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F60897B7-2B53-4E2F-B7AE-C3706B928214}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F60897B7-2B53-4E2F-B7AE-C3706B928214}.Release|Any CPU.Build.0 = Release|Any CPU
-		{534305E5-8C1F-4173-B15B-421894B9C859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{534305E5-8C1F-4173-B15B-421894B9C859}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{534305E5-8C1F-4173-B15B-421894B9C859}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{534305E5-8C1F-4173-B15B-421894B9C859}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,7 +159,7 @@ Global
 		{475CF5C9-7337-4890-A678-4ECDB513E73C} = {910B2845-1287-4F4A-9464-1988071907AF}
 		{AC6C6AE9-BF23-4AD2-A071-290F05D9A8DD} = {1BA54DAA-D124-4939-9FF3-EE7139D856F6}
 		{885704AD-F361-4CF5-9041-336945B0007E} = {1BA54DAA-D124-4939-9FF3-EE7139D856F6}
-		{534305E5-8C1F-4173-B15B-421894B9C859} = {910B2845-1287-4F4A-9464-1988071907AF}
+		{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225} = {910B2845-1287-4F4A-9464-1988071907AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {47D28717-CF68-421D-B547-585C16AE6DE7}
