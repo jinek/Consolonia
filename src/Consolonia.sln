@@ -152,6 +152,7 @@ Global
 		{AA52382A-EC46-4002-95C8-C5E338E6C01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA52382A-EC46-4002-95C8-C5E338E6C01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA52382A-EC46-4002-95C8-C5E338E6C01A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA52382A-EC46-4002-95C8-C5E338E6C01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

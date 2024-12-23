@@ -20,5 +20,6 @@
     <ItemGroup>
         <Compile Remove="**\*" />
         <Content Include="ConsoloniaAppTemplate\**\*" Exclude="**\bin\**;**\obj\**;**\.vs\**" />
+        <None Remove="**\bin\**;**\obj\**;**\.vs\**"/>
     </ItemGroup>
 </Project>
