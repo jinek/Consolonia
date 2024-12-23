@@ -57,19 +57,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia.PreviewHost", "T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{910B2845-1287-4F4A-9464-1988071907AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia", "Consolonia\Consolonia.csproj", "{147B1B51-FE10-4845-A035-BE1460A912CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia", "Consolonia\Consolonia.csproj", "{147B1B51-FE10-4845-A035-BE1460A912CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Experimental", "Experimental", "{1BA54DAA-D124-4939-9FF3-EE7139D856F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.PreviewHost", "Experimental\Avalonia.PreviewHost\Avalonia.PreviewHost.csproj", "{AC6C6AE9-BF23-4AD2-A071-290F05D9A8DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PreviewHost", "Experimental\Avalonia.PreviewHost\Avalonia.PreviewHost.csproj", "{AC6C6AE9-BF23-4AD2-A071-290F05D9A8DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Designer", "Experimental\Consolonia.Designer\Consolonia.Designer.csproj", "{885704AD-F361-4CF5-9041-336945B0007E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia.Designer", "Experimental\Consolonia.Designer\Consolonia.Designer.csproj", "{885704AD-F361-4CF5-9041-336945B0007E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Blazor", "Consolonia.Blazor\Consolonia.Blazor.csproj", "{66726106-2ED4-4516-A912-1C0FE0ACDCBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia.Blazor", "Consolonia.Blazor\Consolonia.Blazor.csproj", "{66726106-2ED4-4516-A912-1C0FE0ACDCBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Blazor", "Example.Blazor\Example.Blazor.csproj", "{000ED32A-027D-4005-BDE0-4DBF1ABC0829}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Blazor", "Example.Blazor\Example.Blazor.csproj", "{000ED32A-027D-4005-BDE0-4DBF1ABC0829}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Blazor.Components", "Example.Blazor.Components\Example.Blazor.Components.csproj", "{F60897B7-2B53-4E2F-B7AE-C3706B928214}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Blazor.Components", "Example.Blazor.Components\Example.Blazor.Components.csproj", "{F60897B7-2B53-4E2F-B7AE-C3706B928214}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoloniaAppTemplate", "Tools\Consolonia.Templates\ConsoloniaAppTemplate\ConsoloniaAppTemplate.csproj", "{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,14 +131,6 @@ Global
 		{885704AD-F361-4CF5-9041-336945B0007E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{885704AD-F361-4CF5-9041-336945B0007E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{885704AD-F361-4CF5-9041-336945B0007E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D1DDDE9-34BE-47B8-88F2-F878AC2CC910}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F0EA682-C28C-4C1C-9D40-EC0561179505}.Release|Any CPU.Build.0 = Release|Any CPU
 		{66726106-2ED4-4516-A912-1C0FE0ACDCBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{66726106-2ED4-4516-A912-1C0FE0ACDCBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66726106-2ED4-4516-A912-1C0FE0ACDCBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -149,6 +143,10 @@ Global
 		{F60897B7-2B53-4E2F-B7AE-C3706B928214}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F60897B7-2B53-4E2F-B7AE-C3706B928214}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F60897B7-2B53-4E2F-B7AE-C3706B928214}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,6 +159,7 @@ Global
 		{475CF5C9-7337-4890-A678-4ECDB513E73C} = {910B2845-1287-4F4A-9464-1988071907AF}
 		{AC6C6AE9-BF23-4AD2-A071-290F05D9A8DD} = {1BA54DAA-D124-4939-9FF3-EE7139D856F6}
 		{885704AD-F361-4CF5-9041-336945B0007E} = {1BA54DAA-D124-4939-9FF3-EE7139D856F6}
+		{6AB9DF1E-CF1E-436A-B2DD-EB418EE08225} = {910B2845-1287-4F4A-9464-1988071907AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {47D28717-CF68-421D-B547-585C16AE6DE7}
