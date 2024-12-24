@@ -1,21 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
-
+    <PropertyGroup>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+    </PropertyGroup>
+    
     <PropertyGroup>
         <Title>Consolonia Templates</Title>
         <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
         <PackageType>Template</PackageType>
         <PackageId>Consolonia.Templates</PackageId>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
         <Description>Templates for creating a consolonia application.</Description>
         <PackageTags>dotnet-new;templates;console</PackageTags>
         <IncludeContentInPack>true</IncludeContentInPack>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <ContentTargetFolders>content</ContentTargetFolders>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="ConsoloniaAppTemplate\**\*" Exclude="**\bin\**;**\obj\**;**\.vs\**" />
         <Compile Remove="**\*" />
+        <Content Include="ConsoloniaAppTemplate\**\*" Exclude="**\bin\**;**\obj\**;**\.vs\**" />
+        <None Remove="**\bin\**;**\obj\**;**\.vs\**"/>
     </ItemGroup>
 </Project>

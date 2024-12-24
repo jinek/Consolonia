@@ -10,6 +10,8 @@
         <Description>Text User Interface implementation of Avalonia UI (GUI Framework)</Description>
         <Copyright>Copyright © Evgeny Gorbovoy 2021 - 2022</Copyright>
         <PackageIcon>Icon.png</PackageIcon>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <NoWarn>AVA3001</NoWarn>
         <IsPackable>False</IsPackable>
     </PropertyGroup>
@@ -18,6 +20,6 @@
     </PropertyGroup>
     <ItemGroup Condition="'$(IsPackable)' != 'false'">
         <None Include="$(SolutionDir)/../Icon.png" Pack="True" PackagePath="\" />
-        <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="readme.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 </Project>

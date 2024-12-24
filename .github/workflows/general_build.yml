@@ -24,7 +24,7 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore /p:Configuration=Release
       - name: Build
         run: dotnet build --no-restore --configuration release
       - name: Test
