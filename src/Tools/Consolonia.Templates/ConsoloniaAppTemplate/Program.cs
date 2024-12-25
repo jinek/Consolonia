@@ -13,7 +13,7 @@ namespace ConsoloniaAppTemplate
 
         public static AppBuilder BuildAvaloniaApp()
         {
-            return AppBuilder.Configure<ConsoloniaAppTemplateApp>()
+            return AppBuilder.Configure<App>()
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
                 .LogToException();
