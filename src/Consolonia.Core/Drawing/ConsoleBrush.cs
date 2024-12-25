@@ -1,8 +1,5 @@
 using System;
-using System.Diagnostics;
-using Avalonia;
 using Avalonia.Media;
-using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing

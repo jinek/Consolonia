@@ -6,8 +6,6 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Media;
 using Avalonia.Reactive;
 using Avalonia.Threading;
-using Consolonia.Core.Drawing;
-using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers

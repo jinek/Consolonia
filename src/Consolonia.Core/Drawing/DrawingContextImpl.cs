@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Media.Immutable;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
