@@ -123,16 +123,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 else
                 {
                     newForeground = new PixelForeground(Foreground.Symbol,
-                        MergeColors(Foreground.Color, pixelAbove.Background.Color), 
+                        MergeColors(Foreground.Color, pixelAbove.Background.Color),
                         Foreground.Weight,
                         Foreground.Style,
                         Foreground.TextDecoration);
 
                     if (pixelAbove.Background.Color.A == 0xFF)
-                    {
                         // non-transparent layer above
                         newForeground = new PixelForeground();
-                    }
                 }
 
                 newIsCaret = pixelAbove.IsCaret;
@@ -158,10 +156,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             float outAlpha = fgAlpha + bgAlpha * (1 - fgAlpha);
 
             // If there's no alpha in the result, return transparent
-            if (outAlpha <= 0f)
-            {
-                return Color.FromArgb(0, 0, 0, 0);
-            }
+            if (outAlpha <= 0f) return Color.FromArgb(0, 0, 0, 0);
 
             // Calculate the composited color channels, also converting channels to [0..1]
             float outR = (source.R / 255f * fgAlpha + target.R / 255f * bgAlpha * (1 - fgAlpha)) / outAlpha;

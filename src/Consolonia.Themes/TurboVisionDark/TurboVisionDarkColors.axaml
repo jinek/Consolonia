@@ -4,7 +4,7 @@
     <!--https://www.mikrocontroller.net/attachment/483578/Turbo_Vision.gif-->
     <system:Double x:Key="FontSizeNormal">1</system:Double>
     <SolidColorBrush x:Key="ThemeForegroundBrush"
-                          Color="White" />
+                     Color="White" />
     <SolidColorBrush x:Key="ThemeBackgroundBrush"
                      Color="DarkGray" />
     <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"

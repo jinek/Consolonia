@@ -663,7 +663,7 @@ namespace Consolonia.Core.Drawing
             }
 
             IBrush brush = pen.Brush;
-            
+
             if (brush is LineBrush lineBrush)
             {
                 lineStyle = lineBrush.LineStyle;

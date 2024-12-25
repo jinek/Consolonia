@@ -44,7 +44,8 @@
                                 Margin="1,0">
                         <StackPanel.Styles>
                             <Style Selector="TextBlock">
-                                <Setter Property="Foreground" Value="Gray"/>
+                                <Setter Property="Foreground"
+                                        Value="Gray" />
                             </Style>
                         </StackPanel.Styles>
                         <TextBlock Text="Id" />

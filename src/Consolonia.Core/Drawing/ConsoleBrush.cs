@@ -7,7 +7,8 @@ namespace Consolonia.Core.Drawing
     public static class BrushExtensions
     {
         public static Color FromPosition(IBrush brush, int x, int y, int width, int height)
-        {//todo: apply brush opacity
+        {
+            //todo: apply brush opacity
             ArgumentNullException.ThrowIfNull(brush);
             if (x < 0 || x > width)
                 throw new ArgumentOutOfRangeException(nameof(x), "x is out bounds");

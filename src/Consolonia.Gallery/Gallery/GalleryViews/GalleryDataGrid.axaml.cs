@@ -9,7 +9,6 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
-using Consolonia.Core.Drawing;
 
 // ReSharper disable UnusedMember.Global
 
