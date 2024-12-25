@@ -527,7 +527,7 @@ namespace Consolonia.Core.Drawing
                 int px = (int)(r2.TopLeft.X + x);
                 int py = (int)(r2.TopLeft.Y + y);
 
-                Color backgroundColor = BrushExtensions.FromPosition(brush, x, y, (int)width, (int)height);
+                Color backgroundColor = brush.FromPosition(x, y, (int)width, (int)height);
                 CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                 {
                     _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),

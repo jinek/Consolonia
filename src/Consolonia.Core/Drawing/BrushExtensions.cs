@@ -4,9 +4,9 @@ using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
-    public static class BrushExtensions
+    public static class BrushExtensions //todo: investigate why resharper does not complain about wrong file naming
     {
-        public static Color FromPosition(IBrush brush, int x, int y, int width, int height)
+        public static Color FromPosition(this IBrush brush, int x, int y, int width, int height)
         {
             //todo: apply brush opacity
             ArgumentNullException.ThrowIfNull(brush);

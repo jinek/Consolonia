@@ -122,15 +122,17 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 }
                 else
                 {
-                    newForeground = new PixelForeground(Foreground.Symbol,
-                        MergeColors(Foreground.Color, pixelAbove.Background.Color),
-                        Foreground.Weight,
-                        Foreground.Style,
-                        Foreground.TextDecoration);
-
+                    // merge the PixelForeground color with the pixelAbove background color
+                    
                     if (pixelAbove.Background.Color.A == 0xFF)
                         // non-transparent layer above
                         newForeground = new PixelForeground();
+                    else
+                    newForeground = new PixelForeground(Foreground.Symbol,
+                                            MergeColors(Foreground.Color, pixelAbove.Background.Color),
+                                            Foreground.Weight,
+                                            Foreground.Style,
+                                            Foreground.TextDecoration);
                 }
 
                 newIsCaret = pixelAbove.IsCaret;
