@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
                     xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
     <!--TODO: Validation and Focus-->
 

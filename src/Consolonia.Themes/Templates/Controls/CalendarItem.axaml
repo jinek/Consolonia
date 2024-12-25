@@ -1,7 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
-                    xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
     <ControlTheme x:Key="{x:Type CalendarItem}"
                   TargetType="CalendarItem">
         <Setter Property="HorizontalAlignment"
