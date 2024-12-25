@@ -71,7 +71,7 @@ namespace Consolonia.NUnit
                     new Pixel(
                         new PixelForeground(new SimpleSymbol(rune), foreground, style: style, weight: weight,
                             textDecoration: textDecoration),
-                        new PixelBackground(PixelBackgroundMode.Colored, background)));
+                        new PixelBackground(background)));
                 i++;
             }
         }

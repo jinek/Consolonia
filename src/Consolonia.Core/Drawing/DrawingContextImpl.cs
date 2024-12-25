@@ -528,12 +528,11 @@ namespace Consolonia.Core.Drawing
                 int px = (int)(r2.TopLeft.X + x);
                 int py = (int)(r2.TopLeft.Y + y);
 
-                ConsoleBrush backgroundBrush = ConsoleBrush.FromPosition(brush, x, y, (int)width, (int)height);
+                Color backgroundColor = ConsoleBrush2.FromPosition(brush, x, y, (int)width, (int)height);
                 CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                 {
                     _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                        pixel => pixel.Blend(new Pixel(new PixelBackground(backgroundBrush.Mode,
-                            backgroundBrush.Color))));
+                        pixel => pixel.Blend(new Pixel(new PixelBackground(backgroundColor))));
                 });
             }
         }
@@ -653,9 +652,9 @@ namespace Consolonia.Core.Drawing
             lineStyle = null;
             if (pen is not
                 {
-                    Brush: ConsoleBrush or LineBrush or ImmutableSolidColorBrush,
+                    Brush: LineBrush or ImmutableSolidColorBrush,
                     // Thickness: 1,
-                    DashStyle: null or { Dashes: { Count: 0 } },
+                    DashStyle: null or { Dashes.Count: 0 },
                     LineCap: PenLineCap.Flat,
                     LineJoin: PenLineJoin.Miter
                 })
@@ -667,20 +666,9 @@ namespace Consolonia.Core.Drawing
             if (pen.Brush is LineBrush lineBrush)
                 lineStyle = lineBrush.LineStyle;
 
-            ConsoleBrush consoleBrush = ConsoleBrush.FromBrush(pen.Brush);
 
-            switch (consoleBrush.Mode)
-            {
-                case PixelBackgroundMode.Colored:
-                    return consoleBrush.Color;
-                case PixelBackgroundMode.Transparent:
-                    return null;
-                case PixelBackgroundMode.Shaded:
-                    ConsoloniaPlatform.RaiseNotSupported(8);
-                    return null;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(pen));
-            }
+            Color consoleBrush = ((ImmutableSolidColorBrush)pen.Brush).Color;
+            return consoleBrush;
         }
 
         /// <summary>
@@ -731,8 +719,8 @@ namespace Consolonia.Core.Drawing
 
         private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
         {
-            foreground = ConsoleBrush.FromBrush(foreground);
-            if (foreground is not ConsoleBrush { Mode: PixelBackgroundMode.Colored } consoleBrush)
+            
+            if (foreground is not ImmutableSolidColorBrush immutableSolidColorBrush)
             {
                 ConsoloniaPlatform.RaiseNotSupported(4);
                 return;
@@ -751,7 +739,7 @@ namespace Consolonia.Core.Drawing
             {
                 Point characterPoint =
                     whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));
-                Color foregroundColor = consoleBrush.Color;
+                Color foregroundColor = immutableSolidColorBrush.Color;
 
                 switch (glyph)
                 {

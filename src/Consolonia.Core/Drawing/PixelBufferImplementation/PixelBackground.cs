@@ -11,34 +11,24 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     {
         public PixelBackground()
         {
-            Mode = PixelBackgroundMode.Transparent;
             Color = Colors.Transparent;
         }
 
         public PixelBackground(Color color)
         {
-            Mode = color.A == 0 ? PixelBackgroundMode.Transparent : PixelBackgroundMode.Colored;
             Color = color;
         }
 
-        public PixelBackground(PixelBackgroundMode mode, Color? color = null)
-        {
-            Color = color ?? Colors.Transparent;
-            Mode = mode;
-        }
 
         [JsonConverter(typeof(ColorConverter))]
         public Color Color { get; init; }
 
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public PixelBackgroundMode Mode { get; init; }
-
         public bool Equals(PixelBackground other)
         {
-            return Color.Equals(other.Color) && Mode == other.Mode;
+            return Color.Equals(other.Color);
         }
 
-        public PixelBackground Shade()
+        /*public PixelBackground Shade()
         {
             Color newColor = Color;
             PixelBackgroundMode newMode = Mode;
@@ -59,7 +49,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
 
             return new PixelBackground(newMode, newColor);
-        }
+        }*/
 
         public override bool Equals([NotNullWhen(true)] object obj)
         {
@@ -68,7 +58,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Color, Mode);
+            return HashCode.Combine(Color);
         }
 
         public static bool operator ==(PixelBackground left, PixelBackground right)

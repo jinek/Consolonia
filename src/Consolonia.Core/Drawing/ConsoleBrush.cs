@@ -7,90 +7,10 @@ using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
-    [DebuggerDisplay("{Color} [{Mode}]")]
-    public class ConsoleBrush : AvaloniaObject, IImmutableBrush
+    public static class ConsoleBrush2
     {
-        public static readonly StyledProperty<Color> ColorProperty =
-            AvaloniaProperty.Register<ConsoleBrush, Color>(nameof(Color));
-
-        public static readonly StyledProperty<PixelBackgroundMode> ModeProperty =
-            AvaloniaProperty.Register<ConsoleBrush, PixelBackgroundMode>(nameof(Mode));
-
-        // ReSharper disable once UnusedMember.Global
-        public ConsoleBrush(Color color, PixelBackgroundMode mode) : this(color)
-        {
-            Mode = mode;
-        }
-
-        public ConsoleBrush(Color color)
-        {
-            Color = color;
-        }
-
-        public ConsoleBrush()
-        {
-        }
-
-        public PixelBackgroundMode Mode
-        {
-            get => GetValue(ModeProperty);
-            set => SetValue(ModeProperty, value);
-        }
-
-        public Color Color
-        {
-            get => GetValue(ColorProperty);
-            set => SetValue(ColorProperty, value);
-        }
-
-        public double Opacity => 1;
-        public ITransform Transform => null;
-        public RelativePoint TransformOrigin => RelativePoint.TopLeft;
-
-        /// <summary>
-        ///     Convert a IBrush to a Brush.
-        /// </summary>
-        /// <remarks>
-        ///     NOTE: If it's a ConsoleBrush it will be passed through unchanged, unless mode is set then it will convert
-        ///     consolebrush to mode
-        /// </remarks>
-        /// <param name="brush"></param>
-        /// <param name="mode">Default is Colored.</param>
-        /// <returns></returns>
-        public static ConsoleBrush FromBrush(IBrush brush, PixelBackgroundMode? mode = null)
-        {
-            ArgumentNullException.ThrowIfNull(brush, nameof(brush));
-
-            switch (brush)
-            {
-                case ConsoleBrush consoleBrush:
-                    if (mode != null && consoleBrush.Mode != mode)
-                        return new ConsoleBrush(consoleBrush.Color, mode.Value);
-                    return consoleBrush;
-
-                case LineBrush lineBrush:
-                    switch (lineBrush.Brush)
-                    {
-                        case ConsoleBrush consoleBrush:
-                            return consoleBrush;
-                        case ISolidColorBrush br:
-                            return new ConsoleBrush(br.Color, mode ?? PixelBackgroundMode.Colored);
-                        default:
-                            ConsoloniaPlatform.RaiseNotSupported(6);
-                            return null;
-                    }
-
-                case ISolidColorBrush solidBrush:
-                    return new ConsoleBrush(solidBrush.Color, mode ?? PixelBackgroundMode.Colored);
-
-                default:
-                    ConsoloniaPlatform.RaiseNotSupported(6);
-                    return null;
-            }
-        }
-
-        public static ConsoleBrush FromPosition(IBrush brush, int x, int y, int width, int height)
-        {
+        public static Color FromPosition(IBrush brush, int x, int y, int width, int height)
+        {//todo: apply brush opacity
             ArgumentNullException.ThrowIfNull(brush);
             if (x < 0 || x > width)
                 throw new ArgumentOutOfRangeException(nameof(x), "x is out bounds");
@@ -115,7 +35,7 @@ namespace Consolonia.Core.Drawing
 
                     // Average the two colors to get the final color
                     Color color = BlendColors(horizontalColor, verticalColor);
-                    return new ConsoleBrush(color);
+                    return color;
                 }
                 case IRadialGradientBrush radialBrush:
                 {
@@ -142,7 +62,7 @@ namespace Consolonia.Core.Drawing
 
                     // Interpolate the color based on the normalized distance
                     Color color = InterpolateColor(radialBrush, normalizedDistance);
-                    return new ConsoleBrush(color);
+                    return color;
                 }
                 case IConicGradientBrush conicBrush:
                 {
@@ -160,19 +80,12 @@ namespace Consolonia.Core.Drawing
 
                     // Average the two colors to get the final color
                     Color color = BlendColors(horizontalColor, verticalColor);
-                    return new ConsoleBrush(color);
+                    return color;
                 }
 
                 default:
-                    return FromBrush(brush);
+                    return ((SolidColorBrush)brush).Color;
             }
-        }
-
-        // ReSharper disable once UnusedMember.Global used by Avalonia
-        // ReSharper disable once UnusedParameter.Global
-        public IBrush ProvideValue(IServiceProvider _)
-        {
-            return this;
         }
 
         private static Color InterpolateColor(IGradientBrush brush, double relativePosition)

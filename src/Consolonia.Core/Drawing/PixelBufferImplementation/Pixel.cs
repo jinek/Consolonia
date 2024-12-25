@@ -40,7 +40,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             FontWeight weight = FontWeight.Normal,
             TextDecorationLocation? textDecorations = null) : this(
             new PixelForeground(symbol, foregroundColor, weight, style, textDecorations),
-            new PixelBackground(PixelBackgroundMode.Transparent))
+            new PixelBackground())
         {
         }
 
@@ -102,42 +102,34 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public Pixel Blend(Pixel pixelAbove)
         {
             PixelForeground newForeground;
-            PixelBackground newBackground;
 
-            if (pixelAbove.IsCaret) return new Pixel(Foreground, Background, true);
+            var newBackground = new PixelBackground(MergeColors(Background.Color, pixelAbove.Background.Color));
 
-            switch (pixelAbove.Background.Mode)
+            bool newIsCaret;
+
+            if (pixelAbove.Background.Color.A == 0x0 /*todo: can be approximate, extract to extension method*/)
             {
-                case PixelBackgroundMode.Colored:
-                    // merge pixelAbove into this pixel using alpha channel.
-                    Color mergedColors = MergeColors(Background.Color, pixelAbove.Background.Color);
-                    newForeground = pixelAbove.Foreground;
-                    newBackground = new PixelBackground(mergedColors);
-                    return new Pixel(newForeground, newBackground, pixelAbove.IsCaret);
-
-                case PixelBackgroundMode.Transparent:
-                    // if the foreground is transparent, ignore pixelAbove foreground.
-                    newForeground = pixelAbove.Foreground.Color != Colors.Transparent
-                        ? Foreground.Blend(pixelAbove.Foreground)
-                        : Foreground;
-
-                    // background is transparent, ignore pixelAbove background.
-                    newBackground = Background;
-                    break;
-                case PixelBackgroundMode.Shaded:
-                    // shade the current pixel
-                    (newForeground, newBackground) = Shade();
-
-                    // blend the pixelAbove foreground into the shaded pixel
-                    newForeground = newForeground.Blend(pixelAbove.Foreground);
-
-                    // resulting in new pixel with shaded background and blended foreground
-                    return new Pixel(newForeground, newBackground);
-
-                default: throw new ArgumentOutOfRangeException(nameof(pixelAbove));
+                newForeground = pixelAbove.Foreground.Color == Colors.Transparent
+                    ? Foreground
+                    : Foreground.Blend(pixelAbove.Foreground);
+                newIsCaret = pixelAbove.IsCaret | IsCaret;
             }
+            else
+            {
+                if (!pixelAbove.IsEmpty())
+                {
+                    newForeground = pixelAbove.Foreground;
+                }
+                else
+                {
+                    newForeground = new PixelForeground(Foreground.Symbol,
+                        MergeColors(Foreground.Color, pixelAbove.Background.Color), Foreground.Weight,
+                        Foreground.Style,
+                        Foreground.TextDecoration);
+                }
 
-            bool newIsCaret = IsCaret | pixelAbove.IsCaret;
+                newIsCaret = pixelAbove.IsCaret;
+            }
 
             return new Pixel(newForeground, newBackground, newIsCaret);
         }
@@ -147,10 +139,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return Foreground.Symbol.Width == 0;
         }
 
-        private (PixelForeground, PixelBackground) Shade()
+        /*private (PixelForeground, PixelBackground) Shade()
         {
             return (Foreground.Shade(), Background.Shade());
-        }
+        }*/
 
         /// <summary>
         ///     merge colors with alpha blending
