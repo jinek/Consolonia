@@ -1,0 +1,9 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="clr-namespace:Consolonia.Themes;assembly=Consolonia.Themes"
+             x:Class="ConsoloniaAppTemplate.App"
+             RequestedThemeVariant="Default">
+    <Application.Styles>
+        <themes:MaterialTheme />
+    </Application.Styles>
+</Application>

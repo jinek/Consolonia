@@ -33,14 +33,6 @@ jobs:
         run: dotnet restore
         working-directory: ./src
         
-      - name: Inspect code
-        uses: muno92/resharper_inspectcode@1.12.0
-        with:
-          solutionPath: ./src/Consolonia.sln
-          exclude: "**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*;**Example/**.*;**Consolonia.Templates/**.*"
-          version: '2024.2.6'
-          minimumSeverity: 'warning'
-
       - name: install-resharper
         run: |
           dotnet tool install -g JetBrains.ReSharper.GlobalTools
@@ -50,6 +42,14 @@ jobs:
         run: |                    
           jb cleanupcode Consolonia.sln --exclude="**Consolonia.GuiCS/**.*;**Consolonia.Templates/**.*"
         working-directory: ./src
+
+      - name: Inspect code
+        uses: muno92/resharper_inspectcode@1.12.0
+        with:
+          solutionPath: ./src/Consolonia.sln
+          exclude: "**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*;**Example/**.*;**Consolonia.Templates/**.*"
+          # version: '2024.2.6'
+          minimumSeverity: 'warning'
 
       - name: Commit files
         continue-on-error: true # todo: need to check whether has changes
