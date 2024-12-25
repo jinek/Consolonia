@@ -31,7 +31,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         [JsonIgnore] public string Text { get; init; }
 
-        [JsonIgnore] public ushort Width { get; } = 1;
+        [JsonIgnore] public ushort Width => 1;
 
         public bool NothingToDraw()
         {

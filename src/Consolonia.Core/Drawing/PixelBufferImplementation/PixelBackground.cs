@@ -7,49 +7,20 @@ using Newtonsoft.Json;
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("[{Color}]")]
-    public readonly struct PixelBackground : IEquatable<PixelBackground>
+    public readonly struct PixelBackground(Color color) : IEquatable<PixelBackground>
     {
-        public PixelBackground()
+        public PixelBackground() : this(Colors.Transparent)
         {
-            Color = Colors.Transparent;
-        }
-
-        public PixelBackground(Color color)
-        {
-            Color = color;
         }
 
 
         [JsonConverter(typeof(ColorConverter))]
-        public Color Color { get; init; }
+        public Color Color { get; init; } = color;
 
         public bool Equals(PixelBackground other)
         {
             return Color.Equals(other.Color);
         }
-
-        /*public PixelBackground Shade()
-        {
-            Color newColor = Color;
-            PixelBackgroundMode newMode = Mode;
-            switch (Mode)
-            {
-                case PixelBackgroundMode.Colored:
-                    newColor = Color.Shade();
-                    break;
-                case PixelBackgroundMode.Transparent:
-                    newMode = PixelBackgroundMode.Shaded;
-                    break;
-                case PixelBackgroundMode.Shaded:
-                    newMode = PixelBackgroundMode.Colored;
-                    newColor = Colors.Black;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            return new PixelBackground(newMode, newColor);
-        }*/
 
         public override bool Equals([NotNullWhen(true)] object obj)
         {

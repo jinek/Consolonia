@@ -149,6 +149,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <returns>source blended into target</returns>
         private static Color MergeColors(Color target, Color source)
         {
+            // by chatGPT o1
             // Convert alpha from [0..255] to [0..1]
             float fgAlpha = source.A / 255f;
             float bgAlpha = target.A / 255f;

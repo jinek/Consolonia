@@ -1,6 +1,9 @@
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    public enum PixelBackgroundMode2 : byte
+    /// <summary>
+    /// todo: use it for EGA extension
+    /// </summary>
+    public enum PixelBackgroundMode : byte
     {
         Colored,
         Transparent,

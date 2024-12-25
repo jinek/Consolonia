@@ -7,7 +7,7 @@ using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
-    public static class ConsoleBrush2
+    public static class BrushExtensions
     {
         public static Color FromPosition(IBrush brush, int x, int y, int width, int height)
         {//todo: apply brush opacity
@@ -83,8 +83,12 @@ namespace Consolonia.Core.Drawing
                     return color;
                 }
 
+                case ISolidColorBrush solidColorBrush:
+                    return solidColorBrush.Color;
+
                 default:
-                    return ((ISolidColorBrush)brush).Color;
+                    ConsoloniaPlatform.RaiseNotSupported(751, brush); //todo: allow RaiseNotSupported to return a result
+                    return new Color();
             }
         }
 

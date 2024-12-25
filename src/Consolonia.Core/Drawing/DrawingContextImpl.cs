@@ -528,7 +528,7 @@ namespace Consolonia.Core.Drawing
                 int px = (int)(r2.TopLeft.X + x);
                 int py = (int)(r2.TopLeft.Y + y);
 
-                Color backgroundColor = ConsoleBrush2.FromPosition(brush, x, y, (int)width, (int)height);
+                Color backgroundColor = BrushExtensions.FromPosition(brush, x, y, (int)width, (int)height);
                 CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                 {
                     _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
@@ -722,14 +722,13 @@ namespace Consolonia.Core.Drawing
 
         private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
         {
-            
-            if (foreground is not ISolidColorBrush immutableSolidColorBrush)
+            if (foreground is not ISolidColorBrush solidColorBrush)
             {
                 ConsoloniaPlatform.RaiseNotSupported(4);
                 return;
             }
 
-            // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15);
+            // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15); //todo: what to do if a rotation?
 
             Point whereToDraw = origin.Transform(Transform);
             int currentXPosition = 0;
@@ -742,7 +741,7 @@ namespace Consolonia.Core.Drawing
             {
                 Point characterPoint =
                     whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));
-                Color foregroundColor = immutableSolidColorBrush.Color;
+                Color foregroundColor = solidColorBrush.Color;
 
                 switch (glyph)
                 {
