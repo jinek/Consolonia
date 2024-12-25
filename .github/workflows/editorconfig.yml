@@ -48,7 +48,7 @@ jobs:
         with:
           solutionPath: ./src/Consolonia.sln
           exclude: "**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*;**Example/**.*;**Consolonia.Templates/**.*"
-          version: '2024.2.6'
+          # version: '2024.2.6'
           minimumSeverity: 'warning'
 
       - name: Commit files
