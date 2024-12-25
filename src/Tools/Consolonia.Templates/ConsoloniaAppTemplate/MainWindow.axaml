@@ -7,7 +7,7 @@
         Title="Consolonia">
     <StackPanel VerticalAlignment="Center"
                    HorizontalAlignment="Center">
-        <TextBlock Text="Welcome to Conslonia!" />
+        <TextBlock Text="Welcome to Consolonia!" />
         <Button Content="_Exit"
                 Click="OnExit" />
     </StackPanel>
