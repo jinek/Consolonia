@@ -96,5 +96,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             return !left.Equals(right);
         }
+
+        public bool NothingToDraw()
+        {
+            return Color.A == 0x0 || Symbol.NothingToDraw();
+        }
     }
 }

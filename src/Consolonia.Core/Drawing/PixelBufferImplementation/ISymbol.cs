@@ -15,7 +15,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// </summary>
         ushort Width { get; }
 
-        bool IsWhiteSpace();
+        bool NothingToDraw();
 
         /// <summary>
         ///     Blend 2 symbols together

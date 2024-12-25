@@ -4,7 +4,6 @@ using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Consolonia.Core.Drawing;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -49,7 +48,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     public class RgbModel : INotifyPropertyChanged
     {
-        private ConsoleBrush _brush;
+        private IBrush _brush;
 
         private Color _color;
 
@@ -59,11 +58,11 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             set
             {
                 _color = value;
-                Brush = new ConsoleBrush(_color);
+                Brush = new SolidColorBrush(_color);
             }
         }
 
-        public ConsoleBrush Brush
+        public IBrush Brush
         {
             get => _brush;
             set

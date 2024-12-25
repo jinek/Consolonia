@@ -6,8 +6,6 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Media;
 using Avalonia.Reactive;
 using Avalonia.Threading;
-using Consolonia.Core.Drawing;
-using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers
@@ -58,10 +56,8 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
                         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local //todo: what does this mean?
                         args =>
                         {
-                            ConsoleBrush brush =
-                                ConsoleBrush.FromBrush(args.NewValue.Value, PixelBackgroundMode.Transparent);
-
-                            if (brush.Mode != PixelBackgroundMode.Transparent)
+                            if (args.NewValue.Value.Opacity != 0 &&
+                                ((ISolidColorBrush)args.NewValue.Value).Color.A != 0x0)
                                 throw new NotSupportedException(
                                     "CaretBrush must have a transparent background. This ensures proper rendering of the caret over text content.");
                         }));
@@ -80,7 +76,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
                 caretTickTimer!.Tick += (_, _) => throw new NotImplementedException("How to disable timer completely?");
             }
 
-            CaretBrush = new ConsoleBrush(Colors.Black, PixelBackgroundMode.Transparent); // we want to draw own caret
+            CaretBrush = Brushes.Transparent; // we want to draw own caret
         }
 
         public Point CaretPosition

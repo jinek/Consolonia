@@ -23,7 +23,6 @@ namespace Consolonia.Core.Tests
         {
             var pixel = new Pixel(new PixelBackground(Colors.Red));
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Red));
-            Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Colored));
         }
 
         [Test]
@@ -36,7 +35,6 @@ namespace Consolonia.Core.Tests
             Assert.That(pixel.Foreground.Weight, Is.EqualTo(FontWeight.Normal));
             Assert.That(pixel.Foreground.TextDecoration, Is.Null);
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Transparent));
-            Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Transparent));
         }
 
         [Test]
@@ -49,7 +47,6 @@ namespace Consolonia.Core.Tests
             Assert.That(pixel.Foreground.Weight, Is.EqualTo(FontWeight.Normal));
             Assert.That(pixel.Foreground.TextDecoration, Is.Null);
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Transparent));
-            Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Transparent));
         }
 
         [Test]
@@ -63,7 +60,6 @@ namespace Consolonia.Core.Tests
             Assert.IsNull(pixel.Foreground.Weight);
             Assert.IsNull(pixel.Foreground.TextDecoration);
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Blue));
-            Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Colored));
         }
 
         [Test]
@@ -147,10 +143,10 @@ namespace Consolonia.Core.Tests
         {
             var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
                 new PixelBackground(Colors.White));
-            var pixel2 = new Pixel(new PixelBackground(PixelBackgroundMode.Shaded));
+            var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F000000")));
             Pixel newPixel = pixel.Blend(pixel2);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
-            // foreground should be lighter than original
+            // foreground should be darker than original
             Assert.True(newPixel.Foreground.Color.R < pixel.Foreground.Color.R &&
                         newPixel.Foreground.Color.G < pixel.Foreground.Color.G &&
                         newPixel.Foreground.Color.B < pixel.Foreground.Color.B);
@@ -165,17 +161,38 @@ namespace Consolonia.Core.Tests
         {
             var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
                 new PixelBackground(Colors.Black));
-            var pixel2 = new Pixel(new PixelBackground(PixelBackgroundMode.Shaded));
+            var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F000000")));
             Pixel newPixel = pixel.Blend(pixel2);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
             // foreground should be darker than original
             Assert.True(newPixel.Foreground.Color.R < pixel.Foreground.Color.R &&
                         newPixel.Foreground.Color.G < pixel.Foreground.Color.G &&
                         newPixel.Foreground.Color.B < pixel.Foreground.Color.B);
-            // background should be darker than original
-            Assert.True(newPixel.Background.Color.R > pixel.Background.Color.R &&
-                        newPixel.Background.Color.G > pixel.Background.Color.G &&
-                        newPixel.Background.Color.B > pixel.Background.Color.B);
+            // background should be not lighter than original
+            Assert.True(newPixel.Background.Color.R <= pixel.Background.Color.R &&
+                        newPixel.Background.Color.G <= pixel.Background.Color.G &&
+                        newPixel.Background.Color.B <= pixel.Background.Color.B);
+        }
+
+        [Test]
+        public void TextBelowSemiTransparentBackgroundIsStillVisible()
+        {
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+                new PixelBackground(Colors.White));
+            var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F000000")));
+            Pixel newPixel = pixel2.Blend(pixel);
+            Assert.True(newPixel.Foreground.Symbol.Text == "x");
+        }
+
+        [Test]
+        public void TextBelowNoneTransparentNullCharacterIsStillVisible()
+        {
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+                new PixelBackground(Colors.White));
+            var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol(char.MinValue), Colors.White),
+                new PixelBackground(Color.Parse("#7F000000")));
+            Pixel newPixel = pixel2.Blend(pixel);
+            Assert.True(newPixel.Foreground.Symbol.Text == "x");
         }
 
         [Test]

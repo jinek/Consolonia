@@ -1,31 +1,30 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
     <!--https://www.mikrocontroller.net/attachment/483578/Turbo_Vision.gif-->
     <system:Double x:Key="FontSizeNormal">1</system:Double>
-    <drawing:ConsoleBrush x:Key="ThemeForegroundBrush"
-                          Color="Gray" />
-    <drawing:ConsoleBrush x:Key="ThemeBackgroundBrush"
-                          Color="Black" />
-    <drawing:ConsoleBrush x:Key="ThemeChooserBackgroundBrush"
-                          Color="DarkBlue" />
-    <drawing:ConsoleBrush x:Key="ThemeActionBackgroundBrush"
-                          Color="DarkMagenta" />
-    <drawing:ConsoleBrush x:Key="ThemeSelectionBackgroundBrush"
-                          Color="DarkGray" />
-    <drawing:ConsoleBrush x:Key="ThemeSelectionForegroundBrush"
-                          Color="White" />
-    <drawing:ConsoleBrush x:Key="ThemeAlternativeBackgroundBrush"
-                          Color="DarkGray" />
-    <drawing:ConsoleBrush x:Key="ThemeBorderBrush"
-                          Color="Gray" />
-    <drawing:ConsoleBrush x:Key="ThemeNoDisturbBrush"
-                          Color="DarkGoldenrod" />
-    <drawing:ConsoleBrush x:Key="ThemeShadeBrush"
-                          Mode="Shaded" />
-    <drawing:ConsoleBrush x:Key="ThemePseudoShadeBrush"
-                          Color="DarkGray" />
-    <drawing:ConsoleBrush x:Key="ThemeErrorBrush"
-                          Color="Red" />
+    <SolidColorBrush x:Key="ThemeForegroundBrush"
+                     Color="Gray" />
+    <SolidColorBrush x:Key="ThemeBackgroundBrush"
+                     Color="Black" />
+    <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"
+                     Color="DarkBlue" />
+    <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
+                     Color="DarkMagenta" />
+    <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
+                     Color="DarkGray" />
+    <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
+                     Color="White" />
+    <SolidColorBrush x:Key="ThemeAlternativeBackgroundBrush"
+                     Color="DarkGray" />
+    <SolidColorBrush x:Key="ThemeBorderBrush"
+                     Color="Gray" />
+    <SolidColorBrush x:Key="ThemeNoDisturbBrush"
+                     Color="DarkGoldenrod" />
+    <SolidColorBrush x:Key="ThemeShadeBrush"
+                     Color="#7F000000" />
+    <SolidColorBrush x:Key="ThemePseudoShadeBrush"
+                     Color="DarkGray" />
+    <SolidColorBrush x:Key="ThemeErrorBrush"
+                     Color="Red" />
 </ResourceDictionary>

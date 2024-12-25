@@ -1,10 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:drawing1="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
              x:Class="Consolonia.Core.Controls.Dialog.DialogWrap">
 
     <Panel>
-        <Border Background="{drawing1:ConsoleBrush Mode=Shaded}"
+        <Border Background="{DynamicResource ThemeShadeBrush}"
                 IsVisible="{Binding RelativeSource={RelativeSource Self}, Path=IsEffectivelyEnabled}" />
 
         <!-- ReSharper disable once UnusedMember.Local Used for manual search-->

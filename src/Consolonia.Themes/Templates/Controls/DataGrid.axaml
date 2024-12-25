@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
                     xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
     <!--TODO: Validation and Focus-->
 
@@ -280,11 +279,8 @@
                   TargetType="DataGrid">
         <Setter Property="Focusable"
                 Value="True" />
-        <Setter Property="RowBackground">
-            <Setter.Value>
-                <drawing:ConsoleBrush Mode="Transparent" />
-            </Setter.Value>
-        </Setter>
+        <Setter Property="RowBackground"
+                Value="{DynamicResource ThemeTransparentBrush}" />
         <Setter Property="HeadersVisibility"
                 Value="Column" />
         <Setter Property="HorizontalScrollBarVisibility"
