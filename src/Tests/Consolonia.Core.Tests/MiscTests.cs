@@ -1,4 +1,3 @@
-using System.Text;
 using System;
 using Consolonia.Core.Infrastructure;
 using NUnit.Framework;
