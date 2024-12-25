@@ -96,5 +96,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             return !left.Equals(right);
         }
+
+        public bool NothingToDraw()
+        {
+            if (Color.A == 0x0)
+                return true;
+            if (Symbol is SimpleSymbol simpleSymbol)
+                return string.IsNullOrWhiteSpace(simpleSymbol.Text);
+            return Symbol.IsWhiteSpace();
+        }
     }
 }

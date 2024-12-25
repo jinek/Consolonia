@@ -116,7 +116,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(pixelAbove.Foreground.Symbol.Text) && pixelAbove.Foreground.Color.A != 0x0)
+                if (!pixelAbove.Foreground.NothingToDraw())
                 {
                     newForeground = pixelAbove.Foreground;
                 }
