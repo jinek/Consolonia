@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("[{Color}, {Mode}]")]
+    [DebuggerDisplay("[{Color}]")]
     public readonly struct PixelBackground : IEquatable<PixelBackground>
     {
         public PixelBackground()
