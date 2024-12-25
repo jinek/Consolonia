@@ -141,17 +141,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return new Pixel(newForeground, newBackground, newIsCaret);
         }
 
-        public bool IsEmpty()
-        {
-            return Foreground.Symbol.Width == 0;
-        }
-
-        /*private (PixelForeground, PixelBackground) Shade()
-        {
-            return (Foreground.Shade(), Background.Shade());
-        }*/
-
-
         /// <summary>
         ///     merge colors with alpha blending
         /// </summary>

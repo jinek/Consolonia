@@ -45,14 +45,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         [JsonIgnore] public ushort Width { get; init; }
 
-        public bool IsWhiteSpace()
+        public bool NothingToDraw()
         {
-            return string.IsNullOrWhiteSpace(Text);
+            return string.IsNullOrEmpty(Text);
         }
 
         public ISymbol Blend(ref ISymbol symbolAbove)
         {
-            return symbolAbove.IsWhiteSpace() ? this : symbolAbove;
+            return symbolAbove.NothingToDraw() ? this : symbolAbove;
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)

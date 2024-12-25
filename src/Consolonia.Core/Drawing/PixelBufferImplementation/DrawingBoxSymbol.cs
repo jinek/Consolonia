@@ -33,14 +33,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         [JsonIgnore] public ushort Width { get; } = 1;
 
-        public bool IsWhiteSpace()
+        public bool NothingToDraw()
         {
             return UpRightDownLeft == EmptySymbol;
         }
 
         public ISymbol Blend(ref ISymbol symbolAbove)
         {
-            if (symbolAbove.IsWhiteSpace()) return this;
+            if (symbolAbove.NothingToDraw()) return this;
 
             if (symbolAbove is not DrawingBoxSymbol drawingBoxSymbol)
                 return symbolAbove;

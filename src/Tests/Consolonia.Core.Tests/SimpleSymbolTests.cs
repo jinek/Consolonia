@@ -106,9 +106,9 @@ namespace Consolonia.Core.Tests
         [Test]
         public void IsWhiteSpace()
         {
-            Assert.That(new SimpleSymbol(string.Empty).IsWhiteSpace(), Is.True);
-            Assert.That(new SimpleSymbol(" ").IsWhiteSpace(), Is.False);
-            Assert.That(new SimpleSymbol("a").IsWhiteSpace(), Is.False);
+            Assert.That(new SimpleSymbol(string.Empty).NothingToDraw(), Is.True);
+            Assert.That(new SimpleSymbol(" ").NothingToDraw(), Is.False);
+            Assert.That(new SimpleSymbol("a").NothingToDraw(), Is.False);
         }
 
         [Test]
