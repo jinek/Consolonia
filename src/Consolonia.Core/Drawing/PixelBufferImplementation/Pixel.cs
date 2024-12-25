@@ -109,7 +109,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             if (pixelAbove.Background.Color.A == 0x0 /*todo: can be approximate, extract to extension method*/)
             {
-                newForeground = pixelAbove.Foreground.Color == Colors.Transparent
+                newForeground = pixelAbove.Foreground.NothingToDraw()
                     ? Foreground
                     : Foreground.Blend(pixelAbove.Foreground);
                 newIsCaret = pixelAbove.IsCaret | IsCaret;
@@ -123,9 +123,16 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 else
                 {
                     newForeground = new PixelForeground(Foreground.Symbol,
-                        MergeColors(Foreground.Color, pixelAbove.Background.Color), Foreground.Weight,
+                        MergeColors(Foreground.Color, pixelAbove.Background.Color), 
+                        Foreground.Weight,
                         Foreground.Style,
                         Foreground.TextDecoration);
+
+                    if (pixelAbove.Background.Color.A == 0xFF)
+                    {
+                        // non-transparent layer above
+                        newForeground = new PixelForeground();
+                    }
                 }
 
                 newIsCaret = pixelAbove.IsCaret;
