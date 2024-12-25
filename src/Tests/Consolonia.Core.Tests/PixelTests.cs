@@ -189,7 +189,8 @@ namespace Consolonia.Core.Tests
         {
             var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
                 new PixelBackground(Colors.White));
-            var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol(char.MinValue), Colors.White),new PixelBackground(Color.Parse("#7F000000")));
+            var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol(char.MinValue), Colors.White),
+                new PixelBackground(Color.Parse("#7F000000")));
             Pixel newPixel = pixel2.Blend(pixel);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
         }
