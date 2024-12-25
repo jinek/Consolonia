@@ -175,6 +175,26 @@ namespace Consolonia.Core.Tests
         }
 
         [Test]
+        public void TextBelowSemiTransparentBackgroundIsStillVisible()
+        {
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+                new PixelBackground(Colors.White));
+            var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F000000")));
+            Pixel newPixel = pixel2.Blend(pixel);
+            Assert.True(newPixel.Foreground.Symbol.Text == "x");
+        }
+
+        [Test]
+        public void TextBelowNoneTransparentNullCharacterIsStillVisible()
+        {
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+                new PixelBackground(Colors.White));
+            var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol(char.MinValue), Colors.White),new PixelBackground(Color.Parse("#7F000000")));
+            Pixel newPixel = pixel2.Blend(pixel);
+            Assert.True(newPixel.Foreground.Symbol.Text == "x");
+        }
+
+        [Test]
         public void HashCode()
         {
             var set = new HashSet<Pixel>();
