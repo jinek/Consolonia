@@ -7,10 +7,8 @@
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Panel>
-                    <Panel.Background>
-                        <drawing:ConsoleBrush Mode="Transparent" />
-                    </Panel.Background>
+                <Panel Background="{DynamicResource ThemeTransparentBrush}">
+                    
                     <!--<Border Name="PART_TransparencyFallback" IsHitTestVisible="False" Tag="thth">
                     <Border.Background>
                         <notImportant:ConsoleBrush Color="DarkGreen"/>

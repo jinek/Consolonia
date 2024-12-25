@@ -5,41 +5,40 @@
     <system:Double x:Key="FontSizeNormal">1</system:Double>
     <!-- Fluent Design Color Scheme -->
     <!-- Fluent: Black -->
-    <drawing:ConsoleBrush x:Key="ThemeForegroundBrush"
-                          Color="#323130" />
+    <SolidColorBrush x:Key="ThemeForegroundBrush"
+                     Color="#323130" />
     <!-- Fluent: White -->
-    <drawing:ConsoleBrush x:Key="ThemeBackgroundBrush"
-                          Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ThemeBackgroundBrush"
+                     Color="#FFFFFF" />
     <!-- Fluent: Communication Blue -->
-    <drawing:ConsoleBrush x:Key="ThemeChooserBackgroundBrush"
-                          Color="#0078D4" />
+    <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"
+                     Color="#0078D4" />
     <!-- Fluent: Communication Blue -->
-    <drawing:ConsoleBrush x:Key="ThemeActionBackgroundBrush"
-                          Color="#0078D4" />
+    <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
+                     Color="#0078D4" />
     <!-- Fluent: Light Gray (Neutral Background) -->
-    <drawing:ConsoleBrush x:Key="ThemeSelectionBackgroundBrush"
-                          Color="#EDEBE9" />
+    <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
+                     Color="#EDEBE9" />
     <!-- Fluent: Black (Neutral Foreground) -->
-    <drawing:ConsoleBrush x:Key="ThemeSelectionForegroundBrush"
-                          Color="#323130" />
+    <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
+                     Color="#323130" />
     <!-- Fluent: Light Gray (Alternative Background) -->
-    <drawing:ConsoleBrush x:Key="ThemeAlternativeBackgroundBrush"
-                          Color="#F3F2F1" />
+    <SolidColorBrush x:Key="ThemeAlternativeBackgroundBrush"
+                     Color="#F3F2F1" />
     <!-- Fluent: Gray (Neutral Stroke) -->
-    <drawing:ConsoleBrush x:Key="ThemeBorderBrush"
-                          Color="#D2D2D2" />
+    <SolidColorBrush x:Key="ThemeBorderBrush"
+                     Color="#D2D2D2" />
     <!-- Fluent: Yellow (Warning) -->
-    <drawing:ConsoleBrush x:Key="ThemeNoDisturbBrush"
-                          Color="#FFB900" />
+    <SolidColorBrush x:Key="ThemeNoDisturbBrush"
+                     Color="#FFB900" />
     <!-- Fluent: Semi-transparent Gray -->
-    <drawing:ConsoleBrush x:Key="ThemeShadeBrush"
-                          Color="#80767676"
-                          Mode="Shaded" />
+    <SolidColorBrush x:Key="ThemeShadeBrush"
+                     Color="#7F767676" />
     <!-- Fluent: Light Gray (Neutral Fill) -->
-    <drawing:ConsoleBrush x:Key="ThemePseudoShadeBrush"
-                          Color="#A0A0A0" />
+    <SolidColorBrush x:Key="ThemePseudoShadeBrush"
+                     Color="#A0A0A0" />
     <!-- Fluent: Red (Error) -->
-    <drawing:ConsoleBrush x:Key="ThemeErrorBrush"
-                          Color="#D83B01" />
+    <SolidColorBrush x:Key="ThemeErrorBrush"
+                     Color="#D83B01" />
 
 </ResourceDictionary>

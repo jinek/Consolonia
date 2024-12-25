@@ -280,11 +280,8 @@
                   TargetType="DataGrid">
         <Setter Property="Focusable"
                 Value="True" />
-        <Setter Property="RowBackground">
-            <Setter.Value>
-                <drawing:ConsoleBrush Mode="Transparent" />
-            </Setter.Value>
-        </Setter>
+        <Setter Property="RowBackground"
+                Value="{DynamicResource ThemeTransparentBrush}" />
         <Setter Property="HeadersVisibility"
                 Value="Column" />
         <Setter Property="HorizontalScrollBarVisibility"

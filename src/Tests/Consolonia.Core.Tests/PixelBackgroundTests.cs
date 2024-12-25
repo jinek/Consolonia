@@ -13,7 +13,6 @@ namespace Consolonia.Core.Tests
         {
             var pixelBackground = new PixelBackground();
             Assert.That(pixelBackground.Color, Is.EqualTo(Colors.Transparent));
-            Assert.That(pixelBackground.Mode, Is.EqualTo(PixelBackgroundMode.Transparent));
         }
 
         [Test]
@@ -21,18 +20,6 @@ namespace Consolonia.Core.Tests
         {
             var pixelBackground = new PixelBackground(Colors.Red);
             Assert.That(pixelBackground.Color, Is.EqualTo(Colors.Red));
-            Assert.That(pixelBackground.Mode, Is.EqualTo(PixelBackgroundMode.Colored));
-        }
-
-        [Test]
-        [TestCase(PixelBackgroundMode.Transparent)]
-        [TestCase(PixelBackgroundMode.Colored)]
-        [TestCase(PixelBackgroundMode.Shaded)]
-        public void ConstructorWithMode(PixelBackgroundMode mode)
-        {
-            var pixelBackground = new PixelBackground(mode, Colors.Red);
-            Assert.That(pixelBackground.Color.Equals(Colors.Red));
-            Assert.That(pixelBackground.Mode.Equals(mode));
         }
 
         [Test]
@@ -44,8 +31,8 @@ namespace Consolonia.Core.Tests
             Assert.That(pixelBackground.Equals(pixelBackground2));
             Assert.That(pixelBackground == pixelBackground2);
 
-            pixelBackground = new PixelBackground(PixelBackgroundMode.Transparent, Colors.Blue);
-            pixelBackground2 = new PixelBackground(PixelBackgroundMode.Transparent, Colors.Blue);
+            pixelBackground = new PixelBackground(Color.Parse("#000000FF"));
+            pixelBackground2 = new PixelBackground(Color.Parse("#000000FF"));
             Assert.That(pixelBackground.Equals((object)pixelBackground2));
             Assert.That(pixelBackground.Equals(pixelBackground2));
             Assert.That(pixelBackground == pixelBackground2);
@@ -59,8 +46,8 @@ namespace Consolonia.Core.Tests
             Assert.That(!pixelBackground.Equals(pixelBackground2));
             Assert.That(pixelBackground != pixelBackground2);
 
-            pixelBackground = new PixelBackground(PixelBackgroundMode.Colored, Colors.Red);
-            pixelBackground2 = new PixelBackground(PixelBackgroundMode.Transparent, Colors.Red);
+            pixelBackground = new PixelBackground(Colors.Red);
+            pixelBackground2 = new PixelBackground(Color.Parse("#7FFF0000"));
             Assert.That(!pixelBackground.Equals((object)pixelBackground2));
             Assert.That(!pixelBackground.Equals(pixelBackground2));
             Assert.That(pixelBackground != pixelBackground2);
@@ -73,8 +60,8 @@ namespace Consolonia.Core.Tests
             var pixelBackground2 = new PixelBackground(Colors.Red);
             Assert.That(pixelBackground.GetHashCode(), Is.EqualTo(pixelBackground2.GetHashCode()));
 
-            pixelBackground = new PixelBackground(PixelBackgroundMode.Transparent, Colors.Blue);
-            pixelBackground2 = new PixelBackground(PixelBackgroundMode.Transparent, Colors.Blue);
+            pixelBackground = new PixelBackground(Color.Parse("#000000FF"));
+            pixelBackground2 = new PixelBackground(Color.Parse("#000000FF"));
             Assert.That(pixelBackground.GetHashCode(), Is.EqualTo(pixelBackground2.GetHashCode()));
 
             // inequal hashcode

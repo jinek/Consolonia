@@ -22,7 +22,7 @@
                             <Grid.Styles>
                                 <Style Selector="Button.CalendarHeader">
                                     <Setter Property="Background"
-                                            Value="{drawing:ConsoleBrush Mode=Transparent}" />
+                                            Value="{DynamicResource ThemeTransparentBrush}" />
                                     <Setter Property="BorderThickness"
                                             Value="0" />
                                     <Setter Property="(helpers:ButtonExtensions.Shadow)"
@@ -33,7 +33,7 @@
                                 <Style Selector="Button.CalendarHeader:pressed  /template/ ContentPresenter">
                                     <!--todo: needs some color may be-->
                                     <Setter Property="Background"
-                                            Value="{drawing:ConsoleBrush Mode=Transparent}" />
+                                            Value="{DynamicResource ThemeTransparentBrush}" />
                                 </Style>
 
                                 <Style Selector="Button.CalendarNavigation">

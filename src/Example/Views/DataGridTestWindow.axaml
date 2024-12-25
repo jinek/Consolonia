@@ -45,11 +45,7 @@
                                 Margin="1,0">
                         <StackPanel.Styles>
                             <Style Selector="TextBlock">
-                                <Setter Property="Foreground">
-                                    <Setter.Value>
-                                        <drawing:ConsoleBrush Color="Gray" />
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="Foreground" Value="Gray"/>
                             </Style>
                         </StackPanel.Styles>
                         <TextBlock Text="Id" />

@@ -23,7 +23,6 @@ namespace Consolonia.Core.Tests
         {
             var pixel = new Pixel(new PixelBackground(Colors.Red));
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Red));
-            Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Colored));
         }
 
         [Test]
@@ -36,7 +35,6 @@ namespace Consolonia.Core.Tests
             Assert.That(pixel.Foreground.Weight, Is.EqualTo(FontWeight.Normal));
             Assert.That(pixel.Foreground.TextDecoration, Is.Null);
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Transparent));
-            Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Transparent));
         }
 
         [Test]
@@ -49,7 +47,6 @@ namespace Consolonia.Core.Tests
             Assert.That(pixel.Foreground.Weight, Is.EqualTo(FontWeight.Normal));
             Assert.That(pixel.Foreground.TextDecoration, Is.Null);
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Transparent));
-            Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Transparent));
         }
 
         [Test]
@@ -63,7 +60,6 @@ namespace Consolonia.Core.Tests
             Assert.IsNull(pixel.Foreground.Weight);
             Assert.IsNull(pixel.Foreground.TextDecoration);
             Assert.That(pixel.Background.Color, Is.EqualTo(Colors.Blue));
-            Assert.That(pixel.Background.Mode, Is.EqualTo(PixelBackgroundMode.Colored));
         }
 
         [Test]
@@ -147,7 +143,7 @@ namespace Consolonia.Core.Tests
         {
             var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
                 new PixelBackground(Colors.White));
-            var pixel2 = new Pixel(new PixelBackground(PixelBackgroundMode.Shaded));
+            var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F0000FF")));
             Pixel newPixel = pixel.Blend(pixel2);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
             // foreground should be lighter than original
@@ -165,7 +161,7 @@ namespace Consolonia.Core.Tests
         {
             var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
                 new PixelBackground(Colors.Black));
-            var pixel2 = new Pixel(new PixelBackground(PixelBackgroundMode.Shaded));
+            var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F0000FF")));
             Pixel newPixel = pixel.Blend(pixel2);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
             // foreground should be darker than original

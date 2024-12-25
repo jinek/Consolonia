@@ -84,7 +84,7 @@ namespace Consolonia.Core.Drawing
                 }
 
                 default:
-                    return ((SolidColorBrush)brush).Color;
+                    return ((ISolidColorBrush)brush).Color;
             }
         }
 

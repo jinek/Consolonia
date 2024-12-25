@@ -652,7 +652,7 @@ namespace Consolonia.Core.Drawing
             lineStyle = null;
             if (pen is not
                 {
-                    Brush: LineBrush or ImmutableSolidColorBrush,
+                    Brush: LineBrush or ISolidColorBrush,
                     // Thickness: 1,
                     DashStyle: null or { Dashes.Count: 0 },
                     LineCap: PenLineCap.Flat,
@@ -663,12 +663,15 @@ namespace Consolonia.Core.Drawing
                 return null;
             }
 
-            if (pen.Brush is LineBrush lineBrush)
+            IBrush brush = pen.Brush;
+            
+            if (brush is LineBrush lineBrush)
+            {
                 lineStyle = lineBrush.LineStyle;
+                brush = lineBrush.Brush;
+            }
 
-
-            Color consoleBrush = ((ImmutableSolidColorBrush)pen.Brush).Color;
-            return consoleBrush;
+            return ((ISolidColorBrush)brush).Color;
         }
 
         /// <summary>
@@ -720,7 +723,7 @@ namespace Consolonia.Core.Drawing
         private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
         {
             
-            if (foreground is not ImmutableSolidColorBrush immutableSolidColorBrush)
+            if (foreground is not ISolidColorBrush immutableSolidColorBrush)
             {
                 ConsoloniaPlatform.RaiseNotSupported(4);
                 return;
