@@ -7,7 +7,7 @@ namespace Consolonia
 {
     //todo: define xaml namespace for out classes
     /// <summary>
-    ///     Avalonia axaml extension which consumes ConsoleColor and produce AvaloniaColor
+    ///     Avalonia axaml extension which consumes ConsoleColor and produces AvaloniaColor
     /// </summary>
     public class EgaColorExtension : MarkupExtension
     {
