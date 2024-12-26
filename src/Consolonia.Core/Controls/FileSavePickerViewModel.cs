@@ -9,8 +9,7 @@ namespace Consolonia.Core.Controls
     {
         [ObservableProperty] private string _savePath = string.Empty;
 
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(SelectedFile))]
+        [ObservableProperty] [NotifyPropertyChangedFor(nameof(SelectedFile))]
         private IStorageItem _selectedItem;
 
         public FileSavePickerViewModel(FilePickerSaveOptions options)

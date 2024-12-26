@@ -27,27 +27,27 @@ namespace Consolonia.Core.Controls
             switch (e.Property.Name)
             {
                 case nameof(Text):
+                {
+                    if (!string.IsNullOrEmpty(Text))
                     {
-                        if (!string.IsNullOrEmpty(Text))
+                        var inlines = new InlineCollection();
+                        int iPos = Text.IndexOf('_', StringComparison.Ordinal);
+                        if (iPos >= 0 && iPos < Text.Length - 1)
                         {
-                            var inlines = new InlineCollection();
-                            int iPos = Text.IndexOf('_', StringComparison.Ordinal);
-                            if (iPos >= 0 && iPos < Text.Length - 1)
-                            {
-                                inlines.Add(new Run(Text[..iPos]));
-                                _accessRun = new Run(Text[++iPos..++iPos]);
-                                inlines.Add(_accessRun);
-                                inlines.Add(new Run(Text[iPos..]));
-                            }
-                            else
-                            {
-                                _accessRun = null;
-                                inlines.Add(new Run(Text));
-                            }
-
-                            Inlines = inlines;
+                            inlines.Add(new Run(Text[..iPos]));
+                            _accessRun = new Run(Text[++iPos..++iPos]);
+                            inlines.Add(_accessRun);
+                            inlines.Add(new Run(Text[iPos..]));
                         }
+                        else
+                        {
+                            _accessRun = null;
+                            inlines.Add(new Run(Text));
+                        }
+
+                        Inlines = inlines;
                     }
+                }
                     break;
 
                 case nameof(ShowAccessKey):

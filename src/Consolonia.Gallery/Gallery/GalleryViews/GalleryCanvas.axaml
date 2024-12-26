@@ -75,7 +75,7 @@
                           EndPoint="8,8">
                         <Line.Stroke>
                             <consolonia:LineBrush LineStyle="DoubleLine"
-                                               Brush="Red" />
+                                                  Brush="Red" />
                         </Line.Stroke>
                     </Line>
 

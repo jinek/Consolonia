@@ -49,7 +49,7 @@
                     HorizontalAlignment="Right">
                 <Border.BorderBrush>
                     <consolonia:LineBrush LineStyle="Bold"
-                                       Brush="Blue" />
+                                          Brush="Blue" />
                 </Border.BorderBrush>
                 <Border.Styles>
                     <Style Selector="Border">
@@ -89,7 +89,7 @@
                     HorizontalAlignment="Right">
                 <Border.BorderBrush>
                     <consolonia:LineBrush LineStyle="DoubleLine"
-                                       Brush="Blue" />
+                                          Brush="Blue" />
                 </Border.BorderBrush>
                 <Border.Styles>
                     <Style Selector="Border">

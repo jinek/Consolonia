@@ -1,4 +1,5 @@
 // ReSharper disable CheckNamespace
+
 namespace Consolonia.Controls
 {
     public enum LineStyle

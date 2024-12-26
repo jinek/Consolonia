@@ -18,68 +18,68 @@ namespace Consolonia.Core.Drawing
             switch (brush)
             {
                 case ILinearGradientBrush gradientBrush:
-                    {
-                        if (width <= 0)
-                            width = 1;
-                        if (height <= 0)
-                            height = 1;
-                        // Calculate the relative position within the gradient
-                        double horizontalRelativePosition = (double)x / width;
-                        double verticalRelativePosition = (double)y / height;
+                {
+                    if (width <= 0)
+                        width = 1;
+                    if (height <= 0)
+                        height = 1;
+                    // Calculate the relative position within the gradient
+                    double horizontalRelativePosition = (double)x / width;
+                    double verticalRelativePosition = (double)y / height;
 
-                        // Interpolate horizontal and vertical colors
-                        Color horizontalColor = InterpolateColor(gradientBrush, horizontalRelativePosition);
-                        Color verticalColor = InterpolateColor(gradientBrush, verticalRelativePosition);
+                    // Interpolate horizontal and vertical colors
+                    Color horizontalColor = InterpolateColor(gradientBrush, horizontalRelativePosition);
+                    Color verticalColor = InterpolateColor(gradientBrush, verticalRelativePosition);
 
-                        // Average the two colors to get the final color
-                        Color color = BlendColors(horizontalColor, verticalColor);
-                        return color;
-                    }
+                    // Average the two colors to get the final color
+                    Color color = BlendColors(horizontalColor, verticalColor);
+                    return color;
+                }
                 case IRadialGradientBrush radialBrush:
-                    {
-                        // Calculate the normalized center coordinates
-                        double centerX = radialBrush.Center.Point.X * width;
-                        double centerY = radialBrush.Center.Point.Y * height;
+                {
+                    // Calculate the normalized center coordinates
+                    double centerX = radialBrush.Center.Point.X * width;
+                    double centerY = radialBrush.Center.Point.Y * height;
 
-                        // Calculate the distance from the center
-                        double dx = x - centerX;
-                        double dy = y - centerY;
+                    // Calculate the distance from the center
+                    double dx = x - centerX;
+                    double dy = y - centerY;
 
-                        // Calculate the distance based on separate X and Y radii
-                        double distanceX = dx / (width * radialBrush.RadiusX.Scalar);
-                        double distanceY = dy / (height * radialBrush.RadiusY.Scalar);
-                        double distance = Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
+                    // Calculate the distance based on separate X and Y radii
+                    double distanceX = dx / (width * radialBrush.RadiusX.Scalar);
+                    double distanceY = dy / (height * radialBrush.RadiusY.Scalar);
+                    double distance = Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
 
-                        // Normalize the distance
-                        double normalizedDistance = distance /
-                                                    Math.Sqrt(radialBrush.RadiusX.Scalar * radialBrush.RadiusX.Scalar +
-                                                              radialBrush.RadiusY.Scalar * radialBrush.RadiusY.Scalar);
+                    // Normalize the distance
+                    double normalizedDistance = distance /
+                                                Math.Sqrt(radialBrush.RadiusX.Scalar * radialBrush.RadiusX.Scalar +
+                                                          radialBrush.RadiusY.Scalar * radialBrush.RadiusY.Scalar);
 
-                        // Clamp the normalized distance to [0, 1]
-                        normalizedDistance = Math.Min(Math.Max(normalizedDistance, 0), 1);
+                    // Clamp the normalized distance to [0, 1]
+                    normalizedDistance = Math.Min(Math.Max(normalizedDistance, 0), 1);
 
-                        // Interpolate the color based on the normalized distance
-                        Color color = InterpolateColor(radialBrush, normalizedDistance);
-                        return color;
-                    }
+                    // Interpolate the color based on the normalized distance
+                    Color color = InterpolateColor(radialBrush, normalizedDistance);
+                    return color;
+                }
                 case IConicGradientBrush conicBrush:
-                    {
-                        if (width <= 0)
-                            width = 1;
-                        if (height <= 0)
-                            height = 1;
-                        // Calculate the relative position within the gradient
-                        double horizontalRelativePosition = (double)x / width;
-                        double verticalRelativePosition = (double)y / height;
+                {
+                    if (width <= 0)
+                        width = 1;
+                    if (height <= 0)
+                        height = 1;
+                    // Calculate the relative position within the gradient
+                    double horizontalRelativePosition = (double)x / width;
+                    double verticalRelativePosition = (double)y / height;
 
-                        // Interpolate horizontal and vertical colors
-                        Color horizontalColor = InterpolateColor(conicBrush, horizontalRelativePosition);
-                        Color verticalColor = InterpolateColor(conicBrush, verticalRelativePosition);
+                    // Interpolate horizontal and vertical colors
+                    Color horizontalColor = InterpolateColor(conicBrush, horizontalRelativePosition);
+                    Color verticalColor = InterpolateColor(conicBrush, verticalRelativePosition);
 
-                        // Average the two colors to get the final color
-                        Color color = BlendColors(horizontalColor, verticalColor);
-                        return color;
-                    }
+                    // Average the two colors to get the final color
+                    Color color = BlendColors(horizontalColor, verticalColor);
+                    return color;
+                }
 
                 case ISolidColorBrush solidColorBrush:
                     return solidColorBrush.Color;
