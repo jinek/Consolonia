@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:galleryViews="clr-namespace:Consolonia.Gallery.Gallery.GalleryViews"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryColors">
     <UserControl.Resources>
@@ -16,7 +17,7 @@
     </UserControl.Resources>
 
     <!--Examples from Avalonia https://github.com/AvaloniaUI/Avalonia/blob/master/samples/ControlCatalog/Pages/TextBlockPage.xaml-->
-    <Grid RowDefinitions="Auto *"
+    <Grid RowDefinitions="Auto * *"
           ColumnDefinitions="* Auto">
 
         <StackPanel Grid.Row="0"
@@ -467,5 +468,30 @@
                        Foreground="YellowGreen"
                        Text="YellowGreen" />
         </WrapPanel>
+
+        <ItemsControl Grid.Row="2"
+                      Height="16"
+                      x:Name="FourBitControl">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Background="{DynamicResource ThemeBackgroundBrush}"
+                               Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="galleryViews:ConsoleColorItem">
+                    <DockPanel LastChildFill="True"
+                               Margin="1,1,0,0">
+                        <Rectangle Width="2"
+                                   Margin="0,0,1,0"
+                                   Height="1"
+                                   DockPanel.Dock="Left"
+                                   Fill="{Binding Brush}" />
+                        <TextBlock Text="{Binding Name}"
+                                   Foreground="{Binding Brush}" />
+                    </DockPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

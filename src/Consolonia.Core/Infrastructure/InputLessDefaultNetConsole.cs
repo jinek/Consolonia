@@ -69,6 +69,9 @@ namespace Consolonia.Core.Infrastructure
         public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
+            //todo: performance of retrieval of the service, at least can be retrieved once
+            var consoleColorMode = AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>();
+
             PauseTask?.Wait();
             SetCaretPosition(bufferPoint);
 
@@ -82,17 +85,10 @@ namespace Consolonia.Core.Infrastructure
             if (style == FontStyle.Italic)
                 sb.Append(Esc.Italic);
 
-            sb.Append(Esc.Background(background));
+            WriteText(sb.ToString());
+            sb.Clear();
 
-            sb.Append(Esc.Foreground(weight switch
-            {
-                FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black
-                    or FontWeight.ExtraBlack
-                    => foreground.Brighten(background),
-                FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light
-                    => foreground.Shade(background),
-                _ => foreground
-            }));
+            consoleColorMode.SetAttributes(this, background, foreground, weight);
 
             sb.Append(str);
             sb.Append(Esc.Reset);

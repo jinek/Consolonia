@@ -1,43 +1,26 @@
 using System;
 using System.Diagnostics;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using NUnit.Framework;
 
 #pragma warning disable CA1305 // Specify IFormatProvider
 
-namespace Consolonia.Core.Tests
+namespace Consolonia.Core.Tests.WithLifetimeFixture
 {
-    public class ContextApp : Application
-    {
-    }
-
     [TestFixture]
-    public class DrawingContextImplTests : IDisposable
+    public class DrawingContextImplTests
     {
-        [OneTimeSetUp]
-        public void Setup()
-        {
-            _scope = AvaloniaLocator.EnterScope();
-            _lifetime = ApplicationStartup.BuildLifetime<ContextApp>(new DummyConsole(), Array.Empty<string>());
-        }
-
-        private IDisposable _scope;
-        private ClassicDesktopStyleApplicationLifetime _lifetime;
-        private bool _disposedValue;
-
         [Test]
         public void BufferInitialized()
         {
-            ArgumentNullException.ThrowIfNull(_lifetime);
+            ArgumentNullException.ThrowIfNull(Application.Current.ApplicationLifetime);
             var consoleWindow = new ConsoleWindow();
             PixelBuffer buffer = consoleWindow.PixelBuffer;
 
@@ -48,7 +31,7 @@ namespace Consolonia.Core.Tests
                 Assert.IsTrue(pixel.Width == 1);
                 Assert.IsTrue(pixel.Foreground.Symbol.Text == " ");
                 Assert.IsTrue(pixel.Foreground.Color == Colors.Transparent);
-                Assert.IsTrue(pixel.Background.Color == Colors.Transparent);
+                Assert.IsTrue(pixel.Background.Color == Colors.Black);
             }
         }
 
@@ -346,13 +329,13 @@ namespace Consolonia.Core.Tests
                 {
                     Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
                 }
                 else if (y == 0 || y == bottom)
                 {
                     Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
                 }
                 else
                 {
@@ -389,7 +372,7 @@ namespace Consolonia.Core.Tests
                     // outside of box
                     Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
                 }
                 else if (x == left && y == top)
                 {
@@ -485,7 +468,7 @@ namespace Consolonia.Core.Tests
                     // outside of box
                     Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent);
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
                 }
                 else if (x == left && y == top)
                 {
@@ -578,39 +561,6 @@ namespace Consolonia.Core.Tests
         {
             dc.Transform = new Matrix(1, 0, 0, 1, x, y);
             return new PixelBufferCoordinate(x, y);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing)
-                {
-                    // dispose managed state (managed objects)
-                    _scope?.Dispose();
-                    _lifetime?.Dispose();
-                    _scope = null;
-                    _lifetime = null;
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                _disposedValue = true;
-            }
-        }
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~DrawingContextImplTests()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

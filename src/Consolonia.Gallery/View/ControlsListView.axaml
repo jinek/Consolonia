@@ -30,6 +30,7 @@
                           x:Name="ThemeCombo"
                           SelectionChanged="ComboBox_SelectionChanged"
                           IsTabStop="false"
+                          SelectedIndex="0"
                           HorizontalContentAlignment="Stretch">
                     <ComboBoxItem Content="Material"
                                   IsSelected="True" />

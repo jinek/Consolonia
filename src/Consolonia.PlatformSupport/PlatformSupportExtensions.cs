@@ -1,6 +1,8 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
@@ -25,7 +27,36 @@ namespace Consolonia
                 _ => new DefaultNetConsole()
             };
 
-            return builder.UseConsole(console);
+            return builder.UseConsole(console).UseAutoDetectConsoleColorMode();
+        }
+
+        public static AppBuilder UseAutoDetectConsoleColorMode(this AppBuilder builder)
+        {
+            IConsoleColorMode result;
+            if (Design.IsDesignMode)
+                result = new RgbConsoleColorMode();
+            else
+                switch (Environment.OSVersion.Platform)
+                {
+                    case PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT:
+                    case PlatformID.MacOSX:
+                        result = new RgbConsoleColorMode();
+                        break;
+                    case PlatformID.Unix:
+                        string term = Environment.GetEnvironmentVariable("TERM");
+                        result = term switch
+                        {
+                            "linux" or "xterm-direct" or "xterm-color" => new EgaConsoleColorMode(),
+                            "xterm-256color" or "screen-256color" or "tmux-256color" => new RgbConsoleColorMode(),
+                            _ => new EgaConsoleColorMode()
+                        };
+                        break;
+                    default:
+                        result = new EgaConsoleColorMode();
+                        break;
+                }
+
+            return builder.UseConsoleColorMode(result);
         }
     }
 }
