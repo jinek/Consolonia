@@ -5,6 +5,7 @@ using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Controls
 {
+    // ReSharper disable CheckNamespace
     public class LineBrush : Animatable, IImmutableBrush
     {
         //todo: we don't really implement immutable brush

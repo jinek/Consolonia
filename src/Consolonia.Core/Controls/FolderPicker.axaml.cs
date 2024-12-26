@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Consolonia.Controls;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Controls

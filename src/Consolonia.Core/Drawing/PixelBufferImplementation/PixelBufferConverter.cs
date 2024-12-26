@@ -19,16 +19,16 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             ArgumentNullException.ThrowIfNull(pixels);
             int i = 0;
             for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-            {
-                JToken pixelRecord = pixels[i++];
-                ArgumentNullException.ThrowIfNull(pixelRecord);
-                JsonReader rdr = pixelRecord.CreateReader()!;
-                ArgumentNullException.ThrowIfNull(rdr);
-                var pixel = serializer.Deserialize<Pixel>(rdr);
-                ArgumentNullException.ThrowIfNull(pixel);
-                pixelBuffer[x, y] = pixel;
-            }
+                for (ushort x = 0; x < width; x++)
+                {
+                    JToken pixelRecord = pixels[i++];
+                    ArgumentNullException.ThrowIfNull(pixelRecord);
+                    JsonReader rdr = pixelRecord.CreateReader()!;
+                    ArgumentNullException.ThrowIfNull(rdr);
+                    var pixel = serializer.Deserialize<Pixel>(rdr);
+                    ArgumentNullException.ThrowIfNull(pixel);
+                    pixelBuffer[x, y] = pixel;
+                }
 
             return pixelBuffer;
         }
@@ -43,8 +43,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             writer.WritePropertyName("Pixels");
             writer.WriteStartArray();
             for (ushort y = 0; y < value.Height; y++)
-            for (ushort x = 0; x < value.Width; x++)
-                serializer.Serialize(writer, value[x, y]);
+                for (ushort x = 0; x < value.Width; x++)
+                    serializer.Serialize(writer, value[x, y]);
             writer.WriteEndArray();
             writer.WriteEndObject();
         }

@@ -1,7 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Interactivity;
-using Consolonia.Core.Controls;
+using Consolonia.Controls;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
