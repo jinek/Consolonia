@@ -3,7 +3,8 @@ using Avalonia.Animation;
 using Avalonia.Media;
 using Consolonia.Core.InternalHelpers;
 
-namespace Consolonia.Core.Drawing
+// ReSharper disable CheckNamespace
+namespace Consolonia.Controls
 {
     public class LineBrush : Animatable, IImmutableBrush
     {

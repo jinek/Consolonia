@@ -1,8 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="clr-namespace:Consolonia.Core.Controls;assembly=Consolonia.Core"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers"
-        xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
+        xmlns:controls="clr-namespace:Consolonia.Controls;assembly=Consolonia.Core"
+        xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers">
     <Styles.Resources>
         <Thickness x:Key="ConsoloniaDialogWindowBorderMargin">1,0</Thickness>
     </Styles.Resources>
@@ -46,7 +45,7 @@
                             <Border BorderThickness="{TemplateBinding BorderThickness}"
                                     Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}">
                                 <Border.BorderBrush>
-                                    <drawing:LineBrush
+                                    <controls:LineBrush
                                         Brush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                         LineStyle="DoubleLine" />
                                 </Border.BorderBrush>

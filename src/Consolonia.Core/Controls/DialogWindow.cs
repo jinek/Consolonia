@@ -10,9 +10,9 @@ using Avalonia.Input;
 using Avalonia.VisualTree;
 using Consolonia.Core.Controls.Dialog;
 
+// ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBeProtected.Global
-
-namespace Consolonia.Core.Controls
+namespace Consolonia.Controls
 {
     [TemplatePart("PART_ContentPresenter", typeof(ContentPresenter))]
     public class DialogWindow : UserControl

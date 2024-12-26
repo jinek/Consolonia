@@ -6,6 +6,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Reactive;
 using Avalonia.VisualTree;
+using Consolonia.Controls;
 
 namespace Consolonia.Core.Controls.Dialog
 {

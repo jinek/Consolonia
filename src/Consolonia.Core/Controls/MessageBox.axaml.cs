@@ -4,7 +4,9 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Consolonia.Core.Controls
+// ReSharper disable CheckNamespace
+
+namespace Consolonia.Controls
 {
     public partial class MessageBox : DialogWindow
     {
