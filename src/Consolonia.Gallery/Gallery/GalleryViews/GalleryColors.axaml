@@ -468,26 +468,26 @@
                        Foreground="YellowGreen"
                        Text="YellowGreen" />
         </WrapPanel>
-        
+
         <ItemsControl Grid.Row="2"
                       Height="16"
                       x:Name="FourBitControl">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Background="{DynamicResource ThemeBackgroundBrush}"
-                               Orientation="Vertical"/>
+                               Orientation="Vertical" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="galleryViews:ConsoleColorItem">
-                    <DockPanel LastChildFill="True" Margin="1,1,0,0">
+                    <DockPanel LastChildFill="True"
+                               Margin="1,1,0,0">
                         <Rectangle Width="2"
                                    Margin="0,0,1,0"
                                    Height="1"
                                    DockPanel.Dock="Left"
                                    Fill="{Binding Brush}" />
                         <TextBlock Text="{Binding Name}"
-                                   
                                    Foreground="{Binding Brush}" />
                     </DockPanel>
                 </DataTemplate>

@@ -21,7 +21,6 @@ namespace Consolonia.Gallery
             Styles.Add(new MaterialTheme());
             //todo: automatically switch to turbovision if only 16 colors are supported
             /*Styles.Add(new TurboVisionTheme());*/
-            
         }
     }
 }

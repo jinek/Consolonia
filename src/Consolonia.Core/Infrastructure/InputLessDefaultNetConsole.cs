@@ -89,7 +89,7 @@ namespace Consolonia.Core.Infrastructure
             sb.Clear();
 
             consoleColorMode.SetAttributes(this, background, foreground, weight);
-            
+
             sb.Append(str);
             sb.Append(Esc.Reset);
 
