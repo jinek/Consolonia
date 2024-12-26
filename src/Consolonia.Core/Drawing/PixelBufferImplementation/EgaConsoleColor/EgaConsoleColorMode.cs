@@ -62,7 +62,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor
                 ConsoloniaPlatform.RaiseNotSupported(62144, foreground);
             
 
-            (ConsoleColor foregroundConsoleColor, mode) = ConvertToConsoleColorMode(foreground);
+            (ConsoleColor foregroundConsoleColor, _) = ConvertToConsoleColorMode(foreground);
             //todo: if mode is transparent, don't print foreground. if shaded - shade it
 
             var sb = new StringBuilder();
