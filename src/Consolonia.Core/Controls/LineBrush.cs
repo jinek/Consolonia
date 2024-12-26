@@ -3,7 +3,7 @@ using Avalonia.Animation;
 using Avalonia.Media;
 using Consolonia.Core.InternalHelpers;
 
-namespace Consolonia.Core.Drawing
+namespace Consolonia.Controls
 {
     public class LineBrush : Animatable, IImmutableBrush
     {

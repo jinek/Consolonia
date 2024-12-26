@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+             xmlns:consolonia="clr-namespace:Consolonia.Controls;assembly=Consolonia.Core"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryAnimatedLines">
     <Panel>
         <Panel Width="40"
@@ -48,7 +48,7 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="Bold"
+                    <consolonia:LineBrush LineStyle="Bold"
                                        Brush="Blue" />
                 </Border.BorderBrush>
                 <Border.Styles>
@@ -88,7 +88,7 @@
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Right">
                 <Border.BorderBrush>
-                    <drawing:LineBrush LineStyle="DoubleLine"
+                    <consolonia:LineBrush LineStyle="DoubleLine"
                                        Brush="Blue" />
                 </Border.BorderBrush>
                 <Border.Styles>

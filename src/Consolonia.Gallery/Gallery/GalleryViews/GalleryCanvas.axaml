@@ -1,6 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core"
+             xmlns:consolonia="clr-namespace:Consolonia.Controls;assembly=Consolonia.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
@@ -74,7 +74,7 @@
                     <Line StartPoint="4,4"
                           EndPoint="8,8">
                         <Line.Stroke>
-                            <drawing:LineBrush LineStyle="DoubleLine"
+                            <consolonia:LineBrush LineStyle="DoubleLine"
                                                Brush="Red" />
                         </Line.Stroke>
                     </Line>
