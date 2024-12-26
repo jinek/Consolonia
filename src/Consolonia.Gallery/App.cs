@@ -16,14 +16,21 @@ namespace Consolonia.Gallery
 
         public App()
         {
+            
+        }
+
+        public override void OnFrameworkInitializationCompleted()
+        {
             /*Styles.Add(new TurboVisionBlackTheme());*/
             /*Styles.Add(new TurboVisionDarkTheme());*/
             /*Styles.Add(new FluentTheme());*/
-            
+
             if(((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode())
                 Styles.Add(new MaterialTheme());
             else
                 Styles.Add(new TurboVisionTheme());
+            
+            base.OnFrameworkInitializationCompleted();
         }
     }
 }
