@@ -2,7 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Consolonia.Core.Controls;
+using Consolonia.Controls;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {

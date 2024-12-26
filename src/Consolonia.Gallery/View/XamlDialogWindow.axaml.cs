@@ -2,7 +2,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
-using Consolonia.Core.Controls;
+using Consolonia.Controls;
 
 namespace Consolonia.Gallery.View
 {
