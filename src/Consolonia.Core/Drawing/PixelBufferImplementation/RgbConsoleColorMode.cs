@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using Avalonia.Media;
 using Consolonia.Core.Infrastructure;

@@ -13,16 +13,34 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
     [SetUpFixture]
     public class LifetimeSetupFixture : IDisposable
     {
-        private class ContextApp2 : Application;
-        
+        private bool _disposedValue;
+        private ClassicDesktopStyleApplicationLifetime _lifetime;
+
+        private IDisposable _scope;
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~DrawingContextImplTests()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(true);
+            SuppressFinalize(this);
+        }
+
         [OneTimeSetUp]
         public void Setup()
         {
             AvaloniaLocator.Current = new AvaloniaLocator()
                 .Bind<IConsole>().ToConstant(new UnitTestConsole(new PixelBufferSize(100, 100)));
-            
+
             _scope = AvaloniaLocator.EnterScope();
-            _lifetime = ApplicationStartup.BuildLifetime<ContextApp2>(new DummyConsole(), new RgbConsoleColorMode(), []);
+            _lifetime = ApplicationStartup.BuildLifetime<ContextApp2>(new DummyConsole(), new RgbConsoleColorMode(),
+                []);
         }
 
         [OneTimeTearDown]
@@ -30,11 +48,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             Dispose();
         }
-        
-        private IDisposable _scope;
-        private ClassicDesktopStyleApplicationLifetime _lifetime;
-        private bool _disposedValue;
-        
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
@@ -54,18 +68,6 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             }
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~DrawingContextImplTests()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(true);
-            SuppressFinalize(this);
-        }
+        private class ContextApp2 : Application;
     }
 }

@@ -55,7 +55,7 @@ namespace Consolonia
                         result = new EgaConsoleColorMode();
                         break;
                 }
-            
+
             return builder.UseConsoleColorMode(result);
         }
     }
