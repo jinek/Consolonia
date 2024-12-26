@@ -69,6 +69,7 @@ namespace Consolonia.Core.Infrastructure
         public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
+            //todo: performance of retrieval of the service, at least can be retrieved once
             var consoleColorMode = AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>();
 
             PauseTask?.Wait();

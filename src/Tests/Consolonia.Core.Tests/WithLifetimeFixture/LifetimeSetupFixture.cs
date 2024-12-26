@@ -3,6 +3,8 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Dummy;
+using Consolonia.Core.Infrastructure;
+using Consolonia.NUnit;
 using NUnit.Framework;
 using static System.GC;
 
@@ -15,7 +17,10 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         
         [OneTimeSetUp]
         public void Setup()
-        {//todo: setup copypasted from another test. Can be extracted to a base class?
+        {
+            AvaloniaLocator.Current = new AvaloniaLocator()
+                .Bind<IConsole>().ToConstant(new UnitTestConsole(new PixelBufferSize(100, 100)));
+            
             _scope = AvaloniaLocator.EnterScope();
             _lifetime = ApplicationStartup.BuildLifetime<ContextApp2>(new DummyConsole(), new RgbConsoleColorMode(), []);
         }

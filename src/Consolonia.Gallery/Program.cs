@@ -1,6 +1,5 @@
 using System;
 using Avalonia;
-using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 
 namespace Consolonia.Gallery
 {
