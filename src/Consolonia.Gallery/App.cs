@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Threading;
+using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
 using Consolonia.Themes;
 
@@ -18,9 +19,11 @@ namespace Consolonia.Gallery
             /*Styles.Add(new TurboVisionBlackTheme());*/
             /*Styles.Add(new TurboVisionDarkTheme());*/
             /*Styles.Add(new FluentTheme());*/
-            Styles.Add(new MaterialTheme());
-            //todo: automatically switch to turbovision if only 16 colors are supported
-            /*Styles.Add(new TurboVisionTheme());*/
+            
+            if(((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode())
+                Styles.Add(new MaterialTheme());
+            else
+                Styles.Add(new TurboVisionTheme());
         }
     }
 }
