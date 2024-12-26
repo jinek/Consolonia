@@ -35,7 +35,10 @@ namespace Consolonia.Core.Infrastructure
             return Dispatcher.UIThread.InvokeAsync(() => { }).GetTask();
         }
 
+#pragma warning disable CA1822
+        // ReSharper disable once MemberCanBeMadeStatic.Global It can be static only because we rely on static locator currently. I bet it will change in the future
         public bool IsRgbColorMode()
+#pragma warning restore CA1822
         {
             IConsoleColorMode consoleColorMode = AvaloniaLocator.Current.GetService<IConsoleColorMode>()
                                                  ?? throw new ConsoloniaException("Console color mode has not been initialized");
