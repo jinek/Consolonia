@@ -3,6 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 using Consolonia.Core.Infrastructure;
 
 // ReSharper disable UnusedMember.Global //todo: how to disable it for public methods?
@@ -27,12 +29,17 @@ namespace Consolonia
 
         public static AppBuilder UseStandardConsole(this AppBuilder builder)
         {
-            return builder.UseConsole(new DefaultNetConsole());
+            return builder.UseConsole(new DefaultNetConsole()).UseConsoleColorMode(new EgaConsoleColorMode());
         }
 
         public static AppBuilder UseConsole(this AppBuilder builder, IConsole console)
         {
             return builder.With(console);
+        }
+
+        public static AppBuilder UseConsoleColorMode(this AppBuilder builder, IConsoleColorMode consoleColorMode)
+        {
+            return builder.With(consoleColorMode);
         }
 
         public static AppBuilder UseConsolonia(this AppBuilder builder)

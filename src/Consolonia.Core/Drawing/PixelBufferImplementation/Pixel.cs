@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Avalonia;
 using Avalonia.Media;
 using Newtonsoft.Json;
 
@@ -149,29 +150,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <returns>source blended into target</returns>
         private static Color MergeColors(Color target, Color source)
         {
-            // by chatGPT o1
-            // Convert alpha from [0..255] to [0..1]
-            float fgAlpha = source.A / 255f;
-            float bgAlpha = target.A / 255f;
-
-            // Compute output alpha
-            float outAlpha = fgAlpha + bgAlpha * (1 - fgAlpha);
-
-            // If there's no alpha in the result, return transparent
-            if (outAlpha <= 0f) return Color.FromArgb(0, 0, 0, 0);
-
-            // Calculate the composited color channels, also converting channels to [0..1]
-            float outR = (source.R / 255f * fgAlpha + target.R / 255f * bgAlpha * (1 - fgAlpha)) / outAlpha;
-            float outG = (source.G / 255f * fgAlpha + target.G / 255f * bgAlpha * (1 - fgAlpha)) / outAlpha;
-            float outB = (source.B / 255f * fgAlpha + target.B / 255f * bgAlpha * (1 - fgAlpha)) / outAlpha;
-
-            // Convert back to [0..255]
-            byte a = (byte)(outAlpha * 255f);
-            byte r = (byte)(outR * 255f);
-            byte g = (byte)(outG * 255f);
-            byte b = (byte)(outB * 255f);
-
-            return Color.FromArgb(a, r, g, b);
+            var consoleColorMode = AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>();
+            return consoleColorMode.Blend(target, source);
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)

@@ -1,5 +1,6 @@
 using System;
 using Avalonia;
+using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 
 namespace Consolonia.Gallery
 {
@@ -17,7 +18,8 @@ namespace Consolonia.Gallery
         {
             return AppBuilder.Configure<App>()
                 .UseConsolonia()
-                .UseAutoDetectedConsole()
+                .UseStandardConsole()
+                /*.UseConsoleColorMode(new EgaConsoleColorMode())*/
                 .LogToException();
         }
     }

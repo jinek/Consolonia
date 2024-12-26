@@ -143,7 +143,7 @@ namespace Consolonia.Core.Drawing
             {
                 _console.SetCaretPosition((PixelBufferCoordinate)caretPosition);
                 _console.WriteText(pixelBuffer.CaretStyle switch
-                {
+                {//todo: may be better to move low level stuff to IConsole
                     CaretStyle.BlinkingBar => Esc.BlinkingBarCursor,
                     CaretStyle.SteadyBar => Esc.SteadyBarCursor,
                     CaretStyle.BlinkingBlock => Esc.BlinkingBlockCursor,

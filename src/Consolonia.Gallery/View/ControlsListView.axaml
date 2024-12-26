@@ -31,10 +31,9 @@
                           SelectionChanged="ComboBox_SelectionChanged"
                           IsTabStop="false"
                           HorizontalContentAlignment="Stretch">
-                    <ComboBoxItem Content="Material"
-                                  IsSelected="True" />
+                    <ComboBoxItem Content="TurboVision" IsSelected="True" />
+                    <ComboBoxItem Content="Material"/>
                     <ComboBoxItem Content="Fluent" />
-                    <ComboBoxItem Content="TurboVision" />
                     <ComboBoxItem Content="TurboVisionDark" />
                     <ComboBoxItem Content="TurboVisionBlack" />
                 </ComboBox>

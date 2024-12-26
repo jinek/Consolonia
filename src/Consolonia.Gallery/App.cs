@@ -15,10 +15,10 @@ namespace Consolonia.Gallery
 
         public App()
         {
-            /*Styles.Add(new TurboVisionTheme());*/
+            Styles.Add(new TurboVisionTheme());
             /*Styles.Add(new TurboVisionBlackTheme());*/
             /*Styles.Add(new TurboVisionDarkTheme());*/
-            Styles.Add(new FluentTheme());
+            /*Styles.Add(new FluentTheme());*/
             /*Styles.Add(new MaterialTheme());*/
         }
     }
