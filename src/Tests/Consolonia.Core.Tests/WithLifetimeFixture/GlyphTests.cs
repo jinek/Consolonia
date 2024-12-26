@@ -1,7 +1,7 @@
 using Consolonia.Core.Helpers;
 using NUnit.Framework;
 
-namespace Consolonia.Core.Tests
+namespace Consolonia.Core.Tests.WithLifetimeFixture
 {
     [TestFixture]
     public class GlyphTests

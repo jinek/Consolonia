@@ -17,12 +17,12 @@ namespace Consolonia
     {
         public static void StartConsolonia<TApp>(params string[] args) where TApp : Application, new()
         {
-            StartConsolonia<TApp>(new DefaultNetConsole(), args);
+            StartConsolonia<TApp>(new DefaultNetConsole(), new EgaConsoleColorMode(), args);
         }
 
-        public static void StartConsolonia<TApp>(IConsole console, params string[] args) where TApp : Application, new()
+        public static void StartConsolonia<TApp>(IConsole console, IConsoleColorMode consoleColorMode, params string[] args) where TApp : Application, new()
         {
-            ClassicDesktopStyleApplicationLifetime lifetime = BuildLifetime<TApp>(console, args);
+            ClassicDesktopStyleApplicationLifetime lifetime = BuildLifetime<TApp>(console, consoleColorMode, args);
 
             lifetime.Start(args);
         }
@@ -56,12 +56,13 @@ namespace Consolonia
                 }, nameof(ConsoloniaRenderInterface));
         }
 
-        public static ClassicDesktopStyleApplicationLifetime BuildLifetime<TApp>(IConsole console, string[] args)
+        public static ClassicDesktopStyleApplicationLifetime BuildLifetime<TApp>(IConsole console, IConsoleColorMode consoleColorMode, string[] args)
             where TApp : Application, new()
         {
             AppBuilder consoloniaAppBuilder = AppBuilder.Configure<TApp>()
                 .UseConsole(console)
                 .UseConsolonia()
+                .UseConsoleColorMode(consoleColorMode)
                 .LogToException();
 
             return CreateLifetime(consoloniaAppBuilder, args);

@@ -4,7 +4,7 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Consolonia.Core.Tests
+namespace Consolonia.Core.Tests.WithLifetimeFixture
 {
     [TestFixture]
     public class DrawingBoxSymbolTests

@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 [assembly: CLSCompliant(false)] //todo: should we make it compliant?
 
-namespace Consolonia.Core.Tests
+namespace Consolonia.Core.Tests.WithLifetimeFixture
 {
     [SetUpFixture]
     public class AllTests

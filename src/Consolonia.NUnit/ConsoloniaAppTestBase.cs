@@ -45,7 +45,7 @@ namespace Consolonia.NUnit
             {
                 _disposeTaskCompletionSource = new TaskCompletionSource();
                 _scope = AvaloniaLocator.EnterScope();
-                _lifetime = ApplicationStartup.BuildLifetime<TApp>(UITest, Args);
+                _lifetime = ApplicationStartup.BuildLifetime<TApp>(UITest, new RgbConsoleColorMode(), Args);
                 UITest.SetupLifetime(_lifetime);
                 setupTaskSource.SetResult();
                 _lifetime.Start(Args);
