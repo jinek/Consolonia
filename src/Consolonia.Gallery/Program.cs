@@ -18,8 +18,7 @@ namespace Consolonia.Gallery
         {
             return AppBuilder.Configure<App>()
                 .UseConsolonia()
-                .UseStandardConsole()
-                /*.UseConsoleColorMode(new EgaConsoleColorMode())*/
+                .UseAutoDetectedConsole()
                 .LogToException();
         }
     }

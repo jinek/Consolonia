@@ -75,6 +75,7 @@ namespace Consolonia
                 ShutdownMode = ShutdownMode.OnMainWindowClose
             };
             builder.SetupWithLifetime(lifetime);
+            
             return lifetime;
         }
 

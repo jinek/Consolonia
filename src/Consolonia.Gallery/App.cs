@@ -15,10 +15,12 @@ namespace Consolonia.Gallery
 
         public App()
         {
-            Styles.Add(new TurboVisionTheme());
             /*Styles.Add(new TurboVisionBlackTheme());*/
             /*Styles.Add(new TurboVisionDarkTheme());*/
-            /*Styles.Add(new FluentTheme());*/
+            
+            Styles.Add(new FluentTheme());
+            //todo: automatically switch to turbovision if only 16 colors are supported
+            /*Styles.Add(new TurboVisionTheme());*/
             /*Styles.Add(new MaterialTheme());*/
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using Avalonia;
+using Avalonia.Media;
 using Newtonsoft.Json;
 
 // ReSharper disable UnusedMember.Global
@@ -26,7 +27,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             // blended into it.
             for (ushort y = 0; y < height; y++)
             for (ushort x = 0; x < width; x++)
-                _buffer[x, y] = Pixel.Space;
+                _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
         }
 
         public ushort Width { get; }

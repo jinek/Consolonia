@@ -1,9 +1,11 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -15,6 +17,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Random rnd = Random.Shared;
             DataContext = new RgbModel
                 { Color = Color.FromRgb((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255)) };
+
+            FourBitControl.ItemsSource = ConsoleColorItem.GetAll();
         }
 
         private void Random_Click(object sender, RoutedEventArgs e)
@@ -82,5 +86,23 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public string Name { get; set; }
 
         public Color Color { get; set; }
+    }
+
+    public class ConsoleColorItem
+    {
+        public Brush Brush { get; set; }
+
+        public string Name { get; set; }
+
+        public static ConsoleColorItem[] GetAll()
+        {
+            return Enum.GetValues<ConsoleColor>()
+                .Select(c => new ConsoleColorItem
+                {
+                    Brush = new SolidColorBrush(EgaConsoleColorMode.ConvertToAvaloniaColor(c)),
+                    Name = c.ToString()
+                })
+                .ToArray();
+        }
     }
 }

@@ -42,8 +42,6 @@ namespace Consolonia.Gallery.View
             else
                 _commandLineArgs = [];
 
-            Styles.Add(new MaterialTheme());
-
             TrySetupSelected();
         }
 
@@ -110,7 +108,7 @@ namespace Consolonia.Gallery.View
                 !Enum.TryParse(themeName, out Themes selectedTheme))
                 return;
 
-            Styles[0] = selectedTheme switch
+            Application.Current.Styles[0] = selectedTheme switch
             {
                 Themes.Material => new MaterialTheme(),
                 Themes.Fluent => new FluentTheme(),

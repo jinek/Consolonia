@@ -1,4 +1,5 @@
-namespace Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor
+// ReSharper disable once CheckNamespace
+namespace Consolonia
 {
     public enum EgaColorMode : byte
     {

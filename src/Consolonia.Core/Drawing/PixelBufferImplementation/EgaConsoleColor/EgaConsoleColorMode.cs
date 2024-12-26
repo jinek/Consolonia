@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 using Avalonia.Media;
 using Consolonia.Core.Infrastructure;
 
@@ -57,19 +58,58 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor
             FontWeight? weight)
         {
             (ConsoleColor backgroundConsoleColor, EgaColorMode mode) = ConvertToConsoleColorMode(background);
-            /* todo: bring back and below
-             if (mode is not EgaColorMode.Colored)
-                ConsoloniaPlatform.RaiseNotSupported(62143, background);*/
+            if (mode is not EgaColorMode.Colored)
+                ConsoloniaPlatform.RaiseNotSupported(62144, foreground);
+            
 
             (ConsoleColor foregroundConsoleColor, mode) = ConvertToConsoleColorMode(foreground);
-            /*if (mode is not EgaColorMode.Colored)
-                ConsoloniaPlatform.RaiseNotSupported(62144, foreground);*/
+            //todo: if mode is transparent, don't print foreground. if shaded - shade it
 
-            Console.ForegroundColor = foregroundConsoleColor;
-            Console.BackgroundColor = backgroundConsoleColor;
+            var sb = new StringBuilder();
+
+            // Append ANSI escape sequence for background color
+            sb.Append(GetAnsiCode(backgroundConsoleColor, true));
+
+            // Append ANSI escape sequence for foreground color
+            sb.Append(GetAnsiCode(foregroundConsoleColor, false));
+            console.WriteText(sb.ToString());
+            return;
+
+            // Function to map ConsoleColor to ANSI code
+            static string GetAnsiCode(ConsoleColor color, bool isBackground)
+            {
+                int ansiCode = color switch
+                {
+                    ConsoleColor.Black => 0,
+                    ConsoleColor.DarkRed => 1,
+                    ConsoleColor.DarkGreen => 2,
+                    ConsoleColor.DarkYellow => 3,
+                    ConsoleColor.DarkBlue => 4,
+                    ConsoleColor.DarkMagenta => 5,
+                    ConsoleColor.DarkCyan => 6,
+                    ConsoleColor.Gray => 7,
+                    ConsoleColor.DarkGray => 8,
+                    ConsoleColor.Red => 9,
+                    ConsoleColor.Green => 10,
+                    ConsoleColor.Yellow => 11,
+                    ConsoleColor.Blue => 12,
+                    ConsoleColor.Magenta => 13,
+                    ConsoleColor.Cyan => 14,
+                    ConsoleColor.White => 15,
+                    _ => 7 // Default to white if unknown
+                };
+
+                return ansiCode < 8
+                    ?
+                    // Standard colors
+                    $"\x1b[{(isBackground ? 40 + ansiCode : 30 + ansiCode)}m"
+                    :
+                    // Bright colors
+                    $"\x1b[{(isBackground ? 100 + (ansiCode - 8) : 90 + (ansiCode - 8))}m";
+            }
         }
-
-        private static (ConsoleColor, EgaColorMode) ConvertToConsoleColorMode(Color color)
+        
+        public static (ConsoleColor, EgaColorMode) ConvertToConsoleColorMode(Color color)
         {
             ConsoleColor consoleColor = MapToConsoleColor(color);
 
@@ -117,10 +157,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor
             };
         }
 
-        private static Color ConvertToAvaloniaColor(ConsoleColor consoleColor)
+        public static Color ConvertToAvaloniaColor(ConsoleColor consoleColor,
+            EgaColorMode mode = EgaColorMode.Colored)
         {
-            (ConsoleColor _, (int R, int G, int B) rgb) = ConsoleColorMap.First(c => c.Color == consoleColor);
-            return Color.FromRgb((byte)rgb.R, (byte)rgb.G, (byte)rgb.B);
+            switch (mode)
+            {
+                case EgaColorMode.Transparent:
+                    return Color.FromArgb(0, 0, 0, 0);
+                case EgaColorMode.Shaded:
+                    return Color.FromArgb(127, 0, 0, 0);
+                case EgaColorMode.Colored:
+                    (ConsoleColor _, (int R, int G, int B) rgb) = ConsoleColorMap.First(c => c.Color == consoleColor);
+                    return Color.FromRgb((byte)rgb.R, (byte)rgb.G, (byte)rgb.B);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
+            }
         }
     }
 }

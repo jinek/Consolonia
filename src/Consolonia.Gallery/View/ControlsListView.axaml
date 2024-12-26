@@ -30,10 +30,11 @@
                           x:Name="ThemeCombo"
                           SelectionChanged="ComboBox_SelectionChanged"
                           IsTabStop="false"
+                          SelectedIndex="0"
                           HorizontalContentAlignment="Stretch">
-                    <ComboBoxItem Content="TurboVision" IsSelected="True" />
-                    <ComboBoxItem Content="Material"/>
-                    <ComboBoxItem Content="Fluent" />
+                    <ComboBoxItem Content="Fluent" IsSelected="True" />
+                    <ComboBoxItem Content="TurboVision" />
+                    <ComboBoxItem Content="Material" />
                     <ComboBoxItem Content="TurboVisionDark" />
                     <ComboBoxItem Content="TurboVisionBlack" />
                 </ComboBox>
