@@ -14,22 +14,17 @@ namespace Consolonia.Gallery
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
 
-        public App()
-        {
-            
-        }
-
         public override void OnFrameworkInitializationCompleted()
         {
             /*Styles.Add(new TurboVisionBlackTheme());*/
             /*Styles.Add(new TurboVisionDarkTheme());*/
             /*Styles.Add(new FluentTheme());*/
 
-            if(((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode())
+            if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode())
                 Styles.Add(new MaterialTheme());
             else
                 Styles.Add(new TurboVisionTheme());
-            
+
             base.OnFrameworkInitializationCompleted();
         }
     }

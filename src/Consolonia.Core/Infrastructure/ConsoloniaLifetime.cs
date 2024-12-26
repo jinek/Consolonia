@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -41,7 +40,8 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning restore CA1822
         {
             IConsoleColorMode consoleColorMode = AvaloniaLocator.Current.GetService<IConsoleColorMode>()
-                                                 ?? throw new ConsoloniaException("Console color mode has not been initialized");
+                                                 ?? throw new ConsoloniaException(
+                                                     "Console color mode has not been initialized");
 
             return consoleColorMode is RgbConsoleColorMode;
         }

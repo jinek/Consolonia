@@ -43,7 +43,7 @@ namespace Consolonia.Gallery.View
                 _commandLineArgs = [];
 
             TrySetupSelected();
-            
+
             Loaded += OnLoaded;
         }
 
@@ -120,7 +120,7 @@ namespace Consolonia.Gallery.View
                 _ => throw new ArgumentOutOfRangeException(nameof(selectedTheme))
             };
         }
-        
+
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             string themeName = Application.Current.Styles[0].GetType().Name[..^5];
