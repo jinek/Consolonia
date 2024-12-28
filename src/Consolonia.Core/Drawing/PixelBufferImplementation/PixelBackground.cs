@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
-using Avalonia.Styling;
 using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation

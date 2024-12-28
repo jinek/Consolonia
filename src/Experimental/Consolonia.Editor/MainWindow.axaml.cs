@@ -18,7 +18,9 @@ using AvaloniaEdit.Snippets;
 using Snippet = AvaloniaEdit.Snippets.Snippet;
 using ConsoloniaEdit.Demo.ViewModels;
 using AvaloniaEdit;
-using Consolonia.Controls;
+
+// ReSharper disable UnusedParameter.Local
+// ReSharper disable UnusedMember.Local
 namespace ConsoloniaEdit.Demo
 {
     using Pair = KeyValuePair<int, Control>;
@@ -30,9 +32,6 @@ namespace ConsoloniaEdit.Demo
         private readonly TextMate.Installation _textMateInstallation;
         private CompletionWindow _completionWindow;
         private OverloadInsightWindow _insightWindow;
-        private Button _addControlButton;
-        private Button _clearControlButton;
-        private Button _insertSnippetButton;
         private ComboBox _syntaxModeCombo;
         private TextBlock _statusTextBlock;
         private ElementGenerator _generator = new ElementGenerator();
