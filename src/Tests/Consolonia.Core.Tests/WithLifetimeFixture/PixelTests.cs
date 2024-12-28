@@ -115,6 +115,61 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
+        public void PixelShade()
+        {
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'),
+                    Colors.Red,
+                    FontWeight.Bold,
+                    FontStyle.Italic,
+                    TextDecorationLocation.Underline),
+                new PixelBackground(Colors.Green));
+            Pixel newPixel = pixel.Shade();
+            Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
+            Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Red.Shade()));
+            Assert.That(newPixel.Background.Color, Is.EqualTo(Colors.Green.Shade()));
+            Assert.That(newPixel.Foreground.Weight, Is.EqualTo(FontWeight.Bold));
+            Assert.That(newPixel.Foreground.Style, Is.EqualTo(FontStyle.Italic));
+            Assert.That(newPixel.Foreground.TextDecoration, Is.EqualTo(TextDecorationLocation.Underline));
+        }
+
+        [Test]
+        public void PixelBrighten()
+        {
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'),
+                    Colors.Red,
+                    FontWeight.Bold,
+                    FontStyle.Italic,
+                    TextDecorationLocation.Underline),
+                new PixelBackground(Colors.Green));
+            Pixel newPixel = pixel.Brighten();
+            Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
+            Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Red.Brighten()));
+            Assert.That(newPixel.Background.Color, Is.EqualTo(Colors.Green.Brighten()));
+            Assert.That(newPixel.Foreground.Weight, Is.EqualTo(FontWeight.Bold));
+            Assert.That(newPixel.Foreground.Style, Is.EqualTo(FontStyle.Italic));
+            Assert.That(newPixel.Foreground.TextDecoration, Is.EqualTo(TextDecorationLocation.Underline));
+        }
+
+        [Test]
+        public void PixelInvert()
+        {
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'), 
+                    Colors.Red, 
+                    FontWeight.Bold, 
+                    FontStyle.Italic, 
+                    TextDecorationLocation.Underline),
+                new PixelBackground(Colors.Green));
+            Pixel newPixel = pixel.Invert();
+            Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
+            Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Green));
+            Assert.That(newPixel.Background.Color, Is.EqualTo(Colors.Red));
+            Assert.That(newPixel.Foreground.Weight, Is.EqualTo(FontWeight.Bold));
+            Assert.That(newPixel.Foreground.Style, Is.EqualTo(FontStyle.Italic));
+            Assert.That(newPixel.Foreground.TextDecoration, Is.EqualTo(TextDecorationLocation.Underline));
+        }
+
+
+        [Test]
         public void BlendTransparentBackground()
         {
             var pixel = new Pixel(new PixelBackground(Colors.Green));

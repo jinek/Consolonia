@@ -94,6 +94,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                    IsCaret.Equals(other.IsCaret);
         }
 
+        public Pixel Shade()
+            => new(Foreground.Shade(), Background.Shade(), IsCaret);
+
+        public Pixel Brighten()
+            => new(Foreground.Brighten(), Background.Brighten(), IsCaret);
+
+        public Pixel Invert()
+            => new Pixel(new PixelForeground(Foreground.Symbol,
+                                            Background.Color, // background color becomes the new foreground color
+                                            Foreground.Weight,
+                                            Foreground.Style,
+                                            Foreground.TextDecoration),
+                    new PixelBackground(Foreground.Color),
+                    IsCaret);
+
         /// <summary>
         ///     Blend the pixelAbove with this pixel.
         /// </summary>
