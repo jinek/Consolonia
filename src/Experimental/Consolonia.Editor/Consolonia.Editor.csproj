@@ -9,7 +9,7 @@
 
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
-        <AvaloniaResource Include="**\*.xaml" />
+        <AvaloniaResource Include="**\*.*xaml" />
     </ItemGroup>
 
     <ItemGroup>

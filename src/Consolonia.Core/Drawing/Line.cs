@@ -27,7 +27,6 @@ namespace Consolonia.Core.Drawing
             if (!(pStart.X.IsNearlyEqual(pEnd.X) || pStart.Y.IsNearlyEqual(pEnd.Y)))
             {
                 Debug.WriteLine("Consolonia can only draw horizontal or vertical lines");
-                return; // ignore
             }
             Vertical = pStart.X.IsNearlyEqual(pEnd.X);
             Length = Vertical ? (int)Math.Abs(pStart.Y - pEnd.Y) : (int)Math.Abs(pStart.X - pEnd.X);
