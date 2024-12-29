@@ -541,6 +541,7 @@ namespace Consolonia.Core.Drawing
                 {
                     int px = (int)(r2.TopLeft.X + x);
                     int py = (int)(r2.TopLeft.Y + y);
+                    Color backgroundColor = brush.FromPosition(x, y, (int)width, (int)height);
 
                     CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
                     {
@@ -556,7 +557,6 @@ namespace Consolonia.Core.Drawing
                                     case InvertBrush:
                                         return pixel.Invert();
                                     default:
-                                        Color backgroundColor = brush.FromPosition(x, y, (int)width, (int)height);
                                         return pixel.Blend(new Pixel(new PixelBackground(backgroundColor)));
                                 }
                             });

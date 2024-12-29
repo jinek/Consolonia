@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Media;
+using Consolonia.Controls;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
@@ -84,9 +85,13 @@ namespace Consolonia.Core.Drawing
                 case ISolidColorBrush solidColorBrush:
                     return solidColorBrush.Color;
 
+                case ShadeBrush:
+                case BrightenBrush:
+                case InvertBrush:
+                    return Colors.Transparent;
                 default:
                     ConsoloniaPlatform.RaiseNotSupported(751, brush); //todo: allow RaiseNotSupported to return a result
-                    return new Color();
+                    return Colors.Transparent;
             }
         }
 
