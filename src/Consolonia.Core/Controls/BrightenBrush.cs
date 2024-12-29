@@ -6,7 +6,7 @@ using Avalonia.Media;
 namespace Consolonia.Controls
 {
     /// <summary>
-    /// This brush brightens the area it paints.
+    ///     This brush brightens the area it paints.
     /// </summary>
     public class BrightenBrush : Animatable, IImmutableBrush
     {

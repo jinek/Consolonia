@@ -6,7 +6,7 @@ using Avalonia.Media;
 namespace Consolonia.Controls
 {
     /// <summary>
-    /// This brush inverts foreground/background colors for each pixel of the area it paints.
+    ///     This brush inverts foreground/background colors for each pixel of the area it paints.
     /// </summary>
     public class InvertBrush : Animatable, IImmutableBrush
     {

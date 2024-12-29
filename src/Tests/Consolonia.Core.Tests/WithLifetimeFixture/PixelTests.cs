@@ -153,10 +153,10 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void PixelInvert()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'), 
-                    Colors.Red, 
-                    FontWeight.Bold, 
-                    FontStyle.Italic, 
+            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'),
+                    Colors.Red,
+                    FontWeight.Bold,
+                    FontStyle.Italic,
                     TextDecorationLocation.Underline),
                 new PixelBackground(Colors.Green));
             Pixel newPixel = pixel.Invert();

@@ -15,10 +15,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
 
         public PixelBackground Shade()
-            => new PixelBackground(Color.Shade());
+        {
+            return new PixelBackground(Color.Shade());
+        }
 
         public PixelBackground Brighten()
-            => new PixelBackground(Color.Brighten());
+        {
+            return new PixelBackground(Color.Brighten());
+        }
 
         [JsonConverter(typeof(ColorConverter))]
         public Color Color { get; init; } = color;

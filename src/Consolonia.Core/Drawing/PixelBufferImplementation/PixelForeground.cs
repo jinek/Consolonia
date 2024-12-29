@@ -54,10 +54,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         public PixelForeground Shade()
-            => new PixelForeground(Symbol, Color.Shade(), Weight, Style, TextDecoration);
+        {
+            return new PixelForeground(Symbol, Color.Shade(), Weight, Style, TextDecoration);
+        }
 
         public PixelForeground Brighten()
-            => new PixelForeground(Symbol, Color.Brighten(), Weight, Style, TextDecoration);
+        {
+            return new PixelForeground(Symbol, Color.Brighten(), Weight, Style, TextDecoration);
+        }
 
         public PixelForeground Blend(PixelForeground pixelAboveForeground)
         {
