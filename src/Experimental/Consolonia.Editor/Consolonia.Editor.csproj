@@ -8,11 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="Assets\**" />
-        <AvaloniaResource Include="**\*.*xaml" />
-    </ItemGroup>
-
-    <ItemGroup>
         <EmbeddedResource Include="Resources\SampleFiles\**\*" />
     </ItemGroup>
 

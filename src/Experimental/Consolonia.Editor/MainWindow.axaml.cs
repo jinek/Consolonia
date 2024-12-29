@@ -35,7 +35,7 @@ namespace ConsoloniaEdit.Demo
         private ComboBox _syntaxModeCombo;
         private TextBlock _statusTextBlock;
         private RegistryOptions _registryOptions;
-        private int _currentTheme = (int)ThemeName.DarkPlus;
+        private int _currentTheme = (int)ThemeName.SolarizedLight;
 
         public MainWindow()
         {
