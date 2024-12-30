@@ -43,11 +43,11 @@ namespace Consolonia.Core.Infrastructure
         public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
         {
             if (bufferPoint.Equals(GetCaretPosition())) return;
-            _headBufferPoint = bufferPoint;
-
+            
             try
             {
                 WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+                _headBufferPoint = bufferPoint;
             }
             catch (ArgumentOutOfRangeException argumentOutOfRangeException)
             {
@@ -97,6 +97,11 @@ namespace Consolonia.Core.Infrastructure
                 _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
         }
 
+        /// <summary>
+        /// Write raw text to the console
+        /// </summary>
+        /// <remarks>This does not move the caret position, so should only be used for escape commands</remarks>
+        /// <param name="str"></param>
         public void WriteText(string str)
         {
             Console.Write(str);

@@ -1,4 +1,6 @@
+using System;
 using Avalonia.Media;
+using Wcwidth;
 
 namespace Consolonia.Core.Text
 {
@@ -63,6 +65,54 @@ namespace Consolonia.Core.Text
         public static string SetCursorPosition(int x, int y)
         {
             return $"\u001b[{y + 1};{x + 1}f";
+        }
+
+        public static string Foreground(ConsoleColor color)
+        {
+            var ansiCode = GetAnsiCode(color);
+            return ansiCode < 8
+                ?
+                // Standard colors
+                $"\x1b[{(30 + ansiCode)}m"
+                :
+                // Bright colors
+                $"\x1b[{(90 + (ansiCode - 8))}m";
+        }
+
+        public static string Background(ConsoleColor color)
+        {
+            var ansiCode = GetAnsiCode(color);
+            return ansiCode < 8
+                ?
+            // Standard colors
+                $"\x1b[{40 + ansiCode}m"
+            :
+            // Bright colors
+                $"\x1b[{100 + (ansiCode - 8)}m";
+        }
+
+        public static int GetAnsiCode(ConsoleColor color)
+        {
+            return color switch
+            {
+                ConsoleColor.Black => 0,
+                ConsoleColor.DarkRed => 1,
+                ConsoleColor.DarkGreen => 2,
+                ConsoleColor.DarkYellow => 3,
+                ConsoleColor.DarkBlue => 4,
+                ConsoleColor.DarkMagenta => 5,
+                ConsoleColor.DarkCyan => 6,
+                ConsoleColor.Gray => 7,
+                ConsoleColor.DarkGray => 8,
+                ConsoleColor.Red => 9,
+                ConsoleColor.Green => 10,
+                ConsoleColor.Yellow => 11,
+                ConsoleColor.Blue => 12,
+                ConsoleColor.Magenta => 13,
+                ConsoleColor.Cyan => 14,
+                ConsoleColor.White => 15,
+                _ => 7 // Default to white if unknown
+            };
         }
 
         public static string Foreground(Color color)

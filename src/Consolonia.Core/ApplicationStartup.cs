@@ -36,8 +36,7 @@ namespace Consolonia
         public static AppBuilder UseConsole(this AppBuilder builder, IConsole console)
         {
             return builder.With(console)
-                .With<IConsoleOutput>(console)
-                .With<IConsoleInput>(console);
+                .With<IConsoleOutput>(console);
         }
 
         public static AppBuilder UseConsoleColorMode(this AppBuilder builder, IConsoleColorMode consoleColorMode)

@@ -34,7 +34,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return Color.FromArgb(a, r, g, b);
         }
 
-        public void SetAttributes(IConsoleOutput consoleOut, Color background, Color foreground,
+        public void SetAttributes(IConsoleOutput consoleOutput, Color background, Color foreground,
             FontWeight? weight)
         {
             var sb = new StringBuilder();
@@ -50,7 +50,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 _ => foreground
             }));
 
-            consoleOut.WriteText(sb.ToString());
+            consoleOutput.WriteText(sb.ToString());
         }
     }
 }
