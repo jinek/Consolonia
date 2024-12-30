@@ -24,7 +24,6 @@ namespace Consolonia.Core.Infrastructure
 
         public AnsiConsoleOutput()
         {
-            PrepareConsole();
         }
 
         public bool CaretVisible => _caretVisible;
@@ -120,8 +119,6 @@ namespace Consolonia.Core.Infrastructure
             (int left2, _) = Console.GetCursorPosition();
             _supportEmoji = left2 - left == 2;
 
-            SetCaretPosition(new PixelBufferCoordinate((ushort)left, (ushort)top));
-
             ClearScreen();
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
@@ -175,6 +172,8 @@ namespace Consolonia.Core.Infrastructure
         public void ClearScreen()
         {
             WriteText(Esc.ClearScreen);
+            _headBufferPoint = new PixelBufferCoordinate(0, 0);
+            WriteText(Esc.SetCursorPosition(0, 0));
         }
 
         public bool CheckSize()

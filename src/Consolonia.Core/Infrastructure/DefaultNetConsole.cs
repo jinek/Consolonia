@@ -53,6 +53,8 @@ namespace Consolonia.Core.Infrastructure
         public DefaultNetConsole()
             : base(new DefaultNetConsoleOutput())
         {
+            PrepareConsole();
+
             StartSizeCheckTimerAsync();
             StartInputReading();
         }

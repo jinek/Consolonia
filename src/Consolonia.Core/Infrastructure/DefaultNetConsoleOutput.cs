@@ -26,7 +26,6 @@ namespace Consolonia.Core.Infrastructure
         
         public DefaultNetConsoleOutput()
         {
-            PrepareConsole();
         }
 
         public PixelBufferSize Size { get; private set; }
@@ -94,6 +93,7 @@ namespace Consolonia.Core.Infrastructure
             _originalForeground = Console.ForegroundColor;
             _originalBackground = Console.BackgroundColor;
             CheckSize();
+            Console.Clear();
         }
 
         public void RestoreConsole()

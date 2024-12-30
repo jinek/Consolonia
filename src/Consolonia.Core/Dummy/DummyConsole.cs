@@ -40,7 +40,6 @@ namespace Consolonia.Core.Dummy
 
         public DummyConsoleOutput(ushort width, ushort height)
         {
-            PrepareConsole();
             Size = new PixelBufferSize(width, height);
         }
 
