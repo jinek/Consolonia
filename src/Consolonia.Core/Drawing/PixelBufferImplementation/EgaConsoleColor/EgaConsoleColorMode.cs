@@ -72,7 +72,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor
 
             // Append ANSI escape sequence for foreground color
             sb.Append(GetAnsiCode(foregroundConsoleColor, false));
-            consoleOut.WriteText(sb.ToString());
+            console.WriteText(sb.ToString());
             return;
 
             // Function to map ConsoleColor to ANSI code

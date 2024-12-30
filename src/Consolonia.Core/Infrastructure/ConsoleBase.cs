@@ -87,50 +87,54 @@ namespace Consolonia.Core.Infrastructure
         #endregion
 
         #region IConsoleOutput
-        public PixelBufferSize Size => _consoleOutput.Size;
+        public virtual PixelBufferSize Size => _consoleOutput.Size;
 
-        public bool CaretVisible => _consoleOutput.CaretVisible;
+        public virtual bool CaretVisible => _consoleOutput.CaretVisible;
 
-        public bool SupportsComplexEmoji => _consoleOutput.SupportsComplexEmoji;
+        public virtual bool SupportsComplexEmoji => _consoleOutput.SupportsComplexEmoji;
 
-        public bool SupportsAltSolo => _consoleOutput.SupportsAltSolo;
+        public virtual bool SupportsAltSolo => _consoleOutput.SupportsAltSolo;
 
         public event Action Resized;
 
-        public void ClearScreen()
+        public virtual void ClearScreen()
             => _consoleOutput.ClearScreen();
 
-        public PixelBufferCoordinate GetCaretPosition()
+        public virtual PixelBufferCoordinate GetCaretPosition()
             => _consoleOutput.GetCaretPosition();
 
-        public void HideCaret()
+        public virtual void HideCaret()
             => _consoleOutput.HideCaret();
 
-        public void PrepareConsole()
+        public virtual void PrepareConsole()
             => _consoleOutput.PrepareConsole();
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style, FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+        public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style, FontWeight? weight, TextDecorationLocation? textDecoration, string str)
             => _consoleOutput.Print(bufferPoint, background, foreground, style, weight, textDecoration, str);
 
-        public void RestoreConsole()
+        public virtual void RestoreConsole()
             => _consoleOutput.RestoreConsole();
 
-        public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
+        public virtual void SetCaretPosition(PixelBufferCoordinate bufferPoint)
             => _consoleOutput.SetCaretPosition(bufferPoint);
 
-        public void SetCaretStyle(CaretStyle caretStyle)
+        public virtual void SetCaretStyle(CaretStyle caretStyle)
             => _consoleOutput.SetCaretStyle(caretStyle);
 
-        public void SetTitle(string title)
+        public virtual void SetTitle(string title)
             => _consoleOutput.SetTitle(title);
-        public void ShowCaret()
+        public virtual void ShowCaret()
             => _consoleOutput.ShowCaret();
 
-        public void WriteText(string str)
+        public virtual void WriteText(string str)
         {
             PauseTask?.Wait();
             _consoleOutput.WriteText(str);
         }
+
+        public virtual bool CheckSize()
+            => _consoleOutput.CheckSize();
+
         #endregion
 
         #region IDisposable
@@ -153,9 +157,6 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning restore CA1063 // Implement IDisposable Correctly
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
-
-        public bool CheckSize()
-            => _consoleOutput.CheckSize();
 
         #endregion
     }
