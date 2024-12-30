@@ -16,8 +16,6 @@ namespace Consolonia.Core.Infrastructure
     /// </remarks>
     public class DefaultNetConsole : ConsoleBase
     {
-        private IConsoleOutput _consoleOutput;
-
         private static readonly Dictionary<ConsoleKey, Key> KeyMapping = new()
         {
             { ConsoleKey.Applications, Key.Apps },
