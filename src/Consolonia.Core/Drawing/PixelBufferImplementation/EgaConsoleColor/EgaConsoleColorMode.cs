@@ -54,7 +54,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor
             }
         }
 
-        public void SetAttributes(InputLessDefaultNetConsole console, Color background, Color foreground,
+        public void SetAttributes(IConsoleOutput console, Color background, Color foreground,
             FontWeight? weight)
         {
             (ConsoleColor backgroundConsoleColor, EgaColorMode mode) = ConvertToConsoleColorMode(background);
@@ -72,7 +72,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor
 
             // Append ANSI escape sequence for foreground color
             sb.Append(GetAnsiCode(foregroundConsoleColor, false));
-            console.WriteText(sb.ToString());
+            consoleOut.WriteText(sb.ToString());
             return;
 
             // Function to map ConsoleColor to ANSI code

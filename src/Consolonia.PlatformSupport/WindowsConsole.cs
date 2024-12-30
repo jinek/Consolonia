@@ -18,7 +18,7 @@ using Point = Avalonia.Point;
 
 namespace Consolonia.PlatformSupport
 {
-    public class Win32Console : InputLessDefaultNetConsole
+    public class Win32Console : ConsoleBase
     {
         private static readonly FlagTranslator<WindowsConsole.ControlKeyState, RawInputModifiers>
             ModifiersFlagTranslator = new(new[]
@@ -54,16 +54,19 @@ namespace Consolonia.PlatformSupport
 
         private int _mouseButtonsState;
 
-        public Win32Console()
+        public override bool SupportsMouse => true;
+
+        public override bool SupportsMouseMove => true;
+
+        public Win32Console(IConsoleOutput console)
+            : base(console) 
         {
             _windowsConsole = new WindowsConsole();
 
+            PrepareConsole();
+
             StartEventLoop();
         }
-
-        public override bool SupportsAltSolo => true;
-        public override bool SupportsMouse => true;
-        public override bool SupportsMouseMove => true;
 
         public override void PauseIO(Task task)
         {
@@ -102,7 +105,7 @@ namespace Consolonia.PlatformSupport
                         switch (inputRecord.EventType)
                         {
                             case WindowsConsole.EventType.WindowBufferSize:
-                                ActualizeSize();
+                                CheckSize();
                                 break;
                             case WindowsConsole.EventType.Focus:
                                 WindowsConsole.FocusEventRecord focusEvent = inputRecord.FocusEvent;
@@ -263,6 +266,7 @@ namespace Consolonia.PlatformSupport
             INPUT_RECORD[] lpBuffer,
             uint nLength,
             out uint lpNumberOfEventsWritten);
+
         // Resharper restore MemberCanBePrivate.Global
         // Resharper restore MemberCanBePrivate.Local
         // Resharper restore FieldCanBeMadeReadOnly.Global

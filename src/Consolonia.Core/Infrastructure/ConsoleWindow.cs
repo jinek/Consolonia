@@ -17,7 +17,6 @@ using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
-using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -361,7 +360,7 @@ namespace Consolonia.Core.Infrastructure
         {
             // clear screen so we don't see crazy while resizing.
 #pragma warning disable CA1303 // Do not pass literals as localized parameters
-            System.Console.Write(Esc.ClearScreen);
+            Console.ClearScreen();
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
 
             // Cancel previous task if there is one and start a new one
@@ -452,7 +451,9 @@ namespace Consolonia.Core.Infrastructure
                     Console.KeyEvent -= ConsoleOnKeyEvent;
                     Console.MouseEvent -= ConsoleOnMouseEvent;
                     Console.FocusEvent -= ConsoleOnFocusEvent;
-                    Console.Dispose();
+
+                    if (Console is IDisposable disposableConsole)
+                        disposableConsole.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

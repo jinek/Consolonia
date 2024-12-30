@@ -1,15 +1,12 @@
 using System;
-using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Input;
-using Avalonia.Input.Raw;
 using Avalonia.Media;
+using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Dummy
 {
-    public class DummyConsole : IConsole
+    public class DummyConsole : ConsoleBase
     {
         private PixelBufferCoordinate _caretPosition = new(0, 0);
         private bool _disposed;
@@ -20,7 +17,30 @@ namespace Consolonia.Core.Dummy
         }
 
         public DummyConsole(ushort width, ushort height)
+            : base(new DummyConsoleOutput())
         {
+        }
+
+        public override bool SupportsMouse => false;
+
+        public override bool SupportsMouseMove => false;
+    }
+
+    public class DummyConsoleOutput : IConsoleOutput
+    {
+        private PixelBufferCoordinate _caretPosition = new(0, 0);
+        private bool _disposed;
+
+        public event Action Resized;
+
+        public DummyConsoleOutput()
+            : this(80, 25)
+        {
+        }
+
+        public DummyConsoleOutput(ushort width, ushort height)
+        {
+            PrepareConsole();
             Size = new PixelBufferSize(width, height);
         }
 
@@ -34,18 +54,10 @@ namespace Consolonia.Core.Dummy
 
         public bool SupportsComplexEmoji => true;
         public bool SupportsAltSolo => false;
-        public bool SupportsMouse => false;
-        public bool SupportsMouseMove => false;
 
         public void ClearOutput()
         {
             SetCaretPosition(new PixelBufferCoordinate(0, 0));
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public PixelBufferCoordinate GetCaretPosition()
@@ -53,9 +65,6 @@ namespace Consolonia.Core.Dummy
             return _caretPosition;
         }
 
-        public void PauseIO(Task task)
-        {
-        }
 
         public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
@@ -90,12 +99,33 @@ namespace Consolonia.Core.Dummy
             }
         }
 
+        public void SetCaretStyle(CaretStyle caretStyle)
+        {
+        }
 
-#pragma warning disable CS0067 // never used
-        public event Action Resized;
-        public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
-        public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
-        public event Action<bool> FocusEvent;
-#pragma warning restore CS0067
+        public void HideCaret()
+        {
+        }
+
+        public void ShowCaret()
+        {
+        }
+
+        public void PrepareConsole()
+        {
+        }
+
+        public void RestoreConsole()
+        {
+        }
+
+        public void ClearScreen()
+        {
+        }
+
+        public bool CheckSize()
+        {
+            return false;
+        }
     }
 }

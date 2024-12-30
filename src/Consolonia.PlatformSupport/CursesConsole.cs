@@ -21,7 +21,7 @@ using KeyModifiers = Terminal.Gui.KeyModifiers;
 
 namespace Consolonia.PlatformSupport
 {
-    public class CursesConsole : InputLessDefaultNetConsole
+    public class CursesConsole : ConsoleBase
     {
         private static readonly FlagTranslator<Key, RawInputModifiers>
             KeyModifiersFlagTranslator = new(new[]
@@ -110,7 +110,10 @@ namespace Consolonia.PlatformSupport
         private KeyModifiers _keyModifiers;
 
         public CursesConsole()
+            : base(new AnsiConsoleOutput())
         {
+            PrepareConsole();
+
             StartSizeCheckTimerAsync(2500);
             StartEventLoop();
         }
@@ -165,7 +168,7 @@ namespace Consolonia.PlatformSupport
                 switch (wch)
                 {
                     case Curses.KeyResize when Curses.CheckWinChange():
-                        CheckActualizeTheSize();
+                        CheckSize();
                         return;
                     case Curses.KeyMouse:
                         Curses.getmouse(out Curses.MouseEvent ev);

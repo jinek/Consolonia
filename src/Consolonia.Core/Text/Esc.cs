@@ -84,5 +84,10 @@ namespace Consolonia.Core.Text
         {
             return $"\u001b[48;2;{red};{green};{blue}m";
         }
+
+        public static string SetWindowTitle(string title)
+        {
+            return $"\u001b]0;{title}\u0007";
+        }
     }
 }

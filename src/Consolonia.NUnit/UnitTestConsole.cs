@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
@@ -18,6 +19,7 @@ namespace Consolonia.NUnit
     public sealed class UnitTestConsole : IConsole
     {
         private readonly PixelBufferSize _size;
+        private bool _caretVisible;
         private PixelBufferCoordinate _fakeCaretPosition;
         private ClassicDesktopStyleApplicationLifetime _lifetime;
 
@@ -35,8 +37,8 @@ namespace Consolonia.NUnit
             _lifetime = null;
         }
 
-        PixelBufferSize IConsole.Size => _size;
-        bool IConsole.CaretVisible { get; set; }
+        public PixelBufferSize Size => _size;
+        public bool CaretVisible => _caretVisible;
 
         public bool SupportsComplexEmoji => true;
         public bool SupportsAltSolo => true;
@@ -48,17 +50,17 @@ namespace Consolonia.NUnit
             Console.WriteLine($"Title changed to {title}");
         }
 
-        void IConsole.SetCaretPosition(PixelBufferCoordinate bufferPoint)
+        public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
         {
             _fakeCaretPosition = bufferPoint;
         }
 
-        PixelBufferCoordinate IConsole.GetCaretPosition()
+        public PixelBufferCoordinate GetCaretPosition()
         {
             return _fakeCaretPosition;
         }
 
-        void IConsole.Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
+        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
             (ushort x, ushort y) = bufferPoint;
@@ -172,6 +174,40 @@ namespace Consolonia.NUnit
         public void SetupLifetime(ClassicDesktopStyleApplicationLifetime lifetime)
         {
             _lifetime = lifetime;
+        }
+
+
+        public void SetCaretStyle(CaretStyle caretStyle)
+        {
+
+        }
+
+        public void HideCaret()
+        {
+            _caretVisible = false;
+        }
+
+        public void ShowCaret()
+        {
+            _caretVisible = true;
+        }
+
+        public void PrepareConsole()
+        {
+            
+        }
+
+        public void RestoreConsole()
+        {
+        }
+
+        public void ClearScreen()
+        {
+        }
+
+        public bool CheckSize()
+        {
+            return false;
         }
 
 

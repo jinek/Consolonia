@@ -22,7 +22,10 @@ namespace Consolonia
 
             IConsole console = Environment.OSVersion.Platform switch
             {
-                PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT => new Win32Console(),
+                PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT =>
+                        new Win32Console((Console.IsOutputRedirected || IsWindowsTerminal()) ? 
+                            new AnsiConsoleOutput() : 
+                            new DefaultNetConsoleOutput()), 
                 PlatformID.Unix or PlatformID.MacOSX => new CursesConsole(),
                 _ => new DefaultNetConsole()
             };
@@ -39,6 +42,14 @@ namespace Consolonia
                 switch (Environment.OSVersion.Platform)
                 {
                     case PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT:
+                        {
+                            // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
+                            if (Console.IsOutputRedirected || IsWindowsTerminal())
+                                result = new RgbConsoleColorMode();
+                            else
+                                result = new EgaConsoleColorMode();
+                        }
+                        break;
                     case PlatformID.MacOSX:
                         result = new RgbConsoleColorMode();
                         break;
@@ -57,6 +68,12 @@ namespace Consolonia
                 }
 
             return builder.UseConsoleColorMode(result);
+        }
+
+        private static bool IsWindowsTerminal()
+        {
+            return Environment.GetEnvironmentVariable("WT_SESSION") is { } ||
+                                    Environment.GetEnvironmentVariable("VSAPPIDNAME") != null;
         }
     }
 }

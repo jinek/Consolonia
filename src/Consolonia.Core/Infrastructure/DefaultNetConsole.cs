@@ -1,16 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using Avalonia.Input;
 using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Infrastructure
 {
-    public class DefaultNetConsole : InputLessDefaultNetConsole
+    /// <summary>
+    /// IConsole implementation which purely uses Console API 
+    /// </summary>
+    /// <remarks>
+    /// This implements uses standard Console.ReadKey to get input and
+    /// calls the base IConsoleOutput for output (or default of Console Output)
+    /// </remarks>
+    public class DefaultNetConsole : ConsoleBase
     {
+        private IConsoleOutput _consoleOutput;
+
         private static readonly Dictionary<ConsoleKey, Key> KeyMapping = new()
         {
             { ConsoleKey.Applications, Key.Apps },
@@ -41,29 +48,15 @@ namespace Consolonia.Core.Infrastructure
             (ConsoleModifiers.Shift, RawInputModifiers.Shift), (ConsoleModifiers.Alt, RawInputModifiers.Alt)
         ]);
 
+        public override bool SupportsMouse => throw new NotImplementedException();
+
+        public override bool SupportsMouseMove => throw new NotImplementedException();
+
         public DefaultNetConsole()
+            : base(new DefaultNetConsoleOutput())
         {
             StartSizeCheckTimerAsync();
             StartInputReading();
-        }
-
-        public override bool SupportsAltSolo => false;
-        public override bool SupportsMouse => false;
-        public override bool SupportsMouseMove => false;
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            RaiseFocusEvent(false);
-        }
-
-        public override void PauseIO(Task task)
-        {
-            base.PauseIO(task);
-
-            TextReader defaultIn = Console.In;
-            Console.SetIn(new StringReader(string.Empty));
-            Console.SetIn(defaultIn);
         }
 
         private void StartInputReading()
@@ -109,5 +102,6 @@ namespace Consolonia.Core.Infrastructure
                 throw new NotImplementedException();
             return key;
         }
+
     }
 }
