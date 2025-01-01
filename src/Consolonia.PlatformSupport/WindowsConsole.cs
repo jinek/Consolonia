@@ -22,38 +22,40 @@ namespace Consolonia.PlatformSupport
     public class Win32Console : ConsoleBase
     {
         private static readonly FlagTranslator<WindowsConsole.ControlKeyState, RawInputModifiers>
-            ModifiersFlagTranslator = new(new[]
-            {
+            ModifiersFlagTranslator = new(
+            [
                 (WindowsConsole.ControlKeyState.ShiftPressed, RawInputModifiers.Shift),
                 (WindowsConsole.ControlKeyState.LeftAltPressed, RawInputModifiers.Alt),
                 (WindowsConsole.ControlKeyState.RightAltPressed, RawInputModifiers.Alt),
                 (WindowsConsole.ControlKeyState.LeftControlPressed, RawInputModifiers.Control),
                 (WindowsConsole.ControlKeyState.RightControlPressed, RawInputModifiers.Control)
-            });
+            ]);
 
         private static readonly FlagTranslator<WindowsConsole.ButtonState, RawPointerEventType>
-            MouseButtonFlagTranslator = new(new[]
-            {
+            MouseButtonFlagTranslator = new(
+            [
                 (WindowsConsole.ButtonState.Button1Pressed, RawPointerEventType.LeftButtonDown),
                 (WindowsConsole.ButtonState.RightmostButtonPressed, RawPointerEventType.RightButtonDown),
                 (WindowsConsole.ButtonState.Button2Pressed, RawPointerEventType.MiddleButtonDown),
                 (WindowsConsole.ButtonState.Button3Pressed, RawPointerEventType.XButton1Down),
                 (WindowsConsole.ButtonState.Button4Pressed, RawPointerEventType.XButton2Down)
-            });
+            ]);
 
         private static readonly FlagTranslator<WindowsConsole.ButtonState, RawInputModifiers>
-            MouseModifiersFlagTranslator = new(new[]
-            {
+            MouseModifiersFlagTranslator = new(
+            [
                 (WindowsConsole.ButtonState.Button1Pressed, RawInputModifiers.LeftMouseButton),
                 (WindowsConsole.ButtonState.RightmostButtonPressed, RawInputModifiers.RightMouseButton),
                 (WindowsConsole.ButtonState.Button2Pressed, RawInputModifiers.MiddleMouseButton),
                 (WindowsConsole.ButtonState.Button3Pressed, RawInputModifiers.XButton1MouseButton),
                 (WindowsConsole.ButtonState.Button4Pressed, RawInputModifiers.XButton2MouseButton)
-            });
+            ]);
 
         private readonly WindowsConsole _windowsConsole;
 
         private int _mouseButtonsState;
+
+        public override bool SupportsAltSolo => true;
 
         public override bool SupportsMouse => true;
 
@@ -64,6 +66,7 @@ namespace Consolonia.PlatformSupport
         {
             _windowsConsole = new WindowsConsole();
 
+            // ReSharper disable VirtualMemberCallInConstructor
             PrepareConsole();
 
             StartEventLoop();
@@ -262,7 +265,9 @@ namespace Consolonia.PlatformSupport
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 #pragma warning disable CA5392
+#pragma warning disable SYSLIB1054 // Use 'LibraryImportAttribute' instead of 'DllImportAttribute' to generate P/Invoke marshalling code at compile time
         private static extern bool WriteConsoleInput(
+#pragma warning restore SYSLIB1054 // Use 'LibraryImportAttribute' instead of 'DllImportAttribute' to generate P/Invoke marshalling code at compile time
 #pragma warning restore CA5392
             IntPtr hConsoleInput,
             INPUT_RECORD[] lpBuffer,

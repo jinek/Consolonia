@@ -205,11 +205,6 @@ namespace Consolonia.NUnit
         {
         }
 
-        public bool CheckSize()
-        {
-            return false;
-        }
-
 
 #pragma warning disable CS0067
         public event Action Resized;

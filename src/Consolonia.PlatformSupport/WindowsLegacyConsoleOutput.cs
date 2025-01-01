@@ -25,8 +25,8 @@ namespace Consolonia.PlatformSupport
                 lock (_consoleBuffer.BufferHandle)
                 {
                     GetConsoleScreenBufferInfo(_consoleBuffer.BufferHandle, out var info);
-                    var windowWidth = info.srWindow.Right - info.srWindow.Left + 1;
-                    var windowHeight = info.srWindow.Bottom - info.srWindow.Top + 1;
+                    int windowWidth = info.srWindow.Right - info.srWindow.Left + 1;
+                    int windowHeight = info.srWindow.Bottom - info.srWindow.Top + 1;
                     // Debug.WriteLine($"ScreenBuffer: {info.dwSize.X}x{info.dwSize.Y} NewValue: {value.Width}x{value.Height} Window: {windowWidth}x{windowHeight}");
 
                     if (value.Height > windowHeight)
@@ -48,8 +48,7 @@ namespace Consolonia.PlatformSupport
         {
             get
             {
-                var info = new CONSOLE_CURSOR_INFO();
-                if (!GetConsoleCursorInfo(_consoleBuffer.BufferHandle, out info))
+                if (!GetConsoleCursorInfo(_consoleBuffer.BufferHandle, out var info))
                 {
                     throw GetLastError().GetException();
                 }
@@ -58,8 +57,6 @@ namespace Consolonia.PlatformSupport
         }
 
         public bool SupportsComplexEmoji => false;
-
-        public bool SupportsAltSolo => true;
 
         public WindowsLegacyConsoleOutput()
         {
@@ -98,10 +95,10 @@ namespace Consolonia.PlatformSupport
 
             var (b, f) = consoleColorMode.MapColors(background, foreground, weight);
 
-            if (!(b is ConsoleColor backgroundConsoleColor))
+            if (b is not ConsoleColor backgroundConsoleColor)
                 throw new InvalidCastException("Background color must be ConsoleColor");
 
-            if (!(f is ConsoleColor foregroundConsoleColor))
+            if (f is not ConsoleColor foregroundConsoleColor)
                 throw new InvalidCastException("Foreground color must be ConsoleColor");
 
             CHARACTER_ATTRIBUTE backgroundAttributes = backgroundConsoleColor switch

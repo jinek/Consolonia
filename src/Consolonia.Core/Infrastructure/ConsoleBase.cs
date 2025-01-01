@@ -18,7 +18,7 @@ namespace Consolonia.Core.Infrastructure
     /// </remarks>
     public abstract class ConsoleBase : IConsole, IDisposable
     {
-        private IConsoleOutput _consoleOutput;
+        private readonly IConsoleOutput _consoleOutput;
 
         protected ConsoleBase(IConsoleOutput consoleOutput)
         {
@@ -101,7 +101,7 @@ namespace Consolonia.Core.Infrastructure
 
         public virtual bool SupportsComplexEmoji => _consoleOutput.SupportsComplexEmoji;
 
-        public virtual bool SupportsAltSolo => _consoleOutput.SupportsAltSolo;
+        public abstract bool SupportsAltSolo { get; }
 
         public event Action Resized;
 
@@ -144,7 +144,7 @@ namespace Consolonia.Core.Infrastructure
         {
             if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
 
-            this.Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
             Resized?.Invoke();
             return true;
         }

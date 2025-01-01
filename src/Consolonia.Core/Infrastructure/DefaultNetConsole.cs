@@ -46,13 +46,16 @@ namespace Consolonia.Core.Infrastructure
             (ConsoleModifiers.Shift, RawInputModifiers.Shift), (ConsoleModifiers.Alt, RawInputModifiers.Alt)
         ]);
 
-        public override bool SupportsMouse => throw new NotImplementedException();
+        public override bool SupportsAltSolo => true;
 
-        public override bool SupportsMouseMove => throw new NotImplementedException();
+        public override bool SupportsMouse => false;
+
+        public override bool SupportsMouseMove => false;
 
         public DefaultNetConsole()
             : base(new DefaultNetConsoleOutput())
         {
+            // ReSharper disable VirtualMemberCallInConstructor
             PrepareConsole();
 
             StartSizeCheckTimerAsync();

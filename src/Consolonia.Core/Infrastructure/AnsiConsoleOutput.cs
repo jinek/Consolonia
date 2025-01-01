@@ -27,9 +27,6 @@ namespace Consolonia.Core.Infrastructure
         public bool CaretVisible => _caretVisible;
 
         public bool SupportsComplexEmoji => _supportEmoji ?? false;
-        public bool SupportsAltSolo { get; }
-        public bool SupportsMouse { get; }
-        public bool SupportsMouseMove { get; }
 
         public PixelBufferSize Size { get; set; }
 
@@ -112,7 +109,7 @@ namespace Consolonia.Core.Infrastructure
 
             // Detect complex emoji support by writing a complex emoji and checking cursor position.
             // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
-            (int left, int top) = Console.GetCursorPosition();
+            (int left, _) = Console.GetCursorPosition();
             WriteText(TestEmoji);
             (int left2, _) = Console.GetCursorPosition();
             _supportEmoji = left2 - left == 2;

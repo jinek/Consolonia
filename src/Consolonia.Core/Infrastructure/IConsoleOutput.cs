@@ -22,11 +22,6 @@ namespace Consolonia.Core.Infrastructure
         bool SupportsComplexEmoji { get; }
 
         /// <summary>
-        /// Does this support
-        /// </summary>
-        bool SupportsAltSolo { get; }
-
-        /// <summary>
         ///  Set the title of the console window
         /// </summary>
         /// <param name="title"></param>

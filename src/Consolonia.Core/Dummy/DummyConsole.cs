@@ -13,9 +13,11 @@ namespace Consolonia.Core.Dummy
         }
 
         public DummyConsole(ushort width, ushort height)
-            : base(new DummyConsoleOutput())
+            : base(new DummyConsoleOutput(width, height))
         {
         }
+
+        public override bool SupportsAltSolo => false;
 
         public override bool SupportsMouse => false;
 
@@ -39,14 +41,9 @@ namespace Consolonia.Core.Dummy
 
         public PixelBufferSize Size { get; set; }
 
-        public bool CaretVisible
-        {
-            get => false;
-            set { }
-        }
+        public bool CaretVisible { get; set; } 
 
         public bool SupportsComplexEmoji => true;
-        public bool SupportsAltSolo => false;
 
         public void ClearOutput()
         {

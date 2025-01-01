@@ -32,8 +32,6 @@ namespace Consolonia.Core.Infrastructure
 
         public bool SupportsComplexEmoji => false;
 
-        public bool SupportsAltSolo => false;
-
         public void SetTitle(string title)
             => Console.Title = title;
 
@@ -48,12 +46,19 @@ namespace Consolonia.Core.Infrastructure
 
         public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style, FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
-            var (consoleColor, egaColor) = EgaConsoleColorMode.ConvertToConsoleColorMode(foreground);
+            var originalForeground = Console.ForegroundColor;
+            var originalBackground = Console.BackgroundColor;
+            
+            var (consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(foreground);
             Console.ForegroundColor = consoleColor;
-            (consoleColor, egaColor) = EgaConsoleColorMode.ConvertToConsoleColorMode(background);
+            (consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(background);
             Console.BackgroundColor = consoleColor;
+            
             Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
             Console.Write(str);
+            
+            Console.ForegroundColor = originalForeground;
+            Console.BackgroundColor = originalBackground;
         }
 
         public void WriteText(string str)
