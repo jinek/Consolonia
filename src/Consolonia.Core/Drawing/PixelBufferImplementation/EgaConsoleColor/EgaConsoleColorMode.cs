@@ -1,9 +1,7 @@
 using System;
 using System.Linq;
-using System.Text;
 using Avalonia.Media;
 using Consolonia.Core.Infrastructure;
-using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor
 {

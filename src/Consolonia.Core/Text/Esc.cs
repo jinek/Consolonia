@@ -1,6 +1,5 @@
 using System;
 using Avalonia.Media;
-using Wcwidth;
 
 namespace Consolonia.Core.Text
 {

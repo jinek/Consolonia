@@ -7,7 +7,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Reactive;
 using Avalonia.Styling;
-using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using NeoSmart.Unicode;
 using Wcwidth;

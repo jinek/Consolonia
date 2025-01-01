@@ -18,7 +18,7 @@ namespace Consolonia.NUnit
 {
     public sealed class UnitTestConsole : IConsole
     {
-        private readonly PixelBufferSize _size;
+        private PixelBufferSize _size;
         private bool _caretVisible;
         private PixelBufferCoordinate _fakeCaretPosition;
         private ClassicDesktopStyleApplicationLifetime _lifetime;
@@ -37,7 +37,7 @@ namespace Consolonia.NUnit
             _lifetime = null;
         }
 
-        public PixelBufferSize Size => _size;
+        public PixelBufferSize Size { get => _size;  set => _size = value; }
         public bool CaretVisible => _caretVisible;
 
         public bool SupportsComplexEmoji => true;
