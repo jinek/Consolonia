@@ -13,7 +13,7 @@ namespace Consolonia.Core.Infrastructure
     /// </summary>
     public interface IConsoleOutput 
     {
-        PixelBufferSize Size { get; }
+        PixelBufferSize Size { get; set; }
 
         bool CaretVisible { get; }
 
@@ -26,11 +26,6 @@ namespace Consolonia.Core.Infrastructure
         /// Does this support
         /// </summary>
         bool SupportsAltSolo { get; }
-
-        /// <summary>
-        /// Console has been resized
-        /// </summary>
-        event Action Resized;
 
         /// <summary>
         ///  Set the title of the console window
@@ -80,12 +75,6 @@ namespace Consolonia.Core.Infrastructure
         /// Clear the screen
         /// </summary>
         void ClearScreen();
-
-        /// <summary>
-        /// Check the size of the console
-        /// </summary>
-        /// <returns>true if size has changed</returns>
-        bool CheckSize();
 
         /// <summary>
         /// Print formatted text to the console

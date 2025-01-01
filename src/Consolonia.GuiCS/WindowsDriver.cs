@@ -17,7 +17,9 @@ namespace Terminal.Gui
 			InputHandle = GetStdHandle (STD_INPUT_HANDLE);
 			originalConsoleMode = ConsoleMode;
 			var newConsoleMode = originalConsoleMode;
-			newConsoleMode |= (uint)(ConsoleModes.EnableMouseInput | ConsoleModes.EnableExtendedFlags);
+			newConsoleMode |= (uint)(ConsoleModes.EnableMouseInput | 
+									 ConsoleModes.EnableExtendedFlags |
+									 ConsoleModes.EnableWindowInput);
 			newConsoleMode &= ~(uint)ConsoleModes.EnableQuickEditMode;
 			newConsoleMode &= ~(uint)ConsoleModes.EnableProcessedInput;
 			ConsoleMode = newConsoleMode;
@@ -36,6 +38,7 @@ namespace Terminal.Gui
 		[Flags]
 		public enum ConsoleModes : uint {
 			EnableProcessedInput = 1,
+			EnableWindowInput = 8,
 			EnableMouseInput = 16,
 			EnableQuickEditMode = 64,
 			EnableExtendedFlags = 128,

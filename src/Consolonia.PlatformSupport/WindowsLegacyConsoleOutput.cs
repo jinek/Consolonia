@@ -1,17 +1,12 @@
 #pragma warning disable CA1416 // Validate platform compatibility
 using System;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Media;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
-using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.User32;
 
 namespace Consolonia.PlatformSupport
 {
@@ -20,24 +15,32 @@ namespace Consolonia.PlatformSupport
     {
         private WindowsConsoleBuffer _originalBuffer;
         private WindowsConsoleBuffer _consoleBuffer;
-
-        private CancellationTokenSource _taskCompletionSource = new CancellationTokenSource();
-
-        public event Action Resized;
-
+        private PixelBufferSize _size;
 
         public PixelBufferSize Size
         {
-            get
+            get => _size;
+            set
             {
-                var info = new CONSOLE_SCREEN_BUFFER_INFOEX();
-                info.cbSize = (uint)Marshal.SizeOf(info);
-                if (!GetConsoleScreenBufferInfoEx(_consoleBuffer.BufferHandle, ref info))
+                lock (_consoleBuffer.BufferHandle)
                 {
-                    throw GetLastError().GetException();
-                }
+                    GetConsoleScreenBufferInfo(_consoleBuffer.BufferHandle, out var info);
+                    var windowWidth = info.srWindow.Right - info.srWindow.Left + 1;
+                    var windowHeight = info.srWindow.Bottom - info.srWindow.Top + 1;
+                    // Debug.WriteLine($"ScreenBuffer: {info.dwSize.X}x{info.dwSize.Y} NewValue: {value.Width}x{value.Height} Window: {windowWidth}x{windowHeight}");
 
-                return new PixelBufferSize((ushort)info.dwSize.X, (ushort)info.dwSize.Y);
+                    if (value.Height > windowHeight)
+                    {
+                        // we need to adjust the buffer size to match to make scroll bars go away.
+                        _size = new PixelBufferSize((ushort)windowWidth, (ushort)windowHeight);
+                        SetConsoleScreenBufferSize(_consoleBuffer.BufferHandle, new COORD((short)_size.Width, (short)_size.Height));
+                    }
+                    else
+                    {
+                        _size = value;
+                    }
+                    ClearScreen();
+                }
             }
         }
 
@@ -56,7 +59,7 @@ namespace Consolonia.PlatformSupport
 
         public bool SupportsComplexEmoji => false;
 
-        public bool SupportsAltSolo => false;
+        public bool SupportsAltSolo => true;
 
         public WindowsLegacyConsoleOutput()
         {
@@ -87,8 +90,6 @@ namespace Consolonia.PlatformSupport
                     throw GetLastError().GetException();
                 }
             }
-
-            _ = MonitorWindowTask(_taskCompletionSource.Token);
         }
 
         public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style, FontWeight? weight, TextDecorationLocation? textDecoration, string str)
@@ -102,9 +103,6 @@ namespace Consolonia.PlatformSupport
 
             if (!(f is ConsoleColor foregroundConsoleColor))
                 throw new InvalidCastException("Foreground color must be ConsoleColor");
-
-            Console.BackgroundColor = backgroundConsoleColor;
-            Console.ForegroundColor = foregroundConsoleColor;
 
             CHARACTER_ATTRIBUTE backgroundAttributes = backgroundConsoleColor switch
             {
@@ -246,67 +244,9 @@ namespace Consolonia.PlatformSupport
             }
         }
 
-        private RECT _previousSize;
-        public virtual bool CheckSize()
-        {
-            var consoleWindow = GetConsoleWindow();
-
-            lock (this)
-            {
-                if (!GetWindowRect(consoleWindow, out RECT currentRect))
-                {
-                    int error = Marshal.GetLastWin32Error();
-                    System.Diagnostics.Debug.WriteLine($"Failed to get console window rect. Error: {error}");
-                }
-
-                if (currentRect.Width != _previousSize.Width || currentRect.Height != _previousSize.Height)
-                {
-                    GetCurrentConsoleFont(_consoleBuffer.BufferHandle, false, out var fontInfo);
-                    var newSize = new COORD((short)(currentRect.Width / fontInfo.dwFontSize.X) - 10, (short)(currentRect.Height / fontInfo.dwFontSize.Y) - 10);
-                    System.Diagnostics.Debug.WriteLine($"{Console.WindowWidth}x{Console.WindowHeight} {currentRect.Width}x{currentRect.Height} NewSize: {newSize.X}x{newSize.Y}");
-                    //if (!SetConsoleScreenBufferSize(_consoleBuffer.BufferHandle, newSize))
-                    //{
-                    //    System.Diagnostics.Debug.WriteLine($"Failed to set size to {newSize.X}x{newSize.Y}");
-                    //}
-                    _previousSize = currentRect;
-
-                    Resized?.Invoke();
-                    return true;
-                }
-            }
-            return false;
-        }
-        //             var size = this.Size;
-        //System.Diagnostics.Debug.WriteLine($"{size.Width}x{size.Height} => Console: {Console.WindowWidth}x{Console.WindowHeight}");
-        //if (size.Width == Console.WindowWidth && size.Height == Console.WindowHeight) return false;
-
-        //// Set the window size to match the buffer size
-        //SMALL_RECT windowSize = new SMALL_RECT
-        //{
-        //    Left = 0,
-        //    Top = 0,
-        //    Right = (short)(size.Width - 1),
-        //    Bottom = (short)(size.Height - 1)
-        //};
-
-        //Console.WindowWidth = size.Width;
-        //Console.WindowHeight = size.Height;
-        //Resized?.Invoke();
-
         public void WriteText(string str)
         {
             throw new NotImplementedException("This doesn't support escape codes, you should use Print instead.");
-        }
-
-        private async Task MonitorWindowTask(CancellationToken ct)
-        {
-            while (!ct.IsCancellationRequested)
-            {
-                CheckSize();
-
-                // Polling interval
-                await Task.Delay(500);
-            }
         }
     }
 }

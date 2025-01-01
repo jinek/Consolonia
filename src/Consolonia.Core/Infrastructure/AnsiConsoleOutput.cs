@@ -20,8 +20,6 @@ namespace Consolonia.Core.Infrastructure
         private bool? _supportEmoji;
         private bool _caretVisible;
 
-        public event Action Resized;
-
         public AnsiConsoleOutput()
         {
         }
@@ -33,7 +31,7 @@ namespace Consolonia.Core.Infrastructure
         public bool SupportsMouse { get; }
         public bool SupportsMouseMove { get; }
 
-        public PixelBufferSize Size { get; private set; }
+        public PixelBufferSize Size { get; set; }
 
         public void SetTitle(string title)
         {
@@ -110,7 +108,7 @@ namespace Consolonia.Core.Infrastructure
             // enable alternate screen so original console screen is not affected by the app
             WriteText(Esc.EnableAlternateBuffer);
 
-            CheckSize();
+            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
 
             // Detect complex emoji support by writing a complex emoji and checking cursor position.
             // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
@@ -175,15 +173,5 @@ namespace Consolonia.Core.Infrastructure
             _headBufferPoint = new PixelBufferCoordinate(0, 0);
             WriteText(Esc.SetCursorPosition(0, 0));
         }
-
-        public bool CheckSize()
-        {
-            if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
-
-            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
-            Resized?.Invoke();
-            return true;
-        }
-
     }
 }

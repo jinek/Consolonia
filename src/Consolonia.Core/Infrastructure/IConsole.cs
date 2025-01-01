@@ -18,6 +18,8 @@ namespace Consolonia.Core.Infrastructure
 
         bool SupportsMouseMove { get; }
 
+        public event Action Resized;
+
         event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
         event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
 

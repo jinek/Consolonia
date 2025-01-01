@@ -26,7 +26,6 @@ namespace Consolonia.Core.Infrastructure
                 throw new ArgumentException("ConsoleBase cannot be used as a console output", nameof(consoleOutput));
 
             _consoleOutput = consoleOutput;
-            _consoleOutput.Resized += () => Resized?.Invoke();
         }
 
         protected bool Disposed { get; private set; }
@@ -54,7 +53,7 @@ namespace Consolonia.Core.Infrastructure
                     if (pauseTask != null)
                         await pauseTask;
 
-                    int timeout = (int)(_consoleOutput.CheckSize() ? 1 : slowInterval);
+                    int timeout = (int)(CheckSize() ? 1 : slowInterval);
                     await Task.Delay(timeout);
                 }
             });
@@ -87,7 +86,16 @@ namespace Consolonia.Core.Infrastructure
         #endregion
 
         #region IConsoleOutput
-        public virtual PixelBufferSize Size => _consoleOutput.Size;
+        public virtual PixelBufferSize Size
+        {
+            get => _consoleOutput.Size;
+            set
+            {
+                // Debug.WriteLine($"Setting size to {value.Width}x{value.Height}");
+                _consoleOutput.Size = value;
+                Resized?.Invoke();
+            }
+        }
 
         public virtual bool CaretVisible => _consoleOutput.CaretVisible;
 
@@ -133,8 +141,13 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public virtual bool CheckSize()
-            => _consoleOutput.CheckSize();
+        {
+            if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
 
+            this.Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+            Resized?.Invoke();
+            return true;
+        }
         #endregion
 
         #region IDisposable

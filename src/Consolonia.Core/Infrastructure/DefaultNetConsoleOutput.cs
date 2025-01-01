@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Media;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -19,7 +18,6 @@ namespace Consolonia.Core.Infrastructure
         private ConsoleColor _originalForeground;
         private ConsoleColor _originalBackground;
         private bool _caretVisible;
-        protected Task PauseTask { get; private set; }
 
         public event Action Resized;
 
@@ -28,19 +26,13 @@ namespace Consolonia.Core.Infrastructure
         {
         }
 
-        public PixelBufferSize Size { get; private set; }
+        public PixelBufferSize Size { get; set; }
 
         public bool CaretVisible => _caretVisible;
 
         public bool SupportsComplexEmoji => false;
 
         public bool SupportsAltSolo => false;
-
-        public virtual void PauseIO(Task task)
-        {
-            task.ContinueWith(_ => { PauseTask = null; }, TaskScheduler.Default);
-            PauseTask = task;
-        }
 
         public void SetTitle(string title)
             => Console.Title = title;
@@ -66,7 +58,6 @@ namespace Consolonia.Core.Infrastructure
 
         public void WriteText(string str)
         {
-            PauseTask?.Wait();
             Console.Write(str);
         }
 

@@ -22,10 +22,10 @@ namespace Consolonia
 
             IConsole console = Environment.OSVersion.Platform switch
             {
-                PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT =>
+                PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT => 
                         new Win32Console((Console.IsOutputRedirected || IsWindowsTerminal()) ? 
-                            new AnsiConsoleOutput() : 
-                            new DefaultNetConsoleOutput()), 
+                            new DefaultNetConsoleOutput() : 
+                            new WindowsLegacyConsoleOutput()), 
                 PlatformID.Unix or PlatformID.MacOSX => new CursesConsole(),
                 _ => new DefaultNetConsole()
             };

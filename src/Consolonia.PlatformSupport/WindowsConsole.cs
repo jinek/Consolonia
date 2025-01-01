@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Terminal.Gui;
@@ -59,7 +60,7 @@ namespace Consolonia.PlatformSupport
         public override bool SupportsMouseMove => true;
 
         public Win32Console(IConsoleOutput console)
-            : base(console) 
+            : base(console)
         {
             _windowsConsole = new WindowsConsole();
 
@@ -105,7 +106,8 @@ namespace Consolonia.PlatformSupport
                         switch (inputRecord.EventType)
                         {
                             case WindowsConsole.EventType.WindowBufferSize:
-                                CheckSize();
+                                WindowsConsole.WindowBufferSizeRecord windowBufferSize = inputRecord.WindowBufferSizeEvent;
+                                Size = new PixelBufferSize((ushort)windowBufferSize.size.X, (ushort)windowBufferSize.size.Y);
                                 break;
                             case WindowsConsole.EventType.Focus:
                                 WindowsConsole.FocusEventRecord focusEvent = inputRecord.FocusEvent;
