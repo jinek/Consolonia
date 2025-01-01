@@ -1,9 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    <ItemGroup>
+      <PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.4" />
+      <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.4" />
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
-        <ProjectReference Include="..\Consolonia.GuiCS\Consolonia.GuiCS.csproj" PrivateAssets="All"  >
+        <ProjectReference Include="..\Consolonia.GuiCS\Consolonia.GuiCS.csproj" PrivateAssets="All">
             <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
             <IncludeAssets>Consolonia.GuiCS.dll</IncludeAssets>
         </ProjectReference>
@@ -20,9 +24,9 @@
     <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
         <ItemGroup>
             <!-- Filter out unnecessary files -->
-            <_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')->WithMetadataValue('PrivateAssets', 'All'))"/>
+            <_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
             <!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
-            <BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)"/>
+            <BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
         </ItemGroup>
     </Target>
 </Project>
