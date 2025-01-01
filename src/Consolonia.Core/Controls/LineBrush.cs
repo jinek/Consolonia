@@ -16,10 +16,6 @@ namespace Consolonia.Controls
         public static readonly StyledProperty<LineStyle> LineStyleProperty =
             AvaloniaProperty.Register<LineBrush, LineStyle>(CommonInternalHelper.GetStyledPropertyName());
 
-        static LineBrush()
-        {
-        }
-
         public IBrush Brush
         {
             get => GetValue(BrushProperty);

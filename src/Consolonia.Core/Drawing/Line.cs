@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
@@ -24,7 +25,7 @@ namespace Consolonia.Core.Drawing
             PStart = pStart;
             pEnd = new Point(pEnd.X, pEnd.Y);
             if (!(pStart.X.IsNearlyEqual(pEnd.X) || pStart.Y.IsNearlyEqual(pEnd.Y)))
-                throw new ArgumentException("Consolonia can only draw horizontal or vertical lines");
+                Debug.WriteLine("Consolonia can only draw horizontal or vertical lines");
             Vertical = pStart.X.IsNearlyEqual(pEnd.X);
             Length = Vertical ? (int)Math.Abs(pStart.Y - pEnd.Y) : (int)Math.Abs(pStart.X - pEnd.X);
             SourceGeometry = sourceGeometry!;

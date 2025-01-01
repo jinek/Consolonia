@@ -40,6 +40,10 @@ namespace Consolonia.Core.Text
         public const string BlinkingBarCursor = "\u001b[5 q";
         public const string SteadyBarCursor = "\u001b[6 q";
 
+        // bracketed 
+        public const string EnableBracketedPasteMode = "\u001b[?2004h";
+        public const string DisableBracktedPasteMode = "\u001b[?2004l";
+
         // move cursor
         public static string MoveCursorUp(int n)
         {
