@@ -1,22 +1,19 @@
 #pragma warning disable CA1416 // Validate platform compatibility
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Consolonia.PlatformSupport
 {
     /// <summary>
-    /// Represents a single Windows console buffer
+    ///     Represents a single Windows console buffer
     /// </summary>
     internal sealed class WindowsConsoleBuffer
     {
         /// <summary>
-        /// Internal handle for the created buffer
-        /// </summary>
-        internal SafeHFILE BufferHandle { get; private set; }
-
-        /// <summary>
-        /// Internal constructor. To create a new ConsoleBuffer, call either Create or GetCurrentConsoleScreenBuffer
+        ///     Internal constructor. To create a new ConsoleBuffer, call either Create or GetCurrentConsoleScreenBuffer
         /// </summary>
         /// <param name="bufferHandle">The handle of the existing screen buffer</param>
         internal WindowsConsoleBuffer(IntPtr bufferHandle)
@@ -26,33 +23,36 @@ namespace Consolonia.PlatformSupport
 
         internal WindowsConsoleBuffer(SafeHFILE bufferHandle)
         {
-            this.BufferHandle = bufferHandle;
+            BufferHandle = bufferHandle;
         }
 
         /// <summary>
-        /// Sets the buffer as the currently active buffer
+        ///     Internal handle for the created buffer
+        /// </summary>
+        internal SafeHFILE BufferHandle { get; }
+
+        /// <summary>
+        ///     Sets the buffer as the currently active buffer
         /// </summary>
         /// <returns>Returns true on success, false on error.</returns>
         internal bool SetAsActiveBuffer()
         {
-            lock(this.BufferHandle)
+            lock (BufferHandle)
             {
-                return SetConsoleActiveScreenBuffer(this.BufferHandle);
+                return SetConsoleActiveScreenBuffer(BufferHandle);
             }
         }
 
         /// <summary>
-        /// Creates a new console buffer.
+        ///     Creates a new console buffer.
         /// </summary>
         /// <returns>Returns a new ConsoleBuffer on success, throws on error.</returns>
         internal static WindowsConsoleBuffer Create()
         {
             try
             {
-                var buffer = CreateConsoleScreenBuffer(ACCESS_MASK.GENERIC_READ | ACCESS_MASK.GENERIC_WRITE,
-                    System.IO.FileShare.Read | System.IO.FileShare.Write,
-                    null,
-                    CONSOLE_TEXTMODE.CONSOLE_TEXTMODE_BUFFER);
+                SafeHFILE buffer = CreateConsoleScreenBuffer(ACCESS_MASK.GENERIC_READ | ACCESS_MASK.GENERIC_WRITE,
+                    FileShare.Read | FileShare.Write);
                 return new WindowsConsoleBuffer(buffer);
             }
             catch (ArgumentException ex)
@@ -62,15 +62,16 @@ namespace Consolonia.PlatformSupport
         }
 
         /// <summary>
-        /// Gets the current console buffer.
+        ///     Gets the current console buffer.
         /// </summary>
         /// <returns>Returns a new ConsoleBuffer on success, throws on error.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")] //Is not a property, so this message is suppressed
+        [SuppressMessage("Microsoft.Design",
+            "CA1024:UsePropertiesWhereAppropriate")] //Is not a property, so this message is suppressed
         internal static WindowsConsoleBuffer GetCurrentConsoleScreenBuffer()
         {
             try
             {
-                var buffer = GetStdHandle(StdHandleType.STD_OUTPUT_HANDLE);
+                HFILE buffer = GetStdHandle(StdHandleType.STD_OUTPUT_HANDLE);
                 return new WindowsConsoleBuffer(buffer.DangerousGetHandle());
             }
             catch (ArgumentException ex)
@@ -80,7 +81,7 @@ namespace Consolonia.PlatformSupport
         }
 
         /// <summary>
-        /// Draw data to the console buffer.
+        ///     Draw data to the console buffer.
         /// </summary>
         /// <param name="data">A CHAR_INFO array containing the data. Should be as big as the data to be written.</param>
         /// <param name="x">X coordinate on the output buffer</param>
@@ -90,12 +91,13 @@ namespace Consolonia.PlatformSupport
         /// <returns>Returns true on success, false on error.</returns>
         internal bool DrawInternal(CHAR_INFO[] data, short x, short y, short width, short height)
         {
-            SMALL_RECT rect = new SMALL_RECT() { Left = x, Top = y, Right = (short)(x + width), Bottom = (short)(y + height) };
-            return WriteConsoleOutput(this.BufferHandle, data, new COORD() { X = width, Y = height }, new COORD() { X = 0, Y = 0 }, ref rect);
+            var rect = new SMALL_RECT { Left = x, Top = y, Right = (short)(x + width), Bottom = (short)(y + height) };
+            return WriteConsoleOutput(BufferHandle, data, new COORD { X = width, Y = height },
+                new COORD { X = 0, Y = 0 }, ref rect);
         }
 
         /// <summary>
-        /// Draws text to the console buffer.
+        ///     Draws text to the console buffer.
         /// </summary>
         /// <param name="text">The text to be drawn</param>
         /// <param name="x">X coordinate on the output buffer</param>
@@ -108,12 +110,13 @@ namespace Consolonia.PlatformSupport
             short y,
             CHARACTER_ATTRIBUTE attributes)
         {
-            lock (this.BufferHandle)
+            lock (BufferHandle)
             {
                 if (text == null) return false;
-                if (text.Length > short.MaxValue) throw new ArgumentOutOfRangeException(nameof(text), "Text must not be longer than short.MaxValue");
+                if (text.Length > short.MaxValue)
+                    throw new ArgumentOutOfRangeException(nameof(text), "Text must not be longer than short.MaxValue");
 
-                CHAR_INFO[] data = new CHAR_INFO[text.Length];
+                var data = new CHAR_INFO[text.Length];
                 for (int i = 0; i < data.Length; i++)
                 {
                     data[i].Char = text[i];
@@ -126,23 +129,20 @@ namespace Consolonia.PlatformSupport
 
         internal bool Clear()
         {
-            lock (this.BufferHandle)
+            lock (BufferHandle)
             {
-                GetConsoleScreenBufferInfo(this.BufferHandle, out CONSOLE_SCREEN_BUFFER_INFO info);
-                var length = info.dwSize.X * info.dwSize.Y;
-                CHAR_INFO[] line = new CHAR_INFO[length];
-                CHAR_INFO cell = new CHAR_INFO() { Char = ' ', Attributes = 0 };
+                GetConsoleScreenBufferInfo(BufferHandle, out CONSOLE_SCREEN_BUFFER_INFO info);
+                int length = info.dwSize.X * info.dwSize.Y;
+                var line = new CHAR_INFO[length];
+                var cell = new CHAR_INFO { Char = ' ', Attributes = 0 };
 
                 for (int i = 0; i < length; i++)
                     line[i] = cell;
 
-                if (!DrawInternal(line, (short)0, (short)0, info.dwSize.X, info.dwSize.Y))
-                {
-                    return false;
-                }
+                if (!DrawInternal(line, 0, 0, info.dwSize.X, info.dwSize.Y)) return false;
             }
+
             return true;
         }
-
     }
 }

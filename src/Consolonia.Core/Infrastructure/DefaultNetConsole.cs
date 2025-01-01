@@ -8,11 +8,11 @@ using Consolonia.Core.InternalHelpers;
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    /// IConsole implementation which purely uses Console API 
+    ///     IConsole implementation which purely uses Console API
     /// </summary>
     /// <remarks>
-    /// This implements uses standard Console.ReadKey to get input and
-    /// calls the base IConsoleOutput for output (or default of Console Output)
+    ///     This implements uses standard Console.ReadKey to get input and
+    ///     calls the base IConsoleOutput for output (or default of Console Output)
     /// </remarks>
     public class DefaultNetConsole : ConsoleBase
     {
@@ -105,6 +105,5 @@ namespace Consolonia.Core.Infrastructure
                 throw new NotImplementedException();
             return key;
         }
-
     }
 }

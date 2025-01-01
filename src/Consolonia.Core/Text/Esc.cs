@@ -78,14 +78,14 @@ namespace Consolonia.Core.Text
 
         public static string Foreground(ConsoleColor color)
         {
-            var ansiCode = GetAnsiCode(color);
+            int ansiCode = GetAnsiCode(color);
             return ansiCode < 8
                 ?
                 // Standard colors
-                $"\x1b[{(30 + ansiCode)}m"
+                $"\x1b[{30 + ansiCode}m"
                 :
                 // Bright colors
-                $"\x1b[{(90 + (ansiCode - 8))}m";
+                $"\x1b[{90 + (ansiCode - 8)}m";
         }
 
         public static string Background(object color)
@@ -100,13 +100,13 @@ namespace Consolonia.Core.Text
 
         public static string Background(ConsoleColor color)
         {
-            var ansiCode = GetAnsiCode(color);
+            int ansiCode = GetAnsiCode(color);
             return ansiCode < 8
                 ?
-            // Standard colors
+                // Standard colors
                 $"\x1b[{40 + ansiCode}m"
-            :
-            // Bright colors
+                :
+                // Bright colors
                 $"\x1b[{100 + (ansiCode - 8)}m";
         }
 

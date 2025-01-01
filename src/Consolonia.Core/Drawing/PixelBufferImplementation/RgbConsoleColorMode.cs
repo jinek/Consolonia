@@ -33,7 +33,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public (object background, object foreground) MapColors(Color background, Color foreground, FontWeight? weight)
         {
-
             foreground = weight switch
             {
                 FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black

@@ -4,17 +4,17 @@ using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
-using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Drawing;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    /// Base IConsole implementation
+    ///     Base IConsole implementation
     /// </summary>
     /// <remarks>
-    /// This implements disposable and eventing for IConsoleInput and
-    /// wraps around internal IConsoleOutput
+    ///     This implements disposable and eventing for IConsoleInput and
+    ///     wraps around internal IConsoleOutput
     /// </remarks>
     public abstract class ConsoleBase : IConsole, IDisposable
     {
@@ -34,7 +34,7 @@ namespace Consolonia.Core.Infrastructure
 
 
         /// <summary>
-        /// Pause the IO
+        ///     Pause the IO
         /// </summary>
         /// <param name="task"></param>
         public virtual void PauseIO(Task task)
@@ -60,6 +60,7 @@ namespace Consolonia.Core.Infrastructure
         }
 
         #region IConsoleInput
+
         public abstract bool SupportsMouse { get; }
 
         public abstract bool SupportsMouseMove { get; }
@@ -83,9 +84,11 @@ namespace Consolonia.Core.Infrastructure
         {
             FocusEvent?.Invoke(focused);
         }
+
         #endregion
 
         #region IConsoleOutput
+
         public virtual PixelBufferSize Size
         {
             get => _consoleOutput.Size;
@@ -106,33 +109,55 @@ namespace Consolonia.Core.Infrastructure
         public event Action Resized;
 
         public virtual void ClearScreen()
-            => _consoleOutput.ClearScreen();
+        {
+            _consoleOutput.ClearScreen();
+        }
 
         public virtual PixelBufferCoordinate GetCaretPosition()
-            => _consoleOutput.GetCaretPosition();
+        {
+            return _consoleOutput.GetCaretPosition();
+        }
 
         public virtual void HideCaret()
-            => _consoleOutput.HideCaret();
+        {
+            _consoleOutput.HideCaret();
+        }
 
         public virtual void PrepareConsole()
-            => _consoleOutput.PrepareConsole();
+        {
+            _consoleOutput.PrepareConsole();
+        }
 
-        public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style, FontWeight? weight, TextDecorationLocation? textDecoration, string str)
-            => _consoleOutput.Print(bufferPoint, background, foreground, style, weight, textDecoration, str);
+        public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground,
+            FontStyle? style, FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+        {
+            _consoleOutput.Print(bufferPoint, background, foreground, style, weight, textDecoration, str);
+        }
 
         public virtual void RestoreConsole()
-            => _consoleOutput.RestoreConsole();
+        {
+            _consoleOutput.RestoreConsole();
+        }
 
         public virtual void SetCaretPosition(PixelBufferCoordinate bufferPoint)
-            => _consoleOutput.SetCaretPosition(bufferPoint);
+        {
+            _consoleOutput.SetCaretPosition(bufferPoint);
+        }
 
         public virtual void SetCaretStyle(CaretStyle caretStyle)
-            => _consoleOutput.SetCaretStyle(caretStyle);
+        {
+            _consoleOutput.SetCaretStyle(caretStyle);
+        }
 
         public virtual void SetTitle(string title)
-            => _consoleOutput.SetTitle(title);
+        {
+            _consoleOutput.SetTitle(title);
+        }
+
         public virtual void ShowCaret()
-            => _consoleOutput.ShowCaret();
+        {
+            _consoleOutput.ShowCaret();
+        }
 
         public virtual void WriteText(string str)
         {
@@ -148,9 +173,11 @@ namespace Consolonia.Core.Infrastructure
             Resized?.Invoke();
             return true;
         }
+
         #endregion
 
         #region IDisposable
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

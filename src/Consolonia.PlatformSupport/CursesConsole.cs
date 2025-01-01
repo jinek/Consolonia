@@ -112,7 +112,6 @@ namespace Consolonia.PlatformSupport
         public CursesConsole()
             : base(new AnsiConsoleOutput())
         {
-
             // ReSharper disable VirtualMemberCallInConstructor
             PrepareConsole();
 

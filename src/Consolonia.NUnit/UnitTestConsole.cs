@@ -18,27 +18,21 @@ namespace Consolonia.NUnit
 {
     public sealed class UnitTestConsole : IConsole
     {
-        private PixelBufferSize _size;
-        private bool _caretVisible;
         private PixelBufferCoordinate _fakeCaretPosition;
         private ClassicDesktopStyleApplicationLifetime _lifetime;
 
         public UnitTestConsole(PixelBufferSize size)
         {
-            _size = size;
+            Size = size;
             PixelBuffer = new PixelBuffer(size.Width, size.Height);
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
         public PixelBuffer PixelBuffer { get; }
 
-        public void Dispose()
-        {
-            _lifetime = null;
-        }
+        public PixelBufferSize Size { get; set; }
 
-        public PixelBufferSize Size { get => _size;  set => _size = value; }
-        public bool CaretVisible => _caretVisible;
+        public bool CaretVisible { get; private set; }
 
         public bool SupportsComplexEmoji => true;
         public bool SupportsAltSolo => true;
@@ -86,6 +80,38 @@ namespace Consolonia.NUnit
         public void PauseIO(Task task)
         {
             throw new NotSupportedException();
+        }
+
+
+        public void SetCaretStyle(CaretStyle caretStyle)
+        {
+        }
+
+        public void HideCaret()
+        {
+            CaretVisible = false;
+        }
+
+        public void ShowCaret()
+        {
+            CaretVisible = true;
+        }
+
+        public void PrepareConsole()
+        {
+        }
+
+        public void RestoreConsole()
+        {
+        }
+
+        public void ClearScreen()
+        {
+        }
+
+        public void Dispose()
+        {
+            _lifetime = null;
         }
 
         public void ClearOutput()
@@ -174,35 +200,6 @@ namespace Consolonia.NUnit
         public void SetupLifetime(ClassicDesktopStyleApplicationLifetime lifetime)
         {
             _lifetime = lifetime;
-        }
-
-
-        public void SetCaretStyle(CaretStyle caretStyle)
-        {
-
-        }
-
-        public void HideCaret()
-        {
-            _caretVisible = false;
-        }
-
-        public void ShowCaret()
-        {
-            _caretVisible = true;
-        }
-
-        public void PrepareConsole()
-        {
-            
-        }
-
-        public void RestoreConsole()
-        {
-        }
-
-        public void ClearScreen()
-        {
         }
 
 

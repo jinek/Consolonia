@@ -10,7 +10,7 @@ using Consolonia.Core.Text;
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    /// Console implementation which uses ANSI escape sequences for output
+    ///     Console implementation which uses ANSI escape sequences for output
     /// </summary>
     public class AnsiConsoleOutput : IConsoleOutput
     {
@@ -18,13 +18,8 @@ namespace Consolonia.Core.Infrastructure
         private PixelBufferCoordinate _headBufferPoint;
 
         private bool? _supportEmoji;
-        private bool _caretVisible;
 
-        public AnsiConsoleOutput()
-        {
-        }
-
-        public bool CaretVisible => _caretVisible;
+        public bool CaretVisible { get; private set; }
 
         public bool SupportsComplexEmoji => _supportEmoji ?? false;
 
@@ -38,7 +33,7 @@ namespace Consolonia.Core.Infrastructure
         public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
         {
             if (bufferPoint.Equals(GetCaretPosition())) return;
-            
+
             try
             {
                 WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
@@ -73,8 +68,9 @@ namespace Consolonia.Core.Infrastructure
             if (style == FontStyle.Italic)
                 WriteText(Esc.Italic);
 
-            var (mappedBackground, mappedForeground) = consoleColorMode.MapColors(background, foreground, weight);
-            WriteText(Esc.Foreground(mappedForeground));    
+            (object mappedBackground, object mappedForeground) =
+                consoleColorMode.MapColors(background, foreground, weight);
+            WriteText(Esc.Foreground(mappedForeground));
             WriteText(Esc.Background(mappedBackground));
             WriteText(str);
             WriteText(Esc.Reset);
@@ -88,7 +84,7 @@ namespace Consolonia.Core.Infrastructure
         }
 
         /// <summary>
-        /// Write raw text to the console
+        ///     Write raw text to the console
         /// </summary>
         /// <remarks>This does not move the caret position, so should only be used for escape commands</remarks>
         /// <param name="str"></param>
@@ -155,13 +151,13 @@ namespace Consolonia.Core.Infrastructure
         public void HideCaret()
         {
             WriteText(Esc.HideCursor);
-            this._caretVisible = false;
+            CaretVisible = false;
         }
 
         public void ShowCaret()
         {
             WriteText(Esc.ShowCursor);
-            this._caretVisible = true;
+            CaretVisible = true;
         }
 
         public void ClearScreen()

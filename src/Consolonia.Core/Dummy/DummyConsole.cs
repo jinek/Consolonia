@@ -41,14 +41,9 @@ namespace Consolonia.Core.Dummy
 
         public PixelBufferSize Size { get; set; }
 
-        public bool CaretVisible { get; set; } 
+        public bool CaretVisible { get; set; }
 
         public bool SupportsComplexEmoji => true;
-
-        public void ClearOutput()
-        {
-            SetCaretPosition(new PixelBufferCoordinate(0, 0));
-        }
 
         public PixelBufferCoordinate GetCaretPosition()
         {
@@ -72,21 +67,6 @@ namespace Consolonia.Core.Dummy
 
         public void WriteText(string str)
         {
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    // Dispose managed resources here.
-                }
-
-                // Dispose unmanaged resources here.
-
-                _disposed = true;
-            }
         }
 
         public void SetCaretStyle(CaretStyle caretStyle)
@@ -113,6 +93,26 @@ namespace Consolonia.Core.Dummy
 
         public void ClearScreen()
         {
+        }
+
+        public void ClearOutput()
+        {
+            SetCaretPosition(new PixelBufferCoordinate(0, 0));
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources here.
+                }
+
+                // Dispose unmanaged resources here.
+
+                _disposed = true;
+            }
         }
     }
 }

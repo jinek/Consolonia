@@ -8,9 +8,9 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    /// Defines properties and methods for console output
+    ///     Defines properties and methods for console output
     /// </summary>
-    public interface IConsoleOutput 
+    public interface IConsoleOutput
     {
         PixelBufferSize Size { get; set; }
 
@@ -22,56 +22,56 @@ namespace Consolonia.Core.Infrastructure
         bool SupportsComplexEmoji { get; }
 
         /// <summary>
-        ///  Set the title of the console window
+        ///     Set the title of the console window
         /// </summary>
         /// <param name="title"></param>
         void SetTitle(string title);
 
         /// <summary>
-        /// Set physical caret position
+        ///     Set physical caret position
         /// </summary>
         /// <param name="bufferPoint"></param>
         void SetCaretPosition(PixelBufferCoordinate bufferPoint);
 
         /// <summary>
-        /// Get physical Caret position
+        ///     Get physical Caret position
         /// </summary>
         /// <returns></returns>
         PixelBufferCoordinate GetCaretPosition();
 
         /// <summary>
-        /// Change caret style
+        ///     Change caret style
         /// </summary>
         /// <param name="caretStyle"></param>
         void SetCaretStyle(CaretStyle caretStyle);
 
         /// <summary>
-        /// Hide the caret
+        ///     Hide the caret
         /// </summary>
         void HideCaret();
 
         /// <summary>
-        /// Show the caret
+        ///     Show the caret
         /// </summary>
         void ShowCaret();
 
         /// <summary>
-        /// Prepare the console
+        ///     Prepare the console
         /// </summary>
         void PrepareConsole();
 
         /// <summary>
-        /// Restore the console
+        ///     Restore the console
         /// </summary>
         void RestoreConsole();
 
         /// <summary>
-        /// Clear the screen
+        ///     Clear the screen
         /// </summary>
         void ClearScreen();
 
         /// <summary>
-        /// Print formatted text to the console
+        ///     Print formatted text to the console
         /// </summary>
         /// <param name="bufferPoint"></param>
         /// <param name="background"></param>
@@ -84,7 +84,7 @@ namespace Consolonia.Core.Infrastructure
             FontWeight? weight, TextDecorationLocation? textDecoration, string str);
 
         /// <summary>
-        /// Write raw text to the console
+        ///     Write raw text to the console
         /// </summary>
         /// <param name="str"></param>
         void WriteText(string str);

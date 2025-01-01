@@ -8,55 +8,53 @@ using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    /// IConsoleOutput implementation which purely uses Console API and not ANSI escape sequences.
+    ///     IConsoleOutput implementation which purely uses Console API and not ANSI escape sequences.
     /// </summary>
     /// <remarks>
-    /// This only supports ConsoleColor and not mouse or other advanced features.
+    ///     This only supports ConsoleColor and not mouse or other advanced features.
     /// </remarks>
     public class DefaultNetConsoleOutput : IConsoleOutput
     {
-        private ConsoleColor _originalForeground;
         private ConsoleColor _originalBackground;
-        private bool _caretVisible;
+        private ConsoleColor _originalForeground;
 
-        public event Action Resized;
-
-        
-        public DefaultNetConsoleOutput()
-        {
-        }
 
         public PixelBufferSize Size { get; set; }
 
-        public bool CaretVisible => _caretVisible;
+        public bool CaretVisible { get; private set; }
 
         public bool SupportsComplexEmoji => false;
 
         public void SetTitle(string title)
-            => Console.Title = title;
+        {
+            Console.Title = title;
+        }
 
         public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
-            => Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
+        {
+            Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
+        }
 
         public PixelBufferCoordinate GetCaretPosition()
         {
-            var (left, top) = Console.GetCursorPosition();
+            (int left, int top) = Console.GetCursorPosition();
             return new PixelBufferCoordinate((ushort)left, (ushort)top);
         }
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style, FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
+            FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
-            var originalForeground = Console.ForegroundColor;
-            var originalBackground = Console.BackgroundColor;
-            
-            var (consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(foreground);
+            ConsoleColor originalForeground = Console.ForegroundColor;
+            ConsoleColor originalBackground = Console.BackgroundColor;
+
+            (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(foreground);
             Console.ForegroundColor = consoleColor;
             (consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(background);
             Console.BackgroundColor = consoleColor;
-            
+
             Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
             Console.Write(str);
-            
+
             Console.ForegroundColor = originalForeground;
             Console.BackgroundColor = originalBackground;
         }
@@ -73,13 +71,13 @@ namespace Consolonia.Core.Infrastructure
         public void HideCaret()
         {
             Console.CursorVisible = false;
-            _caretVisible = false;
+            CaretVisible = false;
         }
 
         public void ShowCaret()
         {
             Console.CursorVisible = true;
-            _caretVisible = true;
+            CaretVisible = true;
         }
 
         public void PrepareConsole()
@@ -102,6 +100,8 @@ namespace Consolonia.Core.Infrastructure
         {
             Console.Clear();
         }
+
+        public event Action Resized;
 
         public bool CheckSize()
         {

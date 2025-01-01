@@ -109,8 +109,10 @@ namespace Consolonia.PlatformSupport
                         switch (inputRecord.EventType)
                         {
                             case WindowsConsole.EventType.WindowBufferSize:
-                                WindowsConsole.WindowBufferSizeRecord windowBufferSize = inputRecord.WindowBufferSizeEvent;
-                                Size = new PixelBufferSize((ushort)windowBufferSize.size.X, (ushort)windowBufferSize.size.Y);
+                                WindowsConsole.WindowBufferSizeRecord windowBufferSize =
+                                    inputRecord.WindowBufferSizeEvent;
+                                Size = new PixelBufferSize((ushort)windowBufferSize.size.X,
+                                    (ushort)windowBufferSize.size.Y);
                                 break;
                             case WindowsConsole.EventType.Focus:
                                 WindowsConsole.FocusEventRecord focusEvent = inputRecord.FocusEvent;
