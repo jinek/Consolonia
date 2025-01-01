@@ -1,5 +1,4 @@
 using Avalonia.Media;
-using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -7,7 +6,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     {
         Color Blend(Color color1, Color color2);
 
-
-        void SetAttributes(IConsoleOutput consoleOutput, Color background, Color foreground, FontWeight? weight);
+        (object background, object foreground) MapColors(Color background, Color foreground, FontWeight? weight);
     }
 }

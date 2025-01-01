@@ -67,6 +67,16 @@ namespace Consolonia.Core.Text
             return $"\u001b[{y + 1};{x + 1}f";
         }
 
+        public static string Foreground(object color)
+        {
+            return color switch
+            {
+                ConsoleColor consoleColor => Foreground(consoleColor),
+                Color rgbColor => Foreground(rgbColor),
+                _ => throw new ArgumentException("Invalid color type")
+            };
+        }
+
         public static string Foreground(ConsoleColor color)
         {
             var ansiCode = GetAnsiCode(color);
@@ -77,6 +87,16 @@ namespace Consolonia.Core.Text
                 :
                 // Bright colors
                 $"\x1b[{(90 + (ansiCode - 8))}m";
+        }
+
+        public static string Background(object color)
+        {
+            return color switch
+            {
+                ConsoleColor consoleColor => Background(consoleColor),
+                Color rgbColor => Background(rgbColor),
+                _ => throw new ArgumentException("Invalid color type")
+            };
         }
 
         public static string Background(ConsoleColor color)

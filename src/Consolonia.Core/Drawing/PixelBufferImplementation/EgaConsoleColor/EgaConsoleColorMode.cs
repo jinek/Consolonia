@@ -55,26 +55,16 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor
             }
         }
 
-        public void SetAttributes(IConsoleOutput consoleOutput, Color background, Color foreground,
-            FontWeight? weight)
+        public (object background, object foreground) MapColors(Color background, Color foreground, FontWeight? weight)
         {
             (ConsoleColor backgroundConsoleColor, EgaColorMode mode) = ConvertToConsoleColorMode(background);
             if (mode is not EgaColorMode.Colored)
                 ConsoloniaPlatform.RaiseNotSupported(62144, foreground);
 
-
             (ConsoleColor foregroundConsoleColor, _) = ConvertToConsoleColorMode(foreground);
             //todo: if mode is transparent, don't print foreground. if shaded - shade it
 
-            var sb = new StringBuilder();
-
-            // Append ANSI escape sequence for background color
-            sb.Append(Esc.Background(backgroundConsoleColor));
-
-            // Append ANSI escape sequence for foreground color
-            sb.Append(Esc.Foreground(foregroundConsoleColor));
-            consoleOutput.WriteText(sb.ToString());
-            return;
+            return (backgroundConsoleColor, foregroundConsoleColor);
         }
 
         public static (ConsoleColor, EgaColorMode) ConvertToConsoleColorMode(Color color)

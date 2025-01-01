@@ -8,9 +8,6 @@ namespace Consolonia.Core.Dummy
 {
     public class DummyConsole : ConsoleBase
     {
-        private PixelBufferCoordinate _caretPosition = new(0, 0);
-        private bool _disposed;
-
         public DummyConsole()
             : this(80, 25)
         {
@@ -41,6 +38,7 @@ namespace Consolonia.Core.Dummy
         public DummyConsoleOutput(ushort width, ushort height)
         {
             Size = new PixelBufferSize(width, height);
+            Resized?.Invoke();
         }
 
         public PixelBufferSize Size { get; set; }

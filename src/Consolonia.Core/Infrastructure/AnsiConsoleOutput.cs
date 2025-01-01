@@ -69,25 +69,20 @@ namespace Consolonia.Core.Infrastructure
 
             SetCaretPosition(bufferPoint);
 
-            var sb = new StringBuilder();
             if (textDecoration == TextDecorationLocation.Underline)
-                sb.Append(Esc.Underline);
+                WriteText(Esc.Underline);
 
             if (textDecoration == TextDecorationLocation.Strikethrough)
-                sb.Append(Esc.Strikethrough);
+                WriteText(Esc.Strikethrough);
 
             if (style == FontStyle.Italic)
-                sb.Append(Esc.Italic);
+                WriteText(Esc.Italic);
 
-            WriteText(sb.ToString());
-
-            consoleColorMode.SetAttributes(this, background, foreground, weight);
-
-            sb.Clear();
-            sb.Append(str);
-            sb.Append(Esc.Reset);
-
-            WriteText(sb.ToString());
+            var (mappedBackground, mappedForeground) = consoleColorMode.MapColors(background, foreground, weight);
+            WriteText(Esc.Foreground(mappedForeground));    
+            WriteText(Esc.Background(mappedBackground));
+            WriteText(str);
+            WriteText(Esc.Reset);
 
             ushort textWidth = str.MeasureText();
             if (_headBufferPoint.X < Size.Width - textWidth)
