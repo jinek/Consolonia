@@ -95,10 +95,12 @@ namespace Consolonia.Core.Dummy
 
         public void HideCaret()
         {
+            CaretVisible = false;
         }
 
         public void ShowCaret()
         {
+            CaretVisible = true;
         }
 
         public void PrepareConsole()
