@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
@@ -14,7 +15,7 @@ using Terminal.Gui;
 using Key = Avalonia.Input.Key;
 using Point = Avalonia.Point;
 using static Vanara.PInvoke.Kernel32;
-using System.Runtime.Versioning;
+
 // ReSharper disable UnusedMember.Local
 #pragma warning disable CS0649
 
@@ -30,7 +31,7 @@ namespace Consolonia.PlatformSupport
                 (CONTROL_KEY_STATE.LEFT_ALT_PRESSED, RawInputModifiers.Alt),
                 (CONTROL_KEY_STATE.RIGHT_ALT_PRESSED, RawInputModifiers.Alt),
                 (CONTROL_KEY_STATE.LEFT_CTRL_PRESSED, RawInputModifiers.Control),
-                (CONTROL_KEY_STATE.RIGHT_CTRL_PRESSED, RawInputModifiers.Control),
+                (CONTROL_KEY_STATE.RIGHT_CTRL_PRESSED, RawInputModifiers.Control)
             ]);
 
         private static readonly FlagTranslator<MOUSE_BUTTON_STATE, RawInputModifiers>
@@ -51,7 +52,7 @@ namespace Consolonia.PlatformSupport
                 (MOUSE_BUTTON_STATE.RIGHTMOST_BUTTON_PRESSED, RawPointerEventType.RightButtonDown),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_2ND_BUTTON_PRESSED, RawPointerEventType.MiddleButtonDown),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_3RD_BUTTON_PRESSED, RawPointerEventType.XButton1Down),
-                (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawPointerEventType.XButton2Down),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawPointerEventType.XButton2Down)
             ]);
 
         private static readonly FlagTranslator<MOUSE_BUTTON_STATE, RawPointerEventType>
@@ -61,7 +62,7 @@ namespace Consolonia.PlatformSupport
                 (MOUSE_BUTTON_STATE.RIGHTMOST_BUTTON_PRESSED, RawPointerEventType.RightButtonUp),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_2ND_BUTTON_PRESSED, RawPointerEventType.MiddleButtonUp),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_3RD_BUTTON_PRESSED, RawPointerEventType.XButton1Up),
-                (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawPointerEventType.XButton2Up),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawPointerEventType.XButton2Up)
             ]);
 
 
@@ -118,23 +119,24 @@ namespace Consolonia.PlatformSupport
                     var readConsoleInput = _windowsConsole.ReadConsoleInput();
                     if (!readConsoleInput.Any())
                         throw new NotImplementedException();
-                    foreach (var inputRecord in readConsoleInput)
+                    foreach (INPUT_RECORD inputRecord in readConsoleInput)
                         // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
                         switch (inputRecord.EventType)
                         {
                             case EVENT_TYPE.WINDOW_BUFFER_SIZE_EVENT:
-                                var windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
-                                Size = new PixelBufferSize((ushort)windowBufferSize.dwSize.X, (ushort)windowBufferSize.dwSize.Y);
+                                WINDOW_BUFFER_SIZE_RECORD windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
+                                Size = new PixelBufferSize((ushort)windowBufferSize.dwSize.X,
+                                    (ushort)windowBufferSize.dwSize.Y);
                                 break;
                             case EVENT_TYPE.FOCUS_EVENT:
-                                var focusEvent = inputRecord.Event.FocusEvent;
+                                FOCUS_EVENT_RECORD focusEvent = inputRecord.Event.FocusEvent;
                                 RaiseFocusEvent(focusEvent.bSetFocus != 0);
                                 break;
                             case EVENT_TYPE.KEY_EVENT:
                                 HandleKeyInput(inputRecord.Event.KeyEvent);
                                 break;
                             case EVENT_TYPE.MOUSE_EVENT:
-                                var mouseEvent = inputRecord.Event.MouseEvent;
+                                MOUSE_EVENT_RECORD mouseEvent = inputRecord.Event.MouseEvent;
                                 HandleMouseInput(mouseEvent);
                                 break;
                         }
@@ -148,17 +150,19 @@ namespace Consolonia.PlatformSupport
         {
             var point = new Point(mouseEvent.dwMousePosition.X, mouseEvent.dwMousePosition.Y);
             RawInputModifiers inputModifiers =
-                            KeyModifiersTranslator.Translate(mouseEvent.dwControlKeyState) |
-                            MouseModifiersTranslator.Translate(mouseEvent.dwButtonState);
+                KeyModifiersTranslator.Translate(mouseEvent.dwControlKeyState) |
+                MouseModifiersTranslator.Translate(mouseEvent.dwButtonState);
 
-            RawPointerEventType eventType = RawPointerEventType.Move;
+            var eventType = RawPointerEventType.Move;
             Vector? wheelDelta = null;
 
             switch (mouseEvent.dwEventFlags)
             {
                 case MOUSE_EVENT_FLAG.DOUBLE_CLICK:
-                    var downButtonEvent = MouseButtonDownEventTypeTranslator.Translate(mouseEvent.dwButtonState);
-                    var upButtonEvent = MouseButtonUpEventTypeTranslator.Translate(mouseEvent.dwButtonState);
+                    RawPointerEventType downButtonEvent =
+                        MouseButtonDownEventTypeTranslator.Translate(mouseEvent.dwButtonState);
+                    RawPointerEventType upButtonEvent =
+                        MouseButtonUpEventTypeTranslator.Translate(mouseEvent.dwButtonState);
                     for (int i = 0; i < 2; i++)
                     {
                         RaiseMouseEvent(downButtonEvent,
@@ -171,39 +175,40 @@ namespace Consolonia.PlatformSupport
                             wheelDelta,
                             inputModifiers);
                     }
+
                     break;
 
                 case MOUSE_EVENT_FLAG.NONE:
-                    foreach (var flag in Enum.GetValues<MOUSE_BUTTON_STATE>())
-                    {
+                    foreach (MOUSE_BUTTON_STATE flag in Enum.GetValues<MOUSE_BUTTON_STATE>())
                         if (!_mouseButtonsState.HasFlag(flag) && mouseEvent.dwButtonState.HasFlag(flag))
                         {
                             // If we went from flag off to flag on
-                            var buttonDownEventType = MouseButtonDownEventTypeTranslator.Translate(flag);
-#pragma warning disable IDE0034 // Simplify 'default' expression
-                            if (buttonDownEventType != default(RawPointerEventType))
-                            {
+                            RawPointerEventType buttonDownEventType =
+                                MouseButtonDownEventTypeTranslator.Translate(flag);
+#pragma warning disable IDE0034
+                            // Simplify 'default' expression
+                            if (buttonDownEventType != default)
                                 RaiseMouseEvent(buttonDownEventType,
                                     point,
                                     null,
                                     inputModifiers);
-                            }
-#pragma warning restore IDE0034 // Simplify 'default' expression
+#pragma warning restore IDE0034
+                            // Simplify 'default' expression
                         }
 
                         else if (_mouseButtonsState.HasFlag(flag) && !mouseEvent.dwButtonState.HasFlag(flag))
                         {
                             // If we went from flag On to flag off
-                            var buttonEventType = MouseButtonUpEventTypeTranslator.Translate(flag);
-#pragma warning disable IDE0034 // Simplify 'default' expression
-                            if (buttonEventType != default(RawPointerEventType))
-                            {
+                            RawPointerEventType buttonEventType = MouseButtonUpEventTypeTranslator.Translate(flag);
+#pragma warning disable IDE0034
+                            // Simplify 'default' expression
+                            if (buttonEventType != default)
                                 RaiseMouseEvent(buttonEventType,
                                     point,
                                     null,
                                     inputModifiers);
-                            }
-#pragma warning restore IDE0034 // Simplify 'default' expression
+#pragma warning restore IDE0034
+                            // Simplify 'default' expression
                         }
                         else
                         {
@@ -212,7 +217,6 @@ namespace Consolonia.PlatformSupport
                                 null,
                                 inputModifiers);
                         }
-                    }
 
                     break;
 
@@ -241,6 +245,7 @@ namespace Consolonia.PlatformSupport
                 default:
                     throw new InvalidOperationException(mouseEvent.dwEventFlags.ToString());
             }
+
             _mouseButtonsState = mouseEvent.dwButtonState;
         }
 
