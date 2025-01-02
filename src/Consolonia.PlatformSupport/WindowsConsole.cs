@@ -127,7 +127,7 @@ namespace Consolonia.PlatformSupport
                         switch (inputRecord.EventType)
                         {
                             case EVENT_TYPE.WINDOW_BUFFER_SIZE_EVENT:
-                                var  windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
+                                var windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
                                 Size = new PixelBufferSize((ushort)windowBufferSize.dwSize.X, (ushort)windowBufferSize.dwSize.Y);
                                 break;
                             case EVENT_TYPE.FOCUS_EVENT:
@@ -160,21 +160,18 @@ namespace Consolonia.PlatformSupport
             {
                 case MOUSE_EVENT_FLAG.DOUBLE_CLICK:
                     var downButtonEvent = MouseButtonDownEventTypeTranslator.Translate(mouseEvent.dwButtonState);
-                    if (downButtonEvent != default)
+                    var upButtonEvent = MouseButtonUpEventTypeTranslator.Translate(mouseEvent.dwButtonState);
+                    for (int i = 0; i < 2; i++)
                     {
-                        var upButtonEvent = MouseButtonUpEventTypeTranslator.Translate(mouseEvent.dwButtonState);
-                        for (int i = 0; i < 2; i++)
-                        {
-                            RaiseMouseEvent(downButtonEvent,
-                                point,
-                                wheelDelta,
-                                inputModifiers);
+                        RaiseMouseEvent(downButtonEvent,
+                            point,
+                            wheelDelta,
+                            inputModifiers);
 
-                            RaiseMouseEvent(upButtonEvent,
-                                point,
-                                wheelDelta,
-                                inputModifiers);
-                        }
+                        RaiseMouseEvent(upButtonEvent,
+                            point,
+                            wheelDelta,
+                            inputModifiers);
                     }
                     break;
 
