@@ -92,9 +92,19 @@ namespace Consolonia.PlatformSupport
 
             // change stdout stream to point to the new buffer
             var handle = new SafeFileHandle(_handle.DangerousGetHandle(), false);
-            Console.SetOut(new StreamWriter(new FileStream(handle, System.IO.FileAccess.Write)) { AutoFlush = true });
+            var stream = new FileStream(handle, System.IO.FileAccess.Write);
+            try
+            {
+                var writer = new StreamWriter(stream) { AutoFlush = true };
+                Console.SetOut(writer);
+                stream = null; // Successfully transferred ownership
+            }
+            finally
+            {
+                stream?.Dispose();
+            }
 
-            if (!SetConsoleCP(65001) || !SetConsoleOutputCP(65001)) 
+            if (!SetConsoleCP(65001) || !SetConsoleOutputCP(65001))
                 throw GetLastError().GetException();
 
             // set console mode
