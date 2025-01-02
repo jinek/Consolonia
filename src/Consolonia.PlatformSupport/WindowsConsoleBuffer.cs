@@ -102,7 +102,6 @@ namespace Consolonia.PlatformSupport
         private async Task MonitorWindowSizeAsync()
         {
             while (!_cts.Token.IsCancellationRequested)
-            {
                 try
                 {
                     await Task.Delay(300, _cts.Token);
@@ -134,8 +133,6 @@ namespace Consolonia.PlatformSupport
                 {
                     break;
                 }
-            }
         }
-
     }
 }
