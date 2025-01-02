@@ -2,7 +2,6 @@
 using System;
 using System.Text;
 using Consolonia.Core.Infrastructure;
-using static Vanara.PInvoke.Kernel32;
 
 namespace Consolonia.PlatformSupport
 {
@@ -23,7 +22,7 @@ namespace Consolonia.PlatformSupport
             _originalBuffer = WindowsConsoleBuffer.GetCurrent();
 
             // create secondary buffer
-            _consoleBuffer = WindowsConsoleBuffer.Create(autoSizeBuffer: true);
+            _consoleBuffer = WindowsConsoleBuffer.Create(true);
             _consoleBuffer.SetAsActiveBuffer();
 
         }
