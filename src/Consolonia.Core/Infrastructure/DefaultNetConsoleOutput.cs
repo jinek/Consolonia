@@ -19,29 +19,37 @@ namespace Consolonia.Core.Infrastructure
         private ConsoleColor _originalForeground;
 
 
-        public PixelBufferSize Size { get; set; }
+        public virtual PixelBufferSize Size { get; set; }
 
-        public bool CaretVisible { get; private set; }
+        public virtual bool CaretVisible { get; private set; }
 
-        public bool SupportsComplexEmoji => false;
+        public virtual bool SupportsComplexEmoji => false;
 
-        public void SetTitle(string title)
+        public virtual void SetTitle(string title)
         {
             Console.Title = title;
         }
 
-        public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
+        public virtual void SetCaretPosition(PixelBufferCoordinate bufferPoint)
         {
-            Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
+            try
+            {
+                Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // ignore
+                // this happens while resizing.
+            }
         }
 
-        public PixelBufferCoordinate GetCaretPosition()
+        public virtual PixelBufferCoordinate GetCaretPosition()
         {
             (int left, int top) = Console.GetCursorPosition();
             return new PixelBufferCoordinate((ushort)left, (ushort)top);
         }
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
+        public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
             ConsoleColor originalForeground = Console.ForegroundColor;
@@ -52,64 +60,65 @@ namespace Consolonia.Core.Infrastructure
             (consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(background);
             Console.BackgroundColor = consoleColor;
 
-            Console.SetCursorPosition(bufferPoint.X, bufferPoint.Y);
+            SetCaretPosition(bufferPoint);
             Console.Write(str);
 
             Console.ForegroundColor = originalForeground;
             Console.BackgroundColor = originalBackground;
         }
 
-        public void WriteText(string str)
+        public virtual void WriteText(string str)
         {
             Console.Write(str);
         }
 
-        public void SetCaretStyle(CaretStyle caretStyle)
+        public virtual void SetCaretStyle(CaretStyle caretStyle)
         {
+#pragma warning disable CA1416 // Validate platform compatibility
+            Console.CursorSize = caretStyle switch
+            {
+                CaretStyle.SteadyBlock => 100,
+                CaretStyle.BlinkingBlock => 100,
+                CaretStyle.SteadyUnderline => 1,
+                CaretStyle.BlinkingUnderline => 1,
+                CaretStyle.SteadyBar => 50,
+                CaretStyle.BlinkingBar => 50,
+                _ => throw new ArgumentOutOfRangeException(nameof(caretStyle))
+            };
+#pragma warning restore CA1416 // Validate platform compatibility
         }
 
-        public void HideCaret()
+        public virtual void HideCaret()
         {
             Console.CursorVisible = false;
             CaretVisible = false;
         }
 
-        public void ShowCaret()
+        public virtual void ShowCaret()
         {
             Console.CursorVisible = true;
             CaretVisible = true;
         }
 
-        public void PrepareConsole()
+        public virtual void PrepareConsole()
         {
             Console.OutputEncoding = Encoding.UTF8;
 
             _originalForeground = Console.ForegroundColor;
             _originalBackground = Console.BackgroundColor;
-            CheckSize();
+            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
             Console.Clear();
         }
 
-        public void RestoreConsole()
+        public virtual void RestoreConsole()
         {
             Console.ForegroundColor = _originalForeground;
             Console.BackgroundColor = _originalBackground;
         }
 
-        public void ClearScreen()
+        public virtual void ClearScreen()
         {
             Console.Clear();
-        }
-
-        public event Action Resized;
-
-        public bool CheckSize()
-        {
-            if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
-
-            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
-            Resized?.Invoke();
-            return true;
         }
     }
 }

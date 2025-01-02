@@ -1,56 +1,124 @@
 #pragma warning disable CA1416 // Validate platform compatibility
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using Microsoft.Win32.SafeHandles;
+using System.Runtime.Versioning;
+using System.Threading.Tasks;
+using System.Threading;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Consolonia.PlatformSupport
 {
     /// <summary>
-    ///     Represents a single Windows console buffer
+    /// WindowsConsoleBuffer - A class for managing console alternate screen buffers on windows
     /// </summary>
-    internal sealed class WindowsConsoleBuffer
+    [SupportedOSPlatform("windows")]
+    internal sealed class WindowsConsoleBuffer : IDisposable
     {
-        /// <summary>
-        ///     Internal constructor. To create a new ConsoleBuffer, call either Create or GetCurrentConsoleScreenBuffer
-        /// </summary>
-        /// <param name="bufferHandle">The handle of the existing screen buffer</param>
-        internal WindowsConsoleBuffer(IntPtr bufferHandle)
-            : this(new SafeHFILE(bufferHandle))
+        private SafeHFILE _handle;
+        private CancellationTokenSource _cts = new CancellationTokenSource();
+        private int _bufferHeight;
+        private int _bufferWidth;
+
+        internal WindowsConsoleBuffer(SafeHFILE bufferHandle, bool autoSize = false)
         {
+            _handle = bufferHandle;
+
+            if (autoSize)
+            {
+                _ = Task.Run(async () =>
+                {
+                    while (!_cts.Token.IsCancellationRequested)
+                    {
+                        try
+                        {
+                            await Task.Delay(300, _cts.Token);
+
+                            // if this window is the output buffer, resize it to match the window size
+                            if (GetStdHandle(StdHandleType.STD_OUTPUT_HANDLE) == _handle)
+                            {
+                                if (Console.BufferHeight > Console.WindowHeight)
+                                {
+                                    try
+                                    {
+                                        Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
+                                    }
+                                    catch (ArgumentOutOfRangeException)
+                                    {
+                                        // this can happen as we are resizing.
+                                        continue;
+                                    }
+                                    Resized?.Invoke();
+                                }
+                                else if (Console.BufferHeight != _bufferHeight || Console.BufferWidth != _bufferWidth)
+                                {
+                                    Resized?.Invoke();
+                                }
+                            }
+                        }
+                        catch (TaskCanceledException)
+                        {
+                            break;
+                        }
+                    }
+                });
+            }
         }
 
-        internal WindowsConsoleBuffer(SafeHFILE bufferHandle)
-        {
-            BufferHandle = bufferHandle;
-        }
+        public SafeHFILE Handle => _handle;
 
         /// <summary>
-        ///     Internal handle for the created buffer
+        /// This will fire an event when the buffer is resized.
         /// </summary>
-        internal SafeHFILE BufferHandle { get; }
+        public event Action Resized;
 
         /// <summary>
-        ///     Sets the buffer as the currently active buffer
+        ///     Sets the buffer as the currently active buffer, redirecting all output to the secondary buffer.
         /// </summary>
         /// <returns>Returns true on success, false on error.</returns>
-        internal bool SetAsActiveBuffer()
+        public bool SetAsActiveBuffer()
         {
-            return SetConsoleActiveScreenBuffer(BufferHandle);
+            if (!SetConsoleActiveScreenBuffer(_handle))
+            {
+                return false;
+            }
+
+            // change stdout handle to point to the new buffer
+            if (!SetStdHandle(StdHandleType.STD_OUTPUT_HANDLE, _handle))
+            {
+                return false;
+            }
+
+            // change stdout stream to point to the new buffer
+            var handle = new SafeFileHandle(_handle.DangerousGetHandle(), false);
+            Console.SetOut(new StreamWriter(new FileStream(handle, System.IO.FileAccess.Write)) { AutoFlush = true });
+
+            if (!SetConsoleCP(65001) || !SetConsoleOutputCP(65001)) 
+                throw GetLastError().GetException();
+
+            // set console mode
+            if (!SetConsoleMode(_handle, CONSOLE_OUTPUT_MODE.DISABLE_NEWLINE_AUTO_RETURN |
+                                         CONSOLE_OUTPUT_MODE.ENABLE_LVB_GRID_WORLDWIDE))
+                throw GetLastError().GetException();
+
+            _bufferHeight = Console.BufferHeight;
+            _bufferWidth = Console.BufferWidth;
+            return true;
         }
 
         /// <summary>
-        ///     Creates a new console buffer.
+        ///     Creates a new console screen buffer.
         /// </summary>
-        /// <returns>Returns a new ConsoleBuffer on success, throws on error.</returns>
-        internal static WindowsConsoleBuffer Create()
+        /// <param name="autoSizeBuffer">Auto size buffer height to window height so that there are no scroll bars</param>
+        /// <returns>Returns a new ConsoleScreenBuffer on success, throws on error.</returns>
+        public static WindowsConsoleBuffer Create(bool autoSizeBuffer = true)
         {
             try
             {
                 SafeHFILE buffer = CreateConsoleScreenBuffer(ACCESS_MASK.GENERIC_READ | ACCESS_MASK.GENERIC_WRITE,
                     FileShare.Read | FileShare.Write);
-                return new WindowsConsoleBuffer(buffer);
+                return new WindowsConsoleBuffer(buffer, autoSizeBuffer);
             }
             catch (ArgumentException ex)
             {
@@ -59,81 +127,18 @@ namespace Consolonia.PlatformSupport
         }
 
         /// <summary>
-        ///     Gets the current console buffer.
+        ///     Gets the current console screen buffer.
         /// </summary>
         /// <returns>Returns a new ConsoleBuffer on success, throws on error.</returns>
-        [SuppressMessage("Microsoft.Design",
-            "CA1024:UsePropertiesWhereAppropriate")] //Is not a property, so this message is suppressed
-        internal static WindowsConsoleBuffer GetCurrentConsoleScreenBuffer()
+        public static WindowsConsoleBuffer GetCurrent()
         {
-            try
-            {
-                HFILE buffer = GetStdHandle(StdHandleType.STD_OUTPUT_HANDLE);
-                return new WindowsConsoleBuffer(buffer.DangerousGetHandle());
-            }
-            catch (ArgumentException ex)
-            {
-                throw new InvalidOperationException("Getting the current buffer was unsuccessful", ex);
-            }
+            HFILE buffer = GetStdHandle(StdHandleType.STD_OUTPUT_HANDLE);
+            return new WindowsConsoleBuffer(new SafeHFILE(buffer.DangerousGetHandle(), false));
         }
 
-        /// <summary>
-        ///     Draw data to the console buffer.
-        /// </summary>
-        /// <param name="data">A CHAR_INFO array containing the data. Should be as big as the data to be written.</param>
-        /// <param name="x">X coordinate on the output buffer</param>
-        /// <param name="y">Y coordinate on the output buffer</param>
-        /// <param name="width">Width of the data</param>
-        /// <param name="height">Height of the data</param>
-        /// <returns>Returns true on success, false on error.</returns>
-        internal bool DrawInternal(CHAR_INFO[] data, short x, short y, short width, short height)
+        public void Dispose()
         {
-            var rect = new SMALL_RECT { Left = x, Top = y, Right = (short)(x + width), Bottom = (short)(y + height) };
-            return WriteConsoleOutput(BufferHandle, data, new COORD { X = width, Y = height },
-                new COORD { X = 0, Y = 0 }, ref rect);
-        }
-
-        /// <summary>
-        ///     Draws text to the console buffer.
-        /// </summary>
-        /// <param name="text">The text to be drawn</param>
-        /// <param name="x">X coordinate on the output buffer</param>
-        /// <param name="y">Y coordinate on the output buffer</param>
-        /// <param name="attributes">Attributes of the text</param>
-        /// <returns>Returns true on success, false on error.</returns>
-        internal bool DrawString(
-            string text,
-            short x,
-            short y,
-            CHARACTER_ATTRIBUTE attributes)
-        {
-            if (text == null) return false;
-            if (text.Length > short.MaxValue)
-                throw new ArgumentOutOfRangeException(nameof(text), "Text must not be longer than short.MaxValue");
-
-            var data = new CHAR_INFO[text.Length];
-            for (int i = 0; i < data.Length; i++)
-            {
-                data[i].Char = text[i];
-                data[i].Attributes = attributes;
-            }
-
-            return DrawInternal(data, x, y, (short)text.Length, 1);
-        }
-
-        internal bool Clear()
-        {
-            GetConsoleScreenBufferInfo(BufferHandle, out CONSOLE_SCREEN_BUFFER_INFO info);
-            int length = info.dwSize.X * info.dwSize.Y;
-            var line = new CHAR_INFO[length];
-            var cell = new CHAR_INFO { Char = ' ', Attributes = 0 };
-
-            for (int i = 0; i < length; i++)
-                line[i] = cell;
-
-            if (!DrawInternal(line, 0, 0, info.dwSize.X, info.dwSize.Y)) return false;
-
-            return true;
+            ((IDisposable)_cts).Dispose();
         }
     }
 }
