@@ -37,10 +37,7 @@ namespace Consolonia.PlatformSupport
         /// <returns>Returns true on success, false on error.</returns>
         internal bool SetAsActiveBuffer()
         {
-            lock (BufferHandle)
-            {
-                return SetConsoleActiveScreenBuffer(BufferHandle);
-            }
+            return SetConsoleActiveScreenBuffer(BufferHandle);
         }
 
         /// <summary>
@@ -110,37 +107,31 @@ namespace Consolonia.PlatformSupport
             short y,
             CHARACTER_ATTRIBUTE attributes)
         {
-            lock (BufferHandle)
+            if (text == null) return false;
+            if (text.Length > short.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(text), "Text must not be longer than short.MaxValue");
+
+            var data = new CHAR_INFO[text.Length];
+            for (int i = 0; i < data.Length; i++)
             {
-                if (text == null) return false;
-                if (text.Length > short.MaxValue)
-                    throw new ArgumentOutOfRangeException(nameof(text), "Text must not be longer than short.MaxValue");
-
-                var data = new CHAR_INFO[text.Length];
-                for (int i = 0; i < data.Length; i++)
-                {
-                    data[i].Char = text[i];
-                    data[i].Attributes = attributes;
-                }
-
-                return DrawInternal(data, x, y, (short)text.Length, 1);
+                data[i].Char = text[i];
+                data[i].Attributes = attributes;
             }
+
+            return DrawInternal(data, x, y, (short)text.Length, 1);
         }
 
         internal bool Clear()
         {
-            lock (BufferHandle)
-            {
-                GetConsoleScreenBufferInfo(BufferHandle, out CONSOLE_SCREEN_BUFFER_INFO info);
-                int length = info.dwSize.X * info.dwSize.Y;
-                var line = new CHAR_INFO[length];
-                var cell = new CHAR_INFO { Char = ' ', Attributes = 0 };
+            GetConsoleScreenBufferInfo(BufferHandle, out CONSOLE_SCREEN_BUFFER_INFO info);
+            int length = info.dwSize.X * info.dwSize.Y;
+            var line = new CHAR_INFO[length];
+            var cell = new CHAR_INFO { Char = ' ', Attributes = 0 };
 
-                for (int i = 0; i < length; i++)
-                    line[i] = cell;
+            for (int i = 0; i < length; i++)
+                line[i] = cell;
 
-                if (!DrawInternal(line, 0, 0, info.dwSize.X, info.dwSize.Y)) return false;
-            }
+            if (!DrawInternal(line, 0, 0, info.dwSize.X, info.dwSize.Y)) return false;
 
             return true;
         }

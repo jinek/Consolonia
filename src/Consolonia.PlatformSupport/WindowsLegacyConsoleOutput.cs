@@ -21,27 +21,24 @@ namespace Consolonia.PlatformSupport
             get => _size;
             set
             {
-                lock (_consoleBuffer.BufferHandle)
+                GetConsoleScreenBufferInfo(_consoleBuffer.BufferHandle, out CONSOLE_SCREEN_BUFFER_INFO info);
+                int windowWidth = info.srWindow.Right - info.srWindow.Left + 1;
+                int windowHeight = info.srWindow.Bottom - info.srWindow.Top + 1;
+                // Debug.WriteLine($"ScreenBuffer: {info.dwSize.X}x{info.dwSize.Y} NewValue: {value.Width}x{value.Height} Window: {windowWidth}x{windowHeight}");
+
+                if (value.Height > windowHeight)
                 {
-                    GetConsoleScreenBufferInfo(_consoleBuffer.BufferHandle, out CONSOLE_SCREEN_BUFFER_INFO info);
-                    int windowWidth = info.srWindow.Right - info.srWindow.Left + 1;
-                    int windowHeight = info.srWindow.Bottom - info.srWindow.Top + 1;
-                    // Debug.WriteLine($"ScreenBuffer: {info.dwSize.X}x{info.dwSize.Y} NewValue: {value.Width}x{value.Height} Window: {windowWidth}x{windowHeight}");
-
-                    if (value.Height > windowHeight)
-                    {
-                        // we need to adjust the buffer size to match to make scroll bars go away.
-                        _size = new PixelBufferSize((ushort)windowWidth, (ushort)windowHeight);
-                        SetConsoleScreenBufferSize(_consoleBuffer.BufferHandle,
-                            new COORD((short)_size.Width, (short)_size.Height));
-                    }
-                    else
-                    {
-                        _size = value;
-                    }
-
-                    ClearScreen();
+                    // we need to adjust the buffer size to match to make scroll bars go away.
+                    _size = new PixelBufferSize((ushort)windowWidth, (ushort)windowHeight);
+                    SetConsoleScreenBufferSize(_consoleBuffer.BufferHandle,
+                        new COORD((short)_size.Width, (short)_size.Height));
                 }
+                else
+                {
+                    _size = value;
+                }
+
+                ClearScreen();
             }
         }
 
@@ -67,15 +64,12 @@ namespace Consolonia.PlatformSupport
             _consoleBuffer = WindowsConsoleBuffer.Create();
             _consoleBuffer.SetAsActiveBuffer();
 
-            lock (_consoleBuffer.BufferHandle)
-            {
-                if (!SetConsoleCP(65001) || !SetConsoleOutputCP(65001)) throw GetLastError().GetException();
+            if (!SetConsoleCP(65001) || !SetConsoleOutputCP(65001)) throw GetLastError().GetException();
 
-                // set console mode
-                if (!SetConsoleMode(_consoleBuffer.BufferHandle, CONSOLE_OUTPUT_MODE.DISABLE_NEWLINE_AUTO_RETURN |
-                                                                 CONSOLE_OUTPUT_MODE.ENABLE_LVB_GRID_WORLDWIDE))
-                    throw GetLastError().GetException();
-            }
+            // set console mode
+            if (!SetConsoleMode(_consoleBuffer.BufferHandle, CONSOLE_OUTPUT_MODE.DISABLE_NEWLINE_AUTO_RETURN |
+                                                             CONSOLE_OUTPUT_MODE.ENABLE_LVB_GRID_WORLDWIDE))
+                throw GetLastError().GetException();
         }
 
         public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
@@ -168,63 +162,48 @@ namespace Consolonia.PlatformSupport
 
         public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
         {
-            lock (_consoleBuffer.BufferHandle)
-            {
-                SetConsoleCursorPosition(_consoleBuffer.BufferHandle, new COORD(bufferPoint.X, bufferPoint.Y));
-            }
+            SetConsoleCursorPosition(_consoleBuffer.BufferHandle, new COORD(bufferPoint.X, bufferPoint.Y));
         }
 
         public PixelBufferCoordinate GetCaretPosition()
         {
-            lock (_consoleBuffer.BufferHandle)
-            {
-                if (!GetConsoleScreenBufferInfo(_consoleBuffer.BufferHandle, out CONSOLE_SCREEN_BUFFER_INFO info))
-                    throw GetLastError().GetException();
-                return new PixelBufferCoordinate((ushort)info.dwCursorPosition.X, (ushort)info.dwCursorPosition.Y);
-            }
+            if (!GetConsoleScreenBufferInfo(_consoleBuffer.BufferHandle, out CONSOLE_SCREEN_BUFFER_INFO info))
+                throw GetLastError().GetException();
+            return new PixelBufferCoordinate((ushort)info.dwCursorPosition.X, (ushort)info.dwCursorPosition.Y);
         }
 
         public void SetCaretStyle(CaretStyle caretStyle)
         {
-            lock (_consoleBuffer.BufferHandle)
+            if (!GetConsoleCursorInfo(_consoleBuffer.BufferHandle, out CONSOLE_CURSOR_INFO cursorInfo))
+                throw GetLastError().GetException();
+            cursorInfo.dwSize = caretStyle switch
             {
-                if (!GetConsoleCursorInfo(_consoleBuffer.BufferHandle, out CONSOLE_CURSOR_INFO cursorInfo))
-                    throw GetLastError().GetException();
-                cursorInfo.dwSize = caretStyle switch
-                {
-                    CaretStyle.SteadyBlock => 100,
-                    CaretStyle.BlinkingBlock => 100,
-                    CaretStyle.SteadyUnderline => 1,
-                    CaretStyle.BlinkingUnderline => 1,
-                    CaretStyle.SteadyBar => 50,
-                    CaretStyle.BlinkingBar => 50,
-                    _ => throw new ArgumentOutOfRangeException(nameof(caretStyle))
-                };
+                CaretStyle.SteadyBlock => 100,
+                CaretStyle.BlinkingBlock => 100,
+                CaretStyle.SteadyUnderline => 1,
+                CaretStyle.BlinkingUnderline => 1,
+                CaretStyle.SteadyBar => 50,
+                CaretStyle.BlinkingBar => 50,
+                _ => throw new ArgumentOutOfRangeException(nameof(caretStyle))
+            };
 
-                if (!SetConsoleCursorInfo(_consoleBuffer.BufferHandle, cursorInfo)) throw GetLastError().GetException();
-            }
+            if (!SetConsoleCursorInfo(_consoleBuffer.BufferHandle, cursorInfo)) throw GetLastError().GetException();
         }
 
         public void HideCaret()
         {
-            lock (_consoleBuffer.BufferHandle)
-            {
-                if (!GetConsoleCursorInfo(_consoleBuffer.BufferHandle, out CONSOLE_CURSOR_INFO cursorInfo))
-                    throw GetLastError().GetException();
-                cursorInfo.bVisible = false;
-                if (!SetConsoleCursorInfo(_consoleBuffer.BufferHandle, cursorInfo)) throw GetLastError().GetException();
-            }
+            if (!GetConsoleCursorInfo(_consoleBuffer.BufferHandle, out CONSOLE_CURSOR_INFO cursorInfo))
+                throw GetLastError().GetException();
+            cursorInfo.bVisible = false;
+            if (!SetConsoleCursorInfo(_consoleBuffer.BufferHandle, cursorInfo)) throw GetLastError().GetException();
         }
 
         public void ShowCaret()
         {
-            lock (_consoleBuffer.BufferHandle)
-            {
-                if (!GetConsoleCursorInfo(_consoleBuffer.BufferHandle, out CONSOLE_CURSOR_INFO cursorInfo))
-                    throw GetLastError().GetException();
-                cursorInfo.bVisible = true;
-                if (!SetConsoleCursorInfo(_consoleBuffer.BufferHandle, cursorInfo)) throw GetLastError().GetException();
-            }
+            if (!GetConsoleCursorInfo(_consoleBuffer.BufferHandle, out CONSOLE_CURSOR_INFO cursorInfo))
+                throw GetLastError().GetException();
+            cursorInfo.bVisible = true;
+            if (!SetConsoleCursorInfo(_consoleBuffer.BufferHandle, cursorInfo)) throw GetLastError().GetException();
         }
 
         public void WriteText(string str)
