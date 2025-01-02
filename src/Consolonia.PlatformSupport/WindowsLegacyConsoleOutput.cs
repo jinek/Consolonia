@@ -22,7 +22,7 @@ namespace Consolonia.PlatformSupport
             _originalBuffer = WindowsConsoleBuffer.GetCurrent();
 
             // create secondary buffer
-            _consoleBuffer = WindowsConsoleBuffer.Create(true);
+            _consoleBuffer = WindowsConsoleBuffer.Create();
             _consoleBuffer.SetAsActiveBuffer();
 
         }
