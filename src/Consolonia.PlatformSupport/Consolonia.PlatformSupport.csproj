@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    <ItemGroup>
+      <PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.4" />
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />

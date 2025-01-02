@@ -5,5 +5,8 @@
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.4" />
+  </ItemGroup>
 
 </Project>

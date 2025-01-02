@@ -12,47 +12,49 @@ using Consolonia.Core.InternalHelpers;
 using Terminal.Gui;
 using Key = Avalonia.Input.Key;
 using Point = Avalonia.Point;
-
+using static Vanara.PInvoke.Kernel32;
+using System.Runtime.Versioning;
 // ReSharper disable UnusedMember.Local
 #pragma warning disable CS0649
 
 namespace Consolonia.PlatformSupport
 {
+    [SupportedOSPlatform("windows")]
     public class Win32Console : InputLessDefaultNetConsole
     {
-        private static readonly FlagTranslator<WindowsConsole.ControlKeyState, RawInputModifiers>
-            ModifiersFlagTranslator = new(new[]
-            {
-                (WindowsConsole.ControlKeyState.ShiftPressed, RawInputModifiers.Shift),
-                (WindowsConsole.ControlKeyState.LeftAltPressed, RawInputModifiers.Alt),
-                (WindowsConsole.ControlKeyState.RightAltPressed, RawInputModifiers.Alt),
-                (WindowsConsole.ControlKeyState.LeftControlPressed, RawInputModifiers.Control),
-                (WindowsConsole.ControlKeyState.RightControlPressed, RawInputModifiers.Control)
-            });
+        private static readonly FlagTranslator<CONTROL_KEY_STATE, RawInputModifiers>
+            ModifiersFlagTranslator = new(
+            [
+                (CONTROL_KEY_STATE.SHIFT_PRESSED, RawInputModifiers.Shift),
+                (CONTROL_KEY_STATE.LEFT_ALT_PRESSED, RawInputModifiers.Alt),
+                (CONTROL_KEY_STATE.RIGHT_ALT_PRESSED, RawInputModifiers.Alt),
+                (CONTROL_KEY_STATE.LEFT_CTRL_PRESSED, RawInputModifiers.Control),
+                (CONTROL_KEY_STATE.RIGHT_CTRL_PRESSED, RawInputModifiers.Control)
+            ]);
 
-        private static readonly FlagTranslator<WindowsConsole.ButtonState, RawPointerEventType>
-            MouseButtonFlagTranslator = new(new[]
-            {
-                (WindowsConsole.ButtonState.Button1Pressed, RawPointerEventType.LeftButtonDown),
-                (WindowsConsole.ButtonState.RightmostButtonPressed, RawPointerEventType.RightButtonDown),
-                (WindowsConsole.ButtonState.Button2Pressed, RawPointerEventType.MiddleButtonDown),
-                (WindowsConsole.ButtonState.Button3Pressed, RawPointerEventType.XButton1Down),
-                (WindowsConsole.ButtonState.Button4Pressed, RawPointerEventType.XButton2Down)
-            });
+        private static readonly FlagTranslator<MOUSE_BUTTON_STATE, RawPointerEventType>
+            MouseButtonFlagTranslator = new(
+            [
+                (MOUSE_BUTTON_STATE.FROM_LEFT_1ST_BUTTON_PRESSED, RawPointerEventType.LeftButtonDown),
+                (MOUSE_BUTTON_STATE.RIGHTMOST_BUTTON_PRESSED, RawPointerEventType.RightButtonDown),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_2ND_BUTTON_PRESSED, RawPointerEventType.MiddleButtonDown),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_3RD_BUTTON_PRESSED, RawPointerEventType.XButton1Down),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawPointerEventType.XButton2Down)
+            ]);
 
-        private static readonly FlagTranslator<WindowsConsole.ButtonState, RawInputModifiers>
-            MouseModifiersFlagTranslator = new(new[]
-            {
-                (WindowsConsole.ButtonState.Button1Pressed, RawInputModifiers.LeftMouseButton),
-                (WindowsConsole.ButtonState.RightmostButtonPressed, RawInputModifiers.RightMouseButton),
-                (WindowsConsole.ButtonState.Button2Pressed, RawInputModifiers.MiddleMouseButton),
-                (WindowsConsole.ButtonState.Button3Pressed, RawInputModifiers.XButton1MouseButton),
-                (WindowsConsole.ButtonState.Button4Pressed, RawInputModifiers.XButton2MouseButton)
-            });
+        private static readonly FlagTranslator<MOUSE_BUTTON_STATE, RawInputModifiers>
+            MouseModifiersFlagTranslator = new(
+            [
+                (MOUSE_BUTTON_STATE.FROM_LEFT_1ST_BUTTON_PRESSED, RawInputModifiers.LeftMouseButton),
+                (MOUSE_BUTTON_STATE.RIGHTMOST_BUTTON_PRESSED, RawInputModifiers.RightMouseButton),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_2ND_BUTTON_PRESSED, RawInputModifiers.MiddleMouseButton),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_3RD_BUTTON_PRESSED, RawInputModifiers.XButton1MouseButton),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawInputModifiers.XButton2MouseButton)
+            ]);
 
         private readonly WindowsConsole _windowsConsole;
 
-        private int _mouseButtonsState;
+        private MOUSE_BUTTON_STATE _mouseButtonsState;
 
         public Win32Console()
         {
@@ -72,7 +74,7 @@ namespace Consolonia.PlatformSupport
             var inputRecords = new INPUT_RECORD[1];
 
             // Create a focus event
-            inputRecords[0].EventType = 0x0010; // FOCUS_EVENT
+            inputRecords[0].EventType = EVENT_TYPE.FOCUS_EVENT; // FOCUS_EVENT
             inputRecords[0].Event.FocusEvent = new FOCUS_EVENT_RECORD
             {
                 bSetFocus = true
@@ -97,23 +99,25 @@ namespace Consolonia.PlatformSupport
                     var readConsoleInput = _windowsConsole.ReadConsoleInput();
                     if (!readConsoleInput.Any())
                         throw new NotImplementedException();
-                    foreach (WindowsConsole.InputRecord inputRecord in readConsoleInput)
+                    foreach (var inputRecord in readConsoleInput)
                         // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
                         switch (inputRecord.EventType)
                         {
-                            case WindowsConsole.EventType.WindowBufferSize:
+                            case EVENT_TYPE.WINDOW_BUFFER_SIZE_EVENT:
+                                //var  windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
+                                //Size = new PixelBufferSize((ushort)windowBufferSize.dwSize.X, (ushort)windowBufferSize.dwSize.Y);
                                 ActualizeSize();
                                 break;
-                            case WindowsConsole.EventType.Focus:
-                                WindowsConsole.FocusEventRecord focusEvent = inputRecord.FocusEvent;
+                            case EVENT_TYPE.FOCUS_EVENT:
+                                var focusEvent = inputRecord.Event.FocusEvent;
                                 RaiseFocusEvent(focusEvent.bSetFocus != 0);
                                 break;
-                            case WindowsConsole.EventType.Key:
-                                HandleKeyInput(inputRecord);
+                            case EVENT_TYPE.KEY_EVENT:
+                                HandleKeyInput(inputRecord.Event.KeyEvent);
                                 break;
-                            case WindowsConsole.EventType.Mouse:
+                            case EVENT_TYPE.MOUSE_EVENT:
 
-                                WindowsConsole.MouseEventRecord mouseEvent = inputRecord.MouseEvent;
+                                var mouseEvent = inputRecord.Event.MouseEvent;
 
                                 if (HandleMouseInput(mouseEvent)) return; //todo: implement
                                 break;
@@ -122,29 +126,27 @@ namespace Consolonia.PlatformSupport
             });
         }
 
-        private bool HandleMouseInput(WindowsConsole.MouseEventRecord mouseEvent)
+        private bool HandleMouseInput(MOUSE_EVENT_RECORD mouseEvent)
         {
-            var point = new Point(mouseEvent.MousePosition.X,
-                mouseEvent.MousePosition.Y);
-            int incomeMouseState = (int)mouseEvent.ButtonState;
-            RawInputModifiers inputModifiers =
-                ModifiersFlagTranslator.Translate(mouseEvent.ControlKeyState) |
-                MouseModifiersFlagTranslator.Translate((WindowsConsole.ButtonState)incomeMouseState);
-
+            var point = new Point(mouseEvent.dwMousePosition.X,
+                mouseEvent.dwMousePosition.Y);
+            var modifiers = ModifiersFlagTranslator.Translate(mouseEvent.dwControlKeyState);
+            var modifiers2 = MouseModifiersFlagTranslator.Translate(mouseEvent.dwButtonState);
+            RawInputModifiers inputModifiers = modifiers | modifiers;
             RawPointerEventType eventType = default;
             Vector? wheelDelta = null;
             short repeat = 1;
 
-            switch (mouseEvent.EventFlags)
+            switch (mouseEvent.dwEventFlags)
             {
-                case WindowsConsole.EventFlags.DoubleClick:
+                case MOUSE_EVENT_FLAG.DOUBLE_CLICK:
                     repeat = 2; //todo: now supporting only leftbutton
                     eventType = RawPointerEventType.LeftButtonDown;
                     break;
-                case default(WindowsConsole.EventFlags):
-                    int xor = _mouseButtonsState ^ incomeMouseState;
-                    foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor &
-                                 incomeMouseState)).GetFlags()
+                case default(MOUSE_EVENT_FLAG):
+                    MOUSE_BUTTON_STATE xor = _mouseButtonsState ^ mouseEvent.dwButtonState;
+                    foreach (RawPointerEventType pointerEventType in (xor &
+                                 mouseEvent.dwButtonState).GetFlags()
                              .Select(MouseButtonFlagTranslator.Translate))
                         //todo: вернуть mouse gesture на элементы
                         RaiseMouseEvent(pointerEventType,
@@ -153,8 +155,8 @@ namespace Consolonia.PlatformSupport
                             inputModifiers);
 
                     //todo: refactor: code clone
-                    foreach (RawPointerEventType pointerEventType in ((WindowsConsole.ButtonState)(xor &
-                                 _mouseButtonsState)).GetFlags()
+                    foreach (RawPointerEventType pointerEventType in (xor &
+                                 _mouseButtonsState).GetFlags()
                              .Select(MouseButtonFlagTranslator.Translate))
                     {
                         RawPointerEventType rawPointerEventType = pointerEventType + 1;
@@ -164,25 +166,25 @@ namespace Consolonia.PlatformSupport
                             inputModifiers);
                     }
 
-                    _mouseButtonsState = incomeMouseState;
+                    _mouseButtonsState = mouseEvent.dwButtonState;
                     repeat = 0;
                     break;
-                case WindowsConsole.EventFlags.MouseWheeled:
-                    double velocity = incomeMouseState < 0 ? -1 : 1;
+                case MOUSE_EVENT_FLAG.MOUSE_WHEELED:
+                    double velocity = mouseEvent.dwButtonState < 0 ? -1 : 1;
                     wheelDelta = new Vector(0, velocity);
                     eventType = RawPointerEventType.Wheel;
                     break;
-                case WindowsConsole.EventFlags.MouseHorizontalWheeled:
+                case MOUSE_EVENT_FLAG.MOUSE_HWHEELED:
                     return true;
-                case WindowsConsole.EventFlags.MouseMoved:
+                case MOUSE_EVENT_FLAG.MOUSE_MOVED:
                     eventType = RawPointerEventType.Move;
                     break;
-                case WindowsConsole.EventFlags.MouseMoved | WindowsConsole.EventFlags.DoubleClick:
+                case MOUSE_EVENT_FLAG.MOUSE_MOVED | MOUSE_EVENT_FLAG.DOUBLE_CLICK:
                     RaiseMouseEvent(RawPointerEventType.LeftButtonDown, point, null, inputModifiers);
                     RaiseMouseEvent(RawPointerEventType.Move, point, null, inputModifiers);
                     return false;
                 default:
-                    throw new InvalidOperationException(mouseEvent.EventFlags.ToString());
+                    throw new InvalidOperationException(mouseEvent.dwEventFlags.ToString());
             }
 
             for (short i = 0; i < repeat; i++)
@@ -202,10 +204,9 @@ namespace Consolonia.PlatformSupport
             return false;
         }
 
-        private void HandleKeyInput(WindowsConsole.InputRecord inputRecord)
+        private void HandleKeyInput(KEY_EVENT_RECORD keyEvent)
         {
-            WindowsConsole.KeyEventRecord keyEvent = inputRecord.KeyEvent;
-            char character = keyEvent.UnicodeChar;
+            char character = keyEvent.uChar;
             RawInputModifiers modifiers =
                 ModifiersFlagTranslator.Translate(keyEvent.dwControlKeyState);
             Key key = DefaultNetConsole.ConvertToKey((ConsoleKey)keyEvent.wVirtualKeyCode);
@@ -214,61 +215,5 @@ namespace Consolonia.PlatformSupport
             RaiseKeyPress(key,
                 character, modifiers, keyEvent.bKeyDown, (ulong)Stopwatch.GetTimestamp());
         }
-
-        #region chatGPT
-
-        // Resharper disable MemberCanBePrivate.Global
-        // Resharper disable MemberCanBePrivate.Local
-        // Resharper disable FieldCanBeMadeReadOnly.Global
-        // Resharper disable FieldCanBeMadeReadOnly.Local
-        // ReSharper disable InconsistentNaming
-        [StructLayout(LayoutKind.Sequential)]
-        private struct INPUT_RECORD
-        {
-            public ushort EventType;
-            public UnionRecord Event;
-
-            [StructLayout(LayoutKind.Explicit)]
-            public struct UnionRecord
-            {
-                [FieldOffset(0)] public KEY_EVENT_RECORD KeyEvent;
-
-                [FieldOffset(0)] public FOCUS_EVENT_RECORD FocusEvent;
-                // Other event types omitted for brevity
-            }
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct KEY_EVENT_RECORD
-        {
-#pragma warning disable IDE1006
-            public bool bKeyDown;
-#pragma warning restore IDE1006
-            // Other fields omitted for brevity
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct FOCUS_EVENT_RECORD
-        {
-#pragma warning disable IDE1006
-            public bool bSetFocus;
-#pragma warning restore IDE1006
-        }
-
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-#pragma warning disable CA5392
-        private static extern bool WriteConsoleInput(
-#pragma warning restore CA5392
-            IntPtr hConsoleInput,
-            INPUT_RECORD[] lpBuffer,
-            uint nLength,
-            out uint lpNumberOfEventsWritten);
-        // Resharper restore MemberCanBePrivate.Global
-        // Resharper restore MemberCanBePrivate.Local
-        // Resharper restore FieldCanBeMadeReadOnly.Global
-        // Resharper restore FieldCanBeMadeReadOnly.Local
-        // ReSharper restore InconsistentNaming
-
-        #endregion
     }
 }
