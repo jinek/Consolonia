@@ -49,7 +49,8 @@ namespace Consolonia.Core.Infrastructure
             return new PixelBufferCoordinate((ushort)left, (ushort)top);
         }
 
-        public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
+        public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground,
+            FontStyle? style,
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
             ConsoleColor originalForeground = Console.ForegroundColor;
