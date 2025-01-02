@@ -23,28 +23,20 @@ namespace Consolonia.PlatformSupport
     public class Win32Console : InputLessDefaultNetConsole
     {
         private static readonly FlagTranslator<CONTROL_KEY_STATE, RawInputModifiers>
-            ModifiersFlagTranslator = new(
+            KeyModifiersTranslator = new(
             [
+                (CONTROL_KEY_STATE.NONE, RawInputModifiers.None),
                 (CONTROL_KEY_STATE.SHIFT_PRESSED, RawInputModifiers.Shift),
                 (CONTROL_KEY_STATE.LEFT_ALT_PRESSED, RawInputModifiers.Alt),
                 (CONTROL_KEY_STATE.RIGHT_ALT_PRESSED, RawInputModifiers.Alt),
                 (CONTROL_KEY_STATE.LEFT_CTRL_PRESSED, RawInputModifiers.Control),
-                (CONTROL_KEY_STATE.RIGHT_CTRL_PRESSED, RawInputModifiers.Control)
-            ]);
-
-        private static readonly FlagTranslator<MOUSE_BUTTON_STATE, RawPointerEventType>
-            MouseButtonFlagTranslator = new(
-            [
-                (MOUSE_BUTTON_STATE.FROM_LEFT_1ST_BUTTON_PRESSED, RawPointerEventType.LeftButtonDown),
-                (MOUSE_BUTTON_STATE.RIGHTMOST_BUTTON_PRESSED, RawPointerEventType.RightButtonDown),
-                (MOUSE_BUTTON_STATE.FROM_LEFT_2ND_BUTTON_PRESSED, RawPointerEventType.MiddleButtonDown),
-                (MOUSE_BUTTON_STATE.FROM_LEFT_3RD_BUTTON_PRESSED, RawPointerEventType.XButton1Down),
-                (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawPointerEventType.XButton2Down)
+                (CONTROL_KEY_STATE.RIGHT_CTRL_PRESSED, RawInputModifiers.Control),
             ]);
 
         private static readonly FlagTranslator<MOUSE_BUTTON_STATE, RawInputModifiers>
-            MouseModifiersFlagTranslator = new(
+            MouseModifiersTranslator = new(
             [
+                (MOUSE_BUTTON_STATE.NONE, RawInputModifiers.None),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_1ST_BUTTON_PRESSED, RawInputModifiers.LeftMouseButton),
                 (MOUSE_BUTTON_STATE.RIGHTMOST_BUTTON_PRESSED, RawInputModifiers.RightMouseButton),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_2ND_BUTTON_PRESSED, RawInputModifiers.MiddleMouseButton),
@@ -52,9 +44,33 @@ namespace Consolonia.PlatformSupport
                 (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawInputModifiers.XButton2MouseButton)
             ]);
 
+
+        private static readonly FlagTranslator<MOUSE_BUTTON_STATE, RawPointerEventType>
+            MouseButtonDownEventTypeTranslator = new(
+            [
+                (MOUSE_BUTTON_STATE.FROM_LEFT_1ST_BUTTON_PRESSED, RawPointerEventType.LeftButtonDown),
+                (MOUSE_BUTTON_STATE.RIGHTMOST_BUTTON_PRESSED, RawPointerEventType.RightButtonDown),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_2ND_BUTTON_PRESSED, RawPointerEventType.MiddleButtonDown),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_3RD_BUTTON_PRESSED, RawPointerEventType.XButton1Down),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawPointerEventType.XButton2Down),
+                (MOUSE_BUTTON_STATE.NONE, RawPointerEventType.LeaveWindow) // ugh. that's default
+            ]);
+
+        private static readonly FlagTranslator<MOUSE_BUTTON_STATE, RawPointerEventType>
+            MouseButtonUpEventTypeTranslator = new(
+            [
+                (MOUSE_BUTTON_STATE.FROM_LEFT_1ST_BUTTON_PRESSED, RawPointerEventType.LeftButtonUp),
+                (MOUSE_BUTTON_STATE.RIGHTMOST_BUTTON_PRESSED, RawPointerEventType.RightButtonUp),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_2ND_BUTTON_PRESSED, RawPointerEventType.MiddleButtonUp),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_3RD_BUTTON_PRESSED, RawPointerEventType.XButton1Up),
+                (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawPointerEventType.XButton2Up),
+                (MOUSE_BUTTON_STATE.NONE, RawPointerEventType.LeaveWindow) // ugh. that's default
+            ]);
+
+
         private readonly WindowsConsole _windowsConsole;
 
-        private MOUSE_BUTTON_STATE _mouseButtonsState;
+        private MOUSE_BUTTON_STATE _mouseButtonsState = MOUSE_BUTTON_STATE.NONE;
 
         public Win32Console()
         {
@@ -116,10 +132,8 @@ namespace Consolonia.PlatformSupport
                                 HandleKeyInput(inputRecord.Event.KeyEvent);
                                 break;
                             case EVENT_TYPE.MOUSE_EVENT:
-
                                 var mouseEvent = inputRecord.Event.MouseEvent;
-
-                                if (HandleMouseInput(mouseEvent)) return; //todo: implement
+                                HandleMouseInput(mouseEvent);
                                 break;
                         }
                 }
@@ -128,87 +142,109 @@ namespace Consolonia.PlatformSupport
 
         private bool HandleMouseInput(MOUSE_EVENT_RECORD mouseEvent)
         {
-            var point = new Point(mouseEvent.dwMousePosition.X,
-                mouseEvent.dwMousePosition.Y);
-            var modifiers = ModifiersFlagTranslator.Translate(mouseEvent.dwControlKeyState);
-            var modifiers2 = MouseModifiersFlagTranslator.Translate(mouseEvent.dwButtonState);
-            RawInputModifiers inputModifiers = modifiers | modifiers;
-            RawPointerEventType eventType = default;
+            var point = new Point(mouseEvent.dwMousePosition.X, mouseEvent.dwMousePosition.Y);
+            RawInputModifiers inputModifiers =
+                            KeyModifiersTranslator.Translate(mouseEvent.dwControlKeyState) |
+                            MouseModifiersTranslator.Translate(mouseEvent.dwButtonState);
+
+            RawPointerEventType eventType = RawPointerEventType.Move;
             Vector? wheelDelta = null;
-            short repeat = 1;
 
             switch (mouseEvent.dwEventFlags)
             {
                 case MOUSE_EVENT_FLAG.DOUBLE_CLICK:
-                    repeat = 2; //todo: now supporting only leftbutton
-                    eventType = RawPointerEventType.LeftButtonDown;
-                    break;
-                case default(MOUSE_EVENT_FLAG):
-                    MOUSE_BUTTON_STATE xor = _mouseButtonsState ^ mouseEvent.dwButtonState;
-                    foreach (RawPointerEventType pointerEventType in (xor &
-                                 mouseEvent.dwButtonState).GetFlags()
-                             .Select(MouseButtonFlagTranslator.Translate))
-                        //todo: вернуть mouse gesture на элементы
-                        RaiseMouseEvent(pointerEventType,
-                            point,
-                            null,
-                            inputModifiers);
-
-                    //todo: refactor: code clone
-                    foreach (RawPointerEventType pointerEventType in (xor &
-                                 _mouseButtonsState).GetFlags()
-                             .Select(MouseButtonFlagTranslator.Translate))
+                    var downButtonEvent = MouseButtonDownEventTypeTranslator.Translate(mouseEvent.dwButtonState);
+                    if (downButtonEvent != RawPointerEventType.LeaveWindow)
                     {
-                        RawPointerEventType rawPointerEventType = pointerEventType + 1;
-                        RaiseMouseEvent(rawPointerEventType,
-                            point,
-                            null,
-                            inputModifiers);
+                        var upButtonEvent = MouseButtonUpEventTypeTranslator.Translate(mouseEvent.dwButtonState);
+                        for (int i = 0; i < 2; i++)
+                        {
+                            RaiseMouseEvent(downButtonEvent,
+                                point,
+                                wheelDelta,
+                                inputModifiers);
+
+                            RaiseMouseEvent(upButtonEvent,
+                                point,
+                                wheelDelta,
+                                inputModifiers);
+                        }
+                    }
+                    break;
+
+                case MOUSE_EVENT_FLAG.NONE:
+                    foreach (var flag in Enum.GetValues<MOUSE_BUTTON_STATE>())
+                    {
+                        if (!_mouseButtonsState.HasFlag(flag) && mouseEvent.dwButtonState.HasFlag(flag))
+                        {
+                            // If we went from flag off to flag on
+                            var buttonEventType = MouseButtonDownEventTypeTranslator.Translate(flag);
+                            if (buttonEventType != default)
+                            {
+                                RaiseMouseEvent(buttonEventType,
+                                    point,
+                                    null,
+                                    inputModifiers);
+                            }
+                        }
+
+                        else if (_mouseButtonsState.HasFlag(flag) && !mouseEvent.dwButtonState.HasFlag(flag))
+                        {
+                            // If we went from flag On to flag off
+                            var buttonEventType = MouseButtonUpEventTypeTranslator.Translate(flag);
+                            if (buttonEventType != default)
+                            {
+                                RaiseMouseEvent(buttonEventType,
+                                    point,
+                                    null,
+                                    inputModifiers);
+                            }
+                        }
+                        else
+                        {
+                            RaiseMouseEvent(eventType,
+                                point,
+                                null,
+                                inputModifiers);
+                        }
                     }
 
-                    _mouseButtonsState = mouseEvent.dwButtonState;
-                    repeat = 0;
                     break;
+
                 case MOUSE_EVENT_FLAG.MOUSE_WHEELED:
                     double velocity = mouseEvent.dwButtonState < 0 ? -1 : 1;
                     wheelDelta = new Vector(0, velocity);
-                    eventType = RawPointerEventType.Wheel;
+                    RaiseMouseEvent(RawPointerEventType.Wheel,
+                        point,
+                        wheelDelta,
+                        inputModifiers);
                     break;
                 case MOUSE_EVENT_FLAG.MOUSE_HWHEELED:
-                    return true;
+                    break;
                 case MOUSE_EVENT_FLAG.MOUSE_MOVED:
-                    eventType = RawPointerEventType.Move;
+                    RaiseMouseEvent(RawPointerEventType.Move,
+                        point,
+                        wheelDelta,
+                        inputModifiers);
+                    _mouseButtonsState = mouseEvent.dwButtonState;
                     break;
                 case MOUSE_EVENT_FLAG.MOUSE_MOVED | MOUSE_EVENT_FLAG.DOUBLE_CLICK:
                     RaiseMouseEvent(RawPointerEventType.LeftButtonDown, point, null, inputModifiers);
                     RaiseMouseEvent(RawPointerEventType.Move, point, null, inputModifiers);
-                    return false;
+                    //RaiseMouseEvent(RawPointerEventType.LeftButtonUp, point, null, inputModifiers);
+                    break;
                 default:
                     throw new InvalidOperationException(mouseEvent.dwEventFlags.ToString());
             }
-
-            for (short i = 0; i < repeat; i++)
-            {
-                RaiseMouseEvent(eventType,
-                    point,
-                    wheelDelta,
-                    inputModifiers);
-
-                if (eventType <= RawPointerEventType.XButton2Down)
-                    RaiseMouseEvent(eventType + 1,
-                        point,
-                        wheelDelta,
-                        inputModifiers);
-            }
-
-            return false;
+            _mouseButtonsState = mouseEvent.dwButtonState;
+            return true;
         }
 
         private void HandleKeyInput(KEY_EVENT_RECORD keyEvent)
         {
             char character = keyEvent.uChar;
             RawInputModifiers modifiers =
-                ModifiersFlagTranslator.Translate(keyEvent.dwControlKeyState);
+                KeyModifiersTranslator.Translate(keyEvent.dwControlKeyState);
             Key key = DefaultNetConsole.ConvertToKey((ConsoleKey)keyEvent.wVirtualKeyCode);
             if (key == Key.LeftAlt || key == Key.RightAlt)
                 modifiers |= RawInputModifiers.Alt;

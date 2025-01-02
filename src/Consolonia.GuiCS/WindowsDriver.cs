@@ -31,12 +31,14 @@ namespace Terminal.Gui
         {
             get
             {
-                GetConsoleMode(InputHandle, out CONSOLE_INPUT_MODE v);
+                if (!GetConsoleMode(InputHandle, out CONSOLE_INPUT_MODE v))
+                    throw GetLastError().GetException();
                 return v;
             }
             set
             {
-                SetConsoleMode(InputHandle, value);
+                if (!SetConsoleMode(InputHandle, value))
+                    throw GetLastError().GetException();
             }
         }
 
