@@ -26,7 +26,6 @@ namespace Consolonia.PlatformSupport
         private static readonly FlagTranslator<CONTROL_KEY_STATE, RawInputModifiers>
             KeyModifiersTranslator = new(
             [
-                (CONTROL_KEY_STATE.NONE, RawInputModifiers.None),
                 (CONTROL_KEY_STATE.SHIFT_PRESSED, RawInputModifiers.Shift),
                 (CONTROL_KEY_STATE.LEFT_ALT_PRESSED, RawInputModifiers.Alt),
                 (CONTROL_KEY_STATE.RIGHT_ALT_PRESSED, RawInputModifiers.Alt),
@@ -37,7 +36,6 @@ namespace Consolonia.PlatformSupport
         private static readonly FlagTranslator<MOUSE_BUTTON_STATE, RawInputModifiers>
             MouseModifiersTranslator = new(
             [
-                (MOUSE_BUTTON_STATE.NONE, RawInputModifiers.None),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_1ST_BUTTON_PRESSED, RawInputModifiers.LeftMouseButton),
                 (MOUSE_BUTTON_STATE.RIGHTMOST_BUTTON_PRESSED, RawInputModifiers.RightMouseButton),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_2ND_BUTTON_PRESSED, RawInputModifiers.MiddleMouseButton),
@@ -54,7 +52,6 @@ namespace Consolonia.PlatformSupport
                 (MOUSE_BUTTON_STATE.FROM_LEFT_2ND_BUTTON_PRESSED, RawPointerEventType.MiddleButtonDown),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_3RD_BUTTON_PRESSED, RawPointerEventType.XButton1Down),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawPointerEventType.XButton2Down),
-                (MOUSE_BUTTON_STATE.NONE, RawPointerEventType.LeaveWindow) // ugh. that's default
             ]);
 
         private static readonly FlagTranslator<MOUSE_BUTTON_STATE, RawPointerEventType>
@@ -65,7 +62,6 @@ namespace Consolonia.PlatformSupport
                 (MOUSE_BUTTON_STATE.FROM_LEFT_2ND_BUTTON_PRESSED, RawPointerEventType.MiddleButtonUp),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_3RD_BUTTON_PRESSED, RawPointerEventType.XButton1Up),
                 (MOUSE_BUTTON_STATE.FROM_LEFT_4TH_BUTTON_PRESSED, RawPointerEventType.XButton2Up),
-                (MOUSE_BUTTON_STATE.NONE, RawPointerEventType.LeaveWindow) // ugh. that's default
             ]);
 
 
@@ -146,6 +142,8 @@ namespace Consolonia.PlatformSupport
             });
         }
 
+        // ReSharper disable ExpressionIsAlwaysNull
+
         private void HandleMouseInput(MOUSE_EVENT_RECORD mouseEvent)
         {
             var point = new Point(mouseEvent.dwMousePosition.X, mouseEvent.dwMousePosition.Y);
@@ -181,27 +179,31 @@ namespace Consolonia.PlatformSupport
                         if (!_mouseButtonsState.HasFlag(flag) && mouseEvent.dwButtonState.HasFlag(flag))
                         {
                             // If we went from flag off to flag on
-                            var buttonEventType = MouseButtonDownEventTypeTranslator.Translate(flag);
-                            if (buttonEventType != default)
+                            var buttonDownEventType = MouseButtonDownEventTypeTranslator.Translate(flag);
+#pragma warning disable IDE0034 // Simplify 'default' expression
+                            if (buttonDownEventType != default(RawPointerEventType))
                             {
-                                RaiseMouseEvent(buttonEventType,
+                                RaiseMouseEvent(buttonDownEventType,
                                     point,
                                     null,
                                     inputModifiers);
                             }
+#pragma warning restore IDE0034 // Simplify 'default' expression
                         }
 
                         else if (_mouseButtonsState.HasFlag(flag) && !mouseEvent.dwButtonState.HasFlag(flag))
                         {
                             // If we went from flag On to flag off
                             var buttonEventType = MouseButtonUpEventTypeTranslator.Translate(flag);
-                            if (buttonEventType != default)
+#pragma warning disable IDE0034 // Simplify 'default' expression
+                            if (buttonEventType != default(RawPointerEventType))
                             {
                                 RaiseMouseEvent(buttonEventType,
                                     point,
                                     null,
                                     inputModifiers);
                             }
+#pragma warning restore IDE0034 // Simplify 'default' expression
                         }
                         else
                         {
