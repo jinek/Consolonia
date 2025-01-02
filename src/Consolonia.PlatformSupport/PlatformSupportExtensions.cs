@@ -8,8 +8,10 @@ using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
 
 // ReSharper disable CheckNamespace
+#pragma warning disable IDE0130
 #pragma warning disable IDE0161
 namespace Consolonia
+#pragma warning restore IDE0130
 #pragma warning restore IDE0161
 {
     public static class PlatformSupportExtensions
@@ -20,12 +22,14 @@ namespace Consolonia
                 // in design mode we can't use any console operations at all, so we use a dummy IConsole.
                 return builder.UseConsole(new DummyConsole());
 
+#pragma warning disable CA1416
             IConsole console = Environment.OSVersion.Platform switch
             {
                 PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT => new Win32Console(),
                 PlatformID.Unix or PlatformID.MacOSX => new CursesConsole(),
                 _ => new DefaultNetConsole()
             };
+#pragma warning restore CA1416
 
             return builder.UseConsole(console).UseAutoDetectConsoleColorMode();
         }

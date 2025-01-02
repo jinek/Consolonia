@@ -140,7 +140,7 @@ namespace Consolonia.PlatformSupport
             });
         }
 
-        private bool HandleMouseInput(MOUSE_EVENT_RECORD mouseEvent)
+        private void HandleMouseInput(MOUSE_EVENT_RECORD mouseEvent)
         {
             var point = new Point(mouseEvent.dwMousePosition.X, mouseEvent.dwMousePosition.Y);
             RawInputModifiers inputModifiers =
@@ -237,7 +237,6 @@ namespace Consolonia.PlatformSupport
                     throw new InvalidOperationException(mouseEvent.dwEventFlags.ToString());
             }
             _mouseButtonsState = mouseEvent.dwButtonState;
-            return true;
         }
 
         private void HandleKeyInput(KEY_EVENT_RECORD keyEvent)
