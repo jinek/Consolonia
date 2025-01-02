@@ -43,8 +43,8 @@ namespace Consolonia.PlatformSupport
                 {
                     for (int i = 0; i < length; i++)
                         attributes[i] |= CHARACTER_ATTRIBUTE.COMMON_LVB_UNDERSCORE;
-                    
-                    WriteConsoleOutputAttribute(_consoleBuffer.Handle, attributes, length, coord, out var nRead2);
+
+                    WriteConsoleOutputAttribute(_consoleBuffer.Handle, attributes, length, coord, out _);
                 }
             }
         }
