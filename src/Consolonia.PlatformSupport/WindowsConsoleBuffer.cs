@@ -26,42 +26,9 @@ namespace Consolonia.PlatformSupport
             Handle = bufferHandle;
 
             if (autoSize)
-                _ = Task.Run(async () =>
-                {
-                    while (!_cts.Token.IsCancellationRequested)
-                        try
-                        {
-                            await Task.Delay(300, _cts.Token);
-
-                            // if this window is the output buffer, resize it to match the window size
-                            if (GetStdHandle(StdHandleType.STD_OUTPUT_HANDLE) == Handle)
-                            {
-                                if (Console.BufferHeight > Console.WindowHeight)
-                                {
-                                    try
-                                    {
-                                        Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
-                                    }
-                                    catch (ArgumentOutOfRangeException)
-                                    {
-                                        // this can happen as we are resizing.
-                                        continue;
-                                    }
-
-                                    Resized?.Invoke();
-                                }
-                                else if (Console.BufferHeight != _bufferHeight || Console.BufferWidth != _bufferWidth)
-                                {
-                                    Resized?.Invoke();
-                                }
-                            }
-                        }
-                        catch (TaskCanceledException)
-                        {
-                            break;
-                        }
-                });
+                _ = MonitorWindowSizeAsync();
         }
+
 
         public SafeHFILE Handle { get; }
 
@@ -131,5 +98,44 @@ namespace Consolonia.PlatformSupport
             HFILE buffer = GetStdHandle(StdHandleType.STD_OUTPUT_HANDLE);
             return new WindowsConsoleBuffer(new SafeHFILE(buffer.DangerousGetHandle(), false));
         }
+
+        private async Task MonitorWindowSizeAsync()
+        {
+            while (!_cts.Token.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(300, _cts.Token);
+
+                    // if this window is the output buffer, resize it to match the window size
+                    if (GetStdHandle(StdHandleType.STD_OUTPUT_HANDLE) == Handle)
+                    {
+                        if (Console.BufferHeight > Console.WindowHeight)
+                        {
+                            try
+                            {
+                                Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
+                            }
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                // this can happen as we are resizing.
+                                continue;
+                            }
+
+                            Resized?.Invoke();
+                        }
+                        else if (Console.BufferHeight != _bufferHeight || Console.BufferWidth != _bufferWidth)
+                        {
+                            Resized?.Invoke();
+                        }
+                    }
+                }
+                catch (TaskCanceledException)
+                {
+                    break;
+                }
+            }
+        }
+
     }
 }
