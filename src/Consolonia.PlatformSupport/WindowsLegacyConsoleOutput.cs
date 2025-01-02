@@ -6,8 +6,8 @@ using Consolonia.Core.Infrastructure;
 namespace Consolonia.PlatformSupport
 {
     /// <summary>
-    /// This creates an alternate screen buffer using windows apis, 
-    /// and switches Console output to use it.
+    ///     This creates an alternate screen buffer using windows apis,
+    ///     and switches Console output to use it.
     /// </summary>
     internal class WindowsLegacyConsoleOutput : DefaultNetConsoleOutput
     {
@@ -24,7 +24,6 @@ namespace Consolonia.PlatformSupport
             // create secondary buffer
             _consoleBuffer = WindowsConsoleBuffer.Create();
             _consoleBuffer.SetAsActiveBuffer();
-
         }
 
         public override void RestoreConsole()

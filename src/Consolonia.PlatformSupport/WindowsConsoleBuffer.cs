@@ -1,42 +1,40 @@
 #pragma warning disable CA1416 // Validate platform compatibility
 using System;
 using System.IO;
-using Microsoft.Win32.SafeHandles;
 using System.Runtime.Versioning;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Win32.SafeHandles;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
+using FileAccess = System.IO.FileAccess;
 
 namespace Consolonia.PlatformSupport
 {
     /// <summary>
-    /// WindowsConsoleBuffer - A class for managing console alternate screen buffers on windows
+    ///     WindowsConsoleBuffer - A class for managing console alternate screen buffers on windows
     /// </summary>
     [SupportedOSPlatform("windows")]
     internal sealed class WindowsConsoleBuffer : IDisposable
     {
-        private SafeHFILE _handle;
-        private CancellationTokenSource _cts = new CancellationTokenSource();
+        private readonly CancellationTokenSource _cts = new();
         private int _bufferHeight;
         private int _bufferWidth;
 
         internal WindowsConsoleBuffer(SafeHFILE bufferHandle, bool autoSize = false)
         {
-            _handle = bufferHandle;
+            Handle = bufferHandle;
 
             if (autoSize)
-            {
                 _ = Task.Run(async () =>
                 {
                     while (!_cts.Token.IsCancellationRequested)
-                    {
                         try
                         {
                             await Task.Delay(300, _cts.Token);
 
                             // if this window is the output buffer, resize it to match the window size
-                            if (GetStdHandle(StdHandleType.STD_OUTPUT_HANDLE) == _handle)
+                            if (GetStdHandle(StdHandleType.STD_OUTPUT_HANDLE) == Handle)
                             {
                                 if (Console.BufferHeight > Console.WindowHeight)
                                 {
@@ -49,6 +47,7 @@ namespace Consolonia.PlatformSupport
                                         // this can happen as we are resizing.
                                         continue;
                                     }
+
                                     Resized?.Invoke();
                                 }
                                 else if (Console.BufferHeight != _bufferHeight || Console.BufferWidth != _bufferWidth)
@@ -61,15 +60,18 @@ namespace Consolonia.PlatformSupport
                         {
                             break;
                         }
-                    }
                 });
-            }
         }
 
-        public SafeHFILE Handle => _handle;
+        public SafeHFILE Handle { get; }
+
+        public void Dispose()
+        {
+            ((IDisposable)_cts).Dispose();
+        }
 
         /// <summary>
-        /// This will fire an event when the buffer is resized.
+        ///     This will fire an event when the buffer is resized.
         /// </summary>
         public event Action Resized;
 
@@ -79,37 +81,21 @@ namespace Consolonia.PlatformSupport
         /// <returns>Returns true on success, false on error.</returns>
         public bool SetAsActiveBuffer()
         {
-            if (!SetConsoleActiveScreenBuffer(_handle))
-            {
-                return false;
-            }
+            if (!SetConsoleActiveScreenBuffer(Handle)) return false;
 
             // change stdout handle to point to the new buffer
-            if (!SetStdHandle(StdHandleType.STD_OUTPUT_HANDLE, _handle))
-            {
-                return false;
-            }
+            if (!SetStdHandle(StdHandleType.STD_OUTPUT_HANDLE, Handle)) return false;
 
             // change stdout stream to point to the new buffer
-            var handle = new SafeFileHandle(_handle.DangerousGetHandle(), false);
-            var stream = new FileStream(handle, System.IO.FileAccess.Write);
-            try
-            {
-                var writer = new StreamWriter(stream) { AutoFlush = true };
-                Console.SetOut(writer);
-                stream = null; // Successfully transferred ownership
-            }
-            finally
-            {
-                stream?.Dispose();
-            }
+            var handle = new SafeFileHandle(Handle.DangerousGetHandle(), false);
+            Console.SetOut(new StreamWriter(new FileStream(handle, FileAccess.Write)) { AutoFlush = true });
 
             if (!SetConsoleCP(65001) || !SetConsoleOutputCP(65001))
                 throw GetLastError().GetException();
 
             // set console mode
-            if (!SetConsoleMode(_handle, CONSOLE_OUTPUT_MODE.DISABLE_NEWLINE_AUTO_RETURN |
-                                         CONSOLE_OUTPUT_MODE.ENABLE_LVB_GRID_WORLDWIDE))
+            if (!SetConsoleMode(Handle, CONSOLE_OUTPUT_MODE.DISABLE_NEWLINE_AUTO_RETURN |
+                                        CONSOLE_OUTPUT_MODE.ENABLE_LVB_GRID_WORLDWIDE))
                 throw GetLastError().GetException();
 
             _bufferHeight = Console.BufferHeight;
@@ -144,11 +130,6 @@ namespace Consolonia.PlatformSupport
         {
             HFILE buffer = GetStdHandle(StdHandleType.STD_OUTPUT_HANDLE);
             return new WindowsConsoleBuffer(new SafeHFILE(buffer.DangerousGetHandle(), false));
-        }
-
-        public void Dispose()
-        {
-            ((IDisposable)_cts).Dispose();
         }
     }
 }
