@@ -24,7 +24,7 @@ namespace Consolonia
             {
                 PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT =>
                     new Win32Console(Console.IsOutputRedirected || IsWindowsTerminal()
-                        ? new DefaultNetConsoleOutput()
+                        ? new AnsiConsoleOutput()
                         : new WindowsLegacyConsoleOutput()),
                 PlatformID.Unix or PlatformID.MacOSX => new CursesConsole(),
                 _ => new DefaultNetConsole()
