@@ -55,27 +55,25 @@
                                     IsHitTestVisible="False"
                                     Margin="{TemplateBinding Padding}" />
                             </Border>
-                            <StackPanel HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
-                                        ZIndex="10"
-                                        Orientation="Horizontal">
-                                <helpers:SymbolsControl Text="{TemplateBinding Icon}"
-                                                        IsVisible="{Binding Icon.Length}"
-                                                        Foreground="{TemplateBinding BorderBrush}" />
-                                <TextBlock Text="{TemplateBinding Title}"
-                                           Margin="1 0 0 0" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        ZIndex="10"
-                                        VerticalAlignment="Top"
-                                        HorizontalAlignment="Right"
-                                        Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
-                                        IsVisible="{TemplateBinding IsCloseButtonVisible}">
-                                <Button Content="×"
+                            <!-- titlebar -->
+                            <Grid RowDefinitions="Auto" ColumnDefinitions="* Auto">
+                                <StackPanel HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            Margin="2 0 3 0"
+                                            ZIndex="10"
+                                            Orientation="Horizontal">
+                                    <helpers:SymbolsControl Text="{TemplateBinding Icon}"
+                                                            IsVisible="{Binding Icon.Length}"
+                                                            Foreground="{TemplateBinding BorderBrush}" />
+                                    <TextBlock Text="╡" Foreground="{TemplateBinding BorderBrush}" />
+                                    <TextBlock Text="{TemplateBinding Title}" Margin="0"/>
+                                    <TextBlock Text="╞" Foreground="{TemplateBinding BorderBrush}" />
+                                </StackPanel>
+                                <Button Content="×" IsVisible="{TemplateBinding IsCloseButtonVisible}"
                                         Background="{x:Null}"
                                         IsTabStop="False"
-                                        Padding="0"
+                                        Margin="0 0 1 0"
+                                        Padding="0" Grid.Column="1" 
                                         Command="{Binding Path=CloseClick, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Styles>
                                         <Style Selector="Button">
@@ -84,7 +82,7 @@
                                         </Style>
                                     </Button.Styles>
                                 </Button>
-                            </StackPanel>
+                            </Grid>
                         </Panel>
 
                         <!--Content-->
