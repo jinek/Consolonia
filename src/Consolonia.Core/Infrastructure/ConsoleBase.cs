@@ -100,8 +100,6 @@ namespace Consolonia.Core.Infrastructure
             }
         }
 
-        public virtual bool CaretVisible => _consoleOutput.CaretVisible;
-
         public virtual bool SupportsComplexEmoji => _consoleOutput.SupportsComplexEmoji;
 
         public abstract bool SupportsAltSolo { get; }

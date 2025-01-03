@@ -21,8 +21,6 @@ namespace Consolonia.Core.Infrastructure
 
         public virtual PixelBufferSize Size { get; set; }
 
-        public virtual bool CaretVisible { get; private set; }
-
         public virtual bool SupportsComplexEmoji => false;
 
         public virtual void SetTitle(string title)
@@ -92,13 +90,11 @@ namespace Consolonia.Core.Infrastructure
         public virtual void HideCaret()
         {
             Console.CursorVisible = false;
-            CaretVisible = false;
         }
 
         public virtual void ShowCaret()
         {
             Console.CursorVisible = true;
-            CaretVisible = true;
         }
 
         public virtual void PrepareConsole()

@@ -32,8 +32,6 @@ namespace Consolonia.NUnit
 
         public PixelBufferSize Size { get; set; }
 
-        public bool CaretVisible { get; private set; }
-
         public bool SupportsComplexEmoji => true;
         public bool SupportsAltSolo => true;
         public bool SupportsMouse => false;
@@ -89,12 +87,10 @@ namespace Consolonia.NUnit
 
         public void HideCaret()
         {
-            CaretVisible = false;
         }
 
         public void ShowCaret()
         {
-            CaretVisible = true;
         }
 
         public void PrepareConsole()

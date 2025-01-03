@@ -19,8 +19,6 @@ namespace Consolonia.Core.Infrastructure
 
         private bool? _supportEmoji;
 
-        public bool CaretVisible { get; private set; }
-
         public bool SupportsComplexEmoji => _supportEmoji ?? false;
 
         public PixelBufferSize Size { get; set; }
@@ -151,13 +149,11 @@ namespace Consolonia.Core.Infrastructure
         public void HideCaret()
         {
             WriteText(Esc.HideCursor);
-            CaretVisible = false;
         }
 
         public void ShowCaret()
         {
             WriteText(Esc.ShowCursor);
-            CaretVisible = true;
         }
 
         public void ClearScreen()

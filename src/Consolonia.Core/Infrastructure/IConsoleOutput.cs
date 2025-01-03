@@ -14,8 +14,6 @@ namespace Consolonia.Core.Infrastructure
     {
         PixelBufferSize Size { get; set; }
 
-        bool CaretVisible { get; }
-
         /// <summary>
         ///     This is true if console supports composing multiple emojis together (like: 👨‍👩‍👧‍👦).
         /// </summary>

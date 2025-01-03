@@ -46,7 +46,7 @@ namespace Consolonia.Core.Infrastructure
             (ConsoleModifiers.Shift, RawInputModifiers.Shift), (ConsoleModifiers.Alt, RawInputModifiers.Alt)
         ]);
 
-        public override bool SupportsAltSolo => true;
+        public override bool SupportsAltSolo => false;
 
         public override bool SupportsMouse => false;
 

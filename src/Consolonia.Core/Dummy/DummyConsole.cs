@@ -41,8 +41,6 @@ namespace Consolonia.Core.Dummy
 
         public PixelBufferSize Size { get; set; }
 
-        public bool CaretVisible { get; set; }
-
         public bool SupportsComplexEmoji => true;
 
         public PixelBufferCoordinate GetCaretPosition()
@@ -75,12 +73,10 @@ namespace Consolonia.Core.Dummy
 
         public void HideCaret()
         {
-            CaretVisible = false;
         }
 
         public void ShowCaret()
         {
-            CaretVisible = true;
         }
 
         public void PrepareConsole()

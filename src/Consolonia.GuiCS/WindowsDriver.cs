@@ -21,7 +21,7 @@ namespace Terminal.Gui
             originalConsoleMode = ConsoleMode;
             var newConsoleMode = originalConsoleMode;
             newConsoleMode |= (CONSOLE_INPUT_MODE.ENABLE_MOUSE_INPUT |
-                                     CONSOLE_INPUT_MODE.ENABLE_EXTENDED_FLAGS);
+                               CONSOLE_INPUT_MODE.ENABLE_EXTENDED_FLAGS);
             newConsoleMode &= ~CONSOLE_INPUT_MODE.ENABLE_QUICK_EDIT_MODE;
             newConsoleMode &= ~CONSOLE_INPUT_MODE.ENABLE_PROCESSED_INPUT;
             ConsoleMode = newConsoleMode;
@@ -46,19 +46,14 @@ namespace Terminal.Gui
         {
             const int bufferSize = 1;
             var records = new INPUT_RECORD[bufferSize];
-            try
-            {
-                Kernel32.ReadConsoleInput(InputHandle, records, bufferSize,
-                    out var numberEventsRead);
 
-                return numberEventsRead == 0
-                    ? null
-                    : records;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            if (!Kernel32.ReadConsoleInput(InputHandle, records, bufferSize,
+                out var numberEventsRead))
+                throw GetLastError().GetException();
+
+            return numberEventsRead == 0
+                ? Array.Empty<INPUT_RECORD>()
+                : records;
         }
     }
 }
