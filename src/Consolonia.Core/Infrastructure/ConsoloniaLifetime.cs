@@ -26,7 +26,7 @@ namespace Consolonia.Core.Infrastructure
 
             pauseTask.ContinueWith(_ =>
             {
-                mainWindowPlatformImpl.Console.ClearOutput();
+                mainWindowPlatformImpl.Console.ClearScreen();
 
                 Dispatcher.UIThread.Post(() => { MainWindow.InvalidateVisual(); });
             }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);

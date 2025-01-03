@@ -10,13 +10,12 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
-using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Drawing
 {
     internal class RenderTarget : IDrawingContextLayerImpl
     {
-        private readonly IConsole _console;
+        private readonly IConsoleOutput _console;
 
         private readonly ConsoleWindow _consoleWindow;
 
@@ -25,7 +24,7 @@ namespace Consolonia.Core.Drawing
 
         internal RenderTarget(ConsoleWindow consoleWindow)
         {
-            _console = AvaloniaLocator.Current.GetService<IConsole>()!;
+            _console = AvaloniaLocator.Current.GetService<IConsoleOutput>()!;
             _consoleWindow = consoleWindow;
             consoleWindow.Resized += OnResized;
             _cache = InitializeCache(_consoleWindow.PixelBuffer.Width, _consoleWindow.PixelBuffer.Height);
@@ -102,7 +101,8 @@ namespace Consolonia.Core.Drawing
         {
             PixelBuffer pixelBuffer = _consoleWindow.PixelBuffer;
 
-            _console.CaretVisible = false;
+            _console.HideCaret();
+
             PixelBufferCoordinate? caretPosition = null;
 
             var flushingBuffer = new FlushingBuffer(_console);
@@ -142,31 +142,19 @@ namespace Consolonia.Core.Drawing
             if (caretPosition != null)
             {
                 _console.SetCaretPosition((PixelBufferCoordinate)caretPosition);
-                _console.WriteText(pixelBuffer.CaretStyle switch
-                {
-                    //todo: may be better to move low level stuff to IConsole
-                    CaretStyle.BlinkingBar => Esc.BlinkingBarCursor,
-                    CaretStyle.SteadyBar => Esc.SteadyBarCursor,
-                    CaretStyle.BlinkingBlock => Esc.BlinkingBlockCursor,
-                    CaretStyle.SteadyBlock => Esc.SteadyBlockCursor,
-                    CaretStyle.BlinkingUnderline => Esc.BlinkingUnderlineCursor,
-                    CaretStyle.SteadyUnderline => Esc.SteadyUnderlineCursor,
-                    _ => throw new ArgumentOutOfRangeException()
-                });
-                _console.WriteText(Esc.ShowCursor);
-                _console.CaretVisible = true;
+                _console.SetCaretStyle(pixelBuffer.CaretStyle);
+                _console.ShowCaret();
             }
             else
             {
-                _console.CaretVisible = false;
-                _console.WriteText(Esc.HideCursor);
+                _console.HideCaret();
             }
         }
 
         private struct FlushingBuffer
         {
             //todo: move class out
-            private readonly IConsole _console;
+            private readonly IConsoleOutput _console;
             private readonly StringBuilder _stringBuilder;
             private Color _lastBackgroundColor;
             private Color _lastForegroundColor;
@@ -176,7 +164,7 @@ namespace Consolonia.Core.Drawing
             private PixelBufferCoordinate _currentBufferPoint;
             private PixelBufferCoordinate _lastBufferPointStart;
 
-            public FlushingBuffer(IConsole console)
+            public FlushingBuffer(IConsoleOutput console)
             {
                 this = new FlushingBuffer();
                 _console = console;

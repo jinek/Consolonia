@@ -7,7 +7,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Reactive;
 using Avalonia.Styling;
-using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using NeoSmart.Unicode;
 using Wcwidth;
@@ -63,16 +62,6 @@ namespace Consolonia.Core.Helpers
             }
         }
 
-        public static void Print(this IConsole console, PixelBufferCoordinate point, Pixel pixel)
-        {
-            console.Print(point,
-                pixel.Background.Color,
-                pixel.Foreground.Color,
-                pixel.Foreground.Style,
-                pixel.Foreground.Weight,
-                pixel.Foreground.TextDecoration,
-                pixel.Foreground.Symbol.Text);
-        }
 
         /// <summary>
         ///     Process text into collection of glyphs where a glyph is either text or a combination of chars which make up an
@@ -137,7 +126,7 @@ namespace Consolonia.Core.Helpers
         /// <returns></returns>
         public static ushort MeasureText(this string text)
         {
-            var console = AvaloniaLocator.Current.GetService<IConsole>();
+            var console = AvaloniaLocator.Current.GetService<IConsoleOutput>();
             bool supportsComplexEmoji = console == null || console.SupportsComplexEmoji;
             ushort width = 0;
             ushort lastWidth = 0;

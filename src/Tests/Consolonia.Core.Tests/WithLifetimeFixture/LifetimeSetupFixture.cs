@@ -36,7 +36,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void Setup()
         {
             AvaloniaLocator.Current = new AvaloniaLocator()
-                .Bind<IConsole>().ToConstant(new UnitTestConsole(new PixelBufferSize(100, 100)));
+                .Bind<IConsoleOutput>().ToConstant(new UnitTestConsole(new PixelBufferSize(100, 100)));
 
             _scope = AvaloniaLocator.EnterScope();
             _lifetime = ApplicationStartup.BuildLifetime<ContextApp2>(new DummyConsole(), new RgbConsoleColorMode(),

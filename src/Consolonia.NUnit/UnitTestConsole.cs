@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
@@ -17,26 +18,19 @@ namespace Consolonia.NUnit
 {
     public sealed class UnitTestConsole : IConsole
     {
-        private readonly PixelBufferSize _size;
         private PixelBufferCoordinate _fakeCaretPosition;
         private ClassicDesktopStyleApplicationLifetime _lifetime;
 
         public UnitTestConsole(PixelBufferSize size)
         {
-            _size = size;
+            Size = size;
             PixelBuffer = new PixelBuffer(size.Width, size.Height);
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
         public PixelBuffer PixelBuffer { get; }
 
-        public void Dispose()
-        {
-            _lifetime = null;
-        }
-
-        PixelBufferSize IConsole.Size => _size;
-        bool IConsole.CaretVisible { get; set; }
+        public PixelBufferSize Size { get; set; }
 
         public bool SupportsComplexEmoji => true;
         public bool SupportsAltSolo => true;
@@ -48,17 +42,17 @@ namespace Consolonia.NUnit
             Console.WriteLine($"Title changed to {title}");
         }
 
-        void IConsole.SetCaretPosition(PixelBufferCoordinate bufferPoint)
+        public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
         {
             _fakeCaretPosition = bufferPoint;
         }
 
-        PixelBufferCoordinate IConsole.GetCaretPosition()
+        public PixelBufferCoordinate GetCaretPosition()
         {
             return _fakeCaretPosition;
         }
 
-        void IConsole.Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
+        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
             (ushort x, ushort y) = bufferPoint;
@@ -84,6 +78,36 @@ namespace Consolonia.NUnit
         public void PauseIO(Task task)
         {
             throw new NotSupportedException();
+        }
+
+
+        public void SetCaretStyle(CaretStyle caretStyle)
+        {
+        }
+
+        public void HideCaret()
+        {
+        }
+
+        public void ShowCaret()
+        {
+        }
+
+        public void PrepareConsole()
+        {
+        }
+
+        public void RestoreConsole()
+        {
+        }
+
+        public void ClearScreen()
+        {
+        }
+
+        public void Dispose()
+        {
+            _lifetime = null;
         }
 
         public void ClearOutput()

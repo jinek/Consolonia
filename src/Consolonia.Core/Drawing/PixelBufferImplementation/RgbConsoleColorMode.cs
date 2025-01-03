@@ -1,7 +1,4 @@
-using System.Text;
 using Avalonia.Media;
-using Consolonia.Core.Infrastructure;
-using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -34,13 +31,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return Color.FromArgb(a, r, g, b);
         }
 
-        public void SetAttributes(InputLessDefaultNetConsole console, Color background, Color foreground,
-            FontWeight? weight)
+        public (object background, object foreground) MapColors(Color background, Color foreground, FontWeight? weight)
         {
-            var sb = new StringBuilder();
-            sb.Append(Esc.Background(background));
-
-            sb.Append(Esc.Foreground(weight switch
+            foreground = weight switch
             {
                 FontWeight.Medium or FontWeight.SemiBold or FontWeight.Bold or FontWeight.ExtraBold or FontWeight.Black
                     or FontWeight.ExtraBlack
@@ -48,9 +41,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light
                     => foreground.Shade(background),
                 _ => foreground
-            }));
+            };
 
-            console.WriteText(sb.ToString());
+            return (background, foreground);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Media;
 
 namespace Consolonia.Core.Text
@@ -69,6 +70,74 @@ namespace Consolonia.Core.Text
             return $"\u001b[{y + 1};{x + 1}f";
         }
 
+        public static string Foreground(object color)
+        {
+            return color switch
+            {
+                ConsoleColor consoleColor => Foreground(consoleColor),
+                Color rgbColor => Foreground(rgbColor),
+                _ => throw new ArgumentException("Invalid color type")
+            };
+        }
+
+        public static string Foreground(ConsoleColor color)
+        {
+            int ansiCode = GetAnsiCode(color);
+            return ansiCode < 8
+                ?
+                // Standard colors
+                $"\x1b[{30 + ansiCode}m"
+                :
+                // Bright colors
+                $"\x1b[{90 + (ansiCode - 8)}m";
+        }
+
+        public static string Background(object color)
+        {
+            return color switch
+            {
+                ConsoleColor consoleColor => Background(consoleColor),
+                Color rgbColor => Background(rgbColor),
+                _ => throw new ArgumentException("Invalid color type")
+            };
+        }
+
+        public static string Background(ConsoleColor color)
+        {
+            int ansiCode = GetAnsiCode(color);
+            return ansiCode < 8
+                ?
+                // Standard colors
+                $"\x1b[{40 + ansiCode}m"
+                :
+                // Bright colors
+                $"\x1b[{100 + (ansiCode - 8)}m";
+        }
+
+        public static int GetAnsiCode(ConsoleColor color)
+        {
+            return color switch
+            {
+                ConsoleColor.Black => 0,
+                ConsoleColor.DarkRed => 1,
+                ConsoleColor.DarkGreen => 2,
+                ConsoleColor.DarkYellow => 3,
+                ConsoleColor.DarkBlue => 4,
+                ConsoleColor.DarkMagenta => 5,
+                ConsoleColor.DarkCyan => 6,
+                ConsoleColor.Gray => 7,
+                ConsoleColor.DarkGray => 8,
+                ConsoleColor.Red => 9,
+                ConsoleColor.Green => 10,
+                ConsoleColor.Yellow => 11,
+                ConsoleColor.Blue => 12,
+                ConsoleColor.Magenta => 13,
+                ConsoleColor.Cyan => 14,
+                ConsoleColor.White => 15,
+                _ => 7 // Default to white if unknown
+            };
+        }
+
         public static string Foreground(Color color)
         {
             return Foreground(color.R, color.G, color.B);
@@ -87,6 +156,11 @@ namespace Consolonia.Core.Text
         public static string Background(byte red, byte green, byte blue)
         {
             return $"\u001b[48;2;{red};{green};{blue}m";
+        }
+
+        public static string SetWindowTitle(string title)
+        {
+            return $"\u001b]0;{title}\u0007";
         }
     }
 }
