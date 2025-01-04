@@ -13,8 +13,8 @@ namespace Consolonia.Controls
             AvaloniaProperty.Register<LineBrush, IBrush>(
                 CommonInternalHelper.GetStyledPropertyName() /*todo: re-use this method everywhere*/);
 
-        public static readonly StyledProperty<LineStyle> LineStyleProperty =
-            AvaloniaProperty.Register<LineBrush, LineStyle>(CommonInternalHelper.GetStyledPropertyName());
+        public static readonly StyledProperty<LineStyles> LineStyleProperty =
+            AvaloniaProperty.Register<LineBrush, LineStyles>(CommonInternalHelper.GetStyledPropertyName());
 
         public IBrush Brush
         {
@@ -22,7 +22,7 @@ namespace Consolonia.Controls
             set => SetValue(BrushProperty, value);
         }
 
-        public LineStyle LineStyle
+        public LineStyles LineStyle
         {
             get => GetValue(LineStyleProperty);
             set => SetValue(LineStyleProperty, value);

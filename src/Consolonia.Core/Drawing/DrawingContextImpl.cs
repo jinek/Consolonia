@@ -96,37 +96,37 @@ namespace Consolonia.Core.Drawing
                 new SKPaint { FilterQuality = SKFilterQuality.Medium });
 
             for (int y = 0; y < bitmap.Info.Height; y += 2)
-            for (int x = 0; x < bitmap.Info.Width; x += 2)
-            {
-                // NOTE: we divide by 2 because we are working with quad pixels,
-                // // the bitmap has twice the horizontal and twice the vertical of the target rect.
-                int px = (int)targetRect.TopLeft.X + x / 2;
-                int py = (int)targetRect.TopLeft.Y + y / 2;
-
-                // get the quad pixel the bitmap
-                var quadColors = new[]
+                for (int x = 0; x < bitmap.Info.Width; x += 2)
                 {
+                    // NOTE: we divide by 2 because we are working with quad pixels,
+                    // // the bitmap has twice the horizontal and twice the vertical of the target rect.
+                    int px = (int)targetRect.TopLeft.X + x / 2;
+                    int py = (int)targetRect.TopLeft.Y + y / 2;
+
+                    // get the quad pixel the bitmap
+                    var quadColors = new[]
+                    {
                     bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
                     bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
                 };
 
-                // map it to a single char to represent the 4 pixels
-                char quadPixel = GetQuadPixelCharacter(quadColors);
+                    // map it to a single char to represent the 4 pixels
+                    char quadPixel = GetQuadPixelCharacter(quadColors);
 
-                // get the combined colors for the quad pixel
-                Color foreground = GetForegroundColorForQuadPixel(quadColors, quadPixel);
-                Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
+                    // get the combined colors for the quad pixel
+                    Color foreground = GetForegroundColorForQuadPixel(quadColors, quadPixel);
+                    Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
 
-                var imagePixel = new Pixel(
-                    new PixelForeground(new SimpleSymbol(quadPixel), foreground),
-                    new PixelBackground(background));
-                CurrentClip.ExecuteWithClipping(new Point(px, py),
-                    () =>
-                    {
-                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                            existingPixel => existingPixel.Blend(imagePixel));
-                    });
-            }
+                    var imagePixel = new Pixel(
+                        new PixelForeground(new SimpleSymbol(quadPixel), foreground),
+                        new PixelBackground(background));
+                    CurrentClip.ExecuteWithClipping(new Point(px, py),
+                        () =>
+                        {
+                            _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                                existingPixel => existingPixel.Blend(imagePixel));
+                        });
+                }
         }
 
         public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
@@ -150,53 +150,32 @@ namespace Consolonia.Core.Drawing
                     DrawLineInternal(pen, myLine);
                     break;
                 case StreamGeometryImpl streamGeometry:
-                {
-                    // if we have fills to do.
-                    if (streamGeometry.Fills.Count > 0)
-                        foreach (Rectangle fill in streamGeometry.Fills)
-                            DrawRectangle(brush, pen, new RoundedRect(fill.Rect));
-
-                    // if we have strokes to draw
-                    if (streamGeometry.Strokes.Count > 0)
                     {
-                        if (pen == null || pen.Thickness == 0)
-                            return;
+                        // if we have fills to do.
+                        if (streamGeometry.Fills.Count > 0)
+                            foreach (Rectangle fill in streamGeometry.Fills)
+                                DrawRectangle(brush, pen, new RoundedRect(fill.Rect));
 
-                        var extractColorCheckPlatformSupported =
-                            ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
-                        if (extractColorCheckPlatformSupported == null)
-                            return;
-
-                        var color = (Color)extractColorCheckPlatformSupported;
-
-                        lineStyle ??= LineStyle.SingleLine;
-
-                        var strokePositions = InferStrokePositions(streamGeometry);
-
-                        bool hasTop = strokePositions.Contains(RectangleLinePosition.Top);
-                        bool hasRight = strokePositions.Contains(RectangleLinePosition.Right);
-                        bool hasBottom = strokePositions.Contains(RectangleLinePosition.Bottom);
-                        bool hasLeft = strokePositions.Contains(RectangleLinePosition.Left);
-
-                        if (lineStyle == LineStyle.Edge || lineStyle == LineStyle.EdgeWide)
+                        // if we have strokes to draw
+                        if (streamGeometry.Strokes.Count > 0)
                         {
-                            for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
-                            {
-                                Line stroke = TransformLineInternal(streamGeometry.Strokes[iStroke]);
+                            if (pen == null || pen.Thickness == 0)
+                                return;
 
-                                if (stroke.Bounds.Width > 0 || stroke.Bounds.Height > 0)
-                                {
-                                    if (stroke.Vertical)
-                                        DrawEdgeLine(stroke, strokePositions[iStroke], lineStyle.Value, color, hasTop,
-                                            hasBottom);
-                                    else
-                                        DrawEdgeLine(stroke, strokePositions[iStroke], lineStyle.Value, color, hasLeft,
-                                            hasRight);
-                                }
-                            }
-                        }
-                        else
-                        {
+                            var extractColorCheckPlatformSupported =
+                                ExtractColorOrNullWithPlatformCheck(pen, out var _);
+                            if (extractColorCheckPlatformSupported == null)
+                                return;
+
+                            var color = (Color)extractColorCheckPlatformSupported;
+
+                            var strokePositions = InferStrokePositions(streamGeometry);
+
+                            bool hasTop = strokePositions.Contains(RectangleLinePosition.Top);
+                            bool hasRight = strokePositions.Contains(RectangleLinePosition.Right);
+                            bool hasBottom = strokePositions.Contains(RectangleLinePosition.Bottom);
+                            bool hasLeft = strokePositions.Contains(RectangleLinePosition.Left);
+
                             Line strokeTop = null;
                             Line strokeLeft = null;
                             Line strokeRight = null;
@@ -216,27 +195,18 @@ namespace Consolonia.Core.Drawing
                             }
 
                             if (strokeLeft != null)
-                                //if (strokeBottom != null)
-                                //    strokeLeft = new Line(strokeLeft.PStart, strokeBottom.PStart, strokeLeft.SourceGeometry, strokeLeft.Transform);
                                 DrawBoxLineInternal(pen, strokeLeft, RectangleLinePosition.Left);
 
                             if (strokeTop != null)
-                                //if (strokeRight != null)
-                                //    strokeTop = new Line(strokeTop.PStart, strokeRight.PStart, strokeTop.SourceGeometry, strokeTop.Transform);
                                 DrawBoxLineInternal(pen, strokeTop, RectangleLinePosition.Top);
 
                             if (strokeRight != null)
-                                //if (strokeBottom != null)
-                                //    strokeRight = new Line(strokeRight.PStart, strokeBottom.PEnd, strokeRight.SourceGeometry, strokeRight.Transform);
                                 DrawBoxLineInternal(pen, strokeRight, RectangleLinePosition.Right);
 
                             if (strokeBottom != null)
-                                //if (strokeLeft != null)
-                                //    strokeBottom = new Line(strokeLeft.PEnd, strokeBottom.PEnd, strokeBottom.SourceGeometry, strokeBottom.Transform);
                                 DrawBoxLineInternal(pen, strokeBottom, RectangleLinePosition.Bottom);
                         }
                     }
-                }
                     break;
                 default:
                     ConsoloniaPlatform.RaiseNotSupported(5);
@@ -266,22 +236,22 @@ namespace Consolonia.Core.Drawing
                     case VisualBrush:
                         throw new NotImplementedException();
                     case ISceneBrush sceneBrush:
-                    {
-                        ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
-                        if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
-                        return;
-                    }
+                        {
+                            ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
+                            if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
+                            return;
+                        }
                     case MoveConsoleCaretToPositionBrush moveBrush:
-                    {
-                        Point head = r.TopLeft.Transform(Transform);
-                        _pixelBuffer.CaretStyle = moveBrush.CaretStyle;
-                        CurrentClip.ExecuteWithClipping(head,
-                            () =>
-                            {
-                                _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true)));
-                            });
-                        return;
-                    }
+                        {
+                            Point head = r.TopLeft.Transform(Transform);
+                            _pixelBuffer.CaretStyle = moveBrush.CaretStyle;
+                            CurrentClip.ExecuteWithClipping(head,
+                                () =>
+                                {
+                                    _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(true)));
+                                });
+                            return;
+                        }
                 }
 
                 FillRectangleWithBrush(brush, pen, r);
@@ -533,31 +503,31 @@ namespace Consolonia.Core.Drawing
             double width = r2.Width + (pen?.Thickness ?? 0);
             double height = r2.Height + (pen?.Thickness ?? 0);
             for (int x = 0; x < width; x++)
-            for (int y = 0; y < height; y++)
-            {
-                int px = (int)(r2.TopLeft.X + x);
-                int py = (int)(r2.TopLeft.Y + y);
-                Color backgroundColor = brush.FromPosition(x, y, (int)width, (int)height);
-
-                CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                for (int y = 0; y < height; y++)
                 {
-                    _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
-                        pixel =>
-                        {
-                            switch (brush)
+                    int px = (int)(r2.TopLeft.X + x);
+                    int py = (int)(r2.TopLeft.Y + y);
+                    Color backgroundColor = brush.FromPosition(x, y, (int)width, (int)height);
+
+                    CurrentClip.ExecuteWithClipping(new Point(px, py), () =>
+                    {
+                        _pixelBuffer.Set(new PixelBufferCoordinate((ushort)px, (ushort)py),
+                            pixel =>
                             {
-                                case ShadeBrush:
-                                    return pixel.Shade();
-                                case BrightenBrush:
-                                    return pixel.Brighten();
-                                case InvertBrush:
-                                    return pixel.Invert();
-                                default:
-                                    return pixel.Blend(new Pixel(new PixelBackground(backgroundColor)));
-                            }
-                        });
-                });
-            }
+                                switch (brush)
+                                {
+                                    case ShadeBrush:
+                                        return pixel.Shade();
+                                    case BrightenBrush:
+                                        return pixel.Brighten();
+                                    case InvertBrush:
+                                        return pixel.Invert();
+                                    default:
+                                        return pixel.Blend(new Pixel(new PixelBackground(backgroundColor)));
+                                }
+                            });
+                    });
+                }
         }
 
         /// <summary>
@@ -574,29 +544,35 @@ namespace Consolonia.Core.Drawing
 
             Point head = line.PStart;
 
-            var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
+            var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyles);
             if (extractColorCheckPlatformSupported == null)
                 return;
 
             var color = (Color)extractColorCheckPlatformSupported;
 
-            if (lineStyle == null || linePosition == RectangleLinePosition.Unknown)
-                lineStyle = LineStyle.SingleLine;
+            var lineStyle = linePosition switch
+            {
+                RectangleLinePosition.Top => lineStyles.Top,
+                RectangleLinePosition.Right => lineStyles.Right,
+                RectangleLinePosition.Bottom => lineStyles.Bottom,
+                RectangleLinePosition.Left => lineStyles.Left,
+                _ => LineStyle.SingleLine
+            };
 
             if (lineStyle is LineStyle.Edge or LineStyle.EdgeWide)
             {
-                DrawEdgeLine(line, linePosition, lineStyle.Value, color, true, true);
+                DrawEdgeLine(line, linePosition, lineStyle, color, true, true);
             }
             else
             {
                 byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, 1); //beginning
+                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //beginning
 
                 pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, line.Length - 1); //line
+                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length - 1); //line
 
                 pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, 1); //ending 
+                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //ending 
             }
         }
 
@@ -670,9 +646,9 @@ namespace Consolonia.Core.Drawing
         /// <param name="lineStyle"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private static Color? ExtractColorOrNullWithPlatformCheck(IPen pen, out LineStyle? lineStyle)
+        private static Color? ExtractColorOrNullWithPlatformCheck(IPen pen, out LineStyles? lineStyles)
         {
-            lineStyle = null;
+            lineStyles = null;
             if (pen is not
                 {
                     Brush: LineBrush or ISolidColorBrush
@@ -690,9 +666,11 @@ namespace Consolonia.Core.Drawing
 
             if (brush is LineBrush lineBrush)
             {
-                lineStyle = lineBrush.LineStyle;
+                lineStyles = lineBrush.LineStyle;
                 brush = lineBrush.Brush;
             }
+            else
+                lineStyles = new LineStyles();
 
             return ((ISolidColorBrush)brush).Color;
         }
@@ -769,21 +747,21 @@ namespace Consolonia.Core.Drawing
                 switch (glyph)
                 {
                     case "\t":
-                    {
-                        const int tabSize = 8;
-                        var consolePixel = new Pixel(new SimpleSymbol(' '), foregroundColor);
-                        for (int j = 0; j < tabSize; j++)
                         {
-                            Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
-                            CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                            const int tabSize = 8;
+                            var consolePixel = new Pixel(new SimpleSymbol(' '), foregroundColor);
+                            for (int j = 0; j < tabSize; j++)
                             {
-                                _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
-                                    oldPixel => oldPixel.Blend(consolePixel));
-                            });
-                        }
+                                Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
+                                CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
+                                {
+                                    _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
+                                        oldPixel => oldPixel.Blend(consolePixel));
+                                });
+                            }
 
-                        currentXPosition += tabSize - 1;
-                    }
+                            currentXPosition += tabSize - 1;
+                        }
                         break;
                     case "\r":
                     case "\f":
@@ -792,66 +770,66 @@ namespace Consolonia.Core.Drawing
                         currentYPosition++;
                         break;
                     default:
-                    {
-                        var symbol = new SimpleSymbol(glyph);
-                        // if we are attempting to draw a wide glyph we need to make sure that the clipping point
-                        // is for the last physical char. Aka a double char should be clipped if it's second rendered 
-                        // char would break the boundary of the clip.
-                        // var clippingPoint = new Point(characterPoint.X + symbol.Width - 1, characterPoint.Y);
-                        var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
-                        CurrentClip.ExecuteWithClipping(characterPoint, () =>
                         {
-                            _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
-                                oldPixel =>
-                                {
-                                    if (oldPixel.Width == 0)
+                            var symbol = new SimpleSymbol(glyph);
+                            // if we are attempting to draw a wide glyph we need to make sure that the clipping point
+                            // is for the last physical char. Aka a double char should be clipped if it's second rendered 
+                            // char would break the boundary of the clip.
+                            // var clippingPoint = new Point(characterPoint.X + symbol.Width - 1, characterPoint.Y);
+                            var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
+                            CurrentClip.ExecuteWithClipping(characterPoint, () =>
+                            {
+                                _pixelBuffer.Set((PixelBufferCoordinate)characterPoint,
+                                    oldPixel =>
                                     {
-                                        // if the oldPixel was empty, we need to set the previous pixel to space
-                                        double targetX = characterPoint.X - 1;
-                                        if (targetX >= 0)
-                                            _pixelBuffer.Set(
-                                                (PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
-                                                oldPixel2 =>
-                                                    new Pixel(
-                                                        new PixelForeground(new SimpleSymbol(' '), Colors.Transparent),
-                                                        oldPixel2.Background));
-                                    }
-                                    else if (oldPixel.Width > 1)
-                                    {
-                                        // if oldPixel was wide we need to reset overlapped symbols from empty to space
-                                        for (ushort i = 1; i < oldPixel.Width; i++)
+                                        if (oldPixel.Width == 0)
                                         {
-                                            double targetX = characterPoint.X + i;
-                                            if (targetX < _pixelBuffer.Size.Width)
+                                            // if the oldPixel was empty, we need to set the previous pixel to space
+                                            double targetX = characterPoint.X - 1;
+                                            if (targetX >= 0)
                                                 _pixelBuffer.Set(
                                                     (PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
                                                     oldPixel2 =>
                                                         new Pixel(
-                                                            new PixelForeground(new SimpleSymbol(' '),
-                                                                Colors.Transparent), oldPixel2.Background));
-                                        }
-                                    }
-
-                                    // if the pixel was a wide character, we need to set the overlapped pixels to empty pixels.
-                                    if (newPixel.Width > 1)
-                                        for (int i = 1; i < symbol.Width; i++)
-                                        {
-                                            double targetX = characterPoint.X + i;
-                                            if (targetX < _pixelBuffer.Size.Width)
-                                                _pixelBuffer.Set(
-                                                    (PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
-                                                    oldPixel2 =>
-                                                        new Pixel(
-                                                            new PixelForeground(new SimpleSymbol(), Colors.Transparent),
+                                                            new PixelForeground(new SimpleSymbol(' '), Colors.Transparent),
                                                             oldPixel2.Background));
                                         }
+                                        else if (oldPixel.Width > 1)
+                                        {
+                                            // if oldPixel was wide we need to reset overlapped symbols from empty to space
+                                            for (ushort i = 1; i < oldPixel.Width; i++)
+                                            {
+                                                double targetX = characterPoint.X + i;
+                                                if (targetX < _pixelBuffer.Size.Width)
+                                                    _pixelBuffer.Set(
+                                                        (PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
+                                                        oldPixel2 =>
+                                                            new Pixel(
+                                                                new PixelForeground(new SimpleSymbol(' '),
+                                                                    Colors.Transparent), oldPixel2.Background));
+                                            }
+                                        }
 
-                                    return oldPixel.Blend(newPixel);
-                                });
-                        });
+                                        // if the pixel was a wide character, we need to set the overlapped pixels to empty pixels.
+                                        if (newPixel.Width > 1)
+                                            for (int i = 1; i < symbol.Width; i++)
+                                            {
+                                                double targetX = characterPoint.X + i;
+                                                if (targetX < _pixelBuffer.Size.Width)
+                                                    _pixelBuffer.Set(
+                                                        (PixelBufferCoordinate)new Point(targetX, characterPoint.Y),
+                                                        oldPixel2 =>
+                                                            new Pixel(
+                                                                new PixelForeground(new SimpleSymbol(), Colors.Transparent),
+                                                                oldPixel2.Background));
+                                            }
 
-                        currentXPosition += symbol.Width;
-                    }
+                                        return oldPixel.Blend(newPixel);
+                                    });
+                            });
+
+                            currentXPosition += symbol.Width;
+                        }
                         break;
                 }
             }
