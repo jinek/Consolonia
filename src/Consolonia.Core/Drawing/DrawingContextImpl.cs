@@ -161,78 +161,19 @@ namespace Consolonia.Core.Drawing
                     {
                         pen = pen ?? new Pen(brush);
 
-                        var extractColorCheckPlatformSupported =
-                            ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
-                        if (extractColorCheckPlatformSupported == null)
-                            return;
-
-                        var color = (Color)extractColorCheckPlatformSupported;
-
-                        lineStyle ??= LineStyle.SingleLine;
-
                         var strokePositions = InferStrokePositions(streamGeometry);
-
-                        bool hasTop = strokePositions.Contains(RectangleLinePosition.Top);
-                        bool hasRight = strokePositions.Contains(RectangleLinePosition.Right);
-                        bool hasBottom = strokePositions.Contains(RectangleLinePosition.Bottom);
-                        bool hasLeft = strokePositions.Contains(RectangleLinePosition.Left);
-
-                        if (lineStyle == LineStyle.Edge || lineStyle == LineStyle.EdgeWide)
+                        for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
                         {
-                            for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
-                            {
-                                Line stroke = TransformLineInternal(streamGeometry.Strokes[iStroke]);
-
-                                if (stroke.Bounds.Width > 0 || stroke.Bounds.Height > 0)
-                                {
-                                    if (stroke.Vertical)
-                                        DrawEdgeLine(stroke, strokePositions[iStroke], lineStyle.Value, color, hasTop,
-                                            hasBottom);
-                                    else
-                                        DrawEdgeLine(stroke, strokePositions[iStroke], lineStyle.Value, color, hasLeft,
-                                            hasRight);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Line strokeTop = null;
-                            Line strokeLeft = null;
-                            Line strokeRight = null;
-                            Line strokeBottom = null;
-                            for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
-                            {
-                                Line stroke = streamGeometry.Strokes[iStroke];
-                                RectangleLinePosition strokePosition = strokePositions[iStroke];
-                                if (strokePosition == RectangleLinePosition.Left)
-                                    strokeLeft = stroke;
-                                else if (strokePosition == RectangleLinePosition.Right)
-                                    strokeRight = stroke;
-                                else if (strokePosition == RectangleLinePosition.Top)
-                                    strokeTop = stroke;
-                                else if (strokePosition == RectangleLinePosition.Bottom)
-                                    strokeBottom = stroke;
-                            }
-
-                            if (strokeLeft != null)
-                                //if (strokeBottom != null)
-                                //    strokeLeft = new Line(strokeLeft.PStart, strokeBottom.PStart, strokeLeft.SourceGeometry, strokeLeft.Transform);
-                                DrawBoxLineInternal(pen, strokeLeft, RectangleLinePosition.Left);
-
-                            if (strokeTop != null)
-                                //if (strokeRight != null)
-                                //    strokeTop = new Line(strokeTop.PStart, strokeRight.PStart, strokeTop.SourceGeometry, strokeTop.Transform);
-                                DrawBoxLineInternal(pen, strokeTop, RectangleLinePosition.Top);
-
-                            if (strokeRight != null)
-                                //if (strokeBottom != null)
-                                //    strokeRight = new Line(strokeRight.PStart, strokeBottom.PEnd, strokeRight.SourceGeometry, strokeRight.Transform);
-                                DrawBoxLineInternal(pen, strokeRight, RectangleLinePosition.Right);
-
-                            if (strokeBottom != null)
-                                //if (strokeLeft != null)
-                                //    strokeBottom = new Line(strokeLeft.PEnd, strokeBottom.PEnd, strokeBottom.SourceGeometry, strokeBottom.Transform);
-                                DrawBoxLineInternal(pen, strokeBottom, RectangleLinePosition.Bottom);
+                            Line stroke = streamGeometry.Strokes[iStroke];
+                            RectangleLinePosition strokePosition = strokePositions[iStroke];
+                            if (strokePosition == RectangleLinePosition.Left)
+                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Left);
+                            else if (strokePosition == RectangleLinePosition.Right)
+                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Right);
+                            else if (strokePosition == RectangleLinePosition.Top)
+                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Top);
+                            else if (strokePosition == RectangleLinePosition.Bottom)
+                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Bottom);
                         }
                     }
                 }
@@ -573,29 +514,36 @@ namespace Consolonia.Core.Drawing
 
             Point head = line.PStart;
 
-            var extractColorCheckPlatformSupported = ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
+            var extractColorCheckPlatformSupported =
+                ExtractColorOrNullWithPlatformCheck(pen, out LineStyles lineStyles);
             if (extractColorCheckPlatformSupported == null)
                 return;
 
             var color = (Color)extractColorCheckPlatformSupported;
 
-            if (lineStyle == null || linePosition == RectangleLinePosition.Unknown)
-                lineStyle = LineStyle.SingleLine;
+            LineStyle lineStyle = linePosition switch
+            {
+                RectangleLinePosition.Top => lineStyles.Top,
+                RectangleLinePosition.Right => lineStyles.Right,
+                RectangleLinePosition.Bottom => lineStyles.Bottom,
+                RectangleLinePosition.Left => lineStyles.Left,
+                _ => LineStyle.SingleLine
+            };
 
             if (lineStyle is LineStyle.Edge or LineStyle.EdgeWide)
             {
-                DrawEdgeLine(line, linePosition, lineStyle.Value, color, true, true);
+                DrawEdgeLine(line, linePosition, lineStyle, color, true, true);
             }
             else
             {
                 byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, 1); //beginning
+                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //beginning
 
                 pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, line.Length - 1); //line
+                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length - 1); //line
 
                 pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle.Value, pattern, color, 1); //ending 
+                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //ending 
             }
         }
 
@@ -666,12 +614,12 @@ namespace Consolonia.Core.Drawing
         ///     Extract color from pen brush
         /// </summary>
         /// <param name="pen"></param>
-        /// <param name="lineStyle"></param>
+        /// <param name="lineStyles"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private static Color? ExtractColorOrNullWithPlatformCheck(IPen pen, out LineStyle? lineStyle)
+        private static Color? ExtractColorOrNullWithPlatformCheck(IPen pen, out LineStyles lineStyles)
         {
-            lineStyle = null;
+            lineStyles = null;
             if (pen is not
                 {
                     Brush: LineBrush or ISolidColorBrush
@@ -689,8 +637,12 @@ namespace Consolonia.Core.Drawing
 
             if (brush is LineBrush lineBrush)
             {
-                lineStyle = lineBrush.LineStyle;
+                lineStyles = lineBrush.LineStyle;
                 brush = lineBrush.Brush;
+            }
+            else
+            {
+                lineStyles = new LineStyles();
             }
 
             return ((ISolidColorBrush)brush).Color;
