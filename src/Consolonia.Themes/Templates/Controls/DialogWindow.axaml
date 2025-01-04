@@ -43,20 +43,26 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center">
                             <Grid ColumnDefinitions="*">
-                                <Grid ColumnDefinitions="* Auto" VerticalAlignment="Top" Margin="1 0 0 0" ZIndex="30">
-                                    <StackPanel Orientation="Horizontal" >
+                                <Grid ColumnDefinitions="* Auto"
+                                      VerticalAlignment="Top"
+                                      Margin="1 0 0 0"
+                                      ZIndex="30">
+                                    <StackPanel Orientation="Horizontal">
                                         <helpers:SymbolsControl Text="{TemplateBinding Icon}"
                                                                 IsVisible="{Binding Icon.Length}"
                                                                 Foreground="{TemplateBinding BorderBrush}" />
-                                        <TextBlock Text="╡" Foreground="{TemplateBinding BorderBrush}" />
+                                        <TextBlock Text="╡"
+                                                   Foreground="{TemplateBinding BorderBrush}" />
                                         <TextBlock Text="{TemplateBinding Title}" />
-                                        <TextBlock Text="╞" Foreground="{TemplateBinding BorderBrush}" />
+                                        <TextBlock Text="╞"
+                                                   Foreground="{TemplateBinding BorderBrush}" />
                                     </StackPanel>
-                                    
+
                                     <StackPanel Grid.Column="1"
                                                 Orientation="Horizontal"
                                                 IsVisible="{TemplateBinding IsCloseButtonVisible}">
-                                        <Button Content="×" Margin="1 0 0 0"
+                                        <Button Content="×"
+                                                Margin="1 0 0 0"
                                                 Background="{x:Null}"
                                                 IsTabStop="False"
                                                 Padding="0"
@@ -71,7 +77,7 @@
                                     </StackPanel>
                                 </Grid>
 
-                                <Border BorderThickness="{TemplateBinding BorderThickness}" >
+                                <Border BorderThickness="{TemplateBinding BorderThickness}">
                                     <Border.BorderBrush>
                                         <controls:LineBrush
                                             Brush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
