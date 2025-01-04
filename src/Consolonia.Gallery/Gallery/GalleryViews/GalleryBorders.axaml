@@ -57,7 +57,7 @@
         <WrapPanel>
             <Border BorderThickness="1">
                 <Border.BorderBrush>
-                    <consolonia:LineBrush LineStyle="SingleLine SingleLine DoubleLine DoubleLine" 
+                    <consolonia:LineBrush LineStyle="SingleLine SingleLine DoubleLine DoubleLine"
                                           Brush="DarkGreen" />
                 </Border.BorderBrush>
                 <TextBlock Text="LineStyle=SingleLine SingleLine DoubleLine DoubleLine"

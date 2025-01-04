@@ -9,11 +9,6 @@ namespace Consolonia.Controls
 {
     public class LineStyles
     {
-        public static LineStyles Parse(string s)
-        {
-            return new LineStyles(s);
-        }
-
         public LineStyles()
         {
             Left = Top = Right = Bottom = LineStyle.SingleLine;
@@ -31,7 +26,8 @@ namespace Consolonia.Controls
             Bottom = styles.Count > 3 ? styles[3] : Right;
         }
 
-        public LineStyles(LineStyle? left = null, LineStyle? top = null, LineStyle? right = null, LineStyle? bottom = null)
+        public LineStyles(LineStyle? left = null, LineStyle? top = null, LineStyle? right = null,
+            LineStyle? bottom = null)
         {
             Left = left ?? LineStyle.SingleLine;
             Top = top ?? Left;
@@ -44,8 +40,19 @@ namespace Consolonia.Controls
         public LineStyle Right { get; set; }
         public LineStyle Bottom { get; set; }
 
-        public static implicit operator LineStyles(string text) => new LineStyles(text);
-        
-        public static implicit operator LineStyles(LineStyle lineStyle) => new LineStyles(lineStyle);
+        public static LineStyles Parse(string s)
+        {
+            return new LineStyles(s);
+        }
+
+        public static implicit operator LineStyles(string text)
+        {
+            return new LineStyles(text);
+        }
+
+        public static implicit operator LineStyles(LineStyle lineStyle)
+        {
+            return new LineStyles(lineStyle);
+        }
     }
 }

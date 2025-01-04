@@ -57,7 +57,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void TestEmptyConstructor()
         {
-            LineStyles lineStyles = new LineStyles();
+            var lineStyles = new LineStyles();
             Assert.That(lineStyles.Left, Is.EqualTo(LineStyle.SingleLine));
             Assert.That(lineStyles.Top, Is.EqualTo(LineStyle.SingleLine));
             Assert.That(lineStyles.Right, Is.EqualTo(LineStyle.SingleLine));
@@ -67,7 +67,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void TestConstructorSingle()
         {
-            LineStyles lineStyles = new LineStyles(LineStyle.Edge);
+            var lineStyles = new LineStyles(LineStyle.Edge);
             Assert.That(lineStyles.Left, Is.EqualTo(LineStyle.Edge));
             Assert.That(lineStyles.Top, Is.EqualTo(LineStyle.Edge));
             Assert.That(lineStyles.Right, Is.EqualTo(LineStyle.Edge));
@@ -77,7 +77,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void TestConstructorDouble()
         {
-            LineStyles lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine);
+            var lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine);
             Assert.That(lineStyles.Left, Is.EqualTo(LineStyle.SingleLine));
             Assert.That(lineStyles.Top, Is.EqualTo(LineStyle.DoubleLine));
             Assert.That(lineStyles.Right, Is.EqualTo(LineStyle.DoubleLine));
@@ -87,7 +87,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void TestConstructorTriple()
         {
-            LineStyles lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine, LineStyle.Edge);
+            var lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine, LineStyle.Edge);
             Assert.That(lineStyles.Left, Is.EqualTo(LineStyle.SingleLine));
             Assert.That(lineStyles.Top, Is.EqualTo(LineStyle.DoubleLine));
             Assert.That(lineStyles.Right, Is.EqualTo(LineStyle.Edge));
@@ -97,7 +97,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void TestConstructorQuad()
         {
-            LineStyles lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine, LineStyle.Edge, LineStyle.Bold);
+            var lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine, LineStyle.Edge, LineStyle.Bold);
             Assert.That(lineStyles.Left, Is.EqualTo(LineStyle.SingleLine));
             Assert.That(lineStyles.Top, Is.EqualTo(LineStyle.DoubleLine));
             Assert.That(lineStyles.Right, Is.EqualTo(LineStyle.Edge));
@@ -107,7 +107,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void TestConstructorQuadNull()
         {
-            LineStyles lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine, LineStyle.Edge, null);
+            var lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine, LineStyle.Edge);
             Assert.That(lineStyles.Left, Is.EqualTo(LineStyle.SingleLine));
             Assert.That(lineStyles.Top, Is.EqualTo(LineStyle.DoubleLine));
             Assert.That(lineStyles.Right, Is.EqualTo(LineStyle.Edge));
@@ -117,7 +117,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void TestConstructorQuadNullAll()
         {
-            LineStyles lineStyles = new LineStyles(null, null, null, null);
+            var lineStyles = new LineStyles(null, null);
             Assert.That(lineStyles.Left, Is.EqualTo(LineStyle.SingleLine));
             Assert.That(lineStyles.Top, Is.EqualTo(LineStyle.SingleLine));
             Assert.That(lineStyles.Right, Is.EqualTo(LineStyle.SingleLine));
@@ -147,9 +147,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void TestJsonSerialization()
         {
-            LineStyles lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine, LineStyle.Edge, LineStyle.Bold);
+            var lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine, LineStyle.Edge, LineStyle.Bold);
             string json = JsonConvert.SerializeObject(lineStyles);
-            LineStyles deserialized = JsonConvert.DeserializeObject<LineStyles>(json);
+            var deserialized = JsonConvert.DeserializeObject<LineStyles>(json);
             Assert.That(deserialized.Left, Is.EqualTo(LineStyle.SingleLine));
             Assert.That(deserialized.Top, Is.EqualTo(LineStyle.DoubleLine));
             Assert.That(deserialized.Right, Is.EqualTo(LineStyle.Edge));
