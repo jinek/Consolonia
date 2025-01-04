@@ -159,8 +159,7 @@ namespace Consolonia.Core.Drawing
                     // if we have strokes to draw
                     if (streamGeometry.Strokes.Count > 0)
                     {
-                        if (pen == null || pen.Thickness == 0)
-                            return;
+                        pen = pen ?? new Pen(brush);
 
                         var extractColorCheckPlatformSupported =
                             ExtractColorOrNullWithPlatformCheck(pen, out var lineStyle);
