@@ -162,44 +162,20 @@ namespace Consolonia.Core.Drawing
                             if (pen == null || pen.Thickness == 0)
                                 return;
 
-                            var extractColorCheckPlatformSupported =
-                                ExtractColorOrNullWithPlatformCheck(pen, out var _);
-                            if (extractColorCheckPlatformSupported == null)
-                                return;
-
-                            var color = (Color)extractColorCheckPlatformSupported;
-
                             var strokePositions = InferStrokePositions(streamGeometry);
-
-                            Line strokeTop = null;
-                            Line strokeLeft = null;
-                            Line strokeRight = null;
-                            Line strokeBottom = null;
                             for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
                             {
                                 Line stroke = streamGeometry.Strokes[iStroke];
                                 RectangleLinePosition strokePosition = strokePositions[iStroke];
                                 if (strokePosition == RectangleLinePosition.Left)
-                                    strokeLeft = stroke;
+                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Left);
                                 else if (strokePosition == RectangleLinePosition.Right)
-                                    strokeRight = stroke;
+                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Right);
                                 else if (strokePosition == RectangleLinePosition.Top)
-                                    strokeTop = stroke;
+                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Top);
                                 else if (strokePosition == RectangleLinePosition.Bottom)
-                                    strokeBottom = stroke;
+                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Bottom);
                             }
-
-                            if (strokeLeft != null)
-                                DrawBoxLineInternal(pen, strokeLeft, RectangleLinePosition.Left);
-
-                            if (strokeTop != null)
-                                DrawBoxLineInternal(pen, strokeTop, RectangleLinePosition.Top);
-
-                            if (strokeRight != null)
-                                DrawBoxLineInternal(pen, strokeRight, RectangleLinePosition.Right);
-
-                            if (strokeBottom != null)
-                                DrawBoxLineInternal(pen, strokeBottom, RectangleLinePosition.Bottom);
                         }
                     }
                     break;
