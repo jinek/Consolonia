@@ -171,11 +171,6 @@ namespace Consolonia.Core.Drawing
 
                             var strokePositions = InferStrokePositions(streamGeometry);
 
-                            bool hasTop = strokePositions.Contains(RectangleLinePosition.Top);
-                            bool hasRight = strokePositions.Contains(RectangleLinePosition.Right);
-                            bool hasBottom = strokePositions.Contains(RectangleLinePosition.Bottom);
-                            bool hasLeft = strokePositions.Contains(RectangleLinePosition.Left);
-
                             Line strokeTop = null;
                             Line strokeLeft = null;
                             Line strokeRight = null;
@@ -643,10 +638,10 @@ namespace Consolonia.Core.Drawing
         ///     Extract color from pen brush
         /// </summary>
         /// <param name="pen"></param>
-        /// <param name="lineStyle"></param>
+        /// <param name="lineStyles"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private static Color? ExtractColorOrNullWithPlatformCheck(IPen pen, out LineStyles? lineStyles)
+        private static Color? ExtractColorOrNullWithPlatformCheck(IPen pen, out LineStyles lineStyles)
         {
             lineStyles = null;
             if (pen is not
