@@ -57,6 +57,14 @@
         <WrapPanel>
             <Border BorderThickness="1">
                 <Border.BorderBrush>
+                    <consolonia:LineBrush LineStyle="SingleLine SingleLine DoubleLine DoubleLine"
+                                          Brush="DarkGreen" />
+                </Border.BorderBrush>
+                <TextBlock Text="LineStyle=SingleLine SingleLine DoubleLine DoubleLine"
+                           Background="AntiqueWhite" />
+            </Border>
+            <Border BorderThickness="1">
+                <Border.BorderBrush>
                     <consolonia:LineBrush LineStyle="Edge"
                                           Brush="Gray" />
                 </Border.BorderBrush>
@@ -71,7 +79,7 @@
                     Padding="0 1 0 0">
                 <Border.BorderBrush>
                     <consolonia:LineBrush LineStyle="Edge"
-                                          Brush="Gray" />
+                                          Brush="Red" />
                 </Border.BorderBrush>
                 <TextBlock Text="Partial borders"
                            Background="AntiqueWhite" />
