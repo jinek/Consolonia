@@ -42,49 +42,54 @@
                         <Panel Background="{TemplateBinding Background}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center">
-                            <Border BorderThickness="{TemplateBinding BorderThickness}"
-                                    Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}">
-                                <Border.BorderBrush>
-                                    <controls:LineBrush
-                                        Brush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                        LineStyle="DoubleLine" />
-                                </Border.BorderBrush>
-                                <Control
-                                    Width="{Binding Path=ContentSize.Width, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Height="{Binding Path=ContentSize.Height, RelativeSource={RelativeSource TemplatedParent}}"
-                                    IsHitTestVisible="False"
-                                    Margin="{TemplateBinding Padding}" />
-                            </Border>
-                            <StackPanel HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
-                                        ZIndex="10"
-                                        Orientation="Horizontal">
-                                <helpers:SymbolsControl Text="{TemplateBinding Icon}"
-                                                        IsVisible="{Binding Icon.Length}"
-                                                        Foreground="{TemplateBinding BorderBrush}" />
-                                <TextBlock Text="{TemplateBinding Title}"
-                                           Margin="1 0 0 0" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        ZIndex="10"
-                                        VerticalAlignment="Top"
-                                        HorizontalAlignment="Right"
-                                        Margin="{DynamicResource ConsoloniaDialogWindowBorderMargin}"
-                                        IsVisible="{TemplateBinding IsCloseButtonVisible}">
-                                <Button Content="×"
-                                        Background="{x:Null}"
-                                        IsTabStop="False"
-                                        Padding="0"
-                                        Command="{Binding Path=CloseClick, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Button.Styles>
-                                        <Style Selector="Button">
-                                            <Setter Property="helpers:ButtonExtensions.Shadow"
-                                                    Value="False" />
-                                        </Style>
-                                    </Button.Styles>
-                                </Button>
-                            </StackPanel>
+                            <Grid ColumnDefinitions="*">
+                                <Grid ColumnDefinitions="* Auto"
+                                      VerticalAlignment="Top"
+                                      Margin="1 0 0 0"
+                                      ZIndex="30">
+                                    <StackPanel Orientation="Horizontal">
+                                        <helpers:SymbolsControl Text="{TemplateBinding Icon}"
+                                                                IsVisible="{Binding Icon.Length}"
+                                                                Foreground="{TemplateBinding BorderBrush}" />
+                                        <TextBlock Text="╡"
+                                                   Foreground="{TemplateBinding BorderBrush}" />
+                                        <TextBlock Text="{TemplateBinding Title}" />
+                                        <TextBlock Text="╞"
+                                                   Foreground="{TemplateBinding BorderBrush}" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal"
+                                                IsVisible="{TemplateBinding IsCloseButtonVisible}">
+                                        <Button Content="×"
+                                                Margin="1 0 0 0"
+                                                Background="{x:Null}"
+                                                IsTabStop="False"
+                                                Padding="0"
+                                                Command="{Binding Path=CloseClick, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <Button.Styles>
+                                                <Style Selector="Button">
+                                                    <Setter Property="helpers:ButtonExtensions.Shadow"
+                                                            Value="False" />
+                                                </Style>
+                                            </Button.Styles>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Border BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Border.BorderBrush>
+                                        <controls:LineBrush
+                                            Brush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                            LineStyle="DoubleLine" />
+                                    </Border.BorderBrush>
+                                    <Control
+                                        Width="{Binding Path=ContentSize.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Height="{Binding Path=ContentSize.Height, RelativeSource={RelativeSource TemplatedParent}}"
+                                        IsHitTestVisible="False"
+                                        Margin="{TemplateBinding Padding}" />
+                                </Border>
+                            </Grid>
                         </Panel>
 
                         <!--Content-->

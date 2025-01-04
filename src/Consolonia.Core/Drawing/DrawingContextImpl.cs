@@ -159,8 +159,7 @@ namespace Consolonia.Core.Drawing
                     // if we have strokes to draw
                     if (streamGeometry.Strokes.Count > 0)
                     {
-                        if (pen == null || pen.Thickness == 0)
-                            return;
+                        pen = pen ?? new Pen(brush);
 
                         var strokePositions = InferStrokePositions(streamGeometry);
                         for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
