@@ -25,10 +25,8 @@ namespace Consolonia
             IConsole console = Environment.OSVersion.Platform switch
             {
 #pragma warning disable CA1416 // Validate platform compatibility
-                PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT =>
-                    new Win32Console(Console.IsOutputRedirected || IsWindowsTerminal()
-                        ? new AnsiConsoleOutput()
-                        : new WindowsLegacyConsoleOutput()),
+                PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT 
+                    => new Win32Console(),
 #pragma warning restore CA1416 // Validate platform compatibility
                 PlatformID.Unix or PlatformID.MacOSX => new CursesConsole(),
                 _ => new DefaultNetConsole()
