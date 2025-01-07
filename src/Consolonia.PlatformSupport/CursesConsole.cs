@@ -420,6 +420,7 @@ namespace Consolonia.PlatformSupport
                     {
                         bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
                     }
+
                     break;
                 }
             }
