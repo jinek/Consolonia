@@ -66,6 +66,14 @@ namespace Consolonia.PlatformSupport
             ]);
 
 
+        private static readonly KEY_EVENT_RECORD[] CtrlVKeyEvents =
+        [
+            new KEY_EVENT_RECORD {bKeyDown = true,wVirtualKeyCode = 17, wVirtualScanCode = 29, dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED},
+            new KEY_EVENT_RECORD {bKeyDown = true,wVirtualKeyCode = 86, wVirtualScanCode = 47, uChar = '\u0016', dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED},
+            new KEY_EVENT_RECORD {bKeyDown = false,wVirtualKeyCode = 86,wVirtualScanCode = 47, uChar = '\u0016', dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED},
+            new KEY_EVENT_RECORD {bKeyDown = false,wVirtualKeyCode = 17,wVirtualScanCode = 29, dwControlKeyState = 0 }
+        ];
+
         private readonly WindowsConsole _windowsConsole;
 
         private MOUSE_BUTTON_STATE _mouseButtonsState = MOUSE_BUTTON_STATE.NONE;
@@ -116,30 +124,46 @@ namespace Consolonia.PlatformSupport
                 while (!Disposed /*inject ThreadAbortException*/)
                 {
                     PauseTask?.Wait();
-                    var readConsoleInput = _windowsConsole.ReadConsoleInput();
-                    if (!readConsoleInput.Any())
+                    var inputRecords = _windowsConsole.ReadConsoleInput();
+                    if (!inputRecords.Any())
                         throw new NotImplementedException();
-                    foreach (INPUT_RECORD inputRecord in readConsoleInput)
-                        // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
-                        switch (inputRecord.EventType)
+
+                    // We only get multiple key events when console is translating
+                    // CTRL+V to sequence of key strokes, so we are turning it back into
+                    // CTRL+V key sequence.
+                    bool isPaste = inputRecords.Where(ir => ir.EventType == EVENT_TYPE.KEY_EVENT).Count() > 1;
+                    if (isPaste)
+                    {
+                        // simulate CTRL_V
+                        foreach (var keyEvent in CtrlVKeyEvents)
                         {
-                            case EVENT_TYPE.WINDOW_BUFFER_SIZE_EVENT:
-                                WINDOW_BUFFER_SIZE_RECORD windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
-                                Size = new PixelBufferSize((ushort)windowBufferSize.dwSize.X,
-                                    (ushort)windowBufferSize.dwSize.Y);
-                                break;
-                            case EVENT_TYPE.FOCUS_EVENT:
-                                FOCUS_EVENT_RECORD focusEvent = inputRecord.Event.FocusEvent;
-                                RaiseFocusEvent(focusEvent.bSetFocus != 0);
-                                break;
-                            case EVENT_TYPE.KEY_EVENT:
-                                HandleKeyInput(inputRecord.Event.KeyEvent);
-                                break;
-                            case EVENT_TYPE.MOUSE_EVENT:
-                                MOUSE_EVENT_RECORD mouseEvent = inputRecord.Event.MouseEvent;
-                                HandleMouseInput(mouseEvent);
-                                break;
+                            HandleKeyInput(keyEvent);
                         }
+                    }
+                    else
+                    {
+                        foreach (INPUT_RECORD inputRecord in inputRecords)
+                            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
+                            switch (inputRecord.EventType)
+                            {
+                                case EVENT_TYPE.WINDOW_BUFFER_SIZE_EVENT:
+                                    WINDOW_BUFFER_SIZE_RECORD windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
+                                    Size = new PixelBufferSize((ushort)windowBufferSize.dwSize.X,
+                                        (ushort)windowBufferSize.dwSize.Y);
+                                    break;
+                                case EVENT_TYPE.FOCUS_EVENT:
+                                    FOCUS_EVENT_RECORD focusEvent = inputRecord.Event.FocusEvent;
+                                    RaiseFocusEvent(focusEvent.bSetFocus != 0);
+                                    break;
+                                case EVENT_TYPE.KEY_EVENT:
+                                    HandleKeyInput(inputRecord.Event.KeyEvent);
+                                    break;
+                                case EVENT_TYPE.MOUSE_EVENT:
+                                    MOUSE_EVENT_RECORD mouseEvent = inputRecord.Event.MouseEvent;
+                                    HandleMouseInput(mouseEvent);
+                                    break;
+                            }
+                    }
                 }
             });
         }

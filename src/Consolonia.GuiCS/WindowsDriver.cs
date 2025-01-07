@@ -42,18 +42,21 @@ namespace Terminal.Gui
             }
         }
 
+        const int bufferSize = 65535;
+        private static INPUT_RECORD[] s_inputBuffer = new INPUT_RECORD[bufferSize];
+
         public INPUT_RECORD[] ReadConsoleInput()
         {
-            const int bufferSize = 1;
-            var records = new INPUT_RECORD[bufferSize];
+            lock (s_inputBuffer)
+            {
 
-            if (!Kernel32.ReadConsoleInput(InputHandle, records, bufferSize,
-                out var numberEventsRead))
-                throw GetLastError().GetException();
-
-            return numberEventsRead == 0
-                ? Array.Empty<INPUT_RECORD>()
-                : records;
+                if (!Kernel32.ReadConsoleInput(InputHandle, s_inputBuffer, bufferSize,
+                    out var numberEventsRead))
+                    throw GetLastError().GetException();
+                INPUT_RECORD[] recordsToReturn = new INPUT_RECORD[numberEventsRead];
+                Array.Copy(s_inputBuffer, recordsToReturn, numberEventsRead);
+                return recordsToReturn;
+            }
         }
     }
 }
