@@ -416,7 +416,10 @@ namespace Consolonia.PlatformSupport
                     return;
                 case 0:
                 {
-                    bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
+                    if (Enum.IsDefined((ConsoleKey)key))
+                    {
+                        bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
+                    }
                     break;
                 }
             }
