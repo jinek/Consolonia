@@ -406,18 +406,19 @@ namespace Consolonia.Core.Infrastructure
                         timeStamp,
                         _inputRoot,
                         string.Concat(Enumerable.Repeat(
-                        @"This is long text. This is long text.This is long text.T
+                            @"This is long text. This is long text.This is long text.T
 This is long text.This is long text.This is long text.This is long text.This
 This is long text.This is long text.This is long text.This is long text.This is long text. is long text.This is long text.
 his is long text.This is long text.This is long text.This is long text.This is lo
 ng text.This is long text.This is
 This is long text.This is long text.This is long text.This is long text.
- long text.This is long text.This is long text.This is long text.This is long text.This is long text.This is long text.",2000))));
+ long text.This is long text.This is long text.This is long text.This is long text.This is long text.This is long text.",
+                            2000))));
                 }, DispatcherPriority.Input);
-                
+
                 return;
             }
-            
+
             if (!down)
             {
                 Dispatcher.UIThread.Post(() =>

@@ -68,10 +68,22 @@ namespace Consolonia.PlatformSupport
 
         private static readonly KEY_EVENT_RECORD[] CtrlVKeyEvents =
         [
-            new KEY_EVENT_RECORD {bKeyDown = true,wVirtualKeyCode = 17, wVirtualScanCode = 29, dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED},
-            new KEY_EVENT_RECORD {bKeyDown = true,wVirtualKeyCode = 86, wVirtualScanCode = 47, uChar = '\u0016', dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED},
-            new KEY_EVENT_RECORD {bKeyDown = false,wVirtualKeyCode = 86,wVirtualScanCode = 47, uChar = '\u0016', dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED},
-            new KEY_EVENT_RECORD {bKeyDown = false,wVirtualKeyCode = 17,wVirtualScanCode = 29, dwControlKeyState = 0 }
+            new()
+            {
+                bKeyDown = true, wVirtualKeyCode = 17, wVirtualScanCode = 29,
+                dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED
+            },
+            new()
+            {
+                bKeyDown = true, wVirtualKeyCode = 86, wVirtualScanCode = 47, uChar = '\u0016',
+                dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED
+            },
+            new()
+            {
+                bKeyDown = false, wVirtualKeyCode = 86, wVirtualScanCode = 47, uChar = '\u0016',
+                dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED
+            },
+            new() { bKeyDown = false, wVirtualKeyCode = 17, wVirtualScanCode = 29, dwControlKeyState = 0 }
         ];
 
         private readonly WindowsConsole _windowsConsole;
@@ -133,21 +145,17 @@ namespace Consolonia.PlatformSupport
                     // CTRL+V key sequence.
                     bool isPaste = inputRecords.Where(ir => ir.EventType == EVENT_TYPE.KEY_EVENT).Count() > 1;
                     if (isPaste)
-                    {
                         // simulate CTRL_V
-                        foreach (var keyEvent in CtrlVKeyEvents)
-                        {
+                        foreach (KEY_EVENT_RECORD keyEvent in CtrlVKeyEvents)
                             HandleKeyInput(keyEvent);
-                        }
-                    }
                     else
-                    {
                         foreach (INPUT_RECORD inputRecord in inputRecords)
                             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
                             switch (inputRecord.EventType)
                             {
                                 case EVENT_TYPE.WINDOW_BUFFER_SIZE_EVENT:
-                                    WINDOW_BUFFER_SIZE_RECORD windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
+                                    WINDOW_BUFFER_SIZE_RECORD
+                                        windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
                                     Size = new PixelBufferSize((ushort)windowBufferSize.dwSize.X,
                                         (ushort)windowBufferSize.dwSize.Y);
                                     break;
@@ -163,7 +171,6 @@ namespace Consolonia.PlatformSupport
                                     HandleMouseInput(mouseEvent);
                                     break;
                             }
-                    }
                 }
             });
         }
