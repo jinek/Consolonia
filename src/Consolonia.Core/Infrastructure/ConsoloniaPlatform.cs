@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.Platform;
 using Avalonia.Input;
@@ -89,7 +88,6 @@ namespace Consolonia.Core.Infrastructure
             //{
             //    //.Bind<IClipboard>().ToConstant(new X11Clipboard(this))
             //}
-
         }
 
         [DebuggerStepThrough]
