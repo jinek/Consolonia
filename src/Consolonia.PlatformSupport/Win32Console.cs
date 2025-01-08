@@ -1,12 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -15,9 +18,6 @@ using Terminal.Gui;
 using Key = Avalonia.Input.Key;
 using Point = Avalonia.Point;
 using static Vanara.PInvoke.Kernel32;
-using Avalonia.Input.Platform;
-using System.Text;
-using System.Collections.Generic;
 
 // ReSharper disable UnusedMember.Local
 #pragma warning disable CS0649
@@ -140,41 +140,38 @@ namespace Consolonia.PlatformSupport
                 {
                     PauseTask?.Wait();
                     var inputRecords = _windowsConsole.ReadConsoleInput();
-                    IClipboard clipboard = AvaloniaLocator.Current.GetService<IClipboard>();
-                    if (clipboard != null && inputRecords.Where(evt => evt.EventType == EVENT_TYPE.KEY_EVENT).Skip(1).Any())
-                    {
+                    var clipboard = AvaloniaLocator.Current.GetService<IClipboard>();
+                    if (clipboard != null &&
+                        inputRecords.Where(evt => evt.EventType == EVENT_TYPE.KEY_EVENT).Skip(1).Any())
                         // when console is translating CTRL+V to sequence of key strokes it comes in as multiple key events.
                         await ProcessClipboardInput(clipboard, inputRecords);
-                    }
                     else
-                    {
                         foreach (INPUT_RECORD inputRecord in inputRecords)
                             HandleInputRecord(inputRecord);
-                    }
                 }
             });
         }
 
         /// <summary>
-        ///    Process clipboard input and compare to clipboard text to determine if we should paste clipboard text.
+        ///     Process clipboard input and compare to clipboard text to determine if we should paste clipboard text.
         /// </summary>
         /// <param name="clipboard"></param>
         /// <param name="inputRecords"></param>
         /// <returns></returns>
         private async Task ProcessClipboardInput(IClipboard clipboard, INPUT_RECORD[] inputRecords)
         {
-            var clipboardText = (await clipboard?.GetTextAsync()) ?? String.Empty;
+            string clipboardText = await clipboard?.GetTextAsync() ?? string.Empty;
             if (clipboardText.Trim().Length == 0)
             {
                 // no text in clipboard, just process input records
-                foreach (var inputRecord in inputRecords)
+                foreach (INPUT_RECORD inputRecord in inputRecords)
                     HandleInputRecord(inputRecord);
                 return;
             }
 
             // KEY_EVENTS will emit \r instead of \n, so we need to remove \n from clipboard text
-            clipboardText = clipboardText.Replace("\n", String.Empty, StringComparison.Ordinal);
-            StringBuilder bufferText = new StringBuilder();
+            clipboardText = clipboardText.Replace("\n", string.Empty, StringComparison.Ordinal);
+            var bufferText = new StringBuilder();
             List<INPUT_RECORD> bufferedKeyEvents = new();
 
             while (inputRecords.Any())
@@ -182,7 +179,7 @@ namespace Consolonia.PlatformSupport
                 // process all input records
                 for (int i = 0; i < inputRecords.Length; i++)
                 {
-                    var inputRecord = inputRecords[i];
+                    INPUT_RECORD inputRecord = inputRecords[i];
                     if (inputRecord.EventType != EVENT_TYPE.KEY_EVENT)
                     {
                         // handle non-key board events 
@@ -199,11 +196,11 @@ namespace Consolonia.PlatformSupport
                             // append the char to the buffer text
                             bufferText.Append(inputRecord.Event.KeyEvent.uChar);
 
-                            var currentBufferText = bufferText.ToString();
+                            string currentBufferText = bufferText.ToString();
                             if (clipboardText.Trim() == currentBufferText.Trim())
                             {
                                 // buffered text matches clipboard, emit CTRL+V sequence and ignore buffered keyboard events
-                                foreach (var ctrlVEvent in CtrlVKeyEvents)
+                                foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
                                     HandleKeyInput(ctrlVEvent);
 
                                 // process remaining input records
@@ -211,10 +208,11 @@ namespace Consolonia.PlatformSupport
                                     HandleInputRecord(inputRecords[i]);
                                 return;
                             }
-                            else if (!clipboardText.StartsWith(currentBufferText, StringComparison.Ordinal))
+
+                            if (!clipboardText.StartsWith(currentBufferText, StringComparison.Ordinal))
                             {
                                 // buffered text doesn't match clipboard, emit buffered key events (we already played other events live)
-                                foreach (var bufferedEvent in bufferedKeyEvents)
+                                foreach (INPUT_RECORD bufferedEvent in bufferedKeyEvents)
                                     HandleInputRecord(bufferedEvent);
 
                                 // process remaining input records
