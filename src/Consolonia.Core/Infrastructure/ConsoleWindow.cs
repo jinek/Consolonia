@@ -394,48 +394,44 @@ namespace Consolonia.Core.Infrastructure
             });
         }
 
-        private async void ConsoleOnKeyEvent(Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down,
-            ulong timeStamp)
+        private void ConsoleOnKeyEvent((Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down,
+            ulong timeStamp)[] events)
         {
-            if (!down)
+            Dispatcher.UIThread.Post(() =>
             {
-                Dispatcher.UIThread.Post(() =>
+                foreach ((Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down,
+                             ulong timeStamp) in events)
                 {
-#pragma warning disable CS0618 // Type or member is obsolete // todo: change to correct constructor, CFA20A9A-3A24-4187-9CA3-9DF0081124EE 
-                    var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp, _inputRoot,
-                        RawKeyEventType.KeyUp, key,
-                        rawInputModifiers);
-#pragma warning restore CS0618 // Type or member is obsolete
-                    Input!(rawInputEventArgs);
-                }, DispatcherPriority.Input);
-            }
-            else
-            {
-                bool handled = false;
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                {
-#pragma warning disable CS0618 // Type or member is obsolete //todo: CFA20A9A-3A24-4187-9CA3-9DF0081124EE
-                    var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp,
-                        _inputRoot,
-                        RawKeyEventType.KeyDown, key,
-                        rawInputModifiers);
-#pragma warning restore CS0618 // Type or member is obsolete
-                    Input!(rawInputEventArgs);
-                    handled = rawInputEventArgs.Handled;
-                }, DispatcherPriority.Input);
-
-                if (!handled
-                    && !char.IsControl(keyChar)
-                    && !rawInputModifiers.HasFlag(RawInputModifiers.Alt)
-                    && !rawInputModifiers.HasFlag(RawInputModifiers.Control))
-                    Dispatcher.UIThread.Post(() =>
+                    if (!down)
                     {
-                        Input!(new RawTextInputEventArgs(_myKeyboardDevice,
-                            timeStamp,
+#pragma warning disable CS0618 // Type or member is obsolete // todo: change to correct constructor, CFA20A9A-3A24-4187-9CA3-9DF0081124EE 
+                        var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp, _inputRoot,
+                            RawKeyEventType.KeyUp, key,
+                            rawInputModifiers);
+#pragma warning restore CS0618 // Type or member is obsolete
+                        Input!(rawInputEventArgs);
+                    }
+                    else
+                    {
+#pragma warning disable CS0618 // Type or member is obsolete //todo: CFA20A9A-3A24-4187-9CA3-9DF0081124EE
+                        var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp,
                             _inputRoot,
-                            keyChar.ToString()));
-                    }, DispatcherPriority.Input);
-            }
+                            RawKeyEventType.KeyDown, key,
+                            rawInputModifiers);
+#pragma warning restore CS0618 // Type or member is obsolete
+                        Input!(rawInputEventArgs);
+
+                        if (!rawInputEventArgs.Handled
+                            && !char.IsControl(keyChar)
+                            && !rawInputModifiers.HasFlag(RawInputModifiers.Alt)
+                            && !rawInputModifiers.HasFlag(RawInputModifiers.Control))
+                            Input!(new RawTextInputEventArgs(_myKeyboardDevice,
+                                timeStamp,
+                                _inputRoot,
+                                keyChar.ToString()));
+                    }
+                }
+            },DispatcherPriority.Input);
         }
 
         protected virtual void Dispose(bool disposing)

@@ -84,11 +84,15 @@ namespace Consolonia.Core.Infrastructure
 
                     RawInputModifiers rawInputModifiers = ModifiersFlagsTranslator.Translate(consoleKeyInfo.Modifiers);
 
-                    RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
-                        (ulong)Stopwatch.GetTimestamp());
+                    RaiseKeyPress([
+                        (key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
+                            (ulong)Stopwatch.GetTimestamp())
+                    ]);
                     Thread.Yield();
-                    RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
-                        (ulong)Stopwatch.GetTimestamp());
+                    RaiseKeyPress([
+                        (key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
+                            (ulong)Stopwatch.GetTimestamp())
+                    ]);
                     Thread.Yield();
                 }
             });

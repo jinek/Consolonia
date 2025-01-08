@@ -65,7 +65,7 @@ namespace Consolonia.Core.Infrastructure
 
         public abstract bool SupportsMouseMove { get; }
 
-        public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
+        public event Action<(Key, char, RawInputModifiers, bool, ulong)[]> KeyEvent;
         public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
         public event Action<bool> FocusEvent;
 
@@ -75,9 +75,9 @@ namespace Consolonia.Core.Infrastructure
             MouseEvent?.Invoke(eventType, point, wheelDelta, modifiers);
         }
 
-        protected void RaiseKeyPress(Key key, char character, RawInputModifiers modifiers, bool down, ulong timeStamp)
+        protected void RaiseKeyPress((Key key, char character, RawInputModifiers modifiers, bool down, ulong timeStamp)[] events)
         {
-            KeyEvent?.Invoke(key, character, modifiers, down, timeStamp);
+            KeyEvent?.Invoke(events);
         }
 
         protected void RaiseFocusEvent(bool focused)

@@ -436,11 +436,11 @@ namespace Consolonia.PlatformSupport
 
             Avalonia.Input.Key convertToKey = DefaultNetConsole.ConvertToKey(consoleKey);
 
-            RaiseKeyPress(convertToKey,
-                character, modifiers, true, (ulong)Stopwatch.GetTimestamp());
+            RaiseKeyPress([(convertToKey,
+                character, modifiers, true, (ulong)Stopwatch.GetTimestamp())]);
             Thread.Yield();
-            RaiseKeyPress(convertToKey,
-                character, modifiers, false, (ulong)Stopwatch.GetTimestamp());
+            RaiseKeyPress([(convertToKey,
+                character, modifiers, false, (ulong)Stopwatch.GetTimestamp())]);
         }
 
         private void HandleMouseInput(Curses.MouseEvent ev)

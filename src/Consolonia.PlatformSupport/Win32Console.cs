@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -128,41 +129,35 @@ namespace Consolonia.PlatformSupport
                     if (!inputRecords.Any())
                         throw new NotImplementedException();
 
-                    // We only get multiple key events when console is translating
-                    // CTRL+V to sequence of key strokes, so we are turning it back into
-                    // CTRL+V key sequence.
-                    bool isPaste = inputRecords.Where(ir => ir.EventType == EVENT_TYPE.KEY_EVENT).Count() > 1;
-                    if (isPaste)
+                    for (int i = 0; i < inputRecords.Length; i++)
                     {
-                        // simulate CTRL_V
-                        foreach (var keyEvent in CtrlVKeyEvents)
+                        INPUT_RECORD inputRecord = inputRecords[i];
+                        switch (inputRecord.EventType)
                         {
-                            HandleKeyInput(keyEvent);
+                            case EVENT_TYPE.WINDOW_BUFFER_SIZE_EVENT:
+                                WINDOW_BUFFER_SIZE_RECORD windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
+                                Size = new PixelBufferSize((ushort)windowBufferSize.dwSize.X,
+                                    (ushort)windowBufferSize.dwSize.Y);
+                                break;
+                            case EVENT_TYPE.FOCUS_EVENT:
+                                FOCUS_EVENT_RECORD focusEvent = inputRecord.Event.FocusEvent;
+                                RaiseFocusEvent(focusEvent.bSetFocus != 0);
+                                break;
+                            case EVENT_TYPE.KEY_EVENT:
+                                List<KEY_EVENT_RECORD> chunk = [inputRecord.Event.KeyEvent];
+                                inputRecords.Skip(i).TakeWhile(r => r.EventType == EVENT_TYPE.KEY_EVENT)
+                                    .Select(r => r.Event.KeyEvent)
+                                    .ToList()
+                                    .ForEach(chunk.Add);
+                                i += chunk.Count - 1;
+                                
+                                HandleKeyInput(chunk);
+                                break;
+                            case EVENT_TYPE.MOUSE_EVENT:
+                                MOUSE_EVENT_RECORD mouseEvent = inputRecord.Event.MouseEvent;
+                                HandleMouseInput(mouseEvent);
+                                break;
                         }
-                    }
-                    else
-                    {
-                        foreach (INPUT_RECORD inputRecord in inputRecords)
-                            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
-                            switch (inputRecord.EventType)
-                            {
-                                case EVENT_TYPE.WINDOW_BUFFER_SIZE_EVENT:
-                                    WINDOW_BUFFER_SIZE_RECORD windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
-                                    Size = new PixelBufferSize((ushort)windowBufferSize.dwSize.X,
-                                        (ushort)windowBufferSize.dwSize.Y);
-                                    break;
-                                case EVENT_TYPE.FOCUS_EVENT:
-                                    FOCUS_EVENT_RECORD focusEvent = inputRecord.Event.FocusEvent;
-                                    RaiseFocusEvent(focusEvent.bSetFocus != 0);
-                                    break;
-                                case EVENT_TYPE.KEY_EVENT:
-                                    HandleKeyInput(inputRecord.Event.KeyEvent);
-                                    break;
-                                case EVENT_TYPE.MOUSE_EVENT:
-                                    MOUSE_EVENT_RECORD mouseEvent = inputRecord.Event.MouseEvent;
-                                    HandleMouseInput(mouseEvent);
-                                    break;
-                            }
                     }
                 }
             });
@@ -273,16 +268,17 @@ namespace Consolonia.PlatformSupport
             _mouseButtonsState = mouseEvent.dwButtonState;
         }
 
-        private void HandleKeyInput(KEY_EVENT_RECORD keyEvent)
+        private void HandleKeyInput(IReadOnlyList<KEY_EVENT_RECORD> keyEvent)
         {
-            char character = keyEvent.uChar;
-            RawInputModifiers modifiers =
-                KeyModifiersTranslator.Translate(keyEvent.dwControlKeyState);
-            Key key = DefaultNetConsole.ConvertToKey((ConsoleKey)keyEvent.wVirtualKeyCode);
-            if (key == Key.LeftAlt || key == Key.RightAlt)
-                modifiers |= RawInputModifiers.Alt;
-            RaiseKeyPress(key,
-                character, modifiers, keyEvent.bKeyDown, (ulong)Stopwatch.GetTimestamp());
+            RaiseKeyPress(keyEvent.Select(keyEvent =>
+            {
+                RawInputModifiers modifiers =
+                    KeyModifiersTranslator.Translate(keyEvent.dwControlKeyState);
+                Key key = DefaultNetConsole.ConvertToKey((ConsoleKey)keyEvent.wVirtualKeyCode);
+                if (key is Key.LeftAlt or Key.RightAlt)
+                    modifiers |= RawInputModifiers.Alt;
+                return (key, keyEvent.uChar, modifiers, keyEvent.bKeyDown, (ulong)Stopwatch.GetTimestamp());
+            }).ToArray());
         }
     }
 }
