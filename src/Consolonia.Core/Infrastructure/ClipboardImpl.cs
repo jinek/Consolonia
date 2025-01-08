@@ -11,7 +11,7 @@ namespace Consolonia.Core.Infrastructure
     // for linux and mac it has a ton of dependencies on the entire rendering subsystem. 
     // This is a temporary solution to get the clipboard working, but it is not a good solution for linux as it relies 
     // on invoking a shell command to get the clipboard content, and doesn't support GetData/SetData/GetFormats
-    public class ClipboardImpl : Avalonia.Input.Platform.IClipboard
+    internal class ClipboardImpl : Avalonia.Input.Platform.IClipboard
     {
 #pragma warning disable CA1822 // Mark members as static
         public Task ClearAsync()
@@ -36,6 +36,6 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public Task SetTextAsync(string text)
-            => ClipboardService.SetTextAsync(text);
+            => ClipboardService.SetTextAsync(text ?? String.Empty);
     }
 }
