@@ -59,34 +59,37 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IPlatformIconLoader>().ToConstant(new DummyIconLoader())
                 .Bind<IPlatformSettings>().ToSingleton<ConsoloniaPlatformSettings>()
                 .Bind<IStorageProvider>().ToSingleton<ConsoloniaStorageProvider>()
+                .Bind<IClipboard>().ToConstant(new ClipboardImpl())
+                //.Bind<IClipboard>().ToConstant(null)
                 /*.Bind<IKeyboardNavigationHandler>().ToTransient<ArrowsAndKeyboardNavigationHandler>() todo: implement this navigation*/
                 //.Bind<IClipboard>().ToConstant(new X11Clipboard(this))
                 //.Bind<IPlatformSettings>().ToConstant(new PlatformSettingsStub())
                 //.Bind<ISystemDialogImpl>().ToConstant(new GtkSystemDialog())
                 /*.Bind<IMountedVolumeInfoProvider>().ToConstant(new LinuxMountedVolumeInfoProvider())*/;
 
-            if (OperatingSystem.IsWindows())
-            {
-                AvaloniaLocator.CurrentMutable.Bind<IClipboard>()
-                    .ToFunc(() =>
-                    {
-                        Assembly assembly = Assembly.Load("Avalonia.Win32");
-                        ArgumentNullException.ThrowIfNull(assembly, "Avalonia.Win32");
-                        Type type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
-                        ArgumentNullException.ThrowIfNull(type, "ClipboardImpl");
-                        var clipboard = Activator.CreateInstance(type) as IClipboard;
-                        ArgumentNullException.ThrowIfNull(clipboard, nameof(clipboard));
-                        return clipboard;
-                    });
-            }
-            else if (OperatingSystem.IsMacOS())
-            {
-                // TODO: Implement or reuse MacOS clipboard
-            }
-            else if (OperatingSystem.IsLinux())
-            {
-                // TODO: Implement or reuse X11 Clipboard
-            }
+            //if (OperatingSystem.IsWindows())
+            //{
+            //    AvaloniaLocator.CurrentMutable.Bind<IClipboard>()
+            //        .ToFunc(() =>
+            //        {
+            //            Assembly assembly = Assembly.Load("Avalonia.Win32");
+            //            ArgumentNullException.ThrowIfNull(assembly, "Avalonia.Win32");
+            //            Type type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
+            //            ArgumentNullException.ThrowIfNull(type, "ClipboardImpl");
+            //            var clipboard = Activator.CreateInstance(type) as IClipboard;
+            //            ArgumentNullException.ThrowIfNull(clipboard, nameof(clipboard));
+            //            return clipboard;
+            //        });
+            //}
+            //else if (OperatingSystem.IsMacOS())
+            //{
+            //    // TODO: Implement or reuse MacOS clipboard
+            //}
+            //else if (OperatingSystem.IsLinux())
+            //{
+            //    //.Bind<IClipboard>().ToConstant(new X11Clipboard(this))
+            //}
+
         }
 
         [DebuggerStepThrough]
