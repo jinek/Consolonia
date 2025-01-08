@@ -398,27 +398,6 @@ namespace Consolonia.Core.Infrastructure
         private async void ConsoleOnKeyEvent(Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down,
             ulong timeStamp)
         {
-            if (keyChar is 'r')
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    Input!(new RawTextInputEventArgs(_myKeyboardDevice,
-                        timeStamp,
-                        _inputRoot,
-                        string.Concat(Enumerable.Repeat(
-                            @"This is long text. This is long text.This is long text.T
-This is long text.This is long text.This is long text.This is long text.This
-This is long text.This is long text.This is long text.This is long text.This is long text. is long text.This is long text.
-his is long text.This is long text.This is long text.This is long text.This is lo
-ng text.This is long text.This is
-This is long text.This is long text.This is long text.This is long text.
- long text.This is long text.This is long text.This is long text.This is long text.This is long text.This is long text.",
-                            2000))));
-                }, DispatcherPriority.Input);
-
-                return;
-            }
-
             if (!down)
             {
                 Dispatcher.UIThread.Post(() =>

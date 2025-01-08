@@ -15,6 +15,9 @@ using Terminal.Gui;
 using Key = Avalonia.Input.Key;
 using Point = Avalonia.Point;
 using static Vanara.PInvoke.Kernel32;
+using Avalonia.Input.Platform;
+using System.Text;
+using System.Collections.Generic;
 
 // ReSharper disable UnusedMember.Local
 #pragma warning disable CS0649
@@ -131,48 +134,124 @@ namespace Consolonia.PlatformSupport
 
         private void StartEventLoop()
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 while (!Disposed /*inject ThreadAbortException*/)
                 {
                     PauseTask?.Wait();
                     var inputRecords = _windowsConsole.ReadConsoleInput();
-                    if (!inputRecords.Any())
-                        throw new NotImplementedException();
-
-                    // We only get multiple key events when console is translating
-                    // CTRL+V to sequence of key strokes, so we are turning it back into
-                    // CTRL+V key sequence.
-                    bool isPaste = inputRecords.Where(ir => ir.EventType == EVENT_TYPE.KEY_EVENT).Count() > 1;
-                    if (isPaste)
-                        // simulate CTRL_V
-                        foreach (KEY_EVENT_RECORD keyEvent in CtrlVKeyEvents)
-                            HandleKeyInput(keyEvent);
+                    IClipboard clipboard = AvaloniaLocator.Current.GetService<IClipboard>();
+                    if (clipboard != null && inputRecords.Where(evt => evt.EventType == EVENT_TYPE.KEY_EVENT).Skip(1).Any())
+                    {
+                        // when console is translating CTRL+V to sequence of key strokes it comes in as multiple key events.
+                        await ProcessClipboardInput(clipboard, inputRecords);
+                    }
                     else
+                    {
                         foreach (INPUT_RECORD inputRecord in inputRecords)
-                            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
-                            switch (inputRecord.EventType)
-                            {
-                                case EVENT_TYPE.WINDOW_BUFFER_SIZE_EVENT:
-                                    WINDOW_BUFFER_SIZE_RECORD
-                                        windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
-                                    Size = new PixelBufferSize((ushort)windowBufferSize.dwSize.X,
-                                        (ushort)windowBufferSize.dwSize.Y);
-                                    break;
-                                case EVENT_TYPE.FOCUS_EVENT:
-                                    FOCUS_EVENT_RECORD focusEvent = inputRecord.Event.FocusEvent;
-                                    RaiseFocusEvent(focusEvent.bSetFocus != 0);
-                                    break;
-                                case EVENT_TYPE.KEY_EVENT:
-                                    HandleKeyInput(inputRecord.Event.KeyEvent);
-                                    break;
-                                case EVENT_TYPE.MOUSE_EVENT:
-                                    MOUSE_EVENT_RECORD mouseEvent = inputRecord.Event.MouseEvent;
-                                    HandleMouseInput(mouseEvent);
-                                    break;
-                            }
+                            HandleInputRecord(inputRecord);
+                    }
                 }
             });
+        }
+
+        /// <summary>
+        ///    Process clipboard input and compare to clipboard text to determine if we should paste clipboard text.
+        /// </summary>
+        /// <param name="clipboard"></param>
+        /// <param name="inputRecords"></param>
+        /// <returns></returns>
+        private async Task ProcessClipboardInput(IClipboard clipboard, INPUT_RECORD[] inputRecords)
+        {
+            var clipboardText = (await clipboard?.GetTextAsync()) ?? String.Empty;
+            if (clipboardText.Trim().Length == 0)
+            {
+                // no text in clipboard, just process input records
+                foreach (var inputRecord in inputRecords)
+                    HandleInputRecord(inputRecord);
+                return;
+            }
+
+            // KEY_EVENTS will emit \r instead of \n, so we need to remove \n from clipboard text
+            clipboardText = clipboardText.Replace("\n", String.Empty, StringComparison.Ordinal);
+            StringBuilder bufferText = new StringBuilder();
+            List<INPUT_RECORD> bufferedKeyEvents = new();
+
+            while (inputRecords.Any())
+            {
+                // process all input records
+                for (int i = 0; i < inputRecords.Length; i++)
+                {
+                    var inputRecord = inputRecords[i];
+                    if (inputRecord.EventType != EVENT_TYPE.KEY_EVENT)
+                    {
+                        // handle non-key board events 
+                        HandleInputRecord(inputRecord);
+                    }
+                    else
+                    {
+                        // capture the key event so we can play it back if we don't match clipboard text
+                        bufferedKeyEvents.Add(inputRecord);
+
+                        // for key down events for chars that are not 0 (control keys)
+                        if (inputRecord.Event.KeyEvent.bKeyDown && inputRecord.Event.KeyEvent.uChar != 0)
+                        {
+                            // append the char to the buffer text
+                            bufferText.Append(inputRecord.Event.KeyEvent.uChar);
+
+                            var currentBufferText = bufferText.ToString();
+                            if (clipboardText.Trim() == currentBufferText.Trim())
+                            {
+                                // buffered text matches clipboard, emit CTRL+V sequence and ignore buffered keyboard events
+                                foreach (var ctrlVEvent in CtrlVKeyEvents)
+                                    HandleKeyInput(ctrlVEvent);
+
+                                // process remaining input records
+                                for (++i; i < inputRecords.Length; i++)
+                                    HandleInputRecord(inputRecords[i]);
+                                return;
+                            }
+                            else if (!clipboardText.StartsWith(currentBufferText, StringComparison.Ordinal))
+                            {
+                                // buffered text doesn't match clipboard, emit buffered key events (we already played other events live)
+                                foreach (var bufferedEvent in bufferedKeyEvents)
+                                    HandleInputRecord(bufferedEvent);
+
+                                // process remaining input records
+                                for (++i; i < inputRecords.Length; i++)
+                                    HandleInputRecord(inputRecords[i]);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                inputRecords = _windowsConsole.ReadConsoleInput();
+            }
+        }
+
+        private void HandleInputRecord(INPUT_RECORD inputRecord)
+        {
+            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
+            switch (inputRecord.EventType)
+            {
+                case EVENT_TYPE.WINDOW_BUFFER_SIZE_EVENT:
+                    WINDOW_BUFFER_SIZE_RECORD windowBufferSize = inputRecord.Event.WindowBufferSizeEvent;
+                    Size = new PixelBufferSize((ushort)windowBufferSize.dwSize.X,
+                        (ushort)windowBufferSize.dwSize.Y);
+                    break;
+                case EVENT_TYPE.FOCUS_EVENT:
+                    FOCUS_EVENT_RECORD focusEvent = inputRecord.Event.FocusEvent;
+                    RaiseFocusEvent(focusEvent.bSetFocus != 0);
+                    break;
+                case EVENT_TYPE.KEY_EVENT:
+                    HandleKeyInput(inputRecord.Event.KeyEvent);
+                    break;
+                case EVENT_TYPE.MOUSE_EVENT:
+                    MOUSE_EVENT_RECORD mouseEvent = inputRecord.Event.MouseEvent;
+                    HandleMouseInput(mouseEvent);
+                    break;
+            }
         }
 
         // ReSharper disable ExpressionIsAlwaysNull

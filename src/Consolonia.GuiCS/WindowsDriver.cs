@@ -42,7 +42,7 @@ namespace Terminal.Gui
             }
         }
 
-        const int bufferSize = 65535;
+        const int bufferSize = 0xffff;
         private static INPUT_RECORD[] s_inputBuffer = new INPUT_RECORD[bufferSize];
 
         public INPUT_RECORD[] ReadConsoleInput()
