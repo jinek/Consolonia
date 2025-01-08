@@ -13,9 +13,7 @@ using Wcwidth;
 
 namespace Consolonia.Core.Helpers
 {
-#pragma warning disable CA1742
-    public static class Extensions
-#pragma warning restore CA1742
+    public static class UtilityExtensions
     {
         public static IDisposable SubscribeAction<TValue>(
             this IObservable<AvaloniaPropertyChangedEventArgs<TValue>> observable,
