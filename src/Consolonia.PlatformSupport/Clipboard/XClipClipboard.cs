@@ -82,9 +82,8 @@ namespace Consolonia.PlatformSupport.Clipboard
             throw new NotImplementedException();
         }
 
-        public async Task SetTextAsync(string text)
+        public Task SetTextAsync(string text)
         {
-            await Task.CompletedTask;
             if (!_isSupported)
             {
                 throw new NotSupportedException("xclip is not installed.");
@@ -100,6 +99,7 @@ namespace Consolonia.PlatformSupport.Clipboard
             {
                 throw new NotSupportedException($"\"{_xclipPath} {xclipargs} < {text}\" failed", e);
             }
+            return Task.CompletedTask;
         }
     }
 }

@@ -15,10 +15,10 @@ namespace Consolonia.PlatformSupport.Clipboard
         {
         }
 
-        public async Task ClearAsync()
+        public Task ClearAsync()
         {
-            await Task.CompletedTask;
             Medo.X11.X11Clipboard.Clipboard.Clear();
+            return Task.CompletedTask;
         }
 
         public Task<object> GetDataAsync(string format)
@@ -31,10 +31,10 @@ namespace Consolonia.PlatformSupport.Clipboard
             throw new NotImplementedException();
         }
 
-        public async Task<string> GetTextAsync()
+        public Task<string> GetTextAsync()
         {
-            await Task.CompletedTask;
-            return Medo.X11.X11Clipboard.Clipboard.GetText();
+            var text = Medo.X11.X11Clipboard.Clipboard.GetText();
+            return Task.FromResult(text);
         }
 
         public Task SetDataObjectAsync(IDataObject data)
@@ -42,11 +42,10 @@ namespace Consolonia.PlatformSupport.Clipboard
             throw new NotImplementedException();
         }
 
-        public async Task SetTextAsync(string text)
+        public Task SetTextAsync(string text)
         {
-            await Task.CompletedTask;
-
             Medo.X11.X11Clipboard.Clipboard.SetText(text);
+            return Task.CompletedTask;
         }
     }
 }

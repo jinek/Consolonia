@@ -76,20 +76,16 @@ namespace Consolonia.PlatformSupport.Clipboard
         [DllImport("/System/Library/Frameworks/AppKit.framework/AppKit", CharSet = CharSet.Unicode)]
         private static extern nint sel_registerName(string selectorName);
 
-        public async Task<string> GetTextAsync()
+        public Task<string> GetTextAsync()
         {
-            await Task.CompletedTask;
-            
             nint ptr = objc_msgSend(_generalPasteboard, _stringForTypeRegister, _nsStringPboardType);
             nint charArray = objc_msgSend(ptr, _utf8Register);
 
-            return Marshal.PtrToStringAnsi(charArray);
+            return Task.FromResult(Marshal.PtrToStringAnsi(charArray));
         }
 
-        public async Task SetTextAsync(string text)
+        public Task SetTextAsync(string text)
         {
-            await Task.CompletedTask;
-            
             nint str = default;
 
             try
@@ -105,6 +101,7 @@ namespace Consolonia.PlatformSupport.Clipboard
                     objc_msgSend(str, sel_registerName("release"));
                 }
             }
+            return Task.CompletedTask;
         }
 
         public Task ClearAsync()

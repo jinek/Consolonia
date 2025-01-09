@@ -52,12 +52,11 @@ namespace Consolonia.PlatformSupport.Clipboard
             throw new NotImplementedException();
         }
 
-        public async Task<string> GetTextAsync()
+        public Task<string> GetTextAsync()
         {
-            await Task.CompletedTask;
             if (!_isSupported)
             {
-                return string.Empty;
+                return Task.FromResult(string.Empty);
             }
 
             (int exitCode, string output) =
@@ -65,10 +64,10 @@ namespace Consolonia.PlatformSupport.Clipboard
 
             if (exitCode == 0)
             {
-                return output;
+                return Task.FromResult(output);
             }
 
-            return string.Empty;
+            return Task.FromResult(string.Empty);
         }
 
         public Task SetDataObjectAsync(IDataObject data)
@@ -76,24 +75,21 @@ namespace Consolonia.PlatformSupport.Clipboard
             throw new NotImplementedException();
         }
 
-        public async Task SetTextAsync(string text)
+        public Task SetTextAsync(string text)
         {
-            await Task.CompletedTask;
-
-            if (!_isSupported)
+            if (_isSupported)
             {
-                return;
-            }
+                (int exitCode, string output) = ClipboardProcessRunner.Process(
+                                                                                _powershellPath,
+                                                                                $"-noprofile -command \"Set-Clipboard -Value \\\"{text}\\\"\""
+                                                                               );
 
-            (int exitCode, string output) = ClipboardProcessRunner.Process(
-                                                                            _powershellPath,
-                                                                            $"-noprofile -command \"Set-Clipboard -Value \\\"{text}\\\"\""
-                                                                           );
-
-            if (exitCode != 0)
-            {
-                throw new InvalidOperationException($"Failed to set clipboard text: {output} using powershell");
+                if (exitCode != 0)
+                {
+                    throw new InvalidOperationException($"Failed to set clipboard text: {output} using powershell");
+                }
             }
+            return Task.CompletedTask;
         }
     }
 }
