@@ -60,11 +60,28 @@ namespace Consolonia
             }
             else if (OperatingSystem.IsLinux())
             {
-                return builder.With<IClipboard>(new X11Clipboard());
+                if (IsWSLPlatform())
+                    return builder.With<IClipboard>(new WSLClipboard());
+                else
+                    return builder.With<IClipboard>(new XClipClipboard());
             }
             else
                 return builder.With<IClipboard>(new NaiveClipboard());
         }
+        
+        private static bool IsWSLPlatform()
+        {
+            // xclip does not work on WSL, so we need to use the Windows clipboard vis Powershell
+            (int exitCode, string result) = ClipboardProcessRunner.Bash("uname -a", waitForOutput: true);
+
+            if (exitCode == 0 && result.Contains("microsoft") && result.Contains("WSL"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
 
         public static AppBuilder UseAutoDetectConsoleColorMode(this AppBuilder builder)
         {
@@ -75,13 +92,13 @@ namespace Consolonia
                 switch (Environment.OSVersion.Platform)
                 {
                     case PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT:
-                    {
-                        // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
-                        if (Console.IsOutputRedirected || IsWindowsTerminal())
-                            result = new RgbConsoleColorMode();
-                        else
-                            result = new EgaConsoleColorMode();
-                    }
+                        {
+                            // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
+                            if (Console.IsOutputRedirected || IsWindowsTerminal())
+                                result = new RgbConsoleColorMode();
+                            else
+                                result = new EgaConsoleColorMode();
+                        }
                         break;
                     case PlatformID.MacOSX:
                         result = new RgbConsoleColorMode();
