@@ -34,7 +34,7 @@ namespace Consolonia.PlatformSupport.Clipboard
         public Task<string> GetTextAsync()
         {
             var text = Medo.X11.X11Clipboard.Clipboard.GetText();
-            return Task.FromResult(text);
+            return Task.FromResult(text ?? String.Empty);
         }
 
         public Task SetDataObjectAsync(IDataObject data)
@@ -44,7 +44,7 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public Task SetTextAsync(string text)
         {
-            Medo.X11.X11Clipboard.Clipboard.SetText(text);
+            Medo.X11.X11Clipboard.Clipboard.SetText(text ?? String.Empty);
             return Task.CompletedTask;
         }
     }
