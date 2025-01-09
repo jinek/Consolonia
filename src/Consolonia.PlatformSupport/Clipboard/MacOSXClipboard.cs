@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia.Input;
@@ -40,7 +41,7 @@ namespace Consolonia.PlatformSupport.Clipboard
                                                );
             _generalPasteboard = objc_msgSend(_nsPasteboard, _generalPasteboardRegister);
             if (!CheckSupport())
-                throw new System.Exception("clipboard operations are not supported pbcopy and pbpaste are not available on this system.");
+                throw new NotSupportedException("clipboard operations are not supported pbcopy and pbpaste are not available on this system.");
         }
 
         private static bool CheckSupport()

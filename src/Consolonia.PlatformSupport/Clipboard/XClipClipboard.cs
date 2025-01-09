@@ -62,7 +62,7 @@ namespace Consolonia.PlatformSupport.Clipboard
 
                 if (exitCode == 0)
                 {
-                    return File.ReadAllText(tempFileName);
+                    return await File.ReadAllTextAsync(tempFileName);
                 }
             }
             catch (Exception e)

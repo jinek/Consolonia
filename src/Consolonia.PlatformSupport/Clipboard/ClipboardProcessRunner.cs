@@ -7,23 +7,6 @@ using System.Threading.Tasks;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
-    /// <summary>Provides cut, copy, and paste support for the OS clipboard.</summary>
-    /// <remarks>
-    ///     <para>On Windows, the <see cref="Clipboard"/> class uses the Windows Clipboard APIs via P/Invoke.</para>
-    ///     <para>
-    ///         On Linux, when not running under Windows Subsystem for Linux (WSL), the <see cref="Clipboard"/> class uses
-    ///         the xclip command line tool. If xclip is not installed, the clipboard will not work.
-    ///     </para>
-    ///     <para>
-    ///         On Linux, when running under Windows Subsystem for Linux (WSL), the <see cref="Clipboard"/> class launches
-    ///         Windows' powershell.exe via WSL interop and uses the "Set-Clipboard" and "Get-Clipboard" Powershell CmdLets.
-    ///     </para>
-    ///     <para>
-    ///         On the Mac, the <see cref="Clipboard"/> class uses the MacO OS X pbcopy and pbpaste command line tools and
-    ///         the Mac clipboard APIs vai P/Invoke.
-    ///     </para>
-    /// </remarks>
-
     /// <summary>
     ///     Helper class for console drivers to invoke shell commands to interact with the clipboard. 
     /// </summary>
@@ -53,7 +36,7 @@ namespace Consolonia.PlatformSupport.Clipboard
             return result;
         }
 
-        public static bool FileExists(this string value) { return !string.IsNullOrEmpty(value) && !value.Contains("not found"); }
+        public static bool FileExists(this string value) { return !string.IsNullOrEmpty(value) && !value.Contains("not found", StringComparison.Ordinal); }
 
         public static (int exitCode, string result) Process(
             string cmd,

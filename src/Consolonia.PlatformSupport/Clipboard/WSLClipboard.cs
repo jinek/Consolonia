@@ -54,6 +54,7 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public async Task<string> GetTextAsync()
         {
+            await Task.CompletedTask;
             if (!_isSupported)
             {
                 return string.Empty;

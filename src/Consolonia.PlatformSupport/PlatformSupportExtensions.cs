@@ -42,6 +42,23 @@ namespace Consolonia
                 .UseAutoDetectConsoleColorMode();
         }
 
+
+        /// <summary>Provides cut, copy, and paste support for the OS clipboard.</summary>
+        /// <remarks>
+        ///     <para>On Windows, the <see cref="Clipboard"/> class uses the Avalonia Windows Clipboard .</para>
+        ///     <para>
+        ///         On Linux, when not running under Windows Subsystem for Linux (WSL), the <see cref="Clipboard"/> class X11
+        ///         PInvoke calls.
+        ///     </para>
+        ///     <para>
+        ///         On Linux, when running under Windows Subsystem for Linux (WSL), the <see cref="Clipboard"/> class launches
+        ///         Windows' powershell.exe via WSL interop and uses the "Set-Clipboard" and "Get-Clipboard" Powershell CmdLets.
+        ///     </para>
+        ///     <para>
+        ///         On the Mac, the <see cref="Clipboard"/> class uses the MacO OS X pbcopy and pbpaste command line tools and
+        ///         the Mac clipboard APIs vai P/Invoke.
+        ///     </para>
+        /// </remarks>
         public static AppBuilder UseAutoDectectedClipboard(this AppBuilder builder)
         {
             if (OperatingSystem.IsWindows())
@@ -69,13 +86,13 @@ namespace Consolonia
             else
                 return builder.With<IClipboard>(new NaiveClipboard());
         }
-        
+
         private static bool IsWSLPlatform()
         {
             // xclip does not work on WSL, so we need to use the Windows clipboard vis Powershell
             (int exitCode, string result) = ClipboardProcessRunner.Bash("uname -a", waitForOutput: true);
 
-            if (exitCode == 0 && result.Contains("microsoft") && result.Contains("WSL"))
+            if (exitCode == 0 && result.Contains("microsoft", StringComparison.OrdinalIgnoreCase) && result.Contains("WSL", StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
