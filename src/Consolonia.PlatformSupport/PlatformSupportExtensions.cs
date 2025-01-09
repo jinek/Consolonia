@@ -77,7 +77,7 @@ namespace Consolonia
             }
             else if (OperatingSystem.IsLinux())
             {
-                if (IsWSLPlatform())
+                if (IsWslPlatform())
                     return builder.With<IClipboard>(new WSLClipboard());
                 else
                     // alternatively use xclip CLI tool
@@ -88,7 +88,7 @@ namespace Consolonia
                 return builder.With<IClipboard>(new NaiveClipboard());
         }
 
-        private static bool IsWSLPlatform()
+        private static bool IsWslPlatform()
         {
             // xclip does not work on WSL, so we need to use the Windows clipboard vis Powershell
             (int exitCode, string result) = ClipboardProcessRunner.Bash("uname -a", waitForOutput: true);
