@@ -3,20 +3,22 @@ using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 
-namespace Consolonia.Core.Infrastructure
+namespace Consolonia.PlatformSupport.Clipboard
 {
-    /// <summary>
-    /// This clipboard only stores memory in the same process, so it is not useful for sharing data between processes.
-    /// </summary>
-    public class NaiveClipboard : IClipboard
-    {
-        private string _text = String.Empty;
 
-#pragma warning disable CA1822 // Mark members as static
+    /// <summary>
+    ///     A clipboard implementation for X11;
+    /// </summary>
+    internal class X11Clipboard : IClipboard
+    {
+        public X11Clipboard()
+        {
+        }
+
         public async Task ClearAsync()
         {
             await Task.CompletedTask;
-            _text = String.Empty;
+            Medo.X11.X11Clipboard.Clipboard.Clear();
         }
 
         public Task<object> GetDataAsync(string format)
@@ -32,7 +34,7 @@ namespace Consolonia.Core.Infrastructure
         public async Task<string> GetTextAsync()
         {
             await Task.CompletedTask;
-            return _text;
+            return Medo.X11.X11Clipboard.Clipboard.GetText();
         }
 
         public Task SetDataObjectAsync(IDataObject data)
@@ -43,7 +45,8 @@ namespace Consolonia.Core.Infrastructure
         public async Task SetTextAsync(string text)
         {
             await Task.CompletedTask;
-            _text = text;
+
+            Medo.X11.X11Clipboard.Clipboard.SetText(text);
         }
     }
 }
