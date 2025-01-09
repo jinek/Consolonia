@@ -6,11 +6,12 @@
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryTextBox">
     <!--Copied from https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Default/TextBox.xaml-->
-    <StackPanel Orientation="Vertical"
+    <ScrollViewer VerticalScrollBarVisibility="Auto" >
+        <StackPanel Orientation="Vertical"
                 HorizontalAlignment="Stretch"
                 Spacing="1"
                 Margin="1,0">
-        <!--<StackPanel.Styles>
+            <!--<StackPanel.Styles>
             <Style Selector="TextBox">
                 <Setter Property="HorizontalAlignment"
                         Value="Left" />
@@ -18,58 +19,59 @@
                         Value="35" />
             </Style>
         </StackPanel.Styles>-->
-        <TextBox Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
-            <TextBox.ContextFlyout>
-                <Flyout>
-                    <TextBlock>Custom context flyout</TextBlock>
-                </Flyout>
-            </TextBox.ContextFlyout>
-        </TextBox>
-        <TextBox IsReadOnly="True"
-                 Text="This is read only" />
-        <TextBox Watermark="ReadOnly watermark"
-                 IsReadOnly="True" />
-        <TextBox IsEnabled="False"
-                 Text="This is disabled" />
-        <TextBox IsEnabled="False"
-                 Watermark="This is disabled watermark" />
-        <TextBox Watermark="Numeric Watermark"
-                 x:Name="NumericWatermark" />
-        <TextBox Watermark="Floating Watermark"
-                 UseFloatingWatermark="True"
-                 Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
-        <!--<MaskedTextBox Width="200" ResetOnSpace="False"  Mask="(LLL) 999-0000"/>
+            <TextBox Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
+                <TextBox.ContextFlyout>
+                    <Flyout>
+                        <TextBlock>Custom context flyout</TextBlock>
+                    </Flyout>
+                </TextBox.ContextFlyout>
+            </TextBox>
+            <TextBox IsReadOnly="True"
+                     Text="This is read only" />
+            <TextBox Watermark="ReadOnly watermark"
+                     IsReadOnly="True" />
+            <TextBox IsEnabled="False"
+                     Text="This is disabled" />
+            <TextBox IsEnabled="False"
+                     Watermark="This is disabled watermark" />
+            <TextBox Watermark="Numeric Watermark"
+                     x:Name="NumericWatermark" />
+            <TextBox Watermark="Floating Watermark"
+                     UseFloatingWatermark="True"
+                     Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+            <!--<MaskedTextBox Width="200" ResetOnSpace="False"  Mask="(LLL) 999-0000"/>
             todo: need to upgrade avalonia for this-->
 
-        <TextBox Text="Validation Error">
-            <DataValidationErrors.Error>
-                <system:Exception />
-            </DataValidationErrors.Error>
-        </TextBox>
+            <TextBox Text="Validation Error">
+                <DataValidationErrors.Error>
+                    <system:Exception />
+                </DataValidationErrors.Error>
+            </TextBox>
 
-        <TextBox Watermark="Password Box"
-                 UseFloatingWatermark="True"
-                 PasswordChar="*"
-                 Text="Password" />
-        <TextBox Text="Left aligned text"
-                 TextAlignment="Left" />
-        <TextBox Text="Center aligned text"
-                 TextAlignment="Center" />
-        <TextBox Text="Right aligned text"
-                 TextAlignment="Right" />
-        <TextBox Text="Custom selection brush"
-                 SelectionStart="5"
-                 SelectionEnd="22"
-                 SelectionBrush="Magenta"
-                 SelectionForegroundBrush="Yellow" />
+            <TextBox Watermark="Password Box"
+                     UseFloatingWatermark="True"
+                     PasswordChar="*"
+                     Text="Password" />
+            <TextBox Text="Left aligned text"
+                     TextAlignment="Left" />
+            <TextBox Text="Center aligned text"
+                     TextAlignment="Center" />
+            <TextBox Text="Right aligned text"
+                     TextAlignment="Right" />
+            <TextBox Text="Custom selection brush"
+                     SelectionStart="5"
+                     SelectionEnd="22"
+                     SelectionBrush="Magenta"
+                     SelectionForegroundBrush="Yellow" />
 
-        <TextBox AcceptsReturn="True"
-                 TextWrapping="Wrap"
-                 Height="10"
-                 Text="Multiline TextBox with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
-        <TextBox AcceptsReturn="True"
-                 Height="10"
-                 Text="Multiline TextBox with no TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
+            <TextBox AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     Height="10"
+                     Text="Multiline TextBox with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
+            <TextBox AcceptsReturn="True"
+                     Height="10"
+                     Text="Multiline TextBox with no TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
 
-    </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

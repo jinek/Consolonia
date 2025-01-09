@@ -4,28 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryButton">
-    <StackPanel Orientation="Vertical"
+    <ScrollViewer VerticalScrollBarVisibility="Auto" >
+        <StackPanel Orientation="Vertical"
                 Spacing="1">
-        <StackPanel.Styles>
-            <Style Selector="Button">
-                <Setter Property="HorizontalAlignment"
-                        Value="Left" />
-            </Style>
-        </StackPanel.Styles>
-        <Button>Standard _XAML Button</Button>
-        <Button Background="DarkBlue"
-                Foreground="Yellow">
-            Custom Colors
-        </Button>
-        <Button IsEnabled="False">Disabled</Button>
-        <RepeatButton Name="RepeatButton">
-            <TextBlock Name="RepeatButtonTextBlock"
-                       Text="Repeat Button: 0" />
-        </RepeatButton>
-        <ToggleButton Content="Toggle Button" />
-        <Button BorderBrush="{DynamicResource SystemAccentColor}"
-                KeyboardNavigation.IsTabStop="False">
-            IsTabStop=False
-        </Button>
-    </StackPanel>
+            <StackPanel.Styles>
+                <Style Selector="Button">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Left" />
+                </Style>
+            </StackPanel.Styles>
+            <Button>Standard _XAML Button</Button>
+            <Button Background="DarkBlue"
+                    Foreground="Yellow">
+                Custom Colors
+            </Button>
+            <Button IsEnabled="False">Disabled</Button>
+            <RepeatButton Name="RepeatButton">
+                <TextBlock Name="RepeatButtonTextBlock"
+                           Text="Repeat Button: 0" />
+            </RepeatButton>
+            <ToggleButton Content="Toggle Button" />
+            <Button BorderBrush="{DynamicResource SystemAccentColor}"
+                    KeyboardNavigation.IsTabStop="False">
+                IsTabStop=False
+            </Button>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

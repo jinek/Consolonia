@@ -43,8 +43,9 @@ namespace Consolonia.Gallery.Tests
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText(
-                "│elit. Vivamus magna. Cras in mi at felis aliquet       │",
-                "│congue. Ut a est eget ligula molestie gravida.         │");
+                "│Lorem ipsum dolor sit amet, consectetur adipiscing elit.│",
+                "│Vivamus magna. Cras in mi at felis aliquet congue. Ut a │",
+                "│est eget ligula molestie gravida. Curabitur massa. Donec│");
         }
 
         [Test]

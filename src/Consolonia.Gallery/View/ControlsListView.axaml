@@ -42,11 +42,10 @@
 
         </Grid>
         <Grid RowDefinitions="* Auto">
-            <Border BorderThickness="1"
-                    BorderBrush="{DynamicResource ThemeBorderBrush}">
-                <ScrollViewer
-                    Content="{Binding ElementName=GalleryGrid,Path=SelectedItem, Converter={StaticResource GalleryItemConverter}}" />
-            </Border>
+            <Border
+                Child="{Binding ElementName=GalleryGrid,Path=SelectedItem, Converter={StaticResource GalleryItemConverter}}"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" />
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Grid.Row="1">
