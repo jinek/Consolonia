@@ -63,7 +63,8 @@ namespace Consolonia
                 if (IsWSLPlatform())
                     return builder.With<IClipboard>(new WSLClipboard());
                 else
-                    return builder.With<IClipboard>(new XClipClipboard());
+                    //return builder.With<IClipboard>(new XClipClipboard());
+                    return builder.With<IClipboard>(new X11Clipboard());
             }
             else
                 return builder.With<IClipboard>(new NaiveClipboard());
