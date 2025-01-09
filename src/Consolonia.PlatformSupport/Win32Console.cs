@@ -69,25 +69,25 @@ namespace Consolonia.PlatformSupport
             ]);
 
 
-        private static readonly KEY_EVENT_RECORD[] CtrlVKeyEvents =
-        [
-            new()
-            {
-                bKeyDown = true, wVirtualKeyCode = 17, wVirtualScanCode = 29,
-                dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED
-            },
-            new()
-            {
-                bKeyDown = true, wVirtualKeyCode = 86, wVirtualScanCode = 47, uChar = '\u0016',
-                dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED
-            },
-            new()
-            {
-                bKeyDown = false, wVirtualKeyCode = 86, wVirtualScanCode = 47, uChar = '\u0016',
-                dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED
-            },
-            new() { bKeyDown = false, wVirtualKeyCode = 17, wVirtualScanCode = 29, dwControlKeyState = 0 }
-        ];
+        //private static readonly KEY_EVENT_RECORD[] CtrlVKeyEvents =
+        //[
+        //    new()
+        //    {
+        //        bKeyDown = true, wVirtualKeyCode = 17, wVirtualScanCode = 29,
+        //        dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED
+        //    },
+        //    new()
+        //    {
+        //        bKeyDown = true, wVirtualKeyCode = 86, wVirtualScanCode = 47, uChar = '\u0016',
+        //        dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED
+        //    },
+        //    new()
+        //    {
+        //        bKeyDown = false, wVirtualKeyCode = 86, wVirtualScanCode = 47, uChar = '\u0016',
+        //        dwControlKeyState = CONTROL_KEY_STATE.LEFT_CTRL_PRESSED
+        //    },
+        //    new() { bKeyDown = false, wVirtualKeyCode = 17, wVirtualScanCode = 29, dwControlKeyState = 0 }
+        //];
 
         private readonly WindowsConsole _windowsConsole;
 
@@ -200,8 +200,9 @@ namespace Consolonia.PlatformSupport
                             if (clipboardText.Trim() == currentBufferText.Trim())
                             {
                                 // buffered text matches clipboard, emit CTRL+V sequence and ignore buffered keyboard events
-                                foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
-                                    HandleKeyInput(ctrlVEvent);
+                                //foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
+                                //    HandleKeyInput(ctrlVEvent);
+                                RaiseTextInput(currentBufferText, (ulong)Stopwatch.GetTimestamp());
 
                                 // process remaining input records
                                 for (++i; i < inputRecords.Length; i++)

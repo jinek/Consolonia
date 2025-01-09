@@ -38,6 +38,7 @@ namespace Consolonia.Core.Infrastructure
             Console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
             Console.Resized += OnConsoleOnResized;
             Console.KeyEvent += ConsoleOnKeyEvent;
+            Console.TextInputEvent += ConsoleOnTextInputEvent;
             Console.MouseEvent += ConsoleOnMouseEvent;
             Console.FocusEvent += ConsoleOnFocusEvent;
             Handle = null!;
@@ -393,6 +394,18 @@ namespace Consolonia.Core.Infrastructure
                 }
             });
         }
+
+        private void ConsoleOnTextInputEvent(string text, ulong timeStamp)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+#pragma warning disable CS0618 // Type or member is obsolete // todo: change to correct constructor, CFA20A9A-3A24-4187-9CA3-9DF0081124EE 
+                var rawInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice, timeStamp, _inputRoot, text);
+#pragma warning restore CS0618 // Type or member is obsolete
+                Input!(rawInputEventArgs);
+            }, DispatcherPriority.Input);
+        }
+
 
         private async void ConsoleOnKeyEvent(Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down,
             ulong timeStamp)

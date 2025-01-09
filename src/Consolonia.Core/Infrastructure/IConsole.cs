@@ -32,6 +32,7 @@ namespace Consolonia.Core.Infrastructure
         public event Action Resized;
 
         event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
+        event Action<string, ulong> TextInputEvent;
         event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
 
         event Action<bool> FocusEvent;
