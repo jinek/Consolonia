@@ -45,17 +45,16 @@ namespace Consolonia
 
         /// <summary>Provides cut, copy, and paste support for the OS clipboard.</summary>
         /// <remarks>
-        ///     <para>On Windows, the <see cref="Clipboard"/> class uses the Avalonia Windows Clipboard .</para>
+        ///     <para>On Windows, we use the Avalonia Windows Clipboard .</para>
         ///     <para>
-        ///         On Linux, when not running under Windows Subsystem for Linux (WSL), the <see cref="Clipboard"/> class X11
-        ///         PInvoke calls.
+        ///         On Linux, when not running under Windows Subsystem for Linux (WSL), we use X11Clipboard to call X11 PInvoke calls.
         ///     </para>
         ///     <para>
-        ///         On Linux, when running under Windows Subsystem for Linux (WSL), the <see cref="Clipboard"/> class launches
+        ///         On Linux, when running under Windows Subsystem for Linux (WSL), we use WslClipboard class launches
         ///         Windows' powershell.exe via WSL interop and uses the "Set-Clipboard" and "Get-Clipboard" Powershell CmdLets.
         ///     </para>
         ///     <para>
-        ///         On the Mac, the <see cref="Clipboard"/> class uses the MacO OS X pbcopy and pbpaste command line tools and
+        ///         On the Mac, we use MacClipboard class which uses the MacOS X pbcopy and pbpaste command line tools and
         ///         the Mac clipboard APIs vai P/Invoke.
         ///     </para>
         /// </remarks>
@@ -73,12 +72,12 @@ namespace Consolonia
             }
             else if (OperatingSystem.IsMacOS())
             {
-                return builder.With<IClipboard>(new MacOSXClipboard());
+                return builder.With<IClipboard>(new MacClipboard());
             }
             else if (OperatingSystem.IsLinux())
             {
                 if (IsWslPlatform())
-                    return builder.With<IClipboard>(new WSLClipboard());
+                    return builder.With<IClipboard>(new WslClipboard());
                 else
                     // alternatively use xclip CLI tool
                     //return builder.With<IClipboard>(new XClipClipboard());

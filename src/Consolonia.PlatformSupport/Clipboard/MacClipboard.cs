@@ -11,7 +11,7 @@ namespace Consolonia.PlatformSupport.Clipboard
     ///     A clipboard implementation for MacOSX. This implementation uses the Mac clipboard API (via P/Invoke) to
     ///     copy/paste. The existence of the Mac pbcopy and pbpaste commands is used to determine if copy/paste is supported.
     /// </summary>
-    internal class MacOSXClipboard : IClipboard
+    internal class MacClipboard : IClipboard
     {
         private readonly nint _allocRegister = sel_registerName("alloc");
         private readonly nint _clearContentsRegister = sel_registerName("clearContents");
@@ -26,7 +26,7 @@ namespace Consolonia.PlatformSupport.Clipboard
         private readonly nint _utf8Register = sel_registerName("UTF8String");
         private readonly nint _utfTextType;
 
-        public MacOSXClipboard()
+        public MacClipboard()
         {
             _utfTextType = objc_msgSend(
                                          objc_msgSend(_nsString, _allocRegister),

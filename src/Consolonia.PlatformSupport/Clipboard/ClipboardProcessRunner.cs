@@ -43,18 +43,17 @@ namespace Consolonia.PlatformSupport.Clipboard
         {
             var output = string.Empty;
 
-            using var process = new Process
+            using var process = new Process();
+
+            process.StartInfo = new()
             {
-                StartInfo = new()
-                {
-                    FileName = cmd,
-                    Arguments = arguments,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    RedirectStandardInput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                }
+                FileName = cmd,
+                Arguments = arguments,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                RedirectStandardInput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
             };
 
             // TaskCompletionSource<bool> eventHandled = new();

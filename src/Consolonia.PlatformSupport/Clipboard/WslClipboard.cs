@@ -11,12 +11,12 @@ namespace Consolonia.PlatformSupport.Clipboard
     ///     to store the data, and uses Windows' powershell.exe (launched via WSL interop services) to set/get the Windows
     ///     clipboard.
     /// </summary>
-    internal class WSLClipboard : IClipboard
+    internal class WslClipboard : IClipboard
     {
         private static string _powershellPath = string.Empty;
 
         private bool _isSupported;
-        public WSLClipboard()
+        public WslClipboard()
         {
             if (string.IsNullOrEmpty(_powershellPath))
             {
