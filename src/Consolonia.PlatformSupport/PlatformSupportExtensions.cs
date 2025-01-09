@@ -38,7 +38,7 @@ namespace Consolonia
             };
 
             return builder.UseConsole(console)
-                .UseAutoDectectedClipboard()
+                .UseAutoDetectClipboard()
                 .UseAutoDetectConsoleColorMode();
         }
 
@@ -59,7 +59,7 @@ namespace Consolonia
         ///         the Mac clipboard APIs vai P/Invoke.
         ///     </para>
         /// </remarks>
-        public static AppBuilder UseAutoDectectedClipboard(this AppBuilder builder)
+        public static AppBuilder UseAutoDetectClipboard(this AppBuilder builder)
         {
             if (OperatingSystem.IsWindows())
             {
