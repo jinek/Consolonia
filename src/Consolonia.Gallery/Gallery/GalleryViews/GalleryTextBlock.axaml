@@ -13,7 +13,7 @@
         </Style>
     </UserControl.Styles>
     <!--Examples from Avalonia https://github.com/AvaloniaUI/Avalonia/blob/master/samples/ControlCatalog/Pages/TextBlockPage.xaml-->
-    <ScrollViewer VerticalScrollBarVisibility="Auto" >
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
 
         <StackPanel Orientation="Vertical">
             <TextBlock Text="This is TextBlock  " />

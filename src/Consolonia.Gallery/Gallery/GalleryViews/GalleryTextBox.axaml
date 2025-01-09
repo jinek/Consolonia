@@ -6,11 +6,11 @@
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryTextBox">
     <!--Copied from https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Default/TextBox.xaml-->
-    <ScrollViewer VerticalScrollBarVisibility="Auto" >
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical"
-                HorizontalAlignment="Stretch"
-                Spacing="1"
-                Margin="1,0">
+                    HorizontalAlignment="Stretch"
+                    Spacing="1"
+                    Margin="1,0">
             <!--<StackPanel.Styles>
             <Style Selector="TextBox">
                 <Setter Property="HorizontalAlignment"

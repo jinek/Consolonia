@@ -12,9 +12,9 @@
                     Value="0,0,0,1" />
         </Style>
     </UserControl.Styles>
-    <ScrollViewer VerticalScrollBarVisibility="Auto" >
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical"
-                Spacing="1">
+                    Spacing="1">
             <TextBlock>A control for selecting dates with a calendar drop-down</TextBlock>
 
             <StackPanel Orientation="Horizontal"

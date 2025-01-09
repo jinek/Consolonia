@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryRadioButton">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" >
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical"
-                Spacing="1">
+                    Spacing="1">
             <StackPanel Orientation="Vertical"
                         Spacing="1">
                 <RadioButton IsChecked="True">_Option 1</RadioButton>

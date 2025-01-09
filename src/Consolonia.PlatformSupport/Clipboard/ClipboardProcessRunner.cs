@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace Consolonia.PlatformSupport.Clipboard
 {
     /// <summary>
-    ///     Helper class for console drivers to invoke shell commands to interact with the clipboard. 
+    ///     Helper class for console drivers to invoke shell commands to interact with the clipboard.
     /// </summary>
     internal static class ClipboardProcessRunner
     {
@@ -14,7 +14,7 @@ namespace Consolonia.PlatformSupport.Clipboard
             bool waitForOutput = false
         )
         {
-            var arguments = $"-c \"{commandLine}\"";
+            string arguments = $"-c \"{commandLine}\"";
             (int exitCode, string result) = Process("bash", arguments, inputText, waitForOutput);
 
             return (exitCode, result.TrimEnd());
@@ -24,15 +24,15 @@ namespace Consolonia.PlatformSupport.Clipboard
         {
             bool result = process.WaitForExit(500);
 
-            if (result)
-            {
-                process.WaitForExit();
-            }
+            if (result) process.WaitForExit();
 
             return result;
         }
 
-        public static bool FileExists(this string value) { return !string.IsNullOrEmpty(value) && !value.Contains("not found", StringComparison.Ordinal); }
+        public static bool FileExists(this string value)
+        {
+            return !string.IsNullOrEmpty(value) && !value.Contains("not found", StringComparison.Ordinal);
+        }
 
         public static (int exitCode, string result) Process(
             string cmd,
@@ -41,11 +41,11 @@ namespace Consolonia.PlatformSupport.Clipboard
             bool waitForOutput = true
         )
         {
-            var output = string.Empty;
+            string output = string.Empty;
 
             using var process = new Process();
 
-            process.StartInfo = new()
+            process.StartInfo = new ProcessStartInfo
             {
                 FileName = cmd,
                 Arguments = arguments,
@@ -67,23 +67,18 @@ namespace Consolonia.PlatformSupport.Clipboard
 
             if (!process.WaitForExit(5000))
             {
-                var timeoutError =
+                string timeoutError =
                     $@"Process timed out. Command line: {process.StartInfo.FileName} {process.StartInfo.Arguments}.";
 
                 throw new TimeoutException(timeoutError);
             }
 
-            if (waitForOutput && process.StandardOutput.Peek() != -1)
-            {
-                output = process.StandardOutput.ReadToEnd();
-            }
+            if (waitForOutput && process.StandardOutput.Peek() != -1) output = process.StandardOutput.ReadToEnd();
 
             if (process.ExitCode > 0)
-            {
                 output = $@"Process failed to run. Command line: {cmd} {arguments}.
 										Output: {output}
 										Error: {process.StandardError.ReadToEnd()}";
-            }
 
             return (process.ExitCode, output);
         }

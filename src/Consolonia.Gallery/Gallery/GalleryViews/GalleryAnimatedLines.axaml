@@ -5,7 +5,7 @@
              mc:Ignorable="d"
              xmlns:consolonia="clr-namespace:Consolonia.Controls;assembly=Consolonia.Core"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryAnimatedLines">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" >
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Panel>
             <Panel Width="40"
                    Height="30">

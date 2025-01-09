@@ -47,7 +47,8 @@ namespace Consolonia
         /// <remarks>
         ///     <para>On Windows, we use the Avalonia Windows Clipboard .</para>
         ///     <para>
-        ///         On Linux, when not running under Windows Subsystem for Linux (WSL), we use X11Clipboard to call X11 PInvoke calls.
+        ///         On Linux, when not running under Windows Subsystem for Linux (WSL), we use X11Clipboard to call X11 PInvoke
+        ///         calls.
         ///     </para>
         ///     <para>
         ///         On Linux, when running under Windows Subsystem for Linux (WSL), we use WslClipboard class launches
@@ -70,21 +71,19 @@ namespace Consolonia
                 var clipboard = Activator.CreateInstance(type) as IClipboard;
                 return builder.With(clipboard ?? new NaiveClipboard());
             }
-            else if (OperatingSystem.IsMacOS())
-            {
-                return builder.With<IClipboard>(new MacClipboard());
-            }
-            else if (OperatingSystem.IsLinux())
+
+            if (OperatingSystem.IsMacOS()) return builder.With<IClipboard>(new MacClipboard());
+
+            if (OperatingSystem.IsLinux())
             {
                 if (IsWslPlatform())
                     return builder.With<IClipboard>(new WslClipboard());
-                else
-                    // alternatively use xclip CLI tool
-                    //return builder.With<IClipboard>(new XClipClipboard());
-                    return builder.With<IClipboard>(new X11Clipboard());
+                // alternatively use xclip CLI tool
+                //return builder.With<IClipboard>(new XClipClipboard());
+                return builder.With<IClipboard>(new X11Clipboard());
             }
-            else
-                return builder.With<IClipboard>(new NaiveClipboard());
+
+            return builder.With<IClipboard>(new NaiveClipboard());
         }
 
         private static bool IsWslPlatform()
@@ -92,10 +91,8 @@ namespace Consolonia
             // xclip does not work on WSL, so we need to use the Windows clipboard vis Powershell
             (int exitCode, string result) = ClipboardProcessRunner.Bash("uname -a", waitForOutput: true);
 
-            if (exitCode == 0 && result.Contains("microsoft", StringComparison.OrdinalIgnoreCase) && result.Contains("WSL", StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
+            if (exitCode == 0 && result.Contains("microsoft", StringComparison.OrdinalIgnoreCase) &&
+                result.Contains("WSL", StringComparison.OrdinalIgnoreCase)) return true;
 
             return false;
         }
@@ -110,13 +107,13 @@ namespace Consolonia
                 switch (Environment.OSVersion.Platform)
                 {
                     case PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT:
-                        {
-                            // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
-                            if (Console.IsOutputRedirected || IsWindowsTerminal())
-                                result = new RgbConsoleColorMode();
-                            else
-                                result = new EgaConsoleColorMode();
-                        }
+                    {
+                        // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
+                        if (Console.IsOutputRedirected || IsWindowsTerminal())
+                            result = new RgbConsoleColorMode();
+                        else
+                            result = new EgaConsoleColorMode();
+                    }
                         break;
                     case PlatformID.MacOSX:
                         result = new RgbConsoleColorMode();

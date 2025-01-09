@@ -6,13 +6,12 @@ using Avalonia.Input.Platform;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
-
     /// <summary>A clipboard implementation for Linux. This implementation uses the xclip command to access the clipboard.</summary>
     /// <remarks>If xclip is not installed, this implementation will not work.</remarks>
     internal class XClipClipboard : IClipboard
     {
-        private string _xclipPath = string.Empty;
         private readonly bool _isSupported;
+        private readonly string _xclipPath = string.Empty;
 
         public XClipClipboard()
         {
@@ -24,8 +23,10 @@ namespace Consolonia.PlatformSupport.Clipboard
 
                 _isSupported = true;
             }
-            else 
+            else
+            {
                 _isSupported = false;
+            }
         }
 
 
@@ -46,23 +47,17 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public async Task<string> GetTextAsync()
         {
-            if (!_isSupported)
-            {
-                throw new NotSupportedException("xclip is not installed.");
-            }
+            if (!_isSupported) throw new NotSupportedException("xclip is not installed.");
 
             string tempFileName = Path.GetTempFileName();
-            var xclipargs = "-selection clipboard -o";
+            string xclipargs = "-selection clipboard -o";
 
             try
             {
                 (int exitCode, string _) =
                     ClipboardProcessRunner.Bash($"{_xclipPath} {xclipargs} > {tempFileName}", waitForOutput: false);
 
-                if (exitCode == 0)
-                {
-                    return await File.ReadAllTextAsync(tempFileName);
-                }
+                if (exitCode == 0) return await File.ReadAllTextAsync(tempFileName);
             }
             catch (Exception e)
             {
@@ -83,25 +78,20 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public Task SetTextAsync(string text)
         {
-            if (!_isSupported)
-            {
-                throw new NotSupportedException("xclip is not installed.");
-            }
+            if (!_isSupported) throw new NotSupportedException("xclip is not installed.");
 
-            var xclipargs = "-selection clipboard -i";
+            string xclipargs = "-selection clipboard -i";
 
             try
             {
                 (int exitCode, _) = ClipboardProcessRunner.Bash($"{_xclipPath} {xclipargs}", text);
-                if (exitCode != 0)
-                {
-                    throw new NotSupportedException($"\"{_xclipPath} {xclipargs} < {text}\" failed");
-                }
+                if (exitCode != 0) throw new NotSupportedException($"\"{_xclipPath} {xclipargs} < {text}\" failed");
             }
             catch (Exception e)
             {
                 throw new NotSupportedException($"\"{_xclipPath} {xclipargs} < {text}\" failed", e);
             }
+
             return Task.CompletedTask;
         }
     }

@@ -64,7 +64,6 @@ namespace Consolonia.Core.Infrastructure
                 //.Bind<IPlatformSettings>().ToConstant(new PlatformSettingsStub())
                 //.Bind<ISystemDialogImpl>().ToConstant(new GtkSystemDialog())
                 /*.Bind<IMountedVolumeInfoProvider>().ToConstant(new LinuxMountedVolumeInfoProvider())*/;
-
         }
 
         [DebuggerStepThrough]

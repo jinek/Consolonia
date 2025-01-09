@@ -5,16 +5,11 @@ using Avalonia.Input.Platform;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
-
     /// <summary>
     ///     A clipboard implementation for X11;
     /// </summary>
     internal class X11Clipboard : IClipboard
     {
-        public X11Clipboard()
-        {
-        }
-
         public Task ClearAsync()
         {
             Medo.X11.X11Clipboard.Clipboard.Clear();
@@ -33,7 +28,7 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public Task<string> GetTextAsync()
         {
-            var text = Medo.X11.X11Clipboard.Clipboard.GetText();
+            string text = Medo.X11.X11Clipboard.Clipboard.GetText();
             return Task.FromResult(text);
         }
 
@@ -44,7 +39,7 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public Task SetTextAsync(string text)
         {
-            Medo.X11.X11Clipboard.Clipboard.SetText(text ?? String.Empty);
+            Medo.X11.X11Clipboard.Clipboard.SetText(text ?? string.Empty);
             return Task.CompletedTask;
         }
     }
