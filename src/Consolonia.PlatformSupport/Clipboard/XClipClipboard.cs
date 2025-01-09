@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
-using Unix.Terminal;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
@@ -57,7 +56,7 @@ namespace Consolonia.PlatformSupport.Clipboard
 
             try
             {
-                (int exitCode, string result) =
+                (int exitCode, string _) =
                     ClipboardProcessRunner.Bash($"{_xclipPath} {xclipargs} > {tempFileName}", waitForOutput: false);
 
                 if (exitCode == 0)
@@ -94,6 +93,10 @@ namespace Consolonia.PlatformSupport.Clipboard
             try
             {
                 (int exitCode, _) = ClipboardProcessRunner.Bash($"{_xclipPath} {xclipargs}", text);
+                if (exitCode != 0)
+                {
+                    throw new NotSupportedException($"\"{_xclipPath} {xclipargs} < {text}\" failed");
+                }
             }
             catch (Exception e)
             {

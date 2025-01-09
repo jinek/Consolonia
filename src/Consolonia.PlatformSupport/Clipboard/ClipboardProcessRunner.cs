@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
@@ -47,7 +43,7 @@ namespace Consolonia.PlatformSupport.Clipboard
         {
             var output = string.Empty;
 
-            using (var process = new Process
+            using var process = new Process
             {
                 StartInfo = new()
                 {
@@ -59,39 +55,38 @@ namespace Consolonia.PlatformSupport.Clipboard
                     UseShellExecute = false,
                     CreateNoWindow = true
                 }
-            })
+            };
+
+            // TaskCompletionSource<bool> eventHandled = new();
+            process.Start();
+
+            if (!string.IsNullOrEmpty(input))
             {
-                TaskCompletionSource<bool> eventHandled = new();
-                process.Start();
+                process.StandardInput.Write(input);
+                process.StandardInput.Close();
+            }
 
-                if (!string.IsNullOrEmpty(input))
-                {
-                    process.StandardInput.Write(input);
-                    process.StandardInput.Close();
-                }
+            if (!process.WaitForExit(5000))
+            {
+                var timeoutError =
+                    $@"Process timed out. Command line: {process.StartInfo.FileName} {process.StartInfo.Arguments}.";
 
-                if (!process.WaitForExit(5000))
-                {
-                    var timeoutError =
-                        $@"Process timed out. Command line: {process.StartInfo.FileName} {process.StartInfo.Arguments}.";
+                throw new TimeoutException(timeoutError);
+            }
 
-                    throw new TimeoutException(timeoutError);
-                }
+            if (waitForOutput && process.StandardOutput.Peek() != -1)
+            {
+                output = process.StandardOutput.ReadToEnd();
+            }
 
-                if (waitForOutput && process.StandardOutput.Peek() != -1)
-                {
-                    output = process.StandardOutput.ReadToEnd();
-                }
-
-                if (process.ExitCode > 0)
-                {
-                    output = $@"Process failed to run. Command line: {cmd} {arguments}.
+            if (process.ExitCode > 0)
+            {
+                output = $@"Process failed to run. Command line: {cmd} {arguments}.
 										Output: {output}
 										Error: {process.StandardError.ReadToEnd()}";
-                }
-
-                return (process.ExitCode, output);
             }
+
+            return (process.ExitCode, output);
         }
     }
 }

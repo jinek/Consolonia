@@ -1,21 +1,14 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using AvaloniaEdit.CodeCompletion;
 using ConsoloniaEdit.Demo.Resources;
 using AvaloniaEdit.Document;
-using AvaloniaEdit.Editing;
 using AvaloniaEdit.Folding;
-using AvaloniaEdit.Rendering;
 using AvaloniaEdit.TextMate;
 using TextMateSharp.Grammars;
-using AvaloniaEdit.Snippets;
-using Snippet = AvaloniaEdit.Snippets.Snippet;
 using ConsoloniaEdit.Demo.ViewModels;
 using AvaloniaEdit;
 
@@ -23,8 +16,6 @@ using AvaloniaEdit;
 // ReSharper disable UnusedMember.Local
 namespace ConsoloniaEdit.Demo
 {
-    using Pair = KeyValuePair<int, Control>;
-
     public partial class MainWindow : Window
     {
         private readonly TextEditor _textEditor;

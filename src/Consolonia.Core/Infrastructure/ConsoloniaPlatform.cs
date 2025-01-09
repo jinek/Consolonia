@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.Platform;
 using Avalonia.Input;
