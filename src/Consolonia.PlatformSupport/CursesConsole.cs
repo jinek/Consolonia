@@ -207,6 +207,11 @@ namespace Consolonia.PlatformSupport
                         wch -= 60;
                         k = Key.ShiftMask | Key.AltMask | MapCursesKey(wch);
                         break;
+                    case >= 523 and <= 570:
+                        // Ctrl/Shift/Alt and navigation keys (arrow, home, end)
+                        wch -= 9;
+                        k = MapCursesKey(wch); // has appropriate XxxMask internal
+                        break;
                 }
 
                 RaiseKeyPressInternal(k);
