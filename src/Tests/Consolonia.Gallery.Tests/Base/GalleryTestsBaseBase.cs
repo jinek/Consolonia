@@ -12,7 +12,7 @@ namespace Consolonia.Gallery.Tests.Base
     internal class GalleryTestsBaseBase : ConsoloniaAppTestBase<App>
     {
         protected GalleryTestsBaseBase(PixelBufferSize size = default) : base(size.IsEmpty
-            ? new PixelBufferSize(81, 40)
+            ? new PixelBufferSize(80, 40)
             : size)
         {
             Args = new string[2];

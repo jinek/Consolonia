@@ -58,17 +58,13 @@ namespace Consolonia.PlatformSupport.Clipboard
                     ClipboardProcessRunner.Bash($"{_xclipPath} {xclipargs} > {tempFileName}", waitForOutput: false);
 
                 if (exitCode == 0) return await File.ReadAllTextAsync(tempFileName);
-            }
-            catch (Exception e)
-            {
-                throw new NotSupportedException($"\"{_xclipPath} {xclipargs}\" failed.", e);
+                else
+                    throw new NotSupportedException($"\"{_xclipPath} {xclipargs}\" failed. {exitCode}");
             }
             finally
             {
                 File.Delete(tempFileName);
             }
-
-            return string.Empty;
         }
 
         public Task SetDataObjectAsync(IDataObject data)

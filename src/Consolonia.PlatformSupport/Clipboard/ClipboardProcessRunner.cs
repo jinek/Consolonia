@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
@@ -20,15 +21,6 @@ namespace Consolonia.PlatformSupport.Clipboard
             return (exitCode, result.TrimEnd());
         }
 
-        public static bool DoubleWaitForExit(this Process process)
-        {
-            bool result = process.WaitForExit(500);
-
-            if (result) process.WaitForExit();
-
-            return result;
-        }
-
         public static bool FileExists(this string value)
         {
             return !string.IsNullOrEmpty(value) && !value.Contains("not found", StringComparison.Ordinal);
@@ -38,7 +30,8 @@ namespace Consolonia.PlatformSupport.Clipboard
             string cmd,
             string arguments,
             string input = null,
-            bool waitForOutput = true
+            bool waitForOutput = true,
+            int timeout = Timeout.Infinite
         )
         {
             string output = string.Empty;
@@ -65,7 +58,7 @@ namespace Consolonia.PlatformSupport.Clipboard
                 process.StandardInput.Close();
             }
 
-            if (!process.WaitForExit(5000))
+            if (!process.WaitForExit(timeout))
             {
                 string timeoutError =
                     $@"Process timed out. Command line: {process.StartInfo.FileName} {process.StartInfo.Arguments}.";
