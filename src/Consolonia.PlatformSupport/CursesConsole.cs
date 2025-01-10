@@ -209,7 +209,11 @@ namespace Consolonia.PlatformSupport
                         break;
                     case >= 523 and <= 570:
                         // Ctrl/Shift/Alt and navigation keys (arrow, home, end)
-                        wch -= 9;
+                        var distro = Environment.GetEnvironmentVariable("WSL_DISTRO_NAME");
+                        if (!String.IsNullOrEmpty(distro))
+                            wch -= 1;
+                        else
+                            wch -= 9;
                         k = MapCursesKey(wch); // has appropriate XxxMask internal
                         break;
                 }
