@@ -8,7 +8,7 @@ namespace Consolonia.Core.Infrastructure
     /// <summary>
     ///     This clipboard only stores memory in the same process, so it is not useful for sharing data between processes.
     /// </summary>
-    public class NaiveClipboard : IClipboard
+    public class InprocessClipboard : IClipboard
     {
         private string _text = string.Empty;
 #pragma warning disable CA1822 // Mark members as static
@@ -28,10 +28,9 @@ namespace Consolonia.Core.Infrastructure
             throw new NotImplementedException();
         }
 
-        public async Task<string> GetTextAsync()
+        public Task<string> GetTextAsync()
         {
-            await Task.CompletedTask;
-            return _text;
+            return Task.FromResult(_text);
         }
 
         public Task SetDataObjectAsync(IDataObject data)
@@ -39,10 +38,10 @@ namespace Consolonia.Core.Infrastructure
             throw new NotImplementedException();
         }
 
-        public async Task SetTextAsync(string text)
+        public Task SetTextAsync(string text)
         {
-            await Task.CompletedTask;
             _text = text;
+            return Task.CompletedTask;
         }
     }
 }

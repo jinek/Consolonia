@@ -69,7 +69,7 @@ namespace Consolonia
                 Type type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
                 ArgumentNullException.ThrowIfNull(type, "ClipboardImpl");
                 var clipboard = Activator.CreateInstance(type) as IClipboard;
-                return builder.With(clipboard ?? new NaiveClipboard());
+                return builder.With(clipboard ?? new InprocessClipboard());
             }
 
             if (OperatingSystem.IsMacOS()) return builder.With<IClipboard>(new MacClipboard());
@@ -83,7 +83,7 @@ namespace Consolonia
                 return builder.With<IClipboard>(new X11Clipboard());
             }
 
-            return builder.With<IClipboard>(new NaiveClipboard());
+            return builder.With<IClipboard>(new InprocessClipboard());
         }
 
         private static bool IsWslPlatform()
