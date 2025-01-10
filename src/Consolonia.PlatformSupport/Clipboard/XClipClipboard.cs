@@ -78,15 +78,8 @@ namespace Consolonia.PlatformSupport.Clipboard
 
             string xclipargs = "-selection clipboard -i";
 
-            try
-            {
-                (int exitCode, _) = ClipboardProcessRunner.Bash($"{_xclipPath} {xclipargs}", text);
-                if (exitCode != 0) throw new NotSupportedException($"\"{_xclipPath} {xclipargs} < {text}\" failed");
-            }
-            catch (Exception e)
-            {
-                throw new NotSupportedException($"\"{_xclipPath} {xclipargs} < {text}\" failed", e);
-            }
+            (int exitCode, _) = ClipboardProcessRunner.Bash($"{_xclipPath} {xclipargs}", text);
+            if (exitCode != 0) throw new NotSupportedException($"\"{_xclipPath} {xclipargs} < {text}\" failed");
 
             return Task.CompletedTask;
         }
