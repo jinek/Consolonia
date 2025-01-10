@@ -209,8 +209,8 @@ namespace Consolonia.PlatformSupport
                         break;
                     case >= 523 and <= 570:
                         // Ctrl/Shift/Alt and navigation keys (arrow, home, end)
-                        var distro = Environment.GetEnvironmentVariable("WSL_DISTRO_NAME");
-                        if (!String.IsNullOrEmpty(distro))
+                        string distro = Environment.GetEnvironmentVariable("WSL_DISTRO_NAME");
+                        if (!string.IsNullOrEmpty(distro))
                             wch -= 1;
                         else
                             wch -= 9;
