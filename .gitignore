@@ -767,3 +767,4 @@ fabric.properties
 *.sln.iml
 
 /src/Tools/Consolonia.PreviewHost/Properties/launchSettings.json
+src/.vscode/launch.json

@@ -1,11 +1,14 @@
 using System;
+using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
+using Consolonia.PlatformSupport.Clipboard;
 
 // ReSharper disable CheckNamespace
 #pragma warning disable IDE0161
@@ -34,8 +37,66 @@ namespace Consolonia
                 _ => new DefaultNetConsole()
             };
 
-            return builder.UseConsole(console).UseAutoDetectConsoleColorMode();
+            return builder.UseConsole(console)
+                .UseAutoDetectClipboard()
+                .UseAutoDetectConsoleColorMode();
         }
+
+
+        /// <summary>Provides cut, copy, and paste support for the OS clipboard.</summary>
+        /// <remarks>
+        ///     <para>On Windows, we use the Avalonia Windows Clipboard .</para>
+        ///     <para>
+        ///         On Linux, when not running under Windows Subsystem for Linux (WSL), we use X11Clipboard to call X11 PInvoke
+        ///         calls.
+        ///     </para>
+        ///     <para>
+        ///         On Linux, when running under Windows Subsystem for Linux (WSL), we use WslClipboard class launches
+        ///         Windows' powershell.exe via WSL interop and uses the "Set-Clipboard" and "Get-Clipboard" Powershell CmdLets.
+        ///     </para>
+        ///     <para>
+        ///         On the Mac, we use MacClipboard class which uses the MacOS X pbcopy and pbpaste command line tools and
+        ///         the Mac clipboard APIs vai P/Invoke.
+        ///     </para>
+        /// </remarks>
+        public static AppBuilder UseAutoDetectClipboard(this AppBuilder builder)
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                // we can consume the avalonia clipboard implementation because it's self contained enough for us to reach inside and pull it out.
+                Assembly assembly = Assembly.Load("Avalonia.Win32");
+                ArgumentNullException.ThrowIfNull(assembly, "Avalonia.Win32");
+                Type type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
+                ArgumentNullException.ThrowIfNull(type, "ClipboardImpl");
+                var clipboard = Activator.CreateInstance(type) as IClipboard;
+                return builder.With(clipboard ?? new InprocessClipboard());
+            }
+
+            if (OperatingSystem.IsMacOS()) return builder.With<IClipboard>(new MacClipboard());
+
+            if (OperatingSystem.IsLinux())
+            {
+                if (IsWslPlatform())
+                    return builder.With<IClipboard>(new WslClipboard());
+                // alternatively use xclip CLI tool
+                //return builder.With<IClipboard>(new XClipClipboard());
+                return builder.With<IClipboard>(new X11Clipboard());
+            }
+
+            return builder.With<IClipboard>(new InprocessClipboard());
+        }
+
+        private static bool IsWslPlatform()
+        {
+            // xclip does not work on WSL, so we need to use the Windows clipboard vis Powershell
+            (int exitCode, string result) = ClipboardProcessRunner.Bash("uname -a", waitForOutput: true);
+
+            if (exitCode == 0 && result.Contains("microsoft", StringComparison.OrdinalIgnoreCase) &&
+                result.Contains("WSL", StringComparison.OrdinalIgnoreCase)) return true;
+
+            return false;
+        }
+
 
         public static AppBuilder UseAutoDetectConsoleColorMode(this AppBuilder builder)
         {

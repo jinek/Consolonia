@@ -6,6 +6,7 @@ using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -68,6 +69,7 @@ namespace Consolonia.Core.Infrastructure
         public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
         public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
         public event Action<bool> FocusEvent;
+        public event Action<string, ulong> TextInputEvent;
 
         protected void RaiseMouseEvent(RawPointerEventType eventType, Point point, Vector? wheelDelta,
             RawInputModifiers modifiers)
@@ -78,6 +80,11 @@ namespace Consolonia.Core.Infrastructure
         protected void RaiseKeyPress(Key key, char character, RawInputModifiers modifiers, bool down, ulong timeStamp)
         {
             KeyEvent?.Invoke(key, character, modifiers, down, timeStamp);
+        }
+
+        protected void RaiseTextInput(string text, ulong timestamp)
+        {
+            TextInputEvent?.Invoke(text, timestamp);
         }
 
         protected void RaiseFocusEvent(bool focused)
@@ -123,6 +130,7 @@ namespace Consolonia.Core.Infrastructure
 
         public virtual void PrepareConsole()
         {
+            WriteText(Esc.EnableBracketedPasteMode);
             _consoleOutput.PrepareConsole();
         }
 
@@ -135,6 +143,7 @@ namespace Consolonia.Core.Infrastructure
         public virtual void RestoreConsole()
         {
             _consoleOutput.RestoreConsole();
+            WriteText(Esc.DisableBracketedPasteMode);
         }
 
         public virtual void SetCaretPosition(PixelBufferCoordinate bufferPoint)

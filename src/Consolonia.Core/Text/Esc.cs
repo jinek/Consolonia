@@ -42,7 +42,7 @@ namespace Consolonia.Core.Text
 
         // bracketed 
         public const string EnableBracketedPasteMode = "\u001b[?2004h";
-        public const string DisableBracktedPasteMode = "\u001b[?2004l";
+        public const string DisableBracketedPasteMode = "\u001b[?2004l";
 
         // mouse tracking
         public const string EnableMouseTracking = "\u001b[?1000h";

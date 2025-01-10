@@ -13,96 +13,98 @@
         </Style>
     </UserControl.Styles>
     <!--Examples from Avalonia https://github.com/AvaloniaUI/Avalonia/blob/master/samples/ControlCatalog/Pages/TextBlockPage.xaml-->
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-    <StackPanel Orientation="Vertical">
-        <TextBlock Text="This is TextBlock  " />
-        <TextBlock Text="This is colored TextBlock"
-                   FontWeight="Bold"
-                   Background="DarkMagenta"
-                   Foreground="Chartreuse" />
-        <SelectableTextBlock TextWrapping="Wrap"
-                             SelectionStart="17"
-                             SelectionEnd="26">
-            Selectable text: Loreum ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis
-        </SelectableTextBlock>
-
-        <StackPanel Orientation="Vertical"
-                    Margin="0"
-                    Background="DarkGray">
-            <TextBlock TextTrimming="CharacterEllipsis"
-                       Text="Text trimming with character ellipsis. Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
-            <TextBlock TextTrimming="WordEllipsis"
-                       Text="Text trimming with word ellipsis.Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
-            <TextBlock Text="Left aligned text"
-                       TextAlignment="Left" />
-            <TextBlock Text="Center aligned text"
-                       TextAlignment="Center" />
-            <TextBlock Text="Right aligned text"
-                       TextAlignment="Right" />
-        </StackPanel>
-
-        <TextBlock TextWrapping="Wrap"
-                   Text="Multiline TextBlock with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
-        <TextBlock TextWrapping="Wrap"
-                   Text="Special characters: Élève naïve: “𝔉𝔞𝔫𝔠𝔶” ligatures like ﬀ, ﬁ and ﬂ numbers ½, ¼; symbols like @, #, and €; emoji 😊 and math symbols Ω, ∑, √…" />
-        <TextBlock Text="0123456789012345678901234567890" />
-        <TextBlock Text="𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟, 𝄞, 🎵, 👨‍👩‍👧‍👦,  🏳️‍🌈" />
-        <StackPanel Spacing="0">
-            <TextBlock Text="International chars"
-                       TextDecorations="Underline" />
-            <TextBlock Text="Chinese: 中国人 " />
-            <TextBlock Text="Japanese: 漢字学" />
-            <TextBlock Text="Korean: 한국인" />
-        </StackPanel>
-        <WrapPanel>
-            <TextBlock Text="Underline"
-                       TextDecorations="Underline"
-                       HorizontalAlignment="Left"
-                       Margin="1 0" />
-            <TextBlock Text="Strikethrough"
-                       HorizontalAlignment="Left"
-                       TextDecorations="Strikethrough"
-                       Margin="1 0" />
-            <TextBlock Text="Italic"
-                       FontStyle="Italic"
-                       HorizontalAlignment="Left"
-                       Margin="1 0" />
-            <TextBlock Text="Italic and Underline"
-                       FontStyle="Italic"
-                       TextDecorations="Underline"
-                       HorizontalAlignment="Left"
-                       Margin="1 0" />
-        </WrapPanel>
-        <WrapPanel>
-            <TextBlock Text="BOLD"
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="This is TextBlock  " />
+            <TextBlock Text="This is colored TextBlock"
                        FontWeight="Bold"
-                       Foreground="Sienna"
-                       Margin="1 0" />
-            <TextBlock Text="NORMAL"
-                       FontWeight="Normal"
-                       Foreground="Sienna"
-                       Margin="1 0" />
-            <TextBlock Text="LIGHT"
-                       FontWeight="Light"
-                       Foreground="Sienna"
-                       Margin="1 0" />
-            <TextBlock Text="BOLD"
                        Background="DarkMagenta"
-                       Foreground="Yellow"
-                       FontWeight="Bold"
-                       Margin="1 0" />
-            <TextBlock Text="NORMAL"
-                       Background="DarkMagenta"
-                       Foreground="Yellow"
-                       FontWeight="Normal"
-                       Margin="1 0" />
-            <TextBlock Text="LIGHT"
-                       Background="DarkMagenta"
-                       Foreground="Yellow"
-                       FontWeight="Light"
-                       Margin="1 0" />
-        </WrapPanel>
+                       Foreground="Chartreuse" />
+            <SelectableTextBlock TextWrapping="Wrap"
+                                 SelectionStart="17"
+                                 SelectionEnd="26">
+                Selectable text: Loreum ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis
+            </SelectableTextBlock>
 
-    </StackPanel>
+            <StackPanel Orientation="Vertical"
+                        Margin="0"
+                        Background="DarkGray">
+                <TextBlock TextTrimming="CharacterEllipsis"
+                           Text="Text trimming with character ellipsis. Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+                <TextBlock TextTrimming="WordEllipsis"
+                           Text="Text trimming with word ellipsis.Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+                <TextBlock Text="Left aligned text"
+                           TextAlignment="Left" />
+                <TextBlock Text="Center aligned text"
+                           TextAlignment="Center" />
+                <TextBlock Text="Right aligned text"
+                           TextAlignment="Right" />
+            </StackPanel>
+
+            <TextBlock TextWrapping="Wrap"
+                       Text="Multiline TextBlock with TextWrapping.&#xD;&#xD;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est." />
+            <TextBlock TextWrapping="Wrap"
+                       Text="Special characters: Élève naïve: “𝔉𝔞𝔫𝔠𝔶” ligatures like ﬀ, ﬁ and ﬂ numbers ½, ¼; symbols like @, #, and €; emoji 😊 and math symbols Ω, ∑, √…" />
+            <TextBlock Text="0123456789012345678901234567890" />
+            <TextBlock Text="𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟, 𝄞, 🎵, 👨‍👩‍👧‍👦,  🏳️‍🌈" />
+            <StackPanel Spacing="0">
+                <TextBlock Text="International chars"
+                           TextDecorations="Underline" />
+                <TextBlock Text="Chinese: 中国人 " />
+                <TextBlock Text="Japanese: 漢字学" />
+                <TextBlock Text="Korean: 한국인" />
+            </StackPanel>
+            <WrapPanel>
+                <TextBlock Text="Underline"
+                           TextDecorations="Underline"
+                           HorizontalAlignment="Left"
+                           Margin="1 0" />
+                <TextBlock Text="Strikethrough"
+                           HorizontalAlignment="Left"
+                           TextDecorations="Strikethrough"
+                           Margin="1 0" />
+                <TextBlock Text="Italic"
+                           FontStyle="Italic"
+                           HorizontalAlignment="Left"
+                           Margin="1 0" />
+                <TextBlock Text="Italic and Underline"
+                           FontStyle="Italic"
+                           TextDecorations="Underline"
+                           HorizontalAlignment="Left"
+                           Margin="1 0" />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Text="BOLD"
+                           FontWeight="Bold"
+                           Foreground="Sienna"
+                           Margin="1 0" />
+                <TextBlock Text="NORMAL"
+                           FontWeight="Normal"
+                           Foreground="Sienna"
+                           Margin="1 0" />
+                <TextBlock Text="LIGHT"
+                           FontWeight="Light"
+                           Foreground="Sienna"
+                           Margin="1 0" />
+                <TextBlock Text="BOLD"
+                           Background="DarkMagenta"
+                           Foreground="Yellow"
+                           FontWeight="Bold"
+                           Margin="1 0" />
+                <TextBlock Text="NORMAL"
+                           Background="DarkMagenta"
+                           Foreground="Yellow"
+                           FontWeight="Normal"
+                           Margin="1 0" />
+                <TextBlock Text="LIGHT"
+                           Background="DarkMagenta"
+                           Foreground="Yellow"
+                           FontWeight="Light"
+                           Margin="1 0" />
+            </WrapPanel>
+
+        </StackPanel>
+    </ScrollViewer>
 
 </UserControl>

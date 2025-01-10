@@ -4,62 +4,64 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryRadioButton">
-    <StackPanel Orientation="Vertical"
-                Spacing="1">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical"
                     Spacing="1">
-            <RadioButton IsChecked="True">_Option 1</RadioButton>
-            <RadioButton>O_ption 2</RadioButton>
-            <RadioButton IsChecked="{x:Null}">Op_tion 3</RadioButton>
-            <RadioButton IsEnabled="False">Disabled</RadioButton>
+            <StackPanel Orientation="Vertical"
+                        Spacing="1">
+                <RadioButton IsChecked="True">_Option 1</RadioButton>
+                <RadioButton>O_ption 2</RadioButton>
+                <RadioButton IsChecked="{x:Null}">Op_tion 3</RadioButton>
+                <RadioButton IsEnabled="False">Disabled</RadioButton>
+            </StackPanel>
+            <StackPanel Orientation="Vertical"
+                        Spacing="1">
+                <RadioButton IsChecked="True"
+                             IsThreeState="True">
+                    Three States: Option 1
+                </RadioButton>
+                <RadioButton IsChecked="False"
+                             IsThreeState="True">
+                    Three States: Option 2
+                </RadioButton>
+                <RadioButton IsChecked="{x:Null}"
+                             IsThreeState="True">
+                    Three States: Option 3
+                </RadioButton>
+                <RadioButton IsChecked="{x:Null}"
+                             IsThreeState="True"
+                             IsEnabled="False">
+                    Disabled
+                </RadioButton>
+            </StackPanel>
+            <StackPanel Orientation="Vertical"
+                        Spacing="1">
+                <RadioButton GroupName="A"
+                             IsChecked="True">
+                    Group A: Option 1
+                </RadioButton>
+                <RadioButton GroupName="A"
+                             IsEnabled="False">
+                    Group A: Disabled
+                </RadioButton>
+                <RadioButton GroupName="B">Group B: Option 1</RadioButton>
+                <RadioButton GroupName="B"
+                             IsChecked="{x:Null}">
+                    Group B: Option 3
+                </RadioButton>
+            </StackPanel>
+            <StackPanel Orientation="Vertical"
+                        Spacing="1">
+                <RadioButton GroupName="A"
+                             IsChecked="True">
+                    Group A: Option 2
+                </RadioButton>
+                <RadioButton GroupName="B">Group B: Option 2</RadioButton>
+                <RadioButton GroupName="B"
+                             IsChecked="{x:Null}">
+                    Group B: Option 4
+                </RadioButton>
+            </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Vertical"
-                    Spacing="1">
-            <RadioButton IsChecked="True"
-                         IsThreeState="True">
-                Three States: Option 1
-            </RadioButton>
-            <RadioButton IsChecked="False"
-                         IsThreeState="True">
-                Three States: Option 2
-            </RadioButton>
-            <RadioButton IsChecked="{x:Null}"
-                         IsThreeState="True">
-                Three States: Option 3
-            </RadioButton>
-            <RadioButton IsChecked="{x:Null}"
-                         IsThreeState="True"
-                         IsEnabled="False">
-                Disabled
-            </RadioButton>
-        </StackPanel>
-        <StackPanel Orientation="Vertical"
-                    Spacing="1">
-            <RadioButton GroupName="A"
-                         IsChecked="True">
-                Group A: Option 1
-            </RadioButton>
-            <RadioButton GroupName="A"
-                         IsEnabled="False">
-                Group A: Disabled
-            </RadioButton>
-            <RadioButton GroupName="B">Group B: Option 1</RadioButton>
-            <RadioButton GroupName="B"
-                         IsChecked="{x:Null}">
-                Group B: Option 3
-            </RadioButton>
-        </StackPanel>
-        <StackPanel Orientation="Vertical"
-                    Spacing="1">
-            <RadioButton GroupName="A"
-                         IsChecked="True">
-                Group A: Option 2
-            </RadioButton>
-            <RadioButton GroupName="B">Group B: Option 2</RadioButton>
-            <RadioButton GroupName="B"
-                         IsChecked="{x:Null}">
-                Group B: Option 4
-            </RadioButton>
-        </StackPanel>
-    </StackPanel>
+    </ScrollViewer>
 </UserControl>

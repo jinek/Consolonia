@@ -13,7 +13,7 @@ using Wcwidth;
 
 namespace Consolonia.Core.Helpers
 {
-    public static class Extensions
+    public static class UtilityExtensions
     {
         public static IDisposable SubscribeAction<TValue>(
             this IObservable<AvaloniaPropertyChangedEventArgs<TValue>> observable,

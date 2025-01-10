@@ -8,6 +8,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -206,6 +207,15 @@ namespace Consolonia.PlatformSupport
                         wch -= 60;
                         k = Key.ShiftMask | Key.AltMask | MapCursesKey(wch);
                         break;
+                    case >= 523 and <= 570:
+                        // Ctrl/Shift/Alt and navigation keys (arrow, home, end)
+                        string distro = Environment.GetEnvironmentVariable("WSL_DISTRO_NAME");
+                        if (!string.IsNullOrEmpty(distro))
+                            wch -= 1;
+                        else
+                            wch -= 9;
+                        k = MapCursesKey(wch); // has appropriate XxxMask internal
+                        break;
                 }
 
                 RaiseKeyPressInternal(k);
@@ -327,6 +337,21 @@ namespace Consolonia.PlatformSupport
                                             // Shift+Ctrl+Alt+KeyEnd
                                             k = Key.ShiftMask | Key.CtrlMask | Key.AltMask | Key.End;
                                             break;
+
+                                        // ESC [200~ 
+                                        case 50 when c[1] == 48 && c[2] == 48 && c[3] == 126:
+                                            var sb = new StringBuilder();
+                                            for (int i = 4; i < c.Length; i++) sb.Append((char)c[i]);
+                                            string bufferText = sb.ToString();
+                                            int index = bufferText.IndexOf("\u001b[201~", StringComparison.Ordinal);
+                                            if (index > 0)
+                                            {
+                                                string text = bufferText[..--index];
+                                                RaiseTextInput(text, (ulong)Stopwatch.GetTimestamp());
+                                            }
+
+                                            break;
+
                                         default:
                                             k = MapCursesKey(wch2);
                                             break;

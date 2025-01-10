@@ -4,76 +4,78 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryProgressBar">
-    <StackPanel>
-        <CheckBox x:Name="ShowProgress"
-                  IsChecked="True"
-                  Margin="1,0"
-                  Content="Show Progress Text" />
-        <CheckBox x:Name="IsIndeterminate"
-                  Margin="1,0"
-                  Content="Toggle Indeterminate" />
-        <StackPanel Orientation="Vertical"
-                    Margin="1"
-                    Spacing="1">
-            <ProgressBar IsIndeterminate="{Binding #IsIndeterminate.IsChecked}"
-                         ShowProgressText="{Binding #ShowProgress.IsChecked}">
-                <ProgressBar.Styles>
-                    <Style Selector="ProgressBar">
-                        <Style.Animations>
-                            <Animation Duration="0:0:15"
-                                       IterationCount="INFINITE"
-                                       PlaybackDirection="Normal">
-                                <KeyFrame Cue="0%">
-                                    <Setter Property="Value"
-                                            Value="0" />
-                                </KeyFrame>
-                                <KeyFrame Cue="100%">
-                                    <Setter Property="Value"
-                                            Value="100" />
-                                </KeyFrame>
-                            </Animation>
-                        </Style.Animations>
-                    </Style>
-                </ProgressBar.Styles>
-            </ProgressBar>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <CheckBox x:Name="ShowProgress"
+                      IsChecked="True"
+                      Margin="1,0"
+                      Content="Show Progress Text" />
+            <CheckBox x:Name="IsIndeterminate"
+                      Margin="1,0"
+                      Content="Toggle Indeterminate" />
+            <StackPanel Orientation="Vertical"
+                        Margin="1"
+                        Spacing="1">
+                <ProgressBar IsIndeterminate="{Binding #IsIndeterminate.IsChecked}"
+                             ShowProgressText="{Binding #ShowProgress.IsChecked}">
+                    <ProgressBar.Styles>
+                        <Style Selector="ProgressBar">
+                            <Style.Animations>
+                                <Animation Duration="0:0:15"
+                                           IterationCount="INFINITE"
+                                           PlaybackDirection="Normal">
+                                    <KeyFrame Cue="0%">
+                                        <Setter Property="Value"
+                                                Value="0" />
+                                    </KeyFrame>
+                                    <KeyFrame Cue="100%">
+                                        <Setter Property="Value"
+                                                Value="100" />
+                                    </KeyFrame>
+                                </Animation>
+                            </Style.Animations>
+                        </Style>
+                    </ProgressBar.Styles>
+                </ProgressBar>
 
-            <ProgressBar IsIndeterminate="{Binding #IsIndeterminate.IsChecked}"
-                         ShowProgressText="{Binding #ShowProgress.IsChecked}"
-                         Height="7"
-                         HorizontalAlignment="Center"
-                         Orientation="Vertical">
-                <ProgressBar.Styles>
-                    <Style Selector="ProgressBar">
-                        <Style.Animations>
-                            <Animation Duration="0:0:11"
-                                       IterationCount="INFINITE"
-                                       PlaybackDirection="Normal">
-                                <Animation.Easing>
-                                    <ExponentialEaseInOut />
-                                </Animation.Easing>
-                                <KeyFrame Cue="0%">
-                                    <Setter Property="Value"
-                                            Value="0" />
-                                </KeyFrame>
-                                <KeyFrame Cue="100%">
-                                    <Setter Property="Value"
-                                            Value="100" />
-                                </KeyFrame>
-                            </Animation>
-                        </Style.Animations>
-                    </Style>
-                </ProgressBar.Styles>
-            </ProgressBar>
-        </StackPanel>
+                <ProgressBar IsIndeterminate="{Binding #IsIndeterminate.IsChecked}"
+                             ShowProgressText="{Binding #ShowProgress.IsChecked}"
+                             Height="7"
+                             HorizontalAlignment="Center"
+                             Orientation="Vertical">
+                    <ProgressBar.Styles>
+                        <Style Selector="ProgressBar">
+                            <Style.Animations>
+                                <Animation Duration="0:0:11"
+                                           IterationCount="INFINITE"
+                                           PlaybackDirection="Normal">
+                                    <Animation.Easing>
+                                        <ExponentialEaseInOut />
+                                    </Animation.Easing>
+                                    <KeyFrame Cue="0%">
+                                        <Setter Property="Value"
+                                                Value="0" />
+                                    </KeyFrame>
+                                    <KeyFrame Cue="100%">
+                                        <Setter Property="Value"
+                                                Value="100" />
+                                    </KeyFrame>
+                                </Animation>
+                            </Style.Animations>
+                        </Style>
+                    </ProgressBar.Styles>
+                </ProgressBar>
+            </StackPanel>
 
-        <StackPanel Spacing="1">
-            <ProgressBar IsIndeterminate="True" />
-            <ProgressBar Value="5"
-                         Maximum="10" />
-            <ProgressBar Value="50" />
-            <ProgressBar Value="50"
-                         Minimum="25"
-                         Maximum="75" />
+            <StackPanel Spacing="1">
+                <ProgressBar IsIndeterminate="True" />
+                <ProgressBar Value="5"
+                             Maximum="10" />
+                <ProgressBar Value="50" />
+                <ProgressBar Value="50"
+                             Minimum="25"
+                             Maximum="75" />
+            </StackPanel>
         </StackPanel>
-    </StackPanel>
+    </ScrollViewer>
 </UserControl>
