@@ -1,9 +1,9 @@
-using Consolonia.Blazor;
+using BlazorBindingsAvalonia;
 using Example.Blazor.Components;
 
 namespace Example.Blazor
 {
-    public class App : ConsoloniaBlazorApplication<MainPage>
+    public class App : BlazorBindingsApplication<MainPage>
     {
     }
 }

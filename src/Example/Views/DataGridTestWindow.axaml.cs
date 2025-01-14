@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
@@ -15,9 +14,6 @@ namespace Example.Views
         public DataGridTestWindow()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
 
             Combo.ItemsSource = TheItem.Genres;
             var rnd = new Random();
