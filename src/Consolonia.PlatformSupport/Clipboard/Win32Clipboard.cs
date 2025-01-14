@@ -24,13 +24,16 @@ namespace Consolonia.PlatformSupport.Clipboard
 
             try
             {
+                if (!IsClipboardFormatAvailable(CF_UNICODETEXT))
+                    return Task.FromResult(String.Empty);
+
                 IntPtr handle = GetClipboardData(CF_UNICODETEXT);
                 if (handle == IntPtr.Zero)
-                    return Task.FromResult((string)null);
+                    return Task.FromResult(String.Empty);
 
                 IntPtr pointer = Kernel32.GlobalLock(handle);
                 if (pointer == IntPtr.Zero)
-                    return Task.FromResult((string)null);
+                    return Task.FromResult(String.Empty);
 
                 try
                 {
@@ -136,8 +139,8 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr GetClipboardData(uint uFormat);
- 
-        [DllImport("dlluser32.", SetLastError = true)]
+
+        [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool IsClipboardFormatAvailable(uint format);
 

@@ -80,17 +80,8 @@ namespace Consolonia
             return builder.With<IClipboard>(new InprocessClipboard());
         }
 
-        private static bool IsWslPlatform()
-        {
-            // xclip does not work on WSL, so we need to use the Windows clipboard vis Powershell
-            (int exitCode, string result) = ClipboardProcessRunner.Bash("uname -a", waitForOutput: true);
-
-            if (exitCode == 0 && result.Contains("microsoft", StringComparison.OrdinalIgnoreCase) &&
-                result.Contains("WSL", StringComparison.OrdinalIgnoreCase)) return true;
-
-            return false;
-        }
-
+        public static bool IsWslPlatform()
+            => !String.IsNullOrEmpty(Environment.GetEnvironmentVariable("WSL_DISTRO_NAME"));
 
         public static AppBuilder UseAutoDetectConsoleColorMode(this AppBuilder builder)
         {
