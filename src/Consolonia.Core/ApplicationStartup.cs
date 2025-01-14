@@ -84,7 +84,7 @@ namespace Consolonia
 
             // Application has been instantiated here.
             // We need to initialize it
-            
+
             // override AccessText to use ConsoloniaAccessText as default ContentPresenter for unknown data types (aka string)
             Application.Current.DataTemplates.Add(new FuncDataTemplate<object>(
                 (data, _) =>

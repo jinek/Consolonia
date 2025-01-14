@@ -28,9 +28,7 @@ namespace Consolonia.Gallery
                 Styles.Add(new TurboVisionTheme());
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
                 desktop.MainWindow = new ControlsListView();
-            }
 
             base.OnFrameworkInitializationCompleted();
         }
