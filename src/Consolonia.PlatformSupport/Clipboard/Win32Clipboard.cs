@@ -22,15 +22,15 @@ namespace Consolonia.PlatformSupport.Clipboard
             try
             {
                 if (!IsClipboardFormatAvailable(CF_UNICODETEXT))
-                    return Task.FromResult(String.Empty);
+                    return Task.FromResult(string.Empty);
 
                 IntPtr handle = GetClipboardData(CF_UNICODETEXT);
                 if (handle == IntPtr.Zero)
-                    return Task.FromResult(String.Empty);
+                    return Task.FromResult(string.Empty);
 
                 IntPtr pointer = GlobalLock(handle);
                 if (pointer == IntPtr.Zero)
-                    return Task.FromResult(String.Empty);
+                    return Task.FromResult(string.Empty);
 
                 try
                 {
@@ -57,11 +57,11 @@ namespace Consolonia.PlatformSupport.Clipboard
             {
                 EmptyClipboard();
 
-                var handle = Marshal.AllocHGlobal((text.Length + 1) * sizeof(char));
+                IntPtr handle = Marshal.AllocHGlobal((text.Length + 1) * sizeof(char));
                 if (handle == IntPtr.Zero)
                     throw new Win32Exception(Marshal.GetLastWin32Error());
 
-                var pointer = GlobalLock(handle);
+                IntPtr pointer = GlobalLock(handle);
                 if (pointer == IntPtr.Zero)
                     throw new Win32Exception(Marshal.GetLastWin32Error());
 
@@ -87,6 +87,7 @@ namespace Consolonia.PlatformSupport.Clipboard
             {
                 CloseClipboard();
             }
+
             return Task.CompletedTask;
         }
 

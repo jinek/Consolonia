@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input.Platform;
@@ -61,10 +60,7 @@ namespace Consolonia
         /// </remarks>
         public static AppBuilder UseAutoDetectClipboard(this AppBuilder builder)
         {
-            if (OperatingSystem.IsWindows())
-            {
-                return builder.With<IClipboard>(new Win32Clipboard());
-            }
+            if (OperatingSystem.IsWindows()) return builder.With<IClipboard>(new Win32Clipboard());
 
             if (OperatingSystem.IsMacOS()) return builder.With<IClipboard>(new MacClipboard());
 
@@ -81,7 +77,9 @@ namespace Consolonia
         }
 
         public static bool IsWslPlatform()
-            => !String.IsNullOrEmpty(Environment.GetEnvironmentVariable("WSL_DISTRO_NAME"));
+        {
+            return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WSL_DISTRO_NAME"));
+        }
 
         public static AppBuilder UseAutoDetectConsoleColorMode(this AppBuilder builder)
         {

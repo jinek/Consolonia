@@ -19,16 +19,15 @@ namespace Consolonia.Core.Tests
             string text = await clipboard.GetTextAsync();
 
             await clipboard.SetTextAsync("Hello, World!");
-            var hello = await clipboard.GetTextAsync();
+            string hello = await clipboard.GetTextAsync();
             Assert.AreEqual("Hello, World!", hello);
             await clipboard.ClearAsync();
-            Assert.AreEqual(String.Empty, await clipboard.GetTextAsync());
+            Assert.AreEqual(string.Empty, await clipboard.GetTextAsync());
 
             // restore clipboard
             await clipboard.SetTextAsync(text);
         }
 
-        // NOTE: This can mess up your clipboard state !
         [Test]
         [Ignore("This doesn't run on server because X11 no there")]
         public async Task PlatformClipboardTest()
@@ -44,13 +43,15 @@ namespace Consolonia.Core.Tests
             string text = await clipboard.GetTextAsync();
 
             await clipboard.SetTextAsync("Hello, World!");
-            var hello = await clipboard.GetTextAsync();
+            string hello = await clipboard.GetTextAsync();
             Assert.AreEqual("Hello, World!", hello);
             await clipboard.ClearAsync();
-            Assert.AreEqual(String.Empty, await clipboard.GetTextAsync());
+            Assert.AreEqual(string.Empty, await clipboard.GetTextAsync());
 
             // restore clipboard
             await clipboard.SetTextAsync(text);
         }
+
+        // NOTE: This can mess up your clipboard state !
     }
 }
