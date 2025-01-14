@@ -32,9 +32,6 @@ namespace Consolonia.Gallery.View
 
             DataContext = new ControlsListViewModel();
 
-#if DEBUG
-            this.AttachDevTools();
-#endif
             GalleryGrid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
 
             if (Application.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)

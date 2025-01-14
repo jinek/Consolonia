@@ -3,7 +3,6 @@
     <ItemGroup>
       <PackageReference Include="Medo.X11Clipboard" Version="1.0.0" />
       <PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.4" />
-      <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.4" />
     </ItemGroup>
 
     <ItemGroup>

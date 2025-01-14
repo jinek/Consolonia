@@ -63,13 +63,7 @@ namespace Consolonia
         {
             if (OperatingSystem.IsWindows())
             {
-                // we can consume the avalonia clipboard implementation because it's self contained enough for us to reach inside and pull it out.
-                Assembly assembly = Assembly.Load("Avalonia.Win32");
-                ArgumentNullException.ThrowIfNull(assembly, "Avalonia.Win32");
-                Type type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
-                ArgumentNullException.ThrowIfNull(type, "ClipboardImpl");
-                var clipboard = Activator.CreateInstance(type) as IClipboard;
-                return builder.With(clipboard ?? new InprocessClipboard());
+                return builder.With<IClipboard>(new Win32Clipboard());
             }
 
             if (OperatingSystem.IsMacOS()) return builder.With<IClipboard>(new MacClipboard());
