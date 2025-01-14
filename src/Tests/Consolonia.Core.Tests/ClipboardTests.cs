@@ -29,8 +29,9 @@ namespace Consolonia.Core.Tests
         }
 
         // NOTE: This can mess up your clipboard state !
-        //[Test]
-        public async Task Win32ClipboardTest()
+        [Test]
+        [Ignore("This doesn't run on server because X11 no there")]
+        public async Task PlatformClipboardTest()
         {
             IClipboard clipboard = Environment.OSVersion.Platform switch
             {
