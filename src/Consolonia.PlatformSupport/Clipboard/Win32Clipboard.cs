@@ -123,9 +123,11 @@ namespace Consolonia.PlatformSupport.Clipboard
 
 #pragma warning disable CA5392 // Use DefaultDllImportSearchPaths attribute for P/Invokes
 
+        // ReSharper disable InconsistentNaming
 #pragma warning disable CA1707 // Identifiers should not contain underscores
         public const uint CF_UNICODETEXT = 13;
 #pragma warning restore CA1707 // Identifiers should not contain underscores
+        // ReSharper enable InconsistentNaming
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
