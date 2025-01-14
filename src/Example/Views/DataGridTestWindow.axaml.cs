@@ -14,9 +14,6 @@ namespace Example.Views
         public DataGridTestWindow()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
 
             Combo.ItemsSource = TheItem.Genres;
             var rnd = new Random();
