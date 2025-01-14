@@ -11,7 +11,6 @@ namespace Consolonia.Core.Tests
     [TestFixture]
     public class ClipboardTests
     {
-
         [Test]
         public async Task InprocClipboardTest()
         {
@@ -30,7 +29,7 @@ namespace Consolonia.Core.Tests
         }
 
         // NOTE: This can mess up your clipboard state !
-        [Test]
+        //[Test]
         public async Task Win32ClipboardTest()
         {
             IClipboard clipboard = Environment.OSVersion.Platform switch

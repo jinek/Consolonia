@@ -5,14 +5,11 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
-using Vanara.PInvoke;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
     /// <summary>
-    ///     A clipboard implementation for Linux, when running under WSL. This implementation uses the Windows clipboard
-    ///     to store the data, and uses Windows' powershell.exe (launched via WSL interop services) to set/get the Windows
-    ///     clipboard.
+    ///     A clipboard implementation for Win32 using PINvoke
     /// </summary>
     [SupportedOSPlatform("windows")]
     public class Win32Clipboard : IClipboard
@@ -31,7 +28,7 @@ namespace Consolonia.PlatformSupport.Clipboard
                 if (handle == IntPtr.Zero)
                     return Task.FromResult(String.Empty);
 
-                IntPtr pointer = Kernel32.GlobalLock(handle);
+                IntPtr pointer = GlobalLock(handle);
                 if (pointer == IntPtr.Zero)
                     return Task.FromResult(String.Empty);
 
@@ -42,7 +39,7 @@ namespace Consolonia.PlatformSupport.Clipboard
                 }
                 finally
                 {
-                    Kernel32.GlobalUnlock(handle);
+                    GlobalUnlock(handle);
                 }
             }
             finally
@@ -64,7 +61,7 @@ namespace Consolonia.PlatformSupport.Clipboard
                 if (handle == IntPtr.Zero)
                     throw new Win32Exception(Marshal.GetLastWin32Error());
 
-                var pointer = Kernel32.GlobalLock(handle);
+                var pointer = GlobalLock(handle);
                 if (pointer == IntPtr.Zero)
                     throw new Win32Exception(Marshal.GetLastWin32Error());
 
@@ -81,9 +78,9 @@ namespace Consolonia.PlatformSupport.Clipboard
                 finally
                 {
                     if (handle != IntPtr.Zero)
-                        Kernel32.GlobalFree(handle);
+                        GlobalFree(handle);
 
-                    Kernel32.GlobalUnlock(pointer);
+                    GlobalUnlock(pointer);
                 }
             }
             finally
@@ -150,6 +147,16 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr SetClipboardData(uint uFormat, IntPtr data);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GlobalLock(IntPtr hMem);
+
+        [DllImport("kernel32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GlobalUnlock(IntPtr hMem);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GlobalFree(IntPtr hMem);
 #pragma warning restore CA5392 // Use DefaultDllImportSearchPaths attribute for P/Invokes
     }
 }
