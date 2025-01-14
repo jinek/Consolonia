@@ -1,12 +1,16 @@
+using System;
 using System.Globalization;
 using System.Threading;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
 using Consolonia.Themes;
 
 namespace Consolonia.Gallery
 {
-    internal class App : ConsoloniaApplication<ControlsListView>
+    internal class App : Application
     {
         static App()
         {
@@ -25,7 +29,14 @@ namespace Consolonia.Gallery
             else
                 Styles.Add(new TurboVisionTheme());
 
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                desktop.MainWindow = new ControlsListView();
+            }
+
             base.OnFrameworkInitializationCompleted();
+
+            this.InitializeConsolonia();
         }
     }
 }

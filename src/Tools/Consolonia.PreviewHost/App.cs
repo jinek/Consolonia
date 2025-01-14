@@ -1,12 +1,14 @@
 using System.Globalization;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Consolonia.Core.Helpers;
 using Consolonia.PreviewHost.ViewModels;
 using Consolonia.PreviewHost.Views;
 using Consolonia.Themes;
 
 namespace Consolonia.PreviewHost
 {
-    public class App : ConsoloniaApplication
+    public class App : Application
     {
         static App()
         {
@@ -73,6 +75,8 @@ namespace Consolonia.PreviewHost
                     };
 
                 base.OnFrameworkInitializationCompleted();
+
+                this.InitializeConsolonia();
             }
         }
 
