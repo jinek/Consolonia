@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Consolonia;
-using Consolonia.Core.Helpers;
 using Consolonia.Themes;
 using Example.Views;
 

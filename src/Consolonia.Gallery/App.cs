@@ -1,9 +1,7 @@
-using System;
 using System.Globalization;
 using System.Threading;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
 using Consolonia.Themes;
@@ -30,9 +28,7 @@ namespace Consolonia.Gallery
                 Styles.Add(new TurboVisionTheme());
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
                 desktop.MainWindow = new ControlsListView();
-            }
 
             base.OnFrameworkInitializationCompleted();
 

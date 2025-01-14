@@ -11,7 +11,6 @@ namespace Consolonia
 {
     public static class ApplicationExtensions
     {
-
         public static void InitializeConsolonia(this Application application)
         {
             // override AccessText to use ConsoloniaAccessText as default ContentPresenter for unknown data types (aka string)

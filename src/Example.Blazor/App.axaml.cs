@@ -12,6 +12,5 @@ namespace Example.Blazor
 
             this.InitializeConsolonia();
         }
-
     }
 }
