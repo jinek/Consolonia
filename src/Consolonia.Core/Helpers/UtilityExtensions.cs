@@ -62,7 +62,6 @@ namespace Consolonia.Core.Helpers
             }
         }
 
-
         /// <summary>
         ///     Process text into collection of glyphs where a glyph is either text or a combination of chars which make up an
         ///     emoji.
