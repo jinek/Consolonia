@@ -1,7 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Templates;
 using Avalonia.Platform;
+using Consolonia.Core.Controls;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
@@ -79,6 +81,27 @@ namespace Consolonia
                 ShutdownMode = ShutdownMode.OnMainWindowClose
             };
             builder.SetupWithLifetime(lifetime);
+
+            // Application has been instantiated here.
+            // We need to initialize it
+            
+            // override AccessText to use ConsoloniaAccessText as default ContentPresenter for unknown data types (aka string)
+            Application.Current.DataTemplates.Add(new FuncDataTemplate<object>(
+                (data, _) =>
+                {
+                    if (data != null)
+                    {
+                        var result = new ConsoloniaAccessText();
+                        // ReSharper disable AccessToStaticMemberViaDerivedType
+                        result.Bind(TextBlock.TextProperty,
+                            result.GetBindingObservable(Control.DataContextProperty, x => x?.ToString()));
+                        return result;
+                    }
+
+                    return null;
+                },
+                true)
+            );
 
             return lifetime;
         }

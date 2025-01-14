@@ -1,9 +1,7 @@
-using System;
 using System.Globalization;
 using System.Threading;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Gallery.View;
 using Consolonia.Themes;
@@ -35,8 +33,6 @@ namespace Consolonia.Gallery
             }
 
             base.OnFrameworkInitializationCompleted();
-
-            this.InitializeConsolonia();
         }
     }
 }
