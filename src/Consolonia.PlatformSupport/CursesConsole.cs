@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
-using Avalonia.Threading;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Unix.Terminal;

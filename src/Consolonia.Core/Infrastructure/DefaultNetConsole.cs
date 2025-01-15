@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Avalonia.Input;
-using Avalonia.Threading;
 using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Infrastructure

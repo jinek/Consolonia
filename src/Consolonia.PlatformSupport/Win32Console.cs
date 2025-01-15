@@ -11,7 +11,6 @@ using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
-using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
@@ -127,14 +126,12 @@ namespace Consolonia.PlatformSupport
                         // when console is translating CTRL+V to sequence of key strokes it comes in as multiple key events.
                         await ProcessClipboardInputAsync(clipboard, inputRecords);
                     else
-                    {
                         await DispatchInputAsync(() =>
                         {
                             foreach (INPUT_RECORD inputRecord in inputRecords)
-                                HandleInputRecord(inputRecord); 
+                                HandleInputRecord(inputRecord);
                         });
-                        //todo: check all dispatching happens with Input priority
-                    }
+                    //todo: check all dispatching happens with Input priority
                 }
             });
         }

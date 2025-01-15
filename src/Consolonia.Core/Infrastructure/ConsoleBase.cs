@@ -61,6 +61,13 @@ namespace Consolonia.Core.Infrastructure
             }); //todo: we should rethrow in main thread, or may be we should keep the loop running, but raise some general handler if it already exists, like Dispatcher.UnhandledException or whatever + check other places we use Task.Run and async void
         }
 
+#pragma warning disable CA1822 // todo: low is it legit to invoke static Dispatcher, do we have instance somehwere available?
+        protected Task DispatchInputAsync(Action action)
+#pragma warning restore CA1822
+        {
+            return Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input).GetTask();
+        }
+
         #region IConsoleInput
 
         public abstract bool SupportsMouse { get; }
@@ -94,13 +101,6 @@ namespace Consolonia.Core.Infrastructure
         }
 
         #endregion
-
-#pragma warning disable CA1822 // todo: low is it legit to invoke static Dispatcher, do we have instance somehwere available?
-        protected Task DispatchInputAsync(Action action)
-#pragma warning restore CA1822
-        {
-            return Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input).GetTask();
-        }
 
         #region IConsoleOutput
 
@@ -183,12 +183,12 @@ namespace Consolonia.Core.Infrastructure
         public async Task<bool> CheckSize()
         {
             if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
-            
+
             await DispatchInputAsync(() =>
             {
                 Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
             });
-            
+
             return true;
         }
 
