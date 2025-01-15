@@ -131,7 +131,6 @@ namespace Consolonia.PlatformSupport
                             foreach (INPUT_RECORD inputRecord in inputRecords)
                                 HandleInputRecord(inputRecord);
                         });
-                    //todo: check all dispatching happens with Input priority
                 }
             });
         }

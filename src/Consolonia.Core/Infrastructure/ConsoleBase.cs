@@ -21,6 +21,7 @@ namespace Consolonia.Core.Infrastructure
     public abstract class ConsoleBase : IConsole, IDisposable
     {
         private readonly IConsoleOutput _consoleOutput;
+        private readonly Dispatcher _uiDispatcher;
 
         protected ConsoleBase(IConsoleOutput consoleOutput)
         {
@@ -28,6 +29,7 @@ namespace Consolonia.Core.Infrastructure
                 throw new ArgumentException("ConsoleBase cannot be used as a console output", nameof(consoleOutput));
 
             _consoleOutput = consoleOutput;
+            _uiDispatcher = Dispatcher.UIThread; // todo: low possible to inject?
         }
 
         protected bool Disposed { get; private set; }
@@ -55,7 +57,7 @@ namespace Consolonia.Core.Infrastructure
                     if (pauseTask != null)
                         await pauseTask;
 
-                    int timeout = (int)(await CheckSize() ? 1 : slowInterval);
+                    int timeout = (int)(await CheckSizeAsync() ? 1 : slowInterval);
                     await Task.Delay(timeout);
                 }
             }); //todo: we should rethrow in main thread, or may be we should keep the loop running, but raise some general handler if it already exists, like Dispatcher.UnhandledException or whatever + check other places we use Task.Run and async void
@@ -65,7 +67,7 @@ namespace Consolonia.Core.Infrastructure
         protected Task DispatchInputAsync(Action action)
 #pragma warning restore CA1822
         {
-            return Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input).GetTask();
+            return _uiDispatcher.InvokeAsync(action, DispatcherPriority.Input).GetTask();
         }
 
         #region IConsoleInput
@@ -180,7 +182,7 @@ namespace Consolonia.Core.Infrastructure
             _consoleOutput.WriteText(str);
         }
 
-        public async Task<bool> CheckSize()
+        public async Task<bool> CheckSizeAsync()
         {
             if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
 
