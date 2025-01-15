@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
+using DotNet.Globbing;
 
 namespace Consolonia.Core.Controls
 {
@@ -12,7 +13,8 @@ namespace Consolonia.Core.Controls
 
         [ObservableProperty] private ObservableCollection<IStorageFile> _selectedFiles = new();
 
-        [ObservableProperty] [NotifyPropertyChangedFor(nameof(CurrentFolderPath))]
+        [ObservableProperty] 
+        [NotifyPropertyChangedFor(nameof(CurrentFolderPath))]
         private int _selectedFilterIndex;
 
         [ObservableProperty] private SelectionMode _selectionMode;
@@ -36,8 +38,10 @@ namespace Consolonia.Core.Controls
                     return true;
 
                 foreach (string pattern in selectedFileType.Patterns)
-                    if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))
+                {
+                    if (Glob.Parse(pattern).IsMatch(item.Name))
                         return true;
+                }
                 return false;
             }
 
