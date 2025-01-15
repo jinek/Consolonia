@@ -2,12 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    mc:Ignorable="d"
-                    xmlns:v="using:Consolonia.Designer">
+                    xmlns:designer="clr-namespace:Consolonia.Designer;assembly=Consolonia.Designer"
+                    mc:Ignorable="d">
     <Design.PreviewWith>
-        <v:ConsolePreview Columns="80"
-                          Rows="40"
-                          FileName="GalleryTextBlock.axaml" />
+        <designer:ConsolePreview Columns="80"
+                                 Rows="40"
+                                 FileName="GalleryTextBlock.axaml" />
     </Design.PreviewWith>
 
 </ResourceDictionary>

@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input.Platform;
@@ -61,16 +60,7 @@ namespace Consolonia
         /// </remarks>
         public static AppBuilder UseAutoDetectClipboard(this AppBuilder builder)
         {
-            if (OperatingSystem.IsWindows())
-            {
-                // we can consume the avalonia clipboard implementation because it's self contained enough for us to reach inside and pull it out.
-                Assembly assembly = Assembly.Load("Avalonia.Win32");
-                ArgumentNullException.ThrowIfNull(assembly, "Avalonia.Win32");
-                Type type = assembly.GetType(assembly.GetName().Name + ".ClipboardImpl");
-                ArgumentNullException.ThrowIfNull(type, "ClipboardImpl");
-                var clipboard = Activator.CreateInstance(type) as IClipboard;
-                return builder.With(clipboard ?? new InprocessClipboard());
-            }
+            if (OperatingSystem.IsWindows()) return builder.With<IClipboard>(new Win32Clipboard());
 
             if (OperatingSystem.IsMacOS()) return builder.With<IClipboard>(new MacClipboard());
 
@@ -86,17 +76,10 @@ namespace Consolonia
             return builder.With<IClipboard>(new InprocessClipboard());
         }
 
-        private static bool IsWslPlatform()
+        public static bool IsWslPlatform()
         {
-            // xclip does not work on WSL, so we need to use the Windows clipboard vis Powershell
-            (int exitCode, string result) = ClipboardProcessRunner.Bash("uname -a", waitForOutput: true);
-
-            if (exitCode == 0 && result.Contains("microsoft", StringComparison.OrdinalIgnoreCase) &&
-                result.Contains("WSL", StringComparison.OrdinalIgnoreCase)) return true;
-
-            return false;
+            return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WSL_DISTRO_NAME"));
         }
-
 
         public static AppBuilder UseAutoDetectConsoleColorMode(this AppBuilder builder)
         {
