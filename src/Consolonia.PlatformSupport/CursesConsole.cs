@@ -143,7 +143,9 @@ namespace Consolonia.PlatformSupport
             {
                 while (!Disposed)
                 {
-                    PauseTask?.Wait();
+                    Task pauseTask = PauseTask;
+                    if (pauseTask != null)
+                        await pauseTask;
                     await ProcessInput();
                 }
             });
