@@ -22,14 +22,29 @@ namespace Consolonia.Core.Infrastructure
 
         public Action Changed { get; set; }
 
-        public Task<bool> RequestScreenDetails() => Task.FromResult(true);
+        public Task<bool> RequestScreenDetails()
+        {
+            return Task.FromResult(true);
+        }
 
-        public Screen ScreenFromPoint(PixelPoint point) => _screens[0];
+        public Screen ScreenFromPoint(PixelPoint point)
+        {
+            return _screens[0];
+        }
 
-        public Screen ScreenFromRect(PixelRect rect) => _screens[0];
+        public Screen ScreenFromRect(PixelRect rect)
+        {
+            return _screens[0];
+        }
 
-        public Screen ScreenFromTopLevel(ITopLevelImpl topLevel) => _screens[0];
+        public Screen ScreenFromTopLevel(ITopLevelImpl topLevel)
+        {
+            return _screens[0];
+        }
 
-        public Screen ScreenFromWindow(IWindowBaseImpl window) => _screens[0];
+        public Screen ScreenFromWindow(IWindowBaseImpl window)
+        {
+            return _screens[0];
+        }
     }
 }
