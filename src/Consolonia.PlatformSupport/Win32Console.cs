@@ -11,6 +11,7 @@ using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
+using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
@@ -124,10 +125,16 @@ namespace Consolonia.PlatformSupport
                     if (clipboard != null &&
                         inputRecords.Where(evt => evt.EventType == EVENT_TYPE.KEY_EVENT).Skip(1).Any())
                         // when console is translating CTRL+V to sequence of key strokes it comes in as multiple key events.
-                        await ProcessClipboardInput(clipboard, inputRecords);
+                        await ProcessClipboardInputAsync(clipboard, inputRecords);
                     else
-                        foreach (INPUT_RECORD inputRecord in inputRecords)
-                            HandleInputRecord(inputRecord);
+                    {
+                        await DispatchInputAsync(() =>
+                        {
+                            foreach (INPUT_RECORD inputRecord in inputRecords)
+                                HandleInputRecord(inputRecord); 
+                        });
+                        //todo: check all dispatching happens with Input priority
+                    }
                 }
             });
         }
@@ -138,21 +145,24 @@ namespace Consolonia.PlatformSupport
         /// <param name="clipboard"></param>
         /// <param name="inputRecords"></param>
         /// <returns></returns>
-        private async Task ProcessClipboardInput(IClipboard clipboard, INPUT_RECORD[] inputRecords)
+        private async Task ProcessClipboardInputAsync(IClipboard clipboard, INPUT_RECORD[] inputRecords)
         {
             string clipboardText = await clipboard?.GetTextAsync() ?? string.Empty;
             if (clipboardText.Trim().Length == 0)
             {
                 // no text in clipboard, just process input records
-                foreach (INPUT_RECORD inputRecord in inputRecords)
-                    HandleInputRecord(inputRecord);
+                await DispatchInputAsync(() =>
+                {
+                    foreach (INPUT_RECORD inputRecord in inputRecords)
+                        HandleInputRecord(inputRecord);
+                });
                 return;
             }
 
             // KEY_EVENTS will emit \r instead of \n, so we need to remove \n from clipboard text
             clipboardText = clipboardText.Replace("\n", string.Empty, StringComparison.Ordinal);
             var bufferText = new StringBuilder();
-            List<INPUT_RECORD> bufferedKeyEvents = new();
+            List<INPUT_RECORD> bufferedKeyEvents = [];
 
             while (inputRecords.Any())
             {
@@ -162,8 +172,8 @@ namespace Consolonia.PlatformSupport
                     INPUT_RECORD inputRecord = inputRecords[i];
                     if (inputRecord.EventType != EVENT_TYPE.KEY_EVENT)
                     {
-                        // handle non-key board events 
-                        HandleInputRecord(inputRecord);
+                        // handle non-key board events
+                        await DispatchInputAsync(() => { HandleInputRecord(inputRecord); });
                     }
                     else
                     {
@@ -182,23 +192,32 @@ namespace Consolonia.PlatformSupport
                                 // buffered text matches clipboard, emit CTRL+V sequence and ignore buffered keyboard events
                                 //foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
                                 //    HandleKeyInput(ctrlVEvent);
-                                RaiseTextInput(currentBufferText, (ulong)Stopwatch.GetTimestamp());
+                                await DispatchInputAsync(() =>
+                                {
+                                    RaiseTextInput(currentBufferText, (ulong)Stopwatch.GetTimestamp());
+                                });
 
                                 // process remaining input records
-                                for (++i; i < inputRecords.Length; i++)
-                                    HandleInputRecord(inputRecords[i]);
+                                await DispatchInputAsync(() =>
+                                {
+                                    for (++i; i < inputRecords.Length; i++)
+                                        HandleInputRecord(inputRecords[i]);
+                                });
                                 return;
                             }
 
                             if (!clipboardText.StartsWith(currentBufferText, StringComparison.Ordinal))
                             {
-                                // buffered text doesn't match clipboard, emit buffered key events (we already played other events live)
-                                foreach (INPUT_RECORD bufferedEvent in bufferedKeyEvents)
-                                    HandleInputRecord(bufferedEvent);
+                                await DispatchInputAsync(() =>
+                                {
+                                    // buffered text doesn't match clipboard, emit buffered key events (we already played other events live)
+                                    foreach (INPUT_RECORD bufferedEvent in bufferedKeyEvents)
+                                        HandleInputRecord(bufferedEvent);
 
-                                // process remaining input records
-                                for (++i; i < inputRecords.Length; i++)
-                                    HandleInputRecord(inputRecords[i]);
+                                    // process remaining input records
+                                    for (++i; i < inputRecords.Length; i++)
+                                        HandleInputRecord(inputRecords[i]);
+                                });
                                 return;
                             }
                         }

@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Text;
@@ -54,10 +55,10 @@ namespace Consolonia.Core.Infrastructure
                     if (pauseTask != null)
                         await pauseTask;
 
-                    int timeout = (int)(CheckSize() ? 1 : slowInterval);
+                    int timeout = (int)(await CheckSize() ? 1 : slowInterval);
                     await Task.Delay(timeout);
                 }
-            });
+            }); //todo: we should rethrow in main thread, or may be we should keep the loop running, but raise some general handler if it already exists, like Dispatcher.UnhandledException or whatever + check other places we use Task.Run and async void
         }
 
         #region IConsoleInput
@@ -93,6 +94,13 @@ namespace Consolonia.Core.Infrastructure
         }
 
         #endregion
+
+#pragma warning disable CA1822 // todo: low is it legit to invoke static Dispatcher, do we have instance somehwere available?
+        protected Task DispatchInputAsync(Action action)
+#pragma warning restore CA1822
+        {
+            return Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input).GetTask();
+        }
 
         #region IConsoleOutput
 
@@ -172,12 +180,15 @@ namespace Consolonia.Core.Infrastructure
             _consoleOutput.WriteText(str);
         }
 
-        public virtual bool CheckSize()
+        public async Task<bool> CheckSize()
         {
             if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
-
-            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
-            Resized?.Invoke();
+            
+            await DispatchInputAsync(() =>
+            {
+                Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+            });
+            
             return true;
         }
 

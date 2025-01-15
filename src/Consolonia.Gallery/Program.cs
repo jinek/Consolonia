@@ -17,7 +17,8 @@ namespace Consolonia.Gallery
         {
             return AppBuilder.Configure<App>()
                 .UseConsolonia()
-                .UseAutoDetectedConsole()
+                //.UseAutoDetectedConsole()
+                .UseStandardConsole()
                 .LogToException();
         }
     }
