@@ -6,8 +6,8 @@
                     mc:Ignorable="d">
     <Design.PreviewWith>
         <designer:ConsolePreview Columns="80"
-                          Rows="40"
-                          FileName="GalleryTextBlock.axaml" />
+                                 Rows="40"
+                                 FileName="GalleryTextBlock.axaml" />
     </Design.PreviewWith>
 
 </ResourceDictionary>
