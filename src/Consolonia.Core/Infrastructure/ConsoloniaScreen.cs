@@ -8,10 +8,12 @@ namespace Consolonia.Core.Infrastructure
 {
     public class ConsoloniaScreen : IScreenImpl
     {
-        private Screen[] _screens = [new Screen(0.0, new PixelRect(0, 0, 1920, 1080), new PixelRect(0, 0, 1920, 1080), true)];
 
-        public ConsoloniaScreen()
+        private Screen[] _screens;
+
+        public ConsoloniaScreen(PixelRect rect)
         {
+            _screens = [new Screen(0.0, rect, rect, true) ];
         }
 
         public int ScreenCount => 1;

@@ -280,7 +280,7 @@ namespace Consolonia.Core.Infrastructure
             }
 
             if (featureType == typeof(IScreenImpl))
-                return new ConsoloniaScreen();
+                return new ConsoloniaScreen(new PixelRect(0, 0, this.Console.Size.Width, this.Console.Size.Height));
 
             // TODO ISystemNavigationManagerImpl should be implemented to handle BACK navigation between pages of controls like mobile apps do.
             // TODO ITextInputMethodImpl should be implemented to handle text IME input
