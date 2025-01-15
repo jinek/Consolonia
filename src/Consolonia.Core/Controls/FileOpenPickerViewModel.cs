@@ -39,7 +39,7 @@ namespace Consolonia.Core.Controls
 
                 foreach (string pattern in selectedFileType.Patterns)
                 {
-                    if (Glob.Parse(pattern).IsMatch(item.Name))
+                    if (Glob.Parse(pattern).IsMatch(file.Name))
                         return true;
                 }
                 return false;
