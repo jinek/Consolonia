@@ -216,13 +216,13 @@ namespace Consolonia.Core.Infrastructure
 
         public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
-            //todo: can we deny resizing?
+            // todo: can we deny resizing? TODO We could consider resizing the console window
         }
 
 
         public void Move(PixelPoint point)
         {
-            throw new NotImplementedException();
+            // ignore move request, TODO We could consider moving the console window
         }
 
         public void SetMinMaxSize(Size minSize, Size maxSize)
@@ -278,6 +278,9 @@ namespace Consolonia.Core.Infrastructure
                 if (clipboard != null)
                     return clipboard;
             }
+
+            if (featureType == typeof(IScreenImpl))
+                return new ConsoloniaScreen();
 
             // TODO ISystemNavigationManagerImpl should be implemented to handle BACK navigation between pages of controls like mobile apps do.
             // TODO ITextInputMethodImpl should be implemented to handle text IME input
