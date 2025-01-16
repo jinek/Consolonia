@@ -54,7 +54,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                             new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
                         FileTypeFilter = new List<FilePickerFileType>
                         {
-                            new("All files") { Patterns = ["*"] },
+                            new("* files") { Patterns = ["*"] },
+                            new("*.* files") { Patterns = ["*.*"] },
                             new("Text") { Patterns = ["*.txt"] },
                             new("Comma Delimited Files") { Patterns = ["*.csv"] },
                             new("PDF") { Patterns = ["*.pdf"] }
