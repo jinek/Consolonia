@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using Avalonia.Input;
-using Consolonia.Core.Helpers;
 using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Infrastructure
@@ -48,8 +46,6 @@ namespace Consolonia.Core.Infrastructure
             (ConsoleModifiers.Shift, RawInputModifiers.Shift), (ConsoleModifiers.Alt, RawInputModifiers.Alt)
         ]);
 
-        private readonly CustomBuffer<ConsoleKeyInfo> _inputBuffer;
-
         public override bool SupportsAltSolo => false;
 
         public override bool SupportsMouse => false;
@@ -59,18 +55,6 @@ namespace Consolonia.Core.Infrastructure
         public DefaultNetConsole()
             : base(new DefaultNetConsoleOutput())
         {
-            _inputBuffer = new CustomBuffer<ConsoleKeyInfo>(() =>
-            {
-                while (true)
-                    try
-                    {
-                        return Console.ReadKey(true);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                    }
-            });
-            
             // ReSharper disable VirtualMemberCallInConstructor
             PrepareConsole();
 
@@ -80,30 +64,34 @@ namespace Consolonia.Core.Infrastructure
 
         private void StartInputReading()
         {
-            _inputBuffer.RunAsync();
-            
             ThreadPool.QueueUserWorkItem(async _ =>
             {
                 while (!Disposed)
                 {
                     PauseTask?.Wait();
 
-                    var consoleKeyInfos = _inputBuffer.Dequeue();
-                    
+                    ConsoleKeyInfo consoleKeyInfo;
+                    try
+                    {
+                        consoleKeyInfo = Console.ReadKey(true);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        continue;
+                    }
+
+                    Key key = ConvertToKey(consoleKeyInfo.Key);
+
+                    RawInputModifiers rawInputModifiers = ModifiersFlagsTranslator.Translate(consoleKeyInfo.Modifiers);
+
                     await DispatchInputAsync(() =>
                     {
-                        foreach (ConsoleKeyInfo consoleKeyInfo in consoleKeyInfos)
-                        {
-                            Key key = ConvertToKey(consoleKeyInfo.Key);
-                            RawInputModifiers rawInputModifiers = ModifiersFlagsTranslator.Translate(consoleKeyInfo.Modifiers);
-                            
-                            RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
-                                (ulong)Stopwatch.GetTimestamp());
-                            Thread.Yield(); //todo: low is yielding necessary here?
-                            RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
-                                (ulong)Stopwatch.GetTimestamp());
-                            Thread.Yield();
-                        }
+                        RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
+                            (ulong)Stopwatch.GetTimestamp());
+                        Thread.Yield(); //todo: low is yielding necessary here?
+                        RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
+                            (ulong)Stopwatch.GetTimestamp());
+                        Thread.Yield();
                     });
                 }
             });
