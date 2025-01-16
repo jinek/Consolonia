@@ -211,7 +211,7 @@ namespace Consolonia.PlatformSupport
                                     // process remaining input records
                                     for (++i; i < inputRecords.Length; i++)
                                         HandleInputRecord(inputRecords[i]);
-                                    
+
                                     breakTheLoop = true;
                                     return;
                                 }
