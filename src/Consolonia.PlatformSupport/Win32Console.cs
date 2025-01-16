@@ -160,51 +160,49 @@ namespace Consolonia.PlatformSupport
             var bufferText = new StringBuilder();
             List<INPUT_RECORD> bufferedKeyEvents = [];
 
-            while (inputRecords.Any())
+            bool breakTheLoop = false;
+            while (inputRecords.Any() && !breakTheLoop)
             {
                 // process all input records
-                for (int i = 0; i < inputRecords.Length; i++)
+
+                await DispatchInputAsync(() =>
                 {
-                    INPUT_RECORD inputRecord = inputRecords[i];
-                    if (inputRecord.EventType != EVENT_TYPE.KEY_EVENT)
+                    for (int i = 0; i < inputRecords.Length; i++)
                     {
-                        // handle non-key board events
-                        await DispatchInputAsync(() => { HandleInputRecord(inputRecord); });
-                    }
-                    else
-                    {
-                        // capture the key event so we can play it back if we don't match clipboard text
-                        bufferedKeyEvents.Add(inputRecord);
-
-                        // for key down events for chars that are not 0 (control keys)
-                        if (inputRecord.Event.KeyEvent.bKeyDown && inputRecord.Event.KeyEvent.uChar != 0)
+                        INPUT_RECORD inputRecord = inputRecords[i];
+                        if (inputRecord.EventType != EVENT_TYPE.KEY_EVENT)
                         {
-                            // append the char to the buffer text
-                            bufferText.Append(inputRecord.Event.KeyEvent.uChar);
+                            // handle non-key board events
+                            HandleInputRecord(inputRecord);
+                        }
+                        else
+                        {
+                            // capture the key event so we can play it back if we don't match clipboard text
+                            bufferedKeyEvents.Add(inputRecord);
 
-                            string currentBufferText = bufferText.ToString();
-                            if (clipboardText.Trim() == currentBufferText.Trim())
+                            // for key down events for chars that are not 0 (control keys)
+                            if (inputRecord.Event.KeyEvent.bKeyDown && inputRecord.Event.KeyEvent.uChar != 0)
                             {
-                                // buffered text matches clipboard, emit CTRL+V sequence and ignore buffered keyboard events
-                                //foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
-                                //    HandleKeyInput(ctrlVEvent);
-                                await DispatchInputAsync(() =>
-                                {
-                                    RaiseTextInput(currentBufferText, (ulong)Stopwatch.GetTimestamp());
-                                });
+                                // append the char to the buffer text
+                                bufferText.Append(inputRecord.Event.KeyEvent.uChar);
 
-                                // process remaining input records
-                                await DispatchInputAsync(() =>
+                                string currentBufferText = bufferText.ToString();
+                                if (clipboardText.Trim() == currentBufferText.Trim())
                                 {
+                                    // buffered text matches clipboard, emit CTRL+V sequence and ignore buffered keyboard events
+                                    //foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
+                                    //    HandleKeyInput(ctrlVEvent);
+                                    RaiseTextInput(currentBufferText, (ulong)Stopwatch.GetTimestamp());
+
+                                    // process remaining input records
                                     for (++i; i < inputRecords.Length; i++)
                                         HandleInputRecord(inputRecords[i]);
-                                });
-                                return;
-                            }
 
-                            if (!clipboardText.StartsWith(currentBufferText, StringComparison.Ordinal))
-                            {
-                                await DispatchInputAsync(() =>
+                                    breakTheLoop = true;
+                                    return;
+                                }
+
+                                if (!clipboardText.StartsWith(currentBufferText, StringComparison.Ordinal))
                                 {
                                     // buffered text doesn't match clipboard, emit buffered key events (we already played other events live)
                                     foreach (INPUT_RECORD bufferedEvent in bufferedKeyEvents)
@@ -213,12 +211,14 @@ namespace Consolonia.PlatformSupport
                                     // process remaining input records
                                     for (++i; i < inputRecords.Length; i++)
                                         HandleInputRecord(inputRecords[i]);
-                                });
-                                return;
+                                    
+                                    breakTheLoop = true;
+                                    return;
+                                }
                             }
                         }
                     }
-                }
+                });
 
                 inputRecords = _windowsConsole.ReadConsoleInput();
             }
