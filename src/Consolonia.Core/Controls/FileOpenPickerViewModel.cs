@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
+using DotNet.Globbing;
 
 namespace Consolonia.Core.Controls
 {
@@ -36,7 +37,7 @@ namespace Consolonia.Core.Controls
                     return true;
 
                 foreach (string pattern in selectedFileType.Patterns)
-                    if (file.Path.LocalPath.EndsWith(pattern.TrimStart('*'), StringComparison.OrdinalIgnoreCase))
+                    if (Glob.Parse(pattern).IsMatch(file.Name))
                         return true;
                 return false;
             }
