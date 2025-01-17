@@ -124,10 +124,13 @@ namespace Consolonia.PlatformSupport
                     if (clipboard != null &&
                         inputRecords.Where(evt => evt.EventType == EVENT_TYPE.KEY_EVENT).Skip(1).Any())
                         // when console is translating CTRL+V to sequence of key strokes it comes in as multiple key events.
-                        await ProcessClipboardInput(clipboard, inputRecords);
+                        await ProcessClipboardInputAsync(clipboard, inputRecords);
                     else
-                        foreach (INPUT_RECORD inputRecord in inputRecords)
-                            HandleInputRecord(inputRecord);
+                        await DispatchInputAsync(() =>
+                        {
+                            foreach (INPUT_RECORD inputRecord in inputRecords)
+                                HandleInputRecord(inputRecord);
+                        });
                 }
             });
         }
@@ -138,72 +141,84 @@ namespace Consolonia.PlatformSupport
         /// <param name="clipboard"></param>
         /// <param name="inputRecords"></param>
         /// <returns></returns>
-        private async Task ProcessClipboardInput(IClipboard clipboard, INPUT_RECORD[] inputRecords)
+        private async Task ProcessClipboardInputAsync(IClipboard clipboard, INPUT_RECORD[] inputRecords)
         {
             string clipboardText = await clipboard?.GetTextAsync() ?? string.Empty;
             if (clipboardText.Trim().Length == 0)
             {
                 // no text in clipboard, just process input records
-                foreach (INPUT_RECORD inputRecord in inputRecords)
-                    HandleInputRecord(inputRecord);
+                await DispatchInputAsync(() =>
+                {
+                    foreach (INPUT_RECORD inputRecord in inputRecords)
+                        HandleInputRecord(inputRecord);
+                });
                 return;
             }
 
             // KEY_EVENTS will emit \r instead of \n, so we need to remove \n from clipboard text
             clipboardText = clipboardText.Replace("\n", string.Empty, StringComparison.Ordinal);
             var bufferText = new StringBuilder();
-            List<INPUT_RECORD> bufferedKeyEvents = new();
+            List<INPUT_RECORD> bufferedKeyEvents = [];
 
-            while (inputRecords.Any())
+            bool breakTheLoop = false;
+            while (inputRecords.Any() && !breakTheLoop)
             {
                 // process all input records
-                for (int i = 0; i < inputRecords.Length; i++)
+
+                await DispatchInputAsync(() =>
                 {
-                    INPUT_RECORD inputRecord = inputRecords[i];
-                    if (inputRecord.EventType != EVENT_TYPE.KEY_EVENT)
+                    for (int i = 0; i < inputRecords.Length; i++)
                     {
-                        // handle non-key board events 
-                        HandleInputRecord(inputRecord);
-                    }
-                    else
-                    {
-                        // capture the key event so we can play it back if we don't match clipboard text
-                        bufferedKeyEvents.Add(inputRecord);
-
-                        // for key down events for chars that are not 0 (control keys)
-                        if (inputRecord.Event.KeyEvent.bKeyDown && inputRecord.Event.KeyEvent.uChar != 0)
+                        INPUT_RECORD inputRecord = inputRecords[i];
+                        if (inputRecord.EventType != EVENT_TYPE.KEY_EVENT)
                         {
-                            // append the char to the buffer text
-                            bufferText.Append(inputRecord.Event.KeyEvent.uChar);
+                            // handle non-key board events
+                            HandleInputRecord(inputRecord);
+                        }
+                        else
+                        {
+                            // capture the key event so we can play it back if we don't match clipboard text
+                            bufferedKeyEvents.Add(inputRecord);
 
-                            string currentBufferText = bufferText.ToString();
-                            if (clipboardText.Trim() == currentBufferText.Trim())
+                            // for key down events for chars that are not 0 (control keys)
+                            if (inputRecord.Event.KeyEvent.bKeyDown && inputRecord.Event.KeyEvent.uChar != 0)
                             {
-                                // buffered text matches clipboard, emit CTRL+V sequence and ignore buffered keyboard events
-                                //foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
-                                //    HandleKeyInput(ctrlVEvent);
-                                RaiseTextInput(currentBufferText, (ulong)Stopwatch.GetTimestamp());
+                                // append the char to the buffer text
+                                bufferText.Append(inputRecord.Event.KeyEvent.uChar);
 
-                                // process remaining input records
-                                for (++i; i < inputRecords.Length; i++)
-                                    HandleInputRecord(inputRecords[i]);
-                                return;
-                            }
+                                string currentBufferText = bufferText.ToString();
+                                if (clipboardText.Trim() == currentBufferText.Trim())
+                                {
+                                    // buffered text matches clipboard, emit CTRL+V sequence and ignore buffered keyboard events
+                                    //foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
+                                    //    HandleKeyInput(ctrlVEvent);
+                                    RaiseTextInput(currentBufferText, (ulong)Stopwatch.GetTimestamp());
 
-                            if (!clipboardText.StartsWith(currentBufferText, StringComparison.Ordinal))
-                            {
-                                // buffered text doesn't match clipboard, emit buffered key events (we already played other events live)
-                                foreach (INPUT_RECORD bufferedEvent in bufferedKeyEvents)
-                                    HandleInputRecord(bufferedEvent);
+                                    // process remaining input records
+                                    for (++i; i < inputRecords.Length; i++)
+                                        HandleInputRecord(inputRecords[i]);
 
-                                // process remaining input records
-                                for (++i; i < inputRecords.Length; i++)
-                                    HandleInputRecord(inputRecords[i]);
-                                return;
+                                    breakTheLoop = true;
+                                    return;
+                                }
+
+                                if (!clipboardText.StartsWith(currentBufferText, StringComparison.Ordinal))
+                                {
+                                    // buffered text doesn't match clipboard, emit buffered key events (we already played other events live)
+                                    foreach (INPUT_RECORD bufferedEvent in bufferedKeyEvents)
+                                        HandleInputRecord(bufferedEvent);
+
+                                    // process remaining input records
+                                    for (++i; i < inputRecords.Length; i++)
+                                        HandleInputRecord(inputRecords[i]);
+
+                                    breakTheLoop = true;
+                                    return;
+                                }
                             }
                         }
                     }
-                }
+                });
 
                 inputRecords = _windowsConsole.ReadConsoleInput();
             }

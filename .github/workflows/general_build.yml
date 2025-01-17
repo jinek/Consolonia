@@ -30,7 +30,7 @@ jobs:
       - name: Test
         run: dotnet test # --configuration release todo: release get stuck and never finishes
       - name: Pack
-        run: dotnet pack --configuration release -o ./packages --version-suffix alpha-${{ github.run_number }} # https://stackoverflow.com/a/60067489/2362847
+        run: dotnet pack --configuration release -o ./packages --version-suffix beta.${{ github.run_number }} # https://stackoverflow.com/a/60067489/2362847
       - name: Push
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
         run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
