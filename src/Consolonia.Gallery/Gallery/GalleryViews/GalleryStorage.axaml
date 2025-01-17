@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery.GalleryViews"
              xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d"
              x:DataType="gallery:GalleryStorageViewModel"
              d:DataContext="gallery:GalleryStorageViewModel"
