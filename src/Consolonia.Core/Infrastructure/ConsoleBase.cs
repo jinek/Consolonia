@@ -21,16 +21,13 @@ namespace Consolonia.Core.Infrastructure
     public abstract class ConsoleBase : IConsole, IDisposable
     {
         private readonly IConsoleOutput _consoleOutput;
-        private readonly Dispatcher _uiDispatcher;
 
         protected ConsoleBase(IConsoleOutput consoleOutput)
         {
             if (consoleOutput is ConsoleBase)
                 throw new ArgumentException("ConsoleBase cannot be used as a console output", nameof(consoleOutput));
 
-            _consoleOutput = consoleOutput;
-            _uiDispatcher = Dispatcher.UIThread; // todo: low possible to inject?
-        }
+            _consoleOutput = consoleOutput; }
 
         protected bool Disposed { get; private set; }
 
