@@ -1,6 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:consolonia="clr-namespace:Consolonia.Controls;assembly=Consolonia.Core"
+             xmlns:console="https://github.com/jinek/consolonia"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
@@ -16,7 +16,7 @@
                 </Border>
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
-                        <consolonia:LineBrush LineStyle="SingleLine"
+                        <console:LineBrush LineStyle="SingleLine"
                                               Brush="Green" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=SingleLine"
@@ -24,7 +24,7 @@
                 </Border>
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
-                        <consolonia:LineBrush LineStyle="DoubleLine"
+                        <console:LineBrush LineStyle="DoubleLine"
                                               Brush="Blue" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=DoubleLine"
@@ -32,7 +32,7 @@
                 </Border>
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
-                        <consolonia:LineBrush LineStyle="Edge"
+                        <console:LineBrush LineStyle="Edge"
                                               Brush="DarkGreen" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=Edge"
@@ -40,7 +40,7 @@
                 </Border>
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
-                        <consolonia:LineBrush LineStyle="EdgeWide"
+                        <console:LineBrush LineStyle="EdgeWide"
                                               Brush="Purple" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=EdgeWide"
@@ -48,7 +48,7 @@
                 </Border>
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
-                        <consolonia:LineBrush LineStyle="Bold"
+                        <console:LineBrush LineStyle="Bold"
                                               Brush="DarkGray" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=Bold"
@@ -58,7 +58,7 @@
             <WrapPanel>
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
-                        <consolonia:LineBrush LineStyle="SingleLine SingleLine DoubleLine DoubleLine"
+                        <console:LineBrush LineStyle="SingleLine SingleLine DoubleLine DoubleLine"
                                               Brush="DarkGreen" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=SingleLine SingleLine DoubleLine DoubleLine"
@@ -66,7 +66,7 @@
                 </Border>
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
-                        <consolonia:LineBrush LineStyle="Edge"
+                        <console:LineBrush LineStyle="Edge"
                                               Brush="Gray" />
                     </Border.BorderBrush>
                     <ComboBox Width="10">
@@ -79,7 +79,7 @@
                 <Border BorderThickness="1 0 1 1"
                         Padding="0 1 0 0">
                     <Border.BorderBrush>
-                        <consolonia:LineBrush LineStyle="Edge"
+                        <console:LineBrush LineStyle="Edge"
                                               Brush="Red" />
                     </Border.BorderBrush>
                     <TextBlock Text="Partial borders"
@@ -89,7 +89,7 @@
             <WrapPanel>
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
-                        <consolonia:LineBrush LineStyle="Edge"
+                        <console:LineBrush LineStyle="Edge"
                                               Brush="Gray" />
                     </Border.BorderBrush>
                     <Panel Background="AntiqueWhite">
