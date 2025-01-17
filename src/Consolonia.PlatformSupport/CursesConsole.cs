@@ -139,14 +139,12 @@ namespace Consolonia.PlatformSupport
             /*Console.Out.Write("\x1b[?1003h");
             Console.Out.Flush();*/
 
-            Task _ = Task.Run(async () =>
+            Task _ = Task.Run(() =>
             {
                 while (!Disposed)
                 {
-                    Task pauseTask = PauseTask;
-                    if (pauseTask != null)
-                        await pauseTask;
-                    await ProcessInput();
+                    PauseTask?.Wait();
+                    ProcessInput();
                 }
             });
         }
@@ -158,7 +156,7 @@ namespace Consolonia.PlatformSupport
         }
 
         ///this is copied from CursesDriver.cs -> ProcessInput
-        private async Task ProcessInput()
+        private void ProcessInput()
         {
             int code = Curses.get_wch(out int wch);
             if (code == Curses.ERR)
@@ -172,11 +170,11 @@ namespace Consolonia.PlatformSupport
                 switch (wch)
                 {
                     case Curses.KeyResize when Curses.CheckWinChange():
-                        await CheckSizeAsync();
+                        CheckSize();
                         return;
                     case Curses.KeyMouse:
                         Curses.getmouse(out Curses.MouseEvent ev);
-                        await HandleMouseInputAsync(ev);
+                        HandleMouseInput(ev);
                         return;
                 }
 
@@ -220,7 +218,7 @@ namespace Consolonia.PlatformSupport
                         break;
                 }
 
-                await RaiseKeyPressInternalAsync(k);
+                RaiseKeyPressInternal(k);
                 return;
             }
 
@@ -349,10 +347,7 @@ namespace Consolonia.PlatformSupport
                                             if (index > 0)
                                             {
                                                 string text = bufferText[..--index];
-                                                await DispatchInputAsync(() =>
-                                                {
-                                                    RaiseTextInput(text, (ulong)Stopwatch.GetTimestamp());
-                                                });
+                                                RaiseTextInput(text, (ulong)Stopwatch.GetTimestamp());
                                             }
 
                                             break;
@@ -424,11 +419,11 @@ namespace Consolonia.PlatformSupport
                 }
             }
 
-            await RaiseKeyPressInternalAsync(k);
+            RaiseKeyPressInternal(k);
         }
 
 
-        private async Task RaiseKeyPressInternalAsync(Key key)
+        private void RaiseKeyPressInternal(Key key)
         {
             int keyValue = (int)key;
             RawInputModifiers modifiers = KeyModifiersFlagTranslator.Translate(key);
@@ -466,17 +461,14 @@ namespace Consolonia.PlatformSupport
 
             Avalonia.Input.Key convertToKey = DefaultNetConsole.ConvertToKey(consoleKey);
 
-            await DispatchInputAsync(() =>
-            {
-                RaiseKeyPress(convertToKey,
-                    character, modifiers, true, (ulong)Stopwatch.GetTimestamp());
-                Thread.Yield();
-                RaiseKeyPress(convertToKey,
-                    character, modifiers, false, (ulong)Stopwatch.GetTimestamp());
-            });
+            RaiseKeyPress(convertToKey,
+                character, modifiers, true, (ulong)Stopwatch.GetTimestamp());
+            Thread.Yield();
+            RaiseKeyPress(convertToKey,
+                character, modifiers, false, (ulong)Stopwatch.GetTimestamp());
         }
 
-        private async Task HandleMouseInputAsync(Curses.MouseEvent ev)
+        private void HandleMouseInput(Curses.MouseEvent ev)
         {
             const double velocity = 1 / 12D;
 
@@ -493,15 +485,12 @@ namespace Consolonia.PlatformSupport
                 if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledUp))
                     wheelDelta = new Vector(0, velocity);
 
-                await DispatchInputAsync(() =>
-                {
-                    RaiseMouseEvent(rawPointerEventType, new Point(ev.X, ev.Y), wheelDelta, rawInputModifiers);
-                    if (flag is not (Curses.Event.Button1Clicked or Curses.Event.Button2Clicked
-                        or Curses.Event.Button3Clicked
-                        or Curses.Event.Button4Clicked)) return;
-                    Thread.Yield();
-                    RaiseMouseEvent(rawPointerEventType + 1, new Point(ev.X, ev.Y), null, rawInputModifiers);
-                });
+                RaiseMouseEvent(rawPointerEventType, new Point(ev.X, ev.Y), wheelDelta, rawInputModifiers);
+                if (flag is not (Curses.Event.Button1Clicked or Curses.Event.Button2Clicked
+                    or Curses.Event.Button3Clicked
+                    or Curses.Event.Button4Clicked)) continue;
+                Thread.Yield();
+                RaiseMouseEvent(rawPointerEventType + 1, new Point(ev.X, ev.Y), null, rawInputModifiers);
             }
         }
 

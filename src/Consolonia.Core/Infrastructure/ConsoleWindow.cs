@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Platform;
@@ -12,6 +14,7 @@ using Avalonia.Input.Raw;
 using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
+using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
 
@@ -22,9 +25,11 @@ namespace Consolonia.Core.Infrastructure
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
+        private readonly TimeSpan _resizeDelay = TimeSpan.FromMilliseconds(100);
         [NotNull] internal readonly IConsole Console;
         private bool _disposedValue;
         private IInputRoot _inputRoot;
+        private CancellationTokenSource _resizeCancellationTokenSource;
 
         public ConsoleWindow()
         {
@@ -318,37 +323,43 @@ namespace Consolonia.Core.Infrastructure
             RawInputModifiers modifiers)
         {
             ulong timestamp = (ulong)Stopwatch.GetTimestamp();
-            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
-            switch (type)
+            Dispatcher.UIThread.Post(() =>
             {
-                case RawPointerEventType.Move:
-                case RawPointerEventType.LeftButtonDown:
-                case RawPointerEventType.LeftButtonUp:
-                case RawPointerEventType.RightButtonUp:
-                case RawPointerEventType.RightButtonDown:
-                case RawPointerEventType.MiddleButtonDown:
-                case RawPointerEventType.XButton1Down:
-                case RawPointerEventType.XButton2Down:
-                case RawPointerEventType.NonClientLeftButtonDown:
-                case RawPointerEventType.MiddleButtonUp:
-                case RawPointerEventType.XButton1Up:
-                case RawPointerEventType.XButton2Up:
-                    Input!(new RawPointerEventArgs(MouseDevice, timestamp, _inputRoot,
-                        type, point,
-                        modifiers));
-                    break;
-                case RawPointerEventType.Wheel:
-                    Input!(new RawMouseWheelEventArgs(MouseDevice, timestamp, _inputRoot, point,
-                        (Vector)wheelDelta!, modifiers));
-                    break;
-            }
+                // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
+                switch (type)
+                {
+                    case RawPointerEventType.Move:
+                    case RawPointerEventType.LeftButtonDown:
+                    case RawPointerEventType.LeftButtonUp:
+                    case RawPointerEventType.RightButtonUp:
+                    case RawPointerEventType.RightButtonDown:
+                    case RawPointerEventType.MiddleButtonDown:
+                    case RawPointerEventType.XButton1Down:
+                    case RawPointerEventType.XButton2Down:
+                    case RawPointerEventType.NonClientLeftButtonDown:
+                    case RawPointerEventType.MiddleButtonUp:
+                    case RawPointerEventType.XButton1Up:
+                    case RawPointerEventType.XButton2Up:
+                        Input!(new RawPointerEventArgs(MouseDevice, timestamp, _inputRoot,
+                            type, point,
+                            modifiers));
+                        break;
+                    case RawPointerEventType.Wheel:
+                        Input!(new RawMouseWheelEventArgs(MouseDevice, timestamp, _inputRoot, point,
+                            (Vector)wheelDelta!, modifiers));
+                        break;
+                }
+            });
         }
 
         private void ConsoleOnFocusEvent(bool focused)
         {
-            if (focused)
-                Activated?.Invoke();
-            else Deactivated?.Invoke();
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (focused)
+                    Activated?.Invoke();
+                else Deactivated?.Invoke();
+            });
         }
 
         private void OnConsoleOnResized()
@@ -358,50 +369,90 @@ namespace Consolonia.Core.Infrastructure
             Console.ClearScreen();
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
 
-            PixelBuffer = new PixelBuffer(Console.Size);
-            var size = new Size(Console.Size.Width, Console.Size.Height);
-            Resized!(size, WindowResizeReason.Unspecified);
+            // Cancel previous task if there is one and start a new one
+            CancellationTokenSource oldCts = _resizeCancellationTokenSource;
+            _resizeCancellationTokenSource = new CancellationTokenSource();
+            oldCts?.Cancel();
+            oldCts?.Dispose();
+
+            // ReSharper disable once GrammarMistakeInComment
+            // start a task which if no resize event comes for _resizeDelay will post the resize to the window
+            // ReSharper disable once MethodSupportsCancellation
+            Task.Run(async () =>
+            {
+                try
+                {
+                    // Wait for the delay period, this task will be canceled if another refresh comes in.
+                    await Task.Delay(_resizeDelay, _resizeCancellationTokenSource.Token);
+
+                    // dispatch to the UI thread 
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        PixelBuffer = new PixelBuffer(Console.Size);
+                        var size = new Size(Console.Size.Width, Console.Size.Height);
+                        Resized!(size, WindowResizeReason.Unspecified);
+                    });
+                }
+                catch (TaskCanceledException)
+                {
+                    // Ignore cancellation exception, we want this to happen while resizes are happening quickly
+                }
+            });
         }
 
         private void ConsoleOnTextInputEvent(string text, ulong timeStamp)
         {
+            Dispatcher.UIThread.Post(() =>
+            {
 #pragma warning disable CS0618 // Type or member is obsolete // todo: change to correct constructor, CFA20A9A-3A24-4187-9CA3-9DF0081124EE 
-            var rawInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice, timeStamp, _inputRoot, text);
+                var rawInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice, timeStamp, _inputRoot, text);
 #pragma warning restore CS0618 // Type or member is obsolete
-            Input!(rawInputEventArgs);
+                Input!(rawInputEventArgs);
+            }, DispatcherPriority.Input);
         }
 
 
-        private void ConsoleOnKeyEvent(Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down,
+        private async void ConsoleOnKeyEvent(Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down,
             ulong timeStamp)
         {
             if (!down)
             {
+                Dispatcher.UIThread.Post(() =>
+                {
 #pragma warning disable CS0618 // Type or member is obsolete // todo: change to correct constructor, CFA20A9A-3A24-4187-9CA3-9DF0081124EE 
-                var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp, _inputRoot,
-                    RawKeyEventType.KeyUp, key,
-                    rawInputModifiers);
+                    var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp, _inputRoot,
+                        RawKeyEventType.KeyUp, key,
+                        rawInputModifiers);
 #pragma warning restore CS0618 // Type or member is obsolete
-                Input!(rawInputEventArgs);
+                    Input!(rawInputEventArgs);
+                }, DispatcherPriority.Input);
             }
             else
             {
+                bool handled = false;
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
 #pragma warning disable CS0618 // Type or member is obsolete //todo: CFA20A9A-3A24-4187-9CA3-9DF0081124EE
-                var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp,
-                    _inputRoot,
-                    RawKeyEventType.KeyDown, key,
-                    rawInputModifiers);
+                    var rawInputEventArgs = new RawKeyEventArgs(_myKeyboardDevice, timeStamp,
+                        _inputRoot,
+                        RawKeyEventType.KeyDown, key,
+                        rawInputModifiers);
 #pragma warning restore CS0618 // Type or member is obsolete
-                Input!(rawInputEventArgs);
+                    Input!(rawInputEventArgs);
+                    handled = rawInputEventArgs.Handled;
+                }, DispatcherPriority.Input);
 
-                if (!rawInputEventArgs.Handled
+                if (!handled
                     && !char.IsControl(keyChar)
                     && !rawInputModifiers.HasFlag(RawInputModifiers.Alt)
                     && !rawInputModifiers.HasFlag(RawInputModifiers.Control))
-                    Input!(new RawTextInputEventArgs(_myKeyboardDevice,
-                        timeStamp,
-                        _inputRoot,
-                        keyChar.ToString()));
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        Input!(new RawTextInputEventArgs(_myKeyboardDevice,
+                            timeStamp,
+                            _inputRoot,
+                            keyChar.ToString()));
+                    }, DispatcherPriority.Input);
             }
         }
 
