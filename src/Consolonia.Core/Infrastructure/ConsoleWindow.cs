@@ -211,13 +211,15 @@ namespace Consolonia.Core.Infrastructure
 
         public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
-            // todo: can we deny resizing? TODO We could consider resizing the console window
+            // todo: can we deny resizing? TODO We could consider resizing the console window or throwing exception
+            //throw new NotImplementedException();
         }
 
 
         public void Move(PixelPoint point)
         {
-            // ignore move request, TODO We could consider moving the console window
+            // TODO: Can we deny moving? TODO We could consider moving the console window or throwing exception
+            //throw new NotImplementedException();
         }
 
         public void SetMinMaxSize(Size minSize, Size maxSize)
