@@ -64,7 +64,7 @@ namespace Consolonia.Core.Infrastructure
 
         private void StartInputReading()
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            ThreadPool.QueueUserWorkItem(async _ =>
             {
                 while (!Disposed)
                 {
@@ -84,12 +84,15 @@ namespace Consolonia.Core.Infrastructure
 
                     RawInputModifiers rawInputModifiers = ModifiersFlagsTranslator.Translate(consoleKeyInfo.Modifiers);
 
-                    RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
-                        (ulong)Stopwatch.GetTimestamp());
-                    Thread.Yield();
-                    RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
-                        (ulong)Stopwatch.GetTimestamp());
-                    Thread.Yield();
+                    await DispatchInputAsync(() =>
+                    {
+                        RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
+                            (ulong)Stopwatch.GetTimestamp());
+                        Thread.Yield(); //todo: low is yielding necessary here?
+                        RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
+                            (ulong)Stopwatch.GetTimestamp());
+                        Thread.Yield();
+                    });
                 }
             });
         }
