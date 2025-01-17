@@ -75,7 +75,7 @@
                           EndPoint="8,8">
                         <Line.Stroke>
                             <console:LineBrush LineStyle="DoubleLine"
-                                                  Brush="Red" />
+                                               Brush="Red" />
                         </Line.Stroke>
                     </Line>
 

@@ -46,15 +46,15 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
                 <console:ConsolePreview x:Name="PreviewPane"
-                                  Background="#FF101020"
-                                  DataContext="{Binding SelectedItem, ElementName=FilesListBox}"
-                                  x:DataType="vm:FileViewModel"
-                                  FileName="{Binding FullName}"
-                                  Columns="80"
-                                  Rows="40"
-                                  MonitorChanges="true"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center" />
+                                        Background="#FF101020"
+                                        DataContext="{Binding SelectedItem, ElementName=FilesListBox}"
+                                        x:DataType="vm:FileViewModel"
+                                        FileName="{Binding FullName}"
+                                        Columns="80"
+                                        Rows="40"
+                                        MonitorChanges="true"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center" />
             </StackPanel>
 
         </Grid>

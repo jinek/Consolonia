@@ -1,13 +1,13 @@
 <console:DialogWindow xmlns="https://github.com/avaloniaui"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                       xmlns:console="https://github.com/jinek/consolonia"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       x:DataType="console:MessageBoxViewModel"
-                       x:Class="Consolonia.Controls.MessageBox"
-                       CancelOnEscape="True"
-                       WindowStartupLocation="CenterOwner"
-                       Title="{Binding Title}">
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:console="https://github.com/jinek/consolonia"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      x:DataType="console:MessageBoxViewModel"
+                      x:Class="Consolonia.Controls.MessageBox"
+                      CancelOnEscape="True"
+                      WindowStartupLocation="CenterOwner"
+                      Title="{Binding Title}">
     <Grid RowDefinitions="Auto Auto">
 
         <TextBlock Text="{Binding Text}"

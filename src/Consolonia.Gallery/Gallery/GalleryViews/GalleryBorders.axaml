@@ -17,7 +17,7 @@
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="SingleLine"
-                                              Brush="Green" />
+                                           Brush="Green" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=SingleLine"
                                Background="AntiqueWhite" />
@@ -25,7 +25,7 @@
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="DoubleLine"
-                                              Brush="Blue" />
+                                           Brush="Blue" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=DoubleLine"
                                Background="AntiqueWhite" />
@@ -33,7 +33,7 @@
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="Edge"
-                                              Brush="DarkGreen" />
+                                           Brush="DarkGreen" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=Edge"
                                Background="AntiqueWhite" />
@@ -41,7 +41,7 @@
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="EdgeWide"
-                                              Brush="Purple" />
+                                           Brush="Purple" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=EdgeWide"
                                Background="AntiqueWhite" />
@@ -49,7 +49,7 @@
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="Bold"
-                                              Brush="DarkGray" />
+                                           Brush="DarkGray" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=Bold"
                                Background="AntiqueWhite" />
@@ -59,7 +59,7 @@
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="SingleLine SingleLine DoubleLine DoubleLine"
-                                              Brush="DarkGreen" />
+                                           Brush="DarkGreen" />
                     </Border.BorderBrush>
                     <TextBlock Text="LineStyle=SingleLine SingleLine DoubleLine DoubleLine"
                                Background="AntiqueWhite" />
@@ -67,7 +67,7 @@
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="Edge"
-                                              Brush="Gray" />
+                                           Brush="Gray" />
                     </Border.BorderBrush>
                     <ComboBox Width="10">
                         <ComboBoxItem>Item 1</ComboBoxItem>
@@ -80,7 +80,7 @@
                         Padding="0 1 0 0">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="Edge"
-                                              Brush="Red" />
+                                           Brush="Red" />
                     </Border.BorderBrush>
                     <TextBlock Text="Partial borders"
                                Background="AntiqueWhite" />
@@ -90,7 +90,7 @@
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="Edge"
-                                              Brush="Gray" />
+                                           Brush="Gray" />
                     </Border.BorderBrush>
                     <Panel Background="AntiqueWhite">
                         <Image Source="avares://Consolonia.Gallery/Resources/happy.png"

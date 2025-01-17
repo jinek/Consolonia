@@ -50,7 +50,7 @@
                         HorizontalAlignment="Right">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="Bold"
-                                              Brush="Blue" />
+                                           Brush="Blue" />
                     </Border.BorderBrush>
                     <Border.Styles>
                         <Style Selector="Border">
@@ -90,7 +90,7 @@
                         HorizontalAlignment="Right">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="DoubleLine"
-                                              Brush="Blue" />
+                                           Brush="Blue" />
                     </Border.BorderBrush>
                     <Border.Styles>
                         <Style Selector="Border">
