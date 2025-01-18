@@ -77,7 +77,7 @@ namespace Consolonia.Core.Infrastructure
             return Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input).GetTask();
         }
 
-        private void WaitDispatcherInitialized()
+        private static void WaitDispatcherInitialized()
         {//todo: low this method is not supposed to exist at all, but for simplicity we call Dispatcher right from our low level ConsoleBase, which brings necessarity to wait for it to be initialized
             while (AvaloniaLocator.Current.GetService<IDispatcherImpl>() == null)
             {
