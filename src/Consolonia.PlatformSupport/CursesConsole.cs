@@ -170,7 +170,7 @@ namespace Consolonia.PlatformSupport
                 switch (wch)
                 {
                     case Curses.KeyResize when Curses.CheckWinChange():
-                        CheckSize();
+                        await CheckSize();
                         return;
                     case Curses.KeyMouse:
                         Curses.getmouse(out Curses.MouseEvent ev);
