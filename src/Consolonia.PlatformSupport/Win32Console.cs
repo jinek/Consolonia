@@ -11,7 +11,6 @@ using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
-using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
@@ -212,7 +211,7 @@ namespace Consolonia.PlatformSupport
                                     // process remaining input records
                                     for (++i; i < inputRecords.Length; i++)
                                         HandleInputRecord(inputRecords[i]);
-                                    
+
                                     breakTheLoop = true;
                                     return;
                                 }

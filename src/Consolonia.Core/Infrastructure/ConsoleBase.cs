@@ -23,6 +23,8 @@ namespace Consolonia.Core.Infrastructure
     {
         private readonly IConsoleOutput _consoleOutput;
 
+        private bool _dispatcherInialized;
+
         protected ConsoleBase(IConsoleOutput consoleOutput)
         {
             if (consoleOutput is ConsoleBase)
@@ -62,27 +64,23 @@ namespace Consolonia.Core.Infrastructure
             }); //todo: we should rethrow in main thread, or may be we should keep the loop running, but raise some general handler if it already exists, like Dispatcher.UnhandledException or whatever + check other places we use Task.Run and async void
         }
 
-        private bool _dispatcherInialized;
-
 #pragma warning disable CA1822 // todo: low is it legit to invoke static Dispatcher, do we have instance somehwere available?
         protected Task DispatchInputAsync(Action action)
 #pragma warning restore CA1822
         {
-            if(!_dispatcherInialized)
+            if (!_dispatcherInialized)
             {
                 WaitDispatcherInitialized();
                 _dispatcherInialized = true;
             }
-            
+
             return Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input).GetTask();
         }
 
         private static void WaitDispatcherInitialized()
-        {//todo: low this method is not supposed to exist at all, but for simplicity we call Dispatcher right from our low level ConsoleBase, which brings necessarity to wait for it to be initialized
-            while (AvaloniaLocator.Current.GetService<IDispatcherImpl>() == null)
-            {
-                Thread.Yield();
-            }
+        {
+            //todo: low this method is not supposed to exist at all, but for simplicity we call Dispatcher right from our low level ConsoleBase, which brings necessarity to wait for it to be initialized
+            while (AvaloniaLocator.Current.GetService<IDispatcherImpl>() == null) Thread.Yield();
         }
 
         #region IConsoleInput
