@@ -348,11 +348,6 @@ namespace Consolonia.Core.Infrastructure
 
         private void OnConsoleOnResized()
         {
-            // clear screen so we don't see crazy while resizing.
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
-            Console.ClearScreen();
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
-
             PixelBuffer = new PixelBuffer(Console.Size);
             var size = new Size(Console.Size.Width, Console.Size.Height);
             Resized!(size, WindowResizeReason.Unspecified);

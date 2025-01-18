@@ -23,7 +23,7 @@ namespace Consolonia.Core.Infrastructure
     {
         private readonly IConsoleOutput _consoleOutput;
 
-        private bool _dispatcherInialized;
+        private bool _dispatcherInitialized;
 
         protected ConsoleBase(IConsoleOutput consoleOutput)
         {
@@ -64,23 +64,26 @@ namespace Consolonia.Core.Infrastructure
             }); //todo: we should rethrow in main thread, or may be we should keep the loop running, but raise some general handler if it already exists, like Dispatcher.UnhandledException or whatever + check other places we use Task.Run and async void
         }
 
+      
 #pragma warning disable CA1822 // todo: low is it legit to invoke static Dispatcher, do we have instance somehwere available?
-        protected Task DispatchInputAsync(Action action)
+        protected async Task DispatchInputAsync(Action action)
 #pragma warning restore CA1822
         {
-            if (!_dispatcherInialized)
+            if (!_dispatcherInitialized)
             {
-                WaitDispatcherInitialized();
-                _dispatcherInialized = true;
+                await WaitDispatcherInitialized();
+                _dispatcherInitialized = true;
             }
 
-            return Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input).GetTask();
+            await Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input);
         }
 
-        private static void WaitDispatcherInitialized()
-        {
-            //todo: low this method is not supposed to exist at all, but for simplicity we call Dispatcher right from our low level ConsoleBase, which brings necessarity to wait for it to be initialized
-            while (AvaloniaLocator.Current.GetService<IDispatcherImpl>() == null) Thread.Yield();
+        private static async Task WaitDispatcherInitialized()
+        {//todo: low this method is not supposed to exist at all, but for simplicity we call Dispatcher right from our low level ConsoleBase, which brings necessarity to wait for it to be initialized
+            while (AvaloniaLocator.Current.GetService<IDispatcherImpl>() == null)
+            {
+                await Task.Yield();
+            }
         }
 
         #region IConsoleInput
