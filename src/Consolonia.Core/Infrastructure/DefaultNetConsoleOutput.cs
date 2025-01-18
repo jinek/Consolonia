@@ -73,25 +73,18 @@ namespace Consolonia.Core.Infrastructure
 
         public virtual void SetCaretStyle(CaretStyle caretStyle)
         {
-            try
-            {
 #pragma warning disable CA1416 // Validate platform compatibility
-                Console.CursorSize = caretStyle switch
-                {
-                    CaretStyle.SteadyBlock => 100,
-                    CaretStyle.BlinkingBlock => 100,
-                    CaretStyle.SteadyUnderline => 1,
-                    CaretStyle.BlinkingUnderline => 1,
-                    CaretStyle.SteadyBar => 50,
-                    CaretStyle.BlinkingBar => 50,
-                    _ => throw new ArgumentOutOfRangeException(nameof(caretStyle))
-                };
-#pragma warning restore CA1416 // Validate platform compatibility
-            }
-            catch (PlatformNotSupportedException)
+            Console.CursorSize = caretStyle switch
             {
-                //todo: should be Consolonia exception? Should we avoid custom CursorSize on higher level in Theme for instance?
-            }
+                CaretStyle.SteadyBlock => 100,
+                CaretStyle.BlinkingBlock => 100,
+                CaretStyle.SteadyUnderline => 1,
+                CaretStyle.BlinkingUnderline => 1,
+                CaretStyle.SteadyBar => 50,
+                CaretStyle.BlinkingBar => 50,
+                _ => throw new ArgumentOutOfRangeException(nameof(caretStyle))
+            };
+#pragma warning restore CA1416 // Validate platform compatibility
         }
 
         public virtual void HideCaret()

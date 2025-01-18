@@ -21,13 +21,15 @@ namespace Consolonia.Core.Infrastructure
     public abstract class ConsoleBase : IConsole, IDisposable
     {
         private readonly IConsoleOutput _consoleOutput;
+        private readonly Dispatcher _uiDispatcher;
 
         protected ConsoleBase(IConsoleOutput consoleOutput)
         {
             if (consoleOutput is ConsoleBase)
                 throw new ArgumentException("ConsoleBase cannot be used as a console output", nameof(consoleOutput));
 
-            _consoleOutput = consoleOutput; }
+            _consoleOutput = consoleOutput;
+        }
 
         protected bool Disposed { get; private set; }
 
@@ -54,7 +56,7 @@ namespace Consolonia.Core.Infrastructure
                     if (pauseTask != null)
                         await pauseTask;
 
-                    int timeout = (int)(await CheckSizeAsync() ? 1 : slowInterval);
+                    int timeout = (int)(CheckSize() ? 1 : slowInterval);
                     await Task.Delay(timeout);
                 }
             }); //todo: we should rethrow in main thread, or may be we should keep the loop running, but raise some general handler if it already exists, like Dispatcher.UnhandledException or whatever + check other places we use Task.Run and async void
