@@ -75,7 +75,6 @@ namespace Consolonia.PreviewHost.ViewModels
 
                 object content = AvaloniaRuntimeXamlLoader.Load(xaml, Assembly, designMode: true);
                 if (content is TopLevel top)
-                {
                     // If the root element is a TopLevel, we can't use it as the content of the panel
                     if (top.Content != null)
                     {
@@ -83,7 +82,6 @@ namespace Consolonia.PreviewHost.ViewModels
                         content = top.Content;
                         top.Content = null;
                     }
-                }
 
                 if (content is Control control)
                 {
