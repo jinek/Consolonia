@@ -74,6 +74,17 @@ namespace Consolonia.PreviewHost.ViewModels
 
 
                 object content = AvaloniaRuntimeXamlLoader.Load(xaml, Assembly, designMode: true);
+                if (content is TopLevel top)
+                {
+                    // If the root element is a TopLevel, we can't use it as the content of the panel
+                    if (top.Content != null)
+                    {
+                        // So we'll use the content of the TopLevel as the content of the panel
+                        content = top.Content;
+                        top.Content = null;
+                    }
+                }
+
                 if (content is Control control)
                 {
                     Application.Current!.TryGetResource("ThemeBorderBrush", null, out object? borderBrush);
