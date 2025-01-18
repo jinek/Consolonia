@@ -2,8 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d"
-             xmlns:consolonia="clr-namespace:Consolonia.Controls;assembly=Consolonia.Core"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryAnimatedLines">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Panel>
@@ -49,8 +49,8 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right">
                     <Border.BorderBrush>
-                        <consolonia:LineBrush LineStyle="Bold"
-                                              Brush="Blue" />
+                        <console:LineBrush LineStyle="Bold"
+                                           Brush="Blue" />
                     </Border.BorderBrush>
                     <Border.Styles>
                         <Style Selector="Border">
@@ -89,8 +89,8 @@
                         VerticalAlignment="Bottom"
                         HorizontalAlignment="Right">
                     <Border.BorderBrush>
-                        <consolonia:LineBrush LineStyle="DoubleLine"
-                                              Brush="Blue" />
+                        <console:LineBrush LineStyle="DoubleLine"
+                                           Brush="Blue" />
                     </Border.BorderBrush>
                     <Border.Styles>
                         <Style Selector="Border">
