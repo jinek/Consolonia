@@ -122,7 +122,7 @@ namespace Consolonia.Core.Infrastructure
             get => _consoleOutput.Size;
             set
             {
-                // Debug.WriteLine($"Setting size to {value.Width}x{value.Height}");
+                // ReSharper disable once UsageOfDefaultStructEquality //todo: low use special equality interfaces
                 if (_consoleOutput.Size.Equals(value))
                     return;
                 
