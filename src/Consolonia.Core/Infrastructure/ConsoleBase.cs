@@ -23,8 +23,6 @@ namespace Consolonia.Core.Infrastructure
     {
         private readonly IConsoleOutput _consoleOutput;
 
-        private bool _dispatcherInitialized;
-
         protected ConsoleBase(IConsoleOutput consoleOutput)
         {
             if (consoleOutput is ConsoleBase)
@@ -52,6 +50,8 @@ namespace Consolonia.Core.Infrastructure
         {
             Task.Run(async () =>
             {
+                await WaitDispatcherInitialized();
+                
                 while (!Disposed)
                 {
                     Task pauseTask = PauseTask;
@@ -66,19 +66,14 @@ namespace Consolonia.Core.Infrastructure
 
       
 #pragma warning disable CA1822 // todo: low is it legit to invoke static Dispatcher, do we have instance somehwere available?
+        // ReSharper disable once MemberCanBeMadeStatic.Global
         protected async Task DispatchInputAsync(Action action)
 #pragma warning restore CA1822
         {
-            if (!_dispatcherInitialized)
-            {
-                await WaitDispatcherInitialized();
-                _dispatcherInitialized = true;
-            }
-
             await Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input);
         }
 
-        private static async Task WaitDispatcherInitialized()
+        protected static async Task WaitDispatcherInitialized()
         {//todo: low this method is not supposed to exist at all, but for simplicity we call Dispatcher right from our low level ConsoleBase, which brings necessarity to wait for it to be initialized
             while (AvaloniaLocator.Current.GetService<IDispatcherImpl>() == null)
             {
@@ -122,12 +117,15 @@ namespace Consolonia.Core.Infrastructure
 
         #region IConsoleOutput
 
-        public virtual PixelBufferSize Size
+        public PixelBufferSize Size
         {
             get => _consoleOutput.Size;
             set
             {
                 // Debug.WriteLine($"Setting size to {value.Width}x{value.Height}");
+                if (_consoleOutput.Size.Equals(value))
+                    return;
+                
                 _consoleOutput.Size = value;
                 Resized?.Invoke();
             }

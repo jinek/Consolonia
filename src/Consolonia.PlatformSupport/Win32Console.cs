@@ -117,6 +117,8 @@ namespace Consolonia.PlatformSupport
         {
             Task.Run(async () =>
             {
+                await WaitDispatcherInitialized();
+                
                 while (!Disposed /*inject ThreadAbortException*/)
                 {
                     PauseTask?.Wait();

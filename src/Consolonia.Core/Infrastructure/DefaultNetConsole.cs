@@ -66,6 +66,8 @@ namespace Consolonia.Core.Infrastructure
         {
             ThreadPool.QueueUserWorkItem(async _ =>
             {
+                await WaitDispatcherInitialized();
+                
                 while (!Disposed)
                 {
                     PauseTask?.Wait();

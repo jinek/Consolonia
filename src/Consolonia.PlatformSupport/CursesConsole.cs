@@ -141,6 +141,8 @@ namespace Consolonia.PlatformSupport
 
             Task _ = Task.Run(async () =>
             {
+                await WaitDispatcherInitialized();
+                
                 while (!Disposed)
                 {
                     Task pauseTask = PauseTask;
