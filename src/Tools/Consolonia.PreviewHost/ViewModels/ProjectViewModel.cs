@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Runtime.Loader;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 

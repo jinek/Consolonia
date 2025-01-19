@@ -88,7 +88,7 @@ namespace Consolonia.Gallery.View
         private async void OnShowXaml(object sender, RoutedEventArgs e)
         {
             var lifetime = Application.Current.ApplicationLifetime as ISingleViewApplicationLifetime;
-             if (lifetime == null)
+            if (lifetime == null)
                 throw new InvalidOperationException("ApplicationLifetime is not ISingleViewApplicationLifetime");
 
             var selectedItem = GalleryGrid.SelectedItem as GalleryItem;

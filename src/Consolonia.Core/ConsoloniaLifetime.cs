@@ -15,27 +15,32 @@ using Consolonia.Core.Infrastructure;
 namespace Consolonia
 {
     public class ConsoloniaLifetime : ISingleViewApplicationLifetime,
-                                    IControlledApplicationLifetime,
-                                    ISingleTopLevelApplicationLifetime,
-                                    IDisposable
+        IControlledApplicationLifetime,
+        ISingleTopLevelApplicationLifetime,
+        IDisposable
     {
-        private int _exitCode;
-        private CancellationTokenSource _cts = new CancellationTokenSource();
-        private bool _isShuttingDown;
+        private CancellationTokenSource _cts = new();
         private bool _disposedValue;
-
-        public event EventHandler<ControlledApplicationLifetimeStartupEventArgs> Startup;
-
-        public event EventHandler<ShutdownRequestedEventArgs> ShutdownRequested;
-
-        public event EventHandler<ControlledApplicationLifetimeExitEventArgs> Exit;
+        private int _exitCode;
+        private bool _isShuttingDown;
 
         /// <summary>
-        /// Gets the arguments passed to the AppBuilder Start method.
+        ///     Gets the arguments passed to the AppBuilder Start method.
         /// </summary>
 #pragma warning disable CA1819 // Properties should not return arrays
         public string[] Args { get; set; }
 #pragma warning restore CA1819 // Properties should not return arrays
+
+        public event EventHandler<ControlledApplicationLifetimeStartupEventArgs> Startup;
+
+        public event EventHandler<ControlledApplicationLifetimeExitEventArgs> Exit;
+
+        public void Shutdown(int exitCode = 0)
+        {
+            DoShutdown(new ShutdownRequestedEventArgs(), true, true, exitCode);
+        }
+
+        public TopLevel TopLevel { get; set; }
 
         public Control MainView
         {
@@ -45,21 +50,14 @@ namespace Consolonia
                 if (value is TopLevel topLevel)
                     TopLevel = topLevel;
                 else
-                {
-                    TopLevel = new Window()
+                    TopLevel = new Window
                     {
-                        Content = value,
+                        Content = value
                     };
-                }
             }
         }
 
-        public TopLevel TopLevel { get; set; }
-
-        public void Shutdown(int exitCode = 0)
-        {
-            DoShutdown(new ShutdownRequestedEventArgs(), true, true, exitCode);
-        }
+        public event EventHandler<ShutdownRequestedEventArgs> ShutdownRequested;
 
         public bool TryShutdown(int exitCode = 0)
         {
@@ -84,7 +82,8 @@ namespace Consolonia
         }
 
         /// <summary>
-        /// Since the lifetime must be set up/prepared with 'args' before executing Start(), an overload with no parameters seems more suitable for integrating with some lifetime manager providers, such as MS HostApplicationBuilder.
+        ///     Since the lifetime must be set up/prepared with 'args' before executing Start(), an overload with no parameters
+        ///     seems more suitable for integrating with some lifetime manager providers, such as MS HostApplicationBuilder.
         /// </summary>
         /// <returns>exit code</returns>
         public int Start()
@@ -101,10 +100,7 @@ namespace Consolonia
             Dispatcher.UIThread.MainLoop(_cts.Token);
             Environment.ExitCode = _exitCode;
             return _exitCode;
-        }
-
-
-        // ReSharper disable UnusedParameter.Local
+        } // ReSharper disable UnusedParameter.Local
         // ReSharper disable UnusedMember.Local
 #pragma warning disable IDE0060 // Remove unused parameter
         private bool DoShutdown(
@@ -127,7 +123,7 @@ namespace Consolonia
             _exitCode = exitCode;
             _isShuttingDown = true;
 
-            ConsoleWindow consoleWindow = (ConsoleWindow)TopLevel.PlatformImpl;
+            var consoleWindow = (ConsoleWindow)TopLevel.PlatformImpl;
             consoleWindow.Console.RestoreConsole();
 
             try
@@ -150,7 +146,10 @@ namespace Consolonia
 #pragma warning restore IDE0060 // Remove unused parameter
 
         // ReSharper disable once UnusedMember.Local
-        private void OnShutdownRequested(object sender, ShutdownRequestedEventArgs e) => DoShutdown(e, false);
+        private void OnShutdownRequested(object sender, ShutdownRequestedEventArgs e)
+        {
+            DoShutdown(e, false);
+        }
 
         /// <summary>
         ///     returned task indicates that console is successfully paused
@@ -216,7 +215,7 @@ namespace Consolonia
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
     }
