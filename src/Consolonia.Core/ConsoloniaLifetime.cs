@@ -10,6 +10,7 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable NotNullOrRequiredMemberIsNotInitialized
 namespace Consolonia
 {
     public class ConsoloniaLifetime : ISingleViewApplicationLifetime, 
@@ -108,6 +109,7 @@ namespace Consolonia
         }
 
 
+#pragma warning disable IDE0060 // Remove unused parameter
         private bool DoShutdown(
             ShutdownRequestedEventArgs e,
             bool isProgrammatic,
@@ -152,6 +154,7 @@ namespace Consolonia
 
             return true;
         }
+#pragma warning restore IDE0060 // Remove unused parameter
 
         private void OnShutdownRequested(object sender, ShutdownRequestedEventArgs e) => DoShutdown(e, false);
 

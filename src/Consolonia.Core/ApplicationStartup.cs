@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using Avalonia;
 using Avalonia.Controls;
@@ -15,6 +14,7 @@ using Consolonia.Core.Infrastructure;
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
 
+#nullable enable
 namespace Consolonia
 {
     public static class ApplicationStartup
@@ -120,7 +120,7 @@ namespace Consolonia
             // We need to initialize it
 
             // override AccessText to use ConsoloniaAccessText as default ContentPresenter for unknown data types (aka string)
-            Application.Current.DataTemplates.Add(new FuncDataTemplate<object>(
+            Application.Current!.DataTemplates.Add(new FuncDataTemplate<object>(
                 (data, _) =>
                 {
                     if (data != null)
