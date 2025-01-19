@@ -74,7 +74,7 @@ namespace Consolonia
             if (lifetimeEvents != null)
                 lifetimeEvents.ShutdownRequested += OnShutdownRequested;
 
-            TopLevel.Closed += (sender, args) => TryShutdown();
+            TopLevel.Closed += (_, _) => TryShutdown();
         }
 
         public int Start(string[] args)
@@ -103,7 +103,8 @@ namespace Consolonia
         }
 
 
-        // ReSharper disable once UnusedMember.Local
+        // ReSharper disable UnusedParameter.Local
+        // ReSharper disable UnusedMember.Local
 #pragma warning disable IDE0060 // Remove unused parameter
         private bool DoShutdown(
             ShutdownRequestedEventArgs e,
