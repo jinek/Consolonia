@@ -45,12 +45,9 @@ namespace Consolonia
         public Control MainView
         {
             get => (Control)TopLevel.Content;
-            set 
+            set
             {
-                if (TopLevel == null)
-                {
-                    TopLevel = new Window();
-                }
+                if (TopLevel == null) TopLevel = new Window();
                 TopLevel.Content = value;
             }
         }

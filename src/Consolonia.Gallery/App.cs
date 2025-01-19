@@ -30,7 +30,7 @@ namespace Consolonia.Gallery
             if (ApplicationLifetime is ISingleViewApplicationLifetime lifetime)
                 lifetime.MainView = new ControlsListView();
             else if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                desktop.MainWindow = new Window() { Content = new ControlsListView() };
+                desktop.MainWindow = new Window { Content = new ControlsListView() };
 
             base.OnFrameworkInitializationCompleted();
         }
