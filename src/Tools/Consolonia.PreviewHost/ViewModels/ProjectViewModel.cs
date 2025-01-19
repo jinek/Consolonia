@@ -44,7 +44,7 @@ namespace Consolonia.PreviewHost.ViewModels
                         Current.Load();
             };
 
-            var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
+            var lifetime = (ConsoloniaLifetime)Application.Current!.ApplicationLifetime!;
             if (lifetime.Args!.Contains("--buffer"))
                 _ = Task.Run(() =>
                 {

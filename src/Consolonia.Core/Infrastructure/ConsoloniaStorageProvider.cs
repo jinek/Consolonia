@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using Consolonia.Core.Controls;
 
@@ -26,12 +24,10 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IReadOnlyList<IStorageFile>> OpenFilePickerAsync(FilePickerOpenOptions options)
         {
-            Window mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)
-                ?.MainWindow;
-            ArgumentNullException.ThrowIfNull(mainWindow);
-
+            var lifetime = (ConsoloniaLifetime)Application.Current.ApplicationLifetime;
+            ArgumentNullException.ThrowIfNull(lifetime);
             var picker = new FileOpenPicker(options);
-            var results = await picker.ShowDialogAsync<IReadOnlyList<IStorageFile>>(mainWindow);
+            var results = await picker.ShowDialogAsync<IReadOnlyList<IStorageFile>>(lifetime.TopLevel);
             return results;
         }
 
@@ -42,23 +38,21 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IReadOnlyList<IStorageFolder>> OpenFolderPickerAsync(FolderPickerOpenOptions options)
         {
-            Window mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)
-                ?.MainWindow;
-            ArgumentNullException.ThrowIfNull(mainWindow);
+            var lifetime = (ConsoloniaLifetime)Application.Current.ApplicationLifetime;
+            ArgumentNullException.ThrowIfNull(lifetime);
 
             var picker = new FolderPicker(options);
-            var results = await picker.ShowDialogAsync<IReadOnlyList<IStorageFolder>>(mainWindow);
+            var results = await picker.ShowDialogAsync<IReadOnlyList<IStorageFolder>>(lifetime.TopLevel);
             return results;
         }
 
         public async Task<IStorageFile> SaveFilePickerAsync(FilePickerSaveOptions options)
         {
-            Window mainWindow = ((IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime)
-                ?.MainWindow;
-            ArgumentNullException.ThrowIfNull(mainWindow);
+            var lifetime = (ConsoloniaLifetime)Application.Current.ApplicationLifetime;
+            ArgumentNullException.ThrowIfNull(lifetime);
 
             var picker = new FileSavePicker(options);
-            var results = await picker.ShowDialogAsync<IStorageFile>(mainWindow);
+            var results = await picker.ShowDialogAsync<IStorageFile>(lifetime.TopLevel);
             return results;
         }
 

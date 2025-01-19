@@ -25,7 +25,7 @@ namespace Consolonia
         public static void StartConsolonia<TApp>(IConsole console, IConsoleColorMode consoleColorMode,
             params string[] args) where TApp : Application, new()
         {
-            ClassicDesktopStyleApplicationLifetime lifetime = BuildLifetime<TApp>(console, consoleColorMode, args);
+            var lifetime = BuildLifetime<TApp>(console, consoleColorMode, args);
 
             lifetime.Start(args);
         }
@@ -60,7 +60,7 @@ namespace Consolonia
                 }, nameof(ConsoloniaRenderInterface));
         }
 
-        public static ClassicDesktopStyleApplicationLifetime BuildLifetime<TApp>(IConsole console,
+        public static ConsoloniaLifetime BuildLifetime<TApp>(IConsole console,
             IConsoleColorMode consoleColorMode, string[] args)
             where TApp : Application, new()
         {
@@ -73,13 +73,33 @@ namespace Consolonia
             return CreateLifetime(consoloniaAppBuilder, args);
         }
 
-        private static ClassicDesktopStyleApplicationLifetime CreateLifetime(AppBuilder builder, string[] args)
+        public static void Shutdown(this IApplicationLifetime lifetime, int exitCode = 0)
+        {
+            if (lifetime is IControlledApplicationLifetime controlledLifetime)
+            {
+                controlledLifetime.Shutdown(exitCode);
+            }
+            else 
+                throw new System.NotImplementedException();
+        }
+
+        public static void TryShutdown(this IApplicationLifetime lifetime, int exitCode = 0)
+        {
+            if (lifetime is IControlledApplicationLifetime controlledLifetime)
+            {
+                controlledLifetime.TryShutdown(exitCode);
+            }
+            else
+                throw new System.NotImplementedException();
+        }
+
+        private static ConsoloniaLifetime CreateLifetime(AppBuilder builder, string[] args)
         {
             var lifetime = new ConsoloniaLifetime
             {
                 Args = args,
-                ShutdownMode = ShutdownMode.OnMainWindowClose
             };
+
             builder.SetupWithLifetime(lifetime);
 
             // Application has been instantiated here.
@@ -109,7 +129,7 @@ namespace Consolonia
         public static int StartWithConsoleLifetime(
             this AppBuilder builder, string[] args)
         {
-            ClassicDesktopStyleApplicationLifetime lifetime = CreateLifetime(builder, args);
+            var lifetime = CreateLifetime(builder, args);
             return lifetime.Start(args);
         }
     }

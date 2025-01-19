@@ -14,9 +14,9 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        if (ApplicationLifetime is ISingleViewApplicationLifetime lifetime)
         {
-            desktop.MainWindow = new MainWindow();
+            lifetime.MainView = new MainWindow();
         }
 
         base.OnFrameworkInitializationCompleted();

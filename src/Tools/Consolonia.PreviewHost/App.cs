@@ -22,7 +22,7 @@ namespace Consolonia.PreviewHost
 
         public override void OnFrameworkInitializationCompleted()
         {
-            var applicationLifetime = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+            var applicationLifetime = ApplicationLifetime as ConsoloniaLifetime;
             if (applicationLifetime != null)
             {
                 var appViewModel = new AppViewModel();
@@ -55,7 +55,7 @@ namespace Consolonia.PreviewHost
                             ?? appViewModel.Project.Files.SingleOrDefault(f =>
                                 f.Name!.Equals(Path.GetFileName(path), StringComparison.OrdinalIgnoreCase))
                             ?? throw new ArgumentException($"{path} not found in project", nameof(path));
-                        applicationLifetime.MainWindow = new HeadlessWindow
+                        applicationLifetime.TopLevel = new HeadlessWindow
                         {
                             DataContext = appViewModel
                         };
@@ -67,8 +67,8 @@ namespace Consolonia.PreviewHost
                     appViewModel.Project = new ProjectViewModel(projectFile);
                 }
 
-                if (applicationLifetime.MainWindow == null)
-                    applicationLifetime.MainWindow = new MainWindow
+                if (applicationLifetime.MainView == null)
+                    applicationLifetime.MainView = new MainWindow
                     {
                         DataContext = appViewModel
                     };

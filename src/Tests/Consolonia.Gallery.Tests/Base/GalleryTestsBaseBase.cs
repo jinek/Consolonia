@@ -26,8 +26,8 @@ namespace Consolonia.Gallery.Tests.Base
             {
                 var controlsListView =
                     (ControlsListView)
-                    ((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!
-                    .MainWindow!;
+                    ((ISingleViewApplicationLifetime)Application.Current!.ApplicationLifetime)!
+                    .MainView!;
                 controlsListView!.ChangeTo(Args);
             });
 

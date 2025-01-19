@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Threading;
 using Consolonia.Core.Infrastructure;
@@ -49,7 +48,7 @@ namespace Consolonia.PreviewHost.Views
         {
             base.OnDataContextEndUpdate();
 
-            var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
+            var lifetime = (ConsoloniaLifetime)Application.Current!.ApplicationLifetime!;
             if (lifetime.Args!.Contains("--buffer"))
                 Dispatcher.UIThread.Post(() =>
                 {

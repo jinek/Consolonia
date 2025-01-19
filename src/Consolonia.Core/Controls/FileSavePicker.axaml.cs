@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
@@ -58,21 +57,19 @@ namespace Consolonia.Core.Controls
 
         private async void OnOK(object sender, RoutedEventArgs e)
         {
-            var lifetime = Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            ArgumentNullException.ThrowIfNull(lifetime);
-            ArgumentNullException.ThrowIfNull(lifetime.MainWindow);
-            ArgumentNullException.ThrowIfNull(lifetime.MainWindow.StorageProvider);
+            var lifetime = Application.Current?.ApplicationLifetime as ConsoloniaLifetime;
+            ArgumentNullException.ThrowIfNull(lifetime?.TopLevel?.StorageProvider);
 
             string savePath = ViewModel.SavePath;
             if (!Path.IsPathFullyQualified(ViewModel.SavePath))
                 savePath = Path.GetFullPath(Path.Combine(ViewModel.CurrentFolder.Path.LocalPath, ViewModel.SavePath));
 
             IStorageFile file =
-                await lifetime.MainWindow.StorageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));
+                await lifetime.TopLevel.StorageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));
             if (file == null)
             {
                 IStorageFolder folder =
-                    await lifetime.MainWindow.StorageProvider.TryGetFolderFromPathAsync(
+                    await lifetime.TopLevel.StorageProvider.TryGetFolderFromPathAsync(
                         new Uri($"file://{Path.GetDirectoryName(savePath)}"));
                 if (folder == null)
                 {

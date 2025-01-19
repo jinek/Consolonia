@@ -1,5 +1,5 @@
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
+using Consolonia;
 using Consolonia.Themes;
 using Example.Views;
 
@@ -19,9 +19,10 @@ namespace Example
 
         public override void OnFrameworkInitializationCompleted()
         {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (ApplicationLifetime is ConsoloniaLifetime lifetime)
             {
-                desktop.MainWindow = new DataGridTestWindow();
+                lifetime.TopLevel = new DataGridTestWindow();
+
                 base.OnFrameworkInitializationCompleted();
             }
         }
