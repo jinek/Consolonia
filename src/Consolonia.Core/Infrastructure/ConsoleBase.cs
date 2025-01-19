@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Text;
@@ -48,16 +49,33 @@ namespace Consolonia.Core.Infrastructure
         {
             Task.Run(async () =>
             {
+                await WaitDispatcherInitialized();
+
                 while (!Disposed)
                 {
                     Task pauseTask = PauseTask;
                     if (pauseTask != null)
                         await pauseTask;
 
-                    int timeout = (int)(CheckSize() ? 1 : slowInterval);
+                    int timeout = (int)(await CheckSizeAsync() ? 1 : slowInterval);
                     await Task.Delay(timeout);
                 }
-            });
+            }); //todo: we should rethrow in main thread, or may be we should keep the loop running, but raise some general handler if it already exists, like Dispatcher.UnhandledException or whatever + check other places we use Task.Run and async void
+        }
+
+
+#pragma warning disable CA1822 // todo: low is it legit to invoke static Dispatcher, do we have instance somehwere available?
+        // ReSharper disable once MemberCanBeMadeStatic.Global
+        protected async Task DispatchInputAsync(Action action)
+#pragma warning restore CA1822
+        {
+            await Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input);
+        }
+
+        protected static async Task WaitDispatcherInitialized()
+        {
+            //todo: low this method is not supposed to exist at all, but for simplicity we call Dispatcher right from our low level ConsoleBase, which brings necessarity to wait for it to be initialized
+            while (AvaloniaLocator.Current.GetService<IDispatcherImpl>() == null) await Task.Yield();
         }
 
         #region IConsoleInput
@@ -96,12 +114,15 @@ namespace Consolonia.Core.Infrastructure
 
         #region IConsoleOutput
 
-        public virtual PixelBufferSize Size
+        public PixelBufferSize Size
         {
             get => _consoleOutput.Size;
             set
             {
-                // Debug.WriteLine($"Setting size to {value.Width}x{value.Height}");
+                // ReSharper disable once UsageOfDefaultStructEquality //todo: low use special equality interfaces
+                if (_consoleOutput.Size.Equals(value))
+                    return;
+
                 _consoleOutput.Size = value;
                 Resized?.Invoke();
             }
@@ -172,12 +193,15 @@ namespace Consolonia.Core.Infrastructure
             _consoleOutput.WriteText(str);
         }
 
-        public virtual bool CheckSize()
+        public async Task<bool> CheckSizeAsync()
         {
             if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
 
-            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
-            Resized?.Invoke();
+            await DispatchInputAsync(() =>
+            {
+                Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+            });
+
             return true;
         }
 

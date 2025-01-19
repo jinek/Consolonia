@@ -1,12 +1,12 @@
-<controls:DialogWindow xmlns="https://github.com/avaloniaui"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                       mc:Ignorable="d"
-                       xmlns:controls="clr-namespace:Consolonia.Controls;assembly=Consolonia.Core"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       x:Class="Consolonia.Gallery.Gallery.GalleryViews.SomeDialogWindow">
+<console:DialogWindow xmlns="https://github.com/avaloniaui"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:console="https://github.com/jinek/consolonia"
+                      mc:Ignorable="d"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      x:Class="Consolonia.Gallery.Gallery.GalleryViews.SomeDialogWindow">
     <Panel>
         <TextBlock xml:space="preserve"
                    HorizontalAlignment="Right"
@@ -32,4 +32,4 @@ Bill Ames
                 VerticalAlignment="Bottom"
                 Click="OneMore_Clicked" />
     </Panel>
-</controls:DialogWindow>
+</console:DialogWindow>

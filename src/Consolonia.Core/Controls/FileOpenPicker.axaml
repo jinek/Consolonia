@@ -1,15 +1,15 @@
-<controls:DialogWindow xmlns="https://github.com/avaloniaui"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                       xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
-                       xmlns:controls="clr-namespace:Consolonia.Controls"
-                       xmlns:core-Controls="clr-namespace:Consolonia.Core.Controls"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       x:DataType="core-Controls:FileOpenPickerViewModel"
-                       x:Class="Consolonia.Core.Controls.FileOpenPicker"
-                       Icon="📰"
-                       CancelOnEscape="True"
-                       Title="{Binding Options.Title}">
+<console:DialogWindow xmlns="https://github.com/avaloniaui"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
+                      xmlns:console="https://github.com/jinek/consolonia"
+                      xmlns:core-Controls="clr-namespace:Consolonia.Core.Controls"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      x:DataType="core-Controls:FileOpenPickerViewModel"
+                      x:Class="Consolonia.Core.Controls.FileOpenPicker"
+                      Icon="📰"
+                      CancelOnEscape="True"
+                      Title="{Binding Options.Title}">
     <Grid RowDefinitions="Auto * Auto Auto">
         <Grid ColumnDefinitions="Auto *">
             <TextBlock Text="📁 " />
@@ -67,4 +67,4 @@
                     Click="OnCancel" />
         </StackPanel>
     </Grid>
-</controls:DialogWindow>
+</console:DialogWindow>
