@@ -87,7 +87,9 @@ namespace Consolonia.Gallery.View
 
         private async void OnShowXaml(object sender, RoutedEventArgs e)
         {
-            var lifetime = (ISingleViewApplicationLifetime)Application.Current.ApplicationLifetime;
+            var lifetime = Application.Current.ApplicationLifetime as ISingleViewApplicationLifetime;
+             if (lifetime == null)
+                throw new InvalidOperationException("ApplicationLifetime is not ISingleViewApplicationLifetime");
 
             var selectedItem = GalleryGrid.SelectedItem as GalleryItem;
             string path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..", "..", "..", "Gallery",

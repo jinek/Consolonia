@@ -12,7 +12,10 @@ using Consolonia.Core.Infrastructure;
 // ReSharper disable CheckNamespace
 namespace Consolonia
 {
-    public class ConsoloniaLifetime : ISingleViewApplicationLifetime, ISingleTopLevelApplicationLifetime, IControlledApplicationLifetime, IDisposable
+    public class ConsoloniaLifetime : ISingleViewApplicationLifetime, 
+                                    IControlledApplicationLifetime, 
+                                    ISingleTopLevelApplicationLifetime, 
+                                    IDisposable
     {
         private int _exitCode;
         private CancellationTokenSource? _cts;
@@ -31,7 +34,9 @@ namespace Consolonia
         /// <summary>
         /// Gets the arguments passed to the AppBuilder Start method.
         /// </summary>
+#pragma warning disable CA1819 // Properties should not return arrays
         public string[] Args { get; set; }
+#pragma warning restore CA1819 // Properties should not return arrays
 
         /// <inheritdoc/>
         public Control MainView

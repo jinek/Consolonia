@@ -4,7 +4,6 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.PreviewHost.ViewModels;
 using Avalonia.PreviewHost.Views;
-using Consolonia;
 using Consolonia.Designer;
 
 namespace Avalonia.PreviewHost
@@ -22,9 +21,9 @@ namespace Avalonia.PreviewHost
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
-            if (ApplicationLifetime is ConsoloniaLifetime lifetime)
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
             {
-                lifetime.TopLevel = new MainWindow
+                lifetime.MainWindow = new MainWindow
                 {
                     DataContext = new MainViewModel()
                 };
@@ -36,7 +35,7 @@ namespace Avalonia.PreviewHost
 
         private void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
         {
-            var desktop = ApplicationLifetime as ISingleViewApplicationLifetime;
+            var desktop = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
 
             desktop!.MainWindow!.FindControl<ConsolePreview>("PreviewPane")?.Dispose();
         }

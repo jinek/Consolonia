@@ -1,3 +1,5 @@
+#nullable enable
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -73,16 +75,28 @@ namespace Consolonia
             return CreateLifetime(consoloniaAppBuilder, args);
         }
 
+        /// <summary>
+        /// Shuts down the application with the specified exit code.
+        /// </summary>
+        /// <param name="lifetime">The application lifetime.</param>
+        /// <param name="exitCode">The exit code to use.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the lifetime does not support controlled shutdown.</exception>
         public static void Shutdown(this IApplicationLifetime lifetime, int exitCode = 0)
         {
             if (lifetime is IControlledApplicationLifetime controlledLifetime)
             {
                 controlledLifetime.Shutdown(exitCode);
             }
-            else 
-                throw new System.NotImplementedException();
+            else
+                throw new InvalidOperationException("The lifetime does not support controlled shutdown.");
         }
 
+        /// <summary>
+        /// Shuts down the application with the specified exit code.
+        /// </summary>
+        /// <param name="lifetime">The application lifetime.</param>
+        /// <param name="exitCode">The exit code to use.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the lifetime does not support controlled shutdown.</exception>
         public static void TryShutdown(this IApplicationLifetime lifetime, int exitCode = 0)
         {
             if (lifetime is IControlledApplicationLifetime controlledLifetime)
@@ -90,7 +104,7 @@ namespace Consolonia
                 controlledLifetime.TryShutdown(exitCode);
             }
             else
-                throw new System.NotImplementedException();
+                throw new InvalidOperationException("The lifetime does not support controlled shutdown.");
         }
 
         private static ConsoloniaLifetime CreateLifetime(AppBuilder builder, string[] args)

@@ -23,11 +23,11 @@ namespace Consolonia.PreviewHost
         public override void OnFrameworkInitializationCompleted()
         {
             var applicationLifetime = ApplicationLifetime as ConsoloniaLifetime;
-            if (applicationLifetime != null)
+            if (applicationLifetime?.Args != null)
             {
                 var appViewModel = new AppViewModel();
 
-                string? path = applicationLifetime.Args!.FirstOrDefault();
+                string? path = applicationLifetime.Args.FirstOrDefault();
                 if (!string.IsNullOrEmpty(path))
                 {
                     string folder;
