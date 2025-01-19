@@ -1,17 +1,12 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 
-namespace ConsoloniaAppTemplate;
-
-public partial class MainWindow : Window
+namespace ConsoloniaAppTemplate
 {
-    public MainWindow()
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
-    }
-
-    private void OnExit(object sender, RoutedEventArgs e)
-    {
-        Close();
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
     }
 }

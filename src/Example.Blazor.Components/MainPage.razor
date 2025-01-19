@@ -6,21 +6,19 @@
 
 @namespace Example.Blazor.Components
 
-<Window Title="Blazor Bindings for Consolonia" Topmost="true">
-    <StackPanel Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center">
-        @if (_showCounter)
-        {
-            <TextBlock HorizontalAlignment="HorizontalAlignment.Center">Counter: @CounterText</TextBlock>
-        }
-        <StackPanel Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" Margin="@Thickness.Parse("4")">
-            <Button OnClick="@OnIncrement">Increment counter support</Button>
-            <Button OnClick="@OnToggleCounter">@ToggleText</Button>
-            <Button OnClick="@OnMessageBox">Message Box</Button>
-            <Button OnClick="@OnGotoSubPage">Go to SubPage</Button>
-            <Button OnClick="@OnExit">Exit</Button>
-        </StackPanel>
+<StackPanel Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center">
+    @if (_showCounter)
+    {
+        <TextBlock HorizontalAlignment="HorizontalAlignment.Center">Counter: @CounterText</TextBlock>
+    }
+    <StackPanel Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" Margin="@Thickness.Parse("4")">
+        <Button OnClick="@OnIncrement">Increment counter support</Button>
+        <Button OnClick="@OnToggleCounter">@ToggleText</Button>
+        <Button OnClick="@OnMessageBox">Message Box</Button>
+        <Button OnClick="@OnGotoSubPage">Go to SubPage</Button>
+        <Button OnClick="@OnExit">Exit</Button>
     </StackPanel>
-</Window>
+</StackPanel>
 
 @code {
     int _counter;

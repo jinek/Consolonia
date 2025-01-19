@@ -26,7 +26,7 @@ namespace Consolonia.Gallery
             else
                 Styles.Add(new TurboVisionTheme());
 
-            if (ApplicationLifetime is ConsoloniaLifetime lifetime)
+            if (ApplicationLifetime is ISingleViewApplicationLifetime lifetime)
                 lifetime.MainView = new ControlsListView();
 
             base.OnFrameworkInitializationCompleted();
