@@ -121,7 +121,7 @@ namespace Consolonia
 
             // override AccessText to use ConsoloniaAccessText as default ContentPresenter for unknown data types (aka string)
             Application.Current!.DataTemplates.Add(new FuncDataTemplate<object>(
-                (data, _) =>
+                (_, _) =>
                 {
                     var result = new ConsoloniaAccessText();
                     // ReSharper disable AccessToStaticMemberViaDerivedType
