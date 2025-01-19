@@ -6,7 +6,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
@@ -118,7 +117,7 @@ namespace Consolonia.PlatformSupport
             Task.Run(async () =>
             {
                 await WaitDispatcherInitialized();
-                
+
                 while (!Disposed /*inject ThreadAbortException*/)
                 {
                     PauseTask?.Wait();

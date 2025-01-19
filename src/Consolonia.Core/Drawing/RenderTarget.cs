@@ -94,7 +94,7 @@ namespace Consolonia.Core.Drawing
             for (ushort y = 0; y < height; y++)
             for (ushort x = 0; x < width; x++)
                 cache[x, y] = Pixel.Empty;
-            
+
             return cache;
         }
 

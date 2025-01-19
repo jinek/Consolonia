@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
@@ -51,7 +50,7 @@ namespace Consolonia.Core.Infrastructure
             Task.Run(async () =>
             {
                 await WaitDispatcherInitialized();
-                
+
                 while (!Disposed)
                 {
                     Task pauseTask = PauseTask;
@@ -64,7 +63,7 @@ namespace Consolonia.Core.Infrastructure
             }); //todo: we should rethrow in main thread, or may be we should keep the loop running, but raise some general handler if it already exists, like Dispatcher.UnhandledException or whatever + check other places we use Task.Run and async void
         }
 
-      
+
 #pragma warning disable CA1822 // todo: low is it legit to invoke static Dispatcher, do we have instance somehwere available?
         // ReSharper disable once MemberCanBeMadeStatic.Global
         protected async Task DispatchInputAsync(Action action)
@@ -73,12 +72,10 @@ namespace Consolonia.Core.Infrastructure
             await Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input);
         }
 
-         protected static async Task WaitDispatcherInitialized()
-        {//todo: low this method is not supposed to exist at all, but for simplicity we call Dispatcher right from our low level ConsoleBase, which brings necessarity to wait for it to be initialized
-            while (AvaloniaLocator.Current.GetService<IDispatcherImpl>() == null)
-            {
-                await Task.Yield();
-            }
+        protected static async Task WaitDispatcherInitialized()
+        {
+            //todo: low this method is not supposed to exist at all, but for simplicity we call Dispatcher right from our low level ConsoleBase, which brings necessarity to wait for it to be initialized
+            while (AvaloniaLocator.Current.GetService<IDispatcherImpl>() == null) await Task.Yield();
         }
 
         #region IConsoleInput
@@ -125,7 +122,7 @@ namespace Consolonia.Core.Infrastructure
                 // ReSharper disable once UsageOfDefaultStructEquality //todo: low use special equality interfaces
                 if (_consoleOutput.Size.Equals(value))
                     return;
-                
+
                 _consoleOutput.Size = value;
                 Resized?.Invoke();
             }
