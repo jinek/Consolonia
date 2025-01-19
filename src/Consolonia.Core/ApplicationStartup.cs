@@ -123,16 +123,11 @@ namespace Consolonia
             Application.Current!.DataTemplates.Add(new FuncDataTemplate<object>(
                 (data, _) =>
                 {
-                    if (data != null)
-                    {
-                        var result = new ConsoloniaAccessText();
-                        // ReSharper disable AccessToStaticMemberViaDerivedType
-                        result.Bind(TextBlock.TextProperty,
-                            result.GetBindingObservable(Control.DataContextProperty, x => x?.ToString()));
-                        return result;
-                    }
-
-                    return null;
+                    var result = new ConsoloniaAccessText();
+                    // ReSharper disable AccessToStaticMemberViaDerivedType
+                    result.Bind(TextBlock.TextProperty,
+                        result.GetBindingObservable(Control.DataContextProperty, x => x?.ToString()));
+                    return result;
                 },
                 true)
             );
