@@ -13,23 +13,20 @@ using Consolonia.Core.Infrastructure;
 // ReSharper disable NotNullOrRequiredMemberIsNotInitialized
 namespace Consolonia
 {
-    public class ConsoloniaLifetime : ISingleViewApplicationLifetime, 
-                                    IControlledApplicationLifetime, 
-                                    ISingleTopLevelApplicationLifetime, 
+    public class ConsoloniaLifetime : ISingleViewApplicationLifetime,
+                                    IControlledApplicationLifetime,
+                                    ISingleTopLevelApplicationLifetime,
                                     IDisposable
     {
         private int _exitCode;
-        private CancellationTokenSource? _cts;
+        private CancellationTokenSource _cts = new CancellationTokenSource();
         private bool _isShuttingDown;
         private bool _disposedValue;
 
-        /// <inheritdoc/>
         public event EventHandler<ControlledApplicationLifetimeStartupEventArgs> Startup;
 
-        /// <inheritdoc/>
         public event EventHandler<ShutdownRequestedEventArgs> ShutdownRequested;
 
-        /// <inheritdoc/>
         public event EventHandler<ControlledApplicationLifetimeExitEventArgs> Exit;
 
         /// <summary>
@@ -39,7 +36,6 @@ namespace Consolonia
         public string[] Args { get; set; }
 #pragma warning restore CA1819 // Properties should not return arrays
 
-        /// <inheritdoc/>
         public Control MainView
         {
             get => (Control)TopLevel.Content;
@@ -57,7 +53,7 @@ namespace Consolonia
             }
         }
 
-        public TopLevel TopLevel { get; set; } 
+        public TopLevel TopLevel { get; set; }
 
         public void Shutdown(int exitCode = 0)
         {
@@ -99,8 +95,6 @@ namespace Consolonia
         {
             SetupCore(args);
 
-            _cts = new CancellationTokenSource();
-
             (TopLevel as Window)?.Show();
 
             Dispatcher.UIThread.MainLoop(_cts.Token);
@@ -109,6 +103,7 @@ namespace Consolonia
         }
 
 
+        // ReSharper disable once UnusedMember.Local
 #pragma warning disable IDE0060 // Remove unused parameter
         private bool DoShutdown(
             ShutdownRequestedEventArgs e,
@@ -156,6 +151,7 @@ namespace Consolonia
         }
 #pragma warning restore IDE0060 // Remove unused parameter
 
+        // ReSharper disable once UnusedMember.Local
         private void OnShutdownRequested(object sender, ShutdownRequestedEventArgs e) => DoShutdown(e, false);
 
         /// <summary>
