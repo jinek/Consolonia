@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:consolonia="clr-namespace:Consolonia.Controls;assembly=Consolonia.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryCanvas">
     <Grid RowDefinitions="Auto Auto *">
@@ -74,8 +74,8 @@
                     <Line StartPoint="4,4"
                           EndPoint="8,8">
                         <Line.Stroke>
-                            <consolonia:LineBrush LineStyle="DoubleLine"
-                                                  Brush="Red" />
+                            <console:LineBrush LineStyle="DoubleLine"
+                                               Brush="Red" />
                         </Line.Stroke>
                     </Line>
 

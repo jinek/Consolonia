@@ -1,9 +1,9 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:console="https://github.com/jinek/consolonia"
         xmlns:vm="using:Avalonia.PreviewHost.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:v="using:Consolonia.Designer"
         mc:Ignorable="d"
         x:Class="Avalonia.PreviewHost.Views.MainWindow"
         x:DataType="vm:MainViewModel"
@@ -45,16 +45,16 @@
             <StackPanel Grid.Column="2"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
-                <v:ConsolePreview x:Name="PreviewPane"
-                                  Background="#FF101020"
-                                  DataContext="{Binding SelectedItem, ElementName=FilesListBox}"
-                                  x:DataType="vm:FileViewModel"
-                                  FileName="{Binding FullName}"
-                                  Columns="80"
-                                  Rows="40"
-                                  MonitorChanges="true"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center" />
+                <console:ConsolePreview x:Name="PreviewPane"
+                                        Background="#FF101020"
+                                        DataContext="{Binding SelectedItem, ElementName=FilesListBox}"
+                                        x:DataType="vm:FileViewModel"
+                                        FileName="{Binding FullName}"
+                                        Columns="80"
+                                        Rows="40"
+                                        MonitorChanges="true"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center" />
             </StackPanel>
 
         </Grid>
