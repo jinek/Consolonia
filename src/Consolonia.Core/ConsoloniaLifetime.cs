@@ -11,6 +11,7 @@ using Consolonia.Core.Infrastructure;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable NotNullOrRequiredMemberIsNotInitialized
+// ReSharper disable ConstantConditionalAccessQualifier
 namespace Consolonia
 {
     public class ConsoloniaLifetime : ISingleViewApplicationLifetime,
@@ -125,7 +126,6 @@ namespace Consolonia
 
             _exitCode = exitCode;
             _isShuttingDown = true;
-            var shutdownCancelled = false;
 
             ConsoleWindow consoleWindow = (ConsoleWindow)TopLevel.PlatformImpl;
             consoleWindow.Console.RestoreConsole();
@@ -140,12 +140,9 @@ namespace Consolonia
             {
                 _isShuttingDown = false;
 
-                if (!shutdownCancelled)
-                {
-                    _cts?.Cancel();
-                    _cts = null;
-                    Dispatcher.UIThread.InvokeShutdown();
-                }
+                _cts?.Cancel();
+                _cts = null;
+                Dispatcher.UIThread.InvokeShutdown();
             }
 
             return true;
