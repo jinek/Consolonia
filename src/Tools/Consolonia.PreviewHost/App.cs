@@ -1,6 +1,5 @@
 using System.Globalization;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Consolonia.PreviewHost.ViewModels;
 using Consolonia.PreviewHost.Views;
 using Consolonia.Themes;

@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.Threading;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Consolonia.Gallery.View;
 using Consolonia.Themes;
 

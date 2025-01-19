@@ -76,7 +76,7 @@ namespace Consolonia
         }
 
         /// <summary>
-        /// Shuts down the application with the specified exit code.
+        ///     Shuts down the application with the specified exit code.
         /// </summary>
         /// <param name="lifetime">The application lifetime.</param>
         /// <param name="exitCode">The exit code to use.</param>
@@ -84,15 +84,13 @@ namespace Consolonia
         public static void Shutdown(this IApplicationLifetime lifetime, int exitCode = 0)
         {
             if (lifetime is IControlledApplicationLifetime controlledLifetime)
-            {
                 controlledLifetime.Shutdown(exitCode);
-            }
             else
                 throw new InvalidOperationException("The lifetime does not support controlled shutdown.");
         }
 
         /// <summary>
-        /// Shuts down the application with the specified exit code.
+        ///     Shuts down the application with the specified exit code.
         /// </summary>
         /// <param name="lifetime">The application lifetime.</param>
         /// <param name="exitCode">The exit code to use.</param>
@@ -100,9 +98,7 @@ namespace Consolonia
         public static void TryShutdown(this IApplicationLifetime lifetime, int exitCode = 0)
         {
             if (lifetime is IControlledApplicationLifetime controlledLifetime)
-            {
                 controlledLifetime.TryShutdown(exitCode);
-            }
             else
                 throw new InvalidOperationException("The lifetime does not support controlled shutdown.");
         }
@@ -111,7 +107,7 @@ namespace Consolonia
         {
             var lifetime = new ConsoloniaLifetime
             {
-                Args = args,
+                Args = args
             };
 
             builder.SetupWithLifetime(lifetime);

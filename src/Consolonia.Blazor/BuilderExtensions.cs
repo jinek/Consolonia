@@ -30,10 +30,10 @@ namespace Consolonia
                         ArgumentNullException.ThrowIfNull(lifetime);
                         return lifetime;
                     });
-                    sc.AddSingleton<ISingleViewApplicationLifetime>(sp =>
+                    sc.AddSingleton(sp =>
                         (ISingleViewApplicationLifetime)sp.GetRequiredService<ConsoloniaLifetime>()
                     );
-                    sc.AddSingleton<IControlledApplicationLifetime>(sp =>
+                    sc.AddSingleton(sp =>
                         (IControlledApplicationLifetime)sp.GetRequiredService<ConsoloniaLifetime>()
                     );
                     sc.AddTransient(sp =>
