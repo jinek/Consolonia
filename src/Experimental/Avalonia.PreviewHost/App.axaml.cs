@@ -21,13 +21,13 @@ namespace Avalonia.PreviewHost
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
             {
-                desktop.MainWindow = new MainWindow
+                lifetime.MainWindow = new MainWindow
                 {
                     DataContext = new MainViewModel()
                 };
-                desktop.Exit += Desktop_Exit;
+                lifetime.Exit += Desktop_Exit;
             }
 
             base.OnFrameworkInitializationCompleted();

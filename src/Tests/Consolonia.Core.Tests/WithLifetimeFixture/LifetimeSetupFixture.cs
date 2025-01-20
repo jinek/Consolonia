@@ -1,6 +1,5 @@
 using System;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
@@ -14,7 +13,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
     public class LifetimeSetupFixture : IDisposable
     {
         private bool _disposedValue;
-        private ClassicDesktopStyleApplicationLifetime _lifetime;
+        private ConsoloniaLifetime _lifetime;
 
         private IDisposable _scope;
 

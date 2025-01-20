@@ -1,6 +1,5 @@
 using System.Globalization;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Consolonia.PreviewHost.ViewModels;
 using Consolonia.PreviewHost.Views;
 using Consolonia.Themes;
@@ -22,12 +21,12 @@ namespace Consolonia.PreviewHost
 
         public override void OnFrameworkInitializationCompleted()
         {
-            var applicationLifetime = ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            if (applicationLifetime != null)
+            var applicationLifetime = ApplicationLifetime as ConsoloniaLifetime;
+            if (applicationLifetime?.Args != null)
             {
                 var appViewModel = new AppViewModel();
 
-                string? path = applicationLifetime.Args!.FirstOrDefault();
+                string? path = applicationLifetime.Args.FirstOrDefault();
                 if (!string.IsNullOrEmpty(path))
                 {
                     string folder;
@@ -55,7 +54,7 @@ namespace Consolonia.PreviewHost
                             ?? appViewModel.Project.Files.SingleOrDefault(f =>
                                 f.Name!.Equals(Path.GetFileName(path), StringComparison.OrdinalIgnoreCase))
                             ?? throw new ArgumentException($"{path} not found in project", nameof(path));
-                        applicationLifetime.MainWindow = new HeadlessWindow
+                        applicationLifetime.TopLevel = new HeadlessWindow
                         {
                             DataContext = appViewModel
                         };
@@ -67,8 +66,8 @@ namespace Consolonia.PreviewHost
                     appViewModel.Project = new ProjectViewModel(projectFile);
                 }
 
-                if (applicationLifetime.MainWindow == null)
-                    applicationLifetime.MainWindow = new MainWindow
+                if (applicationLifetime.MainView == null)
+                    applicationLifetime.MainView = new MainWindow
                     {
                         DataContext = appViewModel
                     };

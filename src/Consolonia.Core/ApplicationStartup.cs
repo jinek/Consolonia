@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -13,6 +14,7 @@ using Consolonia.Core.Infrastructure;
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
 
+#nullable enable
 namespace Consolonia
 {
     public static class ApplicationStartup
@@ -25,7 +27,7 @@ namespace Consolonia
         public static void StartConsolonia<TApp>(IConsole console, IConsoleColorMode consoleColorMode,
             params string[] args) where TApp : Application, new()
         {
-            ClassicDesktopStyleApplicationLifetime lifetime = BuildLifetime<TApp>(console, consoleColorMode, args);
+            ConsoloniaLifetime lifetime = BuildLifetime<TApp>(console, consoleColorMode, args);
 
             lifetime.Start(args);
         }
@@ -60,7 +62,7 @@ namespace Consolonia
                 }, nameof(ConsoloniaRenderInterface));
         }
 
-        public static ClassicDesktopStyleApplicationLifetime BuildLifetime<TApp>(IConsole console,
+        public static ConsoloniaLifetime BuildLifetime<TApp>(IConsole console,
             IConsoleColorMode consoleColorMode, string[] args)
             where TApp : Application, new()
         {
@@ -73,32 +75,55 @@ namespace Consolonia
             return CreateLifetime(consoloniaAppBuilder, args);
         }
 
-        private static ClassicDesktopStyleApplicationLifetime CreateLifetime(AppBuilder builder, string[] args)
+        /// <summary>
+        ///     Shuts down the application with the specified exit code.
+        /// </summary>
+        /// <param name="lifetime">The application lifetime.</param>
+        /// <param name="exitCode">The exit code to use.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the lifetime does not support controlled shutdown.</exception>
+        public static void Shutdown(this IApplicationLifetime lifetime, int exitCode = 0)
+        {
+            if (lifetime is IControlledApplicationLifetime controlledLifetime)
+                controlledLifetime.Shutdown(exitCode);
+            else
+                throw new InvalidOperationException("The lifetime does not support controlled shutdown.");
+        }
+
+        /// <summary>
+        ///     Shuts down the application with the specified exit code.
+        /// </summary>
+        /// <param name="lifetime">The application lifetime.</param>
+        /// <param name="exitCode">The exit code to use.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the lifetime does not support controlled shutdown.</exception>
+        public static void TryShutdown(this IApplicationLifetime lifetime, int exitCode = 0)
+        {
+            if (lifetime is IControlledApplicationLifetime controlledLifetime)
+                controlledLifetime.TryShutdown(exitCode);
+            else
+                throw new InvalidOperationException("The lifetime does not support controlled shutdown.");
+        }
+
+        private static ConsoloniaLifetime CreateLifetime(AppBuilder builder, string[] args)
         {
             var lifetime = new ConsoloniaLifetime
             {
-                Args = args,
-                ShutdownMode = ShutdownMode.OnMainWindowClose
+                Args = args
             };
+
             builder.SetupWithLifetime(lifetime);
 
             // Application has been instantiated here.
             // We need to initialize it
 
             // override AccessText to use ConsoloniaAccessText as default ContentPresenter for unknown data types (aka string)
-            Application.Current.DataTemplates.Add(new FuncDataTemplate<object>(
-                (data, _) =>
+            Application.Current!.DataTemplates.Add(new FuncDataTemplate<object>(
+                (_, _) =>
                 {
-                    if (data != null)
-                    {
-                        var result = new ConsoloniaAccessText();
-                        // ReSharper disable AccessToStaticMemberViaDerivedType
-                        result.Bind(TextBlock.TextProperty,
-                            result.GetBindingObservable(Control.DataContextProperty, x => x?.ToString()));
-                        return result;
-                    }
-
-                    return null;
+                    var result = new ConsoloniaAccessText();
+                    // ReSharper disable AccessToStaticMemberViaDerivedType
+                    result.Bind(TextBlock.TextProperty,
+                        result.GetBindingObservable(Control.DataContextProperty, x => x?.ToString()));
+                    return result;
                 },
                 true)
             );
@@ -109,7 +134,7 @@ namespace Consolonia
         public static int StartWithConsoleLifetime(
             this AppBuilder builder, string[] args)
         {
-            ClassicDesktopStyleApplicationLifetime lifetime = CreateLifetime(builder, args);
+            ConsoloniaLifetime lifetime = CreateLifetime(builder, args);
             return lifetime.Start(args);
         }
     }

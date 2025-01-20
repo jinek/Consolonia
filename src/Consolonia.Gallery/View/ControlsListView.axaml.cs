@@ -21,7 +21,7 @@ namespace Consolonia.Gallery.View
         TurboVisionBlack
     }
 
-    public partial class ControlsListView : Window
+    public partial class ControlsListView : DockPanel
     {
         private readonly IEnumerable<GalleryItem> _items;
         private string[] _commandLineArgs;
@@ -34,7 +34,7 @@ namespace Consolonia.Gallery.View
 
             GalleryGrid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
 
-            if (Application.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+            if (Application.Current!.ApplicationLifetime is ConsoloniaLifetime lifetime)
                 _commandLineArgs = lifetime!.Args!;
             else
                 _commandLineArgs = [];
@@ -81,12 +81,15 @@ namespace Consolonia.Gallery.View
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            var lifetime = Application.Current!.ApplicationLifetime as ConsoloniaLifetime;
+            lifetime.TryShutdown();
         }
 
         private async void OnShowXaml(object sender, RoutedEventArgs e)
         {
-            var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime;
+            var lifetime = Application.Current.ApplicationLifetime as ISingleViewApplicationLifetime;
+            if (lifetime == null)
+                throw new InvalidOperationException("ApplicationLifetime is not ISingleViewApplicationLifetime");
 
             var selectedItem = GalleryGrid.SelectedItem as GalleryItem;
             string path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..", "..", "..", "Gallery",
@@ -97,7 +100,7 @@ namespace Consolonia.Gallery.View
                 DataContext = File.ReadAllText(path)
             };
 
-            await dialog.ShowDialogAsync(lifetime.MainWindow);
+            await dialog.ShowDialogAsync(lifetime.MainView);
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

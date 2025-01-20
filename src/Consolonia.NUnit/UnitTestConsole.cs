@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
@@ -19,7 +18,7 @@ namespace Consolonia.NUnit
     public sealed class UnitTestConsole : IConsole
     {
         private PixelBufferCoordinate _fakeCaretPosition;
-        private ClassicDesktopStyleApplicationLifetime _lifetime;
+        private ConsoloniaLifetime _lifetime;
 
         public UnitTestConsole(PixelBufferSize size)
         {
@@ -138,7 +137,7 @@ namespace Consolonia.NUnit
         {
             await Dispatcher.UIThread.InvokeAsync(async () =>
             {
-                Window mainWindow = _lifetime.MainWindow!;
+                var mainWindow = _lifetime.TopLevel as Window;
                 mainWindow!.InvalidateVisual();
                 await mainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Rendered
                     .ConfigureAwait(true);
@@ -193,7 +192,7 @@ namespace Consolonia.NUnit
             return stringBuilder.ToString();
         }
 
-        public void SetupLifetime(ClassicDesktopStyleApplicationLifetime lifetime)
+        public void SetupLifetime(ConsoloniaLifetime lifetime)
         {
             _lifetime = lifetime;
         }

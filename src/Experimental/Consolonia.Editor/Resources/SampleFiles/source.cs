@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
 class CSharp
 {
     public static List<int> BubbleSort(List<int> xs)

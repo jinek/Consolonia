@@ -26,26 +26,32 @@ namespace Consolonia
                     sc.AddSingleton(_ =>
                     {
                         var lifetime =
-                            (IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime;
+                            (ConsoloniaLifetime)Application.Current?.ApplicationLifetime;
                         ArgumentNullException.ThrowIfNull(lifetime);
                         return lifetime;
                     });
+                    sc.AddSingleton(sp =>
+                        (ISingleViewApplicationLifetime)sp.GetRequiredService<ConsoloniaLifetime>()
+                    );
+                    sc.AddSingleton(sp =>
+                        (IControlledApplicationLifetime)sp.GetRequiredService<ConsoloniaLifetime>()
+                    );
                     sc.AddTransient(sp =>
-                        sp.GetRequiredService<IClassicDesktopStyleApplicationLifetime>().MainWindow?.StorageProvider);
+                        sp.GetRequiredService<ConsoloniaLifetime>().TopLevel?.StorageProvider);
                     sc.AddTransient(sp =>
-                        sp.GetRequiredService<IClassicDesktopStyleApplicationLifetime>().MainWindow?.Clipboard);
+                        sp.GetRequiredService<ConsoloniaLifetime>().TopLevel?.Clipboard);
                     sc.AddTransient(sp =>
-                        sp.GetRequiredService<IClassicDesktopStyleApplicationLifetime>().MainWindow?.InsetsManager);
+                        sp.GetRequiredService<ConsoloniaLifetime>().TopLevel?.InsetsManager);
                     sc.AddTransient(sp =>
-                        sp.GetRequiredService<IClassicDesktopStyleApplicationLifetime>().MainWindow?.InputPane);
+                        sp.GetRequiredService<ConsoloniaLifetime>().TopLevel?.InputPane);
                     sc.AddTransient(sp =>
-                        sp.GetRequiredService<IClassicDesktopStyleApplicationLifetime>().MainWindow?.Launcher);
+                        sp.GetRequiredService<ConsoloniaLifetime>().TopLevel?.Launcher);
                     sc.AddTransient(sp =>
-                        sp.GetRequiredService<IClassicDesktopStyleApplicationLifetime>().MainWindow?.Screens);
+                        sp.GetRequiredService<ConsoloniaLifetime>().TopLevel?.Screens);
                     sc.AddTransient(sp =>
-                        sp.GetRequiredService<IClassicDesktopStyleApplicationLifetime>().MainWindow?.FocusManager);
+                        sp.GetRequiredService<ConsoloniaLifetime>().TopLevel?.FocusManager);
                     sc.AddTransient(sp =>
-                        sp.GetRequiredService<IClassicDesktopStyleApplicationLifetime>().MainWindow?.PlatformSettings);
+                        sp.GetRequiredService<ConsoloniaLifetime>().TopLevel?.PlatformSettings);
 
                     if (configureServices != null) configureServices(sc);
                 });

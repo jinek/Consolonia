@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Runtime.Loader;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -44,7 +43,7 @@ namespace Consolonia.PreviewHost.ViewModels
                         Current.Load();
             };
 
-            var lifetime = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
+            var lifetime = (ConsoloniaLifetime)Application.Current!.ApplicationLifetime!;
             if (lifetime.Args!.Contains("--buffer"))
                 _ = Task.Run(() =>
                 {

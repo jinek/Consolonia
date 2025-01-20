@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -41,9 +40,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private async Task OpenFiles(string title, bool allowMultiple)
         {
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+            if (Application.Current.ApplicationLifetime is ConsoloniaLifetime lifetime)
             {
-                IStorageProvider storageProvider = lifetime.MainWindow.StorageProvider;
+                IStorageProvider storageProvider = lifetime.TopLevel?.StorageProvider;
                 if (storageProvider.CanOpen)
                 {
                     var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
@@ -79,9 +78,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private async Task OpenFolders(string title, bool allowMultiple)
         {
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+            if (Application.Current.ApplicationLifetime is ConsoloniaLifetime lifetime)
             {
-                IStorageProvider storageProvider = lifetime.MainWindow.StorageProvider;
+                IStorageProvider storageProvider = lifetime.TopLevel.StorageProvider;
                 if (storageProvider.CanOpen)
                 {
                     var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
@@ -98,9 +97,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private async void OnSaveFile(object sender, RoutedEventArgs e)
         {
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+            if (Application.Current.ApplicationLifetime is ConsoloniaLifetime lifetime)
             {
-                IStorageProvider storageProvider = lifetime.MainWindow.StorageProvider;
+                IStorageProvider storageProvider = lifetime.TopLevel.StorageProvider;
                 if (storageProvider.CanSave)
                 {
                     IStorageFile file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions

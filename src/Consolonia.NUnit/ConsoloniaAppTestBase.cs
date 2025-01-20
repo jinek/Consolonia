@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using NUnit.Framework;
@@ -67,7 +66,7 @@ namespace Consolonia.NUnit
                 {
                     bool windowFound = await Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        Window mainWindow = _lifetime?.MainWindow;
+                        var mainWindow = _lifetime?.TopLevel as Window;
                         return mainWindow != null;
                     });
                     if (windowFound)
@@ -83,7 +82,7 @@ namespace Consolonia.NUnit
         {
             AppDomain.CurrentDomain.ProcessExit -= GlobalTearDown;
 
-            ClassicDesktopStyleApplicationLifetime lifetime = _lifetime;
+            ConsoloniaLifetime lifetime = _lifetime;
             await Dispatcher.UIThread.InvokeAsync(() => { lifetime.Shutdown(); }).GetTask().ConfigureAwait(true);
 
             _lifetime.Dispose();
@@ -97,7 +96,7 @@ namespace Consolonia.NUnit
 
         // ReSharper disable StaticMemberInGenericType
         private static TaskCompletionSource _disposeTaskCompletionSource; // todo: tests now rely on static
-        private static ClassicDesktopStyleApplicationLifetime _lifetime;
+        private static ConsoloniaLifetime _lifetime;
 
         protected static UnitTestConsole UITest { get; private set; }
         // ReSharper restore StaticMemberInGenericType
