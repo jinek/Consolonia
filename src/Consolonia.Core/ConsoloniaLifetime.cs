@@ -92,9 +92,16 @@ namespace Consolonia
 
             (TopLevel as Window)?.Show();
 
-            Dispatcher.UIThread.MainLoop(_cts.Token);
-            Environment.ExitCode = _exitCode;
-            return _exitCode;
+            try
+            {
+                Dispatcher.UIThread.MainLoop(_cts.Token);
+                Environment.ExitCode = _exitCode;
+                return _exitCode;
+            }
+            finally
+            {
+                Dispose();
+            }
         } // ReSharper disable UnusedParameter.Local
         // ReSharper disable UnusedMember.Local
 #pragma warning disable IDE0060 // Remove unused parameter
@@ -117,9 +124,6 @@ namespace Consolonia
 
             _exitCode = exitCode;
             _isShuttingDown = true;
-
-            var consoleWindow = (ConsoleWindow)TopLevel.PlatformImpl;
-            consoleWindow.Console.RestoreConsole();
 
             try
             {
@@ -192,6 +196,9 @@ namespace Consolonia
                     // TODO: dispose managed state (managed objects)
                     _cts?.Dispose();
                     _cts = null;
+                    var consoleWindow = TopLevel.PlatformImpl as ConsoleWindow;
+                    ArgumentNullException.ThrowIfNull(consoleWindow, nameof(consoleWindow));
+                    consoleWindow.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

@@ -108,14 +108,13 @@ namespace Consolonia.PlatformSupport
                 (Curses.Event.ButtonWheeledUp, RawPointerEventType.Wheel)
             });
 
+        private Curses.Window _cursesWindow;
+
         private KeyModifiers _keyModifiers;
 
         public CursesConsole()
             : base(new AnsiConsoleOutput())
         {
-            // ReSharper disable VirtualMemberCallInConstructor
-            PrepareConsole();
-
             StartSizeCheckTimerAsync(2500);
             StartEventLoop();
         }
@@ -126,18 +125,8 @@ namespace Consolonia.PlatformSupport
 
         private void StartEventLoop()
         {
-            //todo: cleanup
-            Curses.initscr();
-            Curses.noecho();
-            Curses.cbreak();
-            Curses.doupdate();
-            Curses.raw();
-            Curses.Window.Standard.keypad(true);
-            Curses.mousemask(
-                Curses.Event.AllEvents | Curses.Event.ReportMousePosition,
-                out Curses.Event _);
-            /*Console.Out.Write("\x1b[?1003h");
-            Console.Out.Flush();*/
+            // ReSharper disable VirtualMemberCallInConstructor
+            PrepareConsole();
 
             Task _ = Task.Run(async () =>
             {
@@ -151,6 +140,32 @@ namespace Consolonia.PlatformSupport
                     await ProcessInput();
                 }
             });
+        }
+
+        public override void PrepareConsole()
+        {
+            _cursesWindow = Curses.initscr();
+            Curses.raw();
+            Curses.noecho();
+            _cursesWindow.keypad(true);
+            Curses.cbreak();
+            Curses.mousemask(
+                Curses.Event.AllEvents | Curses.Event.ReportMousePosition,
+                out Curses.Event _);
+
+            base.PrepareConsole();
+        }
+
+        public override void RestoreConsole()
+        {
+            base.RestoreConsole();
+
+            Curses.mousemask(0, out Curses.Event _);
+            Curses.nocbreak();
+            _cursesWindow.keypad(false);
+            Curses.echo();
+            Curses.noraw();
+            Curses.endwin();
         }
 
         public override void PauseIO(Task task)
