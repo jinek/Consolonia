@@ -1,8 +1,8 @@
-<Window xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:console="https://github.com/jinek/consolonia"
         xmlns:views="clr-namespace:Example.Views"
-        x:Class="Example.Views.DataGridTestWindow"
-        Title="Movie Catalog">
+        x:Class="Example.Views.DataGridView">
     <Grid ColumnDefinitions="* 35">
         <Grid>
             <DataGrid ItemsSource="{Binding}"
@@ -106,4 +106,4 @@
                        Margin="4,0,0,0" />
         </Grid>
     </Grid>
-</Window>
+</UserControl>
