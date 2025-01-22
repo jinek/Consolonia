@@ -102,9 +102,7 @@ namespace Consolonia
             {
                 Dispose();
             }
-        }
-
-        // ReSharper disable UnusedParameter.Local
+        } // ReSharper disable UnusedParameter.Local
         // ReSharper disable UnusedMember.Local
 #pragma warning disable IDE0060 // Remove unused parameter
         private bool DoShutdown(
