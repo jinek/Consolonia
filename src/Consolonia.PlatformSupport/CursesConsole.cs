@@ -7,7 +7,6 @@
 //
 
 using System;
-using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -368,7 +367,8 @@ namespace Consolonia.PlatformSupport
                                                 string text = bufferText[..--index];
                                                 await DispatchInputAsync(() =>
                                                 {
-                                                    RaiseTextInput(text, (ulong)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+                                                    RaiseTextInput(text,
+                                                        (ulong)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
                                                 });
                                             }
 
