@@ -1,12 +1,13 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Consolonia.PreviewHost.ViewModels;
 
 namespace Consolonia.PreviewHost.Views
 {
-    public partial class MainWindow : Window
+    public partial class MainView : UserControl
     {
-        public MainWindow()
+        public MainView()
         {
             InitializeComponent();
         }
@@ -51,7 +52,7 @@ namespace Consolonia.PreviewHost.Views
 
         private void OnExit(object? sender, RoutedEventArgs e)
         {
-            Close();
+            Application.Current.ApplicationLifetime.Shutdown();
         }
     }
 }

@@ -54,23 +54,21 @@ namespace Consolonia.PreviewHost
                             ?? appViewModel.Project.Files.SingleOrDefault(f =>
                                 f.Name!.Equals(Path.GetFileName(path), StringComparison.OrdinalIgnoreCase))
                             ?? throw new ArgumentException($"{path} not found in project", nameof(path));
-                        applicationLifetime.TopLevel = new HeadlessWindow
-                        {
-                            DataContext = appViewModel
-                        };
                     }
+                    applicationLifetime.MainView = new MainView()
+                    {
+                        DataContext = appViewModel
+                    };
                 }
                 else
                 {
                     string projectFile = FindProjectFileFromPath(Environment.CurrentDirectory);
                     appViewModel.Project = new ProjectViewModel(projectFile);
-                }
-
-                if (applicationLifetime.MainView == null)
-                    applicationLifetime.MainView = new MainWindow
+                    applicationLifetime.MainView = new MainView()
                     {
                         DataContext = appViewModel
                     };
+                }
 
                 base.OnFrameworkInitializationCompleted();
             }
