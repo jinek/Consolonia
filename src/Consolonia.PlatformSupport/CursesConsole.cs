@@ -368,7 +368,7 @@ namespace Consolonia.PlatformSupport
                                                 string text = bufferText[..--index];
                                                 await DispatchInputAsync(() =>
                                                 {
-                                                    RaiseTextInput(text, (ulong)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+                                                    RaiseTextInput(text, (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
                                                 });
                                             }
 
@@ -486,10 +486,10 @@ namespace Consolonia.PlatformSupport
             await DispatchInputAsync(() =>
             {
                 RaiseKeyPress(convertToKey,
-                    character, modifiers, true, (ulong)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+                    character, modifiers, true, (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
                 Thread.Yield();
                 RaiseKeyPress(convertToKey,
-                    character, modifiers, false, (ulong)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+                    character, modifiers, false, (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
             });
         }
 
