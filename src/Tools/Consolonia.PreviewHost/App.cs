@@ -47,15 +47,13 @@ namespace Consolonia.PreviewHost
 
                     appViewModel.Project = new ProjectViewModel(projectFile);
                     if (path.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
-                    {
                         appViewModel.Project.Current =
                             appViewModel.Project.Files.SingleOrDefault(f =>
                                 f.FullName!.Equals(path, StringComparison.OrdinalIgnoreCase))
                             ?? appViewModel.Project.Files.SingleOrDefault(f =>
                                 f.Name!.Equals(Path.GetFileName(path), StringComparison.OrdinalIgnoreCase))
                             ?? throw new ArgumentException($"{path} not found in project", nameof(path));
-                    }
-                    applicationLifetime.MainView = new MainView()
+                    applicationLifetime.MainView = new MainView
                     {
                         DataContext = appViewModel
                     };
@@ -64,7 +62,7 @@ namespace Consolonia.PreviewHost
                 {
                     string projectFile = FindProjectFileFromPath(Environment.CurrentDirectory);
                     appViewModel.Project = new ProjectViewModel(projectFile);
-                    applicationLifetime.MainView = new MainView()
+                    applicationLifetime.MainView = new MainView
                     {
                         DataContext = appViewModel
                     };

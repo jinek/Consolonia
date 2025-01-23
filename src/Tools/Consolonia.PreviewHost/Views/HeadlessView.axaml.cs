@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Consolonia.PreviewHost.Views
 {
-    public partial class HeadlessView: UserControl
+    public partial class HeadlessView : UserControl
     {
         public HeadlessView()
         {
