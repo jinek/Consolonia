@@ -7,7 +7,6 @@
 //
 
 using System;
-using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -368,7 +367,7 @@ namespace Consolonia.PlatformSupport
                                                 string text = bufferText[..--index];
                                                 await DispatchInputAsync(() =>
                                                 {
-                                                    RaiseTextInput(text, (ulong)Stopwatch.GetTimestamp());
+                                                    RaiseTextInput(text, (ulong)Environment.TickCount64);
                                                 });
                                             }
 
@@ -486,10 +485,10 @@ namespace Consolonia.PlatformSupport
             await DispatchInputAsync(() =>
             {
                 RaiseKeyPress(convertToKey,
-                    character, modifiers, true, (ulong)Stopwatch.GetTimestamp());
+                    character, modifiers, true, (ulong)Environment.TickCount64);
                 Thread.Yield();
                 RaiseKeyPress(convertToKey,
-                    character, modifiers, false, (ulong)Stopwatch.GetTimestamp());
+                    character, modifiers, false, (ulong)Environment.TickCount64);
             });
         }
 

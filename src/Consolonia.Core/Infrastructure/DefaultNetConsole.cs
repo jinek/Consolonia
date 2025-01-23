@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using Avalonia.Input;
 using Consolonia.Core.InternalHelpers;
@@ -89,10 +88,10 @@ namespace Consolonia.Core.Infrastructure
                     await DispatchInputAsync(() =>
                     {
                         RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
-                            (ulong)Stopwatch.GetTimestamp());
+                            (ulong)Environment.TickCount64);
                         Thread.Yield(); //todo: low is yielding necessary here?
                         RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
-                            (ulong)Stopwatch.GetTimestamp());
+                            (ulong)Environment.TickCount64);
                         Thread.Yield();
                     });
                 }
