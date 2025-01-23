@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using Avalonia.Input;
 using Consolonia.Core.InternalHelpers;

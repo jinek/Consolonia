@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -194,7 +193,8 @@ namespace Consolonia.PlatformSupport
                                     // buffered text matches clipboard, emit CTRL+V sequence and ignore buffered keyboard events
                                     //foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
                                     //    HandleKeyInput(ctrlVEvent);
-                                    RaiseTextInput(currentBufferText, (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
+                                    RaiseTextInput(currentBufferText, 
+                                        (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
 
                                     // process remaining input records
                                     for (++i; i < inputRecords.Length; i++)
