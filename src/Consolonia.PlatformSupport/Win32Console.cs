@@ -193,7 +193,7 @@ namespace Consolonia.PlatformSupport
                                     // buffered text matches clipboard, emit CTRL+V sequence and ignore buffered keyboard events
                                     //foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
                                     //    HandleKeyInput(ctrlVEvent);
-                                    RaiseTextInput(currentBufferText, 
+                                    RaiseTextInput(currentBufferText,
                                         (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
 
                                     // process remaining input records

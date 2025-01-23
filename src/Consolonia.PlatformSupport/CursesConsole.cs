@@ -367,7 +367,8 @@ namespace Consolonia.PlatformSupport
                                                 string text = bufferText[..--index];
                                                 await DispatchInputAsync(() =>
                                                 {
-                                                    RaiseTextInput(text, (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
+                                                    RaiseTextInput(text,
+                                                        (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
                                                 });
                                             }
 
