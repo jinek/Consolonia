@@ -194,7 +194,7 @@ namespace Consolonia.PlatformSupport
                                     // buffered text matches clipboard, emit CTRL+V sequence and ignore buffered keyboard events
                                     //foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
                                     //    HandleKeyInput(ctrlVEvent);
-                                    RaiseTextInput(currentBufferText, (ulong)Stopwatch.GetTimestamp());
+                                    RaiseTextInput(currentBufferText, (ulong)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
 
                                     // process remaining input records
                                     for (++i; i < inputRecords.Length; i++)
@@ -364,7 +364,7 @@ namespace Consolonia.PlatformSupport
             if (key == Key.LeftAlt || key == Key.RightAlt)
                 modifiers |= RawInputModifiers.Alt;
             RaiseKeyPress(key,
-                character, modifiers, keyEvent.bKeyDown, (ulong)Stopwatch.GetTimestamp());
+                character, modifiers, keyEvent.bKeyDown, (ulong)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
         }
     }
 }
