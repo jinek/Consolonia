@@ -120,7 +120,7 @@ namespace Consolonia.NUnit
             foreach (char c in input)
             {
                 const Key key = Key.None;
-                ulong timestamp = (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                ulong timestamp = (ulong)Environment.TickCount64;
                 // todo: check why Yield is not enough: https://github.com/jinek/Consolonia/runs/7055199426?check_suite_focus=true
                 const ulong interval = 50;
                 KeyEvent?.Invoke(key, c, RawInputModifiers.None, true, timestamp);
@@ -159,7 +159,7 @@ namespace Consolonia.NUnit
 
         public async Task KeyInput(Key key, RawInputModifiers modifiers = RawInputModifiers.None)
         {
-            ulong timestamp = (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            ulong timestamp = (ulong)Environment.TickCount64;
             KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, true, timestamp);
             await Task.Yield();
             KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, false,

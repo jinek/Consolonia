@@ -317,7 +317,7 @@ namespace Consolonia.Core.Infrastructure
         private void ConsoleOnMouseEvent(RawPointerEventType type, Point point, Vector? wheelDelta,
             RawInputModifiers modifiers)
         {
-            ulong timestamp = (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            ulong timestamp = (ulong)Environment.TickCount64;
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (type)
             {

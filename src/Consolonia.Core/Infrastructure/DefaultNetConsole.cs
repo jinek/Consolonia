@@ -88,10 +88,10 @@ namespace Consolonia.Core.Infrastructure
                     await DispatchInputAsync(() =>
                     {
                         RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
-                            (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
+                            (ulong)Environment.TickCount64);
                         Thread.Yield(); //todo: low is yielding necessary here?
                         RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
-                            (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
+                            (ulong)Environment.TickCount64);
                         Thread.Yield();
                     });
                 }

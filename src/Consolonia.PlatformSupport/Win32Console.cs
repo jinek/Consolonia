@@ -194,7 +194,7 @@ namespace Consolonia.PlatformSupport
                                     //foreach (KEY_EVENT_RECORD ctrlVEvent in CtrlVKeyEvents)
                                     //    HandleKeyInput(ctrlVEvent);
                                     RaiseTextInput(currentBufferText, 
-                                        (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
+                                        (ulong)Environment.TickCount64);
 
                                     // process remaining input records
                                     for (++i; i < inputRecords.Length; i++)
@@ -364,7 +364,7 @@ namespace Consolonia.PlatformSupport
             if (key == Key.LeftAlt || key == Key.RightAlt)
                 modifiers |= RawInputModifiers.Alt;
             RaiseKeyPress(key,
-                character, modifiers, keyEvent.bKeyDown, (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds());
+                character, modifiers, keyEvent.bKeyDown, (ulong)Environment.TickCount64);
         }
     }
 }
