@@ -40,7 +40,7 @@ namespace Consolonia
             DoShutdown(new ShutdownRequestedEventArgs(), true, true, exitCode);
         }
 
-        public TopLevel TopLevel { get; set; }
+        public TopLevel TopLevel { get; private set; }
 
         public Control MainView
         {

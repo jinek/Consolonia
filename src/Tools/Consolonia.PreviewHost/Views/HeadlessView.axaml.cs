@@ -21,7 +21,7 @@ namespace Consolonia.PreviewHost.Views
         {
             if (e.Key == Key.Escape)
             {
-                Application.Current.ApplicationLifetime.Shutdown();
+                Application.Current!.ApplicationLifetime!.Shutdown();
             }
             else if (e.Key == Key.Left)
             {
