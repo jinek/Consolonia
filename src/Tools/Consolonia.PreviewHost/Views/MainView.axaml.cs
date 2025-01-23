@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Platform.Storage;
 using Consolonia.PreviewHost.ViewModels;
 
 namespace Consolonia.PreviewHost.Views
@@ -13,8 +12,9 @@ namespace Consolonia.PreviewHost.Views
             InitializeComponent();
         }
 
-        public ProjectViewModel Model => (ProjectViewModel)DataContext!;
+        public AppViewModel Model => (AppViewModel)DataContext!;
 
+#if FILE_OPEN
         private async void OnOpen(object? sender, RoutedEventArgs e)
         {
             // Get top level from the current control. Alternatively, you can use Window reference instead.
@@ -25,30 +25,27 @@ namespace Consolonia.PreviewHost.Views
             {
                 Title = "Open csproj",
                 AllowMultiple = false,
+                SuggestedStartLocation = new SystemStorageFolder(Path.GetDirectoryName(Model.Project!.ProjectPath)),
                 FileTypeFilter = new List<FilePickerFileType>
-            {
-                new FilePickerFileType("C# Project")
                 {
-                    Patterns = new List<string> { "*.csproj" }
+                    new FilePickerFileType("C# Project")
+                    {
+                        Patterns = new List<string> { "*.csproj" }
+                    },
                 },
-            },
             }).ConfigureAwait(false);
 
             if (files == null || !files.Any())
             {
                 return;
             }
-            Model.Files.Clear();
-            var projectFile = files[0].Path.AbsolutePath.Replace('/', '\\');
-            //this.Title = projectFile;
-
-            var folderRoot = Path.GetDirectoryName(projectFile)!;
-            foreach (var file in Directory.EnumerateFiles(folderRoot, "*.axaml", SearchOption.AllDirectories))
+            var projectFile = files[0].Path.AbsolutePath; 
+            Dispatcher.UIThread.Invoke(() =>
             {
-                Model.Files.Add(new XamlFileViewModel(file, null));
-            }
+                Model.Project = new ProjectViewModel(projectFile);
+            });
         }
-
+#endif
         private void OnExit(object? sender, RoutedEventArgs e)
         {
             Application.Current!.ApplicationLifetime!.Shutdown();

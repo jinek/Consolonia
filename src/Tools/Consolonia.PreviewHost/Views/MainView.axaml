@@ -10,8 +10,8 @@
     <Grid RowDefinitions="Auto *">
         <Menu>
             <MenuItem Header="_File">
-                <MenuItem Header="_Open..."
-                          Click="OnOpen" />
+                <!--<MenuItem Header="_Open..."
+                          Click="OnOpen" />-->
                 <MenuItem Header="E_xit"
                           Click="OnExit" />
             </MenuItem>
