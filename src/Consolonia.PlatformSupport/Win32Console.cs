@@ -273,9 +273,9 @@ namespace Consolonia.PlatformSupport
                     // so now we just generate down/up again and avalonia
                     // will turn it into a double click internally.
                     RaiseMouseEvent(downButtonEvent,
-                            point,
-                            wheelDelta,
-                            inputModifiers);
+                        point,
+                        wheelDelta,
+                        inputModifiers);
 
                     RaiseMouseEvent(upButtonEvent,
                         point,
