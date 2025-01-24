@@ -15,15 +15,15 @@ namespace Consolonia.PreviewHost.ViewModels
 
         [ObservableProperty] private ObservableCollection<XamlFileViewModel> _files = new();
 
-        [ObservableProperty] private string? _project;
+        [ObservableProperty] private string? _projectPath;
 
         public ProjectViewModel(string projectFile)
         {
-            _project = projectFile;
+            _projectPath = projectFile;
 
-            string projectFolder = Path.GetDirectoryName(_project)!;
-            ArgumentNullException.ThrowIfNull(_project);
-            string assemblyName = Path.GetFileNameWithoutExtension(_project) + ".dll";
+            string projectFolder = Path.GetDirectoryName(_projectPath)!;
+            ArgumentNullException.ThrowIfNull(_projectPath);
+            string assemblyName = Path.GetFileNameWithoutExtension(_projectPath) + ".dll";
             string buildDirectory = Path.Combine(projectFolder, "bin", "Debug");
             string assemblyPath = Directory.EnumerateFiles(buildDirectory, assemblyName, SearchOption.AllDirectories)
                 .First();

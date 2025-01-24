@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -49,8 +48,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     {
                         Title = title,
                         AllowMultiple = allowMultiple,
-                        SuggestedStartLocation = new SystemStorageFolder(
-                            new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
+                        SuggestedStartLocation = new SystemStorageFolder(Environment.CurrentDirectory),
                         FileTypeFilter = new List<FilePickerFileType>
                         {
                             new("* files") { Patterns = ["*"] },
@@ -86,8 +84,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
                     {
                         Title = title,
-                        SuggestedStartLocation = new SystemStorageFolder(
-                            new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))),
+                        SuggestedStartLocation = new SystemStorageFolder(Environment.CurrentDirectory),
                         AllowMultiple = allowMultiple
                     });
                     ViewModel.Folders = folders;
@@ -106,7 +103,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     {
                         Title = "Save File",
                         SuggestedStartLocation =
-                            new SystemStorageFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)),
+                            new SystemStorageFolder(Environment.CurrentDirectory),
                         DefaultExtension = "txt",
                         SuggestedFileName = "NewFile.txt",
                         FileTypeChoices = new List<FilePickerFileType>
