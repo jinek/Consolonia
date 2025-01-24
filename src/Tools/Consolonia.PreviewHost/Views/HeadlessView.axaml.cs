@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 
 namespace Consolonia.PreviewHost.Views
 {
-    public partial class HeadlessWindow : Window
+    public partial class HeadlessView : UserControl
     {
-        public HeadlessWindow()
+        public HeadlessView()
         {
             InitializeComponent();
         }
@@ -21,7 +21,7 @@ namespace Consolonia.PreviewHost.Views
         {
             if (e.Key == Key.Escape)
             {
-                Close();
+                Application.Current!.ApplicationLifetime!.Shutdown();
             }
             else if (e.Key == Key.Left)
             {
@@ -52,7 +52,7 @@ namespace Consolonia.PreviewHost.Views
             if (lifetime.Args!.Contains("--buffer"))
                 Dispatcher.UIThread.Post(() =>
                 {
-                    var consoleWindow = PlatformImpl as ConsoleWindow;
+                    var consoleWindow = (lifetime.TopLevel as Window)?.PlatformImpl as ConsoleWindow;
                     ArgumentNullException.ThrowIfNull(consoleWindow);
                     string json = JsonConvert.SerializeObject(consoleWindow.PixelBuffer);
                     Console.WriteLine(json);
