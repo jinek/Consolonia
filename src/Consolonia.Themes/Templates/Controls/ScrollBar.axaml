@@ -16,10 +16,10 @@
                 <Border Background="{TemplateBinding BorderBrush}">
                     <Grid RowDefinitions="Auto,*,Auto">
                         <RepeatButton Name="PART_LineUpButton"
-                              Grid.Row="0"
-                              MinWidth="{DynamicResource ScrollBarThickness}"
-                              VerticalAlignment="Center"
-                              Focusable="False">
+                                      Grid.Row="0"
+                                      MinWidth="{DynamicResource ScrollBarThickness}"
+                                      VerticalAlignment="Center"
+                                      Focusable="False">
                             <helpers:SymbolsControl HorizontalAlignment="Center"
                                                     Foreground="{TemplateBinding Foreground}"
                                                     Text="▲" />
@@ -51,10 +51,10 @@
                             <Thumb Name="thumb" />
                         </Track>
                         <RepeatButton Name="PART_LineDownButton"
-                              Grid.Row="2"
-                              MinWidth="{DynamicResource ScrollBarThickness}"
-                              VerticalAlignment="Center"
-                              Focusable="False">
+                                      Grid.Row="2"
+                                      MinWidth="{DynamicResource ScrollBarThickness}"
+                                      VerticalAlignment="Center"
+                                      Focusable="False">
                             <helpers:SymbolsControl HorizontalAlignment="Center"
                                                     Foreground="{TemplateBinding Foreground}"
                                                     Focusable="False"
@@ -71,9 +71,9 @@
                     <Border Background="{TemplateBinding BorderBrush}">
                         <Grid ColumnDefinitions="Auto,*,Auto">
                             <RepeatButton Name="PART_LineUpButton"
-                                  MinHeight="{DynamicResource ScrollBarThickness}"
-                                  HorizontalAlignment="Center"
-                                  Focusable="False">
+                                          MinHeight="{DynamicResource ScrollBarThickness}"
+                                          HorizontalAlignment="Center"
+                                          Focusable="False">
                                 <helpers:SymbolsControl HorizontalAlignment="Center"
                                                         Foreground="{TemplateBinding Foreground}"
                                                         Text="◄" />
@@ -104,10 +104,10 @@
                                 <Thumb Name="thumb" />
                             </Track>
                             <RepeatButton Name="PART_LineDownButton"
-                                  Grid.Column="2"
-                                  MinHeight="{DynamicResource ScrollBarThickness}"
-                                  HorizontalAlignment="Center"
-                                  Focusable="False">
+                                          Grid.Column="2"
+                                          MinHeight="{DynamicResource ScrollBarThickness}"
+                                          HorizontalAlignment="Center"
+                                          Focusable="False">
                                 <helpers:SymbolsControl HorizontalAlignment="Center"
                                                         Foreground="{TemplateBinding Foreground}"
                                                         Text="►" />
