@@ -17,7 +17,6 @@
                     <Grid RowDefinitions="Auto,*,Auto">
                         <RepeatButton Name="PART_LineUpButton"
                               Grid.Row="0"
-                              Grid.Column="0"
                               MinWidth="{DynamicResource ScrollBarThickness}"
                               VerticalAlignment="Center"
                               Classes="repeat"
@@ -42,7 +41,7 @@
                                ViewportSize="{TemplateBinding ViewportSize}"
                                Orientation="{TemplateBinding Orientation}"
                                IsDirectionReversed="True">
-                            <Track.DecreaseButton>
+                            <!--<Track.DecreaseButton>
                                 <RepeatButton Name="PART_PageUpButton"
                                               Classes="repeattrack"
                                               Focusable="False" />
@@ -51,12 +50,11 @@
                                 <RepeatButton Name="PART_PageDownButton"
                                               Classes="repeattrack"
                                               Focusable="False" />
-                            </Track.IncreaseButton>
+                            </Track.IncreaseButton>-->
                             <Thumb Name="thumb" />
                         </Track>
                         <RepeatButton Name="PART_LineDownButton"
                               Grid.Row="2"
-                              Grid.Column="2"
                               MinWidth="{DynamicResource ScrollBarThickness}"
                               VerticalAlignment="Center"
                               Classes="repeat"
@@ -77,7 +75,6 @@
                     <Border Background="{TemplateBinding BorderBrush}">
                         <Grid ColumnDefinitions="Auto,*,Auto">
                             <RepeatButton Name="PART_LineUpButton"
-                                  Grid.Row="0"
                                   MinHeight="{DynamicResource ScrollBarThickness}"
                                   HorizontalAlignment="Center"
                                   Classes="repeat"
@@ -101,7 +98,7 @@
                                    Value="{TemplateBinding Value, Mode=TwoWay}"
                                    ViewportSize="{TemplateBinding ViewportSize}"
                                    Orientation="{TemplateBinding Orientation}">
-                                <Track.DecreaseButton>
+                                <!--<Track.DecreaseButton>
                                     <RepeatButton Name="PART_PageUpButton"
                                                   Classes="repeattrack"
                                                   Focusable="False" />
@@ -110,11 +107,10 @@
                                     <RepeatButton Name="PART_PageDownButton"
                                                   Classes="repeattrack"
                                                   Focusable="False" />
-                                </Track.IncreaseButton>
+                                </Track.IncreaseButton>-->
                                 <Thumb Name="thumb" />
                             </Track>
                             <RepeatButton Name="PART_LineDownButton"
-                                  Grid.Row="2"
                                   Grid.Column="2"
                                   MinHeight="{DynamicResource ScrollBarThickness}"
                                   HorizontalAlignment="Center"
