@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryDragAndDrop">
+
+    <StackPanel Orientation="Vertical"
+                Spacing="1">
+        <TextBlock Classes="h2">Example of Drag+Drop capabilities</TextBlock>
+
+        <StackPanel Orientation="Vertical">
+            <StackPanel Margin="1">
+                <Border Name="DragMeText"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource ThemeForegroundBrush}"
+                        Classes="draggable">
+                    <TextBlock Name="DragStateText"
+                               TextWrapping="Wrap">
+                        Drag Me (text)
+                    </TextBlock>
+                </Border>
+                <Border Name="DragMeFiles"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource ThemeForegroundBrush}"
+                        Classes="draggable">
+                    <TextBlock Name="DragStateFiles"
+                               TextWrapping="Wrap">
+                        Drag Me (files)
+                    </TextBlock>
+                </Border>
+                <Border Name="DragMeCustom"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource ThemeForegroundBrush}"
+                        Classes="draggable">
+                    <TextBlock Name="DragStateCustom"
+                               TextWrapping="Wrap">
+                        Drag Me (custom)
+                    </TextBlock>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Margin="1"
+                        Orientation="Horizontal"
+                        Spacing="1">
+                <TextBlock Foreground="{StaticResource ThemeSelectionForegroundBrush}"
+                           Name="CopyTarget"
+                           Padding="1"
+                           Background="{StaticResource ThemeSelectionBackgroundBrush}"
+                           DragDrop.AllowDrop="True"
+                           TextWrapping="Wrap">
+                    Drop some text or files here (Copy)
+                </TextBlock>
+                <TextBlock Name="MoveTarget"
+                           DragDrop.AllowDrop="True"
+                           Padding="1"
+                           Background="{StaticResource ThemeSelectionBackgroundBrush}"
+                           Foreground="{StaticResource ThemeSelectionForegroundBrush}"
+                           TextWrapping="Wrap">
+                    Drop some text or files here (Move)
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+
+        <TextBlock x:Name="DropState"
+                   TextWrapping="Wrap" />
+    </StackPanel>
+
+</UserControl>

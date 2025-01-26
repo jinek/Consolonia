@@ -283,7 +283,12 @@ namespace Consolonia.PlatformSupport
                         inputModifiers);
                     break;
 
+                case MOUSE_EVENT_FLAG.MOUSE_MOVED | MOUSE_EVENT_FLAG.DOUBLE_CLICK:
+                // Win32 maps MOUSE_DOWN/DRAG => as MOVED|DOUBLE_CLICK 
+                // Avalonia wants it to just be MOUSE_DOWN, and then subsequent MOUSE_MOVE events
                 case MOUSE_EVENT_FLAG.NONE:
+                {
+                    bool emitted = false;
                     foreach (MOUSE_BUTTON_STATE flag in Enum.GetValues<MOUSE_BUTTON_STATE>())
                         if (!_mouseButtonsState.HasFlag(flag) && mouseEvent.dwButtonState.HasFlag(flag))
                         {
@@ -293,10 +298,15 @@ namespace Consolonia.PlatformSupport
 #pragma warning disable IDE0034
                             // Simplify 'default' expression
                             if (buttonDownEventType != default)
+                            {
                                 RaiseMouseEvent(buttonDownEventType,
                                     point,
                                     null,
                                     inputModifiers);
+                                _mouseButtonsState = mouseEvent.dwButtonState;
+                                emitted = true;
+                                break;
+                            }
 #pragma warning restore IDE0034
                             // Simplify 'default' expression
                         }
@@ -308,21 +318,29 @@ namespace Consolonia.PlatformSupport
 #pragma warning disable IDE0034
                             // Simplify 'default' expression
                             if (buttonEventType != default)
+                            {
                                 RaiseMouseEvent(buttonEventType,
                                     point,
                                     null,
                                     inputModifiers);
+                                _mouseButtonsState = mouseEvent.dwButtonState;
+                                emitted = true;
+                                break;
+                            }
 #pragma warning restore IDE0034
                             // Simplify 'default' expression
                         }
-                        else
-                        {
-                            RaiseMouseEvent(eventType,
-                                point,
-                                null,
-                                inputModifiers);
-                        }
 
+                    if (!emitted)
+                    {
+                        // If we didn't emit any button up/down transition events, emit a move event
+                        RaiseMouseEvent(eventType,
+                            point,
+                            wheelDelta,
+                            inputModifiers);
+                        _mouseButtonsState = mouseEvent.dwButtonState;
+                    }
+                }
                     break;
 
                 case MOUSE_EVENT_FLAG.MOUSE_WHEELED:
@@ -341,11 +359,6 @@ namespace Consolonia.PlatformSupport
                         wheelDelta,
                         inputModifiers);
                     _mouseButtonsState = mouseEvent.dwButtonState;
-                    break;
-                case MOUSE_EVENT_FLAG.MOUSE_MOVED | MOUSE_EVENT_FLAG.DOUBLE_CLICK:
-                    RaiseMouseEvent(RawPointerEventType.LeftButtonDown, point, null, inputModifiers);
-                    RaiseMouseEvent(RawPointerEventType.Move, point, null, inputModifiers);
-                    //RaiseMouseEvent(RawPointerEventType.LeftButtonUp, point, null, inputModifiers);
                     break;
                 default:
                     throw new InvalidOperationException(mouseEvent.dwEventFlags.ToString());
