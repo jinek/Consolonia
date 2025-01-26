@@ -126,10 +126,7 @@ namespace Consolonia.Core.Infrastructure
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                _inputBuffer.Dispose();
-            }
+            if (disposing) _inputBuffer.Dispose();
             base.Dispose(disposing);
         }
     }

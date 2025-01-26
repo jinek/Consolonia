@@ -7,7 +7,21 @@ namespace Consolonia.Core.Helpers
 {
     public sealed class FastBuffer<T>(Func<T> readDataFunction) : IDisposable
     {
+        private readonly object _lock = new();
         private readonly ManualResetEvent _manualResetEvent = new(false);
+        private readonly Queue<T> _queue = new(1);
+        private readonly object _readingLock = new();
+        private bool _disposed;
+
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+            _disposed = true;
+
+            //todo: low return when loop exited
+            //todo: low will not unblock reading or writing threads.
+        }
 
         public Task RunAsync()
         {
@@ -21,11 +35,6 @@ namespace Consolonia.Core.Helpers
                 }
             });
         }
-
-        private readonly object _lock = new();
-        private readonly object _readingLock = new();
-        private readonly Queue<T> _queue = new(1);
-        private bool _disposed;
 
         private void Enqueue(T item)
         {
@@ -44,10 +53,7 @@ namespace Consolonia.Core.Helpers
 
                 lock (_lock)
                 {
-                    if (_queue.Count == 0)
-                    {
-                        waitOne = true;
-                    }
+                    if (_queue.Count == 0) waitOne = true;
                 }
 
                 if (waitOne)
@@ -61,16 +67,6 @@ namespace Consolonia.Core.Helpers
                     return result;
                 }
             }
-        }
-
-        public void Dispose()
-        {
-            if (_disposed)
-                return;
-            _disposed = true;
-
-            //todo: low return when loop exited
-            //todo: low will not unblock reading or writing threads.
         }
     }
 }
