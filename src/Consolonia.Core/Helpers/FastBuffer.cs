@@ -36,17 +36,6 @@ namespace Consolonia.Core.Helpers
             }
         }
 
-        private void Enqueue(T[] items)
-        {
-            lock (_lock)
-            {
-                foreach (T item in items)
-                {
-                    Enqueue(item);
-                }
-            }
-        }
-
         public T[] Dequeue()
         {
             lock (_readingLock)
