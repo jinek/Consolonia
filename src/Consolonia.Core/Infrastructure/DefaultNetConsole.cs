@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Avalonia.Input;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Infrastructure
@@ -54,12 +55,29 @@ namespace Consolonia.Core.Infrastructure
         public DefaultNetConsole()
             : base(new DefaultNetConsoleOutput())
         {
+            _inputBuffer = new FastBuffer<ConsoleKeyInfo>(ReadDataFunction);
             // ReSharper disable VirtualMemberCallInConstructor
             PrepareConsole();
 
             StartSizeCheckTimerAsync();
             StartInputReading();
+            _inputBuffer.RunAsync();
         }
+
+        private readonly FastBuffer<ConsoleKeyInfo> _inputBuffer;
+
+        private static ConsoleKeyInfo ReadDataFunction()
+        {
+            while (true)
+                try
+                {
+                    return Console.ReadKey(true);
+                }
+                catch (InvalidOperationException)
+                {
+                }
+        }
+
 
         private void StartInputReading()
         {
@@ -71,28 +89,24 @@ namespace Consolonia.Core.Infrastructure
                 {
                     PauseTask?.Wait();
 
-                    ConsoleKeyInfo consoleKeyInfo;
-                    try
-                    {
-                        consoleKeyInfo = Console.ReadKey(true);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        continue;
-                    }
-
-                    Key key = ConvertToKey(consoleKeyInfo.Key);
-
-                    RawInputModifiers rawInputModifiers = ModifiersFlagsTranslator.Translate(consoleKeyInfo.Modifiers);
+                    var consoleKeyInfos = _inputBuffer.Dequeue();
 
                     await DispatchInputAsync(() =>
                     {
-                        RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
-                            (ulong)Environment.TickCount64);
-                        Thread.Yield(); //todo: low is yielding necessary here?
-                        RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
-                            (ulong)Environment.TickCount64);
-                        Thread.Yield();
+                        foreach (ConsoleKeyInfo consoleKeyInfo in consoleKeyInfos)
+                        {
+                            Key key = ConvertToKey(consoleKeyInfo.Key);
+
+                            RawInputModifiers rawInputModifiers =
+                                ModifiersFlagsTranslator.Translate(consoleKeyInfo.Modifiers);
+
+                            RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
+                                (ulong)Environment.TickCount64);
+                            Thread.Yield(); //todo: low is yielding necessary here?
+                            RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
+                                (ulong)Environment.TickCount64);
+                            Thread.Yield();
+                        }
                     });
                 }
             });
@@ -108,6 +122,15 @@ namespace Consolonia.Core.Infrastructure
             if (!Enum.TryParse(consoleKey.ToString(), out key))
                 throw new NotImplementedException();
             return key;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _inputBuffer.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
