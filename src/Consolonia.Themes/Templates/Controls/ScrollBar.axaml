@@ -15,6 +15,16 @@
             <ControlTemplate>
                 <Border Background="{TemplateBinding BorderBrush}">
                     <Grid RowDefinitions="Auto,*,Auto">
+                        <RepeatButton Name="PART_LineUpButton"
+                                      Grid.Row="0"
+                                      MinWidth="{DynamicResource ScrollBarThickness}"
+                                      VerticalAlignment="Center"
+                                      Focusable="False">
+                            <helpers:SymbolsControl HorizontalAlignment="Center"
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    Text="▲" />
+                        </RepeatButton>
+
                         <Border Grid.Row="1"
                                 BorderThickness="0"
                                 Background="{TemplateBinding Background}">
@@ -23,10 +33,6 @@
                                                     Text="░"
                                                     Foreground="{TemplateBinding BorderBrush}" />
                         </Border>
-                        <helpers:SymbolsControl HorizontalAlignment="Center"
-                                                Grid.Row="0"
-                                                Foreground="{TemplateBinding Foreground}"
-                                                Text="▲" />
                         <Track Grid.Row="1"
                                Minimum="{TemplateBinding Minimum}"
                                Maximum="{TemplateBinding Maximum}"
@@ -34,14 +40,27 @@
                                ViewportSize="{TemplateBinding ViewportSize}"
                                Orientation="{TemplateBinding Orientation}"
                                IsDirectionReversed="True">
+                            <!--<Track.DecreaseButton>
+                                <RepeatButton Name="PART_PageUpButton"
+                                              Focusable="False" />
+                            </Track.DecreaseButton>
+                            <Track.IncreaseButton>
+                                <RepeatButton Name="PART_PageDownButton"
+                                              Focusable="False" />
+                            </Track.IncreaseButton>-->
                             <Thumb Name="thumb" />
                         </Track>
-                        <helpers:SymbolsControl HorizontalAlignment="Center"
-                                                Foreground="{TemplateBinding Foreground}"
-                                                Grid.Row="2"
-                                                Focusable="False"
-                                                MinHeight="1"
-                                                Text="▼" />
+                        <RepeatButton Name="PART_LineDownButton"
+                                      Grid.Row="2"
+                                      MinWidth="{DynamicResource ScrollBarThickness}"
+                                      VerticalAlignment="Center"
+                                      Focusable="False">
+                            <helpers:SymbolsControl HorizontalAlignment="Center"
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    Focusable="False"
+                                                    MinHeight="1"
+                                                    Text="▼" />
+                        </RepeatButton>
                     </Grid>
                 </Border>
             </ControlTemplate>
@@ -51,6 +70,15 @@
                 <ControlTemplate>
                     <Border Background="{TemplateBinding BorderBrush}">
                         <Grid ColumnDefinitions="Auto,*,Auto">
+                            <RepeatButton Name="PART_LineUpButton"
+                                          MinHeight="{DynamicResource ScrollBarThickness}"
+                                          HorizontalAlignment="Center"
+                                          Focusable="False">
+                                <helpers:SymbolsControl HorizontalAlignment="Center"
+                                                        Foreground="{TemplateBinding Foreground}"
+                                                        Text="◄" />
+                            </RepeatButton>
+
                             <Border Grid.Column="1"
                                     BorderThickness="0"
                                     Background="{TemplateBinding Background}">
@@ -59,22 +87,32 @@
                                                         Text="░"
                                                         Foreground="{TemplateBinding BorderBrush}" />
                             </Border>
-                            <helpers:SymbolsControl HorizontalAlignment="Center"
-                                                    Grid.Column="0"
-                                                    Foreground="{TemplateBinding Foreground}"
-                                                    Text="◄" />
                             <Track Grid.Column="1"
                                    Minimum="{TemplateBinding Minimum}"
                                    Maximum="{TemplateBinding Maximum}"
                                    Value="{TemplateBinding Value, Mode=TwoWay}"
                                    ViewportSize="{TemplateBinding ViewportSize}"
                                    Orientation="{TemplateBinding Orientation}">
+                                <!--<Track.DecreaseButton>
+                                    <RepeatButton Name="PART_PageUpButton"
+                                                  Focusable="False" />
+                                </Track.DecreaseButton>
+                                <Track.IncreaseButton>
+                                    <RepeatButton Name="PART_PageDownButton"
+                                                  Focusable="False" />
+                                </Track.IncreaseButton>-->
                                 <Thumb Name="thumb" />
                             </Track>
-                            <helpers:SymbolsControl HorizontalAlignment="Center"
-                                                    Grid.Column="2"
-                                                    Foreground="{TemplateBinding Foreground}"
-                                                    Text="►" />
+                            <RepeatButton Name="PART_LineDownButton"
+                                          Grid.Column="2"
+                                          MinHeight="{DynamicResource ScrollBarThickness}"
+                                          HorizontalAlignment="Center"
+                                          Focusable="False">
+                                <helpers:SymbolsControl HorizontalAlignment="Center"
+                                                        Foreground="{TemplateBinding Foreground}"
+                                                        Text="►" />
+                            </RepeatButton>
+
                         </Grid>
                     </Border>
                 </ControlTemplate>
