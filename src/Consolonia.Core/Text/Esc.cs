@@ -6,7 +6,7 @@ namespace Consolonia.Core.Text
     /// <summary>
     ///     ANSI escape definitions and utility methods.
     /// </summary>
-    internal static class Esc
+    public static class Esc
     {
         // Control
         public const string EndOfText = "\u0003";
@@ -45,10 +45,26 @@ namespace Consolonia.Core.Text
         public const string DisableBracketedPasteMode = "\u001b[?2004l";
 
         // mouse tracking
-        public const string EnableMouseTracking = "\u001b[?1000h";
-        public const string DisableMouseTracking = "\u001b[?1000l";
-        public const string EnableMouseMotionTracking = "\u001b[?1002h";
-        public const string DisableMouseMotionTracking = "\u001b[?1002l";
+        
+        // Normal Mouse tracking
+        // Mouse button press and release not movement
+        public const string EnableMouseButtons = "\u001b[?1000h";
+        public const string DisableMouseButtons = "\u001b[?1000l";
+        
+        // Button-Event Mouse Tracking
+        // Button Press/Release and mouse motion while button is pressed
+        public const string EnableMouseButtonAndMove = "\u001b[?1002h";
+        public const string DisableMouseButtonAndMove = "\u001b[?1002l";
+
+        // Any-event mouse tracking
+        // reports all mouse motions and button events regardless of button state
+        public const string EnableAllMouseEvents  = "\u001b[?1003h";
+        public const string DisableAllMouseEvents = "\u001b[?1003l";
+
+        // SGR Extended Mouse  Mode
+        // The SGR (Select Graphic Rendition) Extended mouse mode is is a modern
+        // protocol for reporting mouse events in terminal emulators. It covercomes limitations
+        // of folder mouse modes
         public const string EnableExtendedMouseTracking = "\u001b[?1006h";
         public const string DisableExtendedMouseTracking = "\u001b[?1006l";
 
