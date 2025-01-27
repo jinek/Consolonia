@@ -45,12 +45,12 @@ namespace Consolonia.Core.Text
         public const string DisableBracketedPasteMode = "\u001b[?2004l";
 
         // mouse tracking
-        
+
         // Normal Mouse tracking
         // Mouse button press and release not movement
         public const string EnableMouseButtons = "\u001b[?1000h";
         public const string DisableMouseButtons = "\u001b[?1000l";
-        
+
         // Button-Event Mouse Tracking
         // Button Press/Release and mouse motion while button is pressed
         public const string EnableMouseButtonAndMove = "\u001b[?1002h";
@@ -58,7 +58,7 @@ namespace Consolonia.Core.Text
 
         // Any-event mouse tracking
         // reports all mouse motions and button events regardless of button state
-        public const string EnableAllMouseEvents  = "\u001b[?1003h";
+        public const string EnableAllMouseEvents = "\u001b[?1003h";
         public const string DisableAllMouseEvents = "\u001b[?1003l";
 
         // SGR Extended Mouse  Mode
