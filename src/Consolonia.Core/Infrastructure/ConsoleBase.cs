@@ -92,6 +92,7 @@ namespace Consolonia.Core.Infrastructure
         protected void RaiseMouseEvent(RawPointerEventType eventType, Point point, Vector? wheelDelta,
             RawInputModifiers modifiers)
         {
+            System.Diagnostics.Debug.WriteLine($"Mouse event: {eventType} [{point}] {wheelDelta} {modifiers}");
             MouseEvent?.Invoke(eventType, point, wheelDelta, modifiers);
         }
 

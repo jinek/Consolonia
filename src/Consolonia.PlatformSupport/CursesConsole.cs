@@ -114,6 +114,8 @@ namespace Consolonia.PlatformSupport
 
         private KeyModifiers _keyModifiers;
 
+        private RawInputModifiers _moveModifers = RawInputModifiers.None;
+
         public CursesConsole()
             : base(new AnsiConsoleOutput())
         {
@@ -156,7 +158,7 @@ namespace Consolonia.PlatformSupport
                 out Curses.Event _);
 
             Console.WriteLine(Esc.EnableAllMouseEvents);
-            // Console.WriteLine(Esc.EnableExtendedMouseTracking);
+            //Console.WriteLine(Esc.EnableExtendedMouseTracking);
             base.PrepareConsole();
         }
 
@@ -171,7 +173,7 @@ namespace Consolonia.PlatformSupport
             Curses.noraw();
             Curses.endwin();
             Console.WriteLine(Esc.DisableAllMouseEvents);
-            // Console.WriteLine(Esc.DisableExtendedMouseTracking);
+            //Console.WriteLine(Esc.DisableExtendedMouseTracking);
         }
 
         public override void PauseIO(Task task)
@@ -380,29 +382,6 @@ namespace Consolonia.PlatformSupport
 
                                                     break;
 
-                                                // // ESC [<Cb;Cx;CyM mouse event
-                                                // case 50 when c[1] == (int)'<':
-                                                //    string s = new String(c.Cast<Char>().ToArray());
-                                                //      s = s[3..]; // remove ESC[<
-                                                //      char eventType = s[^1];// last char
-                                                //      s = s[..^1]; // remove last char
-                                                //      string[] parts = s.Split(';');
-                                                //      if (parts.Length == 3)
-                                                //      {
-                                                //          int cb = int.Parse(parts[0]);
-                                                //          int cx = int.Parse(parts[1]);
-                                                //          int cy = int.Parse(parts[2]);
-                                                //          Curses.MouseEvent ev = new Curses.MouseEvent
-                                                //          {
-                                                //              ButtonState = (Curses.Event)cb,
-                                                //              X = cx,
-                                                //              Y = cy
-                                                //          };
-                                                //          Console.WriteLine($"{cx},{cy} {cb}");
-                                                //          await HandleMouseInputAsync(ev);
-                                                //      }
-                                                //      break;
-
                                                 default:
                                                     k = MapCursesKey(wch2);
                                                     break;
@@ -524,30 +503,114 @@ namespace Consolonia.PlatformSupport
 
         private async Task HandleMouseInputAsync(Curses.MouseEvent ev)
         {
+            System.Diagnostics.Debug.WriteLine($"{JsonConvert.SerializeObject(ev)} {(Curses.Event)ev.ButtonState}");
+
             const double velocity = 1 / 12D;
 
             RawInputModifiers rawInputModifiers = MouseModifiersFlagTranslator.Translate(ev.ButtonState);
 
-            foreach (Curses.Event flag in ev.ButtonState.GetFlags())
+            await DispatchInputAsync(() =>
             {
-                RawPointerEventType rawPointerEventType = MouseEventFlagTranslator.Translate(flag);
-                if (rawPointerEventType == 0) continue;
-
-                Vector? wheelDelta = null;
-                if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledDown))
-                    wheelDelta = new Vector(0, -velocity);
-                if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledUp))
-                    wheelDelta = new Vector(0, velocity);
-
-                await DispatchInputAsync(() =>
+                foreach (Curses.Event flag in ev.ButtonState.GetFlags())
                 {
-                    RaiseMouseEvent(rawPointerEventType, new Point(ev.X, ev.Y), wheelDelta, rawInputModifiers);
-                    if (flag is not (Curses.Event.Button1Clicked or Curses.Event.Button2Clicked
-                        or Curses.Event.Button3Clicked
-                        or Curses.Event.Button4Clicked)) return;
-                     Thread.Yield();
-                    RaiseMouseEvent(rawPointerEventType + 1, new Point(ev.X, ev.Y), null, rawInputModifiers);
-                });
+                    Vector? wheelDelta = null;
+                    if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledDown))
+                        wheelDelta = new Vector(0, -velocity);
+                    if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledUp))
+                        wheelDelta = new Vector(0, velocity);
+
+                    switch (flag)
+                    {
+                        case Curses.Event.ButtonAlt:
+                        case Curses.Event.ButtonCtrl:
+                        case Curses.Event.ButtonShift:
+                            System.Diagnostics.Debug.WriteLine($"Mouse key modifier: {flag}");
+                            break;
+                        case Curses.Event.Button1Clicked:
+                            RailseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp, 1, new Point(ev.X, ev.Y), rawInputModifiers);
+                            break;
+                        case Curses.Event.Button1DoubleClicked:
+                            RailseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp, 2, new Point(ev.X, ev.Y), rawInputModifiers);
+                            break;
+                        case Curses.Event.Button1TripleClicked:
+                            RailseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp, 3, new Point(ev.X, ev.Y), rawInputModifiers);
+                            break;
+                        case Curses.Event.Button2Clicked:
+                            RailseMouseClickedEvent(RawPointerEventType.MiddleButtonDown, RawPointerEventType.MiddleButtonUp, 1, new Point(ev.X, ev.Y), rawInputModifiers);
+                            break;
+                        case Curses.Event.Button2DoubleClicked:
+                            RailseMouseClickedEvent(RawPointerEventType.MiddleButtonDown, RawPointerEventType.MiddleButtonUp, 2, new Point(ev.X, ev.Y), rawInputModifiers);
+                            break;
+                        case Curses.Event.Button2TripleClicked:
+                            RailseMouseClickedEvent(RawPointerEventType.MiddleButtonDown, RawPointerEventType.MiddleButtonUp, 3, new Point(ev.X, ev.Y), rawInputModifiers);
+                            break;
+                        case Curses.Event.Button3Clicked:
+                        case Curses.Event.Button4Clicked:
+                            RailseMouseClickedEvent(RawPointerEventType.RightButtonDown, RawPointerEventType.RightButtonUp, 1, new Point(ev.X, ev.Y), rawInputModifiers);
+                            break;
+                        case Curses.Event.Button3DoubleClicked:
+                        case Curses.Event.Button4DoubleClicked:
+                            RailseMouseClickedEvent(RawPointerEventType.RightButtonDown, RawPointerEventType.RightButtonUp, 2, new Point(ev.X, ev.Y), rawInputModifiers);
+                            break;
+                        case Curses.Event.Button3TripleClicked:
+                        case Curses.Event.Button4TripleClicked:
+                            RailseMouseClickedEvent(RawPointerEventType.RightButtonDown, RawPointerEventType.RightButtonUp, 3, new Point(ev.X, ev.Y), rawInputModifiers);
+                            break;
+                        case Curses.Event.Button1Pressed:
+                            _moveModifers = rawInputModifiers | RawInputModifiers.LeftMouseButton;
+                            RaiseMouseEvent(RawPointerEventType.LeftButtonDown, new Point(ev.X, ev.Y), wheelDelta, _moveModifers);
+                            break;
+                        case Curses.Event.Button2Pressed:
+                            _moveModifers = rawInputModifiers | RawInputModifiers.MiddleMouseButton;
+                            RaiseMouseEvent(RawPointerEventType.MiddleButtonDown, new Point(ev.X, ev.Y), wheelDelta, _moveModifers);
+                            break;
+                        case Curses.Event.Button3Pressed:
+                            _moveModifers = rawInputModifiers | RawInputModifiers.RightMouseButton;
+                            RaiseMouseEvent(RawPointerEventType.RightButtonDown, new Point(ev.X, ev.Y), wheelDelta, rawInputModifiers | _moveModifers);
+                            break;
+                        case Curses.Event.Button1Released:
+                            _moveModifers = RawInputModifiers.None;
+                            RaiseMouseEvent(RawPointerEventType.LeftButtonUp, new Point(ev.X, ev.Y), wheelDelta, RawInputModifiers.None);
+                            break;
+                        case Curses.Event.Button2Released:
+                            _moveModifers = RawInputModifiers.None;
+                            RaiseMouseEvent(RawPointerEventType.MiddleButtonUp, new Point(ev.X, ev.Y), wheelDelta, RawInputModifiers.None);
+                            break;
+                        case Curses.Event.Button3Released:
+                        case Curses.Event.Button4Released:
+                            _moveModifers = RawInputModifiers.None;
+                            RaiseMouseEvent(RawPointerEventType.RightButtonUp, new Point(ev.X, ev.Y), wheelDelta, RawInputModifiers.None);
+                            break;
+
+                        case Curses.Event.ReportMousePosition:
+                            RaiseMouseEvent(RawPointerEventType.Move, new Point(ev.X, ev.Y), wheelDelta, rawInputModifiers | _moveModifers);
+                            break;
+
+                        case Curses.Event.ButtonWheeledDown:
+                        case Curses.Event.ButtonWheeledUp:
+                            RaiseMouseEvent(RawPointerEventType.Wheel, new Point(ev.X, ev.Y), wheelDelta, rawInputModifiers);
+                            break;
+
+                        default:
+                            throw new NotImplementedException("Unknown mouse event");
+                    };
+                }
+            });
+        }
+
+        private void RailseMouseClickedEvent(RawPointerEventType down, RawPointerEventType up, int repeat, Point point, RawInputModifiers rawInputModifiers)
+        {
+            _moveModifers = RawInputModifiers.None;
+            if (repeat < 1 || repeat > 3)
+                throw new ArgumentOutOfRangeException(nameof(repeat), "Only repeat up to 1-3 times");
+
+            for (int i = 0; i < repeat; i++)
+            {
+                RaiseMouseEvent(down, point, null, rawInputModifiers);
+                Thread.Yield();
+
+                RaiseMouseEvent(up, point, null, rawInputModifiers);
+                Thread.Yield();
             }
         }
 
