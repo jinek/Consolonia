@@ -571,7 +571,7 @@ namespace Consolonia.PlatformSupport
 
                         default:
                             throw new NotImplementedException("Unknown mouse event");
-                    };
+                    }
                 }
             });
         }
