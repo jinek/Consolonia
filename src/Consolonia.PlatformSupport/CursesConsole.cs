@@ -587,7 +587,6 @@ namespace Consolonia.PlatformSupport
             {
                 RaiseMouseEvent(down, point, null, rawInputModifiers);
                 Thread.Yield();
-
                 RaiseMouseEvent(up, point, null, rawInputModifiers);
                 Thread.Yield();
             }
