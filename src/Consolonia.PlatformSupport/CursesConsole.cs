@@ -7,7 +7,6 @@
 //
 
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +16,6 @@ using Avalonia.Input.Raw;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
-using Newtonsoft.Json;
 using Unix.Terminal;
 using Key = Terminal.Gui.Key;
 using KeyModifiers = Terminal.Gui.KeyModifiers;
@@ -88,26 +86,6 @@ namespace Consolonia.PlatformSupport
                 (Curses.Event.ButtonAlt, RawInputModifiers.Alt),
                 (Curses.Event.ButtonCtrl, RawInputModifiers.Control),
                 (Curses.Event.ButtonShift, RawInputModifiers.Shift)
-            });
-
-        private static readonly FlagTranslator<Curses.Event, RawPointerEventType>
-            MouseEventFlagTranslator = new(new[]
-            {
-                (Curses.Event.Button1Pressed, RawPointerEventType.LeftButtonDown),
-                (Curses.Event.Button1Clicked, RawPointerEventType.LeftButtonDown),
-                (Curses.Event.Button1Released, RawPointerEventType.LeftButtonUp),
-                (Curses.Event.Button2Pressed, RawPointerEventType.MiddleButtonDown),
-                (Curses.Event.Button2Clicked, RawPointerEventType.MiddleButtonDown),
-                (Curses.Event.Button2Released, RawPointerEventType.MiddleButtonUp),
-                (Curses.Event.Button3Pressed, RawPointerEventType.RightButtonDown),
-                (Curses.Event.Button3Clicked, RawPointerEventType.RightButtonDown),
-                (Curses.Event.Button3Released, RawPointerEventType.RightButtonUp),
-                (Curses.Event.Button4Pressed, RawPointerEventType.XButton1Down),
-                (Curses.Event.Button4Clicked, RawPointerEventType.XButton1Down),
-                (Curses.Event.Button4Released, RawPointerEventType.XButton1Up),
-                (Curses.Event.ReportMousePosition, RawPointerEventType.Move),
-                (Curses.Event.ButtonWheeledDown, RawPointerEventType.Wheel),
-                (Curses.Event.ButtonWheeledUp, RawPointerEventType.Wheel)
             });
 
         private Curses.Window _cursesWindow;
