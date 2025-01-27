@@ -15,6 +15,7 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
+using Consolonia.Core.Text;
 using Unix.Terminal;
 using Key = Terminal.Gui.Key;
 using KeyModifiers = Terminal.Gui.KeyModifiers;
@@ -87,29 +88,11 @@ namespace Consolonia.PlatformSupport
                 (Curses.Event.ButtonShift, RawInputModifiers.Shift)
             });
 
-        private static readonly FlagTranslator<Curses.Event, RawPointerEventType>
-            MouseEventFlagTranslator = new(new[]
-            {
-                (Curses.Event.Button1Pressed, RawPointerEventType.LeftButtonDown),
-                (Curses.Event.Button1Clicked, RawPointerEventType.LeftButtonDown),
-                (Curses.Event.Button1Released, RawPointerEventType.LeftButtonUp),
-                (Curses.Event.Button2Pressed, RawPointerEventType.MiddleButtonDown),
-                (Curses.Event.Button2Clicked, RawPointerEventType.MiddleButtonDown),
-                (Curses.Event.Button2Released, RawPointerEventType.MiddleButtonUp),
-                (Curses.Event.Button3Pressed, RawPointerEventType.RightButtonDown),
-                (Curses.Event.Button3Clicked, RawPointerEventType.RightButtonDown),
-                (Curses.Event.Button3Released, RawPointerEventType.RightButtonUp),
-                (Curses.Event.Button4Pressed, RawPointerEventType.XButton1Down),
-                (Curses.Event.Button4Clicked, RawPointerEventType.XButton1Down),
-                (Curses.Event.Button4Released, RawPointerEventType.XButton1Up),
-                (Curses.Event.ReportMousePosition, RawPointerEventType.Move),
-                (Curses.Event.ButtonWheeledDown, RawPointerEventType.Wheel),
-                (Curses.Event.ButtonWheeledUp, RawPointerEventType.Wheel)
-            });
-
         private Curses.Window _cursesWindow;
 
         private KeyModifiers _keyModifiers;
+
+        private RawInputModifiers _moveModifers = RawInputModifiers.None;
 
         public CursesConsole()
             : base(new AnsiConsoleOutput())
@@ -120,7 +103,7 @@ namespace Consolonia.PlatformSupport
 
         public override bool SupportsAltSolo => false;
         public override bool SupportsMouse => true;
-        public override bool SupportsMouseMove => false;
+        public override bool SupportsMouseMove => true;
 
         private void StartEventLoop()
         {
@@ -151,7 +134,9 @@ namespace Consolonia.PlatformSupport
             Curses.mousemask(
                 Curses.Event.AllEvents | Curses.Event.ReportMousePosition,
                 out Curses.Event _);
-
+            Curses.mouseinterval(0); // if we don't do this mouse events are dropped
+            Console.WriteLine(Esc.EnableAllMouseEvents);
+            //Console.WriteLine(Esc.EnableExtendedMouseTracking);
             base.PrepareConsole();
         }
 
@@ -165,6 +150,8 @@ namespace Consolonia.PlatformSupport
             Curses.echo();
             Curses.noraw();
             Curses.endwin();
+            Console.WriteLine(Esc.DisableAllMouseEvents);
+            //Console.WriteLine(Esc.DisableExtendedMouseTracking);
         }
 
         public override void PauseIO(Task task)
@@ -494,30 +481,127 @@ namespace Consolonia.PlatformSupport
 
         private async Task HandleMouseInputAsync(Curses.MouseEvent ev)
         {
+            // System.Diagnostics.Debug.WriteLine($"{JsonConvert.SerializeObject(ev)} {(Curses.Event)ev.ButtonState}");
+
             const double velocity = 1 / 12D;
 
             RawInputModifiers rawInputModifiers = MouseModifiersFlagTranslator.Translate(ev.ButtonState);
 
-            foreach (Curses.Event flag in ev.ButtonState.GetFlags())
+            await DispatchInputAsync(() =>
             {
-                RawPointerEventType rawPointerEventType = MouseEventFlagTranslator.Translate(flag);
-                if (rawPointerEventType == 0) continue;
-
                 Vector? wheelDelta = null;
                 if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledDown))
                     wheelDelta = new Vector(0, -velocity);
                 if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledUp))
                     wheelDelta = new Vector(0, velocity);
+                var point = new Point(ev.X, ev.Y);
+                foreach (Curses.Event flag in ev.ButtonState.GetFlags())
+                    switch (flag)
+                    {
+                        case Curses.Event.ButtonAlt:
+                        case Curses.Event.ButtonCtrl:
+                        case Curses.Event.ButtonShift:
+                            // we ignore these, as they are picked up by input modifiers
+                            break;
+                        case Curses.Event.Button1Clicked:
+                            RaiseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp,
+                                1, point, rawInputModifiers);
+                            break;
+                        case Curses.Event.Button1DoubleClicked:
+                            RaiseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp,
+                                2, point, rawInputModifiers);
+                            break;
+                        case Curses.Event.Button1TripleClicked:
+                            RaiseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp,
+                                3, point, rawInputModifiers);
+                            break;
+                        case Curses.Event.Button2Clicked:
+                            RaiseMouseClickedEvent(RawPointerEventType.MiddleButtonDown,
+                                RawPointerEventType.MiddleButtonUp, 1, point, rawInputModifiers);
+                            break;
+                        case Curses.Event.Button2DoubleClicked:
+                            RaiseMouseClickedEvent(RawPointerEventType.MiddleButtonDown,
+                                RawPointerEventType.MiddleButtonUp, 2, point, rawInputModifiers);
+                            break;
+                        case Curses.Event.Button2TripleClicked:
+                            RaiseMouseClickedEvent(RawPointerEventType.MiddleButtonDown,
+                                RawPointerEventType.MiddleButtonUp, 3, point, rawInputModifiers);
+                            break;
+                        case Curses.Event.Button3Clicked:
+                        case Curses.Event.Button4Clicked:
+                            RaiseMouseClickedEvent(RawPointerEventType.RightButtonDown,
+                                RawPointerEventType.RightButtonUp, 1, point, rawInputModifiers);
+                            break;
+                        case Curses.Event.Button3DoubleClicked:
+                        case Curses.Event.Button4DoubleClicked:
+                            RaiseMouseClickedEvent(RawPointerEventType.RightButtonDown,
+                                RawPointerEventType.RightButtonUp, 2, point, rawInputModifiers);
+                            break;
+                        case Curses.Event.Button3TripleClicked:
+                        case Curses.Event.Button4TripleClicked:
+                            RaiseMouseClickedEvent(RawPointerEventType.RightButtonDown,
+                                RawPointerEventType.RightButtonUp, 3, point, rawInputModifiers);
+                            break;
+                        case Curses.Event.Button1Pressed:
+                            _moveModifers = rawInputModifiers | RawInputModifiers.LeftMouseButton;
+                            RaiseMouseEvent(RawPointerEventType.LeftButtonDown, point, wheelDelta, _moveModifers);
+                            break;
+                        case Curses.Event.Button2Pressed:
+                            _moveModifers = rawInputModifiers | RawInputModifiers.MiddleMouseButton;
+                            RaiseMouseEvent(RawPointerEventType.MiddleButtonDown, point, wheelDelta, _moveModifers);
+                            break;
+                        case Curses.Event.Button3Pressed:
+                            _moveModifers = rawInputModifiers | RawInputModifiers.RightMouseButton;
+                            RaiseMouseEvent(RawPointerEventType.RightButtonDown, point, wheelDelta,
+                                rawInputModifiers | _moveModifers);
+                            break;
+                        case Curses.Event.Button1Released:
+                            _moveModifers = RawInputModifiers.None;
+                            RaiseMouseEvent(RawPointerEventType.LeftButtonUp, point, wheelDelta,
+                                RawInputModifiers.None);
+                            break;
+                        case Curses.Event.Button2Released:
+                            _moveModifers = RawInputModifiers.None;
+                            RaiseMouseEvent(RawPointerEventType.MiddleButtonUp, point, wheelDelta,
+                                RawInputModifiers.None);
+                            break;
+                        case Curses.Event.Button3Released:
+                        case Curses.Event.Button4Released:
+                            _moveModifers = RawInputModifiers.None;
+                            RaiseMouseEvent(RawPointerEventType.RightButtonUp, point, wheelDelta,
+                                RawInputModifiers.None);
+                            break;
 
-                await DispatchInputAsync(() =>
-                {
-                    RaiseMouseEvent(rawPointerEventType, new Point(ev.X, ev.Y), wheelDelta, rawInputModifiers);
-                    if (flag is not (Curses.Event.Button1Clicked or Curses.Event.Button2Clicked
-                        or Curses.Event.Button3Clicked
-                        or Curses.Event.Button4Clicked)) return;
-                    Thread.Yield();
-                    RaiseMouseEvent(rawPointerEventType + 1, new Point(ev.X, ev.Y), null, rawInputModifiers);
-                });
+                        case Curses.Event.ReportMousePosition:
+                            RaiseMouseEvent(RawPointerEventType.Move, point, wheelDelta,
+                                rawInputModifiers | _moveModifers);
+                            break;
+
+                        case Curses.Event.ButtonWheeledDown:
+                        case Curses.Event.ButtonWheeledUp:
+                            RaiseMouseEvent(RawPointerEventType.Wheel, point, wheelDelta, rawInputModifiers);
+                            break;
+
+                        default:
+                            throw new NotImplementedException("Unknown mouse event");
+                    }
+            });
+        }
+
+        // emit pairs of mouse click events (down/up)
+        private void RaiseMouseClickedEvent(RawPointerEventType down, RawPointerEventType up, int repeat, Point point,
+            RawInputModifiers rawInputModifiers)
+        {
+            _moveModifers = RawInputModifiers.None;
+            if (repeat < 1 || repeat > 3)
+                throw new ArgumentOutOfRangeException(nameof(repeat), "Only repeat up to 1-3 times");
+
+            for (int i = 0; i < repeat; i++)
+            {
+                RaiseMouseEvent(down, point, null, rawInputModifiers);
+                Thread.Yield();
+                RaiseMouseEvent(up, point, null, rawInputModifiers);
+                Thread.Yield();
             }
         }
 
