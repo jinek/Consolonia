@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Controls;
 using Consolonia.Core.Infrastructure;
@@ -92,6 +93,15 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             }
         }
 
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+            if (_console != null)
+            {
+                _console.KeyEvent -= OnRawKey;
+                _console.MouseEvent -= OnRawMouse;
+            }
+        }
 
         private void OnRawMouseEntered(object? sender, Avalonia.Input.PointerEventArgs e)
         {
@@ -180,7 +190,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         public RawMouseEventViewModel(RawPointerEventType type, Point point, Vector? nullable, RawInputModifiers modifiers)
         {
-            Name = type.ToString(); 
+            Name = type.ToString();
             Summary = $"[{point}] {type} ({modifiers.ToString()})";
             Details = $"""
                 Point: {point}
@@ -196,7 +206,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             Name = $"RawKey{(isDown ? "Down" : "Up")} {key} ({modifiers})";
             Summary = Name;
-            Details = 
+            Details =
                 $"""
                 Key: {key.ToString()}
                 Char: '{ch}' {(int)ch} 0x{((int)ch).ToString("x")}
@@ -220,6 +230,16 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             {
                 while (_pointerEvents.Count > 1000)
                     _pointerEvents.RemoveAt(0);
+            };
+            _rawMouseEvents.CollectionChanged += (sender, args) =>
+            {
+                while (_rawMouseEvents.Count > 1000)
+                    _rawMouseEvents.RemoveAt(0);
+            };
+            _rawKeyboardEvents.CollectionChanged += (sender, args) =>
+            {
+                while (_rawKeyboardEvents.Count > 1000)
+                    _rawKeyboardEvents.RemoveAt(0);
             };
         }
 
@@ -245,7 +265,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private ObservableCollection<RawKeyboardEventViewModel> _rawKeyboardEvents = new ObservableCollection<RawKeyboardEventViewModel>();
 
         [ObservableProperty]
-        private EventViewModel _SelectedRawKeyboardEvent;
+        private EventViewModel _selectedRawKeyboardEvent;
     }
 
 }
