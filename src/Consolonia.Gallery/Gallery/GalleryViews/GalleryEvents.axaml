@@ -13,9 +13,12 @@
                       PointerPressed="OnPointerPressed"
                       PointerReleased="OnPointerReleased"
                       PointerWheelChanged="OnPointerWheelChanged">
-                    <TextBlock HorizontalAlignment="Center" TextDecorations="Underline">Mouse Events</TextBlock>
+                    <TextBlock HorizontalAlignment="Center"
+                               TextDecorations="Underline">
+                        Mouse Events
+                    </TextBlock>
                     <TextBlock Grid.Row="1"
-                               Text="{Binding SelectedPointerEvent.Name}"/>
+                               Text="{Binding SelectedPointerEvent.Name}" />
                     <TextBlock Grid.Row="2"
                                Text="{Binding SelectedPointerEvent.Details}" />
                 </Grid>
@@ -25,7 +28,7 @@
                          SelectedItem="{Binding SelectedPointerEvent}"
                          AutoScrollToSelectedItem="True"
                          Grid.Column="1"
-                         DoubleTapped="OnDoubleTapped" >
+                         DoubleTapped="OnDoubleTapped">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Summary}" />
@@ -36,18 +39,21 @@
         </TabItem>
         <TabItem Header="Keyboard">
             <Grid ColumnDefinitions="* *">
-                <Grid RowDefinitions="Auto Auto Auto *"
+                <Grid RowDefinitions="Auto Auto Auto Auto *"
                       Background="Transparent">
-                    <TextBlock HorizontalAlignment="Center" TextDecorations="Underline">Keyboard Events</TextBlock>
-                    <TextBox Height="2"
-                         Watermark="Type here to see keyboard events"
-                         AcceptsReturn="True"
-                         KeyDown="OnKeyDown"
-                         KeyUp="OnKeyUp"/>
+                    <TextBlock HorizontalAlignment="Center"
+                               TextDecorations="Underline">
+                        Keyboard Events
+                    </TextBlock>
+                    <TextBox Height="2" Grid.Row="1"
+                             Watermark="Type here to see keyboard events"
+                             AcceptsReturn="True"
+                             KeyDown="OnKeyDown"
+                             KeyUp="OnKeyUp" />
 
-                    <TextBlock Grid.Row="1"
-                               Text="{Binding SelectedKeyboardEvent.Name}"/>
                     <TextBlock Grid.Row="2"
+                               Text="{Binding SelectedKeyboardEvent.Name}" />
+                    <TextBlock Grid.Row="3"
                                Text="{Binding SelectedKeyboardEvent.Details}" />
                 </Grid>
                 <ListBox x:Name="KeyboardEvents"
@@ -56,7 +62,7 @@
                          SelectedItem="{Binding SelectedKeyboardEvent}"
                          AutoScrollToSelectedItem="True"
                          Grid.Column="1"
-                         DoubleTapped="OnDoubleTapped" >
+                         DoubleTapped="OnDoubleTapped">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Summary}" />
@@ -71,9 +77,12 @@
                       PointerEntered="OnRawMouseEntered"
                       PointerExited="OnRawMouseExited"
                       Background="Transparent">
-                    <TextBlock HorizontalAlignment="Center" TextDecorations="Underline">Raw Mouse Events</TextBlock>
+                    <TextBlock HorizontalAlignment="Center"
+                               TextDecorations="Underline">
+                        Raw Mouse Events
+                    </TextBlock>
                     <TextBlock Grid.Row="1"
-                               Text="{Binding SelectedRawMouseEvent.Name}"/>
+                               Text="{Binding SelectedRawMouseEvent.Name}" />
                     <TextBlock Grid.Row="2"
                                Text="{Binding SelectedRawMouseEvent.Details}" />
                 </Grid>
@@ -83,7 +92,7 @@
                          SelectedItem="{Binding SelectedRawMouseEvent}"
                          AutoScrollToSelectedItem="True"
                          Grid.Column="1"
-                         DoubleTapped="OnDoubleTapped" >
+                         DoubleTapped="OnDoubleTapped">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Summary}" />
@@ -93,15 +102,18 @@
             </Grid>
         </TabItem>
         <TabItem Header="RawKeyboard">
-            <Grid ColumnDefinitions="* *" >
+            <Grid ColumnDefinitions="* *">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock HorizontalAlignment="Center" TextDecorations="Underline">Raw Keyboard Events</TextBlock>
+                    <TextBlock HorizontalAlignment="Center"
+                               TextDecorations="Underline">
+                        Raw Keyboard Events
+                    </TextBlock>
                     <TextBox Height="2"
                              Watermark="Type here to see raw keyboard events"
                              AcceptsReturn="True"
                              GotFocus="OnRawKeyboardGotFocus"
-                             LostFocus="OnRawKeyboardLostFocus"/>
-                    <TextBlock Text="{Binding SelectedRawKeyboardEvent.Name}"/>
+                             LostFocus="OnRawKeyboardLostFocus" />
+                    <TextBlock Text="{Binding SelectedRawKeyboardEvent.Name}" />
                     <TextBlock Text="{Binding SelectedRawKeyboardEvent.Details}" />
                 </StackPanel>
                 <ListBox x:Name="RawKeyboardEvents"
@@ -110,7 +122,7 @@
                          SelectedItem="{Binding SelectedRawKeyboardEvent}"
                          AutoScrollToSelectedItem="True"
                          Grid.Column="1"
-                         DoubleTapped="OnDoubleTapped" >
+                         DoubleTapped="OnDoubleTapped">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Summary}" />
