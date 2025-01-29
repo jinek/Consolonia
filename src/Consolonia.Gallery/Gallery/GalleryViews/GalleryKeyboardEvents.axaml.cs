@@ -19,7 +19,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 Key = $"{(int)e.Key} {e.Key}",
                 KeyDeviceType = e.KeyDeviceType.ToString(),
                 KeyModifiers = e.KeyModifiers.ToString(),
-                KeySymbol = e.KeySymbol
+                e.KeySymbol
             });
         }
 
