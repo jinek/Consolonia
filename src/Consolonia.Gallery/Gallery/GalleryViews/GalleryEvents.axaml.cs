@@ -5,13 +5,13 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Controls;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-
     public partial class GalleryEvents : UserControl
     {
         private IConsole _console;
@@ -20,10 +20,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             InitializeComponent();
 
-            this.DataContext = new EventsViewModel();
+            DataContext = new EventsViewModel();
         }
 
-        public EventsViewModel ViewModel => this.DataContext as EventsViewModel;
+        public EventsViewModel ViewModel => DataContext as EventsViewModel;
 
         private void OnRawMouse(RawPointerEventType type, Point point, Vector? nullable, RawInputModifiers modifiers)
         {
@@ -93,25 +93,25 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
 
-        private void OnRawMouseEntered(object? sender, Avalonia.Input.PointerEventArgs e)
+        private void OnRawMouseEntered(object? sender, PointerEventArgs e)
         {
             EnsureConsole();
             _console.MouseEvent += OnRawMouse;
         }
 
-        private void OnRawMouseExited(object? sender, Avalonia.Input.PointerEventArgs e)
+        private void OnRawMouseExited(object? sender, PointerEventArgs e)
         {
             EnsureConsole();
             _console.MouseEvent -= OnRawMouse;
         }
 
-        private void OnRawKeyboardGotFocus(object? sender, Avalonia.Input.GotFocusEventArgs e)
+        private void OnRawKeyboardGotFocus(object? sender, GotFocusEventArgs e)
         {
             EnsureConsole();
             _console.KeyEvent += OnRawKey;
         }
 
-        private void OnRawKeyboardLostFocus(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void OnRawKeyboardLostFocus(object? sender, RoutedEventArgs e)
         {
             EnsureConsole();
             _console.KeyEvent -= OnRawKey;
@@ -123,11 +123,11 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             if (_console == null)
             {
                 var consoleWindow = (ConsoleWindow)TopLevel.GetTopLevel(this).PlatformImpl;
-                var propInfo = typeof(ConsoleWindow).GetField("Console", BindingFlags.NonPublic | BindingFlags.Instance);
+                FieldInfo propInfo =
+                    typeof(ConsoleWindow).GetField("Console", BindingFlags.NonPublic | BindingFlags.Instance);
                 _console = (IConsole)propInfo.GetValue(consoleWindow);
             }
         }
-
     }
 
     public class EventViewModel
@@ -146,12 +146,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Name = name;
             Summary = $"{name} {e.Key} ({e.KeyModifiers})";
             Details = $"""
-                PhysicalKey: {e.PhysicalKey}
-                Key: {e.Key} {(int)e.Key}
-                KeyDeviceType: {e.KeyDeviceType}
-                KeyModifiers: {e.KeyModifiers}
-                KeySymbol: {e.KeySymbol}
-                """;
+                       PhysicalKey: {e.PhysicalKey}
+                       Key: {e.Key} {(int)e.Key}
+                       KeyDeviceType: {e.KeyDeviceType}
+                       KeyModifiers: {e.KeyModifiers}
+                       KeySymbol: {e.KeySymbol}
+                       """;
         }
     }
 
@@ -163,30 +163,31 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Summary = $"[{point.Position.X},{point.Position.Y}] {name} ({e.KeyModifiers.ToString()})";
             Details =
                 $"""
-                Position: [{point.Position}]
-                KeyModifiers: {e.KeyModifiers}
-                WheelData: {(e is PointerWheelEventArgs pwe ? pwe.Delta : 0)}
-                ClickCount: {(e is PointerPressedEventArgs ppe ? ppe.ClickCount : 0)}
-                Pointer.Type: {point.Pointer.Type}
-                Pointer.Id: {point.Pointer.Id}
-                Pointer.IsPrimary: {point.Pointer.IsPrimary}
-                Pointer.Captured: {point.Pointer.Captured}
-                InitialPressMouseButton: {(e is PointerReleasedEventArgs pre ? pre.InitialPressMouseButton : MouseButton.None)}
-                """;
+                 Position: [{point.Position}]
+                 KeyModifiers: {e.KeyModifiers}
+                 WheelData: {(e is PointerWheelEventArgs pwe ? pwe.Delta : 0)}
+                 ClickCount: {(e is PointerPressedEventArgs ppe ? ppe.ClickCount : 0)}
+                 Pointer.Type: {point.Pointer.Type}
+                 Pointer.Id: {point.Pointer.Id}
+                 Pointer.IsPrimary: {point.Pointer.IsPrimary}
+                 Pointer.Captured: {point.Pointer.Captured}
+                 InitialPressMouseButton: {(e is PointerReleasedEventArgs pre ? pre.InitialPressMouseButton : MouseButton.None)}
+                 """;
         }
     }
 
     public class RawMouseEventViewModel : EventViewModel
     {
-        public RawMouseEventViewModel(RawPointerEventType type, Point point, Vector? nullable, RawInputModifiers modifiers)
+        public RawMouseEventViewModel(RawPointerEventType type, Point point, Vector? nullable,
+            RawInputModifiers modifiers)
         {
-            Name = type.ToString(); 
+            Name = type.ToString();
             Summary = $"[{point}] {type} ({modifiers.ToString()})";
             Details = $"""
-                Point: {point}
-                Modifiers: {modifiers.ToString()}
-                Vector: {nullable}
-                """;
+                       Point: {point}
+                       Modifiers: {modifiers.ToString()}
+                       Vector: {nullable}
+                       """;
         }
     }
 
@@ -196,19 +197,35 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             Name = $"RawKey{(isDown ? "Down" : "Up")} {key} ({modifiers})";
             Summary = Name;
-            Details = 
+            Details =
                 $"""
-                Key: {key.ToString()}
-                Char: '{ch}' {(int)ch} 0x{((int)ch).ToString("x")}
-                Modifiers: {modifiers.ToString()}
-                IsDown: {isDown}
-                Timestamp: {timestamp}
-                """;
+                 Key: {key.ToString()}
+                 Char: '{ch}' {(int)ch} 0x{((int)ch).ToString("x")}
+                 Modifiers: {modifiers.ToString()}
+                 IsDown: {isDown}
+                 Timestamp: {timestamp}
+                 """;
         }
     }
 
     public partial class EventsViewModel : ObservableObject
     {
+        [ObservableProperty] private ObservableCollection<EventViewModel> _keyboardEvents = new();
+
+        [ObservableProperty] private ObservableCollection<EventViewModel> _pointerEvents = new();
+
+        [ObservableProperty] private ObservableCollection<RawKeyboardEventViewModel> _rawKeyboardEvents = new();
+
+        [ObservableProperty] private ObservableCollection<RawMouseEventViewModel> _rawMouseEvents = new();
+
+        [ObservableProperty] private EventViewModel _selectedKeyboardEvent;
+
+        [ObservableProperty] private EventViewModel _selectedPointerEvent;
+
+        [ObservableProperty] private EventViewModel _SelectedRawKeyboardEvent;
+
+        [ObservableProperty] private EventViewModel _selectedRawMouseEvent;
+
         public EventsViewModel()
         {
             _keyboardEvents.CollectionChanged += (sender, args) =>
@@ -222,30 +239,5 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     _pointerEvents.RemoveAt(0);
             };
         }
-
-        [ObservableProperty]
-        private ObservableCollection<EventViewModel> _keyboardEvents = new ObservableCollection<EventViewModel>();
-
-        [ObservableProperty]
-        private EventViewModel _selectedKeyboardEvent;
-
-        [ObservableProperty]
-        private ObservableCollection<EventViewModel> _pointerEvents = new ObservableCollection<EventViewModel>();
-
-        [ObservableProperty]
-        private EventViewModel _selectedPointerEvent;
-
-        [ObservableProperty]
-        private ObservableCollection<RawMouseEventViewModel> _rawMouseEvents = new ObservableCollection<RawMouseEventViewModel>();
-
-        [ObservableProperty]
-        private EventViewModel _selectedRawMouseEvent;
-
-        [ObservableProperty]
-        private ObservableCollection<RawKeyboardEventViewModel> _rawKeyboardEvents = new ObservableCollection<RawKeyboardEventViewModel>();
-
-        [ObservableProperty]
-        private EventViewModel _SelectedRawKeyboardEvent;
     }
-
 }
