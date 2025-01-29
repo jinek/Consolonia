@@ -16,6 +16,16 @@
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="YamlConvert" Version="3.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Gallery\GalleryViews\GalleryKeyboardEvents.axaml.cs">
+        <DependentUpon>GalleryKeyboardEvents.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="Gallery\GalleryViews\GalleryPointerEvents.axaml.cs">
+        <DependentUpon>GalleryPointerEvents.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 

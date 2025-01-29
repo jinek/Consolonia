@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryPointerEvents">
+    <Grid ColumnDefinitions="* *">
+        <Grid RowDefinitions="Auto Auto Auto *"
+              Background="Transparent"
+              PointerMoved="OnPointerMoved"
+              PointerPressed="OnPointerPressed"
+              PointerReleased="OnPointerReleased"
+              PointerWheelChanged="OnPointerWheelChanged">
+            <TextBlock HorizontalAlignment="Center" TextDecorations="Underline">Mouse Events</TextBlock>
+            <TextBlock Grid.Row="1"
+                       Text="{Binding #Events.SelectedItem.Name}"/>
+            <TextBlock Grid.Row="2" 
+                       Text="{Binding #Events.SelectedItem.Details}" />
+        </Grid>
+        <ListBox x:Name="Events"  
+                 Margin="0 -1 0 -1"
+                 ItemsSource="{Binding}" 
+                 AutoScrollToSelectedItem="True"
+                 Grid.Column="1" 
+                 DoubleTapped="ListBox_DoubleTapped" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>
