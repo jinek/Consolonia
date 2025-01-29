@@ -3,6 +3,7 @@ using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Themes.Simple;
 using Consolonia.Gallery.View;
 using Consolonia.Themes;
 
@@ -22,10 +23,13 @@ namespace Consolonia.Gallery
             /*Styles.Add(new TurboVisionDarkTheme());*/
             /*Styles.Add(new FluentTheme());*/
 
+            Styles.Add(new SimpleTheme());
+
             if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode())
                 Styles.Add(new MaterialTheme());
             else
                 Styles.Add(new TurboVisionTheme());
+
 
             if (ApplicationLifetime is ISingleViewApplicationLifetime lifetime)
                 lifetime.MainView = new ControlsListView();

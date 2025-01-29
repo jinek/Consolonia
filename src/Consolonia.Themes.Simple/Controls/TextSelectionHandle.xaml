@@ -1,0 +1,26 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Double x:Key="TextSelectHandleSize">3</x:Double>
+  <ControlTheme x:Key="{x:Type TextSelectionHandle}"
+                TargetType="TextSelectionHandle">
+    <Setter Property="Background"
+            Value="{DynamicResource HighlightBrush}" />
+    <Setter Property="HorizontalAlignment"
+            Value="Center" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate>
+          <Grid>
+            <TextBlock Text="▭" 
+                       HorizontalAlignment="Stretch" 
+                       Height="{DynamicResource TextSelectHandleSize}" 
+                       Foreground="{TemplateBinding Background}" />
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^.caret /template/ TextBlock#PART_HandlePathIcon">
+      <Setter Property="Text" Value="⚪"/>
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>

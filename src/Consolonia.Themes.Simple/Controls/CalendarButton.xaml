@@ -1,0 +1,66 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:ClassModifier="internal">
+  <ControlTheme x:Key="{x:Type CalendarButton}"
+                TargetType="CalendarButton">
+    <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+    <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush2}" />
+    <Setter Property="FontSize" Value="1" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="MinWidth" Value="5" />
+    <Setter Property="MinHeight" Value="3" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid>
+
+          <!-- <Rectangle Name="SelectedBackground"
+                     Fill="{TemplateBinding Background}"
+                     IsVisible="False"
+                     Opacity="0.75" /> -->
+
+          <!-- <Rectangle Name="Background"
+                     Fill="{TemplateBinding Background}"
+                     IsVisible="False"
+                     Opacity="0.5" /> -->
+
+          <ContentPresenter x:Name="PART_ContentPresenter"
+                            Margin="0,0,0,1"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            FontSize="1"
+                            Foreground="{TemplateBinding Foreground}" />
+
+          <!-- <Rectangle Name="FocusVisual"
+                     IsHitTestVisible="False"
+                     IsVisible="False"
+                     Stroke="{DynamicResource HighlightBrush}"
+                     StrokeThickness="1" /> -->
+
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:pointerover /template/ Rectangle#Background">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="^:pressed /template/ Rectangle#Background">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="^:selected /template/ Rectangle#SelectedBackground">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="^:inactive /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundLowBrush}" />
+    </Style>
+
+    <Style Selector="^:btnfocused /template/ Rectangle#FocusVisual">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>

@@ -14,6 +14,7 @@ namespace Consolonia.Gallery.View
 {
     public enum Themes
     {
+        Simple,
         Material,
         Fluent,
         TurboVision,
