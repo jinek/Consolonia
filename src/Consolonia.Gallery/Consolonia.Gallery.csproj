@@ -16,6 +16,5 @@
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="YamlConvert" Version="3.1.0" />
     </ItemGroup>
 </Project>
