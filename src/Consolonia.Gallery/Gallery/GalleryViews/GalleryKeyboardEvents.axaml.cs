@@ -19,7 +19,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 Key = $"{(int)e.Key} {e.Key}",
                 KeyDeviceType = e.KeyDeviceType.ToString(),
                 KeyModifiers = e.KeyModifiers.ToString(),
-                KeySymbol = e.KeySymbol?.ToString()
+                KeySymbol = e.KeySymbol
             });
         }
 
@@ -31,14 +31,13 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     public partial class GalleryKeyboardEvents : UserControl
     {
-
-        private ObservableCollection<KeyEventViewModel> _events = new ObservableCollection<KeyEventViewModel>();
+        private readonly ObservableCollection<KeyEventViewModel> _events = new();
 
         public GalleryKeyboardEvents()
         {
             InitializeComponent();
 
-            this.DataContext = _events;
+            DataContext = _events;
         }
 
         private void OnKeyDown(object? sender, KeyEventArgs e)
@@ -58,13 +57,13 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             _events.Add(eventViewModel);
             if (_events.Count > 1000)
                 _events.RemoveAt(0);
-            this.Events.SelectedItem = eventViewModel;
+            Events.SelectedItem = eventViewModel;
         }
 
 
         private async void ListBox_DoubleTapped(object? sender, TappedEventArgs e)
         {
-            var pev = this.Events.SelectedItem as KeyEventViewModel;
+            var pev = Events.SelectedItem as KeyEventViewModel;
             await new MessageBox().ShowDialogAsync(this, pev.Details, pev.Name);
         }
     }

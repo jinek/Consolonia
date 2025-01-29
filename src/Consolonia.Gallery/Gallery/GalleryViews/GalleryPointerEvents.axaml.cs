@@ -12,12 +12,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public PointerEventViewModel(PointerEventArgs e, PointerPoint point)
         {
             Name = $"[{point.Position.X},{point.Position.Y}] " + e switch
-            {
-                PointerReleasedEventArgs a => "PointerReleased",
-                PointerPressedEventArgs a => "PointerPressed",
-                PointerWheelEventArgs a => "PointerWheelChanged",
-                PointerEventArgs a => "PointerMoved",
-            } + $" {e.KeyModifiers.ToString()}";
+                {
+                    PointerReleasedEventArgs a => "PointerReleased",
+                    PointerPressedEventArgs a => "PointerPressed",
+                    PointerWheelEventArgs a => "PointerWheelChanged",
+                    PointerEventArgs a => "PointerMoved"
+                } + $" {e.KeyModifiers.ToString()}";
             Point = point;
             Event = e;
             Details = YamlConvert.SerializeObject(Point.Properties);
@@ -25,7 +25,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Details += $"KeyModifiers: {Event.KeyModifiers}\n";
             Details += $"WheelDelta: {(Event is PointerWheelEventArgs pwe ? pwe.Delta : 0)}\n";
             Details += $"ClickCount: {(Event is PointerPressedEventArgs ppe ? ppe.ClickCount : 0)}\n";
-            Details += $"InitialPressMouseButton: {(Event is PointerReleasedEventArgs pre ? pre.InitialPressMouseButton : MouseButton.None)}\n";
+            Details +=
+                $"InitialPressMouseButton: {(Event is PointerReleasedEventArgs pre ? pre.InitialPressMouseButton : MouseButton.None)}\n";
         }
 
         public string Name { get; set; }
@@ -33,19 +34,17 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public PointerEventArgs Event { get; set; }
 
         public string Details { get; set; }
-
     }
 
     public partial class GalleryPointerEvents : UserControl
     {
-
-        private ObservableCollection<PointerEventViewModel> _events = new ObservableCollection<PointerEventViewModel>();
+        private readonly ObservableCollection<PointerEventViewModel> _events = new();
 
         public GalleryPointerEvents()
         {
             InitializeComponent();
 
-            this.DataContext = _events;
+            DataContext = _events;
         }
 
         private void OnPointerMoved(object? sender, PointerEventArgs e)
@@ -74,13 +73,13 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             _events.Add(eventViewModel);
             if (_events.Count > 1000)
                 _events.RemoveAt(0);
-            this.Events.SelectedItem = eventViewModel;
+            Events.SelectedItem = eventViewModel;
         }
 
 
         private async void ListBox_DoubleTapped(object? sender, TappedEventArgs e)
         {
-            var pev = this.Events.SelectedItem as PointerEventViewModel;
+            var pev = Events.SelectedItem as PointerEventViewModel;
             await new MessageBox().ShowDialogAsync(this, pev.Details, pev.Name);
         }
     }
