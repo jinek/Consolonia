@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
+             mc:Ignorable="d"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryTreeView"
+             x:DataType="local:TreeViewPageViewModel">
+    <Grid RowDefinitions="Auto * Auto">
+        <TextBlock Classes="h2">Displays a hierachical tree of data.</TextBlock>
+        <TreeView x:Name="TreeView" 
+                  Grid.Row="1" 
+                  ItemsSource="{Binding Items}" 
+                  SelectedItems="{Binding SelectedItems}" 
+                  SelectionMode="{Binding SelectionMode}" 
+                  Background="Transparent" >
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Header}" Padding="1 0 0 0"/>
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" >
+            <Button Command="{Binding AddItemCommand}">Add</Button>
+            <Button Command="{Binding RemoveItemCommand}">Remove</Button>
+            <Button Command="{Binding SelectRandomItemCommand}">Select Random</Button>
+
+            <ComboBox SelectedIndex="{Binding SelectionMode, Mode=TwoWay}" Height="1">
+                <ComboBoxItem>Single</ComboBoxItem>
+                <ComboBoxItem>Multiple</ComboBoxItem>
+                <ComboBoxItem>Toggle</ComboBoxItem>
+                <ComboBoxItem>AlwaysSelected</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
+    </Grid>
+</UserControl>
