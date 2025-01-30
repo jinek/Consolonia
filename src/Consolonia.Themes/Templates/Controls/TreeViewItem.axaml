@@ -48,7 +48,7 @@
                               Margin="{TemplateBinding Level,
                                            Mode=OneWay,
                                            Converter={StaticResource LeftMarginConverter}}"
-                              ColumnDefinitions="1, *">
+                              ColumnDefinitions="Auto, *">
                             <ToggleButton Name="PART_ExpandCollapseChevron"
                                           Focusable="False"
                                           Background="Transparent"
