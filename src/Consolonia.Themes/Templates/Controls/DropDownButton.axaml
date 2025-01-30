@@ -1,0 +1,70 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
+                    x:ClassModifier="internal">
+    <ControlTheme x:Key="{x:Type DropDownButton}"
+                  TargetType="DropDownButton">
+        <Setter Property="Background" Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource ThemeSelectionForegroundBrush}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Name="RootBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            ClipToBounds="True">
+                        <Grid Name="InnerGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Grid.Column="0"
+                                              Padding="{TemplateBinding Padding}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              RecognizesAccessKey="True" />
+                            <TextBlock Name="DropDownGlyph"
+                                       Grid.Column="1"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
+                                      IsHitTestVisible="False"
+                                       Text="▼" />
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <!--<Style Selector="^ /template/ TextBlock#DropDownGlyph">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+            --><!--<Setter Property="Data" Value="M1939 486L2029 576L1024 1581L19 576L109 486L1024 1401L1939 486Z" />--><!--
+        </Style>-->
+
+        <Style Selector="^:pointerover /template/ Border#RootBorder">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemePseudoShadeBrush}" />
+        </Style>
+
+        <Style Selector="^:pressed  /template/ Border#RootBorder">
+            <Setter Property="Background" Value="{DynamicResource ThemeShadeBrush}" />
+        </Style>
+
+        <Style Selector="^:disabled">
+            <!--<Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />-->
+            <Setter Property="FontStyle"
+                    Value="Italic" />
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeShadeBrush}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

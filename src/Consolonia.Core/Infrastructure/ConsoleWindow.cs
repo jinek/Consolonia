@@ -279,6 +279,12 @@ namespace Consolonia.Core.Infrastructure
             if (featureType == typeof(IScreenImpl))
                 return new ConsoloniaScreen(new PixelRect(0, 0, Console.Size.Width, Console.Size.Height));
 
+            if (featureType == typeof(ILauncher))
+            {
+                var objHandle = Activator.CreateInstance("Avalonia.Base", "Avalonia.Platform.Storage.FileIO.BclLauncher");
+                return (ILauncher)objHandle.Unwrap();
+            }
+
             // TODO ISystemNavigationManagerImpl should be implemented to handle BACK navigation between pages of controls like mobile apps do.
             // TODO ITextInputMethodImpl should be implemented to handle text IME input
             Debug.WriteLine($"Missing Feature: {featureType.Name} is not implemented but someone is asking for it!");

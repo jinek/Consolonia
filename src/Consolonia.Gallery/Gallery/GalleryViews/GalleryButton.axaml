@@ -4,6 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryButton">
+    <UserControl.Resources>
+
+        <MenuFlyout x:Key="SharedMenuFlyout"
+                    Placement="Bottom">
+            <MenuItem Header="Item 1">
+                <MenuItem Header="Subitem 1" />
+                <MenuItem Header="Subitem 2" />
+                <MenuItem Header="Subitem 3" />
+            </MenuItem>
+            <MenuItem Header="Item 2"
+                      InputGesture="Ctrl+A" />
+            <MenuItem Header="Item 3" />
+        </MenuFlyout>
+
+    </UserControl.Resources>
+    
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical"
                     Spacing="1">
@@ -18,16 +34,130 @@
                     Foreground="Yellow">
                 Custom Colors
             </Button>
+
             <Button IsEnabled="False">Disabled</Button>
-            <RepeatButton Name="RepeatButton">
+
+            <!-- ToggleButton -->
+            <TextBlock Text="ToggleButton"
+                       FontStyle="Italic" />
+            <TextBlock TextWrapping="Wrap">A button control with multiple states: checked, unchecked or indeterminate.</TextBlock>
+
+            <ToggleButton Content="Toggle Button"
+                          HorizontalAlignment="Left" />
+
+            <!-- RepeatButton -->
+            <TextBlock Text="RepeatButton"
+                       FontStyle="Italic" />
+            <TextBlock TextWrapping="Wrap">A button control that raises its Click event repeatedly when it is pressed and held.</TextBlock>
+
+            <RepeatButton Name="RepeatButton"
+                          HorizontalAlignment="Left" >
                 <TextBlock Name="RepeatButtonTextBlock"
                            Text="Repeat Button: 0" />
             </RepeatButton>
-            <ToggleButton Content="Toggle Button" />
-            <Button BorderBrush="{DynamicResource SystemAccentColor}"
-                    KeyboardNavigation.IsTabStop="False">
-                IsTabStop=False
-            </Button>
+
+            <!-- HyperlinkButton -->
+            <TextBlock Text="HyperlinkButton"
+                       FontStyle="Italic" />
+            <TextBlock TextWrapping="Wrap">A button control that functions as a navigateable hyperlink.</TextBlock>
+
+
+            <StackPanel Orientation="Horizontal">
+                <HyperlinkButton x:Name="EnabledHyperlinkButton"
+                                 VerticalAlignment="Center"
+                                 NavigateUri="https://docs.avaloniaui.net/docs/welcome">
+                    <TextBlock Text="Avalonia Docs" />
+                </HyperlinkButton>
+
+                <CheckBox IsChecked="{Binding #EnabledHyperlinkButton.IsVisited}"
+                          Content="IsVisited"
+                          VerticalAlignment="Center"
+                          Margin="10,0,0,0" />
+            </StackPanel>
+
+            <HyperlinkButton IsEnabled="False"
+                             HorizontalAlignment="Left"
+                             NavigateUri="https://docs.avaloniaui.net/docs/welcome">
+                <TextBlock Text="Avalonia Docs" />
+            </HyperlinkButton>
+
+            <!-- DropDownButton -->
+            <TextBlock Text="DropDownButton"
+                       FontStyle="Italic" />
+            <TextBlock TextWrapping="Wrap">A button with an added drop-down chevron to visually indicate it has a flyout with additional actions.</TextBlock>
+
+            <DropDownButton Flyout="{StaticResource SharedMenuFlyout}"
+                            Margin="0 0 1 0"                           
+                            HorizontalAlignment="Left">
+                <TextBlock Text="Drop Down Button" />
+            </DropDownButton>
+            
+            <DropDownButton HorizontalAlignment="Left"
+                            Flyout="{StaticResource SharedMenuFlyout}">
+                <Border Background="Teal"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Height="3" >
+                    <TextBlock Text="Content " VerticalAlignment="Center"/>
+                </Border>
+            </DropDownButton>
+            
+            <DropDownButton IsEnabled="False" 
+                            Flyout="{StaticResource SharedMenuFlyout}"
+                            Margin="0 0 1 0"                           
+                            HorizontalAlignment="Left">Disabled</DropDownButton>
+
+            <!-- SplitButton -->
+            <TextBlock Text="SplitButton"
+                       FontStyle="Italic" />
+            <TextBlock TextWrapping="Wrap">A button with primary and secondary parts that can each be pressed separately. The primary part behaves like a Button and the secondary part opens a flyout.</TextBlock>
+
+            <SplitButton Flyout="{StaticResource SharedMenuFlyout}">
+                <TextBlock Text="Content" />
+            </SplitButton>
+            <SplitButton IsEnabled="False"
+                         Flyout="{StaticResource SharedMenuFlyout}">
+                <TextBlock Text="Disabled" />
+            </SplitButton>
+            <SplitButton Flyout="{StaticResource SharedMenuFlyout}"
+                         Content="Re-themed"
+                         Foreground="White">
+                <SplitButton.Styles>
+                    <Style>
+                        <Style.Resources>
+                            <x:Double x:Key="SplitButtonSeparatorWidth">1.5</x:Double>
+                            <Thickness x:Key="SplitButtonBorderThemeThickness">2</Thickness>
+                            <SolidColorBrush x:Key="SplitButtonBorderBrush">Red</SolidColorBrush>
+                            <SolidColorBrush x:Key="SplitButtonBorderBrushPointerOver">Red</SolidColorBrush>
+                            <SolidColorBrush x:Key="SplitButtonBorderBrushPressed">Red</SolidColorBrush>
+                            <SolidColorBrush x:Key="SplitButtonBackground">DarkRed</SolidColorBrush>
+                            <SolidColorBrush x:Key="SplitButtonBackgroundPointerOver">Red</SolidColorBrush>
+                            <SolidColorBrush x:Key="SplitButtonBackgroundPressed">OrangeRed</SolidColorBrush>
+                            <SolidColorBrush x:Key="SplitButtonForeground">White</SolidColorBrush>
+                            <SolidColorBrush x:Key="SplitButtonForegroundPointerOver">Black</SolidColorBrush>
+                            <SolidColorBrush x:Key="SplitButtonForegroundPressed">Black</SolidColorBrush>
+                        </Style.Resources>
+                    </Style>
+                </SplitButton.Styles>
+            </SplitButton>
+
+            <!-- ToggleSplitButton -->
+            <TextBlock Text="ToggleSplitButton"
+                       FontStyle="Italic" />
+            <TextBlock TextWrapping="Wrap">A button with primary and secondary parts that can each be pressed separately. The primary part behaves like a ToggleButton with two states and the secondary part opens a flyout.</TextBlock>
+
+            <ToggleSplitButton Flyout="{StaticResource SharedMenuFlyout}">
+                <TextBlock Text="Content" />
+            </ToggleSplitButton>
+            <ToggleSplitButton IsChecked="True"
+                               Flyout="{StaticResource SharedMenuFlyout}">
+                <TextBlock Text="Content" />
+            </ToggleSplitButton>
+            <ToggleSplitButton IsChecked="True"
+                               IsEnabled="False"
+                               Flyout="{StaticResource SharedMenuFlyout}">
+                <TextBlock Text="Disabled" />
+            </ToggleSplitButton>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
