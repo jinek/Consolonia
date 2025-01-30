@@ -1,8 +1,7 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -45,13 +44,13 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             set
             {
                 SelectedItems.Clear();
-                this.RaiseAndSetIfChanged(ref _selectionMode, value);
+                RaiseAndSetIfChanged(ref _selectionMode, value);
             }
         }
 
         private void AddItem()
         {
-            var parentItem = SelectedItems.Count > 0 ? (Node)SelectedItems[0] : _root;
+            Node parentItem = SelectedItems.Count > 0 ? SelectedItems[0] : _root;
             parentItem.AddItem();
         }
 
@@ -59,24 +58,17 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             while (SelectedItems.Count > 0)
             {
-                var lastItem = SelectedItems[0];
+                Node lastItem = SelectedItems[0];
                 RecursiveRemove(Items, lastItem);
             }
 
             bool RecursiveRemove(ObservableCollection<Node> items, Node selectedItem)
             {
-                if (items.Remove(selectedItem))
-                {
-                    return true;
-                }
+                if (items.Remove(selectedItem)) return true;
 
                 foreach (Node item in items)
-                {
                     if (item.AreChildrenInitialized && RecursiveRemove(item.Children, selectedItem))
-                    {
                         return true;
-                    }
-                }
 
                 return false;
             }
@@ -85,14 +77,11 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private void SelectRandomItem()
         {
             var random = new Random();
-            var depth = random.Next(4);
+            int depth = random.Next(4);
             var indexes = Enumerable.Range(0, depth).Select(x => random.Next(10));
-            var node = _root;
+            Node node = _root;
 
-            foreach (var i in indexes)
-            {
-                node = node.Children[i];
-            }
+            foreach (int i in indexes) node = node.Children[i];
 
             SelectedItems.Clear();
             SelectedItems.Add(node);
@@ -100,8 +89,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         public class Node
         {
-            private ObservableCollection<Node>? _children;
             private int _childIndex = 10;
+            private ObservableCollection<Node>? _children;
 
             public Node()
             {
@@ -118,9 +107,21 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             public string Header { get; }
             public bool AreChildrenInitialized => _children != null;
             public ObservableCollection<Node> Children => _children ??= CreateChildren();
-            public void AddItem() => Children.Add(new Node(this, _childIndex++));
-            public void RemoveItem(Node child) => Children.Remove(child);
-            public override string ToString() => Header;
+
+            public void AddItem()
+            {
+                Children.Add(new Node(this, _childIndex++));
+            }
+
+            public void RemoveItem(Node child)
+            {
+                Children.Remove(child);
+            }
+
+            public override string ToString()
+            {
+                return Header;
+            }
 
             private ObservableCollection<Node> CreateChildren()
             {
@@ -129,6 +130,4 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             }
         }
     }
-
-
 }
