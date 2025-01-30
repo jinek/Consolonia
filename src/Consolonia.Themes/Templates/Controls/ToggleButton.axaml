@@ -44,7 +44,7 @@
         </Style>
         <Style Selector="^:disabled">
             <Setter Property="Opacity"
-                    Value="{DynamicResource ThemeShadeBrush}" />
+                    Value="{DynamicResource ThemeDisabledOpacity}" />
         </Style>
     </ControlTheme>
 </ResourceDictionary>
