@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
                     x:ClassModifier="internal">
 
     <Design.PreviewWith>
@@ -11,17 +10,28 @@
         </Border>
     </Design.PreviewWith>
 
-    <ControlTheme x:Key="{x:Type HyperlinkButton}" TargetType="HyperlinkButton">
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BackgroundSizing" Value="OuterBorderEdge" />
-        <Setter Property="Foreground" Value="{DynamicResource ThemeChooserBackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+    <ControlTheme x:Key="{x:Type HyperlinkButton}"
+                  TargetType="HyperlinkButton">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="BackgroundSizing"
+                Value="OuterBorderEdge" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="Transparent" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Padding"
+                Value="0" />
+        <Setter Property="HorizontalAlignment"
+                Value="Left" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="TextBlock.TextDecorations"
+                Value="Underline" />
 
         <Setter Property="Template">
             <ControlTemplate>
@@ -42,11 +52,13 @@
 
         <Style Selector="^:disabled">
             <!--<Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />-->
-            <Setter Property="Foreground" Value="{DynamicResource ThemeShadeBrush}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeShadeBrush}" />
         </Style>
 
         <Style Selector="^:visited /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Foreground" Value="{DynamicResource ThemePseudoShadeBrush}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemePseudoShadeBrush}" />
         </Style>
 
     </ControlTheme>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Remoting;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Platform;
@@ -281,7 +282,8 @@ namespace Consolonia.Core.Infrastructure
 
             if (featureType == typeof(ILauncher))
             {
-                var objHandle = Activator.CreateInstance("Avalonia.Base", "Avalonia.Platform.Storage.FileIO.BclLauncher");
+                ObjectHandle objHandle =
+                    Activator.CreateInstance("Avalonia.Base", "Avalonia.Platform.Storage.FileIO.BclLauncher");
                 return (ILauncher)objHandle.Unwrap();
             }
 

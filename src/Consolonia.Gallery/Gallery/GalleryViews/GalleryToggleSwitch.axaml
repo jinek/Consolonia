@@ -9,11 +9,12 @@
     <!--Examples from Avalonia https://github.com/AvaloniaUI/Avalonia/blob/master/samples/ControlCatalog/Pages/TextBlockPage.xaml-->
     <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-        <StackPanel Orientation="Vertical" Spacing="1">
+        <StackPanel Orientation="Vertical"
+                    Spacing="1">
             <ToggleSwitch />
-            <ToggleSwitch Content="_Headered" 
+            <ToggleSwitch Content="_Headered"
                           IsChecked="true" />
-            <ToggleSwitch >
+            <ToggleSwitch>
                 Casual Fridays?
                 <ToggleSwitch.OnContent>Yep</ToggleSwitch.OnContent>
                 <ToggleSwitch.OffContent>Nope</ToggleSwitch.OffContent>

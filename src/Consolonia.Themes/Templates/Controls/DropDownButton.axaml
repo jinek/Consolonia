@@ -1,16 +1,22 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
                     x:ClassModifier="internal">
     <ControlTheme x:Key="{x:Type DropDownButton}"
                   TargetType="DropDownButton">
-        <Setter Property="Background" Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{DynamicResource ThemeSelectionForegroundBrush}" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="Transparent" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Padding"
+                Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -35,9 +41,9 @@
                                               RecognizesAccessKey="True" />
                             <TextBlock Name="DropDownGlyph"
                                        Grid.Column="1"
-                                      HorizontalAlignment="Right"
-                                      VerticalAlignment="Center"
-                                      IsHitTestVisible="False"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False"
                                        Text="▼" />
 
                         </Grid>
@@ -52,11 +58,13 @@
         </Style>-->
 
         <Style Selector="^:pointerover /template/ Border#RootBorder">
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemePseudoShadeBrush}" />
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ThemePseudoShadeBrush}" />
         </Style>
 
         <Style Selector="^:pressed  /template/ Border#RootBorder">
-            <Setter Property="Background" Value="{DynamicResource ThemeShadeBrush}" />
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeShadeBrush}" />
         </Style>
 
         <Style Selector="^:disabled">
