@@ -40,7 +40,7 @@
   </Style>-->
         <Style Selector="^:pressed  /template/ ContentPresenter">
             <Setter Property="Background"
-                    Value="{DynamicResource ThemeControlHighBrush}" />
+                    Value="{DynamicResource ThemeChooserBackgroundBrush}" />
         </Style>
         <Style Selector="^:disabled">
             <Setter Property="Opacity"

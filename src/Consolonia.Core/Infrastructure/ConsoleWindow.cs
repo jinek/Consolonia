@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Remoting;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Platform;
@@ -278,6 +279,13 @@ namespace Consolonia.Core.Infrastructure
 
             if (featureType == typeof(IScreenImpl))
                 return new ConsoloniaScreen(new PixelRect(0, 0, Console.Size.Width, Console.Size.Height));
+
+            if (featureType == typeof(ILauncher))
+            {
+                ObjectHandle objHandle =
+                    Activator.CreateInstance("Avalonia.Base", "Avalonia.Platform.Storage.FileIO.BclLauncher");
+                return (ILauncher)objHandle.Unwrap();
+            }
 
             // TODO ISystemNavigationManagerImpl should be implemented to handle BACK navigation between pages of controls like mobile apps do.
             // TODO ITextInputMethodImpl should be implemented to handle text IME input
