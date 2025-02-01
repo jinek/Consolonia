@@ -36,12 +36,12 @@
             </Button>
 
             <Button IsEnabled="False">Disabled</Button>
-            
+
             <Button BorderBrush="{DynamicResource SystemAccentColor}"
-                               KeyboardNavigation.IsTabStop="False">
+                    KeyboardNavigation.IsTabStop="False">
                 IsTabStop=False
             </Button>
-            
+
             <!-- ToggleButton -->
             <TextBlock Text="ToggleButton"
                        FontStyle="Italic" />
