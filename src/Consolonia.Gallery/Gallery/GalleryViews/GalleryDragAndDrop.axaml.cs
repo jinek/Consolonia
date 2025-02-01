@@ -32,7 +32,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             SetupDnd(
                 "Files",
-                async d => { d.Set(DataFormats.Files, new[] { new SystemStorageFile(@"file.txt") }); },
+                d => { d.Set(DataFormats.Files, new[] { new SystemStorageFile(@"file.txt") }); },
                 DragDropEffects.Copy);
         }
 
@@ -58,7 +58,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             var dragMe = this.Get<Border>("DragMe" + suffix);
             var dragState = this.Get<TextBlock>("DragState" + suffix);
 
-            async void DoDrag(object? sender, PointerPressedEventArgs e)
+            async void DoDrag(object sender, PointerPressedEventArgs e)
             {
                 var dragData = new DataObject();
                 await factory(dragData);
@@ -85,7 +85,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 }
             }
 
-            void DragOver(object? sender, DragEventArgs e)
+            void DragOver(object sender, DragEventArgs e)
             {
                 if (e.Source is Control c && c.Name == "MoveTarget")
                     e.DragEffects = e.DragEffects & DragDropEffects.Move;
@@ -99,7 +99,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     e.DragEffects = DragDropEffects.None;
             }
 
-            async void Drop(object? sender, DragEventArgs e)
+            async void Drop(object sender, DragEventArgs e)
             {
                 if (e.Source is Control c && c.Name == "MoveTarget")
                     e.DragEffects = e.DragEffects & DragDropEffects.Move;
