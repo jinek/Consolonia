@@ -3,6 +3,7 @@
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <MergeResourceInclude Source="/Templates/Controls/AutoCompleteBox.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Button.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Calendar.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/CalendarButton.axaml" />

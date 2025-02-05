@@ -1,0 +1,51 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
+                        x:ClassModifier="internal">
+    <ControlTheme x:Key="{x:Type AutoCompleteBox}"
+                  TargetType="AutoCompleteBox">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <Setter Property="Padding"
+                Value="0,0" />
+        <Setter Property="MaxDropDownHeight"
+                Value="10"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <TextBox Name="PART_TextBox"
+                             Padding="{TemplateBinding Padding}"
+                             Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             CornerRadius="{TemplateBinding CornerRadius}"
+                             CaretIndex="{TemplateBinding CaretIndex, Mode=TwoWay}"
+                             DataValidationErrors.Errors="{TemplateBinding (DataValidationErrors.Errors)}"
+                             Watermark="{TemplateBinding Watermark}"
+                             MaxLength="{TemplateBinding MaxLength}"
+                             InnerLeftContent="{TemplateBinding InnerLeftContent}"
+                             InnerRightContent="{TemplateBinding InnerRightContent}"
+                   />
+
+                    <Popup Name="PART_Popup"
+                           MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                           MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                           IsLightDismissEnabled="True"
+                           PlacementTarget="{TemplateBinding}">
+                        <ListBox Name="PART_SelectingItemsControl"
+                                 Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                 BorderThickness="0"
+                                 Foreground="{DynamicResource ThemeForegroundBrush}"
+                                 ItemTemplate="{TemplateBinding ItemTemplate}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                    </Popup>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>
