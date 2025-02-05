@@ -40,42 +40,42 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
 
-        private void OnKeyDown(object? sender, KeyEventArgs e)
+        private void OnKeyDown(object sender, KeyEventArgs e)
         {
             var eventViewModel = new KeyEventViewModel(e);
             ViewModel.KeyboardEvents.Add(eventViewModel);
             ViewModel.SelectedKeyboardEvent = eventViewModel;
         }
 
-        private void OnKeyUp(object? sender, KeyEventArgs e)
+        private void OnKeyUp(object sender, KeyEventArgs e)
         {
             var eventViewModel = new KeyEventViewModel(e);
             ViewModel.KeyboardEvents.Add(eventViewModel);
             ViewModel.SelectedKeyboardEvent = eventViewModel;
         }
 
-        private void OnPointerMoved(object? sender, PointerEventArgs e)
+        private void OnPointerMoved(object sender, PointerEventArgs e)
         {
             var eventViewModel = new PointerEventViewModel(e, e.GetCurrentPoint(this));
             ViewModel.PointerEvents.Add(eventViewModel);
             ViewModel.SelectedPointerEvent = eventViewModel;
         }
 
-        private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
+        private void OnPointerPressed(object sender, PointerPressedEventArgs e)
         {
             var eventViewModel = new PointerEventViewModel(e, e.GetCurrentPoint(this));
             ViewModel.PointerEvents.Add(eventViewModel);
             ViewModel.SelectedPointerEvent = eventViewModel;
         }
 
-        private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
+        private void OnPointerReleased(object sender, PointerReleasedEventArgs e)
         {
             var eventViewModel = new PointerEventViewModel(e, e.GetCurrentPoint(this));
             ViewModel.PointerEvents.Add(eventViewModel);
             ViewModel.SelectedPointerEvent = eventViewModel;
         }
 
-        private void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
+        private void OnPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
             var eventViewModel = new PointerEventViewModel(e, e.GetCurrentPoint(this));
             ViewModel.PointerEvents.Add(eventViewModel);
@@ -83,7 +83,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
 
-        private async void OnDoubleTapped(object? sender, TappedEventArgs e)
+        private async void OnDoubleTapped(object sender, TappedEventArgs e)
         {
             if (sender is ListBox lb)
             {
@@ -102,25 +102,25 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             }
         }
 
-        private void OnRawMouseEntered(object? sender, PointerEventArgs e)
+        private void OnRawMouseEntered(object sender, PointerEventArgs e)
         {
             EnsureConsole();
             _console.MouseEvent += OnRawMouse;
         }
 
-        private void OnRawMouseExited(object? sender, PointerEventArgs e)
+        private void OnRawMouseExited(object sender, PointerEventArgs e)
         {
             EnsureConsole();
             _console.MouseEvent -= OnRawMouse;
         }
 
-        private void OnRawKeyboardGotFocus(object? sender, GotFocusEventArgs e)
+        private void OnRawKeyboardGotFocus(object sender, GotFocusEventArgs e)
         {
             EnsureConsole();
             _console.KeyEvent += OnRawKey;
         }
 
-        private void OnRawKeyboardLostFocus(object? sender, RoutedEventArgs e)
+        private void OnRawKeyboardLostFocus(object sender, RoutedEventArgs e)
         {
             EnsureConsole();
             _console.KeyEvent -= OnRawKey;
@@ -150,7 +150,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     public class KeyEventViewModel : EventViewModel
     {
-        public KeyEventViewModel(KeyEventArgs e, [CallerMemberName] string? name = null)
+        public KeyEventViewModel(KeyEventArgs e, [CallerMemberName] string name = null)
         {
             Name = name;
             Summary = $"{name} {e.Key} ({e.KeyModifiers})";
@@ -166,7 +166,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     public class PointerEventViewModel : EventViewModel
     {
-        public PointerEventViewModel(PointerEventArgs e, PointerPoint point, [CallerMemberName] string? name = null)
+        public PointerEventViewModel(PointerEventArgs e, PointerPoint point, [CallerMemberName] string name = null)
         {
             Name = name;
             Summary = $"[{point.Position.X},{point.Position.Y}] {name} ({e.KeyModifiers.ToString()})";
