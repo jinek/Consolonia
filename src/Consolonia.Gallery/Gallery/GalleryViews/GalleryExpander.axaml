@@ -4,37 +4,43 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryExpander"
-             XYFocus.NavigationModes="Keyboard" >
-    <StackPanel Orientation="Vertical" Spacing="4">
+             XYFocus.NavigationModes="Keyboard">
+    <StackPanel Orientation="Vertical"
+                Spacing="4">
         <TextBlock Classes="h2">Expands to show nested content</TextBlock>
 
         <StackPanel Orientation="Vertical"
                     HorizontalAlignment="Center"
                     Spacing="2">
-            
-            <Expander Header="Up" ExpandDirection="Up"  >
-                <StackPanel >
+
+            <Expander Header="Up"
+                      ExpandDirection="Up">
+                <StackPanel>
                     <TextBlock>Top content</TextBlock>
                     <TextBlock>Top content</TextBlock>
                     <TextBlock>Top content</TextBlock>
                 </StackPanel>
             </Expander>
-            <Expander Header="Down" ExpandDirection="Down"  >
-                <StackPanel >
+            <Expander Header="Down"
+                      ExpandDirection="Down">
+                <StackPanel>
                     <TextBlock>Bottom content</TextBlock>
                     <TextBlock>Bottom content</TextBlock>
                     <TextBlock>Bottom content</TextBlock>
                 </StackPanel>
             </Expander>
-            <Expander Header="Left" ExpandDirection="Left"  >
-                <StackPanel >
+            <Expander Header="Left"
+                      ExpandDirection="Left">
+                <StackPanel>
                     <TextBlock>Left content</TextBlock>
                     <TextBlock>Left content</TextBlock>
                     <TextBlock>Left content</TextBlock>
                 </StackPanel>
             </Expander>
-            <Expander Header="Right" ExpandDirection="Right" Background="AntiqueWhite" >
-                <StackPanel >
+            <Expander Header="Right"
+                      ExpandDirection="Right"
+                      Background="AntiqueWhite">
+                <StackPanel>
                     <TextBlock>Right content</TextBlock>
                     <TextBlock>Right content</TextBlock>
                     <TextBlock>Right content</TextBlock>
@@ -43,4 +49,3 @@
         </StackPanel>
     </StackPanel>
 </UserControl>
-
