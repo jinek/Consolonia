@@ -1,15 +1,26 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryGridSplitter">
-    <Grid ColumnDefinitions="*, 1, *" RowDefinitions="*,1,*">
-        <GridSplitter Grid.Column="1" Grid.RowSpan="3"  Background="Transparent"/>
-        <GridSplitter Grid.Row="1" Grid.ColumnSpan="3" Background="Transparent"/>
+    <Grid ColumnDefinitions="*, 1, *"
+          RowDefinitions="*,1,*">
+        <GridSplitter Grid.Column="1"
+                      Grid.RowSpan="3"
+                      Background="Transparent" />
+        <GridSplitter Grid.Row="1"
+                      Grid.ColumnSpan="3"
+                      Background="Transparent" />
 
-        <Rectangle Grid.Row="0" Grid.Column="0" Fill="LightBlue"/>
-        <Rectangle Grid.Row="0" Grid.Column="2" Fill="LightCoral"/>
-        <Rectangle Grid.Row="2" Grid.Column="0" Fill="LightGreen"/>
-        <Rectangle Grid.Row="2" Grid.Column="2" Fill="Purple"/>
+        <Rectangle Grid.Row="0"
+                   Grid.Column="0"
+                   Fill="LightBlue" />
+        <Rectangle Grid.Row="0"
+                   Grid.Column="2"
+                   Fill="LightCoral" />
+        <Rectangle Grid.Row="2"
+                   Grid.Column="0"
+                   Fill="LightGreen" />
+        <Rectangle Grid.Row="2"
+                   Grid.Column="2"
+                   Fill="Purple" />
     </Grid>
 </UserControl>
