@@ -39,7 +39,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <helpers:CaretControl Foreground="{TemplateBinding Foreground}"
-                      IsCaretShown="{TemplateBinding IsFocused}">
+                                      IsCaretShown="{TemplateBinding IsFocused}">
 
                     <StackPanel>
                         <Border Name="SelectionBorder"

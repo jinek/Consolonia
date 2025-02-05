@@ -19,12 +19,11 @@
                 Value="Center" />
         <Setter Property="Template">
             <ControlTemplate>
-                <helpers:CaretControl 
-                  Padding="0,0,0,0"
-                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                  Margin="{TemplateBinding Padding}"
-                  IsCaretShown="{TemplateBinding IsFocused}">
+                <helpers:CaretControl Padding="0,0,0,0"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Margin="{TemplateBinding Padding}"
+                                      IsCaretShown="{TemplateBinding IsFocused}">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Background="{TemplateBinding Background}"
                                       BorderBrush="{TemplateBinding BorderBrush}"

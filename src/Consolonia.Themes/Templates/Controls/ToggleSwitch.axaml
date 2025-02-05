@@ -33,7 +33,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Background="{TemplateBinding Background}"
-                  RowDefinitions="Auto,*">
+                      RowDefinitions="Auto,*">
 
                     <ContentPresenter x:Name="PART_ContentPresenter"
                                       Grid.Row="0"
@@ -99,19 +99,18 @@
                                 Background="{DynamicResource ThemeChooserBackgroundBrush}"
                                 BorderBrush="Transparent"
                                 BorderThickness="0" />
-                        
-                        <helpers:CaretControl
-                                Grid.Row="1"
-                              Padding="0,0,0,0"
-                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                              Margin="{TemplateBinding Padding}"
-                              IsCaretShown="{TemplateBinding IsFocused}">
+
+                        <helpers:CaretControl Grid.Row="1"
+                                              Padding="0,0,0,0"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              IsCaretShown="{TemplateBinding IsFocused}">
 
                             <Canvas x:Name="PART_SwitchKnob"
-                                HorizontalAlignment="Left"
-                                Width="3"
-                                Height="1">
+                                    HorizontalAlignment="Left"
+                                    Width="3"
+                                    Height="1">
 
                                 <Grid x:Name="PART_MovingKnobs"
                                       Width="3"
