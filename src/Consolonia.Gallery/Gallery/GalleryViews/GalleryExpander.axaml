@@ -15,20 +15,28 @@
             <Expander Header="Up" ExpandDirection="Up"  >
                 <StackPanel >
                     <TextBlock>Top content</TextBlock>
+                    <TextBlock>Top content</TextBlock>
+                    <TextBlock>Top content</TextBlock>
                 </StackPanel>
             </Expander>
             <Expander Header="Down" ExpandDirection="Down"  >
                 <StackPanel >
+                    <TextBlock>Bottom content</TextBlock>
+                    <TextBlock>Bottom content</TextBlock>
                     <TextBlock>Bottom content</TextBlock>
                 </StackPanel>
             </Expander>
             <Expander Header="Left" ExpandDirection="Left"  >
                 <StackPanel >
                     <TextBlock>Left content</TextBlock>
+                    <TextBlock>Left content</TextBlock>
+                    <TextBlock>Left content</TextBlock>
                 </StackPanel>
             </Expander>
             <Expander Header="Right" ExpandDirection="Right" Background="AntiqueWhite" >
                 <StackPanel >
+                    <TextBlock>Right content</TextBlock>
+                    <TextBlock>Right content</TextBlock>
                     <TextBlock>Right content</TextBlock>
                 </StackPanel>
             </Expander>
