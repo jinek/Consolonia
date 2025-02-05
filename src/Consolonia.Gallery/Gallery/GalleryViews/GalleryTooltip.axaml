@@ -49,12 +49,15 @@
                 <Border.Styles>
                     <Style Selector="Border">
                         <Style.Animations>
-                            <Animation Duration="0:0:2" IterationCount="Infinite">
+                            <Animation Duration="0:0:2"
+                                       IterationCount="Infinite">
                                 <KeyFrame KeyTime="0:0:0">
-                                    <Setter Property="ToolTip.VerticalOffset" Value="-5" />
+                                    <Setter Property="ToolTip.VerticalOffset"
+                                            Value="-5" />
                                 </KeyFrame>
-                                <KeyFrame KeyTime="0:0:2" >
-                                    <Setter Property="ToolTip.VerticalOffset" Value="5" />
+                                <KeyFrame KeyTime="0:0:2">
+                                    <Setter Property="ToolTip.VerticalOffset"
+                                            Value="5" />
                                 </KeyFrame>
                             </Animation>
                         </Style.Animations>
