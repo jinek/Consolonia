@@ -17,6 +17,7 @@
                 <MergeResourceInclude Source="/Templates/Controls/DataGrid.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/DataValidationErrors.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/DropDownButton.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Expander.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/FlyoutPresenter.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/HyperlinkButton.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ItemsControl.axaml" />

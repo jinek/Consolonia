@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryExpander"
+             XYFocus.NavigationModes="Keyboard" >
+    <StackPanel Orientation="Vertical" Spacing="4">
+        <TextBlock Classes="h2">Expands to show nested content</TextBlock>
+
+        <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    Spacing="2">
+            
+            <Expander Header="Expand Up" ExpandDirection="Up" Background="Green" >
+                <StackPanel >
+                    <TextBlock>Expanded content</TextBlock>
+                </StackPanel>
+            </Expander>
+            <Expander Header="Expand Down" ExpandDirection="Down" Background="Green" >
+                <StackPanel >
+                    <TextBlock>Expanded content</TextBlock>
+                </StackPanel>
+            </Expander>
+            <Expander Header="Expand Left" ExpandDirection="Left" Background="Green" >
+                <StackPanel >
+                    <TextBlock>Expanded content</TextBlock>
+                </StackPanel>
+            </Expander>
+            <Expander Header="Expand Right" ExpandDirection="Right" Background="Green" >
+                <StackPanel >
+                    <TextBlock>Expanded content</TextBlock>
+                </StackPanel>
+            </Expander>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
+
