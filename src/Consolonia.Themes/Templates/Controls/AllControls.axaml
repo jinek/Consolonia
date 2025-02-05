@@ -20,6 +20,7 @@
                 <MergeResourceInclude Source="/Templates/Controls/DropDownButton.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Expander.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/FlyoutPresenter.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/GridSplitter.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/HyperlinkButton.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ItemsControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/LightDismissOverlaylayer.axaml" />
