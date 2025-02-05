@@ -1,10 +1,12 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GallerySpring">
     <UserControl.Resources>
-        <SpringEasing x:Key="SpringEasing" Mass="1" Stiffness="2000" Damping="20" InitialVelocity="0" />
+        <SpringEasing x:Key="SpringEasing"
+                      Mass="1"
+                      Stiffness="2000"
+                      Damping="20"
+                      InitialVelocity="0" />
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="Border.spring">
@@ -13,18 +15,24 @@
                            IterationCount="Infinite"
                            PlaybackDirection="Normal"
                            Easing="{DynamicResource SpringEasing}">
-                    <KeyFrame Cue="0%" KeySpline="">
-                        <Setter Property="TranslateTransform.X" Value="-30"/>
+                    <KeyFrame Cue="0%"
+                              KeySpline="">
+                        <Setter Property="TranslateTransform.X"
+                                Value="-30" />
                     </KeyFrame>
                     <KeyFrame Cue="100%">
-                        <Setter Property="TranslateTransform.X" Value="0" />
+                        <Setter Property="TranslateTransform.X"
+                                Value="0" />
                     </KeyFrame>
                 </Animation>
             </Style.Animations>
         </Style>
     </UserControl.Styles>
     <Grid>
-        <Border Classes="spring" Background="Red" Width="1" Height="1">
+        <Border Classes="spring"
+                Background="Red"
+                Width="1"
+                Height="1">
             <Border.RenderTransform>
                 <TransformGroup>
                     <TranslateTransform />
