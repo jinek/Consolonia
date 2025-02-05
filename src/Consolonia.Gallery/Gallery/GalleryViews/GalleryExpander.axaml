@@ -12,24 +12,24 @@
                     HorizontalAlignment="Center"
                     Spacing="2">
             
-            <Expander Header="Expand Up" ExpandDirection="Up" Background="AntiqueWhite" >
+            <Expander Header="Up" ExpandDirection="Up"  >
                 <StackPanel >
-                    <TextBlock>Expanded content</TextBlock>
+                    <TextBlock>Top content</TextBlock>
                 </StackPanel>
             </Expander>
-            <Expander Header="Expand Down" ExpandDirection="Down" Background="AntiqueWhite" >
+            <Expander Header="Down" ExpandDirection="Down"  >
                 <StackPanel >
-                    <TextBlock>Expanded content</TextBlock>
+                    <TextBlock>Bottom content</TextBlock>
                 </StackPanel>
             </Expander>
-            <Expander Header="Expand Left" ExpandDirection="Left" Background="AntiqueWhite" >
+            <Expander Header="Left" ExpandDirection="Left"  >
                 <StackPanel >
-                    <TextBlock>Expanded content</TextBlock>
+                    <TextBlock>Left content</TextBlock>
                 </StackPanel>
             </Expander>
-            <Expander Header="Expand Right" ExpandDirection="Right" Background="AntiqueWhite" >
+            <Expander Header="Right" ExpandDirection="Right" Background="AntiqueWhite" >
                 <StackPanel >
-                    <TextBlock>Expanded content</TextBlock>
+                    <TextBlock>Right content</TextBlock>
                 </StackPanel>
             </Expander>
         </StackPanel>
