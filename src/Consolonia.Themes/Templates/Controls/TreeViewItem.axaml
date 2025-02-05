@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
                     xmlns:converters="using:Avalonia.Controls.Converters"
                     x:ClassModifier="internal">
     <converters:MarginMultiplierConverter x:Key="LeftMarginConverter"
@@ -37,38 +38,42 @@
                 Value="Transparent" />
         <Setter Property="Template">
             <ControlTemplate>
-                <StackPanel>
-                    <Border Name="SelectionBorder"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Focusable="True"
-                            TemplatedControl.IsTemplateFocusTarget="True">
-                        <Grid Name="PART_Header"
-                              Margin="{TemplateBinding Level,
+                <helpers:CaretControl Foreground="{TemplateBinding Foreground}"
+                      IsCaretShown="{TemplateBinding IsFocused}">
+
+                    <StackPanel>
+                        <Border Name="SelectionBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Focusable="True"
+                                TemplatedControl.IsTemplateFocusTarget="True">
+                            <Grid Name="PART_Header"
+                                  Margin="{TemplateBinding Level,
                                            Mode=OneWay,
                                            Converter={StaticResource LeftMarginConverter}}"
-                              ColumnDefinitions="Auto, *">
-                            <ToggleButton Name="PART_ExpandCollapseChevron"
-                                          Focusable="False"
-                                          Background="Transparent"
-                                          IsChecked="{TemplateBinding IsExpanded,
-                                                        Mode=TwoWay}"
-                                          Theme="{StaticResource SimpleTreeViewItemToggleButtonTheme}" />
-                            <ContentPresenter Name="PART_HeaderPresenter"
-                                              Grid.Column="1"
+                                  ColumnDefinitions="Auto, *">
+                                <ToggleButton Name="PART_ExpandCollapseChevron"
+                                              Focusable="False"
                                               Background="Transparent"
-                                              Padding="{TemplateBinding Padding}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalAlignment}"
-                                              Content="{TemplateBinding Header}"
-                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                              Focusable="False" />
-                        </Grid>
-                    </Border>
-                    <ItemsPresenter Name="PART_ItemsPresenter"
-                                    IsVisible="{TemplateBinding IsExpanded}"
-                                    ItemsPanel="{TemplateBinding ItemsPanel}" />
-                </StackPanel>
+                                              IsChecked="{TemplateBinding IsExpanded,
+                                                        Mode=TwoWay}"
+                                              Theme="{StaticResource SimpleTreeViewItemToggleButtonTheme}" />
+                                <ContentPresenter Name="PART_HeaderPresenter"
+                                                  Grid.Column="1"
+                                                  Background="Transparent"
+                                                  Padding="{TemplateBinding Padding}"
+                                                  HorizontalContentAlignment="{TemplateBinding HorizontalAlignment}"
+                                                  Content="{TemplateBinding Header}"
+                                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                  Focusable="False" />
+                            </Grid>
+                        </Border>
+                        <ItemsPresenter Name="PART_ItemsPresenter"
+                                        IsVisible="{TemplateBinding IsExpanded}"
+                                        ItemsPanel="{TemplateBinding ItemsPanel}" />
+                    </StackPanel>
+                </helpers:CaretControl>
             </ControlTemplate>
         </Setter>
 

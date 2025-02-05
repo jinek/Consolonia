@@ -8,7 +8,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
 
         <StackPanel Orientation="Vertical"
-                Spacing="1">
+                    Spacing="1">
             <TextBlock Classes="h2">Example of Drag+Drop capabilities</TextBlock>
 
             <StackPanel Orientation="Vertical">
