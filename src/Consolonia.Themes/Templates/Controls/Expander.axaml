@@ -111,15 +111,20 @@
                                           Theme="{StaticResource ConsoleExpanderToggleButtonUpTheme}" />
                         </Border>
 
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                          Grid.Row="1"
+                        <Border Grid.Row="1"
+                                Margin="0 -1 0 0"
+                                IsVisible="{TemplateBinding IsExpanded}"
+                                Background ="Transparent"
+                                BorderBrush="{DynamicResource ThemeForegroundBrush}"
+                                BorderThickness="1">
+                            <ContentPresenter Name="PART_ContentPresenter"
                                           Padding="{TemplateBinding Padding}"
                                           Background="{TemplateBinding Background}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          IsVisible="{TemplateBinding IsExpanded}" />
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
                     </Grid>
                 </ControlTemplate>
             </Setter>
@@ -133,14 +138,22 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <Grid RowDefinitions="*,Auto">
-                        <ContentPresenter Name="PART_ContentPresenter"
+                        <Border Grid.Row="0"
+                                Margin="0 0 0 -1"
+                                IsVisible="{TemplateBinding IsExpanded}"
+                                Background ="Transparent"
+                                BorderBrush="{DynamicResource ThemeForegroundBrush}"
+                                BorderThickness="1">
+                            <ContentPresenter Name="PART_ContentPresenter"
                                           Grid.Row="0"
                                           Padding="{TemplateBinding Padding}"
+                                          Background ="{TemplateBinding Background}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          IsVisible="{TemplateBinding IsExpanded}" />
+                                           />
+                        </Border>
 
                         <Border Grid.Row="1"
                                 Background ="Transparent"
@@ -180,15 +193,20 @@
                                                         Mode=TwoWay}"
                                       Theme="{StaticResource ConsoleExpanderToggleButtonLeftTheme}" />
                         </Border>
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                          Grid.Column="1"
+                        <Border Grid.Column="1"
+                                Margin="-1 0 0 0"
+                                IsVisible="{TemplateBinding IsExpanded}"
+                                Background ="Transparent"
+                                BorderBrush="{DynamicResource ThemeForegroundBrush}"
+                                BorderThickness="1">
+                            <ContentPresenter Name="PART_ContentPresenter"
                                           Background="{TemplateBinding Background}"
                                           Padding="{TemplateBinding Padding}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          IsVisible="{TemplateBinding IsExpanded}" />
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        </Border>
                     </Grid>
                 </ControlTemplate>
             </Setter>
@@ -202,15 +220,20 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <Grid ColumnDefinitions="*,Auto">
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                          Grid.Column="0"
+                        <Border Grid.Column="0"
+                                Margin ="0 0 -1 0"
+                                IsVisible="{TemplateBinding IsExpanded}"
+                                Background ="Transparent"
+                                BorderBrush="{DynamicResource ThemeForegroundBrush}"
+                                BorderThickness="1">
+                            <ContentPresenter Name="PART_ContentPresenter"
                                           Background="{TemplateBinding Background}"
                                           Padding="{TemplateBinding Padding}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          IsVisible="{TemplateBinding IsExpanded}" />
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        </Border>
                         <Border Grid.Column="1"
                                 Background ="Transparent"
                                 BorderBrush="{DynamicResource ThemeForegroundBrush}"
