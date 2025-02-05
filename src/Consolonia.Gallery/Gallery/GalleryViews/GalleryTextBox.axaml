@@ -39,8 +39,10 @@
             <TextBox Watermark="Floating Watermark"
                      UseFloatingWatermark="True"
                      Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
-            
-            <MaskedTextBox Width="20" ResetOnSpace="False"  Mask="(LLL) 999-0000"/>
+
+            <MaskedTextBox Width="20"
+                           ResetOnSpace="False"
+                           Mask="(LLL) 999-0000" />
 
             <TextBox Text="Validation Error">
                 <DataValidationErrors.Error>
