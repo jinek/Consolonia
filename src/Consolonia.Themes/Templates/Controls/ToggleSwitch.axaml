@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
                     x:ClassModifier="internal">
     <Thickness x:Key="ToggleSwitchTopHeaderMargin">0,0,0,1</Thickness>
     <GridLength x:Key="ToggleSwitchPreContentMargin">0</GridLength>
@@ -32,7 +33,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Background="{TemplateBinding Background}"
-                      RowDefinitions="Auto,*">
+                  RowDefinitions="Auto,*">
 
                     <ContentPresenter x:Name="PART_ContentPresenter"
                                       Grid.Row="0"
@@ -98,25 +99,33 @@
                                 Background="{DynamicResource ThemeChooserBackgroundBrush}"
                                 BorderBrush="Transparent"
                                 BorderThickness="0" />
-
-                        <Canvas x:Name="PART_SwitchKnob"
+                        
+                        <helpers:CaretControl
                                 Grid.Row="1"
+                              Padding="0,0,0,0"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Margin="{TemplateBinding Padding}"
+                              IsCaretShown="{TemplateBinding IsFocused}">
+
+                            <Canvas x:Name="PART_SwitchKnob"
                                 HorizontalAlignment="Left"
                                 Width="3"
                                 Height="1">
 
-                            <Grid x:Name="PART_MovingKnobs"
-                                  Width="3"
-                                  Height="1">
+                                <Grid x:Name="PART_MovingKnobs"
+                                      Width="3"
+                                      Height="1">
 
-                                <TextBlock x:Name="SwitchKnobOn"
-                                           Text="⬤"
-                                           Foreground="{DynamicResource ThemeBackgroundBrush}" />
-                                <TextBlock x:Name="SwitchKnobOff"
-                                           Text="◯"
-                                           Foreground="{DynamicResource ThemeForegroundBrush}" />
-                            </Grid>
-                        </Canvas>
+                                    <TextBlock x:Name="SwitchKnobOn"
+                                               Text="⬤"
+                                               Foreground="{DynamicResource ThemeBackgroundBrush}" />
+                                    <TextBlock x:Name="SwitchKnobOff"
+                                               Text="◯"
+                                               Foreground="{DynamicResource ThemeForegroundBrush}" />
+                                </Grid>
+                            </Canvas>
+                        </helpers:CaretControl>
                     </Grid>
                 </Grid>
             </ControlTemplate>
@@ -127,7 +136,8 @@
                     Value="0" />
         </Style>
 
-        <!-- PointerOverState --><!--
+        <!-- PointerOverState -->
+        <!--
         <Style Selector="^:pointerover /template/ Border#OuterBorder">
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderHighColor}" />
             <Setter Property="Background" Value="Transparent" />
@@ -150,7 +160,8 @@
             <Setter Property="Background" Value="Transparent" />
         </Style>-->
 
-        <!-- PressedState --><!--
+        <!-- PressedState -->
+        <!--
         <Style Selector="^:pressed /template/ Border#OuterBorder">
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderHighColor}" />
             <Setter Property="Background" Value="{DynamicResource ThemeControlMidHighColor}" />

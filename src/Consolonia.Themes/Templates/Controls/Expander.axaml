@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
                     x:ClassModifier="internal">
     <!-- define template for the toggle button -->
     <ControlTheme x:Key="ConsoleExpanderToggleButtonTheme"
@@ -7,29 +8,37 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid ColumnDefinitions="Auto, *, Auto"
+                <helpers:CaretControl
+                  Padding="0,0,0,0"
+                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                  Margin="{TemplateBinding Padding}"
+                  IsCaretShown="{TemplateBinding IsFocused}">
+
+                    <Grid ColumnDefinitions="Auto, *, Auto"
                       Background="{DynamicResource ThemeAlternativeBackgroundBrush}" >
-                    <TextBlock x:Name="ExpandCollapseChevronLeft"
-                               Foreground="{DynamicResource ThemeForegroundBrush}"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center" />
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                      Grid.Column="1"
-                                      Background="{TemplateBinding Background}"
-                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                      BorderThickness="{TemplateBinding BorderThickness}"
-                                      ContentTemplate="{Binding $parent[Expander].HeaderTemplate}"
-                                      Content="{TemplateBinding Content}"
-                                      Padding="{TemplateBinding Padding}"
-                                      TextBlock.Foreground="{TemplateBinding Foreground}"
-                                      HorizontalContentAlignment="Center"
-                                      VerticalContentAlignment="Center" />
-                    <TextBlock Grid.Column="2"
-                               x:Name="ExpandCollapseChevron"
-                               Foreground="{DynamicResource ThemeForegroundBrush}"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center" />
-                </Grid>
+                        <TextBlock x:Name="ExpandCollapseChevronLeft"
+                                   Foreground="{DynamicResource ThemeForegroundBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Grid.Column="1"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          ContentTemplate="{Binding $parent[Expander].HeaderTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          Padding="{TemplateBinding Padding}"
+                                          TextBlock.Foreground="{TemplateBinding Foreground}"
+                                          HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center" />
+                        <TextBlock Grid.Column="2"
+                                   x:Name="ExpandCollapseChevron"
+                                   Foreground="{DynamicResource ThemeForegroundBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Grid>
+                </helpers:CaretControl>
             </ControlTemplate>
         </Setter>
         <Style Selector="^:checked /template/ Grid">
