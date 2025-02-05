@@ -6,7 +6,8 @@
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryAutoCompleteBox"
              XYFocus.NavigationModes="Keyboard">
     <StackPanel>
-        <TextBlock >Choose an animal:</TextBlock>
-        <AutoCompleteBox x:Name="animals" FilterMode="StartsWith" />
+        <TextBlock>Choose an animal:</TextBlock>
+        <AutoCompleteBox x:Name="animals"
+                         FilterMode="StartsWith" />
     </StackPanel>
 </UserControl>
