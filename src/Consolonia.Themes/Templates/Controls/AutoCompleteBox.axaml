@@ -1,7 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
-                        x:ClassModifier="internal">
+                    x:ClassModifier="internal">
     <ControlTheme x:Key="{x:Type AutoCompleteBox}"
                   TargetType="AutoCompleteBox">
         <Setter Property="Background"
@@ -13,7 +12,7 @@
         <Setter Property="Padding"
                 Value="0,0" />
         <Setter Property="MaxDropDownHeight"
-                Value="10"/>
+                Value="10" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
@@ -28,8 +27,7 @@
                              Watermark="{TemplateBinding Watermark}"
                              MaxLength="{TemplateBinding MaxLength}"
                              InnerLeftContent="{TemplateBinding InnerLeftContent}"
-                             InnerRightContent="{TemplateBinding InnerRightContent}"
-                   />
+                             InnerRightContent="{TemplateBinding InnerRightContent}" />
 
                     <Popup Name="PART_Popup"
                            MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
