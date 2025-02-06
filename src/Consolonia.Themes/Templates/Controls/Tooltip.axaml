@@ -1,0 +1,28 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:ClassModifier="internal">
+    <ControlTheme x:Key="{x:Type ToolTip}"
+                  TargetType="ToolTip">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Padding"
+                Value="1" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  Padding="{TemplateBinding Padding}"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  CornerRadius="{TemplateBinding CornerRadius}" />
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+</ResourceDictionary>

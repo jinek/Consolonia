@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryTooltip">
+    <StackPanel Orientation="Vertical"
+                Spacing="1">
+        <TextBlock Classes="h2">A control which pops up a hint when a control is hovered</TextBlock>
+
+        <Grid RowDefinitions="Auto,Auto,Auto"
+              ColumnDefinitions="Auto,Auto"
+              Margin="0,1,0,0"
+              HorizontalAlignment="Center">
+            <Border Grid.Column="0"
+                    Grid.Row="1"
+                    Background="{DynamicResource ThemeChooserBackgroundBrush}"
+                    Margin="1"
+                    Padding="1"
+                    ToolTip.Tip="This is a ToolTip"
+                    ToolTip.VerticalOffset="1"
+                    ToolTip.HorizontalOffset="1">
+                <TextBlock>Hover Here</TextBlock>
+            </Border>
+            <ToggleSwitch Grid.Column="1"
+                          Margin="1"
+                          Grid.Row="0"
+                          IsChecked="{Binding ElementName=Border, Path=(ToolTip.IsOpen)}"
+                          Content="ToolTip Open" />
+            <Border Name="Border"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Background="{DynamicResource ThemeChooserBackgroundBrush}"
+                    Margin="1"
+                    Padding="1"
+                    ToolTip.Placement="Bottom">
+                <ToolTip.Tip>
+                    <StackPanel>
+                        <TextBlock Classes="h1">ToolTip</TextBlock>
+                        <TextBlock Classes="h2">A control which pops up a hint when a control is hovered</TextBlock>
+                    </StackPanel>
+                </ToolTip.Tip>
+                <TextBlock>ToolTip bottom placement</TextBlock>
+            </Border>
+            <Border Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    Background="{DynamicResource ThemeChooserBackgroundBrush}"
+                    Margin="1"
+                    Padding="1"
+                    ToolTip.Tip="Hello"
+                    ToolTip.Placement="Top">
+                <Border.Styles>
+                    <Style Selector="Border">
+                        <Style.Animations>
+                            <Animation Duration="0:0:2"
+                                       IterationCount="Infinite">
+                                <KeyFrame KeyTime="0:0:0">
+                                    <Setter Property="ToolTip.VerticalOffset"
+                                            Value="-5" />
+                                </KeyFrame>
+                                <KeyFrame KeyTime="0:0:2">
+                                    <Setter Property="ToolTip.VerticalOffset"
+                                            Value="5" />
+                                </KeyFrame>
+                            </Animation>
+                        </Style.Animations>
+                    </Style>
+                </Border.Styles>
+                <TextBlock>Moving offset</TextBlock>
+            </Border>
+        </Grid>
+    </StackPanel>
+</UserControl>

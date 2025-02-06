@@ -3,6 +3,7 @@
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <MergeResourceInclude Source="/Templates/Controls/AutoCompleteBox.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Button.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Calendar.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/CalendarButton.axaml" />
@@ -17,7 +18,9 @@
                 <MergeResourceInclude Source="/Templates/Controls/DataGrid.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/DataValidationErrors.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/DropDownButton.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Expander.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/FlyoutPresenter.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/GridSplitter.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/HyperlinkButton.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ItemsControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/LightDismissOverlaylayer.axaml" />
@@ -42,6 +45,7 @@
                 <MergeResourceInclude Source="/Templates/Controls/TextBox.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ToggleButton.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ToggleSwitch.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Tooltip.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/TreeView.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/TreeViewItem.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Window.axaml" />

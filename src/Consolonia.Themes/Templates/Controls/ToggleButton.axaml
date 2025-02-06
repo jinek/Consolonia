@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
     <ControlTheme x:Key="{x:Type ToggleButton}"
                   TargetType="ToggleButton">
         <Setter Property="Background"
@@ -18,16 +19,22 @@
                 Value="Center" />
         <Setter Property="Template">
             <ControlTemplate>
-                <ContentPresenter Name="PART_ContentPresenter"
-                                  Background="{TemplateBinding Background}"
-                                  BorderBrush="{TemplateBinding BorderBrush}"
-                                  BorderThickness="{TemplateBinding BorderThickness}"
-                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  Content="{TemplateBinding Content}"
-                                  Padding="{TemplateBinding Padding}"
-                                  TextBlock.Foreground="{TemplateBinding Foreground}"
-                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                <helpers:CaretControl Padding="0,0,0,0"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Margin="{TemplateBinding Padding}"
+                                      IsCaretShown="{TemplateBinding IsFocused}">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"
+                                      TextBlock.Foreground="{TemplateBinding Foreground}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                </helpers:CaretControl>
             </ControlTemplate>
         </Setter>
         <Style Selector="^:checked /template/ ContentPresenter">
