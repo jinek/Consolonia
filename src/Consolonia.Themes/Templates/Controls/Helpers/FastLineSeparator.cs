@@ -6,9 +6,9 @@ using Avalonia.Media;
 namespace Consolonia.Themes.Templates.Controls.Helpers
 {
     /// <summary>
-    /// A control that will draw a horizontal or a vertical line to separate content.
-    /// Orientation = Horizontal|Vertical
-    /// Brush = brush to use for the line.
+    ///     A control that will draw a horizontal or a vertical line to separate content.
+    ///     Orientation = Horizontal|Vertical
+    ///     Brush = brush to use for the line.
     /// </summary>
     public class FastLineSeparator : Control
     {

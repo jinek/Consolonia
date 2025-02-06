@@ -2,10 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GallerySlider"
              xmlns:sys="using:System">
-    <StackPanel Orientation="Vertical" Spacing="1">
+    <StackPanel Orientation="Vertical"
+                Spacing="1">
         <TextBlock Classes="h2">A control that lets the user select from a range of values by moving a Thumb control along a Track.</TextBlock>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0 1 0 0" Spacing="1">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    Margin="0 1 0 0"
+                    Spacing="1">
             <StackPanel Orientation="Vertical"
                         Spacing="1"
                         HorizontalAlignment="Left">
@@ -29,10 +33,14 @@
                         Width="50">
                     <Slider.Styles>
                         <Style Selector="Slider /template/ Thumb">
-                            <Setter Property="ToolTip.Tip" Value="{Binding $parent[Slider].Value, Mode=OneWay, StringFormat='Value \{0:f\}'}" />
-                            <Setter Property="ToolTip.Placement" Value="Top" />
-                            <Setter Property="ToolTip.VerticalOffset" Value="-1" />
-                            <Setter Property="ToolTip.HorizontalOffset" Value="-3" />
+                            <Setter Property="ToolTip.Tip"
+                                    Value="{Binding $parent[Slider].Value, Mode=OneWay, StringFormat='Value \{0:f\}'}" />
+                            <Setter Property="ToolTip.Placement"
+                                    Value="Top" />
+                            <Setter Property="ToolTip.VerticalOffset"
+                                    Value="-1" />
+                            <Setter Property="ToolTip.HorizontalOffset"
+                                    Value="-3" />
                         </Style>
                     </Slider.Styles>
                 </Slider>
@@ -59,7 +67,7 @@
                     IsSnapToTickEnabled="True"
                     TickPlacement="Outside"
                     TickFrequency="10"
-                    Height="25"/>
+                    Height="25" />
             <Slider Value="0"
                     IsDirectionReversed="True"
                     Minimum="0"
@@ -68,7 +76,7 @@
                     IsSnapToTickEnabled="True"
                     TickPlacement="Outside"
                     TickFrequency="10"
-                    Height="25"/>
+                    Height="25" />
         </StackPanel>
 
     </StackPanel>

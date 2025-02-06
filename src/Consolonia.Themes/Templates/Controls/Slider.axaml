@@ -4,9 +4,12 @@
                     x:ClassModifier="internal">
     <ControlTheme x:Key="SliderRepeatTrackTheme"
                   TargetType="RepeatButton">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Focusable"
+                Value="False" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}" />
@@ -17,15 +20,17 @@
     <ControlTheme x:Key="{x:Type Slider}"
                   TargetType="Slider">
         <Style Selector="^:horizontal">
-            <Setter Property="MinWidth" Value="4" />
-            <Setter Property="MinHeight" Value="1" />
+            <Setter Property="MinWidth"
+                    Value="4" />
+            <Setter Property="MinHeight"
+                    Value="1" />
             <Setter Property="Template">
                 <ControlTemplate>
-                    <Grid Name="grid" Background="Transparent">
-                        <console:FastLineSeparator
-                            Name="TrackBackground"
-                            Orientation="Horizontal"
-                            Brush="{DynamicResource ThemeForegroundBrush}"/>
+                    <Grid Name="grid"
+                          Background="Transparent">
+                        <console:FastLineSeparator Name="TrackBackground"
+                                                   Orientation="Horizontal"
+                                                   Brush="{DynamicResource ThemeForegroundBrush}" />
                         <Track Name="PART_Track"
                                IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
                                Orientation="Horizontal">
@@ -43,7 +48,7 @@
                                 <Thumb.Template>
                                     <ControlTemplate>
                                         <TextBlock Text="O"
-                                                   Foreground="{DynamicResource ThemeForegroundBrush}"/>
+                                                   Foreground="{DynamicResource ThemeForegroundBrush}" />
                                     </ControlTemplate>
                                 </Thumb.Template>
                             </Thumb>
@@ -53,17 +58,18 @@
             </Setter>
         </Style>
         <Style Selector="^:vertical">
-            <Setter Property="MinWidth" Value="1" />
-            <Setter Property="MinHeight" Value="4" />
+            <Setter Property="MinWidth"
+                    Value="1" />
+            <Setter Property="MinHeight"
+                    Value="4" />
             <Setter Property="Template">
                 <ControlTemplate>
                     <Grid Background="Transparent">
-                        <console:FastLineSeparator
-                            Name="TrackBackground"
-                            Orientation="Vertical"
-                            Brush="{DynamicResource ThemeForegroundBrush}"/>
+                        <console:FastLineSeparator Name="TrackBackground"
+                                                   Orientation="Vertical"
+                                                   Brush="{DynamicResource ThemeForegroundBrush}" />
 
-                        <Track Name="PART_Track" 
+                        <Track Name="PART_Track"
                                IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
                                Orientation="Vertical">
                             <Track.DecreaseButton>
@@ -80,7 +86,7 @@
                                 <Thumb.Template>
                                     <ControlTemplate>
                                         <TextBlock Text="O"
-                                                   Foreground="{DynamicResource ThemeForegroundBrush}"/>
+                                                   Foreground="{DynamicResource ThemeForegroundBrush}" />
                                     </ControlTemplate>
                                 </Thumb.Template>
                             </Thumb>
@@ -91,19 +97,24 @@
         </Style>
 
         <Style Selector="^ /template/ Track#PART_Track">
-            <Setter Property="Minimum" Value="{TemplateBinding Minimum}" />
-            <Setter Property="Maximum" Value="{TemplateBinding Maximum}" />
-            <Setter Property="Value" Value="{TemplateBinding Value, Mode=TwoWay}" />
+            <Setter Property="Minimum"
+                    Value="{TemplateBinding Minimum}" />
+            <Setter Property="Maximum"
+                    Value="{TemplateBinding Maximum}" />
+            <Setter Property="Value"
+                    Value="{TemplateBinding Value, Mode=TwoWay}" />
         </Style>
         <!--<Style Selector="^ /template/ Border#TrackBackground">
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeActionBackgroundBrush}" />
         </Style>-->
         <Style Selector="^ /template/ TickBar">
-            <Setter Property="Ticks" Value="{TemplateBinding Ticks}" />
+            <Setter Property="Ticks"
+                    Value="{TemplateBinding Ticks}" />
         </Style>
         <Style Selector="^:disabled /template/ Grid#grid">
-            <Setter Property="Opacity" Value="{DynamicResource ThemeNoDisturbBrush}" />
+            <Setter Property="Opacity"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
         </Style>
     </ControlTheme>
 </ResourceDictionary>
