@@ -3,11 +3,16 @@
                     x:ClassModifier="internal">
     <ControlTheme x:Key="{x:Type NumericUpDown}"
                   TargetType="NumericUpDown">
-        <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
-        <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderMidBrush}" />
-        <Setter Property="BorderThickness" Value="{DynamicResource ThemeBorderThickness}" />
-        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeBorderMidBrush}" />
+        <Setter Property="BorderThickness"
+                Value="{DynamicResource ThemeBorderThickness}" />
+        <Setter Property="Padding"
+                Value="0" />
         <Setter Property="Template">
             <ControlTemplate>
                 <DataValidationErrors>
@@ -41,7 +46,7 @@
                                  TextWrapping="NoWrap"
                                  Watermark="{TemplateBinding Watermark}"
                                  InnerLeftContent="{Binding InnerLeftContent, RelativeSource={RelativeSource TemplatedParent}}"
-                                 InnerRightContent="{Binding InnerRightContent, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                 InnerRightContent="{Binding InnerRightContent, RelativeSource={RelativeSource TemplatedParent}}" />
                     </ButtonSpinner>
                 </DataValidationErrors>
             </ControlTemplate>

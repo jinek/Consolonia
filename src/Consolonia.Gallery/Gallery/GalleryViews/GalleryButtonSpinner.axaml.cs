@@ -1,14 +1,27 @@
 using System;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public partial class GalleryButtonSpinner : UserControl
     {
+        private readonly string[] _mountains = new[]
+        {
+            "Everest",
+            "K2 (Mount Godwin Austen)",
+            "Kangchenjunga",
+            "Lhotse",
+            "Makalu",
+            "Cho Oyu",
+            "Dhaulagiri",
+            "Manaslu",
+            "Nanga Parbat",
+            "Annapurna"
+        };
+
         public GalleryButtonSpinner()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         public void OnSpin(object sender, SpinEventArgs e)
@@ -30,21 +43,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
                 txtBox.Text = _mountains[value];
             }
-
         }
-
-        private readonly string[] _mountains = new[]
-        {
-            "Everest",
-            "K2 (Mount Godwin Austen)",
-            "Kangchenjunga",
-            "Lhotse",
-            "Makalu",
-            "Cho Oyu",
-            "Dhaulagiri",
-            "Manaslu",
-            "Nanga Parbat",
-            "Annapurna"
-        };
     }
 }

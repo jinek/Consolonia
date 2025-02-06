@@ -9,13 +9,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var str = value.ToString();
+            string str = value.ToString();
             if (str == null)
                 return AvaloniaProperty.UnsetValue;
             if (int.TryParse(str, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int x))
                 return (decimal)x;
             return AvaloniaProperty.UnsetValue;
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -25,5 +24,4 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             return AvaloniaProperty.UnsetValue;
         }
     }
-
 }

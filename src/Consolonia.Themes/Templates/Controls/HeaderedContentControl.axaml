@@ -4,11 +4,11 @@
     <ControlTheme x:Key="{x:Type HeaderedContentControl}"
                   TargetType="HeaderedContentControl">
 
-        <Setter Property="Padding" Value="1" />
+        <Setter Property="Padding"
+                Value="1" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border 
-                        BorderBrush="{TemplateBinding BorderBrush}"
+                <Border BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Background="{TemplateBinding Background}"
                         Padding="{TemplateBinding Padding}">

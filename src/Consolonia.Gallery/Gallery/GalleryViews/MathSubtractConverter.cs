@@ -8,10 +8,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is double dv && parameter is double dp)
-            {
-                return dv - dp;
-            }
+            if (value is double dv && parameter is double dp) return dv - dp;
             return double.NaN;
         }
 
@@ -20,5 +17,4 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             throw new NotSupportedException();
         }
     }
-
 }

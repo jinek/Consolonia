@@ -7,8 +7,6 @@ using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 
@@ -24,6 +22,18 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     public class TransitioningContentControlPageViewModel : ViewModelBase
     {
+        private bool _clipToBounds;
+
+
+        private int _duration = 500;
+        private bool _reversed;
+
+
+        private string _selectedParagraph;
+
+
+        private PageTransition _selectedTransition;
+
         public TransitioningContentControlPageViewModel()
         {
             string[] loremIpsum =
@@ -48,71 +58,57 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             _selectedParagraph = Paragraphs[0];
         }
 
-        public List<PageTransition> PageTransitions { get; } = new List<PageTransition>();
+        public List<PageTransition> PageTransitions { get; } = new();
 
-        public List<String> Paragraphs { get; } = new List<string>();
-
-
-        private string _selectedParagraph;
-        private bool _reversed;
+        public List<string> Paragraphs { get; } = new();
 
         /// <summary>
-        /// Gets or Sets the selected image
+        ///     Gets or Sets the selected image
         /// </summary>
         public string SelectedParagraph
         {
-            get { return _selectedParagraph; }
-            set { this.RaiseAndSetIfChanged(ref _selectedParagraph, value); }
+            get => _selectedParagraph;
+            set => RaiseAndSetIfChanged(ref _selectedParagraph, value);
         }
 
-
-        private PageTransition _selectedTransition;
-
         /// <summary>
-        /// Gets or sets the transition to play
+        ///     Gets or sets the transition to play
         /// </summary>
         public PageTransition SelectedTransition
         {
-            get { return _selectedTransition; }
-            set { this.RaiseAndSetIfChanged(ref _selectedTransition, value); }
+            get => _selectedTransition;
+            set => RaiseAndSetIfChanged(ref _selectedTransition, value);
         }
 
-
-
-        private bool _clipToBounds;
-
         /// <summary>
-        /// Gets or sets if the content should be clipped to bounds
+        ///     Gets or sets if the content should be clipped to bounds
         /// </summary>
         public bool ClipToBounds
         {
-            get { return _clipToBounds; }
-            set { this.RaiseAndSetIfChanged(ref _clipToBounds, value); }
+            get => _clipToBounds;
+            set => RaiseAndSetIfChanged(ref _clipToBounds, value);
         }
 
-
-        private int _duration = 500;
-
         /// <summary>
-        /// Gets or Sets the duration
+        ///     Gets or Sets the duration
         /// </summary>
         public int Duration
         {
-            get { return _duration; }
+            get => _duration;
             set
             {
-                this.RaiseAndSetIfChanged(ref _duration, value);
+                RaiseAndSetIfChanged(ref _duration, value);
                 SetupTransitions();
             }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the animation is reversed.
+        ///     Gets or sets a value indicating whether the animation is reversed.
         /// </summary>
         public bool Reversed
         {
             get => _reversed;
-            set => this.RaiseAndSetIfChanged(ref _reversed, value);
+            set => RaiseAndSetIfChanged(ref _reversed, value);
         }
 
         private void SetupTransitions()
@@ -125,7 +121,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 // new PageTransition("CrossFade") { Transition = new CrossFade(TimeSpan.FromMilliseconds(Duration)) },
                 new PageTransition("Slide horizontally")
                 {
-                    Transition = new PageSlide(TimeSpan.FromMilliseconds(Duration), PageSlide.SlideAxis.Horizontal)
+                    Transition = new PageSlide(TimeSpan.FromMilliseconds(Duration))
                 },
                 new PageTransition("Slide vertically")
                 {
@@ -133,11 +129,11 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 },
                 new PageTransition("Composite")
                 {
-                    Transition = new CompositePageTransition()
+                    Transition = new CompositePageTransition
                     {
                         PageTransitions = new List<IPageTransition>
                         {
-                            new PageSlide(TimeSpan.FromMilliseconds(Duration), PageSlide.SlideAxis.Horizontal),
+                            new PageSlide(TimeSpan.FromMilliseconds(Duration)),
                             new PageSlide(TimeSpan.FromMilliseconds(Duration), PageSlide.SlideAxis.Vertical)
                         }
                     }
@@ -149,19 +145,16 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 }
             });
 
-            if (this.SelectedTransition != null)
-                this.SelectedTransition = PageTransitions.Single(x => x.DisplayTitle == SelectedTransition.DisplayTitle);
+            if (SelectedTransition != null)
+                SelectedTransition = PageTransitions.Single(x => x.DisplayTitle == SelectedTransition.DisplayTitle);
         }
 
         public void NextParagraph()
         {
             Reversed = false;
-            var index = Paragraphs.IndexOf(SelectedParagraph) + 1;
+            int index = Paragraphs.IndexOf(SelectedParagraph) + 1;
 
-            if (index >= Paragraphs.Count)
-            {
-                index = 0;
-            }
+            if (index >= Paragraphs.Count) index = 0;
 
             SelectedParagraph = Paragraphs[index];
         }
@@ -169,12 +162,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public void PrevParagraph()
         {
             Reversed = true;
-            var index = Paragraphs.IndexOf(SelectedParagraph) - 1;
+            int index = Paragraphs.IndexOf(SelectedParagraph) - 1;
 
-            if (index < 0)
-            {
-                index = Paragraphs.Count - 1;
-            }
+            if (index < 0) index = Paragraphs.Count - 1;
 
             SelectedParagraph = Paragraphs[index];
         }
@@ -182,6 +172,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     public class PageTransition : ViewModelBase
     {
+        private IPageTransition _transition;
+
         public PageTransition(string displayTitle)
         {
             DisplayTitle = displayTitle;
@@ -189,36 +181,32 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         public string DisplayTitle { get; }
 
-
-
-        private IPageTransition _transition;
         /// <summary>
-        /// Gets or sets the transition
+        ///     Gets or sets the transition
         /// </summary>
         public IPageTransition Transition
         {
-            get { return _transition; }
-            set { this.RaiseAndSetIfChanged(ref _transition, value); }
+            get => _transition;
+            set => RaiseAndSetIfChanged(ref _transition, value);
         }
 
         public override string ToString()
         {
             return DisplayTitle;
         }
-
     }
 
     public class CustomTransition : IPageTransition
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomTransition"/> class.
+        ///     Initializes a new instance of the <see cref="CustomTransition" /> class.
         /// </summary>
         public CustomTransition()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomTransition"/> class.
+        ///     Initializes a new instance of the <see cref="CustomTransition" /> class.
         /// </summary>
         /// <param name="duration">The duration of the animation.</param>
         public CustomTransition(TimeSpan duration)
@@ -227,19 +215,16 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
         /// <summary>
-        /// Gets the duration of the animation.
+        ///     Gets the duration of the animation.
         /// </summary>
         public TimeSpan Duration { get; set; }
 
         public async Task Start(Visual from, Visual to, bool forward, CancellationToken cancellationToken)
         {
-            if (cancellationToken.IsCancellationRequested)
-            {
-                return;
-            }
+            if (cancellationToken.IsCancellationRequested) return;
 
             var tasks = new List<Task>();
-            var parent = GetVisualParent(from, to);
+            Visual parent = GetVisualParent(from, to);
             var scaleProperty = ScaleTransform.ScaleYProperty;
 
             if (from != null)
@@ -303,36 +288,30 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             await Task.WhenAll(tasks);
 
-            if (from != null && !cancellationToken.IsCancellationRequested)
-            {
-                from.IsVisible = false;
-            }
+            if (from != null && !cancellationToken.IsCancellationRequested) from.IsVisible = false;
         }
 
         /// <summary>
-        /// Gets the common visual parent of the two control.
+        ///     Gets the common visual parent of the two control.
         /// </summary>
         /// <param name="from">The from control.</param>
         /// <param name="to">The to control.</param>
         /// <returns>The common parent.</returns>
         /// <exception cref="ArgumentException">
-        /// The two controls do not share a common parent.
+        ///     The two controls do not share a common parent.
         /// </exception>
         /// <remarks>
-        /// Any one of the parameters may be null, but not both.
+        ///     Any one of the parameters may be null, but not both.
         /// </remarks>
         private static Visual GetVisualParent(Visual from, Visual to)
         {
-            var p1 = (from ?? to)!.GetVisualParent();
-            var p2 = (to ?? from)!.GetVisualParent();
+            Visual p1 = (from ?? to)!.GetVisualParent();
+            Visual p2 = (to ?? from)!.GetVisualParent();
 
             if (p1 != null && p2 != null && p1 != p2)
-            {
                 throw new ArgumentException("Controls for PageSlide must have same parent.");
-            }
 
             return p1 ?? throw new InvalidOperationException("Cannot determine visual parent.");
         }
     }
-
 }
