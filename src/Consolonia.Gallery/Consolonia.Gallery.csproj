@@ -17,4 +17,10 @@
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Gallery\GalleryViews\GallerySlider.axaml.cs">
+        <DependentUpon>GallerySlider.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

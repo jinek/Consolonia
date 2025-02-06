@@ -38,6 +38,7 @@
                 <MergeResourceInclude Source="/Templates/Controls/ScrollViewer.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/SelectableTextBlock.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Separator.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Slider.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/SymbolsControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/TabControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/TabItem.axaml" />
