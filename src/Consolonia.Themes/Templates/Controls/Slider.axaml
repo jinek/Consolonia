@@ -27,29 +27,33 @@
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
                             Brush="{DynamicResource ThemeForegroundBrush}"/>
-                        <Track Name="PART_Track"
+                        <console:CaretControl Foreground="{TemplateBinding Foreground}"
+                                              VerticalAlignment="Center"
+                                              IsCaretShown="{TemplateBinding IsFocused}">
+                            <Track Name="PART_Track"
                                IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
                                Orientation="Horizontal">
-                            <Track.DecreaseButton>
-                                <RepeatButton Name="PART_DecreaseButton"
-                                              Theme="{StaticResource SliderRepeatTrackTheme}" />
-                            </Track.DecreaseButton>
-                            <Track.IncreaseButton>
-                                <RepeatButton Name="PART_IncreaseButton"
-                                              Theme="{StaticResource SliderRepeatTrackTheme}" />
-                            </Track.IncreaseButton>
-                            <Thumb Name="thumb"
-                                   MinWidth="1"
-                                   MinHeight="1">
-                                <Thumb.Template>
-                                    <ControlTemplate>
-                                        <TextBlock Text="O"
+                                <Track.DecreaseButton>
+                                    <RepeatButton Name="PART_DecreaseButton"
+                                                  Theme="{StaticResource SliderRepeatTrackTheme}" />
+                                </Track.DecreaseButton>
+                                <Track.IncreaseButton>
+                                    <RepeatButton Name="PART_IncreaseButton"
+                                                  Theme="{StaticResource SliderRepeatTrackTheme}" />
+                                </Track.IncreaseButton>
+                                <Thumb Name="thumb"
+                                       MinWidth="1"
+                                       MinHeight="1">
+                                    <Thumb.Template>
+                                        <ControlTemplate>
+                                            <TextBlock Text="O"
                                                    VerticalAlignment="Center"
                                                    Foreground="{DynamicResource ThemeForegroundBrush}"/>
-                                    </ControlTemplate>
-                                </Thumb.Template>
-                            </Thumb>
-                        </Track>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track>
+                        </console:CaretControl>
                     </Grid>
                 </ControlTemplate>
             </Setter>
@@ -66,29 +70,32 @@
                             HorizontalAlignment="Center"
                             Brush="{DynamicResource ThemeForegroundBrush}"/>
 
-                        <Track Name="PART_Track" 
+                        <console:CaretControl Foreground="{TemplateBinding Foreground}"
+                                              IsCaretShown="{TemplateBinding IsFocused}">
+                            <Track Name="PART_Track"
                                IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
                                Orientation="Vertical">
-                            <Track.DecreaseButton>
-                                <RepeatButton Name="PART_DecreaseButton"
-                                              Theme="{StaticResource SliderRepeatTrackTheme}" />
-                            </Track.DecreaseButton>
-                            <Track.IncreaseButton>
-                                <RepeatButton Name="PART_IncreaseButton"
-                                              Theme="{StaticResource SliderRepeatTrackTheme}" />
-                            </Track.IncreaseButton>
-                            <Thumb Name="thumb"
-                                   MinWidth="1"
-                                   MinHeight="1">
-                                <Thumb.Template>
-                                    <ControlTemplate>
-                                        <TextBlock Text="O"
+                                <Track.DecreaseButton>
+                                    <RepeatButton Name="PART_DecreaseButton"
+                                                  Theme="{StaticResource SliderRepeatTrackTheme}" />
+                                </Track.DecreaseButton>
+                                <Track.IncreaseButton>
+                                    <RepeatButton Name="PART_IncreaseButton"
+                                                  Theme="{StaticResource SliderRepeatTrackTheme}" />
+                                </Track.IncreaseButton>
+                                <Thumb Name="thumb"
+                                       MinWidth="1"
+                                       MinHeight="1">
+                                    <Thumb.Template>
+                                        <ControlTemplate>
+                                            <TextBlock Text="O"
                                                    HorizontalAlignment="Center"
                                                    Foreground="{DynamicResource ThemeForegroundBrush}"/>
-                                    </ControlTemplate>
-                                </Thumb.Template>
-                            </Thumb>
-                        </Track>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track>
+                        </console:CaretControl>
                     </Grid>
                 </ControlTemplate>
             </Setter>
