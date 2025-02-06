@@ -25,6 +25,7 @@
                         <console:FastLineSeparator
                             Name="TrackBackground"
                             Orientation="Horizontal"
+                            VerticalAlignment="Center"
                             Brush="{DynamicResource ThemeForegroundBrush}"/>
                         <Track Name="PART_Track"
                                IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
@@ -43,6 +44,7 @@
                                 <Thumb.Template>
                                     <ControlTemplate>
                                         <TextBlock Text="O"
+                                                   VerticalAlignment="Center"
                                                    Foreground="{DynamicResource ThemeForegroundBrush}"/>
                                     </ControlTemplate>
                                 </Thumb.Template>
@@ -61,6 +63,7 @@
                         <console:FastLineSeparator
                             Name="TrackBackground"
                             Orientation="Vertical"
+                            HorizontalAlignment="Center"
                             Brush="{DynamicResource ThemeForegroundBrush}"/>
 
                         <Track Name="PART_Track" 
@@ -80,6 +83,7 @@
                                 <Thumb.Template>
                                     <ControlTemplate>
                                         <TextBlock Text="O"
+                                                   HorizontalAlignment="Center"
                                                    Foreground="{DynamicResource ThemeForegroundBrush}"/>
                                     </ControlTemplate>
                                 </Thumb.Template>

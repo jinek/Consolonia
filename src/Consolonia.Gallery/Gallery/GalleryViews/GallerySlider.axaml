@@ -2,74 +2,113 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GallerySlider"
              xmlns:sys="using:System">
-    <StackPanel Orientation="Vertical" Spacing="1">
-        <TextBlock Classes="h2">A control that lets the user select from a range of values by moving a Thumb control along a Track.</TextBlock>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical" Spacing="1">
+            <TextBlock TextWrapping="Wrap">A control that lets the user select from a range of values by moving a Thumb control along a Track.</TextBlock>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0 1 0 0" Spacing="1">
-            <StackPanel Orientation="Vertical"
-                        Spacing="1"
-                        HorizontalAlignment="Left">
-                <Slider Value="0"
-                        Minimum="0"
-                        Maximum="100"
-                        TickFrequency="10"
-                        Width="50" />
-                <Slider Name="CustomTickedSlider"
+            <Grid ColumnDefinitions="Auto Auto Auto">
+                <StackPanel Orientation="Vertical"
+                            Spacing="1"
+                            HorizontalAlignment="Left">
+                    <!-- TextBox Control -->
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock>Simple slider from 0-100</TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding Value, ElementName=Slider1, StringFormat=F0}"
+                                     IsReadOnly="True"
+                                     Margin="1"
+                                     Width="4" />
+
+                            <Slider Name="Slider1"
+                                    Value="0"
+                                    Minimum="0"
+                                    Maximum="100"
+                                    Width="50" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock>Simple slider from 0-100 steps of 10</TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding Value, ElementName=SliderSteps, StringFormat=F0}"
+                                     IsReadOnly="True"
+                                     Margin="1"
+                                     Width="4" />
+
+                            <Slider Name="SliderSteps"
+                                    Value="0"
+                                    Minimum="0"
+                                    Maximum="100"
+                                    TickFrequency="10"
+                                    Width="50" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock>Slider from 0-100 with custom steps</TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding Value, ElementName=CustomTickedSlider, StringFormat=F0}"
+                                     IsReadOnly="True"
+                                     Margin="1"
+                                     Width="4" />
+
+                            <Slider Name="CustomTickedSlider"
+                                Value="0"
+                                Minimum="0"
+                                Maximum="100"
+                                TickPlacement="BottomRight"
+                                IsSnapToTickEnabled="True"
+                                Ticks="0,20,25,40,75,100"
+                                Width="50" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock>Slider from 0-100 with Tooltip</TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding Value, ElementName=SliderWithTooltip, StringFormat=F0}"
+                                     IsReadOnly="True"
+                                     Margin="1"
+                                     Width="4" />
+
+                            <Slider Name="SliderWithTooltip"
+                                Value="0"
+                                Minimum="0"
+                                Maximum="100"
+                                Width="50">
+                                <Slider.Styles>
+                                    <Style Selector="Slider /template/ Thumb">
+                                        <Setter Property="ToolTip.Tip" Value="{Binding $parent[Slider].Value, Mode=OneWay, StringFormat='Value \{0:f\}'}" />
+                                        <Setter Property="ToolTip.Placement" Value="Top" />
+                                        <Setter Property="ToolTip.VerticalOffset" Value="-1" />
+                                        <Setter Property="ToolTip.HorizontalOffset" Value="-3" />
+                                    </Style>
+                                </Slider.Styles>
+                            </Slider>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                
+                <StackPanel Orientation="Vertical" Grid.Column="1">
+                    <TextBlock>Vertical 0-100</TextBlock>
+                    <TextBox Text="{Binding Value, ElementName=VerticalSlider, StringFormat=F0}"
+                             HorizontalAlignment="Center"
+                             IsReadOnly="True"
+                             Margin="1"
+                             Width="4" />
+                    <Slider Name="VerticalSlider"
                         Value="0"
                         Minimum="0"
                         Maximum="100"
-                        TickPlacement="BottomRight"
-                        IsSnapToTickEnabled="True"
-                        Ticks="0,20,25,40,75,100"
-                        Width="50" />
-                <Slider Name="SliderWithTooltip"
-                        Value="0"
-                        Minimum="0"
-                        Maximum="100"
-                        Width="50">
-                    <Slider.Styles>
-                        <Style Selector="Slider /template/ Thumb">
-                            <Setter Property="ToolTip.Tip" Value="{Binding $parent[Slider].Value, Mode=OneWay, StringFormat='Value \{0:f\}'}" />
-                            <Setter Property="ToolTip.Placement" Value="Top" />
-                            <Setter Property="ToolTip.VerticalOffset" Value="-1" />
-                            <Setter Property="ToolTip.HorizontalOffset" Value="-3" />
-                        </Style>
-                    </Slider.Styles>
-                </Slider>
-                <Slider Value="0"
-                        Minimum="0"
-                        Maximum="100"
-                        TickFrequency="10"
-                        Width="50">
-                    <DataValidationErrors.Error>
-                        <sys:Exception />
-                    </DataValidationErrors.Error>
-                </Slider>
-                <Slider Value="0"
-                        IsDirectionReversed="True"
-                        Minimum="0"
-                        Maximum="100"
-                        TickFrequency="10"
-                        Width="50" />
-            </StackPanel>
-            <Slider Value="0"
-                    Minimum="0"
-                    Maximum="100"
-                    Orientation="Vertical"
-                    IsSnapToTickEnabled="True"
-                    TickPlacement="Outside"
-                    TickFrequency="10"
-                    Height="25"/>
-            <Slider Value="0"
-                    IsDirectionReversed="True"
-                    Minimum="0"
-                    Maximum="100"
-                    Orientation="Vertical"
-                    IsSnapToTickEnabled="True"
-                    TickPlacement="Outside"
-                    TickFrequency="10"
-                    Height="25"/>
+                        Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        IsSnapToTickEnabled="False"
+                        TickPlacement="Outside"
+                        Height="25"/>
+                </StackPanel>
+
+                
+            </Grid>
         </StackPanel>
-
-    </StackPanel>
+    </ScrollViewer>
 </UserControl>
