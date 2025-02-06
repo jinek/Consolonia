@@ -5,6 +5,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <MergeResourceInclude Source="/Templates/Controls/AutoCompleteBox.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Button.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/ButtonSpinner.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Calendar.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/CalendarButton.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/CalendarDatePicker.axaml" />
@@ -21,6 +22,7 @@
                 <MergeResourceInclude Source="/Templates/Controls/Expander.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/FlyoutPresenter.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/GridSplitter.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/HeaderedContentControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/HyperlinkButton.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ItemsControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/LightDismissOverlaylayer.axaml" />
@@ -29,11 +31,13 @@
                 <MergeResourceInclude Source="/Templates/Controls/Menu.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/MenuFlyoutPresenter.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/MenuItem.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/NumericUpDown.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/OverlayPopupHost.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Panel.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Popup.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ProgressBar.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/RadioButton.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/RepeatButton.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ScrollBar.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ScrollViewer.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/SelectableTextBlock.axaml" />
@@ -49,6 +53,7 @@
                 <MergeResourceInclude Source="/Templates/Controls/Tooltip.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/TreeView.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/TreeViewItem.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/TransitioningContentControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Window.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
