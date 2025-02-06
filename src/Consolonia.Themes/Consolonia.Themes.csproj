@@ -11,6 +11,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <AvaloniaXaml Update="Templates\Controls\NumericUpDown.axaml">
+        <SubType>Designer</SubType>
+      </AvaloniaXaml>
+    </ItemGroup>
+
+    <ItemGroup>
         <Compile Update="Templates\Controls\DialogWrap.axaml.cs">
             <DependentUpon>DialogWrap.axaml</DependentUpon>
         </Compile>
