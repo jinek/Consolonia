@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     x:ClassModifier="internal">
-    <ControlTheme x:Key="{x:Type Carousel}" TargetType="Carousel">
+    <ControlTheme x:Key="{x:Type Carousel}"
+                  TargetType="Carousel">
         <Setter Property="Template">
             <ControlTemplate>
                 <ScrollViewer Name="PART_ScrollViewer"
@@ -13,7 +14,7 @@
                               VerticalScrollBarVisibility="Hidden">
                     <ItemsPresenter Name="PART_ItemsPresenter"
                                     ItemsPanel="{TemplateBinding ItemsPanel}"
-                                    Margin="{TemplateBinding Padding}"/>
+                                    Margin="{TemplateBinding Padding}" />
                 </ScrollViewer>
             </ControlTemplate>
         </Setter>
