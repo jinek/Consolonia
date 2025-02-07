@@ -44,6 +44,7 @@
                     Grid.Column="2" 
                     VerticalAlignment="Center" 
                     Padding="1,2" 
+                    Background="{DynamicResource ThemeBackgroundBrush}"
                     Margin="1">
                 <TextBlock Text="&gt;"/>
             </Button>
