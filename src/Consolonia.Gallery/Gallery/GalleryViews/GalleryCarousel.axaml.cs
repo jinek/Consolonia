@@ -1,5 +1,5 @@
-using Avalonia.Animation;
 using System;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
@@ -7,15 +7,15 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public partial class GalleryCarousel : UserControl
     {
-        private Carousel _carousel;
-        private Button _left;
-        private Button _right;
-        private ComboBox _transition;
-        private ComboBox _orientation;
+        private readonly Carousel _carousel;
+        private readonly Button _left;
+        private readonly ComboBox _orientation;
+        private readonly Button _right;
+        private readonly ComboBox _transition;
 
         public GalleryCarousel()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             _carousel = this.Get<Carousel>("carousel");
             _left = this.Get<Button>("left");
             _right = this.Get<Button>("right");
@@ -30,7 +30,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-
         }
 
         private void TransitionChanged(object sender, SelectionChangedEventArgs e)
@@ -41,13 +40,19 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     _carousel.PageTransition = null;
                     break;
                 case 1:
-                    _carousel.PageTransition = new PageSlide(TimeSpan.FromSeconds(0.25), _orientation.SelectedIndex == 0 ? PageSlide.SlideAxis.Horizontal : PageSlide.SlideAxis.Vertical);
+                    _carousel.PageTransition = new PageSlide(TimeSpan.FromSeconds(0.25),
+                        _orientation.SelectedIndex == 0
+                            ? PageSlide.SlideAxis.Horizontal
+                            : PageSlide.SlideAxis.Vertical);
                     break;
                 case 2:
                     _carousel.PageTransition = new CrossFade(TimeSpan.FromSeconds(0.25));
                     break;
                 case 3:
-                    _carousel.PageTransition = new Rotate3DTransition(TimeSpan.FromSeconds(0.5), _orientation.SelectedIndex == 0 ? PageSlide.SlideAxis.Horizontal : PageSlide.SlideAxis.Vertical);
+                    _carousel.PageTransition = new Rotate3DTransition(TimeSpan.FromSeconds(0.5),
+                        _orientation.SelectedIndex == 0
+                            ? PageSlide.SlideAxis.Horizontal
+                            : PageSlide.SlideAxis.Vertical);
                     break;
             }
         }
