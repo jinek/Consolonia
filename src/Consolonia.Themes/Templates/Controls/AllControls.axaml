@@ -12,6 +12,7 @@
                 <MergeResourceInclude Source="/Templates/Controls/CalendarDayButton.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/CalendarItem.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/CaretControl.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Carousel.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/CheckBox.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ComboBox.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ComboBoxItem.axaml" />

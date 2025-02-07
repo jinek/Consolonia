@@ -18,16 +18,5 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="Gallery\GalleryViews\GalleryButtonSpinner.axaml.cs">
-        <DependentUpon>GalleryButtonSpinner.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="Gallery\GalleryViews\GalleryNumericUpDown.axaml.cs">
-        <DependentUpon>GalleryNumericUpDown.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="Gallery\GalleryViews\GalleryTransitioningContent.axaml.cs">
-        <DependentUpon>GalleryTransitioningContent.axaml</DependentUpon>
-      </Compile>
-    </ItemGroup>
 
 </Project>
