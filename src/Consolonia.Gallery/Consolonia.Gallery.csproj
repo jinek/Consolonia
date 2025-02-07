@@ -17,4 +17,6 @@
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     </ItemGroup>
+
+
 </Project>

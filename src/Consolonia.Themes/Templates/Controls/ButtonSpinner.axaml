@@ -1,0 +1,94 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:ClassModifier="internal">
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+    <ControlTheme x:Key="ConsoleButtonSpinnerRepeatButton"
+                  BasedOn="{StaticResource {x:Type RepeatButton}}"
+                  TargetType="RepeatButton">
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="BorderBrush"
+                Value="Transparent" />
+        <!--<Style Selector="^ /template/ RepeatButton:pointerover">
+            <Setter Property="Background" Value="{DynamicResource ThemeControlMidBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderMidBrush}" />
+        </Style>-->
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type ButtonSpinner}"
+                  TargetType="ButtonSpinner">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Focusable"
+                Value="True" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DataValidationErrors>
+                    <Border Name="border"
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <DockPanel Width="{TemplateBinding Width}">
+                            <StackPanel Name="PART_SpinnerPanel"
+                                        Orientation="Horizontal"
+                                        TabIndex="2"
+                                        DockPanel.Dock="Right"
+                                        IsVisible="{TemplateBinding ShowButtonSpinner}">
+                                <RepeatButton Name="PART_IncreaseButton"
+                                              IsTabStop="{TemplateBinding IsTabStop}"
+                                              Theme="{StaticResource ConsoleButtonSpinnerRepeatButton}">
+                                    <TextBlock>▴</TextBlock>
+                                </RepeatButton>
+                                <RepeatButton Name="PART_DecreaseButton"
+                                              IsTabStop="{TemplateBinding IsTabStop}"
+                                              Theme="{StaticResource ConsoleButtonSpinnerRepeatButton}">
+                                    <TextBlock>▾</TextBlock>
+                                </RepeatButton>
+                            </StackPanel>
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              TabIndex="1"
+                                              Background="{TemplateBinding Background}"
+                                              Foreground="{TemplateBinding Foreground}"
+                                              Padding="{TemplateBinding Padding}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        </DockPanel>
+                    </Border>
+                </DataValidationErrors>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:left">
+            <Style Selector="^ /template/ StackPanel#PART_SpinnerPanel">
+                <Setter Property="DockPanel.Dock"
+                        Value="Left" />
+            </Style>
+        </Style>
+        <Style Selector="^:pointerover /template/ Border#border">
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ThemeBorderHighBrush}" />
+        </Style>
+        <Style Selector="^:focus /template/ Border#border">
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ThemeBorderHighBrush}" />
+        </Style>
+        <Style Selector="^:error /template/ Border#border">
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ErrorBrush}" />
+        </Style>
+    </ControlTheme>
+
+</ResourceDictionary>

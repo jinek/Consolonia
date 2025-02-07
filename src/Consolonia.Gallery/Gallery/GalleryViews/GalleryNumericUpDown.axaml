@@ -1,0 +1,249 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="using:System"
+             xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryNumericUpDown"
+             x:DataType="local:NumbersPageViewModel">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical"
+                    Spacing="1">
+            <TextBlock Margin="1"
+                       Classes="h2"
+                       TextWrapping="Wrap">
+                Numeric up-down control provides a TextBox with button spinners that allow incrementing and decrementing numeric values by using the spinner buttons, keyboard up/down arrows, or mouse wheel.
+            </TextBlock>
+
+            <TextBlock Margin="1"
+                       FontWeight="Bold">
+                Features:
+            </TextBlock>
+            <StackPanel Spacing="1">
+                <Grid ColumnDefinitions="Auto, Auto"
+                      RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                      Margin="1">
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               VerticalAlignment="Center">
+                        ShowButtonSpinner:
+                    </TextBlock>
+                    <CheckBox Grid.Row="0"
+                              Grid.Column="1"
+                              IsChecked="{Binding #upDown.ShowButtonSpinner}"
+                              VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               VerticalAlignment="Center">
+                        IsReadOnly:
+                    </TextBlock>
+                    <CheckBox Grid.Row="1"
+                              Grid.Column="1"
+                              IsChecked="{Binding #upDown.IsReadOnly}"
+                              VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="0"
+                               VerticalAlignment="Center">
+                        AllowSpin:
+                    </TextBlock>
+                    <CheckBox Grid.Row="2"
+                              Grid.Column="1"
+                              IsChecked="{Binding #upDown.AllowSpin}"
+                              VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="0"
+                               VerticalAlignment="Center">
+                        ClipValueToMinMax:
+                    </TextBlock>
+                    <CheckBox Grid.Row="3"
+                              Grid.Column="1"
+                              IsChecked="{Binding #upDown.ClipValueToMinMax}"
+                              VerticalAlignment="Center" />
+
+                </Grid>
+                <Grid ColumnDefinitions="Auto, 12"
+                      RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                      Margin="1">
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               VerticalAlignment="Center">
+                        FormatString:
+                    </TextBlock>
+                    <ComboBox Grid.Row="0"
+                              Grid.Column="1"
+                              ItemsSource="{Binding Formats}"
+                              SelectedItem="{Binding SelectedFormat}"
+                              VerticalAlignment="Center">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="-" />
+                                    <TextBlock Text="{Binding Value}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="0"
+                               VerticalAlignment="Center">
+                        CultureInfo:
+                    </TextBlock>
+                    <ComboBox x:Name="CultureSelector"
+                              Grid.Row="2"
+                              Grid.Column="1"
+                              ItemsSource="{Binding Cultures}"
+                              VerticalAlignment="Center" />
+                </Grid>
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                      ColumnDefinitions="Auto, Auto"
+                      Margin="1">
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               VerticalAlignment="Center">
+                        Minimum:
+                    </TextBlock>
+                    <NumericUpDown Grid.Row="0"
+                                   Grid.Column="1"
+                                   Value="{Binding #upDown.Minimum}"
+                                   NumberFormat="{Binding #upDown.NumberFormat}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               VerticalAlignment="Center">
+                        Maximum:
+                    </TextBlock>
+                    <NumericUpDown Grid.Row="1"
+                                   Grid.Column="1"
+                                   Value="{Binding #upDown.Maximum}"
+                                   NumberFormat="{Binding #upDown.NumberFormat}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="0"
+                               VerticalAlignment="Center">
+                        Increment:
+                    </TextBlock>
+                    <NumericUpDown Grid.Row="2"
+                                   Grid.Column="1"
+                                   Value="{Binding #upDown.Increment}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="0"
+                               VerticalAlignment="Center">
+                        Value:
+                    </TextBlock>
+                    <NumericUpDown Grid.Row="3"
+                                   Grid.Column="1"
+                                   Value="{Binding DecimalValue}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+
+
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Spacing="1">
+                <StackPanel Orientation="Vertical">
+                    <Label Target="upDown"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center">
+                        Usage of decimal NumericUpDown:
+                    </Label>
+                    <NumericUpDown Name="upDown"
+                                   Minimum="0"
+                                   Maximum="10"
+                                   Increment="0.5"
+                                   HorizontalAlignment="Left"
+                                   ButtonSpinnerLocation="Left"
+                                   NumberFormat="{Binding #CultureSelector.SelectedItem, Converter={x:Static local:GalleryNumericUpDown.CultureConverter}}"
+                                   VerticalAlignment="Center"
+                                   Value="{Binding DecimalValue}"
+                                   Watermark="Enter text"
+                                   FormatString="{Binding SelectedFormat.Value}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical">
+                    <Label Target="DoubleUpDown"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center">
+                        Usage of double NumericUpDown:
+                    </Label>
+                    <NumericUpDown Name="DoubleUpDown"
+                                   Minimum="0"
+                                   Maximum="10"
+                                   Increment="0.5"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Value="{Binding DoubleValue}"
+                                   Watermark="Enter text"
+                                   FormatString="{Binding SelectedFormat.Value}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical">
+                    <Label Target="ValidationUpDown"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center">
+                        NumericUpDown with Validation Errors:
+                    </Label>
+                    <NumericUpDown x:Name="ValidationUpDown"
+                                   Minimum="0"
+                                   Maximum="10"
+                                   Increment="0.5"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Watermark="Enter text"
+                                   FormatString="{Binding SelectedFormat.Value}">
+                        <DataValidationErrors.Error>
+                            <sys:Exception />
+                        </DataValidationErrors.Error>
+                    </NumericUpDown>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical">
+                    <Label Target="HexUpDown"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center">
+                        NumericUpDown in HEX mode:
+                    </Label>
+                    <NumericUpDown x:Name="HexUpDown"
+                                   Value="0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center">
+                        <NumericUpDown.TextConverter>
+                            <local:HexConverter />
+                        </NumericUpDown.TextConverter>
+                    </NumericUpDown>
+
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel>
+                <Label FontWeight="Bold"
+                       Target="InnerContent"
+                       Content="Inner Contents" />
+                <NumericUpDown ButtonSpinnerLocation="Left"
+                               HorizontalAlignment="Left"
+                               TextAlignment="Right"
+                               x:Name="InnerContent">
+                    <NumericUpDown.InnerLeftContent>
+                        <TextBlock Text="m"
+                                   TextAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </NumericUpDown.InnerLeftContent>
+                    <NumericUpDown.InnerRightContent>
+                        <Button Content="X" />
+                    </NumericUpDown.InnerRightContent>
+                </NumericUpDown>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

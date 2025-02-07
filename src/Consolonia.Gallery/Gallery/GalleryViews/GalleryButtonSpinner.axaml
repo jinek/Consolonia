@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryButtonSpinner">
+
+    <StackPanel Orientation="Vertical"
+                Spacing="1">
+        <TextBlock Classes="h2">The ButtonSpinner control allows you to add button spinners to any element and then respond to the Spin event to manipulate that element.</TextBlock>
+
+        <StackPanel Orientation="Vertical"
+                    Spacing="1">
+            <CheckBox Name="allowSpinCheck"
+                      IsChecked="True">
+                AllowSpin
+            </CheckBox>
+            <CheckBox Name="showSpinCheck"
+                      IsChecked="True">
+                ShowButtonSpinner
+            </CheckBox>
+            <ButtonSpinner Spin="OnSpin"
+                           Width="20"
+                           HorizontalAlignment="Left"
+                           AllowSpin="{Binding #allowSpinCheck.IsChecked}"
+                           ShowButtonSpinner="{Binding #showSpinCheck.IsChecked}">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="Everest" />
+            </ButtonSpinner>
+            <ButtonSpinner Spin="OnSpin"
+                           ButtonSpinnerLocation="Left"
+                           Width="20"
+                           HorizontalAlignment="Left"
+                           AllowSpin="{Binding #allowSpinCheck.IsChecked}"
+                           ShowButtonSpinner="{Binding #showSpinCheck.IsChecked}">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="Everest" />
+            </ButtonSpinner>
+        </StackPanel>
+    </StackPanel>
+
+</UserControl>
