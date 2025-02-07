@@ -9,7 +9,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public partial class GalleryNotifications : UserControl
     {
-        private NotificationViewModel _viewModel;
+        private readonly NotificationViewModel _viewModel;
+
         public GalleryNotifications()
         {
             InitializeComponent();
@@ -39,8 +40,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     public class NotificationViewModel
     {
-        public WindowNotificationManager NotificationManager { get; set; }
-
         public NotificationViewModel()
         {
             ShowTextManagedNotificationCommand = MiniCommand.Create(() =>
@@ -50,25 +49,36 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             ShowCustomManagedNotificationCommand = MiniCommand.Create(() =>
             {
-                var viewModel = new NotificationViewModel() { Title = "Hey There!", Message = "Did you know that Avalonia now supports Custom In-Window Notifications?", NotificationManager = NotificationManager };
-                NotificationManager?.Show(new CustomNotificationView() { Foreground=Brushes.White, DataContext = viewModel }, NotificationType.Warning);
+                var viewModel = new NotificationViewModel
+                {
+                    Title = "Hey There!",
+                    Message = "Did you know that Avalonia now supports Custom In-Window Notifications?",
+                    NotificationManager = NotificationManager
+                };
+                NotificationManager?.Show(
+                    new CustomNotificationView { Foreground = Brushes.White, DataContext = viewModel },
+                    NotificationType.Warning);
             });
 
             ShowManagedNotificationCommand = MiniCommand.Create(() =>
             {
-                NotificationManager?.Show(new Notification("Welcome", "Avalonia now supports Notifications!", NotificationType.Information));
+                NotificationManager?.Show(new Notification("Welcome", "Avalonia now supports Notifications!"));
             });
 
             YesCommand = MiniCommand.Create(() =>
             {
-                NotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Avalonia Notifications", "Start adding notifications to your app today."));
+                NotificationManager?.Show(new Notification("Avalonia Notifications",
+                    "Start adding notifications to your app today."));
             });
 
             NoCommand = MiniCommand.Create(() =>
             {
-                NotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Avalonia Notifications", "Start adding notifications to your app today. To find out more visit..."));
+                NotificationManager?.Show(new Notification("Avalonia Notifications",
+                    "Start adding notifications to your app today. To find out more visit..."));
             });
         }
+
+        public WindowNotificationManager NotificationManager { get; set; }
 
         public string Title { get; set; }
         public string Message { get; set; }

@@ -13,12 +13,20 @@
 
     <DockPanel>
         <TextBlock DockPanel.Dock="Top"
-                   Margin="2" TextWrapping="Wrap">TopLevel bound notification manager.</TextBlock>
+                   Margin="2"
+                   TextWrapping="Wrap">
+            TopLevel bound notification manager.
+        </TextBlock>
         <StackPanel DockPanel.Dock="Top"
-                    Orientation="Vertical" Spacing="1" HorizontalAlignment="Left">
-            <Button Content="Show Text Notification" Command="{Binding ShowTextManagedNotificationCommand}" />
-            <Button Content="Show Standard Managed Notification" Command="{Binding ShowManagedNotificationCommand}" />
-            <Button Content="Show Custom Managed Notification" Command="{Binding ShowCustomManagedNotificationCommand}" />
+                    Orientation="Vertical"
+                    Spacing="1"
+                    HorizontalAlignment="Left">
+            <Button Content="Show Text Notification"
+                    Command="{Binding ShowTextManagedNotificationCommand}" />
+            <Button Content="Show Standard Managed Notification"
+                    Command="{Binding ShowManagedNotificationCommand}" />
+            <Button Content="Show Custom Managed Notification"
+                    Command="{Binding ShowCustomManagedNotificationCommand}" />
         </StackPanel>
 
     </DockPanel>
