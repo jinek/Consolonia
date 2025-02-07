@@ -33,7 +33,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         }
 
-        private void TransitionChanged(object? sender, SelectionChangedEventArgs e)
+        private void TransitionChanged(object sender, SelectionChangedEventArgs e)
         {
             switch (_transition.SelectedIndex)
             {

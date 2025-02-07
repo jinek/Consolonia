@@ -1,0 +1,81 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:console="https://github.com/jinek/consolonia"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:ClassModifier="internal">
+    <ControlTheme x:Key="{x:Type WindowNotificationManager}"
+                  TargetType="WindowNotificationManager">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ReversibleStackPanel Name="PART_Items" Spacing="1">
+                    <ReversibleStackPanel.DataTemplates>
+                        <DataTemplate DataType="INotification">
+                            <Panel>
+                                <StackPanel Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
+                                    <TextBlock TextDecorations="Underline"
+                                               Padding="1 1 1 0"
+                                               Margin="0"
+                                               FontWeight="Bold"
+                                               FontSize="1"
+                                               Foreground="{DynamicResource ThemeForegroundBrush}"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding Title}" />
+                                    <TextBlock
+                                               Padding="1 0 1 1"
+                                               Margin="0"
+                                               FontSize="1"
+                                               Foreground="{DynamicResource ThemeForegroundBrush}"
+                                               Text="{Binding Message}"
+                                               TextWrapping="Wrap" />
+
+                                </StackPanel>
+                            </Panel>
+                        </DataTemplate>
+                        <DataTemplate DataType="x:String">
+                            <StackPanel Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
+                                <TextBlock Margin="1"
+                                       FontSize="1"
+                                       Foreground="{DynamicResource ThemeForegroundBrush}"
+                                       TextWrapping="Wrap"
+                                       Text="{Binding}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ReversibleStackPanel.DataTemplates>
+                </ReversibleStackPanel>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:topleft /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <Style Selector="^:topright /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style Selector="^:topcenter /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="^:bottomleft /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="ReverseOrder" Value="True" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <Style Selector="^:bottomright /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="ReverseOrder" Value="True" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style Selector="^:bottomcenter /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="ReverseOrder" Value="True" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

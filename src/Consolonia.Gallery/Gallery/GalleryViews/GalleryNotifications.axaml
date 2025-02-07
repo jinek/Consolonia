@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
+             mc:Ignorable="d"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryNotifications">
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="local:NotificationViewModel">
+            <local:CustomNotificationView />
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top"
+                   Margin="2" TextWrapping="Wrap">TopLevel bound notification manager.</TextBlock>
+        <StackPanel DockPanel.Dock="Top"
+                    Orientation="Vertical" Spacing="1" HorizontalAlignment="Left">
+            <Button Content="Show Text Notification" Command="{Binding ShowTextManagedNotificationCommand}" />
+            <Button Content="Show Standard Managed Notification" Command="{Binding ShowManagedNotificationCommand}" />
+            <Button Content="Show Custom Managed Notification" Command="{Binding ShowCustomManagedNotificationCommand}" />
+        </StackPanel>
+
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.CustomNotificationView"
+             x:DataType="local:NotificationViewModel">
+    <StackPanel Margin="1">
+        <TextBlock Foreground="Black" FontSize="1" Text="⠁⠂⠄⡀⢀⠠⠐⠈⠁⠂⠄⡀⢀⠠⠐⠈⠁⠂⠄⡀⢀⠠⠐⠈" TextAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Foreground="Purple" FontSize="1" Text="{Binding Title}" FontWeight="Medium" />
+        <TextBlock Foreground="DarkBlue" FontSize="1" Text="{Binding Message}" TextWrapping="Wrap" />
+        <TextBlock Foreground="Black" FontSize="1" Text="⠁⠂⠄⡀⢀⠠⠐⠈⠁⠂⠄⡀⢀⠠⠐⠈⠁⠂⠄⡀⢀⠠⠐⠈" TextAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel Spacing="1" Orientation="Horizontal">
+            <Button Content="No" Command="{Binding NoCommand}" NotificationCard.CloseOnClick="True" />
+            <Button Content="Yes" Command="{Binding YesCommand}" NotificationCard.CloseOnClick="True" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>
