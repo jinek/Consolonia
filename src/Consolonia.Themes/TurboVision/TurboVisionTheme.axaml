@@ -5,7 +5,7 @@
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <MergeResourceInclude Source="/Templates/TurboVisionDefaultColors.axaml" />
+                <MergeResourceInclude Source="/TurboVision/TurboVisionDefaultColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <system:String x:Key="ThemeLeftArrowSymbol">←</system:String>
