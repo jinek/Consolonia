@@ -28,7 +28,7 @@
                 <ControlTemplate>
                     <Grid Name="grid"
                           Background="Transparent">
-                        <console:FastLineSeparator Name="TrackBackground"
+                        <console:LineSeparator Name="TrackBackground"
                                                    Orientation="Horizontal"
                                                    VerticalAlignment="Center"
                                                    Brush="{DynamicResource ThemeForegroundBrush}" />
@@ -71,7 +71,7 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <Grid Background="Transparent">
-                        <console:FastLineSeparator Name="TrackBackground"
+                        <console:LineSeparator Name="TrackBackground"
                                                    Orientation="Vertical"
                                                    HorizontalAlignment="Center"
                                                    Brush="{DynamicResource ThemeForegroundBrush}" />

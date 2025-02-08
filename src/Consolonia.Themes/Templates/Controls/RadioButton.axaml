@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type RadioButton}"
                   TargetType="RadioButton">
         <Setter Property="Foreground"
@@ -17,21 +17,21 @@
             <ControlTemplate>
                 <Grid ColumnDefinitions="Auto,*"
                       Background="{TemplateBinding Background}">
-                    <helpers:SymbolsControl Text="( )"
+                    <TextBlock Text="( )"
                                             Name="border"
                                             Foreground="{TemplateBinding BorderBrush}"
                                             VerticalAlignment="Center" />
-                    <helpers:CaretControl Grid.Column="0"
+                    <console:CaretControl Grid.Column="0"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
                                           IsCaretShown="{TemplateBinding IsFocused}">
                         <Panel>
-                            <helpers:SymbolsControl Name="checkMark"
+                            <TextBlock Name="checkMark"
                                                     Text="*" />
-                            <helpers:SymbolsControl Name="indeterminateMark"
+                            <TextBlock Name="indeterminateMark"
                                                     Text="■" />
                         </Panel>
-                    </helpers:CaretControl>
+                    </console:CaretControl>
                     <ContentPresenter Name="PART_ContentPresenter"
                                       ContentTemplate="{TemplateBinding ContentTemplate}"
                                       Content="{TemplateBinding Content}"
@@ -43,19 +43,19 @@
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^ /template/ helpers|SymbolsControl#checkMark">
+        <Style Selector="^ /template/ TextBlock#checkMark">
             <Setter Property="IsVisible"
                     Value="False" />
         </Style>
-        <Style Selector="^ /template/ helpers|SymbolsControl#indeterminateMark">
+        <Style Selector="^ /template/ TextBlock#indeterminateMark">
             <Setter Property="IsVisible"
                     Value="False" />
         </Style>
-        <Style Selector="^:checked /template/ helpers|SymbolsControl#checkMark">
+        <Style Selector="^:checked /template/ TextBlock#checkMark">
             <Setter Property="IsVisible"
                     Value="True" />
         </Style>
-        <Style Selector="^:indeterminate /template/ helpers|SymbolsControl#indeterminateMark">
+        <Style Selector="^:indeterminate /template/ TextBlock#indeterminateMark">
             <Setter Property="IsVisible"
                     Value="True" />
         </Style>

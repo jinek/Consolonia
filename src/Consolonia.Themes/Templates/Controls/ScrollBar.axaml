@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type ScrollBar}"
                   TargetType="ScrollBar">
         <Setter Property="Cursor"
@@ -20,7 +20,7 @@
                                       MinWidth="{DynamicResource ScrollBarThickness}"
                                       VerticalAlignment="Center"
                                       Focusable="False">
-                            <helpers:SymbolsControl HorizontalAlignment="Center"
+                            <TextBlock HorizontalAlignment="Center"
                                                     Foreground="{TemplateBinding Foreground}"
                                                     Text="▲" />
                         </RepeatButton>
@@ -28,7 +28,7 @@
                         <Border Grid.Row="1"
                                 BorderThickness="0"
                                 Background="{TemplateBinding Background}">
-                            <helpers:SymbolsControl Fill="True"
+                            <console:SymbolsControl Fill="True"
                                                     Width="1"
                                                     Text="░"
                                                     Foreground="{TemplateBinding BorderBrush}" />
@@ -55,7 +55,7 @@
                                       MinWidth="{DynamicResource ScrollBarThickness}"
                                       VerticalAlignment="Center"
                                       Focusable="False">
-                            <helpers:SymbolsControl HorizontalAlignment="Center"
+                            <TextBlock HorizontalAlignment="Center"
                                                     Foreground="{TemplateBinding Foreground}"
                                                     Focusable="False"
                                                     MinHeight="1"
@@ -74,7 +74,7 @@
                                           MinHeight="{DynamicResource ScrollBarThickness}"
                                           HorizontalAlignment="Center"
                                           Focusable="False">
-                                <helpers:SymbolsControl HorizontalAlignment="Center"
+                                <TextBlock HorizontalAlignment="Center"
                                                         Foreground="{TemplateBinding Foreground}"
                                                         Text="◄" />
                             </RepeatButton>
@@ -82,7 +82,7 @@
                             <Border Grid.Column="1"
                                     BorderThickness="0"
                                     Background="{TemplateBinding Background}">
-                                <helpers:SymbolsControl Fill="True"
+                                <console:SymbolsControl Fill="True"
                                                         Height="1"
                                                         Text="░"
                                                         Foreground="{TemplateBinding BorderBrush}" />
@@ -108,7 +108,7 @@
                                           MinHeight="{DynamicResource ScrollBarThickness}"
                                           HorizontalAlignment="Center"
                                           Focusable="False">
-                                <helpers:SymbolsControl HorizontalAlignment="Center"
+                                <TextBlock HorizontalAlignment="Center"
                                                         Foreground="{TemplateBinding Foreground}"
                                                         Text="►" />
                             </RepeatButton>
@@ -131,7 +131,7 @@
                 <Setter.Value>
                     <ControlTemplate>
                         <Panel Background="{TemplateBinding Background}">
-                            <helpers:SymbolsControl Foreground="{TemplateBinding Foreground}"
+                            <console:SymbolsControl Foreground="{TemplateBinding Foreground}"
                                                     Fill="True"
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Stretch"

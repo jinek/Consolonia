@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type ProgressBar}"
                   TargetType="ProgressBar">
         <Setter Property="BorderBrush"
@@ -14,7 +14,7 @@
                 <Grid>
                     <Border Background="{TemplateBinding Background}">
                         <Panel>
-                            <helpers:SymbolsControl Text="░"
+                            <console:SymbolsControl Text="░"
                                                     Fill="True"
                                                     Foreground="{TemplateBinding BorderBrush}" />
                             <Border Name="PART_Indicator"

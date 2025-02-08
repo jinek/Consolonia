@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     x:ClassModifier="internal">
     <Thickness x:Key="ToggleSwitchTopHeaderMargin">0,0,0,1</Thickness>
     <GridLength x:Key="ToggleSwitchPreContentMargin">0</GridLength>
@@ -100,7 +100,7 @@
                                 BorderBrush="Transparent"
                                 BorderThickness="0" />
 
-                        <helpers:CaretControl Grid.Row="1"
+                        <console:CaretControl Grid.Row="1"
                                               Padding="0,0,0,0"
                                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -124,7 +124,7 @@
                                                Foreground="{DynamicResource ThemeForegroundBrush}" />
                                 </Grid>
                             </Canvas>
-                        </helpers:CaretControl>
+                        </console:CaretControl>
                     </Grid>
                 </Grid>
             </ControlTemplate>

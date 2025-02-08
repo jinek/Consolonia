@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type CalendarItem}"
                   TargetType="CalendarItem">
         <Setter Property="HorizontalAlignment"
@@ -24,7 +24,7 @@
                                             Value="{DynamicResource ThemeTransparentBrush}" />
                                     <Setter Property="BorderThickness"
                                             Value="0" />
-                                    <Setter Property="(helpers:ButtonExtensions.Shadow)"
+                                    <Setter Property="(console:ButtonExtensions.Shadow)"
                                             Value="False" />
                                     <Setter Property="Margin"
                                             Value="0,0,-1,-1" />

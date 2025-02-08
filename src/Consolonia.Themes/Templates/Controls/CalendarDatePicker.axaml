@@ -7,11 +7,11 @@
 
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type CalendarDatePicker}"
                   TargetType="CalendarDatePicker">
 
-        <Setter Property="(helpers:CalendarDatePickerExtensions.OpenOnEnter)"
+        <Setter Property="(console:CalendarDatePickerExtensions.OpenOnEnter)"
                 Value="True" />
         <Setter Property="Background"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
@@ -41,7 +41,7 @@
                                   Padding="0"
                                   VerticalAlignment="Top"
                                   Background="{x:Null}">
-                        <helpers:SymbolsControl Foreground="{TemplateBinding BorderBrush}"
+                        <TextBlock Foreground="{TemplateBinding BorderBrush}"
                                                 Text="↓"
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center" />
@@ -72,7 +72,7 @@
                                       DisplayDateEnd="{TemplateBinding DisplayDateEnd}">
                                 <Calendar.Styles>
                                     <Style Selector="Calendar">
-                                        <Setter Property="(helpers:CalendarDatePickerExtensions.FocusOnOpen)"
+                                        <Setter Property="(console:CalendarDatePickerExtensions.FocusOnOpen)"
                                                 Value="True" />
                                     </Style>
                                 </Calendar.Styles>

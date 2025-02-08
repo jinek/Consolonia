@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     x:ClassModifier="internal">
     <!-- define template for the toggle button -->
     <ControlTheme x:Key="ConsoleExpanderToggleButtonTheme"
@@ -9,7 +9,7 @@
                 Value="Stretch" />
         <Setter Property="Template">
             <ControlTemplate>
-                <helpers:CaretControl Padding="0,0,0,0"
+                <console:CaretControl Padding="0,0,0,0"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       Margin="{TemplateBinding Padding}"
@@ -38,7 +38,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />
                     </Grid>
-                </helpers:CaretControl>
+                </console:CaretControl>
             </ControlTemplate>
         </Setter>
         <Style Selector="^:checked /template/ Grid">

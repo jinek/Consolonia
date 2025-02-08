@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <!--TODO: Validation and Focus-->
 
 
@@ -74,7 +74,7 @@
 
                     </Grid>
 
-                    <helpers:FastLineSeparator Name="VerticalSeparator"
+                    <console:LineSeparator Name="VerticalSeparator"
                                                Grid.Column="1"
                                                Orientation="Vertical"
                                                VerticalAlignment="Stretch"
@@ -138,22 +138,22 @@
                                        Grid.Column="0"
                                        DataGridFrozenGrid.IsFrozen="True" />
 
-                    <helpers:CaretControl Grid.Row="0"
+                    <console:CaretControl Grid.Row="0"
                                           Grid.Column="1"
                                           x:Name="FocusControl">
-                        <helpers:CaretControl.IsCaretShown>
+                        <console:CaretControl.IsCaretShown>
                             <MultiBinding Converter="{x:Static BoolConverters.And}">
                                 <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=DataGrid}"
                                          Path="IsFocused" />
-                                <TemplateBinding Property="(helpers:DataGridExtensions.IsSelected)" />
+                                <TemplateBinding Property="(console:DataGridExtensions.IsSelected)" />
                                 <!--<Binding RelativeSource="{RelativeSource Self}"
                                          ElementName="FocusControl"
                                          Path="(asdf:DataGridExtensions.IsSelected)" />-->
                             </MultiBinding>
-                        </helpers:CaretControl.IsCaretShown>
+                        </console:CaretControl.IsCaretShown>
                         <DataGridCellsPresenter Name="PART_CellsPresenter"
                                                 DataGridFrozenGrid.IsFrozen="True" />
-                    </helpers:CaretControl>
+                    </console:CaretControl>
                     <!--<DataGridDetailsPresenter Grid.Row="1" Grid.Column="1" Name="PART_DetailsPresenter"/>-->
                     <!--<Rectangle Grid.Row="2" Grid.Column="1" Name="PART_BottomGridLine" HorizontalAlignment="Stretch" Height="1" />-->
 
@@ -176,7 +176,7 @@
         </Style>
 
         <Style Selector="^:selected">
-            <Setter Property="(helpers:DataGridExtensions.IsSelected)"
+            <Setter Property="(console:DataGridExtensions.IsSelected)"
                     Value="True" />
         </Style>
     </ControlTheme>
@@ -315,7 +315,7 @@
                                                   Background="{TemplateBinding Background}"
                                                   Margin="0,1" />
 
-                            <helpers:FastLineSeparator Grid.Row="0"
+                            <console:LineSeparator Grid.Row="0"
                                                        VerticalAlignment="Bottom"
                                                        Grid.ColumnSpan="3"
                                                        Grid.Column="0"

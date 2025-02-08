@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls">
 
     <converters:PlatformKeyGestureConverter x:Key="KeyGestureConverter" />
@@ -18,7 +18,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="root">
-                    <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
+                    <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"
@@ -36,7 +36,7 @@
                                               VerticalAlignment="Center"
                                               Content="{TemplateBinding Icon}" />
 
-                            <helpers:SymbolsControl Grid.Column="0"
+                            <TextBlock Grid.Column="0"
                                                     Name="check"
                                                     Foreground="{TemplateBinding Foreground}"
                                                     Text="V"
@@ -52,7 +52,7 @@
                                        Grid.Column="3"
                                        Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
                                        VerticalAlignment="Center" />
-                            <helpers:SymbolsControl Name="rightArrow"
+                            <TextBlock Name="rightArrow"
                                                     Text=">"
                                                     Foreground="{DynamicResource ThemeForegroundBrush}"
                                                     Margin="0,0,0,0"
@@ -76,7 +76,7 @@
                                                             Grid.IsSharedSizeScope="True">
                                                 <ItemsPresenter.Styles>
                                                     <Style Selector="ItemsPresenter">
-                                                        <Setter Property="(helpers:MenuExtensions.FocusOnLoad)"
+                                                        <Setter Property="(console:MenuExtensions.FocusOnLoad)"
                                                                 Value="True" />
                                                     </Style>
                                                 </ItemsPresenter.Styles>
@@ -86,7 +86,7 @@
                                 </Panel>
                             </Popup>
                         </Grid>
-                    </helpers:CaretControl>
+                    </console:CaretControl>
                 </Border>
             </ControlTemplate>
         </Setter>
@@ -113,7 +113,7 @@
                 Value="{DynamicResource ThemeBackgroundBrush}" />-->
         </Style>
 
-        <Style Selector="^:empty /template/ helpers|SymbolsControl#rightArrow">
+        <Style Selector="^:empty /template/ TextBlock#rightArrow">
             <Setter Property="IsVisible"
                     Value="False" />
         </Style>
