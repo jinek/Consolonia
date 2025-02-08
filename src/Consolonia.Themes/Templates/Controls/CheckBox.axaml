@@ -21,21 +21,18 @@
                       Background="{TemplateBinding Background}">
                     <Grid Name="border"
                           ColumnDefinitions="Auto,Auto,Auto">
-                        <TextBlock Text="["
-                                                Foreground="{TemplateBinding BorderBrush}" />
                         <console:CaretControl Grid.Column="1"
                                               IsCaretShown="{TemplateBinding IsFocused}">
                             <Panel>
-                                <TextBlock Text=" " />
+                                <TextBlock Text="{StaticResource ThemeCheckBoxNotSelectedSymbol}" />
                                 <TextBlock Name="checkMark"
-                                                        Text="V" />
+                                           Text="{StaticResource ThemeCheckBoxSelectedSymbol}" 
+                                           IsVisible="False" />
                                 <TextBlock Name="indeterminateMark"
-                                                        Text="■" />
+                                           Text="{StaticResource ThemeCheckBoxIndeterminateSymbol}" 
+                                           IsVisible="False" />
                             </Panel>
                         </console:CaretControl>
-                        <TextBlock Text="]"
-                                                Grid.Column="2"
-                                                Foreground="{TemplateBinding BorderBrush}" />
                     </Grid>
                     <ContentPresenter Name="PART_ContentPresenter"
                                       TextBlock.Foreground="{TemplateBinding Foreground}"

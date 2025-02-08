@@ -24,6 +24,11 @@
             <system:String x:Key="ThemeRadioButtonNotSelectedSymbol">( )</system:String>
             <system:String x:Key="ThemeRadioButtonSelectedSymbol">(*)</system:String>
             <system:String x:Key="ThemeRadioButtonIndeterminateSymbol">(■)</system:String>
+
+            <system:String x:Key="ThemeCheckBoxNotSelectedSymbol">[ ]</system:String>
+            <system:String x:Key="ThemeCheckBoxSelectedSymbol">[X]</system:String>
+            <system:String x:Key="ThemeCheckBoxIndeterminateSymbol">[■]</system:String>
+
         </ResourceDictionary>
     </Styles.Resources>
 

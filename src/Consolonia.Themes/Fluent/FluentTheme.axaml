@@ -13,10 +13,10 @@
             <system:String x:Key="ThemeUpArrowSymbol">˄</system:String>
             <system:String x:Key="ThemeDownArrowSymbol">˅</system:String>
 
-            <system:String x:Key="ThemeScrollBarLeftArrowSymbol">˂</system:String>
-            <system:String x:Key="ThemeScrollBarRightArrowSymbol">˃</system:String>
-            <system:String x:Key="ThemeScrollBarUpArrowSymbol">˄</system:String>
-            <system:String x:Key="ThemeScrollBarDownArrowSymbol">˅</system:String>
+            <system:String x:Key="ThemeScrollBarLeftSymbol">˂</system:String>
+            <system:String x:Key="ThemeScrollBarRightSymbol">˃</system:String>
+            <system:String x:Key="ThemeScrollBarUpSymbol">˄</system:String>
+            <system:String x:Key="ThemeScrollBarDownSymbol">˅</system:String>
 
             <system:String x:Key="ThemeHorizontalSliderThumbSymbol">🠴</system:String>
             <system:String x:Key="ThemeVerticalSliderThumbSymbol">🠷</system:String>
@@ -24,6 +24,10 @@
             <system:String x:Key="ThemeRadioButtonNotSelectedSymbol">◯</system:String>
             <system:String x:Key="ThemeRadioButtonSelectedSymbol">⬤</system:String>
             <system:String x:Key="ThemeRadioButtonIndeterminateSymbol">🟗</system:String>
+
+            <system:String x:Key="ThemeCheckBoxNotSelectedSymbol">☐</system:String>
+            <system:String x:Key="ThemeCheckBoxSelectedSymbol">🗹</system:String>
+            <system:String x:Key="ThemeCheckBoxIndeterminateSymbol">⍰</system:String>
         </ResourceDictionary>
     </Styles.Resources>
 
