@@ -23,7 +23,7 @@
                 <ControlTemplate>
                     <TextBlock HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               Text="▼"
+                               Text="{StaticResource ThemeDownArrowSymbol}"
                                Background="Transparent" />
                 </ControlTemplate>
             </Setter>

@@ -51,7 +51,7 @@
                                        MinHeight="1">
                                     <Thumb.Template>
                                         <ControlTemplate>
-                                            <TextBlock Text="O"
+                                            <TextBlock Text="{StaticResource ThemeVerticalSliderThumbSymbol}"
                                                        VerticalAlignment="Center"
                                                        Foreground="{DynamicResource ThemeForegroundBrush}" />
                                         </ControlTemplate>
@@ -94,7 +94,7 @@
                                        MinHeight="1">
                                     <Thumb.Template>
                                         <ControlTemplate>
-                                            <TextBlock Text="O"
+                                            <TextBlock Text="{StaticResource ThemeHorizontalSliderThumbSymbol}"
                                                        HorizontalAlignment="Center"
                                                        Foreground="{DynamicResource ThemeForegroundBrush}" />
                                         </ControlTemplate>

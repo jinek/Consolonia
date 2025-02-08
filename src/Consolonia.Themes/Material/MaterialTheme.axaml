@@ -1,11 +1,26 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:system="using:System"
         x:Class="Consolonia.Themes.MaterialTheme">
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/Material/MaterialColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <system:String x:Key="ThemeLeftArrowSymbol">◂</system:String>
+            <system:String x:Key="ThemeRightArrowSymbol">▸</system:String>
+            <system:String x:Key="ThemeUpArrowSymbol">▴</system:String>
+            <system:String x:Key="ThemeDownArrowSymbol">▾</system:String>
+
+            <system:String x:Key="ThemeScrollBarLeftSymbol">◂</system:String>
+            <system:String x:Key="ThemeScrollBarRightSymbol">▸</system:String>
+            <system:String x:Key="ThemeScrollBarUpSymbol">▴</system:String>
+            <system:String x:Key="ThemeScrollBarDownSymbol">▾</system:String>
+            
+            <system:String x:Key="ThemeHorizontalSliderThumbSymbol">◯</system:String>
+            <system:String x:Key="ThemeVerticalSliderThumbSymbol">◯</system:String>
+        
         </ResourceDictionary>
     </Styles.Resources>
 

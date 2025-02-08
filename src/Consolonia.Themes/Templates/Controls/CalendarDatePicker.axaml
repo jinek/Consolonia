@@ -42,7 +42,7 @@
                                   VerticalAlignment="Top"
                                   Background="{x:Null}">
                         <TextBlock Foreground="{TemplateBinding BorderBrush}"
-                                                Text="↓"
+                                                Text="{StaticResource ThemeDownArrowSymbol}"
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center" />
                     </ToggleButton>

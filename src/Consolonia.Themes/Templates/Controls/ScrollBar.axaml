@@ -22,7 +22,7 @@
                                       Focusable="False">
                             <TextBlock HorizontalAlignment="Center"
                                                     Foreground="{TemplateBinding Foreground}"
-                                                    Text="▲" />
+                                                    Text="{StaticResource ThemeScrollBarUpSymbol}" />
                         </RepeatButton>
 
                         <Border Grid.Row="1"
@@ -59,7 +59,7 @@
                                                     Foreground="{TemplateBinding Foreground}"
                                                     Focusable="False"
                                                     MinHeight="1"
-                                                    Text="▼" />
+                                                    Text="{StaticResource ThemeScrollBarDownSymbol}" />
                         </RepeatButton>
                     </Grid>
                 </Border>
@@ -75,8 +75,9 @@
                                           HorizontalAlignment="Center"
                                           Focusable="False">
                                 <TextBlock HorizontalAlignment="Center"
-                                                        Foreground="{TemplateBinding Foreground}"
-                                                        Text="◄" />
+                                           Classes="ThemeLeftArrowSymbol"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           Text="{StaticResource ThemeScrollBarLeftSymbol}" />
                             </RepeatButton>
 
                             <Border Grid.Column="1"
@@ -108,9 +109,10 @@
                                           MinHeight="{DynamicResource ScrollBarThickness}"
                                           HorizontalAlignment="Center"
                                           Focusable="False">
-                                <TextBlock HorizontalAlignment="Center"
-                                                        Foreground="{TemplateBinding Foreground}"
-                                                        Text="►" />
+                                <TextBlock HorizontalAlignment="Center" 
+                                           Classes="ThemeRightArrowSymbol"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           Text="{StaticResource ThemeScrollBarRightSymbol}" />
                             </RepeatButton>
 
                         </Grid>

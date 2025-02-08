@@ -1,11 +1,24 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:system="using:System"
         x:Class="Consolonia.Themes.TurboVisionBlackTheme">
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <MergeResourceInclude Source="/TurboVisionBlack/TurboVisionBlackColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
+            <system:String x:Key="ThemeLeftArrowSymbol">←</system:String>
+            <system:String x:Key="ThemeRightArrowSymbol">→</system:String>
+            <system:String x:Key="ThemeUpArrowSymbol">↑</system:String>
+            <system:String x:Key="ThemeDownArrowSymbol">↓</system:String>
+
+            <system:String x:Key="ThemeScrollBarLeftSymbol">◂</system:String>
+            <system:String x:Key="ThemeScrollBarRightSymbol">▸</system:String>
+            <system:String x:Key="ThemeScrollBarUpSymbol">▴</system:String>
+            <system:String x:Key="ThemeScrollBarDownSymbol">▾</system:String>
+
+            <system:String x:Key="ThemeHorizontalSliderThumbSymbol">O</system:String>
+            <system:String x:Key="ThemeVerticalSliderThumbSymbol">O</system:String>
         </ResourceDictionary>
     </Styles.Resources>
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />

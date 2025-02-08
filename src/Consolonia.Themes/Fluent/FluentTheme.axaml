@@ -1,11 +1,25 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:system="using:System"
         x:Class="Consolonia.Themes.FluentTheme">
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/Fluent/FluentColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <system:String x:Key="ThemeLeftArrowSymbol">˂</system:String>
+            <system:String x:Key="ThemeRightArrowSymbol">˃</system:String>
+            <system:String x:Key="ThemeUpArrowSymbol">˄</system:String>
+            <system:String x:Key="ThemeDownArrowSymbol">˅</system:String>
+
+            <system:String x:Key="ThemeScrollBarLeftArrowSymbol">˂</system:String>
+            <system:String x:Key="ThemeScrollBarRightArrowSymbol">˃</system:String>
+            <system:String x:Key="ThemeScrollBarUpArrowSymbol">˄</system:String>
+            <system:String x:Key="ThemeScrollBarDownArrowSymbol">˅</system:String>
+
+            <system:String x:Key="ThemeHorizontalSliderThumbSymbol">🠴</system:String>
+            <system:String x:Key="ThemeVerticalSliderThumbSymbol">🠷</system:String>
         </ResourceDictionary>
     </Styles.Resources>
 

@@ -95,14 +95,14 @@
             <Setter Property="IsVisible"
                     Value="True" />
             <Setter Property="Text"
-                    Value="▼" />
+                    Value="{StaticResource ThemeDownArrowSymbol}" />
         </Style>
 
         <Style Selector="^:sortdescending /template/ TextBlock#SortIcon">
             <Setter Property="IsVisible"
                     Value="True" />
             <Setter Property="Text"
-                    Value="▲" />
+                    Value="{StaticResource ThemeUpArrowSymbol}" />
         </Style>
     </ControlTheme>
 

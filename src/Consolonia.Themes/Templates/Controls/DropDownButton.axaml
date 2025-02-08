@@ -44,7 +44,7 @@
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        IsHitTestVisible="False"
-                                       Text="▼" />
+                                       Text="{StaticResource ThemeDownArrowSymbol}" />
 
                         </Grid>
                     </Border>

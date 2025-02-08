@@ -57,7 +57,7 @@
                   TargetType="ToggleButton">
         <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
             <Setter Property="Text"
-                    Value="▾" />
+                    Value="{StaticResource ThemeDownArrowSymbol}" />
         </Style>
     </ControlTheme>
     <ControlTheme x:Key="ConsoleExpanderToggleButtonDownTheme"
@@ -65,7 +65,7 @@
                   TargetType="ToggleButton">
         <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
             <Setter Property="Text"
-                    Value="▴" />
+                    Value="{StaticResource ThemeUpArrowSymbol}" />
         </Style>
     </ControlTheme>
     <ControlTheme x:Key="ConsoleExpanderToggleButtonLeftTheme"
@@ -73,7 +73,7 @@
                   TargetType="ToggleButton">
         <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
             <Setter Property="Text"
-                    Value="▸" />
+                    Value="{StaticResource ThemeRightArrowSymbol}" />
         </Style>
     </ControlTheme>
     <ControlTheme x:Key="ConsoleExpanderToggleButtonRightTheme"
@@ -81,7 +81,7 @@
                   TargetType="ToggleButton">
         <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
             <Setter Property="Text"
-                    Value="◂" />
+                    Value="{StaticResource ThemeLeftArrowSymbol}" />
         </Style>
     </ControlTheme>
     <ControlTheme x:Key="ConsoleExpanderToggleButtonLeftTheme2"
@@ -89,7 +89,7 @@
                   TargetType="ToggleButton">
         <Style Selector="^ /template/ TextBlock#ExpandCollapseChevronLeft">
             <Setter Property="Text"
-                    Value="▸" />
+                    Value="{StaticResource ThemeRightArrowSymbol}" />
         </Style>
     </ControlTheme>
     <ControlTheme x:Key="ConsoleExpanderToggleButtonRightTheme2"
@@ -97,7 +97,7 @@
                   TargetType="ToggleButton">
         <Style Selector="^ /template/ TextBlock#ExpandCollapseChevronLeft">
             <Setter Property="Text"
-                    Value="◂" />
+                    Value="{StaticResource ThemeLeftArrowSymbol}" />
         </Style>
     </ControlTheme>
 
