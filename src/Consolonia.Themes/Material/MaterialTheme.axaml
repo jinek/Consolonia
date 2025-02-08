@@ -21,6 +21,9 @@
             <system:String x:Key="ThemeHorizontalSliderThumbSymbol">◯</system:String>
             <system:String x:Key="ThemeVerticalSliderThumbSymbol">◯</system:String>
         
+            <system:String x:Key="ThemeRadioButtonNotSelectedSymbol">◯</system:String>
+            <system:String x:Key="ThemeRadioButtonSelectedSymbol">⬤</system:String>
+            <system:String x:Key="ThemeRadioButtonIndeterminateSymbol">🟗</system:String>
         </ResourceDictionary>
     </Styles.Resources>
 

@@ -17,19 +17,21 @@
             <ControlTemplate>
                 <Grid ColumnDefinitions="Auto,*"
                       Background="{TemplateBinding Background}">
-                    <TextBlock Text="( )"
-                                            Name="border"
-                                            Foreground="{TemplateBinding BorderBrush}"
-                                            VerticalAlignment="Center" />
                     <console:CaretControl Grid.Column="0"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
                                           IsCaretShown="{TemplateBinding IsFocused}">
                         <Panel>
+                            <TextBlock Name="border"
+                                       Text="{StaticResource ThemeRadioButtonNotSelectedSymbol}"
+                                       Foreground="{TemplateBinding BorderBrush}"
+                                       VerticalAlignment="Center" />
                             <TextBlock Name="checkMark"
-                                                    Text="*" />
+                                       IsVisible="False"
+                                       Text="{StaticResource ThemeRadioButtonSelectedSymbol}"/>
                             <TextBlock Name="indeterminateMark"
-                                                    Text="■" />
+                                       IsVisible="False"
+                                       Text="{StaticResource ThemeRadioButtonIndeterminateSymbol}"/>
                         </Panel>
                     </console:CaretControl>
                     <ContentPresenter Name="PART_ContentPresenter"
