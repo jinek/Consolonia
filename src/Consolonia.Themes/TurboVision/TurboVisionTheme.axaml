@@ -36,10 +36,14 @@
             <x:String x:Key="ThemeRadioButtonIndeterminateSymbol">(■)</x:String>
 
             <x:String x:Key="ThemeCheckBoxNotSelectedSymbol">[ ]</x:String>
-            <x:String x:Key="ThemeCheckBoxSelectedSymbol">[X]</x:String>
+            <x:String x:Key="ThemeCheckBoxSelectedSymbol">[x]</x:String>
             <x:String x:Key="ThemeCheckBoxIndeterminateSymbol">[■]</x:String>
 
             <x:String x:Key="ThemeCheckedSymbol">X</x:String>
+            <x:String x:Key="ThemeCloseSymbol">X</x:String>
+
+            <x:String x:Key="ThemeToggleSwitchOffSymbol">■</x:String>
+            <x:String x:Key="ThemeToggleSwitchOnSymbol">■</x:String>
         </ResourceDictionary>
     </Styles.Resources>
 

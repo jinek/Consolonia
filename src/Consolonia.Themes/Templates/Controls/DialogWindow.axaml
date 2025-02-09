@@ -60,7 +60,7 @@
                                     <StackPanel Grid.Column="1"
                                                 Orientation="Horizontal"
                                                 IsVisible="{TemplateBinding IsCloseButtonVisible}">
-                                        <Button Content="×"
+                                        <Button Content="{StaticResource ThemeCloseSymbol}"
                                                 Margin="1 0 0 0"
                                                 Background="{x:Null}"
                                                 IsTabStop="False"
