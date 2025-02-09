@@ -1,6 +1,5 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:system="using:System"
         x:Class="Consolonia.Themes.MaterialTheme">
     <Styles.Resources>
         <ResourceDictionary>
@@ -8,36 +7,38 @@
                 <ResourceInclude Source="/Material/MaterialColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <system:String x:Key="ThemeLeftArrowSymbol">◂</system:String>
-            <system:String x:Key="ThemeRightArrowSymbol">▸</system:String>
-            <system:String x:Key="ThemeUpArrowSymbol">▴</system:String>
-            <system:String x:Key="ThemeDownArrowSymbol">▾</system:String>
+            <x:String x:Key="ThemeLeftArrowSymbol">◂</x:String>
+            <x:String x:Key="ThemeRightArrowSymbol">▸</x:String>
+            <x:String x:Key="ThemeUpArrowSymbol">▴</x:String>
+            <x:String x:Key="ThemeDownArrowSymbol">▾</x:String>
 
-            <system:String x:Key="ThemeScrollBarLeftSymbol">◂</system:String>
-            <system:String x:Key="ThemeScrollBarRightSymbol">▸</system:String>
-            <system:String x:Key="ThemeScrollBarUpSymbol">▴</system:String>
-            <system:String x:Key="ThemeScrollBarDownSymbol">▾</system:String>
+            <x:String x:Key="ThemeScrollBarLeftSymbol">◂</x:String>
+            <x:String x:Key="ThemeScrollBarRightSymbol">▸</x:String>
+            <x:String x:Key="ThemeScrollBarUpSymbol">▴</x:String>
+            <x:String x:Key="ThemeScrollBarDownSymbol">▾</x:String>
             
-            <system:String x:Key="ThemeScrollBarHorizontalBackgroundSymbol">░</system:String>
-            <system:String x:Key="ThemeScrollBarVerticalBackgroundSymbol">░</system:String>
+            <x:String x:Key="ThemeScrollBarHorizontalBackgroundSymbol">░</x:String>
+            <x:String x:Key="ThemeScrollBarHorizontalThumbSymbol">─</x:String>
+            <x:String x:Key="ThemeScrollBarVerticalBackgroundSymbol">░</x:String>
+            <x:String x:Key="ThemeScrollBarVerticalThumbSymbol">│</x:String>
 
-            <system:String x:Key="ThemeProgressBarBackgroundSymbol">░</system:String>
+            <x:String x:Key="ThemeProgressBarBackgroundSymbol">░</x:String>
 
-            <system:String x:Key="ThemeSliderHorizontalThumbSymbol">◯</system:String>
-            <system:String x:Key="ThemeSliderHorizontalBackgroundSymbol">─</system:String>
+            <x:String x:Key="ThemeSliderHorizontalThumbSymbol">◯</x:String>
+            <x:String x:Key="ThemeSliderHorizontalBackgroundSymbol">─</x:String>
             
-            <system:String x:Key="ThemeSliderVerticalThumbSymbol">◯</system:String>
-            <system:String x:Key="ThemeSliderVerticalBackgroundSymbol">│</system:String>
+            <x:String x:Key="ThemeSliderVerticalThumbSymbol">◯</x:String>
+            <x:String x:Key="ThemeSliderVerticalBackgroundSymbol">│</x:String>
 
-            <system:String x:Key="ThemeRadioButtonNotSelectedSymbol">◯</system:String>
-            <system:String x:Key="ThemeRadioButtonSelectedSymbol">⬤</system:String>
-            <system:String x:Key="ThemeRadioButtonIndeterminateSymbol">🟗</system:String>
+            <x:String x:Key="ThemeRadioButtonNotSelectedSymbol">◯</x:String>
+            <x:String x:Key="ThemeRadioButtonSelectedSymbol">⬤</x:String>
+            <x:String x:Key="ThemeRadioButtonIndeterminateSymbol">🟗</x:String>
 
-            <system:String x:Key="ThemeCheckBoxNotSelectedSymbol">☐</system:String>
-            <system:String x:Key="ThemeCheckBoxSelectedSymbol">☒</system:String>
-            <system:String x:Key="ThemeCheckBoxIndeterminateSymbol">■</system:String>
+            <x:String x:Key="ThemeCheckBoxNotSelectedSymbol">☐</x:String>
+            <x:String x:Key="ThemeCheckBoxSelectedSymbol">☒</x:String>
+            <x:String x:Key="ThemeCheckBoxIndeterminateSymbol">■</x:String>
             
-            <system:String x:Key="ThemeCheckedSymbol">✓</system:String>
+            <x:String x:Key="ThemeCheckedSymbol">✓</x:String>
         </ResourceDictionary>
     </Styles.Resources>
 
