@@ -27,7 +27,7 @@
 
             <system:String x:Key="ThemeCheckBoxNotSelectedSymbol">☐</system:String>
             <system:String x:Key="ThemeCheckBoxSelectedSymbol">🗹</system:String>
-            <system:String x:Key="ThemeCheckBoxIndeterminateSymbol">⍰</system:String>
+            <system:String x:Key="ThemeCheckBoxIndeterminateSymbol">■</system:String>
 
             <system:String x:Key="ThemeCheckedSymbol">✓</system:String>
         </ResourceDictionary>
