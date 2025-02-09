@@ -18,8 +18,16 @@
             <system:String x:Key="ThemeScrollBarUpSymbol">˄</system:String>
             <system:String x:Key="ThemeScrollBarDownSymbol">˅</system:String>
 
-            <system:String x:Key="ThemeHorizontalSliderThumbSymbol">🠴</system:String>
-            <system:String x:Key="ThemeVerticalSliderThumbSymbol">🠷</system:String>
+            <system:String x:Key="ThemeScrollBarHorizontalBackgroundSymbol">░</system:String>
+            <system:String x:Key="ThemeScrollBarVerticalBackgroundSymbol">░</system:String>
+
+            <system:String x:Key="ThemeProgressBarBackgroundSymbol">░</system:String>
+
+            <system:String x:Key="ThemeSliderHorizontalThumbSymbol">🠷</system:String>
+            <system:String x:Key="ThemeSliderHorizontalBackgroundSymbol">─</system:String>
+            
+            <system:String x:Key="ThemeSliderVerticalThumbSymbol">🠴</system:String>
+            <system:String x:Key="ThemeSliderVerticalBackgroundSymbol">│</system:String>
 
             <system:String x:Key="ThemeRadioButtonNotSelectedSymbol">◯</system:String>
             <system:String x:Key="ThemeRadioButtonSelectedSymbol">⬤</system:String>

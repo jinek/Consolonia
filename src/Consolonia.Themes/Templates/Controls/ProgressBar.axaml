@@ -14,7 +14,7 @@
                 <Grid>
                     <Border Background="{TemplateBinding Background}">
                         <Panel>
-                            <console:SymbolsControl Text="░"
+                            <console:SymbolsControl Text="{StaticResource ThemeProgressBarBackgroundSymbol}"
                                                     Fill="True"
                                                     Foreground="{TemplateBinding BorderBrush}" />
                             <Border Name="PART_Indicator"

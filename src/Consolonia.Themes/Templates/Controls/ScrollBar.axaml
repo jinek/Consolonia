@@ -30,7 +30,7 @@
                                 Background="{TemplateBinding Background}">
                             <console:SymbolsControl Fill="True"
                                                     Width="1"
-                                                    Text="░"
+                                                    Text="{StaticResource ThemeScrollBarVerticalBackgroundSymbol}"
                                                     Foreground="{TemplateBinding BorderBrush}" />
                         </Border>
                         <Track Grid.Row="1"
@@ -85,7 +85,7 @@
                                     Background="{TemplateBinding Background}">
                                 <console:SymbolsControl Fill="True"
                                                         Height="1"
-                                                        Text="░"
+                                                        Text="{StaticResource ThemeScrollBarHorizontalBackgroundSymbol}"
                                                         Foreground="{TemplateBinding BorderBrush}" />
                             </Border>
                             <Track Grid.Column="1"
