@@ -9,14 +9,14 @@
                 Value="Stretch" />
         <Setter Property="Template">
             <ControlTemplate>
-                <console:CaretControl Padding="0,0,0,0"
-                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      Margin="{TemplateBinding Padding}"
-                                      IsCaretShown="{TemplateBinding IsFocused}">
-
                     <Grid ColumnDefinitions="Auto, *, Auto"
                           Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
+                        <console:CaretControl Padding="0,0,0,0"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              IsCaretShown="{TemplateBinding IsFocused}"/>
+
                         <TextBlock x:Name="ExpandCollapseChevronLeft"
                                    Foreground="{DynamicResource ThemeForegroundBrush}"
                                    HorizontalAlignment="Center"
@@ -38,7 +38,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />
                     </Grid>
-                </console:CaretControl>
+                <!--</console:CaretControl>-->
             </ControlTemplate>
         </Setter>
         <Style Selector="^:checked /template/ Grid">
