@@ -25,14 +25,14 @@
                     <Border Background="{TemplateBinding Background}"
                             x:Name="InternalBorder">
                         <Grid ColumnDefinitions="Auto,*,Auto">
-                            <TextBlock Grid.Column="0"
+                            <!--<TextBlock Grid.Column="0"
                                                     Text="["
                                                     Foreground="{TemplateBinding BorderBrush}"
                                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                             <TextBlock Grid.Column="2"
                                                     Text="]"
                                                     Foreground="{TemplateBinding BorderBrush}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />-->
                             <console:CaretControl Grid.Column="1"
                                                   Padding="0,0,0,0"
                                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"

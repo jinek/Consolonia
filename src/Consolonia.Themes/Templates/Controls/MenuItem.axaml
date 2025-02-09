@@ -31,7 +31,6 @@
                             </Grid.ColumnDefinitions>
                             <ContentPresenter Name="icon"
                                               Height="1"
-                                              MaxWidth="1"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
                                               Content="{TemplateBinding Icon}" />
@@ -39,7 +38,7 @@
                             <TextBlock Grid.Column="0"
                                                     Name="check"
                                                     Foreground="{TemplateBinding Foreground}"
-                                                    Text="V"
+                                                    Text="{StaticResource ThemeCheckedSymbol}"
                                                     IsVisible="False"
                                                     Margin="0,0,0,0"
                                                     VerticalAlignment="Center" />
@@ -53,7 +52,7 @@
                                        Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
                                        VerticalAlignment="Center" />
                             <TextBlock Name="rightArrow"
-                                                    Text=">"
+                                                    Text="{StaticResource ThemeRightArrowSymbol}"
                                                     Foreground="{DynamicResource ThemeForegroundBrush}"
                                                     Margin="0,0,0,0"
                                                     VerticalAlignment="Center"

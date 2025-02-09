@@ -29,6 +29,7 @@
             <system:String x:Key="ThemeCheckBoxSelectedSymbol">[X]</system:String>
             <system:String x:Key="ThemeCheckBoxIndeterminateSymbol">[■]</system:String>
 
+            <system:String x:Key="ThemeCheckedSymbol">V</system:String>
         </ResourceDictionary>
     </Styles.Resources>
 
