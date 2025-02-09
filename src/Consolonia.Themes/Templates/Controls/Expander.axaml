@@ -3,6 +3,7 @@
                     xmlns:console="https://github.com/jinek/consolonia"
                     x:ClassModifier="internal">
     <!-- define template for the toggle button -->
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="ConsoleExpanderToggleButtonTheme"
                   TargetType="ToggleButton">
         <Setter Property="HorizontalContentAlignment"

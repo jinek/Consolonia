@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:console="https://github.com/jinek/consolonia"
                     xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls">
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
 
     <converters:PlatformKeyGestureConverter x:Key="KeyGestureConverter" />
 

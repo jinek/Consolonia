@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:console="https://github.com/jinek/consolonia">
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="{x:Type ScrollBar}"
                   TargetType="ScrollBar">
         <Setter Property="Cursor"
@@ -75,7 +76,6 @@
                                           HorizontalAlignment="Center"
                                           Focusable="False">
                                 <TextBlock HorizontalAlignment="Center"
-                                           Classes="ThemeLeftArrowSymbol"
                                            Foreground="{TemplateBinding Foreground}"
                                            Text="{StaticResource ThemeScrollBarLeftSymbol}" />
                             </RepeatButton>
@@ -110,7 +110,6 @@
                                           HorizontalAlignment="Center"
                                           Focusable="False">
                                 <TextBlock HorizontalAlignment="Center" 
-                                           Classes="ThemeRightArrowSymbol"
                                            Foreground="{TemplateBinding Foreground}"
                                            Text="{StaticResource ThemeScrollBarRightSymbol}" />
                             </RepeatButton>
