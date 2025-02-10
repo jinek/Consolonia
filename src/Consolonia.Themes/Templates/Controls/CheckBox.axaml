@@ -25,11 +25,11 @@
                         <console:CaretControl Grid.Column="1"
                                               IsCaretShown="{TemplateBinding IsFocused}">
                             <Panel>
-                                <TextBlock Text="{StaticResource ThemeCheckBoxNotSelectedSymbol}" />
-                                <TextBlock Name="checkMark"
+                                <console:SymbolsControl Text="{StaticResource ThemeCheckBoxNotSelectedSymbol}" />
+                                <console:SymbolsControl Name="checkMark"
                                            Text="{StaticResource ThemeCheckBoxSelectedSymbol}"
                                            IsVisible="False" />
-                                <TextBlock Name="indeterminateMark"
+                                <console:SymbolsControl Name="indeterminateMark"
                                            Text="{StaticResource ThemeCheckBoxIndeterminateSymbol}"
                                            IsVisible="False" />
                             </Panel>
@@ -55,19 +55,19 @@
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeAccentBackgroundBrush}" />
     </Style>-->
-        <Style Selector="^ /template/ TextBlock#checkMark">
+        <Style Selector="^ /template/ console|SymbolsControl#checkMark">
             <Setter Property="IsVisible"
                     Value="False" />
         </Style>
-        <Style Selector="^ /template/ TextBlock#indeterminateMark">
+        <Style Selector="^ /template/ console|SymbolsControl#indeterminateMark">
             <Setter Property="IsVisible"
                     Value="False" />
         </Style>
-        <Style Selector="^:checked /template/ TextBlock#checkMark">
+        <Style Selector="^:checked /template/ console|SymbolsControl#checkMark">
             <Setter Property="IsVisible"
                     Value="True" />
         </Style>
-        <Style Selector="^:indeterminate /template/ TextBlock#indeterminateMark">
+        <Style Selector="^:indeterminate /template/ console|SymbolsControl#indeterminateMark">
             <Setter Property="IsVisible"
                     Value="True" />
         </Style>

@@ -42,7 +42,7 @@
                                   Padding="0"
                                   VerticalAlignment="Top"
                                   Background="{x:Null}">
-                        <TextBlock Foreground="{TemplateBinding BorderBrush}"
+                        <console:SymbolsControl Foreground="{TemplateBinding BorderBrush}"
                                    Text="{StaticResource ThemeDownArrowSymbol}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />

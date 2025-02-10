@@ -117,10 +117,10 @@
                                       Width="3"
                                       Height="1">
 
-                                    <TextBlock x:Name="SwitchKnobOn"
+                                    <console:SymbolsControl x:Name="SwitchKnobOn"
                                                Text="{StaticResource ThemeToggleSwitchOnSymbol}"
                                                Foreground="{DynamicResource ThemeBackgroundBrush}" />
-                                    <TextBlock x:Name="SwitchKnobOff"
+                                    <console:SymbolsControl x:Name="SwitchKnobOff"
                                                Text="{StaticResource ThemeToggleSwitchOffSymbol}"
                                                Foreground="{DynamicResource ThemeForegroundBrush}" />
                                 </Grid>
@@ -172,11 +172,11 @@
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentColor3}" />
         </Style>
 
-        <Style Selector="^:pressed /template/ TextBlock#SwitchKnobOff">
+        <Style Selector="^:pressed /template/ console|SymbolsControl#SwitchKnobOff">
             <Setter Property="Fill" Value="{DynamicResource ThemeBorderHighColor}" />
         </Style>
 
-        <Style Selector="^:pressed /template/ TextBlock#SwitchKnobOn">
+        <Style Selector="^:pressed /template/ console|SymbolsControl#SwitchKnobOn">
             <Setter Property="Fill" Value="{DynamicResource HighlightForegroundColor}" />
         </Style>
 
@@ -195,11 +195,11 @@
             <Setter Property="Background" Value="Transparent" />
         </Style>
 
-        <Style Selector="^:disabled /template/ TextBlock#SwitchKnobOff">
+        <Style Selector="^:disabled /template/ console|SymbolsControl#SwitchKnobOff">
             <Setter Property="Fill" Value="{DynamicResource ThemeNoDisturbBrush}" />
         </Style>
 
-        <Style Selector="^:disabled /template/ TextBlock#SwitchKnobOn">
+        <Style Selector="^:disabled /template/ Textconsole|SymbolsControlBlock#SwitchKnobOn">
             <Setter Property="Fill" Value="{DynamicResource ThemeNoDisturbBrush}" />
         </Style>
 
@@ -214,7 +214,7 @@
                     Value="0" />
         </Style>
 
-        <Style Selector="^:checked  /template/ TextBlock#SwitchKnobOff">
+        <Style Selector="^:checked  /template/ console|SymbolsControl#SwitchKnobOff">
             <Setter Property="Opacity"
                     Value="0" />
         </Style>
@@ -224,7 +224,7 @@
                     Value="1" />
         </Style>
 
-        <Style Selector="^:checked /template/ TextBlock#SwitchKnobOn">
+        <Style Selector="^:checked /template/ console|SymbolsControl#SwitchKnobOn">
             <Setter Property="Opacity"
                     Value="1" />
         </Style>
@@ -245,12 +245,12 @@
                     Value="1" />
         </Style>
 
-        <Style Selector="^:unchecked /template/ TextBlock#SwitchKnobOff">
+        <Style Selector="^:unchecked /template/ console|SymbolsControl#SwitchKnobOff">
             <Setter Property="Opacity"
                     Value="1" />
         </Style>
 
-        <Style Selector="^:unchecked /template/ TextBlock#SwitchKnobOn">
+        <Style Selector="^:unchecked /template/ console|SymbolsControl#SwitchKnobOn">
             <Setter Property="Opacity"
                     Value="0" />
         </Style>

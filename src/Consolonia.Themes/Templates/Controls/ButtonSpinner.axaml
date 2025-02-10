@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:console="https://github.com/jinek/consolonia" 
                     x:ClassModifier="internal">
     <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="ConsoleButtonSpinnerRepeatButton"
@@ -49,12 +50,12 @@
                                 <RepeatButton Name="PART_IncreaseButton"
                                               IsTabStop="{TemplateBinding IsTabStop}"
                                               Theme="{StaticResource ConsoleButtonSpinnerRepeatButton}">
-                                    <TextBlock Text="{StaticResource ThemeUpArrowSymbol}" />
+                                    <console:SymbolsControl Text="{StaticResource ThemeUpArrowSymbol}" />
                                 </RepeatButton>
                                 <RepeatButton Name="PART_DecreaseButton"
                                               IsTabStop="{TemplateBinding IsTabStop}"
                                               Theme="{StaticResource ConsoleButtonSpinnerRepeatButton}">
-                                    <TextBlock Text="{StaticResource ThemeDownArrowSymbol}" />
+                                    <console:SymbolsControl Text="{StaticResource ThemeDownArrowSymbol}" />
                                 </RepeatButton>
                             </StackPanel>
                             <ContentPresenter Name="PART_ContentPresenter"

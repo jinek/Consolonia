@@ -18,7 +18,7 @@
                                           Margin="{TemplateBinding Padding}"
                                           IsCaretShown="{TemplateBinding IsFocused}" />
 
-                    <TextBlock x:Name="ExpandCollapseChevronLeft"
+                    <console:SymbolsControl x:Name="ExpandCollapseChevronLeft"
                                Foreground="{DynamicResource ThemeForegroundBrush}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center" />
@@ -33,7 +33,7 @@
                                       TextBlock.Foreground="{TemplateBinding Foreground}"
                                       HorizontalContentAlignment="Center"
                                       VerticalContentAlignment="Center" />
-                    <TextBlock Grid.Column="2"
+                    <console:SymbolsControl Grid.Column="2"
                                x:Name="ExpandCollapseChevron"
                                Foreground="{DynamicResource ThemeForegroundBrush}"
                                HorizontalAlignment="Center"
@@ -56,7 +56,7 @@
     <ControlTheme x:Key="ConsoleExpanderToggleButtonUpTheme"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevron">
             <Setter Property="Text"
                     Value="{StaticResource ThemeDownArrowSymbol}" />
         </Style>
@@ -64,7 +64,7 @@
     <ControlTheme x:Key="ConsoleExpanderToggleButtonDownTheme"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevron">
             <Setter Property="Text"
                     Value="{StaticResource ThemeUpArrowSymbol}" />
         </Style>
@@ -72,7 +72,7 @@
     <ControlTheme x:Key="ConsoleExpanderToggleButtonLeftTheme"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevron">
             <Setter Property="Text"
                     Value="{StaticResource ThemeRightArrowSymbol}" />
         </Style>
@@ -80,7 +80,7 @@
     <ControlTheme x:Key="ConsoleExpanderToggleButtonRightTheme"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevron">
             <Setter Property="Text"
                     Value="{StaticResource ThemeLeftArrowSymbol}" />
         </Style>
@@ -88,7 +88,7 @@
     <ControlTheme x:Key="ConsoleExpanderToggleButtonLeftTheme2"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevronLeft">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevronLeft">
             <Setter Property="Text"
                     Value="{StaticResource ThemeRightArrowSymbol}" />
         </Style>
@@ -96,7 +96,7 @@
     <ControlTheme x:Key="ConsoleExpanderToggleButtonRightTheme2"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevronLeft">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevronLeft">
             <Setter Property="Text"
                     Value="{StaticResource ThemeLeftArrowSymbol}" />
         </Style>

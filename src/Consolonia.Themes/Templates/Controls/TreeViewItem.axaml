@@ -22,10 +22,9 @@
         <Style Selector="^:checked">
             <Setter Property="Template">
                 <ControlTemplate>
-                    <TextBlock HorizontalAlignment="Center"
+                    <console:SymbolsControl HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               Text="{StaticResource ThemeDownArrowSymbol}"
-                               Background="Transparent" />
+                               Text="{StaticResource ThemeDownArrowSymbol}" />
                 </ControlTemplate>
             </Setter>
         </Style>

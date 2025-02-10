@@ -21,7 +21,7 @@
                                       MinWidth="{DynamicResource ScrollBarThickness}"
                                       VerticalAlignment="Center"
                                       Focusable="False">
-                            <TextBlock HorizontalAlignment="Center"
+                            <console:SymbolsControl HorizontalAlignment="Center"
                                        Foreground="{TemplateBinding Foreground}"
                                        Text="{StaticResource ThemeScrollBarUpSymbol}" />
                         </RepeatButton>
@@ -56,7 +56,7 @@
                                       MinWidth="{DynamicResource ScrollBarThickness}"
                                       VerticalAlignment="Center"
                                       Focusable="False">
-                            <TextBlock HorizontalAlignment="Center"
+                            <console:SymbolsControl HorizontalAlignment="Center"
                                        Foreground="{TemplateBinding Foreground}"
                                        Focusable="False"
                                        MinHeight="1"
@@ -75,7 +75,7 @@
                                           MinHeight="{DynamicResource ScrollBarThickness}"
                                           HorizontalAlignment="Center"
                                           Focusable="False">
-                                <TextBlock HorizontalAlignment="Center"
+                                <console:SymbolsControl HorizontalAlignment="Center"
                                            Foreground="{TemplateBinding Foreground}"
                                            Text="{StaticResource ThemeScrollBarLeftSymbol}" />
                             </RepeatButton>
@@ -109,7 +109,7 @@
                                           MinHeight="{DynamicResource ScrollBarThickness}"
                                           HorizontalAlignment="Center"
                                           Focusable="False">
-                                <TextBlock HorizontalAlignment="Center"
+                                <console:SymbolsControl HorizontalAlignment="Center"
                                            Foreground="{TemplateBinding Foreground}"
                                            Text="{StaticResource ThemeScrollBarRightSymbol}" />
                             </RepeatButton>

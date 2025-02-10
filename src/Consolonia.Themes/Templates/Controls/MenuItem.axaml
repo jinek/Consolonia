@@ -36,7 +36,7 @@
                                               VerticalAlignment="Center"
                                               Content="{TemplateBinding Icon}" />
 
-                            <TextBlock Grid.Column="0"
+                            <console:SymbolsControl Grid.Column="0"
                                        Name="check"
                                        Foreground="{TemplateBinding Foreground}"
                                        Text="{StaticResource ThemeCheckedSymbol}"
@@ -53,7 +53,7 @@
                                        Margin="1,0"
                                        Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
                                        VerticalAlignment="Center" />
-                            <TextBlock Name="rightArrow"
+                            <console:SymbolsControl Name="rightArrow"
                                        Text="{StaticResource ThemeRightArrowSymbol}"
                                        Foreground="{DynamicResource ThemeForegroundBrush}"
                                        Margin="0,0,0,0"
@@ -114,7 +114,7 @@
                 Value="{DynamicResource ThemeBackgroundBrush}" />-->
         </Style>
 
-        <Style Selector="^:empty /template/ TextBlock#rightArrow">
+        <Style Selector="^:empty /template/ console|SymbolsControl#rightArrow">
             <Setter Property="IsVisible"
                     Value="False" />
         </Style>
