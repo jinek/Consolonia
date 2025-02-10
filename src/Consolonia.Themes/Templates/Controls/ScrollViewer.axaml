@@ -1,16 +1,16 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type ScrollViewer}"
                   TargetType="ScrollViewer">
-        <Setter Property="(helpers:ScrollViewerExtensions.ScrollOnArrows)"
+        <Setter Property="(console:ScrollViewerExtensions.ScrollOnArrows)"
                 Value="True" />
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
-        <Setter Property="(helpers:ScrollViewerExtensions.ScrollBarsWidth)"
+        <Setter Property="(console:ScrollViewerExtensions.ScrollBarsWidth)"
                 Value="Auto" />
         <Setter Property="HorizontalSnapPointsType"
                 Value="None" />
@@ -51,11 +51,11 @@
                                Focusable="False" />
                     <Panel Grid.Row="1"
                            Grid.Column="1">
-                        <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
+                        <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
                                               IsVisible="{TemplateBinding Focusable}">
-                            <helpers:SymbolsControl Text="+"
-                                                    Foreground="{DynamicResource ThemeSelectionBackgroundBrush}" />
-                        </helpers:CaretControl>
+                            <TextBlock Text="+"
+                                       Foreground="{DynamicResource ThemeSelectionBackgroundBrush}" />
+                        </console:CaretControl>
                     </Panel>
                 </Grid>
             </ControlTemplate>
@@ -88,8 +88,8 @@
                                              Path="Viewport.Height" />
                                 </MultiBinding>
                             </RepeatButton.IsVisible>
-                            <helpers:SymbolsControl Text="^"
-                                                    Foreground="{TemplateBinding Foreground}" />
+                            <TextBlock Text="^"
+                                       Foreground="{TemplateBinding Foreground}" />
                         </RepeatButton>
                         <RepeatButton DockPanel.Dock="Bottom"
                                       BorderThickness="0"
@@ -109,8 +109,8 @@
                                              Path="Viewport.Height" />
                                 </MultiBinding>
                             </RepeatButton.IsVisible>
-                            <helpers:SymbolsControl Text="v"
-                                                    Foreground="{TemplateBinding Foreground}" />
+                            <TextBlock Text="v"
+                                       Foreground="{TemplateBinding Foreground}" />
                         </RepeatButton>
                         <ScrollContentPresenter Name="PART_ContentPresenter"
                                                 Padding="{TemplateBinding Padding}"
@@ -123,7 +123,7 @@
                 </ControlTemplate>
             </Setter>
         </Style>
-        <Style Selector="^.menuscroller /template/ RepeatButton > helpers|SymbolsControl">
+        <Style Selector="^.menuscroller /template/ RepeatButton > TextBlock">
             <Setter Property="Foreground"
                     Value="{DynamicResource ThemeForegroundBrush}" />
         </Style>

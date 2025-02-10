@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type ListBoxItem}"
                   TargetType="ListBoxItem">
         <Setter Property="Padding"
@@ -10,7 +10,7 @@
                 Value="{DynamicResource ThemeTransparentBrush}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <helpers:CaretControl Foreground="{TemplateBinding Foreground}"
+                <console:CaretControl Foreground="{TemplateBinding Foreground}"
                                       IsCaretShown="{TemplateBinding IsFocused}">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Background="{TemplateBinding Background}"
@@ -21,7 +21,7 @@
                                       Padding="{TemplateBinding Padding}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
-                </helpers:CaretControl>
+                </console:CaretControl>
             </ControlTemplate>
         </Setter>
 

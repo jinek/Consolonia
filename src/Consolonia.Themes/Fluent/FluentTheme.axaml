@@ -6,6 +6,43 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/Fluent/FluentColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <x:String x:Key="ThemeLeftArrowSymbol">˂</x:String>
+            <x:String x:Key="ThemeRightArrowSymbol">˃</x:String>
+            <x:String x:Key="ThemeUpArrowSymbol">˄</x:String>
+            <x:String x:Key="ThemeDownArrowSymbol">˅</x:String>
+
+            <x:String x:Key="ThemeScrollBarLeftSymbol">˂</x:String>
+            <x:String x:Key="ThemeScrollBarRightSymbol">˃</x:String>
+            <x:String x:Key="ThemeScrollBarUpSymbol">˄</x:String>
+            <x:String x:Key="ThemeScrollBarDownSymbol">˅</x:String>
+
+            <x:String x:Key="ThemeScrollBarHorizontalBackgroundSymbol">░</x:String>
+            <x:String x:Key="ThemeScrollBarHorizontalThumbSymbol">█</x:String>
+            <x:String x:Key="ThemeScrollBarVerticalBackgroundSymbol">░</x:String>
+            <x:String x:Key="ThemeScrollBarVerticalThumbSymbol">█</x:String>
+
+            <x:String x:Key="ThemeProgressBarBackgroundSymbol">░</x:String>
+
+            <x:String x:Key="ThemeSliderHorizontalThumbSymbol">🠷</x:String>
+            <x:String x:Key="ThemeSliderHorizontalBackgroundSymbol">─</x:String>
+
+            <x:String x:Key="ThemeSliderVerticalThumbSymbol">🠴</x:String>
+            <x:String x:Key="ThemeSliderVerticalBackgroundSymbol">│</x:String>
+
+            <x:String x:Key="ThemeRadioButtonNotSelectedSymbol">◯</x:String>
+            <x:String x:Key="ThemeRadioButtonSelectedSymbol">⬤</x:String>
+            <x:String x:Key="ThemeRadioButtonIndeterminateSymbol">🟗</x:String>
+
+            <x:String x:Key="ThemeCheckBoxNotSelectedSymbol">☐</x:String>
+            <x:String x:Key="ThemeCheckBoxSelectedSymbol">🗹</x:String>
+            <x:String x:Key="ThemeCheckBoxIndeterminateSymbol">■</x:String>
+
+            <x:String x:Key="ThemeCheckedSymbol">✓</x:String>
+            <x:String x:Key="ThemeCloseSymbol">✕</x:String>
+
+            <x:String x:Key="ThemeToggleSwitchOffSymbol">◯</x:String>
+            <x:String x:Key="ThemeToggleSwitchOnSymbol">⬤</x:String>
         </ResourceDictionary>
     </Styles.Resources>
 

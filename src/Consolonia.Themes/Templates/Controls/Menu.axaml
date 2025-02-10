@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
 
     <ControlTheme x:Key="TurboVisionTopLevelMenuItem"
                   TargetType="MenuItem">
@@ -16,11 +16,11 @@
             <ControlTemplate>
                 <Border Name="root">
                     <Panel>
-                        <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
+                        <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
                             <ContentPresenter Name="PART_HeaderPresenter"
                                               Content="{TemplateBinding Header}"
                                               Margin="{TemplateBinding Padding}" />
-                        </helpers:CaretControl>
+                        </console:CaretControl>
                         <Popup Name="PART_Popup"
                                IsLightDismissEnabled="True"
                                OverlayInputPassThroughElement="{Binding $parent[Menu]}"
@@ -38,7 +38,7 @@
                                                         Grid.IsSharedSizeScope="True">
                                             <ItemsPresenter.Styles>
                                                 <Style Selector="ItemsPresenter">
-                                                    <Setter Property="(helpers:MenuExtensions.FocusOnLoad)"
+                                                    <Setter Property="(console:MenuExtensions.FocusOnLoad)"
                                                             Value="True" />
                                                 </Style>
                                             </ItemsPresenter.Styles>
@@ -67,7 +67,7 @@
                 Value="{DynamicResource ThemeBackgroundBrush}" />-->
         </Style>
 
-        <Style Selector="^:empty /template/ helpers|SymbolsControl#rightArrow">
+        <Style Selector="^:empty /template/ TextBlock#rightArrow">
             <Setter Property="IsVisible"
                     Value="False" />
         </Style>

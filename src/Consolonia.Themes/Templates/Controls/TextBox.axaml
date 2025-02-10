@@ -1,10 +1,10 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
 
-    <helpers:BooleanAndConverter x:Key="BooleanAndConverter" />
+    <console:BooleanAndConverter x:Key="BooleanAndConverter" />
 
-    <helpers:AreIntegersEqualConverter x:Key="AreIntegersEqualConverter" />
+    <console:AreIntegersEqualConverter x:Key="AreIntegersEqualConverter" />
 
     <ControlTheme x:Key="{x:Type TextBox}"
                   TargetType="TextBox">
@@ -59,7 +59,7 @@
                                     <Panel>
                                         <!--I don't understand why 1 is not sufficient as a padding for caret of width 1-->
                                         <Panel Margin="0,0,2,0">
-                                            <helpers:ConsoloniaTextPresenter Name="PART_TextPresenter"
+                                            <console:ConsoloniaTextPresenter Name="PART_TextPresenter"
                                                                              Margin="{TemplateBinding Padding}"
                                                                              CaretIndex="{TemplateBinding CaretIndex}"
                                                                              PasswordChar="{TemplateBinding PasswordChar}"
@@ -91,8 +91,8 @@
                                                 </MultiBinding>
                                             </TextBlock.IsVisible>
                                         </TextBlock>
-                                        <helpers:TextBoxCaret>
-                                            <helpers:TextBoxCaret.Active>
+                                        <console:TextBoxCaret>
+                                            <console:TextBoxCaret.Active>
                                                 <MultiBinding Converter="{StaticResource BooleanAndConverter}">
                                                     <TemplateBinding Property="IsFocused" />
                                                     <MultiBinding
@@ -103,12 +103,12 @@
                                                                  Path="SelectionEnd" />
                                                     </MultiBinding>
                                                 </MultiBinding>
-                                            </helpers:TextBoxCaret.Active>
-                                            <helpers:TextBoxCaret.Position>
+                                            </console:TextBoxCaret.Active>
+                                            <console:TextBoxCaret.Position>
                                                 <Binding ElementName="PART_TextPresenter"
                                                          Path="CaretPosition" />
-                                            </helpers:TextBoxCaret.Position>
-                                        </helpers:TextBoxCaret>
+                                            </console:TextBoxCaret.Position>
+                                        </console:TextBoxCaret>
                                     </Panel>
                                 </ScrollViewer>
                                 <ContentPresenter Grid.Column="2"

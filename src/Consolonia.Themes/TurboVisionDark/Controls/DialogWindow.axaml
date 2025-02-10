@@ -1,10 +1,10 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="clr-namespace:Consolonia.Controls;assembly=Consolonia.Core">
+        xmlns:console="https://github.com/jinek/consolonia">
     <Styles.Resources>
-        <ControlTheme x:Key="{x:Type controls:DialogWindow}"
-                      TargetType="controls:DialogWindow"
-                      BasedOn="{StaticResource {x:Type controls:DialogWindow}}">
+        <ControlTheme x:Key="{x:Type console:DialogWindow}"
+                      TargetType="console:DialogWindow"
+                      BasedOn="{StaticResource {x:Type console:DialogWindow}}">
             <Setter Property="Background"
                     Value="{DynamicResource ThemeBackgroundBrush}" />
         </ControlTheme>

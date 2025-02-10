@@ -10,18 +10,18 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
     ///     Orientation = Horizontal|Vertical
     ///     Brush = brush to use for the line.
     /// </summary>
-    public class FastLineSeparator : Control
+    public class LineSeparator : Control
     {
         public static readonly StyledProperty<Orientation> OrientationProperty =
-            AvaloniaProperty.Register<FastLineSeparator, Orientation>(nameof(Orientation));
+            AvaloniaProperty.Register<LineSeparator, Orientation>(nameof(Orientation));
 
         public static readonly StyledProperty<IBrush> BrushProperty =
-            AvaloniaProperty.Register<FastLineSeparator, IBrush>(nameof(Brush), Brushes.Black);
+            AvaloniaProperty.Register<LineSeparator, IBrush>(nameof(Brush), Brushes.Black);
 
 
-        public FastLineSeparator()
+        public LineSeparator()
         {
-            AffectsRender<FastLineSeparator>(OrientationProperty);
+            AffectsRender<LineSeparator>(OrientationProperty);
         }
 
         public Orientation Orientation

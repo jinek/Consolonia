@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type ToggleButton}"
                   TargetType="ToggleButton">
         <Setter Property="Background"
@@ -19,7 +19,7 @@
                 Value="Center" />
         <Setter Property="Template">
             <ControlTemplate>
-                <helpers:CaretControl Padding="0,0,0,0"
+                <console:CaretControl Padding="0,0,0,0"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       Margin="{TemplateBinding Padding}"
@@ -34,7 +34,7 @@
                                       TextBlock.Foreground="{TemplateBinding Foreground}"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-                </helpers:CaretControl>
+                </console:CaretControl>
             </ControlTemplate>
         </Setter>
         <Style Selector="^:checked /template/ ContentPresenter">

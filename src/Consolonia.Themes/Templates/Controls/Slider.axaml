@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:console="https://github.com/jinek/consolonia"
                     x:ClassModifier="internal">
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="SliderRepeatTrackTheme"
                   TargetType="RepeatButton">
         <Setter Property="Background"
@@ -28,10 +29,12 @@
                 <ControlTemplate>
                     <Grid Name="grid"
                           Background="Transparent">
-                        <console:FastLineSeparator Name="TrackBackground"
-                                                   Orientation="Horizontal"
-                                                   VerticalAlignment="Center"
-                                                   Brush="{DynamicResource ThemeForegroundBrush}" />
+                        <console:SymbolsControl Name="TrackBackground"
+                                                Fill="True"
+                                                Text="{StaticResource ThemeSliderHorizontalBackgroundSymbol}"
+                                                Height="1"
+                                                VerticalAlignment="Center"
+                                                Foreground="{DynamicResource ThemeForegroundBrush}" />
                         <console:CaretControl Foreground="{TemplateBinding Foreground}"
                                               VerticalAlignment="Center"
                                               IsCaretShown="{TemplateBinding IsFocused}">
@@ -51,9 +54,10 @@
                                        MinHeight="1">
                                     <Thumb.Template>
                                         <ControlTemplate>
-                                            <TextBlock Text="O"
-                                                       VerticalAlignment="Center"
-                                                       Foreground="{DynamicResource ThemeForegroundBrush}" />
+                                            <console:SymbolsControl
+                                                Text="{StaticResource ThemeSliderHorizontalThumbSymbol}"
+                                                VerticalAlignment="Center"
+                                                Foreground="{DynamicResource ThemeForegroundBrush}" />
                                         </ControlTemplate>
                                     </Thumb.Template>
                                 </Thumb>
@@ -71,10 +75,12 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <Grid Background="Transparent">
-                        <console:FastLineSeparator Name="TrackBackground"
-                                                   Orientation="Vertical"
-                                                   HorizontalAlignment="Center"
-                                                   Brush="{DynamicResource ThemeForegroundBrush}" />
+                        <console:SymbolsControl Name="TrackBackground"
+                                                Fill="True"
+                                                Text="{StaticResource ThemeSliderVerticalBackgroundSymbol}"
+                                                Width="1"
+                                                HorizontalAlignment="Center"
+                                                Foreground="{DynamicResource ThemeForegroundBrush}" />
 
                         <console:CaretControl Foreground="{TemplateBinding Foreground}"
                                               IsCaretShown="{TemplateBinding IsFocused}">
@@ -94,9 +100,10 @@
                                        MinHeight="1">
                                     <Thumb.Template>
                                         <ControlTemplate>
-                                            <TextBlock Text="O"
-                                                       HorizontalAlignment="Center"
-                                                       Foreground="{DynamicResource ThemeForegroundBrush}" />
+                                            <console:SymbolsControl
+                                                Text="{StaticResource ThemeSliderVerticalThumbSymbol}"
+                                                HorizontalAlignment="Center"
+                                                Foreground="{DynamicResource ThemeForegroundBrush}" />
                                         </ControlTemplate>
                                     </Thumb.Template>
                                 </Thumb>

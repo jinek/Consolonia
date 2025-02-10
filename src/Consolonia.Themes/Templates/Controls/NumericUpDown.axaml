@@ -4,13 +4,13 @@
     <ControlTheme x:Key="{x:Type NumericUpDown}"
                   TargetType="NumericUpDown">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeBackgroundBrush}" />
+                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeForegroundBrush}" />
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderMidBrush}" />
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
         <Setter Property="BorderThickness"
-                Value="{DynamicResource ThemeBorderThickness}" />
+                Value="0" />
         <Setter Property="Padding"
                 Value="0" />
         <Setter Property="Template">
@@ -37,8 +37,6 @@
                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                  AcceptsReturn="False"
-                                 Background="{TemplateBinding Background}"
-                                 Foreground="{TemplateBinding Foreground}"
                                  BorderThickness="0"
                                  IsReadOnly="{TemplateBinding IsReadOnly}"
                                  Text="{TemplateBinding Text}"

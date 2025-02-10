@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type ListBox}"
                   TargetType="ListBox">
         <Setter Property="BorderBrush"
@@ -26,7 +26,7 @@
                                   Margin="0,0,-1,-1">
                         <ScrollViewer.Styles>
                             <Style Selector="ScrollViewer">
-                                <Setter Property="(helpers:ScrollViewerExtensions.ScrollBarsWidth)"
+                                <Setter Property="(console:ScrollViewerExtensions.ScrollBarsWidth)"
                                         Value="1" />
                             </Style>
                         </ScrollViewer.Styles>

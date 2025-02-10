@@ -1,11 +1,11 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="clr-namespace:Consolonia.Controls;assembly=Consolonia.Core"
-        xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers">
+        xmlns:console="https://github.com/jinek/consolonia">
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <Styles.Resources>
         <Thickness x:Key="ConsoloniaDialogWindowBorderMargin">1,0</Thickness>
     </Styles.Resources>
-    <Style Selector=":is(controls|DialogWindow)">
+    <Style Selector=":is(console|DialogWindow)">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="BorderBrush"
@@ -20,7 +20,7 @@
                 Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="controls:DialogWindow">
+                <ControlTemplate TargetType="console:DialogWindow">
                     <Panel>
                         <!--Centered layout-->
                         <!--Panel shade Mode=Shaded-->
@@ -48,7 +48,7 @@
                                       Margin="1 0 0 0"
                                       ZIndex="30">
                                     <StackPanel Orientation="Horizontal">
-                                        <helpers:SymbolsControl Text="{TemplateBinding Icon}"
+                                        <console:SymbolsControl Text="{TemplateBinding Icon}"
                                                                 IsVisible="{Binding Icon.Length}"
                                                                 Foreground="{TemplateBinding BorderBrush}" />
                                         <TextBlock Text="╡"
@@ -61,7 +61,7 @@
                                     <StackPanel Grid.Column="1"
                                                 Orientation="Horizontal"
                                                 IsVisible="{TemplateBinding IsCloseButtonVisible}">
-                                        <Button Content="×"
+                                        <Button Content="{StaticResource ThemeCloseSymbol}"
                                                 Margin="1 0 0 0"
                                                 Background="{x:Null}"
                                                 IsTabStop="False"
@@ -69,7 +69,7 @@
                                                 Command="{Binding Path=CloseClick, RelativeSource={RelativeSource TemplatedParent}}">
                                             <Button.Styles>
                                                 <Style Selector="Button">
-                                                    <Setter Property="helpers:ButtonExtensions.Shadow"
+                                                    <Setter Property="console:ButtonExtensions.Shadow"
                                                             Value="False" />
                                                 </Style>
                                             </Button.Styles>
@@ -79,7 +79,7 @@
 
                                 <Border BorderThickness="{TemplateBinding BorderThickness}">
                                     <Border.BorderBrush>
-                                        <controls:LineBrush
+                                        <console:LineBrush
                                             Brush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                             LineStyle="DoubleLine" />
                                     </Border.BorderBrush>
