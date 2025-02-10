@@ -75,7 +75,7 @@
                 <ControlTemplate>
                     <Grid Background="Transparent">
                         <console:SymbolsControl Name="TrackBackground"
-                                                Fill="True" 
+                                                Fill="True"
                                                 Text="{StaticResource ThemeSliderVerticalBackgroundSymbol}"
                                                 Width="1"
                                                 HorizontalAlignment="Center"

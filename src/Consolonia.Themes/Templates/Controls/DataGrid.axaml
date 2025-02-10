@@ -76,12 +76,12 @@
                     </Grid>
 
                     <console:LineSeparator Name="VerticalSeparator"
-                                               Grid.Column="1"
-                                               Orientation="Vertical"
-                                               VerticalAlignment="Stretch"
-                                               Width="1"
-                                               Brush="{TemplateBinding BorderBrush}"
-                                               IsVisible="{TemplateBinding AreSeparatorsVisible}" />
+                                           Grid.Column="1"
+                                           Orientation="Vertical"
+                                           VerticalAlignment="Stretch"
+                                           Width="1"
+                                           Brush="{TemplateBinding BorderBrush}"
+                                           IsVisible="{TemplateBinding AreSeparatorsVisible}" />
                 </Grid>
             </ControlTemplate>
         </Setter>
@@ -317,12 +317,12 @@
                                                   Margin="0,1" />
 
                             <console:LineSeparator Grid.Row="0"
-                                                       VerticalAlignment="Bottom"
-                                                       Grid.ColumnSpan="3"
-                                                       Grid.Column="0"
-                                                       Orientation="Horizontal"
-                                                       Brush="{TemplateBinding BorderBrush}"
-                                                       Margin="-1,0" />
+                                                   VerticalAlignment="Bottom"
+                                                   Grid.ColumnSpan="3"
+                                                   Grid.Column="0"
+                                                   Orientation="Horizontal"
+                                                   Brush="{TemplateBinding BorderBrush}"
+                                                   Margin="-1,0" />
 
                             <!--
                             <Border Grid.Row="0"

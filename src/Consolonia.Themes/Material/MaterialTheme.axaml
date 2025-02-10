@@ -16,7 +16,7 @@
             <x:String x:Key="ThemeScrollBarRightSymbol">▸</x:String>
             <x:String x:Key="ThemeScrollBarUpSymbol">▴</x:String>
             <x:String x:Key="ThemeScrollBarDownSymbol">▾</x:String>
-            
+
             <x:String x:Key="ThemeScrollBarHorizontalBackgroundSymbol">░</x:String>
             <x:String x:Key="ThemeScrollBarHorizontalThumbSymbol">─</x:String>
             <x:String x:Key="ThemeScrollBarVerticalBackgroundSymbol">░</x:String>
@@ -26,7 +26,7 @@
 
             <x:String x:Key="ThemeSliderHorizontalThumbSymbol">◯</x:String>
             <x:String x:Key="ThemeSliderHorizontalBackgroundSymbol">─</x:String>
-            
+
             <x:String x:Key="ThemeSliderVerticalThumbSymbol">◯</x:String>
             <x:String x:Key="ThemeSliderVerticalBackgroundSymbol">│</x:String>
 
@@ -37,7 +37,7 @@
             <x:String x:Key="ThemeCheckBoxNotSelectedSymbol">☐</x:String>
             <x:String x:Key="ThemeCheckBoxSelectedSymbol">☒</x:String>
             <x:String x:Key="ThemeCheckBoxIndeterminateSymbol">■</x:String>
-            
+
             <x:String x:Key="ThemeCheckedSymbol">✓</x:String>
             <x:String x:Key="ThemeCloseSymbol">✕</x:String>
 

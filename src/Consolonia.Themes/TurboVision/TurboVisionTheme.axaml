@@ -19,7 +19,7 @@
 
             <x:String x:Key="ThemeScrollBarHorizontalBackgroundSymbol">░</x:String>
             <x:String x:Key="ThemeScrollBarHorizontalThumbSymbol">█</x:String>
-            
+
             <x:String x:Key="ThemeScrollBarVerticalBackgroundSymbol">░</x:String>
             <x:String x:Key="ThemeScrollBarVerticalThumbSymbol">█</x:String>
 

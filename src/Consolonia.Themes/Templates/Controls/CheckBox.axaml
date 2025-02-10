@@ -27,10 +27,10 @@
                             <Panel>
                                 <TextBlock Text="{StaticResource ThemeCheckBoxNotSelectedSymbol}" />
                                 <TextBlock Name="checkMark"
-                                           Text="{StaticResource ThemeCheckBoxSelectedSymbol}" 
+                                           Text="{StaticResource ThemeCheckBoxSelectedSymbol}"
                                            IsVisible="False" />
                                 <TextBlock Name="indeterminateMark"
-                                           Text="{StaticResource ThemeCheckBoxIndeterminateSymbol}" 
+                                           Text="{StaticResource ThemeCheckBoxIndeterminateSymbol}"
                                            IsVisible="False" />
                             </Panel>
                         </console:CaretControl>

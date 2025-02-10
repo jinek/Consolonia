@@ -6,7 +6,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/Fluent/FluentColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <x:String x:Key="ThemeLeftArrowSymbol">˂</x:String>
             <x:String x:Key="ThemeRightArrowSymbol">˃</x:String>
             <x:String x:Key="ThemeUpArrowSymbol">˄</x:String>
@@ -26,7 +26,7 @@
 
             <x:String x:Key="ThemeSliderHorizontalThumbSymbol">🠷</x:String>
             <x:String x:Key="ThemeSliderHorizontalBackgroundSymbol">─</x:String>
-            
+
             <x:String x:Key="ThemeSliderVerticalThumbSymbol">🠴</x:String>
             <x:String x:Key="ThemeSliderVerticalBackgroundSymbol">│</x:String>
 

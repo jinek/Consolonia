@@ -22,8 +22,8 @@
                                       VerticalAlignment="Center"
                                       Focusable="False">
                             <TextBlock HorizontalAlignment="Center"
-                                                    Foreground="{TemplateBinding Foreground}"
-                                                    Text="{StaticResource ThemeScrollBarUpSymbol}" />
+                                       Foreground="{TemplateBinding Foreground}"
+                                       Text="{StaticResource ThemeScrollBarUpSymbol}" />
                         </RepeatButton>
 
                         <Border Grid.Row="1"
@@ -57,10 +57,10 @@
                                       VerticalAlignment="Center"
                                       Focusable="False">
                             <TextBlock HorizontalAlignment="Center"
-                                                    Foreground="{TemplateBinding Foreground}"
-                                                    Focusable="False"
-                                                    MinHeight="1"
-                                                    Text="{StaticResource ThemeScrollBarDownSymbol}" />
+                                       Foreground="{TemplateBinding Foreground}"
+                                       Focusable="False"
+                                       MinHeight="1"
+                                       Text="{StaticResource ThemeScrollBarDownSymbol}" />
                         </RepeatButton>
                     </Grid>
                 </Border>
@@ -109,7 +109,7 @@
                                           MinHeight="{DynamicResource ScrollBarThickness}"
                                           HorizontalAlignment="Center"
                                           Focusable="False">
-                                <TextBlock HorizontalAlignment="Center" 
+                                <TextBlock HorizontalAlignment="Center"
                                            Foreground="{TemplateBinding Foreground}"
                                            Text="{StaticResource ThemeScrollBarRightSymbol}" />
                             </RepeatButton>

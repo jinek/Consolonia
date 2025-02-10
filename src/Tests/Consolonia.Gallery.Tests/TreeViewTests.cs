@@ -14,20 +14,20 @@ namespace Consolonia.Gallery.Tests
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText("│🞂 Item 0  ",
-                                       "│🞂 Item 1  ",
-                                       "│🞂 Item 2  ");
+                "│🞂 Item 1  ",
+                "│🞂 Item 2  ");
             await UITest.AssertHasNoText("│ 🞂 Item 0 0  ");
             await UITest.KeyInput(Key.Enter);
             await UITest.AssertHasText("│▾ Item 0   ",
-                                       "│ 🞂 Item 0 0  ",
-                                       "│ 🞂 Item 0 1  ",
-                                       "│ 🞂 Item 0 2  ",
-                                       "│🞂 Item 1   ",
-                                       "│🞂 Item 2   ");
+                "│ 🞂 Item 0 0  ",
+                "│ 🞂 Item 0 1  ",
+                "│ 🞂 Item 0 2  ",
+                "│🞂 Item 1   ",
+                "│🞂 Item 2   ");
             await UITest.KeyInput(Key.Enter);
             await UITest.AssertHasText("│🞂 Item 0  ",
-                                       "│🞂 Item 1   ",
-                                       "│🞂 Item 2   ");
+                "│🞂 Item 1   ",
+                "│🞂 Item 2   ");
             await UITest.AssertHasNoText("│ 🞂 Item 0 0  ");
         }
     }

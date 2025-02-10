@@ -49,12 +49,12 @@
                                 <RepeatButton Name="PART_IncreaseButton"
                                               IsTabStop="{TemplateBinding IsTabStop}"
                                               Theme="{StaticResource ConsoleButtonSpinnerRepeatButton}">
-                                    <TextBlock Text="{StaticResource ThemeUpArrowSymbol}"/>
+                                    <TextBlock Text="{StaticResource ThemeUpArrowSymbol}" />
                                 </RepeatButton>
                                 <RepeatButton Name="PART_DecreaseButton"
                                               IsTabStop="{TemplateBinding IsTabStop}"
                                               Theme="{StaticResource ConsoleButtonSpinnerRepeatButton}">
-                                    <TextBlock Text="{StaticResource ThemeDownArrowSymbol}"/>
+                                    <TextBlock Text="{StaticResource ThemeDownArrowSymbol}" />
                                 </RepeatButton>
                             </StackPanel>
                             <ContentPresenter Name="PART_ContentPresenter"

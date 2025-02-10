@@ -9,7 +9,8 @@ namespace Consolonia.Gallery.Tests
     [TestFixture]
     internal class ExpanderTests : GalleryTestsBaseBase
     {
-        [Test, Order(1)]
+        [Test]
+        [Order(1)]
         public async Task TestStart()
         {
             await UITest.KeyInput(Key.Tab);
@@ -21,7 +22,8 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(1, Key.Tab, RawInputModifiers.Shift);
         }
 
-        [Test, Order(2)]
+        [Test]
+        [Order(2)]
         public async Task TestUp()
         {
             await UITest.KeyInput(Key.Tab);
@@ -38,7 +40,8 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(1, Key.Tab, RawInputModifiers.Shift);
         }
 
-        [Test, Order(3)]
+        [Test]
+        [Order(3)]
         public async Task TestDown()
         {
             await UITest.KeyInput(Key.Tab);
@@ -57,7 +60,8 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(1, Key.Tab, RawInputModifiers.Shift);
         }
 
-        [Test, Order(4)]
+        [Test]
+        [Order(4)]
         public async Task TestLeft()
         {
             await UITest.KeyInput(Key.Tab);
@@ -78,7 +82,8 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(1, Key.Tab, RawInputModifiers.Shift);
         }
 
-        [Test, Order(5)]
+        [Test]
+        [Order(5)]
         public async Task TestRight()
         {
             await UITest.KeyInput(Key.Tab);

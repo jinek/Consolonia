@@ -54,7 +54,7 @@
                         <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
                                               IsVisible="{TemplateBinding Focusable}">
                             <TextBlock Text="+"
-                                                    Foreground="{DynamicResource ThemeSelectionBackgroundBrush}" />
+                                       Foreground="{DynamicResource ThemeSelectionBackgroundBrush}" />
                         </console:CaretControl>
                     </Panel>
                 </Grid>
@@ -89,7 +89,7 @@
                                 </MultiBinding>
                             </RepeatButton.IsVisible>
                             <TextBlock Text="^"
-                                                    Foreground="{TemplateBinding Foreground}" />
+                                       Foreground="{TemplateBinding Foreground}" />
                         </RepeatButton>
                         <RepeatButton DockPanel.Dock="Bottom"
                                       BorderThickness="0"
@@ -110,7 +110,7 @@
                                 </MultiBinding>
                             </RepeatButton.IsVisible>
                             <TextBlock Text="v"
-                                                    Foreground="{TemplateBinding Foreground}" />
+                                       Foreground="{TemplateBinding Foreground}" />
                         </RepeatButton>
                         <ScrollContentPresenter Name="PART_ContentPresenter"
                                                 Padding="{TemplateBinding Padding}"

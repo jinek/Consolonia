@@ -29,10 +29,10 @@
                                        VerticalAlignment="Center" />
                             <TextBlock Name="checkMark"
                                        IsVisible="False"
-                                       Text="{StaticResource ThemeRadioButtonSelectedSymbol}"/>
+                                       Text="{StaticResource ThemeRadioButtonSelectedSymbol}" />
                             <TextBlock Name="indeterminateMark"
                                        IsVisible="False"
-                                       Text="{StaticResource ThemeRadioButtonIndeterminateSymbol}"/>
+                                       Text="{StaticResource ThemeRadioButtonIndeterminateSymbol}" />
                         </Panel>
                     </console:CaretControl>
                     <ContentPresenter Name="PART_ContentPresenter"
