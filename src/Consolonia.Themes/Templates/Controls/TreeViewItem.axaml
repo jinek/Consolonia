@@ -3,6 +3,7 @@
                     xmlns:console="https://github.com/jinek/consolonia"
                     xmlns:converters="using:Avalonia.Controls.Converters"
                     x:ClassModifier="internal">
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <converters:MarginMultiplierConverter x:Key="LeftMarginConverter"
                                           Indent="1"
                                           Left="True" />
