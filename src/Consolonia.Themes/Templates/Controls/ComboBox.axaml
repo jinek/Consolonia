@@ -59,9 +59,9 @@
                                               IsCaretShown="{TemplateBinding IsFocused}"
                                               Background="{x:Null}">
                             <console:SymbolsControl Foreground="{TemplateBinding BorderBrush}"
-                                       Text="{StaticResource ThemeDownArrowSymbol}"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center" />
+                                                    Text="{StaticResource ThemeDownArrowSymbol}"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center" />
                         </console:CaretControl>
                     </ToggleButton>
                     <Popup Grid.Column="0"

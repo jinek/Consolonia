@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:console="https://github.com/jinek/consolonia" 
+                    xmlns:console="https://github.com/jinek/consolonia"
                     x:ClassModifier="internal">
     <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="{x:Type DropDownButton}"
@@ -42,11 +42,11 @@
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               RecognizesAccessKey="True" />
                             <console:SymbolsControl Name="DropDownGlyph"
-                                       Grid.Column="1"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       IsHitTestVisible="False"
-                                       Text="{StaticResource ThemeDownArrowSymbol}" />
+                                                    Grid.Column="1"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Center"
+                                                    IsHitTestVisible="False"
+                                                    Text="{StaticResource ThemeDownArrowSymbol}" />
 
                         </Grid>
                     </Border>

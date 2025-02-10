@@ -23,8 +23,8 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <console:SymbolsControl HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Text="{StaticResource ThemeDownArrowSymbol}" />
+                                            VerticalAlignment="Center"
+                                            Text="{StaticResource ThemeDownArrowSymbol}" />
                 </ControlTemplate>
             </Setter>
         </Style>

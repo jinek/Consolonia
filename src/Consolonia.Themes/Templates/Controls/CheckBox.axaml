@@ -27,11 +27,11 @@
                             <Panel>
                                 <console:SymbolsControl Text="{StaticResource ThemeCheckBoxNotSelectedSymbol}" />
                                 <console:SymbolsControl Name="checkMark"
-                                           Text="{StaticResource ThemeCheckBoxSelectedSymbol}"
-                                           IsVisible="False" />
+                                                        Text="{StaticResource ThemeCheckBoxSelectedSymbol}"
+                                                        IsVisible="False" />
                                 <console:SymbolsControl Name="indeterminateMark"
-                                           Text="{StaticResource ThemeCheckBoxIndeterminateSymbol}"
-                                           IsVisible="False" />
+                                                        Text="{StaticResource ThemeCheckBoxIndeterminateSymbol}"
+                                                        IsVisible="False" />
                             </Panel>
                         </console:CaretControl>
                     </Grid>

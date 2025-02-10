@@ -22,8 +22,8 @@
                                       VerticalAlignment="Center"
                                       Focusable="False">
                             <console:SymbolsControl HorizontalAlignment="Center"
-                                       Foreground="{TemplateBinding Foreground}"
-                                       Text="{StaticResource ThemeScrollBarUpSymbol}" />
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    Text="{StaticResource ThemeScrollBarUpSymbol}" />
                         </RepeatButton>
 
                         <Border Grid.Row="1"
@@ -57,10 +57,10 @@
                                       VerticalAlignment="Center"
                                       Focusable="False">
                             <console:SymbolsControl HorizontalAlignment="Center"
-                                       Foreground="{TemplateBinding Foreground}"
-                                       Focusable="False"
-                                       MinHeight="1"
-                                       Text="{StaticResource ThemeScrollBarDownSymbol}" />
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    Focusable="False"
+                                                    MinHeight="1"
+                                                    Text="{StaticResource ThemeScrollBarDownSymbol}" />
                         </RepeatButton>
                     </Grid>
                 </Border>
@@ -76,8 +76,8 @@
                                           HorizontalAlignment="Center"
                                           Focusable="False">
                                 <console:SymbolsControl HorizontalAlignment="Center"
-                                           Foreground="{TemplateBinding Foreground}"
-                                           Text="{StaticResource ThemeScrollBarLeftSymbol}" />
+                                                        Foreground="{TemplateBinding Foreground}"
+                                                        Text="{StaticResource ThemeScrollBarLeftSymbol}" />
                             </RepeatButton>
 
                             <Border Grid.Column="1"
@@ -110,8 +110,8 @@
                                           HorizontalAlignment="Center"
                                           Focusable="False">
                                 <console:SymbolsControl HorizontalAlignment="Center"
-                                           Foreground="{TemplateBinding Foreground}"
-                                           Text="{StaticResource ThemeScrollBarRightSymbol}" />
+                                                        Foreground="{TemplateBinding Foreground}"
+                                                        Text="{StaticResource ThemeScrollBarRightSymbol}" />
                             </RepeatButton>
 
                         </Grid>

@@ -24,15 +24,15 @@
                                           IsCaretShown="{TemplateBinding IsFocused}">
                         <Panel>
                             <console:SymbolsControl Name="border"
-                                       Text="{StaticResource ThemeRadioButtonNotSelectedSymbol}"
-                                       Foreground="{TemplateBinding BorderBrush}"
-                                       VerticalAlignment="Center" />
+                                                    Text="{StaticResource ThemeRadioButtonNotSelectedSymbol}"
+                                                    Foreground="{TemplateBinding BorderBrush}"
+                                                    VerticalAlignment="Center" />
                             <console:SymbolsControl Name="checkMark"
-                                       IsVisible="False"
-                                       Text="{StaticResource ThemeRadioButtonSelectedSymbol}" />
+                                                    IsVisible="False"
+                                                    Text="{StaticResource ThemeRadioButtonSelectedSymbol}" />
                             <console:SymbolsControl Name="indeterminateMark"
-                                       IsVisible="False"
-                                       Text="{StaticResource ThemeRadioButtonIndeterminateSymbol}" />
+                                                    IsVisible="False"
+                                                    Text="{StaticResource ThemeRadioButtonIndeterminateSymbol}" />
                         </Panel>
                     </console:CaretControl>
                     <ContentPresenter Name="PART_ContentPresenter"

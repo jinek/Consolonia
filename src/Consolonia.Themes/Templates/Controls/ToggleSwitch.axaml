@@ -118,11 +118,11 @@
                                       Height="1">
 
                                     <console:SymbolsControl x:Name="SwitchKnobOn"
-                                               Text="{StaticResource ThemeToggleSwitchOnSymbol}"
-                                               Foreground="{DynamicResource ThemeBackgroundBrush}" />
+                                                            Text="{StaticResource ThemeToggleSwitchOnSymbol}"
+                                                            Foreground="{DynamicResource ThemeBackgroundBrush}" />
                                     <console:SymbolsControl x:Name="SwitchKnobOff"
-                                               Text="{StaticResource ThemeToggleSwitchOffSymbol}"
-                                               Foreground="{DynamicResource ThemeForegroundBrush}" />
+                                                            Text="{StaticResource ThemeToggleSwitchOffSymbol}"
+                                                            Foreground="{DynamicResource ThemeForegroundBrush}" />
                                 </Grid>
                             </Canvas>
                         </console:CaretControl>

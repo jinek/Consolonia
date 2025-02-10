@@ -19,9 +19,9 @@
                                           IsCaretShown="{TemplateBinding IsFocused}" />
 
                     <console:SymbolsControl x:Name="ExpandCollapseChevronLeft"
-                               Foreground="{DynamicResource ThemeForegroundBrush}"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center" />
+                                            Foreground="{DynamicResource ThemeForegroundBrush}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center" />
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Grid.Column="1"
                                       Background="{TemplateBinding Background}"
@@ -34,10 +34,10 @@
                                       HorizontalContentAlignment="Center"
                                       VerticalContentAlignment="Center" />
                     <console:SymbolsControl Grid.Column="2"
-                               x:Name="ExpandCollapseChevron"
-                               Foreground="{DynamicResource ThemeForegroundBrush}"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center" />
+                                            x:Name="ExpandCollapseChevron"
+                                            Foreground="{DynamicResource ThemeForegroundBrush}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center" />
                 </Grid>
                 <!--</console:CaretControl>-->
             </ControlTemplate>

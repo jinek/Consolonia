@@ -37,12 +37,12 @@
                                               Content="{TemplateBinding Icon}" />
 
                             <console:SymbolsControl Grid.Column="0"
-                                       Name="check"
-                                       Foreground="{TemplateBinding Foreground}"
-                                       Text="{StaticResource ThemeCheckedSymbol}"
-                                       IsVisible="False"
-                                       Margin="0,0,0,0"
-                                       VerticalAlignment="Center" />
+                                                    Name="check"
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    Text="{StaticResource ThemeCheckedSymbol}"
+                                                    IsVisible="False"
+                                                    Margin="0,0,0,0"
+                                                    VerticalAlignment="Center" />
                             <ContentPresenter Name="PART_HeaderPresenter"
                                               Content="{TemplateBinding Header}"
                                               Margin="{TemplateBinding Padding}"
@@ -54,11 +54,11 @@
                                        Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
                                        VerticalAlignment="Center" />
                             <console:SymbolsControl Name="rightArrow"
-                                       Text="{StaticResource ThemeRightArrowSymbol}"
-                                       Foreground="{DynamicResource ThemeForegroundBrush}"
-                                       Margin="0,0,0,0"
-                                       VerticalAlignment="Center"
-                                       Grid.Column="4" />
+                                                    Text="{StaticResource ThemeRightArrowSymbol}"
+                                                    Foreground="{DynamicResource ThemeForegroundBrush}"
+                                                    Margin="0,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Grid.Column="4" />
                             <Popup Grid.Column="0"
                                    Name="PART_Popup"
                                    Placement="BottomEdgeAlignedLeft"
