@@ -10,9 +10,4 @@
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="TurboVision\" />
-    </ItemGroup>
-
-
 </Project>

@@ -1,5 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:console="https://github.com/jinek/consolonia"
         x:Class="Consolonia.Themes.TurboVisionTheme">
     <Styles.Resources>
         <ResourceDictionary>
@@ -48,4 +49,13 @@
     </Styles.Resources>
 
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
+
+    <Style Selector="CheckBox console|CaretControl Rectangle#PART_CaretLine">
+        <Setter Property="Margin" Value="1 0" />
+    </Style>
+
+    <Style Selector="RadioButton console|CaretControl Rectangle#PART_CaretLine">
+        <Setter Property="Margin" Value="1 0" />
+    </Style>
+
 </Styles>
