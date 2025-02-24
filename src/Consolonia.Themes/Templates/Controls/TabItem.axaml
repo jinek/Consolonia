@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type TabItem}"
                   TargetType="TabItem">
         <Setter Property="Foreground"
@@ -20,14 +20,14 @@
                 <Border BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Background="{TemplateBinding Background}">
-                    <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
+                    <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
                         <ContentPresenter Name="PART_ContentPresenter"
                                           ContentTemplate="{TemplateBinding HeaderTemplate}"
                                           Content="{TemplateBinding Header}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-                    </helpers:CaretControl>
+                    </console:CaretControl>
                 </Border>
             </ControlTemplate>
         </Setter>

@@ -14,27 +14,27 @@ namespace Consolonia.Gallery.Tests
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText(
-                "[ ].+Unchecked",
-                "[V].+Checked",
-                @"[■].+Indeterminate",
+                "☐.+Unchecked",
+                "☒.+Checked",
+                @"■.+Indeterminate",
                 "Disabled",
-                "[ ].+Three State: Unchecked",
-                "[V].+Three State: Checked",
-                @"[■].+Three State: Indeterminate",
-                @"[■].+Three State: Disabled"
+                "☐.+Three State: Unchecked",
+                "☒.+Three State: Checked",
+                @"■.+Three State: Indeterminate",
+                @"■.+Three State: Disabled"
             );
 
             for (int i = 0; i < 6; i++) await UITest.KeyInput(Key.Space, Key.Tab);
 
             await UITest.AssertHasText(
-                "[V].+Unchecked",
-                "[ ].+Checked",
-                "[ ].+Indeterminate",
+                "☒.+Unchecked",
+                "☐.+Checked",
+                "☐.+Indeterminate",
                 "Disabled",
-                "[V].+Three State: Unchecked",
-                @"[■].+Three State: Checked",
-                "[ ].+Three State: Indeterminate",
-                @"[■].+Three State: Disabled"
+                "☒.+Three State: Unchecked",
+                @"■.+Three State: Checked",
+                "☐.+Three State: Indeterminate",
+                @"■.+Three State: Disabled"
             );
         }
     }

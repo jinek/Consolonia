@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     x:ClassModifier="internal">
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <Thickness x:Key="ToggleSwitchTopHeaderMargin">0,0,0,1</Thickness>
     <GridLength x:Key="ToggleSwitchPreContentMargin">0</GridLength>
     <GridLength x:Key="ToggleSwitchPostContentMargin">0</GridLength>
@@ -100,7 +101,7 @@
                                 BorderBrush="Transparent"
                                 BorderThickness="0" />
 
-                        <helpers:CaretControl Grid.Row="1"
+                        <console:CaretControl Grid.Row="1"
                                               Padding="0,0,0,0"
                                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -116,15 +117,15 @@
                                       Width="3"
                                       Height="1">
 
-                                    <TextBlock x:Name="SwitchKnobOn"
-                                               Text="⬤"
-                                               Foreground="{DynamicResource ThemeBackgroundBrush}" />
-                                    <TextBlock x:Name="SwitchKnobOff"
-                                               Text="◯"
-                                               Foreground="{DynamicResource ThemeForegroundBrush}" />
+                                    <console:SymbolsControl x:Name="SwitchKnobOn"
+                                                            Text="{StaticResource ThemeToggleSwitchOnSymbol}"
+                                                            Foreground="{DynamicResource ThemeBackgroundBrush}" />
+                                    <console:SymbolsControl x:Name="SwitchKnobOff"
+                                                            Text="{StaticResource ThemeToggleSwitchOffSymbol}"
+                                                            Foreground="{DynamicResource ThemeForegroundBrush}" />
                                 </Grid>
                             </Canvas>
-                        </helpers:CaretControl>
+                        </console:CaretControl>
                     </Grid>
                 </Grid>
             </ControlTemplate>
@@ -171,11 +172,11 @@
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentColor3}" />
         </Style>
 
-        <Style Selector="^:pressed /template/ TextBlock#SwitchKnobOff">
+        <Style Selector="^:pressed /template/ console|SymbolsControl#SwitchKnobOff">
             <Setter Property="Fill" Value="{DynamicResource ThemeBorderHighColor}" />
         </Style>
 
-        <Style Selector="^:pressed /template/ TextBlock#SwitchKnobOn">
+        <Style Selector="^:pressed /template/ console|SymbolsControl#SwitchKnobOn">
             <Setter Property="Fill" Value="{DynamicResource HighlightForegroundColor}" />
         </Style>
 
@@ -194,11 +195,11 @@
             <Setter Property="Background" Value="Transparent" />
         </Style>
 
-        <Style Selector="^:disabled /template/ TextBlock#SwitchKnobOff">
+        <Style Selector="^:disabled /template/ console|SymbolsControl#SwitchKnobOff">
             <Setter Property="Fill" Value="{DynamicResource ThemeNoDisturbBrush}" />
         </Style>
 
-        <Style Selector="^:disabled /template/ TextBlock#SwitchKnobOn">
+        <Style Selector="^:disabled /template/ Textconsole|SymbolsControlBlock#SwitchKnobOn">
             <Setter Property="Fill" Value="{DynamicResource ThemeNoDisturbBrush}" />
         </Style>
 
@@ -213,7 +214,7 @@
                     Value="0" />
         </Style>
 
-        <Style Selector="^:checked  /template/ TextBlock#SwitchKnobOff">
+        <Style Selector="^:checked  /template/ console|SymbolsControl#SwitchKnobOff">
             <Setter Property="Opacity"
                     Value="0" />
         </Style>
@@ -223,7 +224,7 @@
                     Value="1" />
         </Style>
 
-        <Style Selector="^:checked /template/ TextBlock#SwitchKnobOn">
+        <Style Selector="^:checked /template/ console|SymbolsControl#SwitchKnobOn">
             <Setter Property="Opacity"
                     Value="1" />
         </Style>
@@ -244,12 +245,12 @@
                     Value="1" />
         </Style>
 
-        <Style Selector="^:unchecked /template/ TextBlock#SwitchKnobOff">
+        <Style Selector="^:unchecked /template/ console|SymbolsControl#SwitchKnobOff">
             <Setter Property="Opacity"
                     Value="1" />
         </Style>
 
-        <Style Selector="^:unchecked /template/ TextBlock#SwitchKnobOn">
+        <Style Selector="^:unchecked /template/ console|SymbolsControl#SwitchKnobOn">
             <Setter Property="Opacity"
                     Value="0" />
         </Style>

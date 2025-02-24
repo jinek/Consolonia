@@ -1,8 +1,9 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     xmlns:converters="using:Avalonia.Controls.Converters"
                     x:ClassModifier="internal">
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <converters:MarginMultiplierConverter x:Key="LeftMarginConverter"
                                           Indent="1"
                                           Left="True" />
@@ -21,10 +22,9 @@
         <Style Selector="^:checked">
             <Setter Property="Template">
                 <ControlTemplate>
-                    <TextBlock HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Text="▼"
-                               Background="Transparent" />
+                    <console:SymbolsControl HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{StaticResource ThemeDownArrowSymbol}" />
                 </ControlTemplate>
             </Setter>
         </Style>
@@ -38,7 +38,7 @@
                 Value="Transparent" />
         <Setter Property="Template">
             <ControlTemplate>
-                <helpers:CaretControl Foreground="{TemplateBinding Foreground}"
+                <console:CaretControl Foreground="{TemplateBinding Foreground}"
                                       IsCaretShown="{TemplateBinding IsFocused}">
 
                     <StackPanel>
@@ -73,7 +73,7 @@
                                         IsVisible="{TemplateBinding IsExpanded}"
                                         ItemsPanel="{TemplateBinding ItemsPanel}" />
                     </StackPanel>
-                </helpers:CaretControl>
+                </console:CaretControl>
             </ControlTemplate>
         </Setter>
 

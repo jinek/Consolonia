@@ -50,8 +50,7 @@
                         <MenuItem.Icon>
                             <CheckBox BorderThickness="0"
                                       IsHitTestVisible="False"
-                                      IsChecked="True"
-                                      Margin="-1,0" />
+                                      IsChecked="True" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
