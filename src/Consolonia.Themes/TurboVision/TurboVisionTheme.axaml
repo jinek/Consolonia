@@ -51,11 +51,13 @@
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
 
     <Style Selector="CheckBox console|CaretControl Rectangle#PART_CaretLine">
-        <Setter Property="Margin" Value="1 0" />
+        <Setter Property="Margin"
+                Value="1 0" />
     </Style>
 
     <Style Selector="RadioButton console|CaretControl Rectangle#PART_CaretLine">
-        <Setter Property="Margin" Value="1 0" />
+        <Setter Property="Margin"
+                Value="1 0" />
     </Style>
 
 </Styles>
