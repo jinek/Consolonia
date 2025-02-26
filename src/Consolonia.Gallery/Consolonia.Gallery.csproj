@@ -18,5 +18,18 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AvaloniaXaml Update="Gallery\GalleryViews\GalleryPlatform.axaml">
+        <SubType>Designer</SubType>
+      </AvaloniaXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Gallery\GalleryViews\GalleryPlatform.axaml.cs">
+        <SubType>Code</SubType>
+        <DependentUpon>GalleryPlatform.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 
 </Project>
