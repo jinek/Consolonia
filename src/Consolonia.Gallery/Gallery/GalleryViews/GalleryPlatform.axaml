@@ -44,9 +44,7 @@
                             <TextBlock Text="✗ "/>
                         </console:OnPlatformEx.Default>
                         <console:OnPlatformEx.Console>
-                            <TextBlock>
-                                <TextBlock Text="✓ "/>
-                            </TextBlock>
+                            <TextBlock Text="✓ "/>
                         </console:OnPlatformEx.Console>
                     </console:OnPlatformEx>
                     <TextBlock Text="IsConsole" />
