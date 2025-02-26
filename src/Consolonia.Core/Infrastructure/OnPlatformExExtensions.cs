@@ -1,7 +1,7 @@
 using System;
+using Avalonia;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Metadata;
-using Avalonia;
 
 // ReSharper disable CheckNamespace
 #pragma warning disable IDE0130 // Namespace does not match folder structure
@@ -11,7 +11,6 @@ namespace Consolonia
     {
         public OnPlatformExExtension()
         {
-
         }
 
         public OnPlatformExExtension(object defaultValue)
@@ -29,7 +28,6 @@ namespace Consolonia
     {
         public OnPlatformExExtension()
         {
-
         }
 
         public OnPlatformExExtension(TReturn defaultValue)
@@ -49,8 +47,7 @@ namespace Consolonia
         where TOn : On<TReturn>
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        [MarkupExtensionOption("CONSOLE")]
-        public TReturn Console { get; set; }
+        [MarkupExtensionOption("CONSOLE")] public TReturn Console { get; set; }
 
         private protected static bool ShouldProvideOptionInternal2(string option)
         {

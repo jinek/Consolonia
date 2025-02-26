@@ -37,14 +37,14 @@
         </StackPanel>
         <StackPanel>
             <TextBlock TextDecorations="Underline">Long-form conditional markup based platform (including Console)</TextBlock>
-            <StackPanel >
+            <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <console:OnPlatformEx>
                         <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ "/>
+                            <TextBlock Text="✗ " />
                         </console:OnPlatformEx.Default>
                         <console:OnPlatformEx.Console>
-                            <TextBlock Text="✓ "/>
+                            <TextBlock Text="✓ " />
                         </console:OnPlatformEx.Console>
                     </console:OnPlatformEx>
                     <TextBlock Text="IsConsole" />
@@ -53,10 +53,10 @@
                     <TextBlock>
                         <console:OnPlatformEx>
                             <console:OnPlatformEx.Default>
-                                <TextBlock Text="✗ "/>
+                                <TextBlock Text="✗ " />
                             </console:OnPlatformEx.Default>
                             <console:OnPlatformEx.Windows>
-                                <TextBlock Text="✓ "/>
+                                <TextBlock Text="✓ " />
                             </console:OnPlatformEx.Windows>
                         </console:OnPlatformEx>
                     </TextBlock>
@@ -65,10 +65,10 @@
                 <StackPanel Orientation="Horizontal">
                     <console:OnPlatformEx>
                         <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ "/>
+                            <TextBlock Text="✗ " />
                         </console:OnPlatformEx.Default>
                         <console:OnPlatformEx.Linux>
-                            <TextBlock Text="✓ "/>
+                            <TextBlock Text="✓ " />
                         </console:OnPlatformEx.Linux>
                     </console:OnPlatformEx>
                     <TextBlock Text="IsLinux" />
@@ -76,10 +76,10 @@
                 <StackPanel Orientation="Horizontal">
                     <console:OnPlatformEx>
                         <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ "/>
+                            <TextBlock Text="✗ " />
                         </console:OnPlatformEx.Default>
                         <console:OnPlatformEx.macOS>
-                            <TextBlock Text="✓ "/>
+                            <TextBlock Text="✓ " />
                         </console:OnPlatformEx.macOS>
                     </console:OnPlatformEx>
                     <TextBlock Text="IsOSX" />
@@ -87,10 +87,10 @@
                 <StackPanel Orientation="Horizontal">
                     <console:OnPlatformEx>
                         <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ "/>
+                            <TextBlock Text="✗ " />
                         </console:OnPlatformEx.Default>
                         <console:OnPlatformEx.Android>
-                            <TextBlock Text="✓ "/>
+                            <TextBlock Text="✓ " />
                         </console:OnPlatformEx.Android>
                     </console:OnPlatformEx>
                     <TextBlock Text="IsAndroid" />
@@ -98,10 +98,10 @@
                 <StackPanel Orientation="Horizontal">
                     <console:OnPlatformEx>
                         <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ "/>
+                            <TextBlock Text="✗ " />
                         </console:OnPlatformEx.Default>
                         <console:OnPlatformEx.iOS>
-                            <TextBlock Text="✓ "/>
+                            <TextBlock Text="✓ " />
                         </console:OnPlatformEx.iOS>
                     </console:OnPlatformEx>
                     <TextBlock Text="IsiOS" />
@@ -109,10 +109,10 @@
                 <StackPanel Orientation="Horizontal">
                     <console:OnPlatformEx>
                         <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ "/>
+                            <TextBlock Text="✗ " />
                         </console:OnPlatformEx.Default>
                         <console:OnPlatformEx.Browser>
-                            <TextBlock Text="✓ "/>
+                            <TextBlock Text="✓ " />
                         </console:OnPlatformEx.Browser>
                     </console:OnPlatformEx>
                     <TextBlock Text="IsBrowser" />
