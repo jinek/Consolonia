@@ -47,6 +47,7 @@ namespace Consolonia
     public abstract class OnPlatformConsoleExtensionBase<TReturn, TOn> : OnPlatformExtensionBase<TReturn, TOn>
         where TOn : On<TReturn>
     {
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         [MarkupExtensionOption("CONSOLE")]
         public TReturn Console { get; set; }
 
