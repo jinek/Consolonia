@@ -13,7 +13,7 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            var expected = new string[]
+            string[] expected = new[]
             {
                 "✓ IsConsole",
                 $"{(OperatingSystem.IsWindows() ? '✓' : '✗')} IsWindows",
