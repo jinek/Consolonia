@@ -57,13 +57,7 @@ namespace Consolonia
             return option switch
             {
                 "CONSOLE" => Application.Current.ApplicationLifetime is ConsoloniaLifetime,
-                "WINDOWS" => OperatingSystem.IsWindows(),
-                "OSX" => OperatingSystem.IsMacOS(),
-                "LINUX" => OperatingSystem.IsLinux(),
-                "ANDROID" => OperatingSystem.IsAndroid(),
-                "IOS" => OperatingSystem.IsIOS(),
-                "BROWSER" => OperatingSystem.IsBrowser(),
-                _ => OperatingSystem.IsOSPlatform(option)
+                _ => OnPlatformExtension.ShouldProvideOption(option)
             };
         }
     }
