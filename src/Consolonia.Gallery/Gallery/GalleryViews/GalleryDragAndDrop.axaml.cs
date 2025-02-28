@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -29,11 +30,15 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 d => d.Set(CustomFormat, "Test123"),
                 DragDropEffects.Move);
 
-            var filePath = System.IO.Path.Combine(Environment.CurrentDirectory, "file.txt");
-            System.IO.File.WriteAllText(filePath, "foo");
+            string filePath = Path.Combine(Environment.CurrentDirectory, "file.txt");
+            File.WriteAllText(filePath, "foo");
             SetupDnd(
                 "Files",
-                d => { d.Set(DataFormats.Files, new[] { TopLevel.GetTopLevel(this).StorageProvider.TryGetFileFromPathAsync(filePath).Result }); },
+                d =>
+                {
+                    d.Set(DataFormats.Files,
+                        new[] { TopLevel.GetTopLevel(this).StorageProvider.TryGetFileFromPathAsync(filePath).Result });
+                },
                 DragDropEffects.Copy);
         }
 

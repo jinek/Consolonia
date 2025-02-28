@@ -41,20 +41,21 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             IStorageProvider storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
             if (storageProvider.CanOpen)
             {
-                var startLocation = await storageProvider.TryGetFolderFromPathAsync(Environment.CurrentDirectory);
+                IStorageFolder startLocation =
+                    await storageProvider.TryGetFolderFromPathAsync(Environment.CurrentDirectory);
                 var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
                 {
                     Title = title,
                     AllowMultiple = allowMultiple,
                     SuggestedStartLocation = startLocation,
                     FileTypeFilter = new List<FilePickerFileType>
-                        {
-                            new("* files") { Patterns = ["*"] },
-                            new("*.* files") { Patterns = ["*.*"] },
-                            new("Text") { Patterns = ["*.txt"] },
-                            new("Comma Delimited Files") { Patterns = ["*.csv"] },
-                            new("PDF") { Patterns = ["*.pdf"] }
-                        }
+                    {
+                        new("* files") { Patterns = ["*"] },
+                        new("*.* files") { Patterns = ["*.*"] },
+                        new("Text") { Patterns = ["*.txt"] },
+                        new("Comma Delimited Files") { Patterns = ["*.csv"] },
+                        new("PDF") { Patterns = ["*.pdf"] }
+                    }
                 });
 
                 ViewModel.Files = files;
@@ -78,7 +79,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 IStorageProvider storageProvider = lifetime.TopLevel.StorageProvider;
                 if (storageProvider.CanOpen)
                 {
-                    var startLocation = await storageProvider.TryGetFolderFromPathAsync(Environment.CurrentDirectory);
+                    IStorageFolder startLocation =
+                        await storageProvider.TryGetFolderFromPathAsync(Environment.CurrentDirectory);
 
                     var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
                     {
@@ -96,7 +98,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             IStorageProvider storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
             if (storageProvider != null && storageProvider.CanSave)
             {
-                var startLocation = await storageProvider.TryGetFolderFromPathAsync(Environment.CurrentDirectory);
+                IStorageFolder startLocation =
+                    await storageProvider.TryGetFolderFromPathAsync(Environment.CurrentDirectory);
 
                 IStorageFile file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
                 {
@@ -105,11 +108,11 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     DefaultExtension = "txt",
                     SuggestedFileName = "NewFile.txt",
                     FileTypeChoices = new List<FilePickerFileType>
-                        {
-                            new("Text") { Patterns = ["*.txt"] },
-                            new("Comma Delimited Files") { Patterns = ["*.csv"] },
-                            new("PDF") { Patterns = ["*.pdf"] }
-                        }
+                    {
+                        new("Text") { Patterns = ["*.txt"] },
+                        new("Comma Delimited Files") { Patterns = ["*.csv"] },
+                        new("PDF") { Patterns = ["*.pdf"] }
+                    }
                 });
 
                 ViewModel.Files = new List<IStorageFile> { file };
