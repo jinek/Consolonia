@@ -14,12 +14,6 @@ namespace Consolonia.Controls
             return observable.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<TValue>>(action));
         }
 
-        //public static bool IsNearlyEqual(this double value, double compareTo)
-        //{
-        //    //todo: strange implementation for this name
-        //    return value.CompareTo(compareTo) == 0;
-        //}
-
         public static string GetStyledPropertyName([CallerMemberName] string propertyFullName = null)
         {
             return propertyFullName![..^8];
