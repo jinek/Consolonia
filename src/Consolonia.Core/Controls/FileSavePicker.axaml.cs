@@ -56,7 +56,7 @@ namespace Consolonia.Core.Controls
 
         private async void OnOK(object sender, RoutedEventArgs e)
         {
-            var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+            IStorageProvider storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
             ArgumentNullException.ThrowIfNull(storageProvider);
 
             string savePath = ViewModel.SavePath;
