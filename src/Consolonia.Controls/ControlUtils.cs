@@ -5,7 +5,7 @@ using Avalonia;
 
 namespace Consolonia.Controls
 {
-    public static class Utils
+    public static class ControlUtils
     {
         public static IDisposable SubscribeAction<TValue>(
                 this IObservable<AvaloniaPropertyChangedEventArgs<TValue>> observable,

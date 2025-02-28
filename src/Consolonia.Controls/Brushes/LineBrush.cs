@@ -10,10 +10,10 @@ namespace Consolonia.Controls.Brushes
         //todo: we don't really implement immutable brush
         public static readonly StyledProperty<IBrush> BrushProperty =
             AvaloniaProperty.Register<LineBrush, IBrush>(
-                Utils.GetStyledPropertyName() /*todo: re-use this method everywhere*/);
+                ControlUtils.GetStyledPropertyName() /*todo: re-use this method everywhere*/);
 
         public static readonly StyledProperty<LineStyles> LineStyleProperty =
-            AvaloniaProperty.Register<LineBrush, LineStyles>(Utils.GetStyledPropertyName());
+            AvaloniaProperty.Register<LineBrush, LineStyles>(ControlUtils.GetStyledPropertyName());
 
         public IBrush Brush
         {
