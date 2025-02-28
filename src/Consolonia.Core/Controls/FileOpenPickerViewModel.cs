@@ -5,9 +5,9 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DotNet.Globbing;
 
-namespace Consolonia.Controls
+namespace Consolonia.Core.Controls
 {
-    public partial class FileOpenPickerViewModel : PickerViewModelBase<FilePickerOpenOptions>
+    internal partial class FileOpenPickerViewModel : PickerViewModelBase<FilePickerOpenOptions>
     {
         [ObservableProperty] private bool _hasSelection;
 

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Consolonia.Controls
+namespace Consolonia.Core.Controls
 {
     public partial class FileSavePickerViewModel : PickerViewModelBase<FilePickerSaveOptions>
     {

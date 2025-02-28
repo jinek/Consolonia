@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 
-namespace Consolonia.Controls
+namespace Consolonia.Core.Controls
 {
     [DebuggerDisplay("File: {Name}")]
     public sealed class SystemStorageFile : IStorageFile

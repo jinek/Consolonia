@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Consolonia.Controls;
+using Consolonia.Core.Controls;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {

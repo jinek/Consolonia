@@ -3,12 +3,12 @@ using Avalonia;
 using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 
-namespace Consolonia.Controls
+namespace Consolonia.Core.Controls
 {
     /// <summary>
     ///     A text block that displays a character prefixed with an underscore as an access key.
     /// </summary>
-    public sealed class ConsoloniaAccessText : AccessText
+    internal sealed class ConsoloniaAccessText : AccessText
     {
         private Run _accessRun;
 

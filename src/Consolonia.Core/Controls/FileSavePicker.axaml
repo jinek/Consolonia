@@ -2,26 +2,24 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:console="https://github.com/jinek/consolonia"
                       xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
-                      xmlns:core-Controls="clr-namespace:Consolonia.Controls"
+                      xmlns:core-Controls="clr-namespace:Consolonia.Core.Controls"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
-                      x:DataType="core-Controls:FolderPickerViewModel"
-                      x:Class="Consolonia.Controls.FolderPicker"
-                      Icon="📁"
+                      x:DataType="core-Controls:FileSavePickerViewModel"
+                      x:Class="Consolonia.Core.Controls.FileSavePicker"
+                      Icon="📰"
                       CancelOnEscape="True"
                       Title="{Binding Options.Title}">
-    <Grid RowDefinitions="Auto * Auto">
+    <Grid RowDefinitions="Auto * Auto Auto">
         <Grid ColumnDefinitions="Auto *">
-            <TextBlock Text="📁"
-                       Margin="0 0 1 0" />
+            <TextBlock Text="📁 " />
             <TextBox Text="{Binding CurrentFolderPath, Mode=TwoWay}"
                      Grid.Column="1" />
         </Grid>
         <ListBox x:Name="ItemsListBox"
                  Grid.Row="1"
                  ItemsSource="{Binding Items}"
-                 SelectionMode="{Binding SelectionMode}"
-                 SelectionChanged="ListBox_SelectionChanged"
+                 SelectedItem="{Binding SelectedItem}"
                  DoubleTapped="OnDoubleTapped">
             <ListBox.DataTemplates>
                 <DataTemplate DataType="{x:Type storage:IStorageFolder}">
@@ -44,15 +42,22 @@
                 </DataTemplate>
             </ListBox.DataTemplates>
         </ListBox>
-        <StackPanel Grid.Row="2"
+        <Grid Grid.Row="2"
+              ColumnDefinitions="Auto *">
+            <TextBlock Text="File:"
+                       Margin="0 0 1 0" />
+            <TextBox Text="{Binding SavePath, Mode=TwoWay}"
+                     Grid.Column="1" />
+        </Grid>
+        <StackPanel Grid.Row="3"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="1">
-            <Button x:Name="OkButton"
-                    Content="OK"
+            <Button x:Name="SaveButton"
+                    Content="Save"
                     Click="OnOK"
-                    IsEnabled="{Binding HasSelection}" />
-            <Button Name="CancelButton"
+                    IsEnabled="{Binding SavePath, Converter={x:Static ObjectConverters.IsNotNull}}" />
+            <Button x:Name="CancelButton"
                     Content="Cancel"
                     Click="OnCancel" />
         </StackPanel>

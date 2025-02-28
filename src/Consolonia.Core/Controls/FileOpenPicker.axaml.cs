@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Consolonia.Controls;
 
-namespace Consolonia.Controls
+namespace Consolonia.Core.Controls
 {
     public partial class FileOpenPicker : DialogWindow
     {
