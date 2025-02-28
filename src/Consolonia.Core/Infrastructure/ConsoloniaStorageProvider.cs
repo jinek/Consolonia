@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Platform.Storage;
-using Consolonia.Controls;
 using Consolonia.Core.Controls;
 
 namespace Consolonia.Core.Infrastructure
