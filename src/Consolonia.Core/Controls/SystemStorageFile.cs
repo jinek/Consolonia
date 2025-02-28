@@ -7,7 +7,7 @@ using Avalonia.Platform.Storage;
 namespace Consolonia.Core.Controls
 {
     [DebuggerDisplay("File: {Name}")]
-    public sealed class SystemStorageFile : IStorageFile
+    internal sealed class SystemStorageFile : IStorageFile
     {
         private readonly FileInfo _fileInfo;
 

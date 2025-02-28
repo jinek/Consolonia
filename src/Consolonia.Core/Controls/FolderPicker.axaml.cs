@@ -6,7 +6,7 @@ using Consolonia.Controls;
 
 namespace Consolonia.Core.Controls
 {
-    public partial class FolderPicker : DialogWindow
+    internal partial class FolderPicker : DialogWindow
     {
         public FolderPicker()
             : this(new FolderPickerOpenOptions())

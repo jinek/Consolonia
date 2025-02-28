@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Consolonia.Core.Controls
 {
-    public partial class FolderPickerViewModel : PickerViewModelBase<FolderPickerOpenOptions>
+    internal partial class FolderPickerViewModel : PickerViewModelBase<FolderPickerOpenOptions>
     {
         [ObservableProperty] private bool _hasSelection;
 

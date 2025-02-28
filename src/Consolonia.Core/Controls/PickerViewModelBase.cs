@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Consolonia.Core.Controls
 {
-    public abstract partial class PickerViewModelBase<TPickerOptions> : ObservableObject
+    internal abstract partial class PickerViewModelBase<TPickerOptions> : ObservableObject
         where TPickerOptions : PickerOptions
     {
         [ObservableProperty] private IStorageFolder _currentFolder;

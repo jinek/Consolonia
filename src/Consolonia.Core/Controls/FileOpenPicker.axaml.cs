@@ -7,7 +7,7 @@ using Consolonia.Controls;
 
 namespace Consolonia.Core.Controls
 {
-    public partial class FileOpenPicker : DialogWindow
+    internal partial class FileOpenPicker : DialogWindow
     {
         public FileOpenPicker()
             : this(new FilePickerOpenOptions())

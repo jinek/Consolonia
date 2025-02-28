@@ -264,7 +264,7 @@ namespace Consolonia.Core.Infrastructure
         public object TryGetFeature(Type featureType)
         {
             if (featureType == typeof(IStorageProvider))
-                return AvaloniaLocator.Current.GetService<IStorageProvider>();
+                return new ConsoloniaStorageProvider();
 
             if (featureType == typeof(IInsetsManager))
                 // IInsetsManager doesn't apply to console applications.

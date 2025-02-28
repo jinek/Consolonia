@@ -8,7 +8,7 @@ using Consolonia.Controls;
 
 namespace Consolonia.Core.Controls
 {
-    public partial class FileSavePicker : DialogWindow
+    internal partial class FileSavePicker : DialogWindow
     {
         public FileSavePicker()
             : this(new FilePickerSaveOptions())

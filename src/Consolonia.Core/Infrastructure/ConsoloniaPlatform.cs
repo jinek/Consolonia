@@ -57,7 +57,7 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<ICursorFactory>().ToConstant(new DummyCursorFactory())
                 .Bind<IPlatformIconLoader>().ToConstant(new DummyIconLoader())
                 .Bind<IPlatformSettings>().ToSingleton<ConsoloniaPlatformSettings>()
-                .Bind<IStorageProvider>().ToSingleton<ConsoloniaStorageProvider>()
+                // .Bind<IStorageProvider>().ToSingleton<BclStorageProvider>()
                 .Bind<IRuntimePlatform>().ToConstant(new StandardRuntimePlatform())
                 //.Bind<IClipboard>().ToConstant(null)
                 /*.Bind<IKeyboardNavigationHandler>().ToTransient<ArrowsAndKeyboardNavigationHandler>() todo: implement this navigation*/
