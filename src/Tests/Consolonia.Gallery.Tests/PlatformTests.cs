@@ -15,10 +15,10 @@ namespace Consolonia.Gallery.Tests
         {
             string[] expected = new[]
             {
-                "✓ IsConsole",
-                $"{(OperatingSystem.IsWindows() ? '✓' : '✗')} IsWindows",
-                $"{(OperatingSystem.IsLinux() ? '✓' : '✗')} IsLinux",
-                $"{(OperatingSystem.IsMacOS() ? '✓' : '✗')} IsOSX"
+                "✓.*IsConsole",
+                @$"{(OperatingSystem.IsWindows() ? '✓' : '✗')}\s*IsWindows",
+                @$"{(OperatingSystem.IsLinux() ? '✓' : '✗')}\s*IsLinux",
+                @$"{(OperatingSystem.IsMacOS() ? '✓' : '✗')}\s*IsOSX"
             };
 
             await UITest.KeyInput(Key.Tab);

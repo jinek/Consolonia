@@ -3,11 +3,10 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Consolonia.Controls;
-using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Controls
 {
-    public partial class FolderPicker : DialogWindow
+    internal partial class FolderPicker : DialogWindow
     {
         public FolderPicker()
             : this(new FolderPickerOpenOptions())

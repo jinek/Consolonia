@@ -1,20 +1,19 @@
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Media;
-using Consolonia.Core.InternalHelpers;
 
 // ReSharper disable CheckNamespace
-namespace Consolonia.Controls
+namespace Consolonia.Controls.Brushes
 {
     public class LineBrush : Animatable, IImmutableBrush
     {
         //todo: we don't really implement immutable brush
         public static readonly StyledProperty<IBrush> BrushProperty =
             AvaloniaProperty.Register<LineBrush, IBrush>(
-                CommonInternalHelper.GetStyledPropertyName() /*todo: re-use this method everywhere*/);
+                ControlUtils.GetStyledPropertyName() /*todo: re-use this method everywhere*/);
 
         public static readonly StyledProperty<LineStyles> LineStyleProperty =
-            AvaloniaProperty.Register<LineBrush, LineStyles>(CommonInternalHelper.GetStyledPropertyName());
+            AvaloniaProperty.Register<LineBrush, LineStyles>(ControlUtils.GetStyledPropertyName());
 
         public IBrush Brush
         {

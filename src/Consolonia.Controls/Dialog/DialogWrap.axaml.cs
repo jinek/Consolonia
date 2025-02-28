@@ -6,9 +6,8 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Reactive;
 using Avalonia.VisualTree;
-using Consolonia.Controls;
 
-namespace Consolonia.Core.Controls.Dialog
+namespace Consolonia.Controls.Dialog
 {
     [SuppressMessage("Usage", "PartialTypeWithSinglePart",
         Justification = "Partial class required for XAML code generation.")]

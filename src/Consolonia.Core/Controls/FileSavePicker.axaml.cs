@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -9,7 +8,7 @@ using Consolonia.Controls;
 
 namespace Consolonia.Core.Controls
 {
-    public partial class FileSavePicker : DialogWindow
+    internal partial class FileSavePicker : DialogWindow
     {
         public FileSavePicker()
             : this(new FilePickerSaveOptions())
@@ -57,19 +56,19 @@ namespace Consolonia.Core.Controls
 
         private async void OnOK(object sender, RoutedEventArgs e)
         {
-            var lifetime = Application.Current?.ApplicationLifetime as ConsoloniaLifetime;
-            ArgumentNullException.ThrowIfNull(lifetime?.TopLevel?.StorageProvider);
+            IStorageProvider storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+            ArgumentNullException.ThrowIfNull(storageProvider);
 
             string savePath = ViewModel.SavePath;
             if (!Path.IsPathFullyQualified(ViewModel.SavePath))
                 savePath = Path.GetFullPath(Path.Combine(ViewModel.CurrentFolder.Path.LocalPath, ViewModel.SavePath));
 
             IStorageFile file =
-                await lifetime.TopLevel.StorageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));
+                await storageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));
             if (file == null)
             {
                 IStorageFolder folder =
-                    await lifetime.TopLevel.StorageProvider.TryGetFolderFromPathAsync(
+                    await storageProvider.TryGetFolderFromPathAsync(
                         new Uri($"file://{Path.GetDirectoryName(savePath)}"));
                 if (folder == null)
                 {

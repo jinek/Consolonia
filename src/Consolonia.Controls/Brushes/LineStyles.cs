@@ -1,11 +1,7 @@
 using System;
 using System.Linq;
 
-// ReSharper disable CheckNamespace
-#pragma warning disable CA2225
-#pragma warning disable IDE0130 // Namespace does not match folder structure
-namespace Consolonia.Controls
-#pragma warning restore IDE0130 // Namespace does not match folder structure
+namespace Consolonia.Controls.Brushes
 {
     public class LineStyles
     {
@@ -45,6 +41,7 @@ namespace Consolonia.Controls
             return new LineStyles(s);
         }
 
+#pragma warning disable CA2225 // Operator overloads have named alternates
         public static implicit operator LineStyles(string text)
         {
             return new LineStyles(text);
@@ -54,5 +51,6 @@ namespace Consolonia.Controls
         {
             return new LineStyles(lineStyle);
         }
+#pragma warning restore CA2225 // Operator overloads have named alternates
     }
 }

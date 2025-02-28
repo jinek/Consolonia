@@ -3,12 +3,12 @@ using Avalonia.Animation;
 using Avalonia.Media;
 
 // ReSharper disable CheckNamespace
-namespace Consolonia.Controls
+namespace Consolonia.Controls.Brushes
 {
     /// <summary>
-    ///     This brush shades the area it paints.
+    ///     This brush brightens the area it paints.
     /// </summary>
-    public class ShadeBrush : Animatable, IImmutableBrush
+    public class BrightenBrush : Animatable, IImmutableBrush
     {
         public double Opacity => 1;
         public ITransform Transform => null;

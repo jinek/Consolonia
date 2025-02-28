@@ -9,10 +9,8 @@ using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.VisualTree;
-using Consolonia.Controls;
-using Consolonia.Core.Helpers;
 
-namespace Consolonia.Core.Controls.Dialog
+namespace Consolonia.Controls.Dialog
 {
     public class DialogHost
     {
