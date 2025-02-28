@@ -11,6 +11,10 @@
         <PackageReference Include="Unicode.net" Version="2.0.0" />
         <PackageReference Include="Wcwidth" Version="2.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>    
+
+    <ItemGroup>
+      <ProjectReference Include="..\Consolonia.Controls\Consolonia.Controls.csproj" />
     </ItemGroup>
 
 </Project>

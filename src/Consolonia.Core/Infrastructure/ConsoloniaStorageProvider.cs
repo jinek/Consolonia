@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Platform.Storage;
-using Consolonia.Core.Controls;
+using Consolonia.Controls;
 
 namespace Consolonia.Core.Infrastructure
 {

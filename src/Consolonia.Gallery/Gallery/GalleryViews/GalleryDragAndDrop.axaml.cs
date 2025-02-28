@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
-using Consolonia.Core.Infrastructure;
+using Consolonia.Controls;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {

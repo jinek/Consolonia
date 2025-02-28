@@ -5,9 +5,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Consolonia.Core.Infrastructure;
 
-namespace Consolonia.Core.Controls
+namespace Consolonia.Controls
 {
     public abstract partial class PickerViewModelBase<TPickerOptions> : ObservableObject
         where TPickerOptions : PickerOptions

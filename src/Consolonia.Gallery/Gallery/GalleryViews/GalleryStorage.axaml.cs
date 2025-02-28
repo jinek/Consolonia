@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Consolonia.Controls;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews

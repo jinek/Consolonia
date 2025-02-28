@@ -8,7 +8,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
-using Consolonia.Core.Controls.Dialog;
+using Consolonia.Controls.Dialog;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBeProtected.Global

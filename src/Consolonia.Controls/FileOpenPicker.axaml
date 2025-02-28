@@ -2,11 +2,11 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
                       xmlns:console="https://github.com/jinek/consolonia"
-                      xmlns:core-Controls="clr-namespace:Consolonia.Core.Controls"
+                      xmlns:core-Controls="clr-namespace:Consolonia.Controls"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
                       x:DataType="core-Controls:FileOpenPickerViewModel"
-                      x:Class="Consolonia.Core.Controls.FileOpenPicker"
+                      x:Class="Consolonia.Controls.FileOpenPicker"
                       Icon="📰"
                       CancelOnEscape="True"
                       Title="{Binding Options.Title}">

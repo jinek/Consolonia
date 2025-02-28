@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Consolonia.Core.Controls
+namespace Consolonia.Controls
 {
     public partial class FolderPickerViewModel : PickerViewModelBase<FolderPickerOpenOptions>
     {
