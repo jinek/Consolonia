@@ -41,6 +41,7 @@ namespace Consolonia.Controls.Brushes
             return new LineStyles(s);
         }
 
+#pragma warning disable CA2225 // Operator overloads have named alternates
         public static implicit operator LineStyles(string text)
         {
             return new LineStyles(text);
@@ -50,5 +51,6 @@ namespace Consolonia.Controls.Brushes
         {
             return new LineStyles(lineStyle);
         }
+#pragma warning restore CA2225 // Operator overloads have named alternates
     }
 }
