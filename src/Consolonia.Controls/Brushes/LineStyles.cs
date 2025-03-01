@@ -4,7 +4,7 @@ using System.Linq;
 namespace Consolonia.Controls.Brushes
 {
     /// <summary>
-    /// Represents a LineStyle for each side of a rectangle.
+    ///     Represents a LineStyle for each side of a rectangle.
     /// </summary>
     public class LineStyles
     {

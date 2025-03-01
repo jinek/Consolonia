@@ -4,7 +4,7 @@ using Avalonia.Media;
 namespace Consolonia.Controls.Brushes
 {
     /// <summary>
-    /// This brush will move the console caret to the specified position it is drawn into.
+    ///     This brush will move the console caret to the specified position it is drawn into.
     /// </summary>
     public class MoveConsoleCaretToPositionBrush : AvaloniaObject, IImmutableBrush
     {

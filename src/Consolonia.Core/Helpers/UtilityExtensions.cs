@@ -115,7 +115,5 @@ namespace Consolonia.Core.Helpers
             if (emoji.Length > 0) glyphs.Add(emoji.ToString());
             return glyphs;
         }
-
-      
     }
 }

@@ -17,6 +17,7 @@ namespace Consolonia.Controls
 
         public static readonly StyledProperty<IBrush> BrushProperty =
             AvaloniaProperty.Register<LineSeparator, IBrush>(nameof(Brush), Avalonia.Media.Brushes.Black);
+
         public LineSeparator()
         {
             AffectsRender<LineSeparator>(OrientationProperty);

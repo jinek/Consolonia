@@ -3,7 +3,7 @@
 namespace Consolonia.Controls.Brushes
 {
     /// <summary>
-    /// Represents the style of a line.
+    ///     Represents the style of a line.
     /// </summary>
     public enum LineStyle
     {
