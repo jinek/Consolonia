@@ -1,4 +1,4 @@
-﻿namespace Consolonia.Core.Drawing
+namespace Consolonia.Controls
 {
     public enum CaretStyle
     {

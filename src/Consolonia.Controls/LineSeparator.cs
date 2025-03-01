@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
 
-namespace Consolonia.Themes.Templates.Controls.Helpers
+namespace Consolonia.Controls
 {
     /// <summary>
     ///     A control that will draw a horizontal or a vertical line to separate content.
@@ -16,8 +16,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             AvaloniaProperty.Register<LineSeparator, Orientation>(nameof(Orientation));
 
         public static readonly StyledProperty<IBrush> BrushProperty =
-            AvaloniaProperty.Register<LineSeparator, IBrush>(nameof(Brush), Brushes.Black);
-
+            AvaloniaProperty.Register<LineSeparator, IBrush>(nameof(Brush), Avalonia.Media.Brushes.Black);
 
         public LineSeparator()
         {

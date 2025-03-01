@@ -1,5 +1,5 @@
 using Avalonia.Media;
-using Consolonia.Core.Drawing;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 

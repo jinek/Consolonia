@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
+using Consolonia.Controls;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 

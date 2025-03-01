@@ -8,8 +8,6 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
         <PackageReference Include="DotNet.Glob" Version="3.1.3" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8" />
-        <PackageReference Include="Unicode.net" Version="2.0.0" />
-        <PackageReference Include="Wcwidth" Version="2.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>    
 

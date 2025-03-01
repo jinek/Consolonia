@@ -5,6 +5,9 @@ using Avalonia.Media;
 // ReSharper disable CheckNamespace
 namespace Consolonia.Controls.Brushes
 {
+    /// <summary>
+    ///     This brush will draw using a LineStyle
+    /// </summary>
     public class LineBrush : Animatable, IImmutableBrush
     {
         //todo: we don't really implement immutable brush

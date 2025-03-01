@@ -1,18 +1,16 @@
 using Avalonia;
-using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Metadata;
+using AvaloniaMarkup = Avalonia.Markup.Xaml.MarkupExtensions;
 
-// ReSharper disable CheckNamespace
-#pragma warning disable IDE0130 // Namespace does not match folder structure
-namespace Consolonia
+namespace Consolonia.Controls.Markup
 {
-    public sealed class OnPlatformExExtension : OnPlatformConsoleExtensionBase<object, On>
+    public sealed class OnPlatformExtension : OnPlatformConsoleExtensionBase<object, AvaloniaMarkup.On>
     {
-        public OnPlatformExExtension()
+        public OnPlatformExtension()
         {
         }
 
-        public OnPlatformExExtension(object defaultValue)
+        public OnPlatformExtension(object defaultValue)
         {
             Default = defaultValue;
         }
@@ -23,13 +21,14 @@ namespace Consolonia
         }
     }
 
-    public sealed class OnPlatformExExtension<TReturn> : OnPlatformConsoleExtensionBase<TReturn, On<TReturn>>
+    public sealed class
+        OnPlatformExtension<TReturn> : OnPlatformConsoleExtensionBase<TReturn, AvaloniaMarkup.On<TReturn>>
     {
-        public OnPlatformExExtension()
+        public OnPlatformExtension()
         {
         }
 
-        public OnPlatformExExtension(TReturn defaultValue)
+        public OnPlatformExtension(TReturn defaultValue)
         {
             Default = defaultValue;
         }
@@ -42,8 +41,9 @@ namespace Consolonia
         }
     }
 
-    public abstract class OnPlatformConsoleExtensionBase<TReturn, TOn> : OnPlatformExtensionBase<TReturn, TOn>
-        where TOn : On<TReturn>
+    public abstract class
+        OnPlatformConsoleExtensionBase<TReturn, TOn> : AvaloniaMarkup.OnPlatformExtensionBase<TReturn, TOn>
+        where TOn : AvaloniaMarkup.On<TReturn>
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         [MarkupExtensionOption("CONSOLE")] public TReturn Console { get; set; }
@@ -52,10 +52,9 @@ namespace Consolonia
         {
             return option switch
             {
-                "CONSOLE" => Application.Current.ApplicationLifetime is ConsoloniaLifetime,
-                _ => OnPlatformExtension.ShouldProvideOption(option)
+                "CONSOLE" => Application.Current.ApplicationLifetime?.GetType().Name == "ConsoloniaLifetime",
+                _ => AvaloniaMarkup.OnPlatformExtension.ShouldProvideOption(option)
             };
         }
     }
 }
-#pragma warning restore IDE0130 // Namespace does not match folder structure

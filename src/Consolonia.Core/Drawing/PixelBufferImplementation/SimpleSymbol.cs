@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using Consolonia.Core.Helpers;
+using Consolonia.Controls;
 using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
