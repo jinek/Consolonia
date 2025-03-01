@@ -6,115 +6,103 @@
         <HyperlinkButton NavigateUri="https://docs.avaloniaui.net/docs/guides/platforms/platform-specific-code/xaml">Platform specific-code in xaml</HyperlinkButton>
         <StackPanel>
             <TextBlock TextDecorations="Underline">Inline based platform (including Console)</TextBlock>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{console:OnPlatformEx Default='✗ ', Console='✓ '}" />
+            <StackPanel Orientation="Horizontal" Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', Console='✓'}" />
                 <TextBlock Text="IsConsole" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{console:OnPlatformEx Default='✗ ', Windows='✓ '}" />
+            <StackPanel Orientation="Horizontal" Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', Windows='✓'}" />
                 <TextBlock Text="IsWindows" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{console:OnPlatformEx Default='✗ ', Linux='✓ '}" />
+            <StackPanel Orientation="Horizontal" Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', Linux='✓'}" />
                 <TextBlock Text="IsLinux" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{console:OnPlatformEx Default='✗ ', macOS='✓ '}" />
+            <StackPanel Orientation="Horizontal" Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', macOS='✓'}" />
                 <TextBlock Text="IsOSX" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{console:OnPlatformEx Default='✗ ', Android='✓ '}" />
+            <StackPanel Orientation="Horizontal" Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', Android='✓'}" />
                 <TextBlock Text="IsAndroid" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{console:OnPlatformEx Default='✗ ', iOS='✓ '}" />
+            <StackPanel Orientation="Horizontal" Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', iOS='✓'}" />
                 <TextBlock Text="IsiOS" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{console:OnPlatformEx Default='✗ ', Browser='✓ '}" />
+            <StackPanel Orientation="Horizontal" Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', Browser='✓'}" />
                 <TextBlock Text="IsBrowser" />
             </StackPanel>
         </StackPanel>
         <StackPanel>
             <TextBlock TextDecorations="Underline">Long-form conditional markup based platform (including Console)</TextBlock>
             <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <console:OnPlatformEx>
-                        <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ " />
-                        </console:OnPlatformEx.Default>
-                        <console:OnPlatformEx.Console>
-                            <TextBlock Text="✓ " />
-                        </console:OnPlatformEx.Console>
-                    </console:OnPlatformEx>
+                <StackPanel Orientation="Horizontal" Spacing="1">
+                    <TextBlock>
+                        <console:OnPlatform Default="✗" 
+                                            Console="✓"/>
+                    </TextBlock>
                     <TextBlock Text="IsConsole" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Spacing="1">
                     <TextBlock>
-                        <console:OnPlatformEx>
-                            <console:OnPlatformEx.Default>
-                                <TextBlock Text="✗ " />
-                            </console:OnPlatformEx.Default>
-                            <console:OnPlatformEx.Windows>
-                                <TextBlock Text="✓ " />
-                            </console:OnPlatformEx.Windows>
-                        </console:OnPlatformEx>
+                        <TextBlock.Text>
+                            <console:OnPlatform Default="✗"
+                                                Windows="✓"/>
+                        </TextBlock.Text>
                     </TextBlock>
                     <TextBlock Text="IsWindows" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <console:OnPlatformEx>
-                        <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ " />
-                        </console:OnPlatformEx.Default>
-                        <console:OnPlatformEx.Linux>
-                            <TextBlock Text="✓ " />
-                        </console:OnPlatformEx.Linux>
-                    </console:OnPlatformEx>
+                <StackPanel Orientation="Horizontal" Spacing="1">
+                    <TextBlock>
+                        <console:OnPlatform Default="✗" 
+                                            Linux="✓"/>
+                    </TextBlock>
                     <TextBlock Text="IsLinux" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <console:OnPlatformEx>
-                        <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ " />
-                        </console:OnPlatformEx.Default>
-                        <console:OnPlatformEx.macOS>
-                            <TextBlock Text="✓ " />
-                        </console:OnPlatformEx.macOS>
-                    </console:OnPlatformEx>
+                <StackPanel Orientation="Horizontal" Spacing="1">
+                    <console:OnPlatform>
+                        <console:OnPlatform.Default>
+                            <TextBlock Text="✗" />
+                        </console:OnPlatform.Default>
+                        <console:OnPlatform.macOS>
+                            <TextBlock Text="✓" />
+                        </console:OnPlatform.macOS>
+                    </console:OnPlatform>
                     <TextBlock Text="IsOSX" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <console:OnPlatformEx>
-                        <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ " />
-                        </console:OnPlatformEx.Default>
-                        <console:OnPlatformEx.Android>
-                            <TextBlock Text="✓ " />
-                        </console:OnPlatformEx.Android>
-                    </console:OnPlatformEx>
+                <StackPanel Orientation="Horizontal" Spacing="1">
+                    <console:OnPlatform>
+                        <console:OnPlatform.Default>
+                            <TextBlock Text="✗" />
+                        </console:OnPlatform.Default>
+                        <console:OnPlatform.Android>
+                            <TextBlock Text="✓" />
+                        </console:OnPlatform.Android>
+                    </console:OnPlatform>
                     <TextBlock Text="IsAndroid" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <console:OnPlatformEx>
-                        <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ " />
-                        </console:OnPlatformEx.Default>
-                        <console:OnPlatformEx.iOS>
-                            <TextBlock Text="✓ " />
-                        </console:OnPlatformEx.iOS>
-                    </console:OnPlatformEx>
+                <StackPanel Orientation="Horizontal" Spacing="1">
+                    <console:OnPlatform>
+                        <console:OnPlatform.Default>
+                            <TextBlock Text="✗" />
+                        </console:OnPlatform.Default>
+                        <console:OnPlatform.iOS>
+                            <TextBlock Text="✓" />
+                        </console:OnPlatform.iOS>
+                    </console:OnPlatform>
                     <TextBlock Text="IsiOS" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <console:OnPlatformEx>
-                        <console:OnPlatformEx.Default>
-                            <TextBlock Text="✗ " />
-                        </console:OnPlatformEx.Default>
-                        <console:OnPlatformEx.Browser>
-                            <TextBlock Text="✓ " />
-                        </console:OnPlatformEx.Browser>
-                    </console:OnPlatformEx>
+                <StackPanel Orientation="Horizontal" Spacing="1">
+                    <console:OnPlatform>
+                        <console:OnPlatform.Default>
+                            <TextBlock Text="✗" />
+                        </console:OnPlatform.Default>
+                        <console:OnPlatform.Browser>
+                            <TextBlock Text="✓" />
+                        </console:OnPlatform.Browser>
+                    </console:OnPlatform>
                     <TextBlock Text="IsBrowser" />
                 </StackPanel>
             </StackPanel>
