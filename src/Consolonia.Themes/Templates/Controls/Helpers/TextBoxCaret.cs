@@ -4,7 +4,6 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Reactive;
 using Consolonia.Controls.Brushes;
-using Consolonia.Core.Drawing;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers
 {

@@ -7,8 +7,6 @@ using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using NeoSmart.Unicode;
-using Wcwidth;
 
 namespace Consolonia.Controls
 {
