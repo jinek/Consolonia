@@ -1,6 +1,6 @@
 using Avalonia;
-using AvaloniaMarkup =Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Metadata;
+using AvaloniaMarkup = Avalonia.Markup.Xaml.MarkupExtensions;
 
 namespace Consolonia.Controls.Markup
 {
@@ -21,7 +21,8 @@ namespace Consolonia.Controls.Markup
         }
     }
 
-    public sealed class OnPlatformExtension<TReturn> : OnPlatformConsoleExtensionBase<TReturn, AvaloniaMarkup.On<TReturn>>
+    public sealed class
+        OnPlatformExtension<TReturn> : OnPlatformConsoleExtensionBase<TReturn, AvaloniaMarkup.On<TReturn>>
     {
         public OnPlatformExtension()
         {
@@ -40,7 +41,8 @@ namespace Consolonia.Controls.Markup
         }
     }
 
-    public abstract class OnPlatformConsoleExtensionBase<TReturn, TOn> : AvaloniaMarkup.OnPlatformExtensionBase<TReturn, TOn>
+    public abstract class
+        OnPlatformConsoleExtensionBase<TReturn, TOn> : AvaloniaMarkup.OnPlatformExtensionBase<TReturn, TOn>
         where TOn : AvaloniaMarkup.On<TReturn>
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global

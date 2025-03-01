@@ -6,31 +6,38 @@
         <HyperlinkButton NavigateUri="https://docs.avaloniaui.net/docs/guides/platforms/platform-specific-code/xaml">Platform specific-code in xaml</HyperlinkButton>
         <StackPanel>
             <TextBlock TextDecorations="Underline">Inline based platform (including Console)</TextBlock>
-            <StackPanel Orientation="Horizontal" Spacing="1">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
                 <TextBlock Text="{console:OnPlatform Default='✗', Console='✓'}" />
                 <TextBlock Text="IsConsole" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="1">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
                 <TextBlock Text="{console:OnPlatform Default='✗', Windows='✓'}" />
                 <TextBlock Text="IsWindows" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="1">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
                 <TextBlock Text="{console:OnPlatform Default='✗', Linux='✓'}" />
                 <TextBlock Text="IsLinux" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="1">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
                 <TextBlock Text="{console:OnPlatform Default='✗', macOS='✓'}" />
                 <TextBlock Text="IsOSX" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="1">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
                 <TextBlock Text="{console:OnPlatform Default='✗', Android='✓'}" />
                 <TextBlock Text="IsAndroid" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="1">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
                 <TextBlock Text="{console:OnPlatform Default='✗', iOS='✓'}" />
                 <TextBlock Text="IsiOS" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="1">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
                 <TextBlock Text="{console:OnPlatform Default='✗', Browser='✓'}" />
                 <TextBlock Text="IsBrowser" />
             </StackPanel>
@@ -38,14 +45,16 @@
         <StackPanel>
             <TextBlock TextDecorations="Underline">Long-form conditional markup based platform (including Console)</TextBlock>
             <StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="1">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
                     <TextBlock>
                         <console:OnPlatform Default="✗"
-                                            Console="✓"/>
+                                            Console="✓" />
                     </TextBlock>
                     <TextBlock Text="IsConsole" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="1">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
                     <TextBlock>
                         <console:OnPlatform>
                             <On Options="Console">✓</On>
@@ -54,23 +63,26 @@
                     </TextBlock>
                     <TextBlock Text="IsConsole using On tag" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="1">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
                     <TextBlock>
                         <TextBlock.Text>
                             <console:OnPlatform Default="✗"
-                                                Windows="✓"/>
+                                                Windows="✓" />
                         </TextBlock.Text>
                     </TextBlock>
                     <TextBlock Text="IsWindows" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="1">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
                     <TextBlock>
                         <console:OnPlatform Default="✗"
-                                            Linux="✓"/>
+                                            Linux="✓" />
                     </TextBlock>
                     <TextBlock Text="IsLinux" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="1">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
                     <console:OnPlatform>
                         <console:OnPlatform.Default>
                             <TextBlock Text="✗" />
@@ -81,23 +93,26 @@
                     </console:OnPlatform>
                     <TextBlock Text="IsOSX" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="1">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
                     <TextBlock>
                         <TextBlock.Text>
                             <console:OnPlatform Default="✗"
-                                                Android="✓"/>
+                                                Android="✓" />
                         </TextBlock.Text>
                     </TextBlock>
                     <TextBlock Text="IsAndroid" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="1">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
                     <TextBlock>
                         <console:OnPlatform Default="✗"
-                                            iOS="✓"/>
+                                            iOS="✓" />
                     </TextBlock>
                     <TextBlock Text="IsiOS" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="1">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
                     <console:OnPlatform>
                         <On Options="Default">
                             <TextBlock>✗</TextBlock>
