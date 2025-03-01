@@ -40,10 +40,19 @@
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="1">
                     <TextBlock>
-                        <console:OnPlatform Default="✗" 
+                        <console:OnPlatform Default="✗"
                                             Console="✓"/>
                     </TextBlock>
                     <TextBlock Text="IsConsole" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="1">
+                    <TextBlock>
+                        <console:OnPlatform>
+                            <On Options="Console">✓</On>
+                            <On Options="Browser,Windows,Linux">✗</On>
+                        </console:OnPlatform>
+                    </TextBlock>
+                    <TextBlock Text="IsConsole using On tag" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="1">
                     <TextBlock>
@@ -56,7 +65,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="1">
                     <TextBlock>
-                        <console:OnPlatform Default="✗" 
+                        <console:OnPlatform Default="✗"
                                             Linux="✓"/>
                     </TextBlock>
                     <TextBlock Text="IsLinux" />
@@ -73,35 +82,30 @@
                     <TextBlock Text="IsOSX" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="1">
-                    <console:OnPlatform>
-                        <console:OnPlatform.Default>
-                            <TextBlock Text="✗" />
-                        </console:OnPlatform.Default>
-                        <console:OnPlatform.Android>
-                            <TextBlock Text="✓" />
-                        </console:OnPlatform.Android>
-                    </console:OnPlatform>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <console:OnPlatform Default="✗"
+                                                Android="✓"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <TextBlock Text="IsAndroid" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="1">
-                    <console:OnPlatform>
-                        <console:OnPlatform.Default>
-                            <TextBlock Text="✗" />
-                        </console:OnPlatform.Default>
-                        <console:OnPlatform.iOS>
-                            <TextBlock Text="✓" />
-                        </console:OnPlatform.iOS>
-                    </console:OnPlatform>
+                    <TextBlock>
+                        <console:OnPlatform Default="✗"
+                                            iOS="✓"/>
+                    </TextBlock>
                     <TextBlock Text="IsiOS" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="1">
                     <console:OnPlatform>
-                        <console:OnPlatform.Default>
-                            <TextBlock Text="✗" />
-                        </console:OnPlatform.Default>
-                        <console:OnPlatform.Browser>
-                            <TextBlock Text="✓" />
-                        </console:OnPlatform.Browser>
+                        <On Options="Default">
+                            <TextBlock>✗</TextBlock>
+                        </On>
+                        <!-- comma delimted list of options to match....-->
+                        <On Options="Browser">
+                            <TextBlock>✓</TextBlock>
+                        </On>
                     </console:OnPlatform>
                     <TextBlock Text="IsBrowser" />
                 </StackPanel>

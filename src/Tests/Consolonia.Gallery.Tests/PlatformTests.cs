@@ -18,7 +18,8 @@ namespace Consolonia.Gallery.Tests
                 "✓.*IsConsole",
                 @$"{(OperatingSystem.IsWindows() ? '✓' : '✗')}\s*IsWindows",
                 @$"{(OperatingSystem.IsLinux() ? '✓' : '✗')}\s*IsLinux",
-                @$"{(OperatingSystem.IsMacOS() ? '✓' : '✗')}\s*IsOSX"
+                @$"{(OperatingSystem.IsMacOS() ? '✓' : '✗')}\s*IsOSX",
+                $"✓.*IsConsole using On tag"
             };
 
             await UITest.KeyInput(Key.Tab);
