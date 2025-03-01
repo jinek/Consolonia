@@ -7,9 +7,10 @@ using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using Consolonia.Core.Helpers;
+using NeoSmart.Unicode;
+using Wcwidth;
 
-namespace Consolonia.Themes.Templates.Controls.Helpers
+namespace Consolonia.Controls
 {
     /// <summary>
     ///     Represents a control that displays symbols.

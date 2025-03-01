@@ -1,9 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Consolonia.Core.Drawing;
 
-namespace Consolonia.Themes.Templates.Controls.Helpers
+namespace Consolonia.Controls
 {
     public class CaretControl : ContentControl
     {

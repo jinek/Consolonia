@@ -1,5 +1,6 @@
 using System;
 using Avalonia;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
@@ -34,8 +35,10 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [OneTimeSetUp]
         public void Setup()
         {
+            var console = new UnitTestConsole(new PixelBufferSize(100, 100));
             AvaloniaLocator.Current = new AvaloniaLocator()
-                .Bind<IConsoleOutput>().ToConstant(new UnitTestConsole(new PixelBufferSize(100, 100)));
+                .Bind<IConsoleOutput>().ToConstant(console)
+                .Bind<IConsoleCapabilities>().ToConstant(console);
 
             _scope = AvaloniaLocator.EnterScope();
             _lifetime = ApplicationStartup.BuildLifetime<ContextApp2>(new DummyConsole(), new RgbConsoleColorMode(),

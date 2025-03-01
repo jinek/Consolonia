@@ -7,9 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Reactive;
 using Avalonia.Styling;
-using Consolonia.Core.Infrastructure;
 using NeoSmart.Unicode;
-using Wcwidth;
 
 namespace Consolonia.Core.Helpers
 {
@@ -118,31 +116,6 @@ namespace Consolonia.Core.Helpers
             return glyphs;
         }
 
-        /// <summary>
-        ///     Measure text for actual width
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static ushort MeasureText(this string text)
-        {
-            var console = AvaloniaLocator.Current.GetService<IConsoleOutput>();
-            bool supportsComplexEmoji = console == null || console.SupportsComplexEmoji;
-            ushort width = 0;
-            ushort lastWidth = 0;
-            foreach (Rune rune in text.EnumerateRunes())
-            {
-                ushort runeWidth = (ushort)UnicodeCalculator.GetWidth(rune);
-                if (supportsComplexEmoji &&
-                    (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter))
-                    width -= lastWidth;
-                else
-                    width += runeWidth;
-
-                if (runeWidth > 0)
-                    lastWidth = runeWidth;
-            }
-
-            return width;
-        }
+      
     }
 }
