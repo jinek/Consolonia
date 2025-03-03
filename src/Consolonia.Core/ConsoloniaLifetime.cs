@@ -44,11 +44,12 @@ namespace Consolonia
 
         public Control MainView
         {
-            get => (Control)TopLevel.Content;
+            get => (TopLevel as ConsoleTopLevel).MainView;
             set
             {
-                if (TopLevel == null) TopLevel = new Window();
-                TopLevel.Content = value;
+                if (TopLevel == null)
+                    TopLevel = new ConsoleTopLevel();
+                (TopLevel as ConsoleTopLevel).MainView = value;
             }
         }
 
@@ -90,7 +91,7 @@ namespace Consolonia
         {
             SetupCore(args);
 
-            (TopLevel as Window)?.Show();
+            (TopLevel as ConsoleTopLevel).Show();
 
             try
             {
@@ -102,7 +103,9 @@ namespace Consolonia
             {
                 Dispose();
             }
-        } // ReSharper disable UnusedParameter.Local
+        } 
+        
+        // ReSharper disable UnusedParameter.Local
         // ReSharper disable UnusedMember.Local
 #pragma warning disable IDE0060 // Remove unused parameter
         private bool DoShutdown(
@@ -158,8 +161,8 @@ namespace Consolonia
             var taskToWaitFor = new TaskCompletionSource();
             cancellationToken.Register(() => taskToWaitFor.SetResult());
 
-            var mainWindowPlatformImpl = (ConsoleWindow)TopLevel.PlatformImpl;
-            IConsole console = mainWindowPlatformImpl!.Console;
+            var consoleTopLevelImpl = (ConsoleTopLevelImpl)TopLevel.PlatformImpl;
+            IConsole console = consoleTopLevelImpl!.Console;
 
             Task pauseTask = taskToWaitFor.Task;
 
@@ -167,7 +170,7 @@ namespace Consolonia
 
             pauseTask.ContinueWith(_ =>
             {
-                mainWindowPlatformImpl.Console.ClearScreen();
+                consoleTopLevelImpl.Console.ClearScreen();
 
                 Dispatcher.UIThread.Post(() => { MainView.InvalidateVisual(); });
             }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
@@ -196,9 +199,9 @@ namespace Consolonia
                     // TODO: dispose managed state (managed objects)
                     _cts?.Dispose();
                     _cts = null;
-                    var consoleWindow = TopLevel.PlatformImpl as ConsoleWindow;
-                    ArgumentNullException.ThrowIfNull(consoleWindow, nameof(consoleWindow));
-                    consoleWindow.Dispose();
+                    var consoleTopLevelImpl = (ConsoleTopLevelImpl)TopLevel.PlatformImpl;
+                    ArgumentNullException.ThrowIfNull(consoleTopLevelImpl, nameof(consoleTopLevelImpl));
+                    consoleTopLevelImpl.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

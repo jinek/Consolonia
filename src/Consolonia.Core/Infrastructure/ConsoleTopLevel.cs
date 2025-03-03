@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.Remoting;
 using Avalonia;
 using Avalonia.Controls;
@@ -15,10 +16,47 @@ using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Infrastructure
 {
-    public class ConsoleWindow : IWindowImpl
+    /// <summary>
+    /// This is a TopLevel class implementation which is uses the ConsoleTopLevelImpl
+    /// as the PixelBuffer representation of the toplevel.
+    /// </summary>
+    /// <remarks>
+    /// It's implemented as a window because Avalonia doesn't have a TopLevel implementation,
+    /// but in reality, it's a single TopLevel control which represents the Console as a single
+    /// panel of control layout.
+    /// 
+    /// This implementation has content which is a WindowManager panel to handle managed windows
+    /// And the MainView is added to that panel, aka, the default thing rendered is the MainView
+    /// and windows are then layered over the top using Zindex.
+    /// </remarks>
+    public class ConsoleTopLevel : Window
+    {
+        public ConsoleTopLevel() : base(new ConsoleTopLevelImpl())
+        {
+            this.Content = new WindowManagerPanel();
+        }
+
+        public Control MainView
+        {
+            get => WindowManager.Content as Control;
+            set => WindowManager.Content = (Control)value;
+        }
+
+        public WindowManagerPanel WindowManager => (WindowManagerPanel)Content;
+    }
+
+    /// <summary>
+    /// ConsoleTopLevelImpl - An ITopLevelImpl which uses a PixelBuffer to render.
+    /// </summary>
+    /// <remarks>
+    /// This technically should be ITopLevelImpl, but we are implementing it as IWindowImpl 
+    /// so we can use the Window base class, since Avalonia only has an abstratct TopLevel base class.
+    /// </remarks>
+    public class ConsoleTopLevelImpl : IWindowImpl
     {
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
@@ -27,7 +65,7 @@ namespace Consolonia.Core.Infrastructure
         private bool _disposedValue;
         private IInputRoot _inputRoot;
 
-        public ConsoleWindow()
+        public ConsoleTopLevelImpl()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
@@ -137,12 +175,12 @@ namespace Consolonia.Core.Infrastructure
 
         public void Hide()
         {
-            throw new NotImplementedException();
+            // toplevel never hides
         }
 
         public void Activate()
         {
-            throw new NotImplementedException();
+            // toplevel is always visible
         }
 
         public void SetTopmost(bool value)
@@ -174,7 +212,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetParent(IWindowImpl parent)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("You can't set a toplevel parent");
         }
 
         public void SetEnabled(bool enable)
@@ -184,63 +222,62 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetSystemDecorations(SystemDecorations enabled)
         {
-            throw new NotImplementedException();
+            // console window has no system decorations
         }
 
         public void SetIcon(IWindowIconImpl icon)
         {
+            // console window has no icon
         }
 
         public void ShowTaskbarIcon(bool value)
         {
+            // console window has no icon
         }
 
         public void CanResize(bool value)
         {
-            // todo, enable/disable resizing of window
+            // console app can't do this.
         }
 
         public void BeginMoveDrag(PointerPressedEventArgs e)
         {
-            throw new NotImplementedException();
+            // console app can't do this.
         }
 
         public void BeginResizeDrag(WindowEdge edge, PointerPressedEventArgs e)
         {
-            throw new NotImplementedException();
+            // console app can't do this.
         }
 
         public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
-            // todo: can we deny resizing? TODO We could consider resizing the console window or throwing exception
-            //throw new NotImplementedException();
+            // console app can't do this.
         }
-
 
         public void Move(PixelPoint point)
         {
-            // TODO: Can we deny moving? TODO We could consider moving the console window or throwing exception
-            //throw new NotImplementedException();
+            // console app can't do this.
         }
 
         public void SetMinMaxSize(Size minSize, Size maxSize)
         {
-            //throw new NotImplementedException();
+            // console app can't do this.
         }
 
         public void SetExtendClientAreaToDecorationsHint(bool extendIntoClientAreaHint)
         {
-            // we don't support this, we can ignore
+            // console app can't do this.
         }
 
         public void SetExtendClientAreaChromeHints(ExtendClientAreaChromeHints hints)
         {
-            // we don't support this, we can ignore
+            // console app can't do this.
         }
 
         public void SetExtendClientAreaTitleBarHeightHint(double titleBarHeight)
         {
-            // we don't support this, we can ignore
+            // console app can't do this.
         }
 
         public WindowState WindowState { get; set; }

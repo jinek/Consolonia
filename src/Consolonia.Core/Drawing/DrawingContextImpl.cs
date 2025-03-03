@@ -52,15 +52,15 @@ namespace Consolonia.Core.Drawing
         ];
 
         private readonly Stack<Rect> _clipStack = new(100);
-        private readonly ConsoleWindow _consoleWindow;
+        private readonly ConsoleTopLevelImpl _consoleTopLevelImpl;
         private readonly PixelBuffer _pixelBuffer;
         private readonly Matrix _postTransform = Matrix.Identity;
         private Matrix _transform = Matrix.Identity;
 
-        public DrawingContextImpl(ConsoleWindow consoleWindow)
+        public DrawingContextImpl(ConsoleTopLevelImpl consoleTopLevelImpl)
         {
-            _consoleWindow = consoleWindow;
-            _pixelBuffer = consoleWindow.PixelBuffer;
+            _consoleTopLevelImpl = consoleTopLevelImpl;
+            _pixelBuffer = consoleTopLevelImpl.PixelBuffer;
             _clipStack.Push(_pixelBuffer.Size);
         }
 
@@ -265,7 +265,7 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextLayerImpl CreateLayer(PixelSize size)
         {
-            return new RenderTarget(_consoleWindow);
+            return new RenderTarget(_consoleTopLevelImpl);
         }
 
         public void PushClip(Rect clip)
@@ -711,7 +711,7 @@ namespace Consolonia.Core.Drawing
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
             // the x and y are adjusted accordingly.
-            foreach (string glyph in text.GetGlyphs(_consoleWindow.Console.SupportsComplexEmoji))
+            foreach (string glyph in text.GetGlyphs(_consoleTopLevelImpl.Console.SupportsComplexEmoji))
             {
                 Point characterPoint =
                     whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));

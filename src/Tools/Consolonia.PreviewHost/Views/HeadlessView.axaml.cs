@@ -52,9 +52,9 @@ namespace Consolonia.PreviewHost.Views
             if (lifetime.Args!.Contains("--buffer"))
                 Dispatcher.UIThread.Post(() =>
                 {
-                    var consoleWindow = (lifetime.TopLevel as Window)?.PlatformImpl as ConsoleWindow;
-                    ArgumentNullException.ThrowIfNull(consoleWindow);
-                    string json = JsonConvert.SerializeObject(consoleWindow.PixelBuffer);
+                    var consoleTopLevelImpl = lifetime.TopLevel?.PlatformImpl as ConsoleTopLevelImpl;
+                    ArgumentNullException.ThrowIfNull(consoleTopLevelImpl);
+                    string json = JsonConvert.SerializeObject(consoleTopLevelImpl.PixelBuffer);
                     Console.WriteLine(json);
                 });
         }

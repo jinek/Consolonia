@@ -17,30 +17,31 @@ namespace Consolonia.Core.Drawing
     {
         private readonly IConsoleOutput _console;
 
-        private readonly ConsoleWindow _consoleWindow;
+        private readonly ConsoleTopLevelImpl _consoleTopLevelImpl;
 
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
 
-        internal RenderTarget(ConsoleWindow consoleWindow)
+        internal RenderTarget(ConsoleTopLevelImpl consoleTopLevelImpl)
         {
             _console = AvaloniaLocator.Current.GetService<IConsoleOutput>()!;
-            _consoleWindow = consoleWindow;
-            consoleWindow.Resized += OnResized;
-            _cache = InitializeCache(_consoleWindow.PixelBuffer.Width, _consoleWindow.PixelBuffer.Height);
+            _consoleTopLevelImpl = consoleTopLevelImpl;
+            _consoleTopLevelImpl!.Resized += OnResized;
+
+            _cache = InitializeCache(_consoleTopLevelImpl.PixelBuffer.Width, _consoleTopLevelImpl.PixelBuffer.Height);
         }
 
         public RenderTarget(IEnumerable<object> surfaces)
-            : this(surfaces.OfType<ConsoleWindow>()
+            : this(surfaces.OfType<ConsoleTopLevelImpl>()
                 .Single())
         {
         }
 
-        public PixelBuffer Buffer => _consoleWindow.PixelBuffer;
+        public PixelBuffer Buffer => _consoleTopLevelImpl.PixelBuffer;
 
         public void Dispose()
         {
-            _consoleWindow.Resized -= OnResized;
+            _consoleTopLevelImpl.Resized -= OnResized;
         }
 
         public void Save(string fileName, int? quality = null)
@@ -76,14 +77,14 @@ namespace Consolonia.Core.Drawing
         {
             if (useScaledDrawing)
                 throw new NotImplementedException("Consolonia doesn't support useScaledDrawing");
-            return new DrawingContextImpl(_consoleWindow);
+            return new DrawingContextImpl(_consoleTopLevelImpl);
         }
 
 
         private void OnResized(Size size, WindowResizeReason reason)
         {
             // todo: should we check the reason?
-            _cache = InitializeCache(_consoleWindow.PixelBuffer.Width, _consoleWindow.PixelBuffer.Height);
+            _cache = InitializeCache(_consoleTopLevelImpl.PixelBuffer.Width, _consoleTopLevelImpl.PixelBuffer.Height);
         }
 
         private static Pixel?[,] InitializeCache(ushort width, ushort height)
@@ -92,15 +93,15 @@ namespace Consolonia.Core.Drawing
 
             // initialize the cache with Pixel.Empty as it literally means nothing
             for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-                cache[x, y] = Pixel.Empty;
+                for (ushort x = 0; x < width; x++)
+                    cache[x, y] = Pixel.Empty;
 
             return cache;
         }
 
         private void RenderToDevice()
         {
-            PixelBuffer pixelBuffer = _consoleWindow.PixelBuffer;
+            PixelBuffer pixelBuffer = _consoleTopLevelImpl.PixelBuffer;
 
             _console.HideCaret();
 
@@ -109,34 +110,34 @@ namespace Consolonia.Core.Drawing
             var flushingBuffer = new FlushingBuffer(_console);
 
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-            for (ushort x = 0; x < pixelBuffer.Width;)
-            {
-                Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
-
-                if (pixel.IsCaret)
+                for (ushort x = 0; x < pixelBuffer.Width;)
                 {
-                    if (caretPosition != null)
-                        throw new InvalidOperationException("Caret is already shown");
-                    caretPosition = new PixelBufferCoordinate(x, y);
-                }
+                    Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
 
-                /* todo: There is not IWindowImpl.Invalidate anymore.
-                     if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                        rect.ContainsExclusive(new Point(x, y)))) continue;*/
+                    if (pixel.IsCaret)
+                    {
+                        if (caretPosition != null)
+                            throw new InvalidOperationException("Caret is already shown");
+                        caretPosition = new PixelBufferCoordinate(x, y);
+                    }
 
-                //todo: indexOutOfRange during resize
-                if (_cache[x, y] == pixel)
-                {
+                    /* todo: There is not IWindowImpl.Invalidate anymore.
+                         if (!_consoleWindow.InvalidatedRects.Any(rect =>
+                            rect.ContainsExclusive(new Point(x, y)))) continue;*/
+
+                    //todo: indexOutOfRange during resize
+                    if (_cache[x, y] == pixel)
+                    {
+                        x++;
+                        continue;
+                    }
+
+                    _cache[x, y] = pixel;
+
+                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+
                     x++;
-                    continue;
                 }
-
-                _cache[x, y] = pixel;
-
-                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
-
-                x++;
-            }
 
             flushingBuffer.Flush();
 
