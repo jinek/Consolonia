@@ -17,12 +17,12 @@ namespace Consolonia.Core.Drawing
     {
         private readonly IConsoleOutput _console;
 
-        private readonly ConsoleTopLevelImpl _consoleTopLevelImpl;
+        private readonly ConsoleWindowImpl _consoleTopLevelImpl;
 
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
 
-        internal RenderTarget(ConsoleTopLevelImpl consoleTopLevelImpl)
+        internal RenderTarget(ConsoleWindowImpl consoleTopLevelImpl)
         {
             _console = AvaloniaLocator.Current.GetService<IConsoleOutput>()!;
             _consoleTopLevelImpl = consoleTopLevelImpl;
@@ -32,7 +32,7 @@ namespace Consolonia.Core.Drawing
         }
 
         public RenderTarget(IEnumerable<object> surfaces)
-            : this(surfaces.OfType<ConsoleTopLevelImpl>()
+            : this(surfaces.OfType<ConsoleWindowImpl>()
                 .Single())
         {
         }

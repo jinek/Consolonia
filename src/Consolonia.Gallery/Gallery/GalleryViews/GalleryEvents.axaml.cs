@@ -131,9 +131,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             // we reach into internal Console property because we want to hook raw console events
             if (_console == null)
             {
-                var consoleTopLevelInfo = (ConsoleTopLevelImpl)TopLevel.GetTopLevel(this).PlatformImpl;
+                var consoleTopLevelInfo = (ConsoleWindowImpl)TopLevel.GetTopLevel(this).PlatformImpl;
                 FieldInfo propInfo =
-                    typeof(ConsoleTopLevelImpl).GetField("Console", BindingFlags.NonPublic | BindingFlags.Instance);
+                    typeof(ConsoleWindowImpl).GetField("Console", BindingFlags.NonPublic | BindingFlags.Instance);
                 _console = (IConsole)propInfo.GetValue(consoleTopLevelInfo);
             }
         }

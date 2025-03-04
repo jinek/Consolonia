@@ -52,12 +52,12 @@ namespace Consolonia.Core.Drawing
         ];
 
         private readonly Stack<Rect> _clipStack = new(100);
-        private readonly ConsoleTopLevelImpl _consoleTopLevelImpl;
+        private readonly ConsoleWindowImpl _consoleTopLevelImpl;
         private readonly PixelBuffer _pixelBuffer;
         private readonly Matrix _postTransform = Matrix.Identity;
         private Matrix _transform = Matrix.Identity;
 
-        public DrawingContextImpl(ConsoleTopLevelImpl consoleTopLevelImpl)
+        public DrawingContextImpl(ConsoleWindowImpl consoleTopLevelImpl)
         {
             _consoleTopLevelImpl = consoleTopLevelImpl;
             _pixelBuffer = consoleTopLevelImpl.PixelBuffer;

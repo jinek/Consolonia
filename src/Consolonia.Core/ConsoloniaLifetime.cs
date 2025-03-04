@@ -44,12 +44,12 @@ namespace Consolonia
 
         public Control MainView
         {
-            get => (TopLevel as ConsoleTopLevel).MainView;
+            get => (TopLevel as ConsoleWindow).MainView;
             set
             {
                 if (TopLevel == null)
-                    TopLevel = new ConsoleTopLevel();
-                (TopLevel as ConsoleTopLevel).MainView = value;
+                    TopLevel = new ConsoleWindow();
+                (TopLevel as ConsoleWindow).MainView = value;
             }
         }
 
@@ -91,7 +91,7 @@ namespace Consolonia
         {
             SetupCore(args);
 
-            (TopLevel as ConsoleTopLevel).Show();
+            (TopLevel as ConsoleWindow).Show();
 
             try
             {
@@ -161,7 +161,7 @@ namespace Consolonia
             var taskToWaitFor = new TaskCompletionSource();
             cancellationToken.Register(() => taskToWaitFor.SetResult());
 
-            var consoleTopLevelImpl = (ConsoleTopLevelImpl)TopLevel.PlatformImpl;
+            var consoleTopLevelImpl = (ConsoleWindowImpl)TopLevel.PlatformImpl;
             IConsole console = consoleTopLevelImpl!.Console;
 
             Task pauseTask = taskToWaitFor.Task;
@@ -199,7 +199,7 @@ namespace Consolonia
                     // TODO: dispose managed state (managed objects)
                     _cts?.Dispose();
                     _cts = null;
-                    var consoleTopLevelImpl = (ConsoleTopLevelImpl)TopLevel.PlatformImpl;
+                    var consoleTopLevelImpl = (ConsoleWindowImpl)TopLevel.PlatformImpl;
                     ArgumentNullException.ThrowIfNull(consoleTopLevelImpl, nameof(consoleTopLevelImpl));
                     consoleTopLevelImpl.Dispose();
                 }
