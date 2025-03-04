@@ -194,7 +194,21 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            if (boxShadows.Count > 0) throw new NotImplementedException();
+            if (boxShadows.Count > 0)
+            {
+                foreach (var boxShadow in boxShadows)
+                {
+                    // BoxShadow none is OK
+                    // aka offSetX=0, offSetY=0, color=Transparent
+                    if (boxShadow.OffsetX != 0 ||
+                        boxShadow.OffsetY != 0 ||
+                        boxShadow.Color != Colors.Transparent)
+                    {
+                        ConsoloniaPlatform.RaiseNotSupported(11);
+                        return;
+                    }
+                }
+            }
 
             if (rect.Rect.IsEmpty()) return;
             Rect r = rect.Rect;

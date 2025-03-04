@@ -28,12 +28,13 @@ namespace Consolonia.Core.Infrastructure
                 throw new ArgumentException("ConsoleBase cannot be used as a console output", nameof(consoleOutput));
 
             _consoleOutput = consoleOutput;
+
+            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
         }
 
         protected bool Disposed { get; private set; }
 
         protected Task PauseTask { get; private set; }
-
 
         /// <summary>
         ///     Pause the IO

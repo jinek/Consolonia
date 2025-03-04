@@ -73,6 +73,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Editor", "Experi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Controls", "Consolonia.Controls\Consolonia.Controls.csproj", "{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iciclecreek.Avalonia.WindowManager", "..\..\Iciclecreek.Avalonia.WindowManager\source\Iciclecreek.Avalonia.WindowManager\Iciclecreek.Avalonia.WindowManager.csproj", "{1363F7C8-C193-4143-9522-8EE375D79143}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +161,10 @@ Global
 		{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1363F7C8-C193-4143-9522-8EE375D79143}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1363F7C8-C193-4143-9522-8EE375D79143}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1363F7C8-C193-4143-9522-8EE375D79143}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1363F7C8-C193-4143-9522-8EE375D79143}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

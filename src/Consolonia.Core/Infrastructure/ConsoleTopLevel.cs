@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.Remoting;
 using Avalonia;
 using Avalonia.Controls;
@@ -25,17 +24,24 @@ namespace Consolonia.Core.Infrastructure
     /// as the PixelBuffer representation of the toplevel.
     /// </summary>
     /// <remarks>
-    /// It's implemented as a window because Avalonia doesn't have a TopLevel implementation,
+    /// It's implemented deriving from Window because Avalonia doesn't have a TopLevel implementation,
     /// but in reality, it's a single TopLevel control which represents the Console as a single
     /// panel of control layout.
     /// 
     /// This implementation has content which is a WindowManager panel to handle managed windows
-    /// And the MainView is added to that panel, aka, the default thing rendered is the MainView
-    /// and windows are then layered over the top using Zindex.
+    /// And the MainView is is the content of the WindowManagerPanel, aka, the default thing rendered 
+    /// is the MainView and windows are then layered over the top using Zindex.
     /// </remarks>
     public class ConsoleTopLevel : Window
     {
-        public ConsoleTopLevel() : base(new ConsoleTopLevelImpl())
+        public ConsoleTopLevel() :
+            this(new ConsoleTopLevelImpl())
+
+        {
+
+        }
+        public ConsoleTopLevel(IWindowImpl impl)
+            : base(impl)
         {
             this.Content = new WindowManagerPanel();
         }
@@ -54,29 +60,32 @@ namespace Consolonia.Core.Infrastructure
     /// </summary>
     /// <remarks>
     /// This technically should be ITopLevelImpl, but we are implementing it as IWindowImpl 
-    /// so we can use the Window base class, since Avalonia only has an abstratct TopLevel base class.
+    /// so we can use the Window base class for the TopLevel, since Avalonia only has an abstratct TopLevel base class.
     /// </remarks>
+#pragma warning disable CA1711 // Identifiers should not have incorrect suffix
     public class ConsoleTopLevelImpl : IWindowImpl
+#pragma warning restore CA1711 // Identifiers should not have incorrect suffix
     {
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
-        [NotNull] internal readonly IConsole Console;
         private bool _disposedValue;
         private IInputRoot _inputRoot;
+
+        [NotNull] internal readonly IConsole Console;
 
         public ConsoleTopLevelImpl()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             Console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
+            PixelBuffer = new PixelBuffer(this.Console.Size);
             Console.Resized += OnConsoleOnResized;
             Console.KeyEvent += ConsoleOnKeyEvent;
             Console.TextInputEvent += ConsoleOnTextInputEvent;
             Console.MouseEvent += ConsoleOnMouseEvent;
             Console.FocusEvent += ConsoleOnFocusEvent;
             Handle = null!;
-            PixelBuffer = new PixelBuffer(Console.Size);
             _accessKeysAlwaysOn = !Console.SupportsAltSolo;
             if (_accessKeysAlwaysOn)
                 _accessKeysAlwaysOnDisposable =
@@ -398,8 +407,8 @@ namespace Consolonia.Core.Infrastructure
 
         private void OnConsoleOnResized()
         {
-            PixelBuffer = new PixelBuffer(Console.Size);
             var size = new Size(Console.Size.Width, Console.Size.Height);
+            this.PixelBuffer = new PixelBuffer((ushort)size.Width, (ushort)size.Height);
             Resized!(size, WindowResizeReason.Unspecified);
         }
 
