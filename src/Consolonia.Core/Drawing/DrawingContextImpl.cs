@@ -546,7 +546,7 @@ namespace Consolonia.Core.Drawing
 
             if (lineStyle is LineStyle.Edge or LineStyle.EdgeWide)
             {
-                DrawEdgeLine(line, linePosition, lineStyle, color, true, true);
+                DrawEdgeLine(line, linePosition, lineStyle, color);
             }
             else
             {
@@ -561,8 +561,7 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawEdgeLine(Line line, RectangleLinePosition linePosition, LineStyle lineStyle, Color color,
-            bool includeStartSymbol, bool includeEndSymbol)
+        private void DrawEdgeLine(Line line, RectangleLinePosition linePosition, LineStyle lineStyle, Color color)
         {
             if (line.Length == 0)
                 return;
@@ -600,14 +599,14 @@ namespace Consolonia.Core.Drawing
             Point head = line.PStart;
 
             int length = line.Length;
-            if (includeStartSymbol)
+            if (lineStyle == LineStyle.EdgeWide)
                 DrawLineSymbolAndMoveHead(ref head, line.Vertical, startSymbol, color, 1);
             else
                 head += line.Vertical ? new Vector(0, 1) : new Vector(1, 0);
 
             DrawLineSymbolAndMoveHead(ref head, line.Vertical, middleSymbol, color, length - 1);
 
-            if (includeEndSymbol)
+            if (lineStyle == LineStyle.EdgeWide)
                 DrawLineSymbolAndMoveHead(ref head, line.Vertical, endSymbol, color, 1);
         }
 

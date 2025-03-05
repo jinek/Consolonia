@@ -31,7 +31,7 @@ public partial class MyWindow : ManagedWindow
     {
         InitializeComponent();
 
-        this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
+      //  this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
 
         this.DataContext = new MyWindowViewModel()
         {
@@ -66,7 +66,7 @@ public partial class MyWindow : ManagedWindow
         };
         dialog.ViewModel.Text = ViewModel.Text;
 
-        dialog.AdjustWindowSize(this.Bounds);
+        dialog.SetDemoWindowSize(this.Bounds);
 
         var result = await dialog.ShowDialog<string?>(this);
         if (result != null)
@@ -88,7 +88,7 @@ public partial class MyWindowViewModel : ObservableObject
 
 internal static class Utils
 {
-    public static void AdjustWindowSize(this ManagedWindow window, Rect rect)
+    public static void SetDemoWindowSize(this ManagedWindow window, Rect rect)
     {
         var minWidth = (int)rect.Width / 4;
         var minHeight = (int)rect.Height / 4;
@@ -104,16 +104,20 @@ internal static class Utils
         switch (window.SizeToContent)
         {
             case SizeToContent.Manual:
+                // we are providing both width and height
                 window.Width = Random.Shared.Next(minWidth, maxWidth);
                 window.Height = Random.Shared.Next(minHeight, maxHeight);
                 break;
             case SizeToContent.Width:
+                // we are expecting window to figure out width
                 window.Height = Random.Shared.Next(minHeight, maxHeight);
                 break;
             case SizeToContent.Height:
+                // we are expecting window to figure out height
                 window.Width = Random.Shared.Next(minWidth, maxWidth);
                 break;
             case SizeToContent.WidthAndHeight:
+                // we are expecting window to figure out both width and height
                 break;
         }
     }

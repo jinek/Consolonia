@@ -4,9 +4,26 @@
              xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryWindows">
     <Grid RowDefinitions="Auto *">
-        <StackPanel Orientation="Vertical" Name="XXX">
-            <Button Content="Add TopLevel Window" Click="OnShowWindow" HorizontalAlignment="Left" />
-            <Button Content="Add Child Window" Click="OnShowChildWindow" HorizontalAlignment="Left" />
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>SizeToContent for new Window</Label>
+                <ComboBox Name="SizeToContentCombo" SelectedIndex="3">
+                    <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
+                    <ComboBoxItem Tag="Width">Width</ComboBoxItem>
+                    <ComboBoxItem Tag="Height">Height</ComboBoxItem>
+                    <ComboBoxItem Tag="WidthAndHeight">WidthAndHeight</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>StartupLocation for new Window</Label>
+                <ComboBox Name="StartupLocationCombo" SelectedIndex="0">
+                    <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
+                    <ComboBoxItem Tag="CenterOwner">CenterOwner</ComboBoxItem>
+                    <ComboBoxItem Tag="CenterScreen">CenterScreen</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            <Button Content="Add TopLevel Window" Click="OnShowWindowClick" HorizontalAlignment="Left" />
+            <Button Content="Add Child Window" Click="OnShowChildWindowClick" HorizontalAlignment="Left" />
         </StackPanel>
         <!-- MainView has a top level WindowManagerPanel, this is a child one so that when we click on Add Child Window it is added to this panel -->
         <wm:WindowManagerPanel Name="ChildWindowManager" Grid.Row="1"

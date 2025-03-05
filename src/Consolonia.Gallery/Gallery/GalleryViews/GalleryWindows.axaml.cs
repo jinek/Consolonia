@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -12,14 +13,30 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
         }
 
-        private void OnShowWindow(object? sender, RoutedEventArgs e)
+        private void OnShowWindowClick(object? sender, RoutedEventArgs e)
         {
-            this.ShowWindow(new MyWindow());
+            var window = new MyWindow()
+            {
+                WindowStartupLocation = Enum.Parse<WindowStartupLocation>((StartupLocationCombo.SelectedItem as ComboBoxItem).Tag.ToString()),
+                SizeToContent = Enum.Parse<SizeToContent>(((ComboBoxItem)SizeToContentCombo.SelectedItem).Tag.ToString())
+            };
+
+            window.SetDemoWindowSize(this.Bounds);
+
+            this.ShowWindow(window);
         }
 
-        private void OnShowChildWindow(object? sender, RoutedEventArgs e)
+        private void OnShowChildWindowClick(object? sender, RoutedEventArgs e)
         {
-            this.ChildWindowManager.ShowWindow(new MyWindow());
+            var window = new MyWindow()
+            {
+                WindowStartupLocation = Enum.Parse<WindowStartupLocation>((StartupLocationCombo.SelectedItem as ComboBoxItem).Tag.ToString()),
+                SizeToContent = Enum.Parse<SizeToContent>(((ComboBoxItem)SizeToContentCombo.SelectedItem).Tag.ToString())
+            };
+
+            window.SetDemoWindowSize(this.Bounds);
+            
+            this.ChildWindowManager.ShowWindow(window);
         }
     }
 }

@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -16,7 +17,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             // ReSharper restore UnusedParameter.Local
         {
             var lifetime = (ConsoloniaLifetime)Application.Current.ApplicationLifetime;
-            await new SomeDialogWindow(50, 15).ShowDialogAsync(lifetime.TopLevel);
+
+            var dialog = new SomeDialogWindow(50, 15);
+            this.ShowWindow(dialog);
+            // dialog.ShowDialog(this);// .ShowDialog(lifetime.TopLevel);
         }
     }
 }

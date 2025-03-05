@@ -28,7 +28,7 @@ public partial class MyDialog : ManagedWindow
     public MyDialog()
     {
         InitializeComponent();
-        this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
+       // this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
 
         this.DataContext = new MyDialogViewModel()
         {

@@ -1,17 +1,19 @@
-<console:DialogWindow xmlns="https://github.com/avaloniaui"
+<wm:ManagedWindow xmlns="https://github.com/avaloniaui"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
                       xmlns:console="https://github.com/jinek/consolonia"
                       mc:Ignorable="d"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
                       x:Class="Consolonia.Gallery.Gallery.GalleryViews.SomeDialogWindow">
-    <Panel>
-        <TextBlock xml:space="preserve"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Bottom"
-                   Foreground="DarkRed">.
+    <ScrollViewer>
+        <Panel>
+            <TextBlock xml:space="preserve"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Foreground="DarkRed">.
         /;    ;\
     __  \\____//
    /{_\_/   `'\____
@@ -26,10 +28,11 @@ _____/          :--'
 
 Bill Ames
 </TextBlock>
-        <Button Content="One More"
-                Name="OneMoreButton"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Click="OneMore_Clicked" />
-    </Panel>
-</console:DialogWindow>
+            <Button Content="One More"
+                    Name="OneMoreButton"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Click="OneMore_Clicked" />
+        </Panel>
+    </ScrollViewer>
+</wm:ManagedWindow>
