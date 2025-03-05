@@ -1,7 +1,17 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:console="https://github.com/jinek/consolonia"
+             xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryWindows">
-    <StackPanel Orientation="Vertical">
-        <Button Content="Add Window" Click="OnShowWindow" />
-    </StackPanel>
+    <Grid RowDefinitions="Auto *">
+        <StackPanel Orientation="Vertical" Name="XXX">
+            <Button Content="Add TopLevel Window" Click="OnShowWindow" HorizontalAlignment="Left" />
+            <Button Content="Add Child Window" Click="OnShowChildWindow" HorizontalAlignment="Left" />
+        </StackPanel>
+        <!-- MainView has a top level WindowManagerPanel, this is a child one so that when we click on Add Child Window it is added to this panel -->
+        <wm:WindowManagerPanel Name="ChildWindowManager" Grid.Row="1"
+                               Background="Gray">
+            <TextBlock>Child window manager panel</TextBlock>
+        </wm:WindowManagerPanel>
+    </Grid>
 </UserControl>

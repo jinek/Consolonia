@@ -1,7 +1,6 @@
-using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.VisualTree;
 using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
@@ -13,24 +12,14 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
         }
 
-        private void OnShowWindow(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void OnShowWindow(object? sender, RoutedEventArgs e)
         {
-            var x = new ManagedWindow()
-            {
-                Title = "This is a window",
-                Background = Brushes.AliceBlue,
-                Content = new TextBlock()
-                {
-                    Text = "Hello, World!"
-                },
-                CanResize = true,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                SizeToContent = SizeToContent.WidthAndHeight,
-                WindowState = WindowState.Normal,
-                ShowActivated = true
-            };
-            var wm = TopLevel.GetTopLevel(this).FindDescendantOfType<WindowManagerPanel>();
-            wm.ShowWindow(x);
+            this.ShowWindow(new MyWindow());
+        }
+
+        private void OnShowChildWindow(object? sender, RoutedEventArgs e)
+        {
+            this.ChildWindowManager.ShowWindow(new MyWindow());
         }
     }
 }

@@ -20,15 +20,15 @@ using Iciclecreek.Avalonia.WindowManager;
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    /// This is Window class is a TopLevel which uses the ConsoleWindowImpl to interact with the console.
+    /// ConsoleWindow - a TopLevel which uses the ConsoleWindowImpl to interact with the console.
     /// </summary>
     /// <remarks>
     /// This window content is a WindowManager panel to handle managed overlapping windows 
     /// and the MainView is the WindowManagerPanel.Content 
     /// </remarks>
-    internal class ConsoleWindow : Window
+    public class ConsoleWindow : Window
     {
-        internal ConsoleWindow() :
+        public ConsoleWindow() :
             this(new ConsoleWindowImpl())
 
         {
@@ -51,10 +51,10 @@ namespace Consolonia.Core.Infrastructure
     }
 
     /// <summary>
-    /// ConsoleTopLevelImpl - An IWindowImpl which uses a PixelBuffer to render.
+    /// ConsoleWindowImpl - An IWindowImpl which uses a PixelBuffer to render.
     /// </summary>
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix
-    internal class ConsoleWindowImpl : IWindowImpl
+    public class ConsoleWindowImpl : IWindowImpl
 #pragma warning restore CA1711 // Identifiers should not have incorrect suffix
     {
         private readonly bool _accessKeysAlwaysOn;
@@ -65,7 +65,7 @@ namespace Consolonia.Core.Infrastructure
 
         [NotNull] internal readonly IConsole Console;
 
-        internal ConsoleWindowImpl()
+        public ConsoleWindowImpl()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
