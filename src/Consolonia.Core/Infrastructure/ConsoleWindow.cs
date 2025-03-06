@@ -24,7 +24,7 @@ namespace Consolonia.Core.Infrastructure
     /// </summary>
     /// <remarks>
     /// This window content is a WindowManager panel to handle managed overlapping windows 
-    /// and the MainView is the WindowManagerPanel.Content 
+    /// and the MainView is the WindowsPanel.Content 
     /// </remarks>
     public class ConsoleWindow : Window
     {
@@ -38,7 +38,7 @@ namespace Consolonia.Core.Infrastructure
         public ConsoleWindow(IWindowImpl impl)
             : base(impl)
         {
-            this.Content = new WindowManagerPanel();
+            this.Content = new WindowsPanel();
         }
 
         public Control MainView
@@ -47,7 +47,7 @@ namespace Consolonia.Core.Infrastructure
             set => WindowManager.Content = (Control)value;
         }
 
-        public WindowManagerPanel WindowManager => (WindowManagerPanel)Content;
+        public WindowsPanel WindowManager => (WindowsPanel)Content;
     }
 
     /// <summary>

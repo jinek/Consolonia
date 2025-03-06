@@ -19,8 +19,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             var lifetime = (ConsoloniaLifetime)Application.Current.ApplicationLifetime;
 
             var dialog = new SomeDialogWindow(50, 15);
-            this.ShowWindow(dialog);
-            // dialog.ShowDialog(this);// .ShowDialog(lifetime.TopLevel);
+            this.ShowDialog(dialog);
         }
     }
 }

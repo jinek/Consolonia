@@ -26,9 +26,9 @@
             <Button Content="Add Child Window" Click="OnShowChildWindowClick" HorizontalAlignment="Left" />
         </StackPanel>
         <!-- MainView has a top level WindowManagerPanel, this is a child one so that when we click on Add Child Window it is added to this panel -->
-        <wm:WindowManagerPanel Name="ChildWindowManager" Grid.Row="1"
+        <wm:WindowsPanel Name="ChildWindowsPanel" Grid.Row="1"
                                Background="Gray">
-            <TextBlock>Child window manager panel</TextBlock>
-        </wm:WindowManagerPanel>
+            <TextBlock>Child WindowsPanel</TextBlock>
+        </wm:WindowsPanel>
     </Grid>
 </UserControl>

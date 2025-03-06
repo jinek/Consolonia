@@ -36,7 +36,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             window.SetDemoWindowSize(this.Bounds);
             
-            this.ChildWindowManager.ShowWindow(window);
+            this.ChildWindowsPanel.AddWindow(window);
         }
     }
 }
