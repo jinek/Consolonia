@@ -97,6 +97,7 @@ namespace Consolonia.Gallery.View
                 "GalleryViews", $"{selectedItem.Type.Name}.axaml"));
             var dialog = new XamlDialogWindow
             {
+                Title = $"{selectedItem.Type.Name}.axaml",
                 // ReSharper disable once MethodHasAsyncOverload
                 DataContext = File.ReadAllText(path)
             };
