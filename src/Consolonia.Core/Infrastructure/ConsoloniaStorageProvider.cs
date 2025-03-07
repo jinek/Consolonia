@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Consolonia.Core.Controls;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -27,7 +29,7 @@ namespace Consolonia.Core.Infrastructure
             var lifetime = (ConsoloniaLifetime)Application.Current.ApplicationLifetime;
             ArgumentNullException.ThrowIfNull(lifetime);
             var picker = new FileOpenPicker(options);
-            var results = await picker.ShowDialogAsync<IReadOnlyList<IStorageFile>>(lifetime.TopLevel);
+            var results = await lifetime.TopLevel.ShowDialog<IReadOnlyList<IStorageFile>>(picker);
             return results;
         }
 
@@ -42,7 +44,7 @@ namespace Consolonia.Core.Infrastructure
             ArgumentNullException.ThrowIfNull(lifetime);
 
             var picker = new FolderPicker(options);
-            var results = await picker.ShowDialogAsync<IReadOnlyList<IStorageFolder>>(lifetime.TopLevel);
+            var results = await lifetime.TopLevel.ShowDialog<IReadOnlyList<IStorageFolder>>(picker);
             return results;
         }
 
@@ -52,7 +54,7 @@ namespace Consolonia.Core.Infrastructure
             ArgumentNullException.ThrowIfNull(lifetime);
 
             var picker = new FileSavePicker(options);
-            var results = await picker.ShowDialogAsync<IStorageFile>(lifetime.TopLevel);
+            var results = await lifetime.TopLevel.ShowDialog<IStorageFile>(picker);
             return results;
         }
 

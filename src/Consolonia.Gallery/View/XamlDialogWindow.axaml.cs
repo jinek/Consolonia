@@ -6,7 +6,7 @@ using Consolonia.Controls;
 
 namespace Consolonia.Gallery.View
 {
-    public partial class XamlDialogWindow : DialogWindow
+    public partial class XamlDialogWindow : Consolonia.Controls.Window
     {
         public XamlDialogWindow()
         {

@@ -63,5 +63,4 @@
     </Styles.Resources>
 
     <StyleInclude Source="/Templates/Controls/UserControl.axaml" />
-    <StyleInclude Source="/Templates/Controls/DialogWindow.axaml" />
 </Styles>

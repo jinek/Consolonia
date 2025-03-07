@@ -1,15 +1,12 @@
-using Avalonia.Animation.Easings;
-using Avalonia.Animation;
 using Avalonia.Media;
-using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Iciclecreek.Avalonia.WindowManager;
 using System;
 using Avalonia.Interactivity;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews;
 
-public partial class MyDialog : ManagedWindow
+
+public partial class MyDialog : Consolonia.Controls.Window
 {
     private static int _dialogCount = 0;
     private static IImmutableSolidColorBrush[] brushes =

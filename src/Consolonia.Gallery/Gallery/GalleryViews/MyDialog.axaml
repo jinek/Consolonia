@@ -1,14 +1,16 @@
-<wm:ManagedWindow xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
-        xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
-        MinWidth="10"
-        x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyDialog"
-        x:DataType="local:MyDialogViewModel"
-        ShowActivated="True"
-        Title="{Binding Title}">
+<console:Window xmlns="https://github.com/avaloniaui"
+                xmlns:console="https://github.com/jinek/consolonia"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
+                xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
+                MinWidth="10"
+                Icon="😎"
+                x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyDialog"
+                x:DataType="local:MyDialogViewModel"
+                ShowActivated="True"
+                Title="{Binding Title}">
   <StackPanel >
     <StackPanel Orientation="Horizontal" >
       <Label>Enter some text:</Label>
@@ -27,4 +29,4 @@
           Click="OnCancel">Cancel</Button>
     </StackPanel>
   </StackPanel>
-</wm:ManagedWindow>
+</console:Window>

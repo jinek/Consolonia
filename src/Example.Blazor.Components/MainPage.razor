@@ -51,7 +51,7 @@
     async void OnMessageBox(RoutedEventArgs args)
     {
         await new MessageBox()
-            .ShowDialogAsync((AC.Control)args.Source!, "Hello, Blazor!", "Blazor Bindings for Consolonia");
+            .ShowDialog((AC.Control)args.Source!, "Hello, Blazor!", "Blazor Bindings for Consolonia");
     }
 
     void OnExit()

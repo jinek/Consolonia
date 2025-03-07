@@ -1,15 +1,17 @@
-<console:DialogWindow xmlns="https://github.com/avaloniaui"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:console="https://github.com/jinek/consolonia"
-                      xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
-                      xmlns:core-Controls="clr-namespace:Consolonia.Core.Controls"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      x:DataType="core-Controls:FileSavePickerViewModel"
-                      x:Class="Consolonia.Core.Controls.FileSavePicker"
-                      Icon="📰"
-                      CancelOnEscape="True"
-                      Title="{Binding Options.Title}">
+<console:Window xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:console="https://github.com/jinek/consolonia"
+                xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
+                xmlns:core-Controls="clr-namespace:Consolonia.Core.Controls"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                CanResize="True"
+                WindowStartupLocation ="CenterScreen"
+                WindowState="Maximized"
+                x:DataType="core-Controls:FileSavePickerViewModel"
+                x:Class="Consolonia.Core.Controls.FileSavePicker"
+                Icon="📰"
+                Title="{Binding Options.Title}">
     <Grid RowDefinitions="Auto * Auto Auto">
         <Grid ColumnDefinitions="Auto *">
             <TextBlock Text="📁 " />
@@ -59,7 +61,8 @@
                     IsEnabled="{Binding SavePath, Converter={x:Static ObjectConverters.IsNotNull}}" />
             <Button x:Name="CancelButton"
                     Content="Cancel"
+                    IsCancel="True"                    
                     Click="OnCancel" />
         </StackPanel>
     </Grid>
-</console:DialogWindow>
+</console:Window>

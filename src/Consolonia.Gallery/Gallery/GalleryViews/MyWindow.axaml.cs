@@ -1,8 +1,5 @@
-using Avalonia.Animation.Easings;
-using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Iciclecreek.Avalonia.WindowManager;
 using System;
@@ -11,7 +8,7 @@ using Avalonia;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews;
 
-public partial class MyWindow : ManagedWindow
+public partial class MyWindow : Consolonia.Controls.Window
 {
     private static int _windowCount = 0;
     private static IImmutableSolidColorBrush[] brushes =

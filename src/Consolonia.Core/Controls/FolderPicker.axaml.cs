@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -6,7 +7,7 @@ using Consolonia.Controls;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FolderPicker : DialogWindow
+    internal partial class FolderPicker : Consolonia.Controls.Window
     {
         public FolderPicker()
             : this(new FolderPickerOpenOptions())
@@ -15,13 +16,11 @@ namespace Consolonia.Core.Controls
 
         public FolderPicker(FolderPickerOpenOptions options)
         {
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
-
             DataContext = new FolderPickerViewModel(options);
             InitializeComponent();
             CancelButton.Focus();
         }
-
+        
         private FolderPickerViewModel ViewModel => (FolderPickerViewModel)DataContext;
 
         public FolderPickerOpenOptions Options =>
@@ -41,12 +40,12 @@ namespace Consolonia.Core.Controls
 
         private void OnOK(object sender, RoutedEventArgs e)
         {
-            CloseDialog(ViewModel.SelectedFolders);
+            Close(ViewModel.SelectedFolders);
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
         {
-            CloseDialog();
+            Close();
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

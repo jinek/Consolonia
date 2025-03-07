@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -8,7 +9,7 @@ using Consolonia.Controls;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FileSavePicker : DialogWindow
+    internal partial class FileSavePicker : Consolonia.Controls.Window
     {
         public FileSavePicker()
             : this(new FilePickerSaveOptions())
@@ -40,6 +41,15 @@ namespace Consolonia.Core.Controls
             DataContext as FileSavePickerViewModel
             ?? throw new InvalidOperationException($"Invalid DataContext. Expected {nameof(FileSavePickerViewModel)}");
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            Position = new PixelPoint(2, 2);
+            Width = WindowManager.Width - 4;
+            Height = WindowManager.Height - 4;
+        }
+
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {
             var listbox = (ListBox)sender;
@@ -50,7 +60,7 @@ namespace Consolonia.Core.Controls
             }
             else if (listbox.SelectedItem is IStorageFile file)
             {
-                CloseDialog(file);
+                Close(file);
             }
         }
 
@@ -72,19 +82,19 @@ namespace Consolonia.Core.Controls
                         new Uri($"file://{Path.GetDirectoryName(savePath)}"));
                 if (folder == null)
                 {
-                    CloseDialog();
+                    Close();
                     return;
                 }
 
                 file = await folder.CreateFileAsync(Path.GetFileName(savePath));
             }
 
-            CloseDialog(file);
+            Close(file);
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
         {
-            CloseDialog();
+            Close();
         }
     }
 }

@@ -9,6 +9,7 @@ using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
 using Consolonia.Themes;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Gallery.View
 {
@@ -100,7 +101,7 @@ namespace Consolonia.Gallery.View
                 DataContext = File.ReadAllText(path)
             };
 
-            await dialog.ShowDialogAsync(lifetime.MainView);
+            await lifetime.MainView.ShowDialog(dialog);
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

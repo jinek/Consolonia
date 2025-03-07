@@ -11,5 +11,4 @@
 
     <StyleInclude Source="/TurboVision/TurboVisionTheme.axaml" />
     <StyleInclude Source="/TurboVisionDark/Controls/Button.axaml" />
-    <StyleInclude Source="/TurboVisionDark/Controls/DialogWindow.axaml" />
 </Styles>
