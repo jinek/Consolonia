@@ -44,12 +44,12 @@ namespace Consolonia
 
         public Control MainView
         {
-            get => (TopLevel as ConsoleWindow).MainView;
+            get => TopLevel.Content as Control;
             set
             {
                 if (TopLevel == null)
                     TopLevel = new ConsoleWindow();
-                (TopLevel as ConsoleWindow).MainView = value;
+                TopLevel.Content = value;
             }
         }
 

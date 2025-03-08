@@ -6,26 +6,31 @@
                 xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
                 xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
                 MinWidth="10"
+                Padding="1"
                 Icon="😎"
                 x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyDialog"
                 x:DataType="local:MyDialogViewModel"
                 ShowActivated="True"
                 Title="{Binding Title}">
-  <StackPanel >
-    <StackPanel Orientation="Horizontal" >
+  <StackPanel Spacing="1">
+    <StackPanel Orientation="Horizontal" Spacing="1">
       <Label>Enter some text:</Label>
       <TextBox Text="{Binding Text}"/>
     </StackPanel>
 
     <Button  HorizontalAlignment="Left" Click="OnColor">Background</Button>
 
-    <StackPanel Orientation="Horizontal" >
+    <StackPanel Orientation="Horizontal" Spacing="1">
       <Button
           HorizontalAlignment="Center"
+          IsDefault="True"
+          IsTabStop="True"
           Click="OnOK">OK</Button>
 
       <Button
           HorizontalAlignment="Center"
+          IsCancel="True"
+          IsTabStop="True"
           Click="OnCancel">Cancel</Button>
     </StackPanel>
   </StackPanel>

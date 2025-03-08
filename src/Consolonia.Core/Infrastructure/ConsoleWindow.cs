@@ -38,16 +38,13 @@ namespace Consolonia.Core.Infrastructure
         public ConsoleWindow(IWindowImpl impl)
             : base(impl)
         {
-            this.Content = new WindowsPanel();
         }
 
         public Control MainView
         {
-            get => WindowManager.Content as Control;
-            set => WindowManager.Content = (Control)value;
+            get => Content as Control;
+            set => Content = (Control)value;
         }
-
-        public WindowsPanel WindowManager => (WindowsPanel)Content;
     }
 
     /// <summary>

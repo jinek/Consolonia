@@ -5,6 +5,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
@@ -101,8 +102,7 @@ namespace Consolonia.Gallery.View
                 // ReSharper disable once MethodHasAsyncOverload
                 DataContext = File.ReadAllText(path)
             };
-
-            await lifetime.MainView.ShowDialog(dialog);
+            await dialog.ShowDialog();
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

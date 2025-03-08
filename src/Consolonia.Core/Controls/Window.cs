@@ -10,12 +10,12 @@ namespace Consolonia.Controls
         {
             base.OnLoaded(e);
 
-            this.WindowManager.SizeChanged += WindowManager_SizeChanged;
+            this.OverlayLayer.SizeChanged += WindowManager_SizeChanged;
         }
 
         protected override void OnClosed(EventArgs e)
         {
-            this.WindowManager.SizeChanged -= WindowManager_SizeChanged;
+            this.OverlayLayer.SizeChanged -= WindowManager_SizeChanged;
             base.OnClosed(e);
         }
 
@@ -23,8 +23,8 @@ namespace Consolonia.Controls
         {
             if (WindowState == Avalonia.Controls.WindowState.Maximized)
             {
-                this.Width = WindowManager.Bounds.Width;
-                this.Height = WindowManager.Bounds.Height;
+                this.Width = OverlayLayer.Bounds.Width;
+                this.Height = OverlayLayer.Bounds.Height;
             }
         }
     }

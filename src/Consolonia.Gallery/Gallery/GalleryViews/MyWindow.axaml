@@ -6,18 +6,19 @@
                 xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
                 xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
                 Icon="😎"
+                Padding="1"
                 x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyWindow"
                 x:DataType="local:MyWindowViewModel"
                 Title="{Binding Title}">
-  <StackPanel>
-    <StackPanel Orientation="Horizontal" >
+  <StackPanel Spacing="1">
+    <StackPanel Orientation="Horizontal" Spacing="1">
       <Button
           HorizontalAlignment="Left"
           Click="OnIncrement">Increment</Button>
       <TextBlock Text="{Binding Counter}"/>
     </StackPanel>
 
-    <StackPanel Orientation="Horizontal" >
+    <StackPanel Orientation="Horizontal" Spacing="1">
       <Label>SizeToContent for Dialog</Label>
       <ComboBox Name="SizeToContentCombo" SelectedIndex="3">
         <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
@@ -27,7 +28,7 @@
       </ComboBox>
     </StackPanel>
 
-    <StackPanel Orientation="Horizontal" >
+    <StackPanel Orientation="Horizontal" Spacing="1">
       <Label>StartupLocation for Dialog</Label>
       <ComboBox Name="StartupLocationCombo" SelectedIndex="1">
         <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
@@ -36,10 +37,13 @@
       </ComboBox>
     </StackPanel>
 
-    <Button Click="OnShowDialog" HorizontalAlignment="Left">Show dialog</Button>
-    <TextBlock Text="{Binding Text}"/>
+      <StackPanel Orientation="Horizontal" Spacing="1">
+          <Button Click="OnShowDialog" HorizontalAlignment="Left">Show dialog</Button>
+          <TextBlock Text="DialogResult:"/>
+          <TextBlock Text="{Binding Text}"/>
+      </StackPanel>
 
-    <Button  HorizontalAlignment="Left" Click="OnColor">Background</Button>
+      <Button  HorizontalAlignment="Left" Click="OnColor">Background</Button>
 
     <ToggleSwitch Content="CanResize" IsChecked="{Binding CanResize, RelativeSource={RelativeSource AncestorType={x:Type wm:ManagedWindow}}}"/>
   </StackPanel>

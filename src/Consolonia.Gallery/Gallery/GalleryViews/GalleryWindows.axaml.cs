@@ -22,20 +22,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             window.SetDemoWindowSize(this.Bounds);
 
-            this.ShowWindow(window);
+            window.Show();
         }
 
-        private void OnShowChildWindowClick(object? sender, RoutedEventArgs e)
-        {
-            var window = new MyWindow()
-            {
-                WindowStartupLocation = Enum.Parse<WindowStartupLocation>((StartupLocationCombo.SelectedItem as ComboBoxItem).Tag.ToString()),
-                SizeToContent = Enum.Parse<SizeToContent>(((ComboBoxItem)SizeToContentCombo.SelectedItem).Tag.ToString())
-            };
-
-            window.SetDemoWindowSize(this.Bounds);
-            
-            this.ChildWindowsPanel.AddWindow(window);
-        }
     }
 }

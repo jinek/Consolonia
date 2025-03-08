@@ -1,11 +1,6 @@
-using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Chrome;
-using Avalonia.Controls.Metadata;
-using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
@@ -80,6 +75,7 @@ namespace Consolonia.Controls
         {
             base.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             base.SizeToContent = SizeToContent.WidthAndHeight;
+            base.Padding = new Thickness(1.0);
         }
 
         protected override void OnInitialized()
@@ -118,6 +114,7 @@ namespace Consolonia.Controls
 
             var buttonsStackPanel = new StackPanel
             {
+                Spacing=1,
                 Orientation = Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Right,
             };
@@ -151,6 +148,7 @@ namespace Consolonia.Controls
 
             this.Content = new StackPanel
             {
+                Spacing = 1,
                 Children =
                 {
                     message,
@@ -180,12 +178,12 @@ namespace Consolonia.Controls
                 Title = title,
                 Message = message
             };
-            return visual.ShowDialog<MessageBoxResult>(mb);
+            return mb.ShowDialog<MessageBoxResult>(visual.FindAncestorOfType<ManagedWindow>());
         }
 
         public async Task<MessageBoxResult> ShowDialog(Visual visual)
         {
-            return await visual.ShowDialog<MessageBoxResult>(this);
+            return await this.ShowDialog<MessageBoxResult>(visual.FindAncestorOfType<ManagedWindow>());
         }
 
         private void OnOk(object sender, RoutedEventArgs e)
