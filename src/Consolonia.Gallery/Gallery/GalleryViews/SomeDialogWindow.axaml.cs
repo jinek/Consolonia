@@ -42,5 +42,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             await new SomeDialogWindow().ShowDialog(this);
         }
+
+        private void OnCancel(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

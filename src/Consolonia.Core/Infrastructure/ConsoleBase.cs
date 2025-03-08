@@ -29,7 +29,7 @@ namespace Consolonia.Core.Infrastructure
 
             _consoleOutput = consoleOutput;
 
-            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+            Size = consoleOutput.Size;
         }
 
         protected bool Disposed { get; private set; }

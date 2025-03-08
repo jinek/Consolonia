@@ -10,7 +10,7 @@ namespace Consolonia.Controls
         {
             base.OnLoaded(e);
 
-            this.WindowManager.SizeChanged += WindowManager_SizeChanged; 
+            this.WindowManager.SizeChanged += WindowManager_SizeChanged;
         }
 
         protected override void OnClosed(EventArgs e)

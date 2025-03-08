@@ -126,12 +126,12 @@
 
         <Style Selector="^ /template/ Border#InternalBorder">
             <Setter Property="Margin"
-                    Value="0,0,1,1" />
+                    Value="0,0,1,0" />
         </Style>
 
         <Style Selector="^:clickdelayed /template/ Border#InternalBorder">
             <Setter Property="Margin"
-                    Value="1,0,1,1" />
+                    Value="1,0,1,0" />
         </Style>
 
     </ControlTheme>

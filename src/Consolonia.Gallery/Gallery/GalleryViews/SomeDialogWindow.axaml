@@ -27,11 +27,19 @@ _____/          :--'
 
 Bill Ames
 </TextBlock>
+            <StackPanel Orientation="Horizontal">
             <Button Content="One More"
                     Name="OneMoreButton"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
+                    IsDefault="true"
                     Click="OneMore_Clicked" />
+            <Button Content="Cancel"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    IsCancel="true"
+                    Click="OnCancel" />
+            </StackPanel>
         </Panel>
     </ScrollViewer>
 </console:Window>

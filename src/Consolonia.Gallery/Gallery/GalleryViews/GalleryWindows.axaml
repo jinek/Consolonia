@@ -27,7 +27,7 @@
         </StackPanel>
         <!-- MainView has a top level WindowManagerPanel, this is a child one so that when we click on Add Child Window it is added to this panel -->
         <wm:WindowsPanel Name="ChildWindowsPanel" Grid.Row="1"
-                               Background="Gray">
+                               Background="AliceBlue">
             <TextBlock>Child WindowsPanel</TextBlock>
         </wm:WindowsPanel>
     </Grid>

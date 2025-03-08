@@ -136,7 +136,7 @@ namespace Consolonia.NUnit
         {
             await Dispatcher.UIThread.InvokeAsync(async () =>
             {
-                var mainWindow = _lifetime.TopLevel as Window;
+                var mainWindow = _lifetime.TopLevel as Avalonia.Controls.Window;
                 mainWindow!.InvalidateVisual();
                 await mainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Rendered
                     .ConfigureAwait(true);

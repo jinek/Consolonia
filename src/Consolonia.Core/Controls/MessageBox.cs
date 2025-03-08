@@ -88,25 +88,31 @@ namespace Consolonia.Controls
 
             _yesButton = new Button()
             {
-                Content = this.Yes ?? "Yes",
+                Content = this.Yes ?? "_Yes",
+                IsTabStop = true
             };
             _yesButton.Click += OnYes;
 
             _noButton = new Button()
             {
-                Content = this.No ?? "No"
+                Content = this.No ?? "_No",
+                IsTabStop = true
             };
             _noButton.Click += OnNo;
 
             _cancelButton = new Button()
             {
-                Content = this.Cancel ?? "Cancel"
+                Content = this.Cancel ?? "_Cancel",
+                IsCancel = true,
+                IsTabStop = true
             };
             _cancelButton.Click += OnCancel;
 
             _okButton = new Button()
             {
-                Content = this.Ok ?? "Ok"
+                Content = this.Ok ?? "O_k",
+                IsDefault = true,
+                IsTabStop = true
             };
             _okButton.Click += OnOk;
 
@@ -135,6 +141,7 @@ namespace Consolonia.Controls
                     buttonsStackPanel.Children.Add(_cancelButton);
                     break;
             }
+            buttonsStackPanel.Children[0].Focus();
 
             var message = (this.Message is string str) ? new TextBlock()
             {
