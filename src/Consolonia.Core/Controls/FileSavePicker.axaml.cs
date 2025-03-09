@@ -18,8 +18,6 @@ namespace Consolonia.Core.Controls
 
         public FileSavePicker(FilePickerSaveOptions options)
         {
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
-
             DataContext = new FileSavePickerViewModel(options);
             InitializeComponent();
             CancelButton.Focus();
@@ -46,8 +44,8 @@ namespace Consolonia.Core.Controls
             base.OnLoaded(e);
 
             Position = new PixelPoint(2, 2);
-            Width = OverlayLayer.Width - 4;
-            Height = OverlayLayer.Height - 4;
+            Width = OverlayLayer.Bounds.Width - 4;
+            Height = OverlayLayer.Bounds.Height - 4;
         }
 
         private void OnDoubleTapped(object sender, TappedEventArgs e)

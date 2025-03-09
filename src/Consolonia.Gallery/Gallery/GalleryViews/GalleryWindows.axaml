@@ -22,6 +22,15 @@
                     <ComboBoxItem Tag="CenterScreen">CenterScreen</ComboBoxItem>
                 </ComboBox>
             </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="1">
+                <Label>WindowState</Label>
+                <ComboBox Name="WindowStateCombo" SelectedIndex="0">
+                    <ComboBoxItem Tag="Normal">Normal</ComboBoxItem>
+                    <ComboBoxItem Tag="Minimized">Minimized</ComboBoxItem>
+                    <ComboBoxItem Tag="Maximized">Maximized</ComboBoxItem>
+                    <ComboBoxItem Tag="FullScreen">FullScreen</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
             <Button Content="Add Window" Click="OnShowWindowClick" HorizontalAlignment="Left" />
         </StackPanel>
         

@@ -53,6 +53,11 @@ public partial class MyWindow : Consolonia.Controls.Window
         this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
     }
 
+    private void OnClose(object? sender, RoutedEventArgs args)
+    {
+        this.Close();
+    }
+
 
     private async void OnShowDialog(object? sender, RoutedEventArgs args)
     {
@@ -63,7 +68,7 @@ public partial class MyWindow : Consolonia.Controls.Window
         };
         dialog.ViewModel.Text = ViewModel.Text;
 
-        dialog.SetDemoWindowSize(this.Bounds);
+        dialog.SizeToBounds(this.Bounds);
 
         var result = await dialog.ShowDialog<string?>(this);
         if (result != null)
@@ -85,7 +90,7 @@ public partial class MyWindowViewModel : ObservableObject
 
 internal static class Utils
 {
-    public static void SetDemoWindowSize(this ManagedWindow window, Rect rect)
+    public static void SizeToBounds(this ManagedWindow window, Rect rect)
     {
         var minWidth = (int)rect.Width / 4;
         var minHeight = (int)rect.Height / 4;
@@ -100,20 +105,20 @@ internal static class Utils
 
         switch (window.SizeToContent)
         {
-            case SizeToContent.Manual:
+            case Avalonia.Controls.SizeToContent.Manual:
                 // we are providing both width and height
                 window.Width = Random.Shared.Next(minWidth, maxWidth);
                 window.Height = Random.Shared.Next(minHeight, maxHeight);
                 break;
-            case SizeToContent.Width:
+            case Avalonia.Controls.SizeToContent.Width:
                 // we are expecting window to figure out width
                 window.Height = Random.Shared.Next(minHeight, maxHeight);
                 break;
-            case SizeToContent.Height:
+            case Avalonia.Controls.SizeToContent.Height:
                 // we are expecting window to figure out height
                 window.Width = Random.Shared.Next(minWidth, maxWidth);
                 break;
-            case SizeToContent.WidthAndHeight:
+            case Avalonia.Controls.SizeToContent.WidthAndHeight:
                 // we are expecting window to figure out both width and height
                 break;
         }

@@ -17,10 +17,11 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             var window = new MyWindow()
             {
                 WindowStartupLocation = Enum.Parse<WindowStartupLocation>((StartupLocationCombo.SelectedItem as ComboBoxItem).Tag.ToString()),
-                SizeToContent = Enum.Parse<SizeToContent>(((ComboBoxItem)SizeToContentCombo.SelectedItem).Tag.ToString())
+                SizeToContent = Enum.Parse<SizeToContent>(((ComboBoxItem)SizeToContentCombo.SelectedItem).Tag.ToString()),
+                WindowState = Enum.Parse<WindowState>(((ComboBoxItem)WindowStateCombo.SelectedItem).Tag.ToString()),    
             };
 
-            window.SetDemoWindowSize(this.Bounds);
+            window.SizeToBounds(this.Bounds);
 
             window.Show();
         }

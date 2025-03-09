@@ -26,6 +26,15 @@ namespace Consolonia.Core.Controls
         public FolderPickerOpenOptions Options =>
             ((FolderPickerViewModel)DataContext)?.Options ?? new FolderPickerOpenOptions();
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            Position = new PixelPoint(2, 2);
+            Width = OverlayLayer.Bounds.Width - 4;
+            Height = OverlayLayer.Bounds.Height - 4;
+        }
+
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {
             var listbox = (ListBox)sender;

@@ -44,6 +44,7 @@
       </StackPanel>
 
       <Button  HorizontalAlignment="Left" Click="OnColor">Background</Button>
+      <Button  HorizontalAlignment="Left" Click="OnClose">Close</Button>
 
     <ToggleSwitch Content="CanResize" IsChecked="{Binding CanResize, RelativeSource={RelativeSource AncestorType={x:Type wm:ManagedWindow}}}"/>
   </StackPanel>
