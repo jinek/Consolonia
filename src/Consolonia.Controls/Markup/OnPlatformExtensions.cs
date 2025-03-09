@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Avalonia;
 using Avalonia.Metadata;
 using AvaloniaMarkup = Avalonia.Markup.Xaml.MarkupExtensions;
@@ -61,19 +62,26 @@ namespace Consolonia.Controls.Markup
         private static bool IsConsole()
         {
 #pragma warning disable CA1031 // Do not catch general exception types
-            try
+            if (Application.Current?.ApplicationLifetime != null)
+                return Application.Current.ApplicationLifetime.GetType().Name == "ConsoloniaLifetime";
+
+            if (OperatingSystem.IsWindows())
             {
-                if (Application.Current?.ApplicationLifetime != null)
-                    return Application.Current.ApplicationLifetime.GetType().Name == "ConsoloniaLifetime";
-                
-                // fallback to sniffing out height.
-                return System.Console.WindowHeight > 0;
+                try
+                {
+                    return System.Console.WindowHeight > 0;
+                }
+                catch (IOException)
+                {
+                    return false;
+                }
             }
-            catch (Exception)    
-            {
-                // windows throws an exception if the console is not attached.
-                return false;
-            }
+
+            // This works on Unix systems
+            var isConsole = !(System.Console.IsInputRedirected &&
+                                  System.Console.IsOutputRedirected &&
+                                  System.Console.IsErrorRedirected);
+            return isConsole;
 #pragma warning restore CA1031 // Do not catch general exception types
         }
     }
