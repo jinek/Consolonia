@@ -6,7 +6,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 CanResize="True"
-                WindowStartupLocation ="Manual"
+                WindowStartupLocation="Manual"
                 SizeToContent="Manual"
                 x:DataType="core-Controls:FileOpenPickerViewModel"
                 x:Class="Consolonia.Core.Controls.FileOpenPicker"

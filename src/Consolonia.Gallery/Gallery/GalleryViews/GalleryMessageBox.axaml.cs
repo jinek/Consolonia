@@ -29,13 +29,14 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 Title = "OK Message box",
                 Message = "Do you want to OK?"
             };
-            MessageBoxResult result = await mb.ShowDialog(this); 
+            MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
         }
 
         private async void OnOkCancel(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = await MessageBox.ShowDialog(this, "OK/Cancel Message box", "Do you want to OK or cancel?", MessageBoxStyle.OkCancel);
+            MessageBoxResult result = await MessageBox.ShowDialog(this, "OK/Cancel Message box",
+                "Do you want to OK or cancel?", MessageBoxStyle.OkCancel);
             ViewModel.Result = result.ToString();
         }
 

@@ -6,7 +6,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 CanResize="True"
-                WindowStartupLocation ="Manual"
+                WindowStartupLocation="Manual"
                 SizeToContent="Manual"
                 x:DataType="core-Controls:FileSavePickerViewModel"
                 x:Class="Consolonia.Core.Controls.FileSavePicker"
@@ -61,7 +61,7 @@
                     IsEnabled="{Binding SavePath, Converter={x:Static ObjectConverters.IsNotNull}}" />
             <Button x:Name="CancelButton"
                     Content="Cancel"
-                    IsCancel="True"                    
+                    IsCancel="True"
                     Click="OnCancel" />
         </StackPanel>
     </Grid>

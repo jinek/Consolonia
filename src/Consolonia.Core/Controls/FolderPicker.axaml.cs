@@ -3,10 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Window = Consolonia.Controls.Window;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FolderPicker : Consolonia.Controls.Window
+    internal partial class FolderPicker : Window
     {
         public FolderPicker()
             : this(new FolderPickerOpenOptions())
@@ -19,7 +20,7 @@ namespace Consolonia.Core.Controls
             InitializeComponent();
             CancelButton.Focus();
         }
-        
+
         private FolderPickerViewModel ViewModel => (FolderPickerViewModel)DataContext;
 
         public FolderPickerOpenOptions Options =>

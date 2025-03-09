@@ -61,6 +61,6 @@
                 Value="1 0" />
     </Style>
 
-    <wm:WindowManagerTheme/>
+    <wm:WindowManagerTheme />
 
 </Styles>

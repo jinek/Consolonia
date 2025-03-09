@@ -5,10 +5,11 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Window = Consolonia.Controls.Window;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FileSavePicker : Consolonia.Controls.Window
+    internal partial class FileSavePicker : Window
     {
         public FileSavePicker()
             : this(new FilePickerSaveOptions())
