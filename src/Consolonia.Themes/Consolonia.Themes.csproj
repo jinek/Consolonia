@@ -4,11 +4,9 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-        <!--<PackageReference Include="Iciclecreek.Avalonia.WindowManager" Version="1.3.0" />-->
     </ItemGroup>
 
     <ItemGroup>
-        <!--<ProjectReference Include="..\..\..\Iciclecreek.Avalonia.WindowManager\source\Iciclecreek.Avalonia.WindowManager\Iciclecreek.Avalonia.WindowManager.csproj" />-->
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
     </ItemGroup>
 
