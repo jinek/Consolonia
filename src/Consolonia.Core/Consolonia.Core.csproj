@@ -14,7 +14,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Controls\Consolonia.Controls.csproj" />
-        <!--<ProjectReference Include="..\..\..\Iciclecreek.Avalonia.WindowManager\source\Iciclecreek.Avalonia.WindowManager\Iciclecreek.Avalonia.WindowManager.csproj" />-->
     </ItemGroup>
 
 </Project>
