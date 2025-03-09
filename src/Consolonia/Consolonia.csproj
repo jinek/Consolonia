@@ -5,11 +5,5 @@
       <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
       <ProjectReference Include="..\Consolonia.PlatformSupport\Consolonia.PlatformSupport.csproj" />
       <ProjectReference Include="..\Consolonia.Themes\Consolonia.Themes.csproj" />
-        <!--<PackageReference Include="Iciclecreek.Avalonia.WindowManager" Version="1.3.0" />-->
     </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\Iciclecreek.Avalonia.WindowManager\source\Iciclecreek.Avalonia.WindowManager\Iciclecreek.Avalonia.WindowManager.csproj" />
-    </ItemGroup>
-
 </Project>
