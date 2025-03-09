@@ -25,6 +25,7 @@ namespace Consolonia.Core.Drawing
         private const byte HorizontalLinePattern = 0b0101;
         private const byte HorizontalEndPattern = 0b0001;
 
+        // these are magic values for mapping drawing of a line to escape instructions for text decorations around text.
         public const int UnderlineThickness = 10;
         public const int StrikethroughThickness = 11;
 
@@ -52,15 +53,15 @@ namespace Consolonia.Core.Drawing
         ];
 
         private readonly Stack<Rect> _clipStack = new(100);
-        private readonly ConsoleWindowImpl _consoleTopLevelImpl;
+        private readonly ConsoleWindowImpl _consoleWindowImpl;
         private readonly PixelBuffer _pixelBuffer;
         private readonly Matrix _postTransform = Matrix.Identity;
         private Matrix _transform = Matrix.Identity;
 
-        public DrawingContextImpl(ConsoleWindowImpl consoleTopLevelImpl)
+        public DrawingContextImpl(ConsoleWindowImpl consoleWindowImpl)
         {
-            _consoleTopLevelImpl = consoleTopLevelImpl;
-            _pixelBuffer = consoleTopLevelImpl.PixelBuffer;
+            _consoleWindowImpl = consoleWindowImpl;
+            _pixelBuffer = consoleWindowImpl.PixelBuffer;
             _clipStack.Push(_pixelBuffer.Size);
         }
 
@@ -279,7 +280,7 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextLayerImpl CreateLayer(PixelSize size)
         {
-            return new RenderTarget(_consoleTopLevelImpl);
+            return new RenderTarget(_consoleWindowImpl);
         }
 
         public void PushClip(Rect clip)
@@ -726,7 +727,7 @@ namespace Consolonia.Core.Drawing
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
             // the x and y are adjusted accordingly.
-            foreach (string glyph in text.GetGlyphs(_consoleTopLevelImpl.Console.SupportsComplexEmoji))
+            foreach (string glyph in text.GetGlyphs(_consoleWindowImpl.Console.SupportsComplexEmoji))
             {
                 Point characterPoint =
                     whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));
