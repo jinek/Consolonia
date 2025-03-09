@@ -609,8 +609,6 @@ namespace Consolonia.Core.Drawing
 
             if (endSymbol.Text != "\0")
                 DrawLineSymbolAndMoveHead(ref head, line.Vertical, endSymbol, color, 1);
-            else
-                head += line.Vertical ? new Vector(0, 1) : new Vector(1, 0);
         }
 
         /// <summary>
