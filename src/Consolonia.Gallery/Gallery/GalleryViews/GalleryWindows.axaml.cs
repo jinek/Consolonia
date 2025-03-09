@@ -1,7 +1,6 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -12,7 +11,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
         }
 
-        private void OnShowWindowClick(object? sender, RoutedEventArgs e)
+        private void OnShowWindowClick(object sender, RoutedEventArgs e)
         {
             var window = new MyWindow()
             {

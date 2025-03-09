@@ -5,12 +5,10 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
 using Consolonia.Themes;
-using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Gallery.View
 {

@@ -9,7 +9,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews;
 public partial class MyDialog : Consolonia.Controls.Window
 {
     private static int _dialogCount = 0;
-    private static IImmutableSolidColorBrush[] brushes =
+    private static IImmutableSolidColorBrush[] _brushes =
          [
              Brushes.LightBlue,
             Brushes.LightGreen,
@@ -35,19 +35,19 @@ public partial class MyDialog : Consolonia.Controls.Window
 
     public MyDialogViewModel ViewModel => (MyDialogViewModel)DataContext;
 
-    private void OnOK(object? sender, RoutedEventArgs args)
+    private void OnOK(object sender, RoutedEventArgs args)
     {
         this.Close(ViewModel.Text);
     }
 
-    private void OnCancel(object? sender, RoutedEventArgs args)
+    private void OnCancel(object sender, RoutedEventArgs args)
     {
         this.Close(null);
     }
 
-    private void OnColor(object? sender, RoutedEventArgs args)
+    private void OnColor(object sender, RoutedEventArgs args)
     {
-        this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
+        this.Background = _brushes[Random.Shared.Next(0, _brushes.Length)];
     }
 }
 

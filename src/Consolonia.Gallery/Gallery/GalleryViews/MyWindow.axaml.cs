@@ -39,21 +39,21 @@ public partial class MyWindow : Consolonia.Controls.Window
 
     public MyWindowViewModel ViewModel => (MyWindowViewModel)DataContext;
 
-    private void OnIncrement(object? sender, RoutedEventArgs args)
+    private void OnIncrement(object sender, RoutedEventArgs args)
     {
-        var vm = (MyWindowViewModel?)this.DataContext;
+        var vm = (MyWindowViewModel)this.DataContext;
         if (vm != null)
         {
             vm.Counter++;
         }
     }
 
-    private void OnColor(object? sender, RoutedEventArgs args)
+    private void OnColor(object sender, RoutedEventArgs args)
     {
         this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
     }
 
-    private void OnClose(object? sender, RoutedEventArgs args)
+    private void OnClose(object sender, RoutedEventArgs args)
     {
         this.Close();
     }

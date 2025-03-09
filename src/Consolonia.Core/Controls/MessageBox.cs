@@ -53,19 +53,19 @@ namespace Consolonia.Controls
         /// <summary>
         /// Defines the <see cref="SizeToContent"/> property.
         /// </summary>
-        public static readonly StyledProperty<object?> YesProperty =
+        public static readonly StyledProperty<object> YesProperty =
             AvaloniaProperty.Register<MessageBox, object>(nameof(Yes));
 
-        public static readonly StyledProperty<object?> NoProperty =
+        public static readonly StyledProperty<object> NoProperty =
             AvaloniaProperty.Register<MessageBox, object>(nameof(No));
 
-        public static readonly StyledProperty<object?> OkProperty =
+        public static readonly StyledProperty<object> OkProperty =
             AvaloniaProperty.Register<MessageBox, object>(nameof(Ok));
 
-        public static readonly StyledProperty<object?> CancelProperty =
+        public static readonly StyledProperty<object> CancelProperty =
             AvaloniaProperty.Register<MessageBox, object>(nameof(Cancel));
 
-        public static readonly StyledProperty<object?> MessageProperty =
+        public static readonly StyledProperty<object> MessageProperty =
             AvaloniaProperty.Register<MessageBox, object>(nameof(Message));
 
         public static readonly StyledProperty<MessageBoxStyle> MessageBoxStyleProperty =

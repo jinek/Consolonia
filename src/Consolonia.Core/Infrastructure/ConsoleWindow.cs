@@ -15,7 +15,6 @@ using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
-using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Infrastructure
 {

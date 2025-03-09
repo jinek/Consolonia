@@ -4,8 +4,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Consolonia.Controls;
-using Newtonsoft.Json.Serialization;
 
 namespace Consolonia.Core.Controls
 {

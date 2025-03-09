@@ -1,7 +1,6 @@
 using System;
 using Avalonia;
 using Avalonia.Interactivity;
-using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
