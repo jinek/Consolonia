@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
@@ -136,7 +135,7 @@ namespace Consolonia.NUnit
         {
             await Dispatcher.UIThread.InvokeAsync(async () =>
             {
-                var mainWindow = _lifetime.TopLevel as Window;
+                var mainWindow = _lifetime.TopLevel as Avalonia.Controls.Window;
                 mainWindow!.InvalidateVisual();
                 await mainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Rendered
                     .ConfigureAwait(true);

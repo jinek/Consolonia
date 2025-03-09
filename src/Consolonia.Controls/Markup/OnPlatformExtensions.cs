@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Metadata;
 using AvaloniaMarkup = Avalonia.Markup.Xaml.MarkupExtensions;
@@ -52,9 +53,27 @@ namespace Consolonia.Controls.Markup
         {
             return option switch
             {
-                "CONSOLE" => Application.Current.ApplicationLifetime?.GetType().Name == "ConsoloniaLifetime",
+                "CONSOLE" => IsConsole(),
                 _ => AvaloniaMarkup.OnPlatformExtension.ShouldProvideOption(option)
             };
+        }
+
+        private static bool IsConsole()
+        {
+#pragma warning disable CA1031 // Do not catch general exception types
+            try
+            {
+                if (Application.Current?.ApplicationLifetime != null)
+                    return Application.Current.ApplicationLifetime.GetType().Name == "ConsoloniaLifetime";
+                
+                // fallback to sniffing out height.
+                return System.Console.WindowHeight > 0;
+            }
+            catch(Exception err)    
+            {
+                return false;
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
     }
 }

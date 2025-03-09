@@ -1,11 +1,10 @@
 using System;
 using Avalonia;
 using Avalonia.Interactivity;
-using Consolonia.Controls;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public partial class SomeDialogWindow : DialogWindow
+    public partial class SomeDialogWindow : Consolonia.Controls.Window
     {
         internal const string DialogTitle = "Dialog popup";
 
@@ -40,7 +39,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private async void OneMore_Clicked(object sender, RoutedEventArgs e)
         {
-            await new SomeDialogWindow().ShowDialogAsync(this);
+            await new SomeDialogWindow().ShowDialog(this);
+        }
+
+        private void OnCancel(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
