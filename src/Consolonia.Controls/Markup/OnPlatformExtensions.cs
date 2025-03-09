@@ -69,8 +69,9 @@ namespace Consolonia.Controls.Markup
                 // fallback to sniffing out height.
                 return System.Console.WindowHeight > 0;
             }
-            catch(Exception err)    
+            catch (Exception)    
             {
+                // windows throws an exception if the console is not attached.
                 return false;
             }
 #pragma warning restore CA1031 // Do not catch general exception types
