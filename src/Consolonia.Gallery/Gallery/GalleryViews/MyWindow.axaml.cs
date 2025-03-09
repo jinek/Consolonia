@@ -11,7 +11,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews;
 public partial class MyWindow : Consolonia.Controls.Window
 {
     private static int _windowCount = 0;
-    private static IImmutableSolidColorBrush[] brushes =
+    private static IImmutableSolidColorBrush[] _brushes =
         [
             Brushes.LightBlue,
             Brushes.LightGreen,
@@ -50,7 +50,7 @@ public partial class MyWindow : Consolonia.Controls.Window
 
     private void OnColor(object sender, RoutedEventArgs args)
     {
-        this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
+        this.Background = _brushes[Random.Shared.Next(0, _brushes.Length)];
     }
 
     private void OnClose(object sender, RoutedEventArgs args)
@@ -59,7 +59,7 @@ public partial class MyWindow : Consolonia.Controls.Window
     }
 
 
-    private async void OnShowDialog(object? sender, RoutedEventArgs args)
+    private async void OnShowDialog(object sender, RoutedEventArgs args)
     {
         var dialog = new MyDialog()
         {

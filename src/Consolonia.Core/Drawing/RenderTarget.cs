@@ -26,7 +26,7 @@ namespace Consolonia.Core.Drawing
         {
             _console = AvaloniaLocator.Current.GetService<IConsoleOutput>()!;
             _consoleTopLevelImpl = consoleTopLevelImpl;
-            _consoleTopLevelImpl!.Resized += OnResized;
+            _consoleTopLevelImpl.Resized += OnResized;
 
             _cache = InitializeCache(_consoleTopLevelImpl.PixelBuffer.Width, _consoleTopLevelImpl.PixelBuffer.Height);
         }

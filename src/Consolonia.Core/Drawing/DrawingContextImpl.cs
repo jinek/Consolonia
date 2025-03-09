@@ -566,9 +566,9 @@ namespace Consolonia.Core.Drawing
         {
             if (line.Length == 0)
                 return;
-            ISymbol startSymbol = null;
+            ISymbol startSymbol;
             ISymbol middleSymbol;
-            ISymbol endSymbol = null;
+            ISymbol endSymbol;
             int iStyle = (lineStyle == LineStyle.Edge) ? 0 : 1;
 
             switch (linePosition)
