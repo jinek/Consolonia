@@ -3,13 +3,16 @@ using Avalonia;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    internal class LayeredPixelBuffer : PixelBuffer
+    /// <summary>
+    /// A pixelbuffer which is composed of multiple layers
+    /// </summary>
+    internal class PixelBufferLayers : PixelBuffer
     {
-        public LayeredPixelBuffer(PixelSize size)
+        public PixelBufferLayers(PixelSize size)
             : this((ushort)size.Width, (ushort)size.Height)
         { }
 
-        public LayeredPixelBuffer(ushort width, ushort height)
+        public PixelBufferLayers(ushort width, ushort height)
             : base(width, height)
         {
         }
@@ -33,7 +36,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             foreach (var layer in Layers)
             {
-                layer.Blend(this);
+                layer.Blend();
             }
         }
     }

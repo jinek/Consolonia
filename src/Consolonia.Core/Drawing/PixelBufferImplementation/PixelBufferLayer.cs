@@ -2,11 +2,14 @@ using Avalonia;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
+    /// <summary>
+    /// A pixelbuffer which has Position
+    /// </summary>
     internal class PixelBufferLayer : PixelBuffer
     {
-        private LayeredPixelBuffer _manager;
+        private PixelBufferLayers _manager;
 
-        internal PixelBufferLayer(LayeredPixelBuffer manager, ushort x, ushort y, ushort width, ushort height)
+        internal PixelBufferLayer(PixelBufferLayers manager, ushort x, ushort y, ushort width, ushort height)
             : base(width, height)
         {
             _manager = manager;
@@ -32,8 +35,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             _manager.Layers.Remove(this);   
         }
 
-        public void Blend(PixelBuffer targetPixelBuffer)
-            => Blend(Position, targetPixelBuffer);
+        public void Blend()
+            => Blend(Position, _manager);
     }
 }
 
