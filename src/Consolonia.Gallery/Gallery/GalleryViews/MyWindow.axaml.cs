@@ -28,7 +28,8 @@ public partial class MyWindow : Consolonia.Controls.Window
     {
         InitializeComponent();
 
-      //  this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
+        //  this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
+        AnimateWindow = String.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"));
 
         this.DataContext = new MyWindowViewModel()
         {

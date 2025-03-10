@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -22,6 +23,8 @@ namespace Consolonia.Gallery.Tests.Base
         [OneTimeSetUp]
         public async Task Setup()
         {
+            Environment.SetEnvironmentVariable("CONSOLONIA_TEST", "True");
+
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 var controlsListView =

@@ -13,7 +13,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         // ReSharper disable UnusedParameter.Local
         private async void Button_OnClick(object _, RoutedEventArgs e)
-            // ReSharper restore UnusedParameter.Local
+        // ReSharper restore UnusedParameter.Local
         {
             var lifetime = (ConsoloniaLifetime)Application.Current.ApplicationLifetime;
 

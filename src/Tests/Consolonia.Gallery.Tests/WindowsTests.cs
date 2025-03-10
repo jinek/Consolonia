@@ -18,7 +18,7 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Enter); // add window
-            await Task.Delay(100); // animation
+            //await Task.Delay(100); // animation
             await UITest.AssertHasText("New Window 1");
             await UITest.AssertHasText("🗕", "🗖", "🗙");
             await UITest.AssertHasNoText("🗗");
@@ -26,7 +26,7 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Enter); // close button
-            await Task.Delay(100);  // animation
+            //await Task.Delay(100);  // animation
             foreach (var x in new string[] { "New Window 1", "DialogResult:", "🗕", "🗖", "🗙" })
                 await UITest.AssertHasNoText(x);
         }

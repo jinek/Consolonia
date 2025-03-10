@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -23,19 +24,20 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private async void OnOk(object sender, RoutedEventArgs e)
         {
-            var mb = new MessageBox
-            {
-                MessageBoxStyle = MessageBoxStyle.Ok,
-                Title = "OK Message box",
-                Message = "Do you want to OK?"
-            };
-            MessageBoxResult result = await mb.ShowDialog(this); 
+            MessageBoxResult result = await MessageBox.ShowDialog(this, "OK Message box", "Do you want to OK?", MessageBoxStyle.Ok);
             ViewModel.Result = result.ToString();
         }
 
         private async void OnOkCancel(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = await MessageBox.ShowDialog(this, "OK/Cancel Message box", "Do you want to OK or cancel?", MessageBoxStyle.OkCancel);
+            var mb = new MessageBox
+            {
+                MessageBoxStyle = MessageBoxStyle.OkCancel,
+                Title = "OK/Cancel Message box", 
+                Message = "Do you want to OK or cancel?",
+                AnimateWindow = String.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
+            };
+            MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
         }
 
@@ -45,7 +47,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             {
                 MessageBoxStyle = MessageBoxStyle.YesNo,
                 Title = "Yes/No Message box",
-                Message = "Do you want to Yes or No?"
+                Message = "Do you want to Yes or No?",
+                AnimateWindow = String.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
             };
             MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
