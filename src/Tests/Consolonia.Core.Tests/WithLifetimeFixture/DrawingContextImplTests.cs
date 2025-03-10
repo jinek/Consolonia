@@ -21,8 +21,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void BufferInitialized()
         {
             ArgumentNullException.ThrowIfNull(Application.Current.ApplicationLifetime);
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
 
             for (ushort y = 0; y < buffer.Height; y++)
             for (ushort x = 0; x < buffer.Width; x++)
@@ -38,9 +38,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawText()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
             for (ushort x = 1; x < 6; x++) DrawText(dc, x, 2, x.ToString(), Brushes.White);
             for (ushort x = 1; x < 6; x++)
             {
@@ -52,9 +52,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawSingleWide()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
             for (ushort x = 0; x < 10; x++) DrawText(dc, x, 1, x.ToString(), Brushes.White);
             DrawText(dc, 5, 1, "X", Brushes.Blue);
             for (ushort x = 0; x < 10; x++)
@@ -74,9 +74,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawDoubleWide()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
 
             for (ushort x = 0; x < 10; x++) DrawText(dc, x, 0, x.ToString(), Brushes.White);
             DrawText(dc, 5, 0, "🏳️‍🌈", Brushes.Blue);
@@ -105,9 +105,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawOverDoubleWideFirstChar()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
 
             for (ushort x = 0; x < 10; x++) DrawText(dc, x, 0, x.ToString(), Brushes.White);
             DrawText(dc, 5, 0, "🏳️‍🌈", Brushes.Blue);
@@ -137,9 +137,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawOverDoubleWideSecondChar()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
 
             for (ushort x = 0; x < 10; x++) DrawText(dc, x, 0, x.ToString(), Brushes.White);
             DrawText(dc, 5, 0, "🏳️‍🌈", Brushes.Blue);
@@ -171,9 +171,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawLineStrikethrough()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
 
             DrawText(dc, 1, 0, "hello", Brushes.Blue);
             SetOrigin(dc, 1, 0);
@@ -191,9 +191,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawLineUnderline()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
 
             DrawText(dc, 1, 1, "hello", Brushes.Blue);
             SetOrigin(dc, 1, 1);
@@ -212,9 +212,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawHorizontalLine()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
             SetOrigin(dc, 1, 1);
             dc.DrawLine(new Pen(Brushes.White), new Point(0, 0), new Point(4, 0));
             for (ushort x = 0; x <= 6; x++)
@@ -233,9 +233,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawVerticalLine()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
             SetOrigin(dc, 1, 1);
 
             dc.DrawLine(new Pen(Brushes.White), new Point(0, 0), new Point(0, 4));
@@ -255,9 +255,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawLinesCrossingMakeCross()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
 
             SetOrigin(dc, 1, 1);
             for (int y = 0; y < 5; y += 2)
@@ -306,9 +306,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawSolidRectangle()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
             SetOrigin(dc, 1, 1);
             ushort left = 0;
             ushort top = 0;
@@ -348,9 +348,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawSingleBox()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
             SetOrigin(dc, 1, 1);
             ushort left = 0;
             ushort top = 0;
@@ -443,9 +443,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawDoubleBox()
         {
-            var consoleWindow = new ConsoleWindow();
-            PixelBuffer buffer = consoleWindow.PixelBuffer;
-            var dc = new DrawingContextImpl(consoleWindow);
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
             SetOrigin(dc, 1, 1);
             ushort left = 0;
             ushort top = 0;
