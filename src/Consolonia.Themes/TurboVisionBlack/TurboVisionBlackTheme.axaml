@@ -12,5 +12,5 @@
 
     <StyleInclude Source="/TurboVision/TurboVisionTheme.axaml" />
     <StyleInclude Source="/TurboVisionBlack/Controls/Button.axaml" />
-    <wm:WindowManagerTheme/>
+    <wm:WindowManagerTheme />
 </Styles>

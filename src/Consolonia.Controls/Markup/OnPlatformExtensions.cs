@@ -66,7 +66,6 @@ namespace Consolonia.Controls.Markup
                 return Application.Current.ApplicationLifetime.GetType().Name == "ConsoloniaLifetime";
 
             if (OperatingSystem.IsWindows())
-            {
                 try
                 {
                     return System.Console.WindowHeight > 0;
@@ -75,12 +74,11 @@ namespace Consolonia.Controls.Markup
                 {
                     return false;
                 }
-            }
 
             // This works on Unix systems
-            var isConsole = !(System.Console.IsInputRedirected &&
-                                  System.Console.IsOutputRedirected &&
-                                  System.Console.IsErrorRedirected);
+            bool isConsole = !(System.Console.IsInputRedirected &&
+                               System.Console.IsOutputRedirected &&
+                               System.Console.IsErrorRedirected);
             return isConsole;
 #pragma warning restore CA1031 // Do not catch general exception types
         }

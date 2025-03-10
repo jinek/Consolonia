@@ -11,7 +11,6 @@ using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Controls
 {
-
     public enum MessageBoxStyle
     {
         /// <summary>
@@ -43,15 +42,10 @@ namespace Consolonia.Controls
         No
     }
 
-    public class MessageBox : Consolonia.Controls.Window
+    public class MessageBox : Window
     {
-        private Button _yesButton;
-        private Button _noButton;
-        private Button _cancelButton;
-        private Button _okButton;
-
         /// <summary>
-        /// Defines the <see cref="SizeToContent"/> property.
+        ///     Defines the <see cref="SizeToContent" /> property.
         /// </summary>
         public static readonly StyledProperty<object> YesProperty =
             AvaloniaProperty.Register<MessageBox, object>(nameof(Yes));
@@ -71,42 +65,84 @@ namespace Consolonia.Controls
         public static readonly StyledProperty<MessageBoxStyle> MessageBoxStyleProperty =
             AvaloniaProperty.Register<MessageBox, MessageBoxStyle>(nameof(MessageBoxStyle));
 
+        private Button _cancelButton;
+        private Button _noButton;
+        private Button _okButton;
+        private Button _yesButton;
+
         public MessageBox()
         {
-            base.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            base.SizeToContent = SizeToContent.WidthAndHeight;
-            base.Padding = new Thickness(1.0);
+            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            SizeToContent = SizeToContent.WidthAndHeight;
+            Padding = new Thickness(1.0);
+        }
+
+
+        public object Ok
+        {
+            get => GetValue(OkProperty);
+            set => SetValue(OkProperty, value);
+        }
+
+        public object Yes
+        {
+            get => GetValue(YesProperty);
+            set => SetValue(YesProperty, value);
+        }
+
+        public object No
+        {
+            get => GetValue(NoProperty);
+            set => SetValue(NoProperty, value);
+        }
+
+        public object Cancel
+        {
+            get => GetValue(CancelProperty);
+            set => SetValue(CancelProperty, value);
+        }
+
+        public object Message
+        {
+            get => GetValue(MessageProperty);
+            set => SetValue(MessageProperty, value);
+        }
+
+        public MessageBoxStyle MessageBoxStyle
+        {
+            get => GetValue(MessageBoxStyleProperty);
+            set => SetValue(MessageBoxStyleProperty, value);
         }
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
 
-            _yesButton = new Button()
+            _yesButton = new Button
             {
-                Content = this.Yes ?? "_Yes",
+                Content = Yes ?? "_Yes",
                 IsTabStop = true
             };
             _yesButton.Click += OnYes;
 
-            _noButton = new Button()
+            _noButton = new Button
             {
-                Content = this.No ?? "_No",
+                Content = No ?? "_No",
                 IsTabStop = true
             };
             _noButton.Click += OnNo;
 
-            _cancelButton = new Button()
+            _cancelButton = new Button
             {
-                Content = this.Cancel ?? "_Cancel",
+                Content = Cancel ?? "_Cancel",
                 IsCancel = true,
                 IsTabStop = true
             };
             _cancelButton.Click += OnCancel;
 
-            _okButton = new Button()
+            _okButton = new Button
             {
-                Content = this.Ok ?? "O_k",
+                Content = Ok ?? "O_k",
                 IsDefault = true,
                 IsTabStop = true
             };
@@ -114,9 +150,9 @@ namespace Consolonia.Controls
 
             var buttonsStackPanel = new StackPanel
             {
-                Spacing=1,
+                Spacing = 1,
                 Orientation = Orientation.Horizontal,
-                HorizontalAlignment = HorizontalAlignment.Right,
+                HorizontalAlignment = HorizontalAlignment.Right
             };
 
             switch (MessageBoxStyle)
@@ -138,15 +174,18 @@ namespace Consolonia.Controls
                     buttonsStackPanel.Children.Add(_cancelButton);
                     break;
             }
+
             buttonsStackPanel.Children[0].Focus();
 
-            var message = (this.Message is string str) ? new TextBlock()
-            {
-                Text = str,
-                TextWrapping = TextWrapping.Wrap
-            } : this.Message as Control;
+            Control message = Message is string str
+                ? new TextBlock
+                {
+                    Text = str,
+                    TextWrapping = TextWrapping.Wrap
+                }
+                : Message as Control;
 
-            this.Content = new StackPanel
+            Content = new StackPanel
             {
                 Spacing = 1,
                 Children =
@@ -157,20 +196,8 @@ namespace Consolonia.Controls
             };
         }
 
-
-        public object Ok { get => GetValue(OkProperty); set => SetValue(OkProperty, value); }
-
-        public object Yes { get => GetValue(YesProperty); set => SetValue(YesProperty, value); }
-
-        public object No { get => GetValue(NoProperty); set => SetValue(NoProperty, value); }
-
-        public object Cancel { get => GetValue(CancelProperty); set => SetValue(CancelProperty, value); }
-
-        public object Message { get => GetValue(MessageProperty); set => SetValue(MessageProperty, value); }
-
-        public MessageBoxStyle MessageBoxStyle { get => GetValue(MessageBoxStyleProperty); set => SetValue(MessageBoxStyleProperty, value); }
-
-        public static Task<MessageBoxResult> ShowDialog(Visual visual, string title, string message, MessageBoxStyle style = MessageBoxStyle.Ok)
+        public static Task<MessageBoxResult> ShowDialog(Visual visual, string title, string message,
+            MessageBoxStyle style = MessageBoxStyle.Ok)
         {
             var mb = new MessageBox
             {
@@ -183,7 +210,7 @@ namespace Consolonia.Controls
 
         public async Task<MessageBoxResult> ShowDialog(Visual visual)
         {
-            return await this.ShowDialog<MessageBoxResult>(visual.FindAncestorOfType<ManagedWindow>());
+            return await ShowDialog<MessageBoxResult>(visual.FindAncestorOfType<ManagedWindow>());
         }
 
         private void OnOk(object sender, RoutedEventArgs e)

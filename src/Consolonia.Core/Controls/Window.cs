@@ -1,4 +1,5 @@
 using System;
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Iciclecreek.Avalonia.WindowManager;
 
@@ -11,21 +12,21 @@ namespace Consolonia.Controls
         {
             base.OnLoaded(e);
 
-            this.OverlayLayer.SizeChanged += WindowManager_SizeChanged;
+            OverlayLayer.SizeChanged += WindowManager_SizeChanged;
         }
 
         protected override void OnClosed(EventArgs e)
         {
-            this.OverlayLayer.SizeChanged -= WindowManager_SizeChanged;
+            OverlayLayer.SizeChanged -= WindowManager_SizeChanged;
             base.OnClosed(e);
         }
 
-        private void WindowManager_SizeChanged(object sender, Avalonia.Controls.SizeChangedEventArgs e)
+        private void WindowManager_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (WindowState == Avalonia.Controls.WindowState.Maximized)
+            if (WindowState == WindowState.Maximized)
             {
-                this.Width = OverlayLayer.Bounds.Width;
-                this.Height = OverlayLayer.Bounds.Height;
+                Width = OverlayLayer.Bounds.Width;
+                Height = OverlayLayer.Bounds.Height;
             }
         }
     }

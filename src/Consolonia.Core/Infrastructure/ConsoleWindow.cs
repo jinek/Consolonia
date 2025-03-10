@@ -19,11 +19,11 @@ using Consolonia.Core.Helpers;
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    /// ConsoleWindow - a TopLevel which uses the ConsoleWindowImpl to interact with the console.
+    ///     ConsoleWindow - a TopLevel which uses the ConsoleWindowImpl to interact with the console.
     /// </summary>
     /// <remarks>
-    /// This window content is a WindowManager panel to handle managed overlapping windows 
-    /// and the MainView is the WindowsPanel.Content 
+    ///     This window content is a WindowManager panel to handle managed overlapping windows
+    ///     and the MainView is the WindowsPanel.Content
     /// </remarks>
     public class ConsoleWindow : Window
     {
@@ -31,7 +31,6 @@ namespace Consolonia.Core.Infrastructure
             this(new ConsoleWindowImpl())
 
         {
-
         }
 
         public ConsoleWindow(IWindowImpl impl)
@@ -42,12 +41,12 @@ namespace Consolonia.Core.Infrastructure
         public Control MainView
         {
             get => Content as Control;
-            set => Content = (Control)value;
+            set => Content = value;
         }
     }
 
     /// <summary>
-    /// ConsoleWindowImpl - An IWindowImpl which uses a PixelBuffer to render.
+    ///     ConsoleWindowImpl - An IWindowImpl which uses a PixelBuffer to render.
     /// </summary>
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix
     public class ConsoleWindowImpl : IWindowImpl
@@ -56,17 +55,17 @@ namespace Consolonia.Core.Infrastructure
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
-        private bool _disposedValue;
-        private IInputRoot _inputRoot;
 
         [NotNull] internal readonly IConsole Console;
+        private bool _disposedValue;
+        private IInputRoot _inputRoot;
 
         public ConsoleWindowImpl()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             Console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
-            PixelBuffer = new PixelBuffer(this.Console.Size);
+            PixelBuffer = new PixelBuffer(Console.Size);
             Console.Resized += OnConsoleOnResized;
             Console.KeyEvent += ConsoleOnKeyEvent;
             Console.TextInputEvent += ConsoleOnTextInputEvent;
@@ -395,7 +394,7 @@ namespace Consolonia.Core.Infrastructure
         private void OnConsoleOnResized()
         {
             var size = new Size(Console.Size.Width, Console.Size.Height);
-            this.PixelBuffer = new PixelBuffer((ushort)size.Width, (ushort)size.Height);
+            PixelBuffer = new PixelBuffer((ushort)size.Width, (ushort)size.Height);
             Resized!(size, WindowResizeReason.Unspecified);
         }
 

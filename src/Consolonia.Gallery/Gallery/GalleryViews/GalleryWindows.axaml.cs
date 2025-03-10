@@ -13,17 +13,19 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private void OnShowWindowClick(object sender, RoutedEventArgs e)
         {
-            var window = new MyWindow()
+            var window = new MyWindow
             {
-                WindowStartupLocation = Enum.Parse<WindowStartupLocation>((StartupLocationCombo.SelectedItem as ComboBoxItem).Tag.ToString()),
-                SizeToContent = Enum.Parse<SizeToContent>(((ComboBoxItem)SizeToContentCombo.SelectedItem).Tag.ToString()),
-                WindowState = Enum.Parse<WindowState>(((ComboBoxItem)WindowStateCombo.SelectedItem).Tag.ToString()),    
+                WindowStartupLocation =
+                    Enum.Parse<WindowStartupLocation>(
+                        (StartupLocationCombo.SelectedItem as ComboBoxItem).Tag.ToString()),
+                SizeToContent =
+                    Enum.Parse<SizeToContent>(((ComboBoxItem)SizeToContentCombo.SelectedItem).Tag.ToString()),
+                WindowState = Enum.Parse<WindowState>(((ComboBoxItem)WindowStateCombo.SelectedItem).Tag.ToString())
             };
 
-            window.SizeToBounds(this.Bounds);
+            window.SizeToBounds(Bounds);
 
             window.Show();
         }
-
     }
 }

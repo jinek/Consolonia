@@ -3,7 +3,6 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
                 mc:Ignorable="d"
                 WindowStartupLocation="CenterOwner"
                 x:Class="Consolonia.Gallery.Gallery.GalleryViews.SomeDialogWindow">
@@ -28,17 +27,17 @@ _____/          :--'
 Bill Ames
 </TextBlock>
             <StackPanel Orientation="Horizontal">
-            <Button Content="One More"
-                    Name="OneMoreButton"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    IsDefault="true"
-                    Click="OneMore_Clicked" />
-            <Button Content="Cancel"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    IsCancel="true"
-                    Click="OnCancel" />
+                <Button Content="One More"
+                        Name="OneMoreButton"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        IsDefault="true"
+                        Click="OneMore_Clicked" />
+                <Button Content="Cancel"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        IsCancel="true"
+                        Click="OnCancel" />
             </StackPanel>
         </Panel>
     </ScrollViewer>
