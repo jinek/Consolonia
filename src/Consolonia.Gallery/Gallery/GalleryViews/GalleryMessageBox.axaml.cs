@@ -60,7 +60,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             {
                 MessageBoxStyle = MessageBoxStyle.YesNoCancel,
                 Title = "Yes/No/Cancel Message box",
-                Message = "Do you want to Yes, No or Cancel?"
+                Message = "Do you want to Yes, No or Cancel?",
+                AnimateWindow = String.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
             };
             MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
@@ -86,7 +87,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 {
                     Text = "😒 No",
                     Foreground = Brushes.Red
-                }
+                },
+                AnimateWindow = String.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
             };
             MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
