@@ -21,7 +21,7 @@ namespace Consolonia.Gallery.Tests
             await UITest.AssertHasNoText("🗗");
             await UITest.KeyInput(Key.Escape);
             //await Task.Delay(100);  // animation
-            foreach (var x in new string[] { "OK/Cancel Message box", "Do you want to", "🗕", "🗖", "🗙" })
+            foreach (string x in new[] { "OK/Cancel Message box", "Do you want to", "🗕", "🗖", "🗙" })
                 await UITest.AssertHasNoText(x);
         }
     }

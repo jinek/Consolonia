@@ -24,7 +24,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private async void OnOk(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = await MessageBox.ShowDialog(this, "OK Message box", "Do you want to OK?", MessageBoxStyle.Ok);
+            MessageBoxResult result = await MessageBox.ShowDialog(this, "OK Message box", "Do you want to OK?");
             ViewModel.Result = result.ToString();
         }
 
@@ -33,9 +33,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             var mb = new MessageBox
             {
                 MessageBoxStyle = MessageBoxStyle.OkCancel,
-                Title = "OK/Cancel Message box", 
+                Title = "OK/Cancel Message box",
                 Message = "Do you want to OK or cancel?",
-                AnimateWindow = String.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
+                AnimateWindow = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
             };
             MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
@@ -48,7 +48,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 MessageBoxStyle = MessageBoxStyle.YesNo,
                 Title = "Yes/No Message box",
                 Message = "Do you want to Yes or No?",
-                AnimateWindow = String.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
+                AnimateWindow = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
             };
             MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
@@ -61,7 +61,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 MessageBoxStyle = MessageBoxStyle.YesNoCancel,
                 Title = "Yes/No/Cancel Message box",
                 Message = "Do you want to Yes, No or Cancel?",
-                AnimateWindow = String.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
+                AnimateWindow = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
             };
             MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
@@ -88,7 +88,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     Text = "😒 No",
                     Foreground = Brushes.Red
                 },
-                AnimateWindow = String.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
+                AnimateWindow = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"))
             };
             MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
