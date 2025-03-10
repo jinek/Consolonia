@@ -11,7 +11,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BitBltLayers()
         {
-            PixelBufferLayerManager layerManager = new PixelBufferLayerManager(10, 10);
+            LayeredPixelBuffer layerManager = new LayeredPixelBuffer(10, 10);
             FillBuffer(layerManager.PixelBuffer, "T");
 
             var layer1 = layerManager.CreateLayer(2, 2, 5, 5);
@@ -39,7 +39,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BitBltLayersBringToFront()
         {
-            PixelBufferLayerManager layerManager = new PixelBufferLayerManager(10, 10);
+            LayeredPixelBuffer layerManager = new LayeredPixelBuffer(10, 10);
             FillBuffer(layerManager.PixelBuffer, "T");
 
             var layer1 = layerManager.CreateLayer(2, 2, 5, 5);
@@ -68,7 +68,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BitBltLayersSendToBack()
         {
-            PixelBufferLayerManager layerManager = new PixelBufferLayerManager(10, 10);
+            LayeredPixelBuffer layerManager = new LayeredPixelBuffer(10, 10);
             FillBuffer(layerManager.PixelBuffer, "T");
 
             var layer1 = layerManager.CreateLayer(2, 2, 5, 5);

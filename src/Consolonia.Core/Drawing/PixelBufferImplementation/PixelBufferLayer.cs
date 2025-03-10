@@ -4,9 +4,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     internal class PixelBufferLayer : PixelBuffer
     {
-        private PixelBufferLayerManager _manager;
+        private LayeredPixelBuffer _manager;
 
-        internal PixelBufferLayer(PixelBufferLayerManager manager, ushort x, ushort y, ushort width, ushort height)
+        internal PixelBufferLayer(LayeredPixelBuffer manager, ushort x, ushort y, ushort width, ushort height)
             : base(width, height)
         {
             _manager = manager;

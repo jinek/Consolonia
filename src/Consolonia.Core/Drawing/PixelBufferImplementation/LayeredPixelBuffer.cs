@@ -1,26 +1,18 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    internal class PixelBufferLayerManager
+    internal class LayeredPixelBuffer : PixelBuffer
     {
-        public PixelBufferLayerManager(PixelSize size)
+        public LayeredPixelBuffer(PixelSize size)
             : this((ushort)size.Width, (ushort)size.Height)
         { }
 
-        public PixelBufferLayerManager(ushort width, ushort height)
+        public LayeredPixelBuffer(ushort width, ushort height)
+            : base(width, height)
         {
-            PixelBuffer = new PixelBuffer((ushort)width, (ushort)height); 
         }
-
-        public PixelBuffer PixelBuffer { get; set; }
 
         public ObservableCollection<PixelBufferLayer> Layers { get; } = new();
 
@@ -41,7 +33,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             foreach (var layer in Layers)
             {
-                layer.Blend(PixelBuffer);
+                layer.Blend(this);
             }
         }
     }
