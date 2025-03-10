@@ -104,6 +104,40 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
         }
 
+        /// <summary>
+        /// Blend this pixel buffer into another pixelbuffer at a given location
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="targetPixelBuffer"></param>
+        public void BitBlt(int x, int y, PixelPoint position, PixelBuffer targetPixelBuffer)
+            => Blend(new PixelPoint(x, y), targetPixelBuffer);
+
+        /// <summary>
+        /// Blend this pixel buffer into another pixelbuffer at a given location
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="targetPixelBuffer"></param>
+        public void Blend(PixelPoint position, PixelBuffer targetPixelBuffer)
+        {
+            lock (targetPixelBuffer)
+            {
+                for (ushort x = 0; x < Size.Width; x++)
+                {
+                    for (ushort y = 0; y < Size.Height; y++)
+                    {
+                        var targetX = (ushort)(x + position.X);
+                        var targetY = (ushort)(y + position.Y);
+                        if (targetX >= 0 && targetX < targetPixelBuffer.Width &&
+                            targetY >= 0 && targetY < targetPixelBuffer.Height)
+                        {
+                            targetPixelBuffer.Set((PixelBufferCoordinate)new PixelBufferCoordinate(targetX, targetY),
+                                    pixel => pixel.Blend(this[x, y]));
+                        }
+                    }
+                }
+            }
+        }
+
         private (ushort x, ushort y) ToXY(int i)
         {
             return ((ushort x, ushort y))(i % Width, i / Width);

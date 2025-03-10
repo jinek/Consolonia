@@ -1,3 +1,5 @@
+using System.Text;
+using Avalonia;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Newtonsoft.Json;
@@ -77,6 +79,124 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string json = JsonConvert.SerializeObject(buffer);
             var buffer2 = JsonConvert.DeserializeObject<PixelBuffer>(json);
             AssertBufferEqual(buffer, buffer2);
+        }
+
+        [Test]
+        public void BitBlt()
+        {
+            PixelBuffer target = new PixelBuffer(10,10);
+            FillBuffer(target, "T");
+            PixelBuffer source = new PixelBuffer(5, 5);
+            FillBuffer(source, "S");
+            source.Blend(new PixelPoint(2, 2), target);
+
+            var result = BufferToString(target);
+            Assert.AreEqual("""
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTSSSSSTTT
+                TTSSSSSTTT
+                TTSSSSSTTT
+                TTSSSSSTTT
+                TTSSSSSTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                """.Trim(),
+                result.Trim());
+        }
+
+        [Test]
+        public void BitBltClipOuterBounds()
+        {
+            PixelBuffer target = new PixelBuffer(10, 10);
+            FillBuffer(target, "T");
+            PixelBuffer source = new PixelBuffer(50, 50);
+            FillBuffer(source, "S");
+            source.Blend(new PixelPoint(2, 2), target);
+
+            var result = BufferToString(target);
+            Assert.AreEqual("""
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTSSSSSSSS
+                TTSSSSSSSS
+                TTSSSSSSSS
+                TTSSSSSSSS
+                TTSSSSSSSS
+                TTSSSSSSSS
+                TTSSSSSSSS
+                TTSSSSSSSS
+                """.Trim(),
+                result.Trim());
+        }
+
+        [Test]
+        public void BitBltClipNegativeBounds()
+        {
+            PixelBuffer target = new PixelBuffer(10, 10);
+            FillBuffer(target, "T");
+            PixelBuffer source = new PixelBuffer(5, 5);
+            FillBuffer(source, "S");
+            source.Blend(new PixelPoint(-2, -2), target);
+
+            var result = BufferToString(target);
+            Assert.AreEqual("""
+                SSSTTTTTTT
+                SSSTTTTTTT
+                SSSTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                """.Trim(),
+                result.Trim());
+        }
+
+        [Test]
+        public void BitBltEmpty()
+        {
+            PixelBuffer target = new PixelBuffer(10, 10);
+            FillBuffer(target, "T");
+            PixelBuffer source = new PixelBuffer(0,0);
+            source.Blend(new PixelPoint(2, 2), target);
+
+            var result = BufferToString(target);
+            Assert.AreEqual("""
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                TTTTTTTTTT
+                """.Trim(),
+                result.Trim());
+        }
+
+        private static void FillBuffer(PixelBuffer buffer, string symbol)
+        {
+            for (ushort y = 0; y < buffer.Height; y++)
+                for (ushort x = 0; x < buffer.Width; x++)
+                    buffer[x, y] = new Pixel(new SimpleSymbol(symbol), Colors.White);
+        }
+
+        private static string BufferToString(PixelBuffer buffer)
+        {
+            var sb = new StringBuilder();
+            for (ushort y = 0; y < buffer.Height; y++)
+            {
+                for (ushort x = 0; x < buffer.Width; x++)
+                    sb.Append(buffer[x, y].Foreground.Symbol.Text);
+                sb.AppendLine();
+            }
+            return sb.ToString();
         }
     }
 }
