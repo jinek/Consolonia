@@ -11,7 +11,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [JsonConverter(typeof(PixelBufferConverter))]
     public class PixelBuffer
     {
-        private readonly Pixel[,] _buffer;
+        private Pixel[,] _buffer;
 
         public PixelBuffer(PixelBufferSize size)
             : this(size.Width, size.Height)
@@ -20,6 +20,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public PixelBuffer(ushort width, ushort height)
         {
+            SetBufferSize(width, height);
+        }
+
+        public void SetBufferSize(ushort width, ushort height)
+        {
             Width = width;
             Height = height;
             _buffer = new Pixel[width, height];
@@ -27,12 +32,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             // initialize the buffer with space so it draws any background color
             // blended into it.
             for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-                _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
+                for (ushort x = 0; x < width; x++)
+                    _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
         }
 
-        public ushort Width { get; }
-        public ushort Height { get; }
+        public ushort Width { get; private set; }
+        public ushort Height { get; private set; }
 
         public CaretStyle CaretStyle { get; set; } = CaretStyle.BlinkingBar;
 
@@ -110,14 +115,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <param name="position"></param>
         /// <param name="targetPixelBuffer"></param>
         public void BitBlt(int x, int y, PixelPoint position, PixelBuffer targetPixelBuffer)
-            => Blend(new PixelPoint(x, y), targetPixelBuffer);
+            => BitBlt(new PixelPoint(x, y), targetPixelBuffer);
 
         /// <summary>
         /// Blend this pixel buffer into another pixelbuffer at a given location
         /// </summary>
         /// <param name="position"></param>
         /// <param name="targetPixelBuffer"></param>
-        public void Blend(PixelPoint position, PixelBuffer targetPixelBuffer)
+        public virtual void BitBlt(PixelPoint position, PixelBuffer targetPixelBuffer)
         {
             lock (targetPixelBuffer)
             {

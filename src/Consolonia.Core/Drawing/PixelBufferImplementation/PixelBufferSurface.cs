@@ -1,20 +1,27 @@
 using System.Collections.ObjectModel;
 using Avalonia;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     /// <summary>
     /// A pixelbuffer which is composed of multiple layers
     /// </summary>
-    internal class PixelBufferLayers : PixelBuffer
+    internal class PixelBufferSurface : PixelBuffer
     {
-        public PixelBufferLayers(PixelSize size)
+        public PixelBufferSurface(ushort width, ushort height)
+            : base(width, height)
+        {
+        }
+
+        public PixelBufferSurface(PixelSize size)
             : this((ushort)size.Width, (ushort)size.Height)
         { }
 
-        public PixelBufferLayers(ushort width, ushort height)
-            : base(width, height)
+        public PixelBufferSurface(IConsole console)
+            : this(console.Size.Width, console.Size.Height)
         {
+            console.Resized += () => SetBufferSize(console.Size.Width, console.Size.Height);
         }
 
         public ObservableCollection<PixelBufferLayer> Layers { get; } = new();
@@ -32,7 +39,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <summary>
         /// Blend all of the layers into the pixel buffer.
         /// </summary>
-        public void Blend()
+        public void BlendLayers()
         {
             foreach (var layer in Layers)
             {
