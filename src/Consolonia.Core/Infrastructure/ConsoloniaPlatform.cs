@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.Platform;
@@ -15,10 +16,11 @@ namespace Consolonia.Core.Infrastructure
 {
     public class ConsoloniaPlatform : IWindowingPlatform
     {
+        public static IList<ConsoleWindowImpl> Windows { get; private set; } = new List<ConsoleWindowImpl>();
+
         public IWindowImpl CreateWindow()
         {
-            throw new NotImplementedException();
-            // return new ConsoleWindow();
+            return new ConsoleWindowImpl(childWindow: true);
         }
 
         public IWindowImpl CreateEmbeddableWindow()
@@ -89,6 +91,8 @@ namespace Consolonia.Core.Infrastructure
                     break;
             }
         }
+
+
     }
 
     public class ConsoloniaPlatformSettings : DefaultPlatformSettings

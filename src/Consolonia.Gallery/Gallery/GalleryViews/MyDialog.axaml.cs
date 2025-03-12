@@ -1,8 +1,8 @@
 using System;
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Consolonia.Controls;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -27,7 +27,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             InitializeComponent();
             // this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
-            AnimateWindow = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"));
+            //AnimateWindow = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"));
 
             DataContext = new MyDialogViewModel
             {

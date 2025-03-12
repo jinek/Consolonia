@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Platform;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
@@ -18,7 +20,8 @@ namespace Consolonia.Core.Drawing
 
         public IRenderTarget CreateRenderTarget(IEnumerable<object> surfaces)
         {
-            return new RenderTarget(surfaces);
+            var windowImpl = surfaces.Cast<ConsoleWindowImpl>().Single();
+            return new RenderTarget(windowImpl);
         }
 
         public IDrawingContextLayerImpl CreateOffscreenRenderTarget(PixelSize pixelSize, double scaling)

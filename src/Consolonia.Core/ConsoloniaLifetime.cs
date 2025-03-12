@@ -48,7 +48,11 @@ namespace Consolonia
             set
             {
                 if (TopLevel == null)
-                    TopLevel = new ConsoleWindow();
+                    TopLevel = new Window(new ConsoleWindowImpl(childWindow: false))
+                    {
+                        WindowState = WindowState.Maximized,
+                        SystemDecorations = SystemDecorations.None
+                    };
                 TopLevel.Content = value;
             }
         }
@@ -91,7 +95,7 @@ namespace Consolonia
         {
             SetupCore(args);
 
-            (TopLevel as ConsoleWindow).Show();
+            (TopLevel as Window).Show();
 
             try
             {

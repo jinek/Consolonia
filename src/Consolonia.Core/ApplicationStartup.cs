@@ -41,6 +41,7 @@ namespace Consolonia
         public static AppBuilder UseConsole(this AppBuilder builder, IConsole console)
         {
             return builder.With(console)
+                .With(new RenderTargetWindows(console))
                 .With<IConsoleOutput>(console)
                 .With<IConsoleCapabilities>(console);
         }

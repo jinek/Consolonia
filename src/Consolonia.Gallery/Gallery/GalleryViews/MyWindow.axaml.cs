@@ -5,7 +5,6 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Iciclecreek.Avalonia.WindowManager;
-using Window = Consolonia.Controls.Window;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -31,7 +30,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
 
             //  this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
-            AnimateWindow = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"));
+            //AnimateWindow = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"));
 
             DataContext = new MyWindowViewModel
             {
@@ -90,7 +89,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     internal static class Utils
     {
-        public static void SizeToBounds(this ManagedWindow window, Rect rect)
+        public static void SizeToBounds(this Window window, Rect rect)
         {
             int minWidth = (int)rect.Width / 4;
             int minHeight = (int)rect.Height / 4;

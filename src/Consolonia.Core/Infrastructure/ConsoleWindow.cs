@@ -19,33 +19,6 @@ using Consolonia.Core.Helpers;
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    ///     ConsoleWindow - a TopLevel which uses the ConsoleWindowImpl to interact with the console.
-    /// </summary>
-    /// <remarks>
-    ///     This window content is a WindowManager panel to handle managed overlapping windows
-    ///     and the MainView is the WindowsPanel.Content
-    /// </remarks>
-    public class ConsoleWindow : Window
-    {
-        public ConsoleWindow() :
-            this(new ConsoleWindowImpl())
-
-        {
-        }
-
-        public ConsoleWindow(IWindowImpl impl)
-            : base(impl)
-        {
-        }
-
-        public Control MainView
-        {
-            get => Content as Control;
-            set => Content = value;
-        }
-    }
-
-    /// <summary>
     ///     ConsoleWindowImpl - An IWindowImpl which uses a PixelBuffer to render.
     /// </summary>
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix
@@ -60,13 +33,19 @@ namespace Consolonia.Core.Infrastructure
         private bool _disposedValue;
         private IInputRoot _inputRoot;
 
-        public ConsoleWindowImpl()
+        public ConsoleWindowImpl(bool childWindow)
         {
+            ConsoloniaPlatform.Windows.Add(this);
+            this.Closed += () => ConsoloniaPlatform.Windows.Remove(this);
+
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             Console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
             PixelBuffer = new PixelBuffer(Console.Size);
-            Console.Resized += OnConsoleOnResized;
+            if (!childWindow)
+            {
+                Console.Resized += OnConsoleOnResized;
+            }
             Console.KeyEvent += ConsoleOnKeyEvent;
             Console.TextInputEvent += ConsoleOnTextInputEvent;
             Console.MouseEvent += ConsoleOnMouseEvent;

@@ -1,4 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ControlTheme x:Key="{x:Type Window}"
                   TargetType="Window">
@@ -11,23 +12,34 @@
                 Value="{DynamicResource FontSizeNormal}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Panel>
-                    <!--<Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />-->
-                    <Border Background="{TemplateBinding Background}"
-                            IsHitTestVisible="False" />
-                    <!--<Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" /> -->
-                    <VisualLayerManager>
-                        <!--<VisualLayerManager.ChromeOverlayLayer>
+                <wm:ManagedWindow
+                    Title="{TemplateBinding Title}"
+                    WindowState="{TemplateBinding WindowState}"
+                    SystemDecorations ="{TemplateBinding SystemDecorations}"
+                    SizeToContent="{TemplateBinding SizeToContent}"
+                    Topmost="{TemplateBinding Topmost}"
+                    CanResize="{TemplateBinding CanResize}"
+                    Width="{TemplateBinding Width}"
+                    Height="{TemplateBinding Height}"
+                    Background="{TemplateBinding Background}">
+                    <Panel>
+                        <!--<Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />-->
+                        <Border Background="{TemplateBinding Background}"
+                                IsHitTestVisible="False" />
+                        <!--<Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" /> -->
+                        <VisualLayerManager>
+                            <!--<VisualLayerManager.ChromeOverlayLayer>
                         <TitleBar />Red
                     </VisualLayerManager.ChromeOverlayLayer>-->
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          Content="{TemplateBinding Content}"
-                                          Margin="{TemplateBinding Padding}"
-                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-                    </VisualLayerManager>
-                </Panel>
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Content="{TemplateBinding Content}"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </VisualLayerManager>
+                    </Panel>
+                </wm:ManagedWindow>
             </ControlTemplate>
         </Setter>
     </ControlTheme>

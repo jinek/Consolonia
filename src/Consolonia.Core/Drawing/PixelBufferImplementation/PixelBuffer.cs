@@ -1,5 +1,7 @@
 using System;
+using System.Text;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media;
 using Consolonia.Controls;
 using Newtonsoft.Json;
@@ -27,8 +29,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             // initialize the buffer with space so it draws any background color
             // blended into it.
             for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-                _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
+                for (ushort x = 0; x < width; x++)
+                    _buffer[x, y] = new Pixel(new PixelBackground(Colors.Transparent));
         }
 
         public ushort Width { get; }
@@ -70,7 +72,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         [JsonIgnore] public int Length => _buffer.Length;
 
-        [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
+        [JsonIgnore] public PixelBufferSize Size => new PixelBufferSize(Width, Height);
 
 
         public void Set(PixelBufferCoordinate point, Func<Pixel, Pixel> changeAction)
@@ -97,16 +99,31 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public void ForeachReadonly(Action<PixelBufferCoordinate, Pixel> action)
         {
             for (ushort j = 0; j < Height; j++)
-            for (ushort i = 0; i < Width; i++)
-            {
-                Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
-                action(new PixelBufferCoordinate(i, j), pixel);
-            }
+                for (ushort i = 0; i < Width; i++)
+                {
+                    Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
+                    action(new PixelBufferCoordinate(i, j), pixel);
+                }
         }
 
         private (ushort x, ushort y) ToXY(int i)
         {
             return ((ushort x, ushort y))(i % Width, i / Width);
+        }
+
+        public string Dump()
+        {
+            StringBuilder sb = new StringBuilder();
+            for (ushort y = 0; y < Height; y++)
+            {
+                for (ushort x = 0; x < Width; x++)
+                {
+                    Pixel pixel = this[(PixelBufferCoordinate)(x, y)];
+                    sb.Append(pixel.Foreground.Symbol.Text);
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
         }
     }
 }

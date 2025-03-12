@@ -62,7 +62,7 @@ namespace Consolonia.Core.Drawing
         {
             _consoleWindowImpl = consoleWindowImpl;
             _pixelBuffer = consoleWindowImpl.PixelBuffer;
-            _clipStack.Push(_pixelBuffer.Size);
+            _clipStack.Push(new Rect(0,0,_pixelBuffer.Size.Width, _pixelBuffer.Size.Height));
         }
 
         private Rect CurrentClip => _clipStack.Peek();

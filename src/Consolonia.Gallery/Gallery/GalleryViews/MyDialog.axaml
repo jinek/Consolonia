@@ -1,10 +1,9 @@
-<console:Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
                 xmlns:console="https://github.com/jinek/consolonia"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
                 MinWidth="10"
                 Padding="1"
-                Icon="😎"
                 x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyDialog"
                 x:DataType="local:MyDialogViewModel"
                 ShowActivated="True"
@@ -38,4 +37,4 @@
             </Button>
         </StackPanel>
     </StackPanel>
-</console:Window>
+</Window>
