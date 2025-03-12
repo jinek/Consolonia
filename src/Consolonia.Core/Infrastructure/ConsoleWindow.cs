@@ -221,7 +221,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
-            // PixelBuffer.SetBufferSize(new PixelBufferSize((ushort)clientSize.Width, (ushort)clientSize.Height));
+            PixelBuffer.SetBufferSize(new PixelBufferSize((ushort)clientSize.Width, (ushort)clientSize.Height));
             Resized.Invoke(clientSize, reason);
         }
 
@@ -229,7 +229,7 @@ namespace Consolonia.Core.Infrastructure
         {
             if (PixelBuffer is PixelBufferLayer layer)
             {
-            //    layer.Position = new PixelBufferCoordinate((ushort)point.X, (ushort)point.Y);
+                layer.Position = new PixelBufferCoordinate((ushort)point.X, (ushort)point.Y);
             }
         }
 

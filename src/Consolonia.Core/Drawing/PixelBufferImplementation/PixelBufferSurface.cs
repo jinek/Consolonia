@@ -28,9 +28,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public PixelBufferLayer CreateLayer(ushort x, ushort y, ushort width, ushort height)
         {
-            // var layer = new PixelBufferLayer(this, x, y, width, height);
-            var layer = new PixelBufferLayer(this, 0, 0, this.Size.Width, this.Size.Height);
-
+            var layer = new PixelBufferLayer(this, x, y, width, height);
             Layers.Add(layer);
             return layer;
         }
