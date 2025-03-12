@@ -5,18 +5,15 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     /// <summary>
     /// A pixelbuffer which has Position
     /// </summary>
-    internal class PixelBufferLayer : PixelBuffer
+    public class PixelBufferLayer : PixelBuffer
     {
         private PixelBufferSurface _manager;
 
-        internal PixelBufferLayer(PixelBufferSurface manager, ushort x, ushort y, ushort width, ushort height)
-            : base(width, height)
+        public PixelBufferLayer(PixelBufferSurface surface, ushort x, ushort y, ushort width, ushort height)
+            : base(new PixelBufferCoordinate(x, y), new PixelBufferSize(width, height))
         {
-            _manager = manager;
-            Position = new PixelPoint(x, y);
+            _manager = surface;
         }
-
-        public PixelPoint Position { get; set; }
 
         public void BringToFront()
         {
@@ -36,7 +33,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         public virtual void Blend()
-            => BitBlt(Position, _manager);
+            => BitBlt(Position.X, Position.Y, _manager);
     }
 }
 

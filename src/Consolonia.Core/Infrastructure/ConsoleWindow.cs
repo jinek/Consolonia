@@ -19,33 +19,6 @@ using Consolonia.Core.Helpers;
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    ///     ConsoleWindow - a TopLevel which uses the ConsoleWindowImpl to interact with the console.
-    /// </summary>
-    /// <remarks>
-    ///     This window content is a WindowManager panel to handle managed overlapping windows
-    ///     and the MainView is the WindowsPanel.Content
-    /// </remarks>
-    public class ConsoleWindow : Window
-    {
-        public ConsoleWindow() :
-            this(new ConsoleWindowImpl())
-
-        {
-        }
-
-        public ConsoleWindow(IWindowImpl impl)
-            : base(impl)
-        {
-        }
-
-        public Control MainView
-        {
-            get => Content as Control;
-            set => Content = value;
-        }
-    }
-
-    /// <summary>
     ///     ConsoleWindowImpl - An IWindowImpl which uses a PixelBuffer to render.
     /// </summary>
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix
@@ -60,22 +33,24 @@ namespace Consolonia.Core.Infrastructure
         private bool _disposedValue;
         private IInputRoot _inputRoot;
 
-        public ConsoleWindowImpl()
+        public ConsoleWindowImpl(PixelBuffer pixelBuffer, bool rootWindow)
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
-            MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
-            Console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
-            PixelBuffer = new PixelBuffer(Console.Size);
-            Console.Resized += OnConsoleOnResized;
-            Console.KeyEvent += ConsoleOnKeyEvent;
-            Console.TextInputEvent += ConsoleOnTextInputEvent;
-            Console.MouseEvent += ConsoleOnMouseEvent;
-            Console.FocusEvent += ConsoleOnFocusEvent;
+            Console = AvaloniaLocator.Current.GetService<IConsole>();
+            if (rootWindow)
+            {
+                MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
+                Console.KeyEvent += ConsoleOnKeyEvent;
+                Console.TextInputEvent += ConsoleOnTextInputEvent;
+                Console.MouseEvent += ConsoleOnMouseEvent;
+                Console.FocusEvent += ConsoleOnFocusEvent;
+                _accessKeysAlwaysOn = !Console.SupportsAltSolo;
+                if (_accessKeysAlwaysOn)
+                    _accessKeysAlwaysOnDisposable =
+                        AccessText.ShowAccessKeyProperty.Changed.SubscribeAction(OnShowAccessKeyPropertyChanged);
+            }
+            PixelBuffer = pixelBuffer;
             Handle = null!;
-            _accessKeysAlwaysOn = !Console.SupportsAltSolo;
-            if (_accessKeysAlwaysOn)
-                _accessKeysAlwaysOnDisposable =
-                    AccessText.ShowAccessKeyProperty.Changed.SubscribeAction(OnShowAccessKeyPropertyChanged);
         }
 
         public PixelBuffer PixelBuffer { get; private set; }
@@ -134,15 +109,14 @@ namespace Consolonia.Core.Infrastructure
         {
             get
             {
-                PixelBufferSize pixelBufferSize = Console.Size;
-                return new Size(pixelBufferSize.Width, pixelBufferSize.Height);
+                return new Size(PixelBuffer.Size.Width, PixelBuffer.Size.Height);
             }
         }
 
         public Size? FrameSize => ClientSize;
 
         public double RenderScaling => 1;
-        public IEnumerable<object> Surfaces => [this];
+        public IEnumerable<object> Surfaces => [AvaloniaLocator.Current.GetService<PixelBufferSurface>()];
 
         public Action<RawInputEventArgs> Input { get; set; }
 
@@ -247,12 +221,16 @@ namespace Consolonia.Core.Infrastructure
 
         public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
-            // console app can't do this.
+            // PixelBuffer.SetBufferSize(new PixelBufferSize((ushort)clientSize.Width, (ushort)clientSize.Height));
+            Resized.Invoke(clientSize, reason);
         }
 
         public void Move(PixelPoint point)
         {
-            // console app can't do this.
+            if (PixelBuffer is PixelBufferLayer layer)
+            {
+            //    layer.Position = new PixelBufferCoordinate((ushort)point.X, (ushort)point.Y);
+            }
         }
 
         public void SetMinMaxSize(Size minSize, Size maxSize)
@@ -393,9 +371,8 @@ namespace Consolonia.Core.Infrastructure
 
         private void OnConsoleOnResized()
         {
-            var size = new Size(Console.Size.Width, Console.Size.Height);
-            PixelBuffer = new PixelBuffer((ushort)size.Width, (ushort)size.Height);
-            Resized!(size, WindowResizeReason.Unspecified);
+            PixelBuffer = new PixelBuffer(new PixelBufferCoordinate(0, 0), new PixelBufferSize((ushort)Console.Size.Width, (ushort)Console.Size.Height));
+            Resized!(new Size(Console.Size.Width, Console.Size.Height), WindowResizeReason.Unspecified);
         }
 
         private void ConsoleOnTextInputEvent(string text, ulong timeStamp)

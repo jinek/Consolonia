@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Platform;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 namespace Consolonia.Core.Drawing
 {
@@ -18,7 +20,8 @@ namespace Consolonia.Core.Drawing
 
         public IRenderTarget CreateRenderTarget(IEnumerable<object> surfaces)
         {
-            return new RenderTarget(surfaces);
+            var surface = surfaces.Cast<PixelBufferSurface>().Single();
+            return new RenderTarget(surface, surface.Layers.First());
         }
 
         public IDrawingContextLayerImpl CreateOffscreenRenderTarget(PixelSize pixelSize, double scaling)

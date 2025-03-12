@@ -48,7 +48,20 @@ namespace Consolonia
             set
             {
                 if (TopLevel == null)
-                    TopLevel = new ConsoleWindow();
+                {
+                    var console = AvaloniaLocator.Current.GetService<IConsole>();
+                    var surfaceBuffer = AvaloniaLocator.Current.GetRequiredService<PixelBufferSurface>();
+                    var topLayer = surfaceBuffer.CreateLayer(0, 0, console.Size.Width, console.Size.Height);
+                    var windowImpl = new ConsoleWindowImpl(topLayer, rootWindow: true);
+                    var window = new Window(windowImpl);
+                    console.Resized += () =>
+                    {
+                        window.Width = console.Size.Width;
+                        window.Height = console.Size.Height;
+                        window.InvalidateMeasure();
+                    };
+                    TopLevel = window ;            
+                }
                 TopLevel.Content = value;
             }
         }
@@ -91,7 +104,7 @@ namespace Consolonia
         {
             SetupCore(args);
 
-            (TopLevel as ConsoleWindow).Show();
+            (TopLevel as Window).Show();
 
             try
             {

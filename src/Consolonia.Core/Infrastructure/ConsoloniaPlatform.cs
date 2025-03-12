@@ -8,6 +8,7 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Threading;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Text;
 
@@ -17,10 +18,10 @@ namespace Consolonia.Core.Infrastructure
     {
         public IWindowImpl CreateWindow()
         {
-            throw new NotImplementedException();
-            // return new ConsoleWindow();
+            var layer = AvaloniaLocator.Current.GetRequiredService<PixelBufferSurface>().CreateLayer(0, 0, 1, 1);
+            return new ConsoleWindowImpl(layer, rootWindow: false);
         }
-
+         
         public IWindowImpl CreateEmbeddableWindow()
         {
             RaiseNotSupported(13);

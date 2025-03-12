@@ -7,31 +7,30 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     /// <summary>
     /// A pixelbuffer which is composed of multiple layers
     /// </summary>
-    internal class PixelBufferSurface : PixelBuffer
+    public class PixelBufferSurface : PixelBuffer
     {
-        public PixelBufferSurface(ushort width, ushort height)
-            : base(width, height)
+        public PixelBufferSurface(IConsole console)
+            : base(console.Size)
         {
+            console.Resized += () => SetBufferSize(console.Size);
         }
 
-        public PixelBufferSurface(PixelSize size)
-            : this((ushort)size.Width, (ushort)size.Height)
-        { }
-
-        public PixelBufferSurface(IConsole console)
-            : this(console.Size.Width, console.Size.Height)
+        // for unit tests
+        public PixelBufferSurface(PixelBufferSize size)
+            : base(size)
         {
-            console.Resized += () => SetBufferSize(console.Size.Width, console.Size.Height);
         }
 
         public ObservableCollection<PixelBufferLayer> Layers { get; } = new();
 
-        public PixelBufferLayer CreateLayer(PixelPoint position, PixelSize size)
+        public PixelBufferLayer CreateLayer(PixelBufferCoordinate position, PixelBufferSize size)
             => CreateLayer((ushort)position.X, (ushort)position.Y, (ushort)size.Width, (ushort)size.Height);
 
         public PixelBufferLayer CreateLayer(ushort x, ushort y, ushort width, ushort height)
         {
-            var layer = new PixelBufferLayer(this, x, y, width, height);
+            // var layer = new PixelBufferLayer(this, x, y, width, height);
+            var layer = new PixelBufferLayer(this, 0, 0, this.Size.Width, this.Size.Height);
+
             Layers.Add(layer);
             return layer;
         }

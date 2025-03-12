@@ -12,9 +12,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
     {
         private static PixelBuffer CreateBuffer()
         {
-            var buffer = new PixelBuffer(4, 5);
-            for (ushort y = 0; y < buffer.Height; y++)
-            for (ushort x = 0; x < buffer.Width; x++)
+            var buffer = new PixelBuffer(new PixelBufferSize(4, 5));
+            for (ushort y = 0; y < buffer.Size.Height; y++)
+            for (ushort x = 0; x < buffer.Size.Width; x++)
                 if (x % 3 == 0)
                     buffer[x, y] = new Pixel(new SimpleSymbol($"{x},{y}"), Colors.Blue);
                 else if (x % 3 == 1)
@@ -28,10 +28,10 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
         private static void AssertBuffer(PixelBuffer buffer)
         {
-            Assert.That(buffer.Width == 4);
-            Assert.That(buffer.Height == 5);
-            for (ushort y = 0; y < buffer.Height; y++)
-            for (ushort x = 0; x < buffer.Width; x++)
+            Assert.That(buffer.Size.Width == 4);
+            Assert.That(buffer.Size.Height == 5);
+            for (ushort y = 0; y < buffer.Size.Height; y++)
+            for (ushort x = 0; x < buffer.Size.Width; x++)
                 switch (x % 3)
                 {
                     case 0:
@@ -88,7 +88,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             FillBuffer(target, "T");
             PixelBuffer source = new PixelBuffer(5, 5);
             FillBuffer(source, "S");
-            source.Blend(new PixelPoint(2, 2), target);
+            source.BitBlt(new PixelPoint(2, 2), target);
 
             var result = BufferToString(target);
             Assert.AreEqual("""
@@ -113,7 +113,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             FillBuffer(target, "T");
             PixelBuffer source = new PixelBuffer(50, 50);
             FillBuffer(source, "S");
-            source.Blend(new PixelPoint(2, 2), target);
+            source.BitBlt(new PixelPoint(2, 2), target);
 
             var result = BufferToString(target);
             Assert.AreEqual("""
@@ -138,7 +138,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             FillBuffer(target, "T");
             PixelBuffer source = new PixelBuffer(5, 5);
             FillBuffer(source, "S");
-            source.Blend(new PixelPoint(-2, -2), target);
+            source.BitBlt(new PixelPoint(-2, -2), target);
 
             var result = BufferToString(target);
             Assert.AreEqual("""
@@ -162,7 +162,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             PixelBuffer target = new PixelBuffer(10, 10);
             FillBuffer(target, "T");
             PixelBuffer source = new PixelBuffer(0,0);
-            source.Blend(new PixelPoint(2, 2), target);
+            source.BitBlt(new PixelPoint(2, 2), target);
 
             var result = BufferToString(target);
             Assert.AreEqual("""
@@ -182,17 +182,17 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
         private static void FillBuffer(PixelBuffer buffer, string symbol)
         {
-            for (ushort y = 0; y < buffer.Height; y++)
-                for (ushort x = 0; x < buffer.Width; x++)
+            for (ushort y = 0; y < buffer.Size.Height; y++)
+                for (ushort x = 0; x < buffer.Size.Width; x++)
                     buffer[x, y] = new Pixel(new SimpleSymbol(symbol), Colors.White);
         }
 
         private static string BufferToString(PixelBuffer buffer)
         {
             var sb = new StringBuilder();
-            for (ushort y = 0; y < buffer.Height; y++)
+            for (ushort y = 0; y < buffer.Size.Height; y++)
             {
-                for (ushort x = 0; x < buffer.Width; x++)
+                for (ushort x = 0; x < buffer.Size.Width; x++)
                     sb.Append(buffer[x, y].Foreground.Symbol.Text);
                 sb.AppendLine();
             }

@@ -1,11 +1,8 @@
 #nullable enable
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -13,35 +10,21 @@ using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
-    internal class RenderTarget : IDrawingContextLayerImpl
+    internal class RenderTarget: IDrawingContextLayerImpl
     {
-        private readonly IConsoleOutput _console;
-
-        private readonly ConsoleWindowImpl _consoleTopLevelImpl;
-
-        // cache of pixels written so we can ignore them if unchanged.
+        private PixelBufferSurface _pixelBufferSurface;
+        private PixelBufferLayer _pixelBufferLayer;
+        private IConsoleOutput _console;
         private Pixel?[,] _cache;
+        private ushort _width;
+        private ushort _height;
 
-        internal RenderTarget(ConsoleWindowImpl consoleTopLevelImpl)
+        internal RenderTarget(PixelBufferSurface pixelBufferSurface, PixelBufferLayer layer)
         {
             _console = AvaloniaLocator.Current.GetService<IConsoleOutput>()!;
-            _consoleTopLevelImpl = consoleTopLevelImpl;
-            _consoleTopLevelImpl.Resized += OnResized;
-
-            _cache = InitializeCache(_consoleTopLevelImpl.PixelBuffer.Width, _consoleTopLevelImpl.PixelBuffer.Height);
-        }
-
-        public RenderTarget(IEnumerable<object> surfaces)
-            : this(surfaces.OfType<ConsoleWindowImpl>()
-                .Single())
-        {
-        }
-
-        public PixelBuffer Buffer => _consoleTopLevelImpl.PixelBuffer;
-
-        public void Dispose()
-        {
-            _consoleTopLevelImpl.Resized -= OnResized;
+            _cache = InitializeCache((ushort)pixelBufferSurface.Size.Width, (ushort)pixelBufferSurface.Size.Height);
+            _pixelBufferSurface = pixelBufferSurface;
+            _pixelBufferLayer = layer;
         }
 
         public void Save(string fileName, int? quality = null)
@@ -77,31 +60,36 @@ namespace Consolonia.Core.Drawing
         {
             if (useScaledDrawing)
                 throw new NotImplementedException("Consolonia doesn't support useScaledDrawing");
-            return new DrawingContextImpl(_consoleTopLevelImpl);
+            return new DrawingContextImpl(_pixelBufferSurface, _pixelBufferLayer);
         }
 
-
-        private void OnResized(Size size, WindowResizeReason reason)
+        public void Dispose()
         {
-            // todo: should we check the reason?
-            _cache = InitializeCache(_consoleTopLevelImpl.PixelBuffer.Width, _consoleTopLevelImpl.PixelBuffer.Height);
         }
 
-        private static Pixel?[,] InitializeCache(ushort width, ushort height)
+        private Pixel?[,] InitializeCache(ushort width, ushort height)
         {
+            _width = width;
+            _height = height;
             var cache = new Pixel?[width, height];
 
             // initialize the cache with Pixel.Empty as it literally means nothing
             for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-                cache[x, y] = Pixel.Empty;
+                for (ushort x = 0; x < width; x++)
+                    cache[x, y] = Pixel.Empty;
 
             return cache;
         }
 
         private void RenderToDevice()
         {
-            PixelBuffer pixelBuffer = _consoleTopLevelImpl.PixelBuffer;
+            if (_width != _pixelBufferSurface.Size.Width || _height != _pixelBufferSurface.Size.Height)
+            {
+                // buffer changed size
+                InitializeCache(_pixelBufferSurface.Size.Width, _pixelBufferSurface.Size.Height);
+            }
+
+            _pixelBufferSurface.BlendLayers();
 
             _console.HideCaret();
 
@@ -109,42 +97,42 @@ namespace Consolonia.Core.Drawing
 
             var flushingBuffer = new FlushingBuffer(_console);
 
-            for (ushort y = 0; y < pixelBuffer.Height; y++)
-            for (ushort x = 0; x < pixelBuffer.Width;)
-            {
-                Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
-
-                if (pixel.IsCaret)
+            for (ushort y = 0; y < _pixelBufferSurface.Size.Height; y++)
+                for (ushort x = 0; x < _pixelBufferSurface.Size.Width;)
                 {
-                    if (caretPosition != null)
-                        throw new InvalidOperationException("Caret is already shown");
-                    caretPosition = new PixelBufferCoordinate(x, y);
-                }
+                    Pixel pixel = _pixelBufferSurface[(PixelBufferCoordinate)(x, y)];
 
-                /* todo: There is not IWindowImpl.Invalidate anymore.
-                     if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                        rect.ContainsExclusive(new Point(x, y)))) continue;*/
+                    if (pixel.IsCaret)
+                    {
+                        if (caretPosition != null)
+                            throw new InvalidOperationException("Caret is already shown");
+                        caretPosition = new PixelBufferCoordinate(x, y);
+                    }
 
-                //todo: indexOutOfRange during resize
-                if (_cache[x, y] == pixel)
-                {
+                    /* todo: There is not IWindowImpl.Invalidate anymore.
+                         if (!_consoleWindow.InvalidatedRects.Any(rect =>
+                            rect.ContainsExclusive(new Point(x, y)))) continue;*/
+
+                    //todo: indexOutOfRange during resize
+                    if (_cache[x, y] == pixel)
+                    {
+                        x++;
+                        continue;
+                    }
+
+                    _cache[x, y] = pixel;
+
+                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+
                     x++;
-                    continue;
                 }
-
-                _cache[x, y] = pixel;
-
-                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
-
-                x++;
-            }
 
             flushingBuffer.Flush();
 
             if (caretPosition != null)
             {
                 _console.SetCaretPosition((PixelBufferCoordinate)caretPosition);
-                _console.SetCaretStyle(pixelBuffer.CaretStyle);
+                _console.SetCaretStyle(_pixelBufferSurface.CaretStyle);
                 _console.ShowCaret();
             }
             else

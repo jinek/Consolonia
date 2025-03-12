@@ -21,11 +21,11 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void BufferInitialized()
         {
             ArgumentNullException.ThrowIfNull(Application.Current.ApplicationLifetime);
-            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            var consoleTopLevelImpl = new ConsoleWindowImpl(new PixelBuffer(new PixelBufferSize(50,50)));
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
 
-            for (ushort y = 0; y < buffer.Height; y++)
-            for (ushort x = 0; x < buffer.Width; x++)
+            for (ushort y = 0; y < buffer.Size.Height; y++)
+            for (ushort x = 0; x < buffer.Size.Width; x++)
             {
                 Pixel pixel = buffer[x, y];
                 Assert.IsTrue(pixel.Width == 1);
@@ -38,7 +38,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void DrawText()
         {
-            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            var consoleTopLevelImpl = new ConsoleWindowImpl(new PixelBuffer(new PixelBufferSize(50, 50)));
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
             for (ushort x = 1; x < 6; x++) DrawText(dc, x, 2, x.ToString(), Brushes.White);

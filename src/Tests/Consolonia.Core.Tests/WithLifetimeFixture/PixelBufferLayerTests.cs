@@ -11,7 +11,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BitBltLayers()
         {
-            PixelBufferLayers layerManager = new PixelBufferLayers(10, 10);
+            PixelBufferSurface layerManager = new PixelBufferSurface(10, 10);
             FillBuffer(layerManager, "T");
 
             var layer1 = layerManager.CreateLayer(2, 2, 5, 5);
@@ -19,7 +19,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var layer2 = layerManager.CreateLayer(3, 3, 5, 2);
             FillBuffer(layer2, "2");
 
-            layerManager.Blend();
+            layerManager.BlendLayers();
             var result = BufferToString(layerManager);
             Assert.AreEqual("""
                 TTTTTTTTTT
@@ -39,7 +39,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BitBltLayersBringToFront()
         {
-            PixelBufferLayers layers = new PixelBufferLayers(10, 10);
+            PixelBufferSurface layers = new PixelBufferSurface(10, 10);
             FillBuffer(layers, "T");
 
             var layer1 = layers.CreateLayer(2, 2, 5, 5);
@@ -48,7 +48,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             FillBuffer(layer2, "2");
             layer1.BringToFront();
 
-            layers.Blend();
+            layers.BlendLayers();
             var result = BufferToString(layers);
             Assert.AreEqual("""
                 TTTTTTTTTT
@@ -68,7 +68,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BitBltLayersSendToBack()
         {
-            PixelBufferLayers layerManager = new PixelBufferLayers(10, 10);
+            PixelBufferSurface layerManager = new PixelBufferSurface(10, 10);
             FillBuffer(layerManager, "T");
 
             var layer1 = layerManager.CreateLayer(2, 2, 5, 5);
@@ -77,7 +77,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             FillBuffer(layer2, "2");
             layer2.SendToBack();
 
-            layerManager.Blend();
+            layerManager.BlendLayers();
             var result = BufferToString(layerManager);
             Assert.AreEqual("""
                 TTTTTTTTTT
@@ -96,17 +96,17 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
         private static void FillBuffer(PixelBuffer buffer, string symbol)
         {
-            for (ushort y = 0; y < buffer.Height; y++)
-                for (ushort x = 0; x < buffer.Width; x++)
+            for (ushort y = 0; y < buffer.Size.Height; y++)
+                for (ushort x = 0; x < buffer.Size.Width; x++)
                     buffer[x, y] = new Pixel(new SimpleSymbol(symbol), Colors.White);
         }
 
         private static string BufferToString(PixelBuffer buffer)
         {
             var sb = new StringBuilder();
-            for (ushort y = 0; y < buffer.Height; y++)
+            for (ushort y = 0; y < buffer.Size.Height; y++)
             {
-                for (ushort x = 0; x < buffer.Width; x++)
+                for (ushort x = 0; x < buffer.Size.Width; x++)
                     sb.Append(buffer[x, y].Foreground.Symbol.Text);
                 sb.AppendLine();
             }

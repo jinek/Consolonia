@@ -12,14 +12,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             if (reader.TokenType == JsonToken.Null) return null;
 
             JObject jObject = JObject.Load(reader);
-            ushort width = jObject[nameof(PixelBuffer.Width)]!.Value<ushort>();
-            ushort height = jObject[nameof(PixelBuffer.Height)]!.Value<ushort>();
-            var pixelBuffer = new PixelBuffer(width, height);
+            var size = jObject[nameof(PixelBuffer.Size)]!.Value<PixelBufferSize>();
+            var position = jObject[nameof(PixelBuffer.Position)]!.Value<PixelBufferCoordinate>();
+            var pixelBuffer = new PixelBuffer(position, size);
             JToken pixels = jObject["Pixels"];
             ArgumentNullException.ThrowIfNull(pixels);
             int i = 0;
-            for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
+            for (ushort y = 0; y < size.Height; y++)
+            for (ushort x = 0; x < size.Width; x++)
             {
                 JToken pixelRecord = pixels[i++];
                 ArgumentNullException.ThrowIfNull(pixelRecord);
@@ -36,14 +36,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public override void WriteJson(JsonWriter writer, PixelBuffer value, JsonSerializer serializer)
         {
             writer.WriteStartObject();
-            writer.WritePropertyName(nameof(PixelBuffer.Width));
-            writer.WriteValue(value.Width);
-            writer.WritePropertyName(nameof(PixelBuffer.Height));
-            writer.WriteValue(value.Height);
+            writer.WritePropertyName(nameof(PixelBuffer.Size));
+            writer.WriteValue(value.Size);
+            writer.WritePropertyName(nameof(PixelBuffer.Position));
+            writer.WriteValue(value.Position);
             writer.WritePropertyName("Pixels");
             writer.WriteStartArray();
-            for (ushort y = 0; y < value.Height; y++)
-            for (ushort x = 0; x < value.Width; x++)
+            for (ushort y = 0; y < value.Size.Height; y++)
+            for (ushort x = 0; x < value.Size.Width; x++)
                 serializer.Serialize(writer, value[x, y]);
             writer.WriteEndArray();
             writer.WriteEndObject();

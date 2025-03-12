@@ -263,7 +263,7 @@ namespace Consolonia.Designer
                 VerticalAlignment = VerticalAlignment.Top
             };
 
-            for (ushort y = 0; y < buffer.Height; y++)
+            for (ushort y = 0; y < buffer.Size.Height; y++)
             {
                 var line = new StackPanel
                 {
@@ -272,7 +272,7 @@ namespace Consolonia.Designer
                 };
 
                 var composer = new TextBlockComposer(line, _charWidth);
-                for (ushort x = 0; x < buffer.Width;)
+                for (ushort x = 0; x < buffer.Size.Width;)
                 {
                     Pixel pixel = buffer[x, y];
 

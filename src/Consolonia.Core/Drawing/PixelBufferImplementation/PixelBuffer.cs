@@ -11,33 +11,42 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [JsonConverter(typeof(PixelBufferConverter))]
     public class PixelBuffer
     {
+        private static int _counter;
         private Pixel[,] _buffer;
+        private string _id;
 
         public PixelBuffer(PixelBufferSize size)
-            : this(size.Width, size.Height)
+            : this(new PixelBufferCoordinate(0,0), size)
         {
         }
 
-        public PixelBuffer(ushort width, ushort height)
+        public PixelBuffer(PixelBufferCoordinate point, PixelBufferSize size)
         {
-            SetBufferSize(width, height);
+            _id = _counter++.ToString();
+            this.Position = point;
+            SetBufferSize(size);
         }
 
-        public void SetBufferSize(ushort width, ushort height)
+        public void SetBufferSize(PixelBufferSize size)
         {
-            Width = width;
-            Height = height;
-            _buffer = new Pixel[width, height];
+            var id = int.Parse(_id);
+            var colors = new Color[] { Colors.Black, Colors.White, Colors.Red, Colors.Green, Colors.Blue, Colors.Yellow, Colors.Cyan, Colors.Magenta };
 
-            // initialize the buffer with space so it draws any background color
-            // blended into it.
-            for (ushort y = 0; y < height; y++)
-                for (ushort x = 0; x < width; x++)
-                    _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
+            if (size.Width != Size.Width && size.Height != Size.Height)
+            {
+                this.Size = size;
+                _buffer = new Pixel[size.Width, size.Height];
+
+                // initialize the buffer with space so it draws any background color
+                // blended into it.
+                for (ushort y = 0; y < size.Height; y++)
+                    for (ushort x = 0; x < size.Width; x++)
+                    {
+                        // _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
+                        _buffer[x, y] = new Pixel(new PixelForeground(new SimpleSymbol(_id), Colors.White), new PixelBackground(colors[id % colors.Length]));
+                    }
+            }
         }
-
-        public ushort Width { get; private set; }
-        public ushort Height { get; private set; }
 
         public CaretStyle CaretStyle { get; set; } = CaretStyle.BlinkingBar;
 
@@ -75,8 +84,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         [JsonIgnore] public int Length => _buffer.Length;
 
-        [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
+        [JsonIgnore] public PixelBufferCoordinate Position { get; set; }
 
+        [JsonIgnore] public PixelBufferSize Size { get; private set; }
 
         public void Set(PixelBufferCoordinate point, Func<Pixel, Pixel> changeAction)
         {
@@ -101,12 +111,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         // ReSharper disable once MemberCanBePrivate.Global
         public void ForeachReadonly(Action<PixelBufferCoordinate, Pixel> action)
         {
-            for (ushort j = 0; j < Height; j++)
-            for (ushort i = 0; i < Width; i++)
-            {
-                Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
-                action(new PixelBufferCoordinate(i, j), pixel);
-            }
+            for (ushort j = 0; j < Size.Height; j++)
+                for (ushort i = 0; i < Size.Width; i++)
+                {
+                    Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
+                    action(new PixelBufferCoordinate(i, j), pixel);
+                }
         }
 
         /// <summary>
@@ -114,15 +124,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// </summary>
         /// <param name="position"></param>
         /// <param name="targetPixelBuffer"></param>
-        public void BitBlt(int x, int y, PixelPoint position, PixelBuffer targetPixelBuffer)
-            => BitBlt(new PixelPoint(x, y), targetPixelBuffer);
-
-        /// <summary>
-        /// Blend this pixel buffer into another pixelbuffer at a given location
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="targetPixelBuffer"></param>
-        public virtual void BitBlt(PixelPoint position, PixelBuffer targetPixelBuffer)
+        public void BitBlt(int left, int top, PixelBuffer targetPixelBuffer)
         {
             lock (targetPixelBuffer)
             {
@@ -130,12 +132,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 {
                     for (ushort y = 0; y < Size.Height; y++)
                     {
-                        var targetX = (ushort)(x + position.X);
-                        var targetY = (ushort)(y + position.Y);
-                        if (targetX >= 0 && targetX < targetPixelBuffer.Width &&
-                            targetY >= 0 && targetY < targetPixelBuffer.Height)
+                        var targetX = (ushort)(x + left);
+                        var targetY = (ushort)(y + top);
+                        if (targetX >= 0 && targetX < targetPixelBuffer.Size.Width &&
+                            targetY >= 0 && targetY < targetPixelBuffer.Size.Height)
                         {
-                            targetPixelBuffer.Set((PixelBufferCoordinate)new PixelBufferCoordinate(targetX, targetY),
+                            targetPixelBuffer.Set(new PixelBufferCoordinate(targetX, targetY),
                                     pixel => pixel.Blend(this[x, y]));
                         }
                     }
@@ -145,7 +147,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         private (ushort x, ushort y) ToXY(int i)
         {
-            return ((ushort x, ushort y))(i % Width, i / Width);
+            return ((ushort x, ushort y))(i % Size.Width, i / Size.Width);
         }
     }
 }

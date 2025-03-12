@@ -42,7 +42,8 @@ namespace Consolonia
         {
             return builder.With(console)
                 .With<IConsoleOutput>(console)
-                .With<IConsoleCapabilities>(console);
+                .With<IConsoleCapabilities>(console)
+                .With(new PixelBufferSurface(console));
         }
 
         public static AppBuilder UseConsoleColorMode(this AppBuilder builder, IConsoleColorMode consoleColorMode)

@@ -78,7 +78,7 @@ namespace Consolonia.Core.Infrastructure
             //todo: low this method is not supposed to exist at all, but for simplicity we call Dispatcher right from our low level ConsoleBase, which brings necessarity to wait for it to be initialized
             while (AvaloniaLocator.Current.GetService<IDispatcherImpl>() == null) await Task.Yield();
         }
-
+         
         #region IConsoleInput
 
         public abstract bool SupportsMouse { get; }

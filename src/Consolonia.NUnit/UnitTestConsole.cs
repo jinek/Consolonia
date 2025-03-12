@@ -22,7 +22,7 @@ namespace Consolonia.NUnit
         public UnitTestConsole(PixelBufferSize size)
         {
             Size = size;
-            PixelBuffer = new PixelBuffer(size.Width, size.Height);
+            PixelBuffer = new PixelBuffer(size);
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
@@ -173,11 +173,11 @@ namespace Consolonia.NUnit
         {
             var stringBuilder = new StringBuilder();
 
-            for (ushort j = 0; j < PixelBuffer.Height; j++)
+            for (ushort j = 0; j < PixelBuffer.Size.Height; j++)
             {
-                for (ushort i = 0; i < PixelBuffer.Width; i++)
+                for (ushort i = 0; i < PixelBuffer.Size.Width; i++)
                 {
-                    if (i == PixelBuffer.Width - 1 && j == PixelBuffer.Height - 1)
+                    if (i == PixelBuffer.Size.Width - 1 && j == PixelBuffer.Size.Height - 1)
                         break;
                     Pixel pixel = PixelBuffer[new PixelBufferCoordinate(i, j)];
                     string text = pixel.IsCaret ? "Ꮖ" : pixel.Foreground.Symbol.Text;
