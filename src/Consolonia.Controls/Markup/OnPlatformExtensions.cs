@@ -59,28 +59,36 @@ namespace Consolonia.Controls.Markup
             };
         }
 
+        private static bool? _isConsole;
         private static bool IsConsole()
         {
-#pragma warning disable CA1031 // Do not catch general exception types
+            if (_isConsole.HasValue)
+                return _isConsole.Value;
+
             if (Application.Current?.ApplicationLifetime != null)
-                return Application.Current.ApplicationLifetime.GetType().Name == "ConsoloniaLifetime";
+            {
+                _isConsole = Application.Current.ApplicationLifetime.GetType().Name == "ConsoloniaLifetime";
+                return _isConsole.Value;
+            }
 
             if (OperatingSystem.IsWindows())
+            {
                 try
                 {
-                    return System.Console.WindowHeight > 0;
+                    _isConsole = System.Console.WindowHeight > 0;
                 }
                 catch (IOException)
                 {
-                    return false;
+                    _isConsole = false;
                 }
+                return _isConsole.Value;
+            }
 
             // This works on Unix systems
-            bool isConsole = !(System.Console.IsInputRedirected &&
+            _isConsole = !(System.Console.IsInputRedirected &&
                                System.Console.IsOutputRedirected &&
                                System.Console.IsErrorRedirected);
-            return isConsole;
-#pragma warning restore CA1031 // Do not catch general exception types
+            return _isConsole.Value;
         }
     }
 }

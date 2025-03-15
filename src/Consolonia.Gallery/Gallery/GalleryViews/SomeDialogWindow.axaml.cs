@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Interactivity;
 using Consolonia.Controls;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
@@ -17,7 +18,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Title = DialogTitle;
             Width = width;
             Height = height;
-            AnimateWindow = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"));
+            var lifetime = Application.Current.ApplicationLifetime as ConsoloniaLifetime;
+            var consoleWindow = lifetime?.TopLevel as ConsoleWindow;
+            AnimateWindow = (consoleWindow.Console?.GetType().Name != "UnitTestConsole");
 
             AttachedToVisualTree += OnShowDialog;
         }

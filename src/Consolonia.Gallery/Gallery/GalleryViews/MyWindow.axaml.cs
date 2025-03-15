@@ -31,7 +31,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
 
             //  this.Background = brushes[Random.Shared.Next(0, brushes.Length)];
-            AnimateWindow = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONSOLONIA_TEST"));
+            AnimateWindow = !Extensions.IsUnitTestConsole();
 
             DataContext = new MyWindowViewModel
             {

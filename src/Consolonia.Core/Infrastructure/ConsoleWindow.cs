@@ -38,6 +38,8 @@ namespace Consolonia.Core.Infrastructure
         {
         }
 
+        public IConsole Console => AvaloniaLocator.Current.GetRequiredService<IConsole>();
+
         public Control MainView
         {
             get => Content as Control;
@@ -171,11 +173,13 @@ namespace Consolonia.Core.Infrastructure
         public void Hide()
         {
             // toplevel never hides
+            throw new NotImplementedException();
         }
 
         public void Activate()
         {
             // toplevel is always visible
+            throw new NotImplementedException();
         }
 
         public void SetTopmost(bool value)
