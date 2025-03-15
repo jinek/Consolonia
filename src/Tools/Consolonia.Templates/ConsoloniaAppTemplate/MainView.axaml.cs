@@ -15,7 +15,7 @@ namespace ConsoloniaAppTemplate
         private void OnExit(object sender, RoutedEventArgs e)
         {
             var lifetime = Application.Current!.ApplicationLifetime as IControlledApplicationLifetime;
-            lifetime.Shutdown();
+            lifetime!.Shutdown();
         }
     }
 }

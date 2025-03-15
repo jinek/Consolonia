@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:console="https://github.com/jinek/consolonia"
+        xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
         x:Class="Consolonia.Themes.TurboVisionTheme">
     <Styles.Resources>
         <ResourceDictionary>
@@ -60,4 +61,7 @@
                 Value="1 0" />
     </Style>
 
+    <wm:WindowManagerTheme />
+
+    <StyleInclude Source="/TurboVision/Controls/Button.axaml" />
 </Styles>

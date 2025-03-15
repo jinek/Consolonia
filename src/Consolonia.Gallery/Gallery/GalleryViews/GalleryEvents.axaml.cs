@@ -88,7 +88,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             if (sender is ListBox lb)
             {
                 var vm = lb.SelectedItem as EventViewModel;
-                await new MessageBox().ShowDialogAsync(this, vm.Details, vm.Name);
+                await MessageBox.ShowDialog(this, vm.Details, vm.Name);
             }
         }
 
@@ -131,10 +131,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             // we reach into internal Console property because we want to hook raw console events
             if (_console == null)
             {
-                var consoleWindow = (ConsoleWindow)TopLevel.GetTopLevel(this).PlatformImpl;
+                var consoleTopLevelInfo = (ConsoleWindowImpl)TopLevel.GetTopLevel(this).PlatformImpl;
                 FieldInfo propInfo =
-                    typeof(ConsoleWindow).GetField("Console", BindingFlags.NonPublic | BindingFlags.Instance);
-                _console = (IConsole)propInfo.GetValue(consoleWindow);
+                    typeof(ConsoleWindowImpl).GetField("Console", BindingFlags.NonPublic | BindingFlags.Instance);
+                _console = (IConsole)propInfo.GetValue(consoleTopLevelInfo);
             }
         }
     }

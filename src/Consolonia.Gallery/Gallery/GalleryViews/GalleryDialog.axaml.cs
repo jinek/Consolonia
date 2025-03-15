@@ -16,7 +16,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             // ReSharper restore UnusedParameter.Local
         {
             var lifetime = (ConsoloniaLifetime)Application.Current.ApplicationLifetime;
-            await new SomeDialogWindow(50, 15).ShowDialogAsync(lifetime.TopLevel);
+
+            var dialog = new SomeDialogWindow(50, 15);
+            await dialog.ShowDialog();
         }
     }
 }

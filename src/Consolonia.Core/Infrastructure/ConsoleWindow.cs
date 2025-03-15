@@ -18,27 +18,60 @@ using Consolonia.Core.Helpers;
 
 namespace Consolonia.Core.Infrastructure
 {
-    public class ConsoleWindow : IWindowImpl
+    /// <summary>
+    ///     ConsoleWindow - a TopLevel which uses the ConsoleWindowImpl to interact with the console.
+    /// </summary>
+    /// <remarks>
+    ///     This window content is a WindowManager panel to handle managed overlapping windows
+    ///     and the MainView is the WindowsPanel.Content
+    /// </remarks>
+    public class ConsoleWindow : Window
+    {
+        public ConsoleWindow() :
+            this(new ConsoleWindowImpl())
+
+        {
+        }
+
+        public ConsoleWindow(IWindowImpl impl)
+            : base(impl)
+        {
+        }
+
+        public Control MainView
+        {
+            get => Content as Control;
+            set => Content = value;
+        }
+    }
+
+    /// <summary>
+    ///     ConsoleWindowImpl - An IWindowImpl which uses a PixelBuffer to render.
+    /// </summary>
+#pragma warning disable CA1711 // Identifiers should not have incorrect suffix
+    public class ConsoleWindowImpl : IWindowImpl
+#pragma warning restore CA1711 // Identifiers should not have incorrect suffix
     {
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
+
         [NotNull] internal readonly IConsole Console;
         private bool _disposedValue;
         private IInputRoot _inputRoot;
 
-        public ConsoleWindow()
+        public ConsoleWindowImpl()
         {
             _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             Console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
+            PixelBuffer = new PixelBuffer(Console.Size);
             Console.Resized += OnConsoleOnResized;
             Console.KeyEvent += ConsoleOnKeyEvent;
             Console.TextInputEvent += ConsoleOnTextInputEvent;
             Console.MouseEvent += ConsoleOnMouseEvent;
             Console.FocusEvent += ConsoleOnFocusEvent;
             Handle = null!;
-            PixelBuffer = new PixelBuffer(Console.Size);
             _accessKeysAlwaysOn = !Console.SupportsAltSolo;
             if (_accessKeysAlwaysOn)
                 _accessKeysAlwaysOnDisposable =
@@ -137,11 +170,13 @@ namespace Consolonia.Core.Infrastructure
 
         public void Hide()
         {
+            // toplevel never hides
             throw new NotImplementedException();
         }
 
         public void Activate()
         {
+            // toplevel is always visible
             throw new NotImplementedException();
         }
 
@@ -174,7 +209,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetParent(IWindowImpl parent)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("You can't set a toplevel parent");
         }
 
         public void SetEnabled(bool enable)
@@ -184,63 +219,62 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetSystemDecorations(SystemDecorations enabled)
         {
-            throw new NotImplementedException();
+            // console window has no system decorations
         }
 
         public void SetIcon(IWindowIconImpl icon)
         {
+            // console window has no icon
         }
 
         public void ShowTaskbarIcon(bool value)
         {
+            // console window has no icon
         }
 
         public void CanResize(bool value)
         {
-            // todo, enable/disable resizing of window
+            // console app can't do this.
         }
 
         public void BeginMoveDrag(PointerPressedEventArgs e)
         {
-            throw new NotImplementedException();
+            // console app can't do this.
         }
 
         public void BeginResizeDrag(WindowEdge edge, PointerPressedEventArgs e)
         {
-            throw new NotImplementedException();
+            // console app can't do this.
         }
 
         public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
-            // todo: can we deny resizing? TODO We could consider resizing the console window or throwing exception
-            //throw new NotImplementedException();
+            // console app can't do this.
         }
-
 
         public void Move(PixelPoint point)
         {
-            // TODO: Can we deny moving? TODO We could consider moving the console window or throwing exception
-            //throw new NotImplementedException();
+            // console app can't do this.
         }
 
         public void SetMinMaxSize(Size minSize, Size maxSize)
         {
-            //throw new NotImplementedException();
+            // console app can't do this.
         }
 
         public void SetExtendClientAreaToDecorationsHint(bool extendIntoClientAreaHint)
         {
-            // we don't support this, we can ignore
+            // console app can't do this.
         }
 
         public void SetExtendClientAreaChromeHints(ExtendClientAreaChromeHints hints)
         {
-            // we don't support this, we can ignore
+            // console app can't do this.
         }
 
         public void SetExtendClientAreaTitleBarHeightHint(double titleBarHeight)
         {
-            // we don't support this, we can ignore
+            // console app can't do this.
         }
 
         public WindowState WindowState { get; set; }
@@ -361,8 +395,8 @@ namespace Consolonia.Core.Infrastructure
 
         private void OnConsoleOnResized()
         {
-            PixelBuffer = new PixelBuffer(Console.Size);
             var size = new Size(Console.Size.Width, Console.Size.Height);
+            PixelBuffer = new PixelBuffer((ushort)size.Width, (ushort)size.Height);
             Resized!(size, WindowResizeReason.Unspecified);
         }
 

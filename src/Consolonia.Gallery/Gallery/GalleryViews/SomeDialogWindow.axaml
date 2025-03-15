@@ -1,17 +1,17 @@
-<console:DialogWindow xmlns="https://github.com/avaloniaui"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:console="https://github.com/jinek/consolonia"
-                      mc:Ignorable="d"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      x:Class="Consolonia.Gallery.Gallery.GalleryViews.SomeDialogWindow">
-    <Panel>
-        <TextBlock xml:space="preserve"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Bottom"
-                   Foreground="DarkRed">.
+<console:Window xmlns="https://github.com/avaloniaui"
+                xmlns:console="https://github.com/jinek/consolonia"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                mc:Ignorable="d"
+                WindowStartupLocation="CenterOwner"
+                x:Class="Consolonia.Gallery.Gallery.GalleryViews.SomeDialogWindow">
+    <ScrollViewer>
+        <Panel>
+            <TextBlock xml:space="preserve"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Foreground="DarkRed">.
         /;    ;\
     __  \\____//
    /{_\_/   `'\____
@@ -26,10 +26,19 @@ _____/          :--'
 
 Bill Ames
 </TextBlock>
-        <Button Content="One More"
-                Name="OneMoreButton"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Click="OneMore_Clicked" />
-    </Panel>
-</console:DialogWindow>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="One More"
+                        Name="OneMoreButton"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        IsDefault="true"
+                        Click="OneMore_Clicked" />
+                <Button Content="Cancel"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        IsCancel="true"
+                        Click="OnCancel" />
+            </StackPanel>
+        </Panel>
+    </ScrollViewer>
+</console:Window>

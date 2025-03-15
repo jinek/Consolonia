@@ -17,7 +17,8 @@ namespace Consolonia.Core.Infrastructure
     {
         public IWindowImpl CreateWindow()
         {
-            return new ConsoleWindow();
+            throw new NotImplementedException();
+            // return new ConsoleWindow();
         }
 
         public IWindowImpl CreateEmbeddableWindow()

@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:console="https://github.com/jinek/consolonia">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ControlTheme x:Key="{x:Type Window}"
                   TargetType="Window">
         <Setter Property="Background"
@@ -10,8 +9,6 @@
                 Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="FontSize"
                 Value="{DynamicResource FontSizeNormal}" />
-        <Setter Property="(console:DialogHost.IsDialogHost)"
-                Value="True" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>

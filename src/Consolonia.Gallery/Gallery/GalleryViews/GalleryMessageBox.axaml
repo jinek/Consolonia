@@ -7,15 +7,14 @@
              x:DataType="gallery:GalleryMessageBoxViewModel"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryMessageBox">
 
-    <StackPanel Orientation="Vertical">
-        <WrapPanel Orientation="Vertical"
-                   HorizontalAlignment="Left">
-            <Button Click="OnOk">Show Ok</Button>
-            <Button Click="OnOkCancel">Show Ok/Cancel</Button>
-            <Button Click="OnYesNo">Show Yes/No</Button>
-            <Button Click="OnYesNoCancel">Show Yes/No/Cancel</Button>
-            <Button Click="OnCustom">Show Custom</Button>
-        </WrapPanel>
+    <StackPanel Orientation="Vertical"
+                Spacing="1"
+                HorizontalAlignment="Left">
+        <Button Click="OnOk">Show Ok</Button>
+        <Button Click="OnOkCancel">Show Ok/Cancel</Button>
+        <Button Click="OnYesNo">Show Yes/No</Button>
+        <Button Click="OnYesNoCancel">Show Yes/No/Cancel</Button>
+        <Button Click="OnCustom">Show Custom</Button>
         <TextBlock Text="{Binding Result}" />
     </StackPanel>
 </UserControl>

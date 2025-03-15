@@ -1,12 +1,13 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Consolonia.Controls;
+using Window = Consolonia.Controls.Window;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FolderPicker : DialogWindow
+    internal partial class FolderPicker : Window
     {
         public FolderPicker()
             : this(new FolderPickerOpenOptions())
@@ -15,8 +16,6 @@ namespace Consolonia.Core.Controls
 
         public FolderPicker(FolderPickerOpenOptions options)
         {
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
-
             DataContext = new FolderPickerViewModel(options);
             InitializeComponent();
             CancelButton.Focus();
@@ -26,6 +25,15 @@ namespace Consolonia.Core.Controls
 
         public FolderPickerOpenOptions Options =>
             ((FolderPickerViewModel)DataContext)?.Options ?? new FolderPickerOpenOptions();
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            Position = new PixelPoint(2, 2);
+            Width = OverlayLayer.Bounds.Width - 4;
+            Height = OverlayLayer.Bounds.Height - 4;
+        }
 
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {
@@ -41,12 +49,12 @@ namespace Consolonia.Core.Controls
 
         private void OnOK(object sender, RoutedEventArgs e)
         {
-            CloseDialog(ViewModel.SelectedFolders);
+            Close(ViewModel.SelectedFolders);
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
         {
-            CloseDialog();
+            Close();
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

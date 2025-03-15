@@ -24,10 +24,8 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IReadOnlyList<IStorageFile>> OpenFilePickerAsync(FilePickerOpenOptions options)
         {
-            var lifetime = (ConsoloniaLifetime)Application.Current.ApplicationLifetime;
-            ArgumentNullException.ThrowIfNull(lifetime);
             var picker = new FileOpenPicker(options);
-            var results = await picker.ShowDialogAsync<IReadOnlyList<IStorageFile>>(lifetime.TopLevel);
+            var results = await picker.ShowDialog<IReadOnlyList<IStorageFile>>();
             return results;
         }
 
@@ -38,11 +36,8 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<IReadOnlyList<IStorageFolder>> OpenFolderPickerAsync(FolderPickerOpenOptions options)
         {
-            var lifetime = (ConsoloniaLifetime)Application.Current.ApplicationLifetime;
-            ArgumentNullException.ThrowIfNull(lifetime);
-
             var picker = new FolderPicker(options);
-            var results = await picker.ShowDialogAsync<IReadOnlyList<IStorageFolder>>(lifetime.TopLevel);
+            var results = await picker.ShowDialog<IReadOnlyList<IStorageFolder>>();
             return results;
         }
 
@@ -52,7 +47,7 @@ namespace Consolonia.Core.Infrastructure
             ArgumentNullException.ThrowIfNull(lifetime);
 
             var picker = new FileSavePicker(options);
-            var results = await picker.ShowDialogAsync<IStorageFile>(lifetime.TopLevel);
+            var results = await picker.ShowDialog<IStorageFile>();
             return results;
         }
 

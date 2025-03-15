@@ -1,5 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
         x:Class="Consolonia.Themes.FluentTheme">
     <Styles.Resources>
         <ResourceDictionary>
@@ -47,5 +48,7 @@
     </Styles.Resources>
 
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
-    <StyleInclude Source="/TurboVisionBlack/Controls/Button.axaml" />
+
+    <wm:WindowManagerTheme />
+
 </Styles>
