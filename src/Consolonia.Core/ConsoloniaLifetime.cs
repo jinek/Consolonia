@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
@@ -14,6 +15,7 @@ using Consolonia.Core.Infrastructure;
 // ReSharper disable ConstantConditionalAccessQualifier
 namespace Consolonia
 {
+    [Consolonia]
     public class ConsoloniaLifetime : ISingleViewApplicationLifetime,
         IControlledApplicationLifetime,
         ISingleTopLevelApplicationLifetime,
