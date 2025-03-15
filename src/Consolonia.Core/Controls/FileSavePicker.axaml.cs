@@ -1,14 +1,15 @@
 using System;
 using System.IO;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Consolonia.Controls;
+using Window = Consolonia.Controls.Window;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FileSavePicker : DialogWindow
+    internal partial class FileSavePicker : Window
     {
         public FileSavePicker()
             : this(new FilePickerSaveOptions())
@@ -17,8 +18,6 @@ namespace Consolonia.Core.Controls
 
         public FileSavePicker(FilePickerSaveOptions options)
         {
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
-
             DataContext = new FileSavePickerViewModel(options);
             InitializeComponent();
             CancelButton.Focus();
@@ -40,6 +39,15 @@ namespace Consolonia.Core.Controls
             DataContext as FileSavePickerViewModel
             ?? throw new InvalidOperationException($"Invalid DataContext. Expected {nameof(FileSavePickerViewModel)}");
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            Position = new PixelPoint(2, 2);
+            Width = OverlayLayer.Bounds.Width - 4;
+            Height = OverlayLayer.Bounds.Height - 4;
+        }
+
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {
             var listbox = (ListBox)sender;
@@ -50,7 +58,7 @@ namespace Consolonia.Core.Controls
             }
             else if (listbox.SelectedItem is IStorageFile file)
             {
-                CloseDialog(file);
+                Close(file);
             }
         }
 
@@ -72,19 +80,19 @@ namespace Consolonia.Core.Controls
                         new Uri($"file://{Path.GetDirectoryName(savePath)}"));
                 if (folder == null)
                 {
-                    CloseDialog();
+                    Close();
                     return;
                 }
 
                 file = await folder.CreateFileAsync(Path.GetFileName(savePath));
             }
 
-            CloseDialog(file);
+            Close(file);
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
         {
-            CloseDialog();
+            Close();
         }
     }
 }

@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Avalonia;
 using Avalonia.Metadata;
 using AvaloniaMarkup = Avalonia.Markup.Xaml.MarkupExtensions;
@@ -41,6 +43,42 @@ namespace Consolonia.Controls.Markup
         }
     }
 
+    internal static class OnPlatformConsoleExtensionBaseHelper
+    {
+        private static bool? _isConsole;
+        public static bool IsConsole()
+        {
+            if (_isConsole.HasValue)
+                return _isConsole.Value;
+
+            if (Application.Current?.ApplicationLifetime != null)
+            {
+                _isConsole = ConsoloniaAttribute.IsDefined(Application.Current.ApplicationLifetime.GetType());
+                return _isConsole.Value;
+            }
+
+            if (OperatingSystem.IsWindows())
+            {
+                try
+                {
+                    _isConsole = Console.WindowHeight > 0;
+                }
+                catch (IOException)
+                {
+                    _isConsole = false;
+                }
+                return _isConsole.Value;
+            }
+
+            // This works on Unix systems
+            _isConsole = !(Console.IsInputRedirected &&
+                           Console.IsOutputRedirected &&
+                           Console.IsErrorRedirected);
+            return _isConsole.Value;
+        }
+
+    }
+
     public abstract class
         OnPlatformConsoleExtensionBase<TReturn, TOn> : AvaloniaMarkup.OnPlatformExtensionBase<TReturn, TOn>
         where TOn : AvaloniaMarkup.On<TReturn>
@@ -52,7 +90,7 @@ namespace Consolonia.Controls.Markup
         {
             return option switch
             {
-                "CONSOLE" => Application.Current.ApplicationLifetime?.GetType().Name == "ConsoloniaLifetime",
+                "CONSOLE" => OnPlatformConsoleExtensionBaseHelper.IsConsole(),
                 _ => AvaloniaMarkup.OnPlatformExtension.ShouldProvideOption(option)
             };
         }

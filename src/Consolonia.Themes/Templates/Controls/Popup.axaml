@@ -7,12 +7,6 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel Background="{DynamicResource ThemeTransparentBrush}">
-
-                    <!--<Border Name="PART_TransparencyFallback" IsHitTestVisible="False" Tag="thth">
-                    <Border.Background>
-                        <notImportant:ConsoleBrush Color="DarkGreen"/>
-                    </Border.Background>
-                </Border>-->
                     <VisualLayerManager IsPopup="True">
                         <ContentPresenter Name="PART_ContentPresenter"
                                           Background="{TemplateBinding Background}"

@@ -1,0 +1,66 @@
+<console:Window xmlns="https://github.com/avaloniaui"
+                xmlns:console="https://github.com/jinek/consolonia"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
+                xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
+                Icon="😎"
+                Padding="1"
+                x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyWindow"
+                x:DataType="local:MyWindowViewModel"
+                Title="{Binding Title}">
+    <StackPanel Spacing="1">
+        <StackPanel Orientation="Horizontal"
+                    Spacing="1">
+            <Button HorizontalAlignment="Left"
+                    Click="OnIncrement">
+                Increment
+            </Button>
+            <TextBlock Text="{Binding Counter}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    Spacing="1">
+            <Label>SizeToContent for Dialog</Label>
+            <ComboBox Name="SizeToContentCombo"
+                      SelectedIndex="3">
+                <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
+                <ComboBoxItem Tag="Width">Width</ComboBoxItem>
+                <ComboBoxItem Tag="Height">Height</ComboBoxItem>
+                <ComboBoxItem Tag="WidthAndHeight">WidthAndHeight</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    Spacing="1">
+            <Label>StartupLocation for Dialog</Label>
+            <ComboBox Name="StartupLocationCombo"
+                      SelectedIndex="1">
+                <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
+                <ComboBoxItem Tag="CenterOwner">CenterOwner</ComboBoxItem>
+                <ComboBoxItem Tag="CenterScreen">CenterScreen</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    Spacing="1">
+            <Button Click="OnShowDialog"
+                    HorizontalAlignment="Left">
+                Show dialog
+            </Button>
+            <TextBlock Text="DialogResult:" />
+            <TextBlock Text="{Binding Text}" />
+        </StackPanel>
+
+        <Button HorizontalAlignment="Left"
+                Click="OnColor">
+            Background
+        </Button>
+        <Button HorizontalAlignment="Left"
+                Click="OnClose">
+            Close
+        </Button>
+
+        <ToggleSwitch Content="CanResize"
+                      IsChecked="{Binding CanResize, RelativeSource={RelativeSource AncestorType={x:Type wm:ManagedWindow}}}" />
+    </StackPanel>
+</console:Window>

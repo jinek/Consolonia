@@ -1,0 +1,27 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:console="https://github.com/jinek/consolonia">
+    <Styles.Resources>
+        <ControlTheme x:Key="{x:Type Button}"
+                      TargetType="Button">
+
+            <ControlTheme.BasedOn>
+                <StaticResource ResourceKey="{x:Type Button}" />
+            </ControlTheme.BasedOn>
+            
+            <Setter Property="(console:ButtonExtensions.Shadow)"
+                    Value="True" />
+
+            <Style Selector="^ /template/ Border#InternalBorder">
+                <Setter Property="Margin"
+                        Value="0,0,1,1" />
+            </Style>
+
+            <Style Selector="^:clickdelayed /template/ Border#InternalBorder">
+                <Setter Property="Margin"
+                        Value="1,0,1,1" />
+            </Style>
+
+        </ControlTheme>
+    </Styles.Resources>
+</Styles>
