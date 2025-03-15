@@ -38,8 +38,6 @@ namespace Consolonia.Core.Infrastructure
         {
         }
 
-        public IConsole Console => AvaloniaLocator.Current.GetRequiredService<IConsole>();
-
         public Control MainView
         {
             get => Content as Control;

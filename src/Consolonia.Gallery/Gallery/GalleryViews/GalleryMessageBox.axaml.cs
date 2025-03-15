@@ -1,4 +1,5 @@
 using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -35,7 +36,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 MessageBoxStyle = MessageBoxStyle.OkCancel,
                 Title = "OK/Cancel Message box",
                 Message = "Do you want to OK or cancel?",
-                AnimateWindow = !Extensions.IsUnitTestConsole()
+                AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
             MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
@@ -48,7 +49,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 MessageBoxStyle = MessageBoxStyle.YesNo,
                 Title = "Yes/No Message box",
                 Message = "Do you want to Yes or No?",
-                AnimateWindow = !Extensions.IsUnitTestConsole()
+                AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
             MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
@@ -61,7 +62,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 MessageBoxStyle = MessageBoxStyle.YesNoCancel,
                 Title = "Yes/No/Cancel Message box",
                 Message = "Do you want to Yes, No or Cancel?",
-                AnimateWindow = !Extensions.IsUnitTestConsole()
+                AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
             MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
@@ -88,7 +89,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     Text = "😒 No",
                     Foreground = Brushes.Red
                 },
-                AnimateWindow = !Extensions.IsUnitTestConsole()
+                AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
             MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();

@@ -53,6 +53,8 @@ namespace Consolonia
             }
         }
 
+        public static IConsole Console => AvaloniaLocator.Current.GetRequiredService<IConsole>();
+
         public event EventHandler<ShutdownRequestedEventArgs> ShutdownRequested;
 
         public bool TryShutdown(int exitCode = 0)
