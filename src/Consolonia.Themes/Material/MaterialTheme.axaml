@@ -48,7 +48,6 @@
     </Styles.Resources>
 
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
-    <StyleInclude Source="/TurboVisionBlack/Controls/Button.axaml" />
 
     <wm:WindowManagerTheme />
 </Styles>

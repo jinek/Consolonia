@@ -63,4 +63,5 @@
 
     <wm:WindowManagerTheme />
 
+    <StyleInclude Source="/TurboVision/Controls/Button.axaml" />
 </Styles>

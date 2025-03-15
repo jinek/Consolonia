@@ -11,6 +11,4 @@
     </Styles.Resources>
 
     <StyleInclude Source="/TurboVision/TurboVisionTheme.axaml" />
-    <StyleInclude Source="/TurboVisionDark/Controls/Button.axaml" />
-    <wm:WindowManagerTheme />
 </Styles>

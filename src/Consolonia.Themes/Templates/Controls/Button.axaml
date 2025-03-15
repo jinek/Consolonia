@@ -10,7 +10,7 @@
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="(console:ButtonExtensions.Shadow)"
-                Value="True" />
+                Value="False" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Center" />
         <Setter Property="VerticalContentAlignment"
