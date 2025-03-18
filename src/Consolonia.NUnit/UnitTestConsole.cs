@@ -202,7 +202,7 @@ namespace Consolonia.NUnit
         public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
         public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
         public event Action<bool> FocusEvent;
-        public event Action<string, ulong> TextInputEvent;
+        public event Action<string, ulong, CanBeHandledEventArgs> TextInputEvent;
 #pragma warning restore CS0067
     }
 }

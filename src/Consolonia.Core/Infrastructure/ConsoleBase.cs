@@ -87,7 +87,7 @@ namespace Consolonia.Core.Infrastructure
         public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
         public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
         public event Action<bool> FocusEvent;
-        public event Action<string, ulong> TextInputEvent;
+        public event Action<string, ulong, CanBeHandledEventArgs> TextInputEvent;
 
         protected void RaiseMouseEvent(RawPointerEventType eventType, Point point, Vector? wheelDelta,
             RawInputModifiers modifiers)
@@ -101,9 +101,9 @@ namespace Consolonia.Core.Infrastructure
             KeyEvent?.Invoke(key, character, modifiers, down, timeStamp);
         }
 
-        protected void RaiseTextInput(string text, ulong timestamp)
+        protected void RaiseTextInput(string text, ulong timestamp, CanBeHandledEventArgs canBeHandledEventArgs = null)
         {
-            TextInputEvent?.Invoke(text, timestamp);
+            TextInputEvent?.Invoke(text, timestamp, canBeHandledEventArgs ?? CanBeHandledEventArgs.Default);
         }
 
         protected void RaiseFocusEvent(bool focused)

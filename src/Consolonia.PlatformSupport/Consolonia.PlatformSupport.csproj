@@ -13,6 +13,10 @@
         </ProjectReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="IndexedBuffering\" />
+    </ItemGroup>
+
     <!-- 
     see https://josef.codes/dotnet-pack-include-referenced-projects/ for information on how 
     this is including Consolonia.GuiCS.dll as an asset and  not a package references

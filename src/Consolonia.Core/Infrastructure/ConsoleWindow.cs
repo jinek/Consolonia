@@ -366,12 +366,15 @@ namespace Consolonia.Core.Infrastructure
             Resized!(size, WindowResizeReason.Unspecified);
         }
 
-        private void ConsoleOnTextInputEvent(string text, ulong timeStamp)
+        private void ConsoleOnTextInputEvent(string text, ulong timeStamp, CanBeHandledEventArgs canBeHandledEventArgs)
         {
 #pragma warning disable CS0618 // Type or member is obsolete // todo: change to correct constructor, CFA20A9A-3A24-4187-9CA3-9DF0081124EE 
-            var rawInputEventArgs = new RawTextInputEventArgs(_myKeyboardDevice, timeStamp, _inputRoot, text);
+            RawTextInputEventArgs rawInputEventArgs = new(_myKeyboardDevice, timeStamp, _inputRoot, text);
 #pragma warning restore CS0618 // Type or member is obsolete
             Input!(rawInputEventArgs);
+
+            if (rawInputEventArgs.Handled)
+                canBeHandledEventArgs.Handled = true;
         }
 
 
