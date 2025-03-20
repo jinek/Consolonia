@@ -1,6 +1,6 @@
 using System;
 
-namespace Consolonia.Core.Helpers.InputProcessor
+namespace Consolonia.Core.Helpers.InputProcessing
 {
     /// <summary>
     ///     A matcher that matches any text input.

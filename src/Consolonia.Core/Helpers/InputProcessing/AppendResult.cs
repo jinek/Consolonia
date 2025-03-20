@@ -1,4 +1,4 @@
-namespace Consolonia.Core.Helpers.InputProcessor
+namespace Consolonia.Core.Helpers.InputProcessing
 {
     public enum AppendResult
     {

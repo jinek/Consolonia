@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Consolonia.Core.Helpers.InputProcessor
+namespace Consolonia.Core.Helpers.InputProcessing
 {
     /// <summary>
     /// Matches a sequence of characters that starts with a given string and ends with another given string.

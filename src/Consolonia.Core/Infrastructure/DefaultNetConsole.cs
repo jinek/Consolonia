@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using Avalonia.Input;
 using Consolonia.Core.Helpers;
-using Consolonia.Core.Helpers.InputProcessor;
+using Consolonia.Core.Helpers.InputProcessing;
 using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Infrastructure

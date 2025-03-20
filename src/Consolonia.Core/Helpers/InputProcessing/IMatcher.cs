@@ -1,4 +1,4 @@
-namespace Consolonia.Core.Helpers.InputProcessor
+namespace Consolonia.Core.Helpers.InputProcessing
 {
     /// <summary>
     ///     Interface for a matcher that accumulates input and tries to match it to a pattern.

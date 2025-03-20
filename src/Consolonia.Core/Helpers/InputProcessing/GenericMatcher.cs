@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Consolonia.Core.Helpers.InputProcessor
+namespace Consolonia.Core.Helpers.InputProcessing
 {
     /// <summary>
     ///     Matches everything

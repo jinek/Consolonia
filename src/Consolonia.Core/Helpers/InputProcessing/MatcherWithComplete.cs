@@ -1,6 +1,6 @@
 using System;
 
-namespace Consolonia.Core.Helpers.InputProcessor
+namespace Consolonia.Core.Helpers.InputProcessing
 {
     public abstract class MatcherWithComplete<T, TComplete> : IMatcher<T>
     {

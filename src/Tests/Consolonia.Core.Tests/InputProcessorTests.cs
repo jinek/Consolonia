@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using Consolonia.Core.Helpers.InputProcessor;
+using Consolonia.Core.Helpers.InputProcessing;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests

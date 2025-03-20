@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Consolonia.Core.Helpers.InputProcessor
+namespace Consolonia.Core.Helpers.InputProcessing
 {
     public class RegexMatcher<T>(Action<(string, T[])> onComplete, Func<T, char> toChar, string regex)
         : MatcherWithComplete<T, (string, T[])>(onComplete)
