@@ -18,9 +18,8 @@ namespace Consolonia.Core.Helpers.InputProcessing
         public override AppendResult Append(T input)
         {
             char c = toChar(input);
-            bool accumulatorWasEmpty = _accumulator.Length == 0;
 
-            AppendResult matchResultInternal = MatchResultInternal(_accumulator.ToString() + c, accumulatorWasEmpty);
+            AppendResult matchResultInternal = MatchResultInternal(_accumulator.ToString() + c);
             if (matchResultInternal == AppendResult.Match)
             {
                 _accumulator.Append(c);
@@ -29,7 +28,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
             return matchResultInternal;
         }
 
-        private AppendResult MatchResultInternal(string toTest, bool accumulatorWasEmpty)
+        private AppendResult MatchResultInternal(string toTest)
         {
             bool startsWithTrue = toTest.StartsWith(startsWith, StringComparison.Ordinal);
 
@@ -48,10 +47,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
                 return AppendResult.Match;
             }
 
-            if (!accumulatorWasEmpty)
-            {
-                _accumulator.Clear();
-            }
+            _accumulator.Clear();
 
             return AppendResult.NoMatch;
         }
