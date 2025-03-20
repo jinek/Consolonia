@@ -8,15 +8,12 @@ namespace Consolonia.Core.Helpers.InputProcessor
 {
     public class ChunkedDataProcessor<T>(IEnumerable<IMatcher<T>> matchers)
     {
-        private ImmutableArray<IMatcher<T>> Matchers { get; } = [..matchers];
         private int _previousTopMatcherIndex = -1;
+        private ImmutableArray<IMatcher<T>> Matchers { get; } = [..matchers];
 
         public void ProcessDataChunk(IEnumerable<T> chunk)
         {
-            foreach (T input in chunk)
-            {
-                ProcessSingleInput(input);
-            }
+            foreach (T input in chunk) ProcessSingleInput(input);
 
             Flush(0);
         }
@@ -65,13 +62,11 @@ namespace Consolonia.Core.Helpers.InputProcessor
         private void Flush(int startIndex)
         {
             for (int i = startIndex; i < Matchers.Length; i++)
-            {
                 if (Matchers[i].TryFlush())
                 {
                     ResetMatchersFrom(i + 1);
                     break;
                 }
-            }
         }
 
         private void ResetMatchersFrom(int startIndex)

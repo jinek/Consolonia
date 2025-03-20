@@ -8,8 +8,8 @@ namespace Consolonia.Core.Helpers.InputProcessor
     public class RegexMatcher<T>(Action<(string, T[])> onComplete, Func<T, char> toChar, string regex)
         : MatcherWithComplete<T, (string, T[])>(onComplete)
     {
-        private readonly StringBuilder _accumulator = new();
         private readonly List<T> _accumulatedKeys = [];
+        private readonly StringBuilder _accumulator = new();
 
         private readonly Regex _regex = new(regex);
 
@@ -24,6 +24,7 @@ namespace Consolonia.Core.Helpers.InputProcessor
                 _accumulator.Append(c);
                 _accumulatedKeys.Add(input);
             }
+
             return matchResultInternal;
         }
 
@@ -35,10 +36,7 @@ namespace Consolonia.Core.Helpers.InputProcessor
 
         public override bool TryFlush()
         {
-            if (_accumulator.Length == 0)
-            {
-                return false;
-            }
+            if (_accumulator.Length == 0) return false;
 
             string currentAccumulated = _accumulator.ToString();
             bool matches = MatchResultInternal(currentAccumulated) == AccumulationResult.Match;

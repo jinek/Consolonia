@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Consolonia.Core.Helpers.InputProcessor
 {
     /// <summary>
-    /// Matches everything
+    ///     Matches everything
     /// </summary>
     public class GenericMatcher<TKey>(Action<TKey> onComplete)
         : MatcherWithComplete<TKey, TKey>(onComplete)

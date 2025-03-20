@@ -8,7 +8,7 @@
             <ControlTheme.BasedOn>
                 <StaticResource ResourceKey="{x:Type Button}" />
             </ControlTheme.BasedOn>
-            
+
             <Setter Property="(console:ButtonExtensions.Shadow)"
                     Value="True" />
 

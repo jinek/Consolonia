@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using Consolonia.Core.Helpers;
 using Consolonia.Core.Helpers.InputProcessor;
 using NUnit.Framework;
 
@@ -127,10 +126,7 @@ namespace Consolonia.Core.Tests
             var chunkedDataProcessor = new ChunkedDataProcessor<char>(matchers);
 
             string[] inputs = input.Split();
-            foreach (string chunk in inputs)
-            {
-                chunkedDataProcessor.ProcessDataChunk(chunk);
-            }
+            foreach (string chunk in inputs) chunkedDataProcessor.ProcessDataChunk(chunk);
 
             Assert.AreEqual(expected, result[1..]);
             return;

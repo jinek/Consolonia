@@ -4,7 +4,7 @@ using System.Text;
 namespace Consolonia.Core.Helpers.InputProcessor
 {
     /// <summary>
-    /// Matches a sequence of characters that starts with a given string and ends with another given string.
+    ///     Matches a sequence of characters that starts with a given string and ends with another given string.
     /// </summary>
     public class StartsEndsWithMatcher<T>(
         Action<string> onComplete,
@@ -22,10 +22,7 @@ namespace Consolonia.Core.Helpers.InputProcessor
 
             AccumulationResult matchResultInternal =
                 MatchResultInternal(_accumulator.ToString() + c, accumulatorWasEmpty); //todo: performance
-            if (matchResultInternal == AccumulationResult.Match)
-            {
-                _accumulator.Append(c);
-            }
+            if (matchResultInternal == AccumulationResult.Match) _accumulator.Append(c);
 
             return matchResultInternal;
         }
@@ -45,14 +42,9 @@ namespace Consolonia.Core.Helpers.InputProcessor
             }
 
             if (startsWithTrue || startsWith.StartsWith(toTest, StringComparison.Ordinal))
-            {
                 return AccumulationResult.Match;
-            }
 
-            if (!accumulatorWasEmpty)
-            {
-                _accumulator.Clear();
-            }
+            if (!accumulatorWasEmpty) _accumulator.Clear();
 
             return AccumulationResult.NoMatch;
         }
