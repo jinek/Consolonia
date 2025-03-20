@@ -123,9 +123,9 @@ namespace Consolonia.NUnit
                 ulong timestamp = (ulong)Environment.TickCount64;
                 // todo: check why Yield is not enough: https://github.com/jinek/Consolonia/runs/7055199426?check_suite_focus=true
                 const ulong interval = 50;
-                KeyEvent?.Invoke(key, c, RawInputModifiers.None, true, timestamp);
+                KeyEvent?.Invoke(key, c, RawInputModifiers.None, true, timestamp, true);
                 await Task.Delay((int)interval).ConfigureAwait(false);
-                KeyEvent?.Invoke(key, c, RawInputModifiers.None, false, timestamp + interval);
+                KeyEvent?.Invoke(key, c, RawInputModifiers.None, false, timestamp + interval, true);
                 await Task.Delay((int)interval).ConfigureAwait(false);
             }
 
@@ -160,10 +160,10 @@ namespace Consolonia.NUnit
         public async Task KeyInput(Key key, RawInputModifiers modifiers = RawInputModifiers.None)
         {
             ulong timestamp = (ulong)Environment.TickCount64;
-            KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, true, timestamp);
+            KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, true, timestamp, true);
             await Task.Yield();
             KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, false,
-                timestamp + 1);
+                timestamp + 1, true);
             await Task.Yield();
 
             await WaitRendered().ConfigureAwait(true);
@@ -199,7 +199,7 @@ namespace Consolonia.NUnit
 
 #pragma warning disable CS0067
         public event Action Resized;
-        public event Action<Key, char, RawInputModifiers, bool, ulong> KeyEvent;
+        public event Action<Key, char, RawInputModifiers, bool, ulong, bool> KeyEvent;
         public event Action<RawPointerEventType, Point, Vector?, RawInputModifiers> MouseEvent;
         public event Action<bool> FocusEvent;
         public event Action<string, ulong, CanBeHandledEventArgs> TextInputEvent;

@@ -11,7 +11,7 @@ namespace Consolonia.Core.Helpers.InputProcessor
         private int _previousTopMatcherIndex = -1;
         private ImmutableArray<IMatcher<T>> Matchers { get; } = [..matchers];
 
-        public void ProcessDataChunk(IEnumerable<T> chunk)
+        public void ProcessChunk(IEnumerable<T> chunk)
         {
             foreach (T input in chunk) ProcessSingleInput(input);
 

@@ -32,9 +32,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             ViewModel.SelectedRawMouseEvent = eventViewModel;
         }
 
-        private void OnRawKey(Key arg1, char arg2, RawInputModifiers arg3, bool arg4, ulong arg5)
+        private void OnRawKey(Key arg1, char arg2, RawInputModifiers arg3, bool arg4, ulong arg5, bool arg6)
         {
-            var eventViewModel = new RawKeyboardEventViewModel(arg1, arg2, arg3, arg4, arg5);
+            var eventViewModel = new RawKeyboardEventViewModel(arg1, arg2, arg3, arg4, arg5, arg6);
             ViewModel.RawKeyboardEvents.Add(eventViewModel);
             ViewModel.SelectedRawKeyboardEvent = eventViewModel;
         }
@@ -202,7 +202,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     public class RawKeyboardEventViewModel : EventViewModel
     {
-        public RawKeyboardEventViewModel(Key key, char ch, RawInputModifiers modifiers, bool isDown, ulong timestamp)
+        public RawKeyboardEventViewModel(Key key, char ch, RawInputModifiers modifiers, bool isDown, ulong timestamp,
+            bool tryAsTextInput)
         {
             Name = $"RawKey{(isDown ? "Down" : "Up")} {key} ({modifiers})";
             Summary = Name;
@@ -213,6 +214,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                  Modifiers: {modifiers.ToString()}
                  IsDown: {isDown}
                  Timestamp: {timestamp}
+                 TryAsTextInput: {tryAsTextInput}
                  """;
         }
     }

@@ -48,7 +48,7 @@ namespace Consolonia.Core.Tests
                 new('a', ConsoleKey.A, false, false, false)
             ];
 
-            chunkedDataProcessor.ProcessDataChunk(chunk);
+            chunkedDataProcessor.ProcessChunk(chunk);
 
             // b, right, 
 
@@ -59,7 +59,7 @@ namespace Consolonia.Core.Tests
                 new ConsoleKeyInfo('', ConsoleKey.Escape, false, false, false)
             ];
 
-            chunkedDataProcessor.ProcessDataChunk(chunk);
+            chunkedDataProcessor.ProcessChunk(chunk);
 
             // [200~qwe[201~abc
 
@@ -84,7 +84,7 @@ namespace Consolonia.Core.Tests
                 new ConsoleKeyInfo('c', ConsoleKey.C, false, false, false)
             ];
 
-            chunkedDataProcessor.ProcessDataChunk(chunk);
+            chunkedDataProcessor.ProcessChunk(chunk);
 
             Assert.AreEqual(expected, output);
         }
@@ -126,7 +126,7 @@ namespace Consolonia.Core.Tests
             var chunkedDataProcessor = new InputProcessor<char>(matchers);
 
             string[] inputs = input.Split();
-            foreach (string chunk in inputs) chunkedDataProcessor.ProcessDataChunk(chunk);
+            foreach (string chunk in inputs) chunkedDataProcessor.ProcessChunk(chunk);
 
             Assert.AreEqual(expected, result[1..]);
             return;

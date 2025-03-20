@@ -413,7 +413,7 @@ namespace Consolonia.Core.Infrastructure
 
 
         private void ConsoleOnKeyEvent(Key key, char keyChar, RawInputModifiers rawInputModifiers, bool down,
-            ulong timeStamp)
+            ulong timeStamp, bool tryAsTextInput)
         {
             if (!down)
             {
@@ -434,7 +434,8 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning restore CS0618 // Type or member is obsolete
                 Input!(rawInputEventArgs);
 
-                if (!rawInputEventArgs.Handled
+                if (tryAsTextInput &&
+                    !rawInputEventArgs.Handled
                     && !char.IsControl(keyChar)
                     && !rawInputModifiers.HasFlag(RawInputModifiers.Alt)
                     && !rawInputModifiers.HasFlag(RawInputModifiers.Control))

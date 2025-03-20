@@ -59,25 +59,25 @@ namespace Consolonia.Core.Infrastructure
         {
             _inputBuffer = new FastBuffer<ConsoleKeyInfo>(ReadDataFunction);
             _inputProcessor = new InputProcessor<ConsoleKeyInfo>([
-                new PasteBlockMatcher<ConsoleKeyInfo>(
-                    str =>
-                    {
-                        //todo: we need to detect escape of escape and also configure depending on whether <paste> is switched on
-                        RaiseTextInput(str, (ulong)Environment.TickCount64);
-                    }, ToChar),
                 new TextInputMatcher<ConsoleKeyInfo>(tuple =>
                 {
-                    CanBeHandledEventArgs canBeHandledEventArgs = new();
-                    RaiseTextInput(tuple.Item1, (ulong)Environment.TickCount64, canBeHandledEventArgs);
-                    if (!canBeHandledEventArgs.Handled)
+                    bool processSeparateKeys = true;
+                    if (tuple.Item1.Length >= 10) // todo: low: magic number here
+                    {
+                        CanBeHandledEventArgs canBeHandledEventArgs = new();
+                        RaiseTextInput(tuple.Item1, (ulong)Environment.TickCount64, canBeHandledEventArgs);
+                        processSeparateKeys = !canBeHandledEventArgs.Handled;
+                    }
+
+                    if (processSeparateKeys)
                     {
                         foreach (ConsoleKeyInfo consoleKeyInfo in tuple.Item2)
                         {
-                            RaiseKeyInputInternal(consoleKeyInfo);
+                            RaiseKeyInputInternal(consoleKeyInfo, false);
                         }
                     }
                 }, ToChar),
-                new GenericMatcher<ConsoleKeyInfo>(RaiseKeyInputInternal)
+                new GenericMatcher<ConsoleKeyInfo>(consoleKeyInfo => RaiseKeyInputInternal(consoleKeyInfo))
             ]);
             // ReSharper disable VirtualMemberCallInConstructor
             PrepareConsole();
@@ -122,18 +122,13 @@ namespace Consolonia.Core.Infrastructure
 
                     await DispatchInputAsync(() =>
                     {
-                        _inputProcessor.ProcessDataChunk(consoleKeyInfos);
-                        
-                        /*foreach (ConsoleKeyInfo consoleKeyInfo in consoleKeyInfos)
-                        {
-                            RaiseKeyInputInternal(consoleKeyInfo);
-                        }*/
+                        _inputProcessor.ProcessChunk(consoleKeyInfos);
                     });
                 }
             });
         }
 
-        private void RaiseKeyInputInternal(ConsoleKeyInfo consoleKeyInfo)
+        private void RaiseKeyInputInternal(ConsoleKeyInfo consoleKeyInfo, bool tryAsTextInput = true)
         {
             Key key = ConvertToKey(consoleKeyInfo.Key);
 
@@ -144,7 +139,7 @@ namespace Consolonia.Core.Infrastructure
                 (ulong)Environment.TickCount64);
             Thread.Yield(); //todo: low is yielding necessary here?
             RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
-                (ulong)Environment.TickCount64);
+                (ulong)Environment.TickCount64, tryAsTextInput);
             Thread.Yield();
         }
 
