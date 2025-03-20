@@ -1,0 +1,130 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:console="https://github.com/jinek/consolonia"
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryPlatform">
+    <StackPanel>
+        <HyperlinkButton NavigateUri="https://docs.avaloniaui.net/docs/guides/platforms/platform-specific-code/xaml">Platform specific-code in xaml</HyperlinkButton>
+        <StackPanel>
+            <TextBlock TextDecorations="Underline">Inline based platform (including Console)</TextBlock>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', Console='✓'}" />
+                <TextBlock Text="IsConsole" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', Windows='✓'}" />
+                <TextBlock Text="IsWindows" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', Linux='✓'}" />
+                <TextBlock Text="IsLinux" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', macOS='✓'}" />
+                <TextBlock Text="IsOSX" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', Android='✓'}" />
+                <TextBlock Text="IsAndroid" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', iOS='✓'}" />
+                <TextBlock Text="IsiOS" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="1">
+                <TextBlock Text="{console:OnPlatform Default='✗', Browser='✓'}" />
+                <TextBlock Text="IsBrowser" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel>
+            <TextBlock TextDecorations="Underline">Long-form conditional markup based platform (including Console)</TextBlock>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
+                    <TextBlock>
+                        <console:OnPlatform Default="✗"
+                                            Console="✓" />
+                    </TextBlock>
+                    <TextBlock Text="IsConsole" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
+                    <TextBlock>
+                        <console:OnPlatform>
+                            <On Options="Console">✓</On>
+                            <On Options="Browser,Windows,Linux">✗</On>
+                        </console:OnPlatform>
+                    </TextBlock>
+                    <TextBlock Text="IsConsole using On tag" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <console:OnPlatform Default="✗"
+                                                Windows="✓" />
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Text="IsWindows" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
+                    <TextBlock>
+                        <console:OnPlatform Default="✗"
+                                            Linux="✓" />
+                    </TextBlock>
+                    <TextBlock Text="IsLinux" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
+                    <console:OnPlatform>
+                        <console:OnPlatform.Default>
+                            <TextBlock Text="✗" />
+                        </console:OnPlatform.Default>
+                        <console:OnPlatform.macOS>
+                            <TextBlock Text="✓" />
+                        </console:OnPlatform.macOS>
+                    </console:OnPlatform>
+                    <TextBlock Text="IsOSX" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <console:OnPlatform Default="✗"
+                                                Android="✓" />
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Text="IsAndroid" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
+                    <TextBlock>
+                        <console:OnPlatform Default="✗"
+                                            iOS="✓" />
+                    </TextBlock>
+                    <TextBlock Text="IsiOS" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
+                    <console:OnPlatform>
+                        <On Options="Default">
+                            <TextBlock>✗</TextBlock>
+                        </On>
+                        <!-- comma delimted list of options to match....-->
+                        <On Options="Browser">
+                            <TextBlock>✓</TextBlock>
+                        </On>
+                    </console:OnPlatform>
+                    <TextBlock Text="IsBrowser" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

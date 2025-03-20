@@ -6,7 +6,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using Consolonia.Controls;
+using Consolonia.Controls.Brushes;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
@@ -25,6 +25,7 @@ namespace Consolonia.Core.Drawing
         private const byte HorizontalLinePattern = 0b0101;
         private const byte HorizontalEndPattern = 0b0001;
 
+        // these are magic values for mapping drawing of a line to escape instructions for text decorations around text.
         public const int UnderlineThickness = 10;
         public const int StrikethroughThickness = 11;
 
@@ -43,24 +44,24 @@ namespace Consolonia.Core.Drawing
 
 
         // top left, top right, bottom right, bottom left, 
-        private static readonly char[][] CornerChars =
+        private static readonly char[][] EdgeCornerChars =
         [
             // LineStyle=Edge we don't draw chars for edge corners
-            [' ', ' ', ' ', ' '],
+            [char.MinValue, char.MinValue, char.MinValue, char.MinValue],
             // LineStyle=EdgeWide
             ['▗', '▖', '▘', '▝']
         ];
 
         private readonly Stack<Rect> _clipStack = new(100);
-        private readonly ConsoleWindow _consoleWindow;
+        private readonly ConsoleWindowImpl _consoleWindowImpl;
         private readonly PixelBuffer _pixelBuffer;
         private readonly Matrix _postTransform = Matrix.Identity;
         private Matrix _transform = Matrix.Identity;
 
-        public DrawingContextImpl(ConsoleWindow consoleWindow)
+        public DrawingContextImpl(ConsoleWindowImpl consoleWindowImpl)
         {
-            _consoleWindow = consoleWindow;
-            _pixelBuffer = consoleWindow.PixelBuffer;
+            _consoleWindowImpl = consoleWindowImpl;
+            _pixelBuffer = consoleWindowImpl.PixelBuffer;
             _clipStack.Push(_pixelBuffer.Size);
         }
 
@@ -194,7 +195,17 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            if (boxShadows.Count > 0) throw new NotImplementedException();
+            if (boxShadows.Count > 0)
+                foreach (BoxShadow boxShadow in boxShadows)
+                    // BoxShadow none is OK
+                    // aka offSetX=0, offSetY=0, color=Transparent
+                    if (boxShadow.OffsetX != 0 ||
+                        boxShadow.OffsetY != 0 ||
+                        boxShadow.Color != Colors.Transparent)
+                    {
+                        ConsoloniaPlatform.RaiseNotSupported(11);
+                        return;
+                    }
 
             if (rect.Rect.IsEmpty()) return;
             Rect r = rect.Rect;
@@ -265,7 +276,7 @@ namespace Consolonia.Core.Drawing
 
         public IDrawingContextLayerImpl CreateLayer(PixelSize size)
         {
-            return new RenderTarget(_consoleWindow);
+            return new RenderTarget(_consoleWindowImpl);
         }
 
         public void PushClip(Rect clip)
@@ -532,7 +543,7 @@ namespace Consolonia.Core.Drawing
 
             if (lineStyle is LineStyle.Edge or LineStyle.EdgeWide)
             {
-                DrawEdgeLine(line, linePosition, lineStyle, color, true, true);
+                DrawEdgeLine(line, linePosition, lineStyle, color);
             }
             else
             {
@@ -547,37 +558,36 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawEdgeLine(Line line, RectangleLinePosition linePosition, LineStyle lineStyle, Color color,
-            bool includeStartSymbol, bool includeEndSymbol)
+        private void DrawEdgeLine(Line line, RectangleLinePosition linePosition, LineStyle lineStyle, Color color)
         {
             if (line.Length == 0)
                 return;
             ISymbol startSymbol;
             ISymbol middleSymbol;
             ISymbol endSymbol;
-            int iStyle = (int)lineStyle - (int)LineStyle.Edge;
+            int iStyle = lineStyle == LineStyle.Edge ? 0 : 1;
 
             switch (linePosition)
             {
                 case RectangleLinePosition.Left:
-                    startSymbol = new SimpleSymbol(CornerChars[iStyle][TopLeft]);
+                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopLeft]);
                     middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Left]);
-                    endSymbol = new SimpleSymbol(CornerChars[iStyle][BottomLeft]);
+                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomLeft]);
                     break;
                 case RectangleLinePosition.Top:
-                    startSymbol = new SimpleSymbol(CornerChars[iStyle][TopLeft]);
+                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopLeft]);
                     middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Top]);
-                    endSymbol = new SimpleSymbol(CornerChars[iStyle][TopRight]);
+                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopRight]);
                     break;
                 case RectangleLinePosition.Right:
-                    startSymbol = new SimpleSymbol(CornerChars[iStyle][TopRight]);
+                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopRight]);
                     middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Right]);
-                    endSymbol = new SimpleSymbol(CornerChars[iStyle][BottomRight]);
+                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomRight]);
                     break;
                 case RectangleLinePosition.Bottom:
-                    startSymbol = new SimpleSymbol(CornerChars[iStyle][BottomLeft]);
+                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomLeft]);
                     middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Bottom]);
-                    endSymbol = new SimpleSymbol(CornerChars[iStyle][BottomRight]);
+                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomRight]);
                     break;
                 default:
                     throw new NotImplementedException("This shouldn't happen");
@@ -586,14 +596,14 @@ namespace Consolonia.Core.Drawing
             Point head = line.PStart;
 
             int length = line.Length;
-            if (includeStartSymbol)
+            if (startSymbol.Text != "\0")
                 DrawLineSymbolAndMoveHead(ref head, line.Vertical, startSymbol, color, 1);
             else
                 head += line.Vertical ? new Vector(0, 1) : new Vector(1, 0);
 
             DrawLineSymbolAndMoveHead(ref head, line.Vertical, middleSymbol, color, length - 1);
 
-            if (includeEndSymbol)
+            if (endSymbol.Text != "\0")
                 DrawLineSymbolAndMoveHead(ref head, line.Vertical, endSymbol, color, 1);
         }
 
@@ -711,7 +721,7 @@ namespace Consolonia.Core.Drawing
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
             // the x and y are adjusted accordingly.
-            foreach (string glyph in text.GetGlyphs(_consoleWindow.Console.SupportsComplexEmoji))
+            foreach (string glyph in text.GetGlyphs(_consoleWindowImpl.Console.SupportsComplexEmoji))
             {
                 Point characterPoint =
                     whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));

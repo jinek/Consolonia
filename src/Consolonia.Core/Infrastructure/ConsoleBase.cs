@@ -5,7 +5,7 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Avalonia.Threading;
-using Consolonia.Core.Drawing;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Text;
 
@@ -28,12 +28,13 @@ namespace Consolonia.Core.Infrastructure
                 throw new ArgumentException("ConsoleBase cannot be used as a console output", nameof(consoleOutput));
 
             _consoleOutput = consoleOutput;
+
+            Size = consoleOutput.Size;
         }
 
         protected bool Disposed { get; private set; }
 
         protected Task PauseTask { get; private set; }
-
 
         /// <summary>
         ///     Pause the IO

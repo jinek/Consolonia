@@ -1,3 +1,5 @@
+using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -23,12 +25,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private async void OnOk(object sender, RoutedEventArgs e)
         {
-            var mb = new MessageBox
-            {
-                Mode = Mode.Ok,
-                Title = "OK Message box"
-            };
-            MessageBoxResult result = await mb.ShowDialogAsync(this, "This is a message");
+            MessageBoxResult result = await MessageBox.ShowDialog(this, "OK Message box", "Do you want to OK?");
             ViewModel.Result = result.ToString();
         }
 
@@ -36,10 +33,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             var mb = new MessageBox
             {
-                Mode = Mode.OkCancel,
-                Title = "Ok/Cancel Message box"
+                MessageBoxStyle = MessageBoxStyle.OkCancel,
+                Title = "OK/Cancel Message box",
+                Message = "Do you want to OK or cancel?",
+                AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
-            MessageBoxResult result = await mb.ShowDialogAsync(this, "Do you want to OK or cancel?");
+            MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
         }
 
@@ -47,10 +46,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             var mb = new MessageBox
             {
-                Mode = Mode.YesNo,
-                Title = "Yes/No Message box"
+                MessageBoxStyle = MessageBoxStyle.YesNo,
+                Title = "Yes/No Message box",
+                Message = "Do you want to Yes or No?",
+                AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
-            MessageBoxResult result = await mb.ShowDialogAsync(this, "Do you want to?");
+            MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
         }
 
@@ -58,10 +59,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             var mb = new MessageBox
             {
-                Mode = Mode.YesNoCancel,
-                Title = "Yes/No/Cancel Message box"
+                MessageBoxStyle = MessageBoxStyle.YesNoCancel,
+                Title = "Yes/No/Cancel Message box",
+                Message = "Do you want to Yes, No or Cancel?",
+                AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
-            MessageBoxResult result = await mb.ShowDialogAsync(this, "Do you want to, or cancel?");
+            MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
         }
 
@@ -69,8 +72,13 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             var mb = new MessageBox
             {
-                Mode = Mode.YesNoCancel,
+                MessageBoxStyle = MessageBoxStyle.YesNoCancel,
                 Title = "Custom OK content Message box",
+                Message = new TextBlock
+                {
+                    Text = " Message",
+                    Foreground = Brushes.Purple
+                },
                 Yes = new TextBlock
                 {
                     Text = "😁 Yes",
@@ -80,9 +88,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 {
                     Text = "😒 No",
                     Foreground = Brushes.Red
-                }
+                },
+                AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
-            MessageBoxResult result = await mb.ShowDialogAsync(this, "Custom OK button");
+            MessageBoxResult result = await mb.ShowDialog(this);
             ViewModel.Result = result.ToString();
         }
     }

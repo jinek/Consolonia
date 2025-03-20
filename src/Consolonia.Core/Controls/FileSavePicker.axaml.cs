@@ -5,11 +5,11 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Consolonia.Controls;
+using Window = Consolonia.Controls.Window;
 
 namespace Consolonia.Core.Controls
 {
-    public partial class FileSavePicker : DialogWindow
+    internal partial class FileSavePicker : Window
     {
         public FileSavePicker()
             : this(new FilePickerSaveOptions())
@@ -18,8 +18,6 @@ namespace Consolonia.Core.Controls
 
         public FileSavePicker(FilePickerSaveOptions options)
         {
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
-
             DataContext = new FileSavePickerViewModel(options);
             InitializeComponent();
             CancelButton.Focus();
@@ -41,6 +39,15 @@ namespace Consolonia.Core.Controls
             DataContext as FileSavePickerViewModel
             ?? throw new InvalidOperationException($"Invalid DataContext. Expected {nameof(FileSavePickerViewModel)}");
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            Position = new PixelPoint(2, 2);
+            Width = OverlayLayer.Bounds.Width - 4;
+            Height = OverlayLayer.Bounds.Height - 4;
+        }
+
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {
             var listbox = (ListBox)sender;
@@ -51,41 +58,41 @@ namespace Consolonia.Core.Controls
             }
             else if (listbox.SelectedItem is IStorageFile file)
             {
-                CloseDialog(file);
+                Close(file);
             }
         }
 
         private async void OnOK(object sender, RoutedEventArgs e)
         {
-            var lifetime = Application.Current?.ApplicationLifetime as ConsoloniaLifetime;
-            ArgumentNullException.ThrowIfNull(lifetime?.TopLevel?.StorageProvider);
+            IStorageProvider storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+            ArgumentNullException.ThrowIfNull(storageProvider);
 
             string savePath = ViewModel.SavePath;
             if (!Path.IsPathFullyQualified(ViewModel.SavePath))
                 savePath = Path.GetFullPath(Path.Combine(ViewModel.CurrentFolder.Path.LocalPath, ViewModel.SavePath));
 
             IStorageFile file =
-                await lifetime.TopLevel.StorageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));
+                await storageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));
             if (file == null)
             {
                 IStorageFolder folder =
-                    await lifetime.TopLevel.StorageProvider.TryGetFolderFromPathAsync(
+                    await storageProvider.TryGetFolderFromPathAsync(
                         new Uri($"file://{Path.GetDirectoryName(savePath)}"));
                 if (folder == null)
                 {
-                    CloseDialog();
+                    Close();
                     return;
                 }
 
                 file = await folder.CreateFileAsync(Path.GetFileName(savePath));
             }
 
-            CloseDialog(file);
+            Close(file);
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
         {
-            CloseDialog();
+            Close();
         }
     }
 }

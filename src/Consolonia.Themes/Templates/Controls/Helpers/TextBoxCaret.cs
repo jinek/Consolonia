@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Reactive;
-using Consolonia.Core.Drawing;
+using Consolonia.Controls.Brushes;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers
 {

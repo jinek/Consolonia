@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Consolonia.Core.Controls
 {
-    public partial class FileSavePickerViewModel : PickerViewModelBase<FilePickerSaveOptions>
+    internal partial class FileSavePickerViewModel : PickerViewModelBase<FilePickerSaveOptions>
     {
         [ObservableProperty] private string _savePath = string.Empty;
 

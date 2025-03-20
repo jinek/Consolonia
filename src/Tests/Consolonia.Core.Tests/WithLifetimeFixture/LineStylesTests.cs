@@ -1,5 +1,5 @@
 using System;
-using Consolonia.Controls;
+using Consolonia.Controls.Brushes;
 using Newtonsoft.Json;
 using NUnit.Framework;
 

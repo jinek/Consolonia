@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type Button}"
                   TargetType="Button">
         <Setter Property="Background"
@@ -9,15 +9,15 @@
                 Value="{DynamicResource ThemeBackgroundBrush}" />-->
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeBorderBrush}" />
-        <Setter Property="(helpers:ButtonExtensions.Shadow)"
-                Value="True" />
+        <Setter Property="(console:ButtonExtensions.Shadow)"
+                Value="False" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Center" />
         <Setter Property="VerticalContentAlignment"
                 Value="Center" />
         <Setter Property="Padding"
                 Value="1,0,1,0" />
-        <Setter Property="(helpers:ButtonExtensions.DelayPress)"
+        <Setter Property="(console:ButtonExtensions.DelayPress)"
                 Value="0:0:0.25" />
         <Setter Property="Template">
             <ControlTemplate>
@@ -25,15 +25,15 @@
                     <Border Background="{TemplateBinding Background}"
                             x:Name="InternalBorder">
                         <Grid ColumnDefinitions="Auto,*,Auto">
-                            <helpers:SymbolsControl Grid.Column="0"
+                            <!--<TextBlock Grid.Column="0"
                                                     Text="["
                                                     Foreground="{TemplateBinding BorderBrush}"
                                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                            <helpers:SymbolsControl Grid.Column="2"
+                            <TextBlock Grid.Column="2"
                                                     Text="]"
                                                     Foreground="{TemplateBinding BorderBrush}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                            <helpers:CaretControl Grid.Column="1"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />-->
+                            <console:CaretControl Grid.Column="1"
                                                   Padding="0,0,0,0"
                                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -49,49 +49,49 @@
                                                   HorizontalContentAlignment="Stretch"
                                                   VerticalContentAlignment="Stretch"
                                                   TextBlock.Foreground="{TemplateBinding Foreground}" />
-                            </helpers:CaretControl>
+                            </console:CaretControl>
                         </Grid>
                     </Border>
 
                     <!--Shadows-->
 
                     <!--Shadow under-->
-                    <helpers:SymbolsControl Fill="True"
+                    <console:SymbolsControl Fill="True"
                                             Margin="1,0,1,0"
                                             Text="▀"
                                             Classes="shaded"
                                             Height="1"
-                                            IsVisible="{TemplateBinding (helpers:ButtonExtensions.Shadow)}"
+                                            IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
                                             VerticalAlignment="Bottom"
                                             Foreground="{DynamicResource ThemePseudoShadeBrush}" />
 
                     <!--Right shadow-->
-                    <helpers:SymbolsControl Margin="0,1,0,1"
+                    <console:SymbolsControl Margin="0,1,0,1"
                                             Text="█"
                                             Width="1"
                                             Classes="shaded"
-                                            IsVisible="{TemplateBinding (helpers:ButtonExtensions.Shadow)}"
+                                            IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
                                             VerticalAlignment="Stretch"
                                             Fill="True"
                                             HorizontalAlignment="Right"
                                             Foreground="{DynamicResource ThemePseudoShadeBrush}" />
                     <!--Right shadow top half-->
-                    <helpers:SymbolsControl Margin="0,0,0,0"
+                    <console:SymbolsControl Margin="0,0,0,0"
                                             Text="▄"
                                             Width="1"
                                             Height="1"
-                                            IsVisible="{TemplateBinding (helpers:ButtonExtensions.Shadow)}"
+                                            IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
                                             Classes="shaded"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Top"
                                             Foreground="{DynamicResource ThemePseudoShadeBrush}" />
                     <!--Right shadow bottom half-->
-                    <helpers:SymbolsControl Margin="0,0,0,0"
+                    <console:SymbolsControl Margin="0,0,0,0"
                                             Text="▀"
                                             Width="1"
                                             Classes="shaded"
                                             Height="1"
-                                            IsVisible="{TemplateBinding (helpers:ButtonExtensions.Shadow)}"
+                                            IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Bottom"
                                             Foreground="{DynamicResource ThemePseudoShadeBrush}" />
@@ -119,19 +119,19 @@
         <Setter Property="Padding"
                 Value="1,0" />
     </Style>-->
-        <Style Selector="^:clickdelayed /template/ helpers|SymbolsControl.shaded">
+        <Style Selector="^:clickdelayed /template/ console|SymbolsControl.shaded">
             <Setter Property="IsVisible"
                     Value="False" />
         </Style>
 
         <Style Selector="^ /template/ Border#InternalBorder">
             <Setter Property="Margin"
-                    Value="0,0,1,1" />
+                    Value="0,0,1,0" />
         </Style>
 
         <Style Selector="^:clickdelayed /template/ Border#InternalBorder">
             <Setter Property="Margin"
-                    Value="1,0,1,1" />
+                    Value="1,0,1,0" />
         </Style>
 
     </ControlTheme>

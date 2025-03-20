@@ -1,5 +1,5 @@
 using Avalonia.Media;
-using Consolonia.Core.Drawing;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 
 // ReSharper disable UnusedMember.Global
@@ -10,14 +10,9 @@ namespace Consolonia.Core.Infrastructure
     /// <summary>
     ///     Defines properties and methods for console output
     /// </summary>
-    public interface IConsoleOutput
+    public interface IConsoleOutput : IConsoleCapabilities
     {
         PixelBufferSize Size { get; set; }
-
-        /// <summary>
-        ///     This is true if console supports composing multiple emojis together (like: 👨‍👩‍👧‍👦).
-        /// </summary>
-        bool SupportsComplexEmoji { get; }
 
         /// <summary>
         ///     Set the title of the console window

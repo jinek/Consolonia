@@ -1,13 +1,14 @@
 using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Consolonia.Controls;
+using Window = Consolonia.Controls.Window;
 
 namespace Consolonia.Core.Controls
 {
-    public partial class FileOpenPicker : DialogWindow
+    internal partial class FileOpenPicker : Window
     {
         public FileOpenPicker()
             : this(new FilePickerOpenOptions())
@@ -16,8 +17,6 @@ namespace Consolonia.Core.Controls
 
         public FileOpenPicker(FilePickerOpenOptions options)
         {
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
-
             DataContext = new FileOpenPickerViewModel(options);
             InitializeComponent();
             CancelButton.Focus();
@@ -31,6 +30,15 @@ namespace Consolonia.Core.Controls
             DataContext as FileOpenPickerViewModel
             ?? throw new InvalidOperationException("DataContext is not properly initialized.");
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            Position = new PixelPoint(2, 2);
+            Width = OverlayLayer.Bounds.Width - 4;
+            Height = OverlayLayer.Bounds.Height - 4;
+        }
+
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {
             var listbox = (ListBox)sender;
@@ -42,18 +50,18 @@ namespace Consolonia.Core.Controls
             }
             else if (listbox.SelectedItem is IStorageFile file)
             {
-                CloseDialog(new[] { file });
+                Close(new[] { file });
             }
         }
 
         private void OnOK(object sender, RoutedEventArgs e)
         {
-            CloseDialog(ViewModel.SelectedFiles);
+            Close(ViewModel.SelectedFiles);
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
         {
-            CloseDialog();
+            Close();
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

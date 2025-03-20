@@ -1,3 +1,4 @@
+using Consolonia.Controls;
 using Consolonia.Core.Helpers;
 using NUnit.Framework;
 

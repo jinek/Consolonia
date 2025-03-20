@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="{x:Type CheckBox}"
                   TargetType="CheckBox">
         <Setter Property="BorderBrush"
@@ -21,21 +22,18 @@
                       Background="{TemplateBinding Background}">
                     <Grid Name="border"
                           ColumnDefinitions="Auto,Auto,Auto">
-                        <helpers:SymbolsControl Text="["
-                                                Foreground="{TemplateBinding BorderBrush}" />
-                        <helpers:CaretControl Grid.Column="1"
+                        <console:CaretControl Grid.Column="1"
                                               IsCaretShown="{TemplateBinding IsFocused}">
                             <Panel>
-                                <helpers:SymbolsControl Text=" " />
-                                <helpers:SymbolsControl Name="checkMark"
-                                                        Text="V" />
-                                <helpers:SymbolsControl Name="indeterminateMark"
-                                                        Text="■" />
+                                <console:SymbolsControl Text="{StaticResource ThemeCheckBoxNotSelectedSymbol}" />
+                                <console:SymbolsControl Name="checkMark"
+                                                        Text="{StaticResource ThemeCheckBoxSelectedSymbol}"
+                                                        IsVisible="False" />
+                                <console:SymbolsControl Name="indeterminateMark"
+                                                        Text="{StaticResource ThemeCheckBoxIndeterminateSymbol}"
+                                                        IsVisible="False" />
                             </Panel>
-                        </helpers:CaretControl>
-                        <helpers:SymbolsControl Text="]"
-                                                Grid.Column="2"
-                                                Foreground="{TemplateBinding BorderBrush}" />
+                        </console:CaretControl>
                     </Grid>
                     <ContentPresenter Name="PART_ContentPresenter"
                                       TextBlock.Foreground="{TemplateBinding Foreground}"
@@ -53,27 +51,27 @@
             <Setter Property="BorderBrush"
                     Value="{DynamicResource ThemeForegroundBrush}" />
         </Style>
-        <!--<Style Selector="^ /template/ Panel helpers|SymbolsControl">
+        <!--<Style Selector="^ /template/ Panel TextBlock">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeAccentBackgroundBrush}" />
     </Style>-->
-        <Style Selector="^ /template/ helpers|SymbolsControl#checkMark">
+        <Style Selector="^ /template/ console|SymbolsControl#checkMark">
             <Setter Property="IsVisible"
                     Value="False" />
         </Style>
-        <Style Selector="^ /template/ helpers|SymbolsControl#indeterminateMark">
+        <Style Selector="^ /template/ console|SymbolsControl#indeterminateMark">
             <Setter Property="IsVisible"
                     Value="False" />
         </Style>
-        <Style Selector="^:checked /template/ helpers|SymbolsControl#checkMark">
+        <Style Selector="^:checked /template/ console|SymbolsControl#checkMark">
             <Setter Property="IsVisible"
                     Value="True" />
         </Style>
-        <Style Selector="^:indeterminate /template/ helpers|SymbolsControl#indeterminateMark">
+        <Style Selector="^:indeterminate /template/ console|SymbolsControl#indeterminateMark">
             <Setter Property="IsVisible"
                     Value="True" />
         </Style>
-        <!--<Style Selector="^:disabled /template/ helpers|SymbolsControl">
+        <!--<Style Selector="^:disabled /template/ TextBlock">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeNoDisturbBrush}" />
     </Style>-->
