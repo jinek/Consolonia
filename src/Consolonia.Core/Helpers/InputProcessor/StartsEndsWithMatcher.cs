@@ -15,13 +15,13 @@ namespace Consolonia.Core.Helpers.InputProcessor
     {
         private readonly StringBuilder _accumulator = new();
 
-        public override AccumulationResult Accumulate(T input)
+        public override AppendResult Append(T input)
         {
             char c = toChar(input);
             bool accumulatorWasEmpty = _accumulator.Length == 0;
 
-            AccumulationResult matchResultInternal = MatchResultInternal(_accumulator.ToString() + c, accumulatorWasEmpty);
-            if (matchResultInternal == AccumulationResult.Match)
+            AppendResult matchResultInternal = MatchResultInternal(_accumulator.ToString() + c, accumulatorWasEmpty);
+            if (matchResultInternal == AppendResult.Match)
             {
                 _accumulator.Append(c);
             }
@@ -29,7 +29,7 @@ namespace Consolonia.Core.Helpers.InputProcessor
             return matchResultInternal;
         }
 
-        private AccumulationResult MatchResultInternal(string toTest, bool accumulatorWasEmpty)
+        private AppendResult MatchResultInternal(string toTest, bool accumulatorWasEmpty)
         {
             bool startsWithTrue = toTest.StartsWith(startsWith, StringComparison.Ordinal);
 
@@ -40,12 +40,12 @@ namespace Consolonia.Core.Helpers.InputProcessor
 
                 Complete(output);
                 _accumulator.Clear();
-                return AccumulationResult.AutoFlushed;
+                return AppendResult.AutoFlushed;
             }
 
             if (startsWithTrue || startsWith.StartsWith(toTest, StringComparison.Ordinal))
             {
-                return AccumulationResult.Match;
+                return AppendResult.Match;
             }
 
             if (!accumulatorWasEmpty)
@@ -53,7 +53,7 @@ namespace Consolonia.Core.Helpers.InputProcessor
                 _accumulator.Clear();
             }
 
-            return AccumulationResult.NoMatch;
+            return AppendResult.NoMatch;
         }
 
         public override bool TryFlush()

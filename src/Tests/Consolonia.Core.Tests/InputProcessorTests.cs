@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Consolonia.Core.Tests
 {
     [TestFixture]
-    public class ChunkedDataProcessorTests
+    public class InputProcessorTests
     {
         [Test]
         public void RealLifeTest()
@@ -26,7 +26,7 @@ namespace Consolonia.Core.Tests
                 (typeof(TextInputMatcher<ConsoleKeyInfo>), null, "abc", null)
             ];
 
-            var chunkedDataProcessor = new ChunkedDataProcessor<ConsoleKeyInfo>([
+            var chunkedDataProcessor = new InputProcessor<ConsoleKeyInfo>([
                 new PasteBlockMatcher<ConsoleKeyInfo>(
                     str => { output.Add((typeof(PasteBlockMatcher<ConsoleKeyInfo>), null, null, str)); },
                     arg => arg.KeyChar),
@@ -123,7 +123,7 @@ namespace Consolonia.Core.Tests
                 new GenericMatcher<char>(c => OnComplete(c.ToString()))
             ];
 
-            var chunkedDataProcessor = new ChunkedDataProcessor<char>(matchers);
+            var chunkedDataProcessor = new InputProcessor<char>(matchers);
 
             string[] inputs = input.Split();
             foreach (string chunk in inputs) chunkedDataProcessor.ProcessDataChunk(chunk);

@@ -6,7 +6,7 @@ namespace Consolonia.Core.Helpers.InputProcessor
     /// <typeparam name="T">The type of input to match.</typeparam>
     public interface IMatcher<in T>
     {
-        AccumulationResult Accumulate(T input);
+        AppendResult Append(T input);
         bool TryFlush();
         void Reset();
     }

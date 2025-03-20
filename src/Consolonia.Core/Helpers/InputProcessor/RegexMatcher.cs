@@ -13,14 +13,14 @@ namespace Consolonia.Core.Helpers.InputProcessor
 
         private readonly Regex _regex = new(regex);
 
-        public override AccumulationResult Accumulate(T input)
+        public override AppendResult Append(T input)
         {
             char c = toChar(input);
 
             _accumulator.Append(c);
 
-            AccumulationResult matchResultInternal = MatchResultInternal(_accumulator.ToString());
-            if (matchResultInternal != AccumulationResult.NoMatch)
+            AppendResult matchResultInternal = MatchResultInternal(_accumulator.ToString());
+            if (matchResultInternal != AppendResult.NoMatch)
             {
                 _accumulatedKeys.Add(input);
             }
@@ -33,9 +33,9 @@ namespace Consolonia.Core.Helpers.InputProcessor
         }
 
 
-        private AccumulationResult MatchResultInternal(string toTest)
+        private AppendResult MatchResultInternal(string toTest)
         {
-            return _regex.IsMatch(toTest) ? AccumulationResult.Match : AccumulationResult.NoMatch;
+            return _regex.IsMatch(toTest) ? AppendResult.Match : AppendResult.NoMatch;
         }
 
         public override bool TryFlush()
@@ -46,7 +46,7 @@ namespace Consolonia.Core.Helpers.InputProcessor
             }
 
             string currentAccumulated = _accumulator.ToString();
-            bool matches = MatchResultInternal(currentAccumulated) == AccumulationResult.Match;
+            bool matches = MatchResultInternal(currentAccumulated) == AppendResult.Match;
             if (matches)
             {
                 Complete((currentAccumulated, _accumulatedKeys.ToArray()));

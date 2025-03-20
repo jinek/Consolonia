@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Avalonia.Input;
 using Consolonia.Core.Helpers;
@@ -57,7 +58,7 @@ namespace Consolonia.Core.Infrastructure
             : base(new DefaultNetConsoleOutput())
         {
             _inputBuffer = new FastBuffer<ConsoleKeyInfo>(ReadDataFunction);
-            _chunkedDataProcessor = new ChunkedDataProcessor<ConsoleKeyInfo>([
+            _inputProcessor = new InputProcessor<ConsoleKeyInfo>([
                 new PasteBlockMatcher<ConsoleKeyInfo>(
                     str =>
                     {
@@ -69,8 +70,12 @@ namespace Consolonia.Core.Infrastructure
                     CanBeHandledEventArgs canBeHandledEventArgs = new();
                     RaiseTextInput(tuple.Item1, (ulong)Environment.TickCount64, canBeHandledEventArgs);
                     if (!canBeHandledEventArgs.Handled)
+                    {
                         foreach (ConsoleKeyInfo consoleKeyInfo in tuple.Item2)
+                        {
                             RaiseKeyInputInternal(consoleKeyInfo);
+                        }
+                    }
                 }, ToChar),
                 new GenericMatcher<ConsoleKeyInfo>(RaiseKeyInputInternal)
             ]);
@@ -88,7 +93,7 @@ namespace Consolonia.Core.Infrastructure
         }
 
         private readonly FastBuffer<ConsoleKeyInfo> _inputBuffer;
-        private readonly ChunkedDataProcessor<ConsoleKeyInfo> _chunkedDataProcessor;
+        private readonly InputProcessor<ConsoleKeyInfo> _inputProcessor;
 
         private static ConsoleKeyInfo ReadDataFunction()
         {
@@ -113,12 +118,12 @@ namespace Consolonia.Core.Infrastructure
                 {
                     PauseTask?.Wait();
 
-                    var consoleKeyInfos = _inputBuffer.Dequeue();
+                    ConsoleKeyInfo[] consoleKeyInfos = _inputBuffer.Dequeue();
 
                     await DispatchInputAsync(() =>
                     {
-                        _chunkedDataProcessor.ProcessDataChunk(consoleKeyInfos);
-
+                        _inputProcessor.ProcessDataChunk(consoleKeyInfos);
+                        
                         /*foreach (ConsoleKeyInfo consoleKeyInfo in consoleKeyInfos)
                         {
                             RaiseKeyInputInternal(consoleKeyInfo);

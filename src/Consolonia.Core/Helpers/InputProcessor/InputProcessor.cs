@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 
 namespace Consolonia.Core.Helpers.InputProcessor
 {
-    public class ChunkedDataProcessor<T>(IEnumerable<IMatcher<T>> matchers)
+    public class InputProcessor<T>(IEnumerable<IMatcher<T>> matchers)
     {
         private int _previousTopMatcherIndex = -1;
         private ImmutableArray<IMatcher<T>> Matchers { get; } = [..matchers];
@@ -25,18 +25,18 @@ namespace Consolonia.Core.Helpers.InputProcessor
             for (int i = 0; i < Matchers.Length; i++)
             {
                 IMatcher<T> matcher = Matchers[i];
-                AccumulationResult result = matcher.Accumulate(input);
+                AppendResult result = matcher.Append(input);
 
                 bool isPreviousTopMatcher = i == _previousTopMatcherIndex;
 
-                if (result == AccumulationResult.NoMatch)
+                if (result == AppendResult.NoMatch)
                 {
                     if (isPreviousTopMatcher)
                         Flush(i);
                     else matcher.Reset();
                 }
 
-                if (result != AccumulationResult.NoMatch)
+                if (result != AppendResult.NoMatch)
                 {
                     currentTopMatcherIndex = Math.Min(currentTopMatcherIndex, i);
 
@@ -47,7 +47,7 @@ namespace Consolonia.Core.Helpers.InputProcessor
                     }
                 }
 
-                if (result == AccumulationResult.AutoFlushed && isPreviousTopMatcher)
+                if (result == AppendResult.AutoFlushed && isPreviousTopMatcher)
                 {
                     ResetMatchersFrom(0);
                     _previousTopMatcherIndex =

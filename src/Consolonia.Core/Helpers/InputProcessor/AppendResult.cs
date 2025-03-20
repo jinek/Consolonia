@@ -1,6 +1,6 @@
 namespace Consolonia.Core.Helpers.InputProcessor
 {
-    public enum AccumulationResult
+    public enum AppendResult
     {
         Match,
         AutoFlushed,

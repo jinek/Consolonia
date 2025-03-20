@@ -9,7 +9,7 @@ namespace Consolonia.Core.Helpers.InputProcessor
             OnComplete += onComplete;
         }
 
-        public abstract AccumulationResult Accumulate(T input);
+        public abstract AppendResult Append(T input);
         public abstract bool TryFlush();
         public abstract void Reset();
 

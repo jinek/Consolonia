@@ -11,10 +11,10 @@ namespace Consolonia.Core.Helpers.InputProcessor
     {
         private readonly List<TKey> _accumulatedKeys = [];
 
-        public override AccumulationResult Accumulate(TKey input)
+        public override AppendResult Append(TKey input)
         {
             _accumulatedKeys.Add(input);
-            return AccumulationResult.Match;
+            return AppendResult.Match;
         }
 
         public override bool TryFlush()
