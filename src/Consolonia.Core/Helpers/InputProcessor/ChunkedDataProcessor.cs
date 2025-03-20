@@ -29,7 +29,7 @@ namespace Consolonia.Core.Helpers.InputProcessor
 
                 bool isPreviousTopMatcher = i == _previousTopMatcherIndex;
 
-                if (result == AccumulationResult.NoMatch && isPreviousTopMatcher)
+                if (result == AccumulationResult.NoMatch)
                 {
                     if (isPreviousTopMatcher)
                         Flush(i);
