@@ -59,7 +59,8 @@ namespace Consolonia.Core.Helpers.InputProcessing
         public override bool TryFlush()
         {
             return _accumulator.Length != 0;
-            // always lying that we are flushed to indicate others should not flush 15F2A2C4-218D-4B4D-86CE-330A312EF6A6
+            // if any input, always lying that we are flushed to
+            // indicate others should not flush 15F2A2C4-218D-4B4D-86CE-330A312EF6A6
         }
 
         public override void Reset()
