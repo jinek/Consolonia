@@ -11,7 +11,7 @@
     {
         <TextBlock HorizontalAlignment="HorizontalAlignment.Center">Counter: @CounterText</TextBlock>
     }
-    <StackPanel Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" Margin="@Thickness.Parse("4")">
+    <StackPanel Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" Margin="@Thickness.Parse("4")" Spacing="1">
         <Button OnClick="@OnIncrement">Increment counter support</Button>
         <Button OnClick="@OnToggleCounter">@ToggleText</Button>
         <Button OnClick="@OnMessageBox">Message Box</Button>
@@ -50,8 +50,7 @@
 
     async void OnMessageBox(RoutedEventArgs args)
     {
-        await new MessageBox()
-            .ShowDialogAsync((AC.Control)args.Source!, "Hello, Blazor!", "Blazor Bindings for Consolonia");
+        await MessageBox.ShowDialog((AC.Control)args.Source!, "Hello, Blazor!", "Blazor Bindings for Consolonia");
     }
 
     void OnExit()

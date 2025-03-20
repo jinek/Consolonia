@@ -17,30 +17,31 @@ namespace Consolonia.Core.Drawing
     {
         private readonly IConsoleOutput _console;
 
-        private readonly ConsoleWindow _consoleWindow;
+        private readonly ConsoleWindowImpl _consoleTopLevelImpl;
 
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
 
-        internal RenderTarget(ConsoleWindow consoleWindow)
+        internal RenderTarget(ConsoleWindowImpl consoleTopLevelImpl)
         {
             _console = AvaloniaLocator.Current.GetService<IConsoleOutput>()!;
-            _consoleWindow = consoleWindow;
-            consoleWindow.Resized += OnResized;
-            _cache = InitializeCache(_consoleWindow.PixelBuffer.Width, _consoleWindow.PixelBuffer.Height);
+            _consoleTopLevelImpl = consoleTopLevelImpl;
+            _consoleTopLevelImpl.Resized += OnResized;
+
+            _cache = InitializeCache(_consoleTopLevelImpl.PixelBuffer.Width, _consoleTopLevelImpl.PixelBuffer.Height);
         }
 
         public RenderTarget(IEnumerable<object> surfaces)
-            : this(surfaces.OfType<ConsoleWindow>()
+            : this(surfaces.OfType<ConsoleWindowImpl>()
                 .Single())
         {
         }
 
-        public PixelBuffer Buffer => _consoleWindow.PixelBuffer;
+        public PixelBuffer Buffer => _consoleTopLevelImpl.PixelBuffer;
 
         public void Dispose()
         {
-            _consoleWindow.Resized -= OnResized;
+            _consoleTopLevelImpl.Resized -= OnResized;
         }
 
         public void Save(string fileName, int? quality = null)
@@ -76,14 +77,14 @@ namespace Consolonia.Core.Drawing
         {
             if (useScaledDrawing)
                 throw new NotImplementedException("Consolonia doesn't support useScaledDrawing");
-            return new DrawingContextImpl(_consoleWindow);
+            return new DrawingContextImpl(_consoleTopLevelImpl);
         }
 
 
         private void OnResized(Size size, WindowResizeReason reason)
         {
             // todo: should we check the reason?
-            _cache = InitializeCache(_consoleWindow.PixelBuffer.Width, _consoleWindow.PixelBuffer.Height);
+            _cache = InitializeCache(_consoleTopLevelImpl.PixelBuffer.Width, _consoleTopLevelImpl.PixelBuffer.Height);
         }
 
         private static Pixel?[,] InitializeCache(ushort width, ushort height)
@@ -100,7 +101,7 @@ namespace Consolonia.Core.Drawing
 
         private void RenderToDevice()
         {
-            PixelBuffer pixelBuffer = _consoleWindow.PixelBuffer;
+            PixelBuffer pixelBuffer = _consoleTopLevelImpl.PixelBuffer;
 
             _console.HideCaret();
 

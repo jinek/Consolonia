@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     x:ClassModifier="internal">
     <ControlTheme x:Key="{x:Type TreeView}"
                   TargetType="TreeView">
@@ -30,7 +30,7 @@
                                   Margin="0,0,-1,-1">
                         <ScrollViewer.Styles>
                             <Style Selector="ScrollViewer">
-                                <Setter Property="(helpers:ScrollViewerExtensions.ScrollBarsWidth)"
+                                <Setter Property="(console:ScrollViewerExtensions.ScrollBarsWidth)"
                                         Value="1" />
                             </Style>
                         </ScrollViewer.Styles>

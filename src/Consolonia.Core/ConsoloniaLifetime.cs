@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
@@ -14,6 +15,7 @@ using Consolonia.Core.Infrastructure;
 // ReSharper disable ConstantConditionalAccessQualifier
 namespace Consolonia
 {
+    [Consolonia]
     public class ConsoloniaLifetime : ISingleViewApplicationLifetime,
         IControlledApplicationLifetime,
         ISingleTopLevelApplicationLifetime,
@@ -44,13 +46,16 @@ namespace Consolonia
 
         public Control MainView
         {
-            get => (Control)TopLevel.Content;
+            get => TopLevel.Content as Control;
             set
             {
-                if (TopLevel == null) TopLevel = new Window();
+                if (TopLevel == null)
+                    TopLevel = new ConsoleWindow();
                 TopLevel.Content = value;
             }
         }
+
+        public static IConsole Console => AvaloniaLocator.Current.GetRequiredService<IConsole>();
 
         public event EventHandler<ShutdownRequestedEventArgs> ShutdownRequested;
 
@@ -90,7 +95,7 @@ namespace Consolonia
         {
             SetupCore(args);
 
-            (TopLevel as Window)?.Show();
+            (TopLevel as ConsoleWindow).Show();
 
             try
             {
@@ -158,8 +163,8 @@ namespace Consolonia
             var taskToWaitFor = new TaskCompletionSource();
             cancellationToken.Register(() => taskToWaitFor.SetResult());
 
-            var mainWindowPlatformImpl = (ConsoleWindow)TopLevel.PlatformImpl;
-            IConsole console = mainWindowPlatformImpl!.Console;
+            var consoleTopLevelImpl = (ConsoleWindowImpl)TopLevel.PlatformImpl;
+            IConsole console = consoleTopLevelImpl!.Console;
 
             Task pauseTask = taskToWaitFor.Task;
 
@@ -167,7 +172,7 @@ namespace Consolonia
 
             pauseTask.ContinueWith(_ =>
             {
-                mainWindowPlatformImpl.Console.ClearScreen();
+                consoleTopLevelImpl.Console.ClearScreen();
 
                 Dispatcher.UIThread.Post(() => { MainView.InvalidateVisual(); });
             }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
@@ -196,9 +201,9 @@ namespace Consolonia
                     // TODO: dispose managed state (managed objects)
                     _cts?.Dispose();
                     _cts = null;
-                    var consoleWindow = TopLevel.PlatformImpl as ConsoleWindow;
-                    ArgumentNullException.ThrowIfNull(consoleWindow, nameof(consoleWindow));
-                    consoleWindow.Dispose();
+                    var consoleTopLevelImpl = (ConsoleWindowImpl)TopLevel.PlatformImpl;
+                    ArgumentNullException.ThrowIfNull(consoleTopLevelImpl, nameof(consoleTopLevelImpl));
+                    consoleTopLevelImpl.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

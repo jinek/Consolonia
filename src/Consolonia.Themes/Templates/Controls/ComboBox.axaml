@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="{x:Type ComboBox}"
                   TargetType="ComboBox">
         <Setter Property="Background"
@@ -15,7 +16,7 @@
                 Value="Left" />
         <Setter Property="VerticalContentAlignment"
                 Value="Center" />
-        <Setter Property="(helpers:ComboBoxExtensions.OpenOnEnter)"
+        <Setter Property="(console:ComboBoxExtensions.OpenOnEnter)"
                 Value="True" />
         <Setter Property="Padding"
                 Value="1,0" />
@@ -54,14 +55,14 @@
                                   Padding="0"
                                   VerticalAlignment="Top"
                                   Background="{x:Null}">
-                        <helpers:CaretControl Padding="0,0,0,0"
+                        <console:CaretControl Padding="0,0,0,0"
                                               IsCaretShown="{TemplateBinding IsFocused}"
                                               Background="{x:Null}">
-                            <helpers:SymbolsControl Foreground="{TemplateBinding BorderBrush}"
-                                                    Text="↓"
+                            <console:SymbolsControl Foreground="{TemplateBinding BorderBrush}"
+                                                    Text="{StaticResource ThemeDownArrowSymbol}"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center" />
-                        </helpers:CaretControl>
+                        </console:CaretControl>
                     </ToggleButton>
                     <Popup Grid.Column="0"
                            Name="PART_Popup"
@@ -84,7 +85,7 @@
                                                     ItemsPanel="{TemplateBinding ItemsPanel}">
                                         <ItemsPresenter.Styles>
                                             <Style Selector="ItemsPresenter">
-                                                <Setter Property="(helpers:ComboBoxExtensions.FocusOnOpen)"
+                                                <Setter Property="(console:ComboBoxExtensions.FocusOnOpen)"
                                                         Value="true" />
                                             </Style>
                                         </ItemsPresenter.Styles>

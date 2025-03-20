@@ -71,6 +71,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consolonia.Templates", "Too
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Editor", "Experimental\Consolonia.Editor\Consolonia.Editor.csproj", "{2EA06671-2018-49BE-BCC6-F9DA0591AB25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Controls", "Consolonia.Controls\Consolonia.Controls.csproj", "{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,10 @@ Global
 		{2EA06671-2018-49BE-BCC6-F9DA0591AB25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EA06671-2018-49BE-BCC6-F9DA0591AB25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EA06671-2018-49BE-BCC6-F9DA0591AB25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

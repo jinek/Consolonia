@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Templates;
 using Avalonia.Platform;
+using Consolonia.Controls;
 using Consolonia.Core.Controls;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -40,7 +41,8 @@ namespace Consolonia
         public static AppBuilder UseConsole(this AppBuilder builder, IConsole console)
         {
             return builder.With(console)
-                .With<IConsoleOutput>(console);
+                .With<IConsoleOutput>(console)
+                .With<IConsoleCapabilities>(console);
         }
 
         public static AppBuilder UseConsoleColorMode(this AppBuilder builder, IConsoleColorMode consoleColorMode)

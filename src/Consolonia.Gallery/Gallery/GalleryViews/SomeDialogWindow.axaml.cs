@@ -2,10 +2,11 @@ using System;
 using Avalonia;
 using Avalonia.Interactivity;
 using Consolonia.Controls;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public partial class SomeDialogWindow : DialogWindow
+    public partial class SomeDialogWindow : Window
     {
         internal const string DialogTitle = "Dialog popup";
 
@@ -17,6 +18,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Title = DialogTitle;
             Width = width;
             Height = height;
+            var lifetime = Application.Current.ApplicationLifetime as ConsoloniaLifetime;
+            var consoleWindow = lifetime?.TopLevel as ConsoleWindow;
+            AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole";
 
             AttachedToVisualTree += OnShowDialog;
         }
@@ -40,7 +44,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private async void OneMore_Clicked(object sender, RoutedEventArgs e)
         {
-            await new SomeDialogWindow().ShowDialogAsync(this);
+            await new SomeDialogWindow().ShowDialog(this);
+        }
+
+        private void OnCancel(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

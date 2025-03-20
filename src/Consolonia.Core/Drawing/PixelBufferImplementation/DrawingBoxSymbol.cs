@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using Consolonia.Controls;
+using Consolonia.Controls.Brushes;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {

@@ -1,9 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
-                    xmlns:drawing="clr-namespace:Consolonia.Core.Drawing;assembly=Consolonia.Core">
-    <ControlTheme x:Key="{x:Type helpers:CaretControl}"
-                  TargetType="helpers:CaretControl">
+                    xmlns:console="https://github.com/jinek/consolonia">
+    <ControlTheme x:Key="{x:Type console:CaretControl}"
+                  TargetType="console:CaretControl">
         <Setter Property="Focusable"
                 Value="False" />
         <Setter Property="Template">
@@ -24,7 +23,7 @@
                                    IsHitTestVisible="False"
                                    IsVisible="{TemplateBinding IsCaretShown}">
                             <Rectangle.Fill>
-                                <drawing:MoveConsoleCaretToPositionBrush CaretStyle="{TemplateBinding CaretStyle}" />
+                                <console:MoveConsoleCaretToPositionBrush CaretStyle="{TemplateBinding CaretStyle}" />
                             </Rectangle.Fill>
                         </Rectangle>
                     </Grid>

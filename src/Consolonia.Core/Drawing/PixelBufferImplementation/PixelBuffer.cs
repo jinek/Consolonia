@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Media;
+using Consolonia.Controls;
 using Newtonsoft.Json;
 
 // ReSharper disable UnusedMember.Global

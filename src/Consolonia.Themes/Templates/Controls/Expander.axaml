@@ -1,44 +1,45 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     x:ClassModifier="internal">
     <!-- define template for the toggle button -->
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="ConsoleExpanderToggleButtonTheme"
                   TargetType="ToggleButton">
         <Setter Property="HorizontalContentAlignment"
                 Value="Stretch" />
         <Setter Property="Template">
             <ControlTemplate>
-                <helpers:CaretControl Padding="0,0,0,0"
-                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      Margin="{TemplateBinding Padding}"
-                                      IsCaretShown="{TemplateBinding IsFocused}">
+                <Grid ColumnDefinitions="Auto, *, Auto"
+                      Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
+                    <console:CaretControl Padding="0,0,0,0"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          IsCaretShown="{TemplateBinding IsFocused}" />
 
-                    <Grid ColumnDefinitions="Auto, *, Auto"
-                          Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
-                        <TextBlock x:Name="ExpandCollapseChevronLeft"
-                                   Foreground="{DynamicResource ThemeForegroundBrush}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center" />
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                          Grid.Column="1"
-                                          Background="{TemplateBinding Background}"
-                                          BorderBrush="{TemplateBinding BorderBrush}"
-                                          BorderThickness="{TemplateBinding BorderThickness}"
-                                          ContentTemplate="{Binding $parent[Expander].HeaderTemplate}"
-                                          Content="{TemplateBinding Content}"
-                                          Padding="{TemplateBinding Padding}"
-                                          TextBlock.Foreground="{TemplateBinding Foreground}"
-                                          HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center" />
-                        <TextBlock Grid.Column="2"
-                                   x:Name="ExpandCollapseChevron"
-                                   Foreground="{DynamicResource ThemeForegroundBrush}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center" />
-                    </Grid>
-                </helpers:CaretControl>
+                    <console:SymbolsControl x:Name="ExpandCollapseChevronLeft"
+                                            Foreground="{DynamicResource ThemeForegroundBrush}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center" />
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Grid.Column="1"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      ContentTemplate="{Binding $parent[Expander].HeaderTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"
+                                      TextBlock.Foreground="{TemplateBinding Foreground}"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center" />
+                    <console:SymbolsControl Grid.Column="2"
+                                            x:Name="ExpandCollapseChevron"
+                                            Foreground="{DynamicResource ThemeForegroundBrush}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center" />
+                </Grid>
+                <!--</console:CaretControl>-->
             </ControlTemplate>
         </Setter>
         <Style Selector="^:checked /template/ Grid">
@@ -55,49 +56,49 @@
     <ControlTheme x:Key="ConsoleExpanderToggleButtonUpTheme"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevron">
             <Setter Property="Text"
-                    Value="▾" />
+                    Value="{StaticResource ThemeDownArrowSymbol}" />
         </Style>
     </ControlTheme>
     <ControlTheme x:Key="ConsoleExpanderToggleButtonDownTheme"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevron">
             <Setter Property="Text"
-                    Value="▴" />
+                    Value="{StaticResource ThemeUpArrowSymbol}" />
         </Style>
     </ControlTheme>
     <ControlTheme x:Key="ConsoleExpanderToggleButtonLeftTheme"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevron">
             <Setter Property="Text"
-                    Value="▸" />
+                    Value="{StaticResource ThemeRightArrowSymbol}" />
         </Style>
     </ControlTheme>
     <ControlTheme x:Key="ConsoleExpanderToggleButtonRightTheme"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevron">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevron">
             <Setter Property="Text"
-                    Value="◂" />
+                    Value="{StaticResource ThemeLeftArrowSymbol}" />
         </Style>
     </ControlTheme>
     <ControlTheme x:Key="ConsoleExpanderToggleButtonLeftTheme2"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevronLeft">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevronLeft">
             <Setter Property="Text"
-                    Value="▸" />
+                    Value="{StaticResource ThemeRightArrowSymbol}" />
         </Style>
     </ControlTheme>
     <ControlTheme x:Key="ConsoleExpanderToggleButtonRightTheme2"
                   BasedOn="{StaticResource ConsoleExpanderToggleButtonTheme}"
                   TargetType="ToggleButton">
-        <Style Selector="^ /template/ TextBlock#ExpandCollapseChevronLeft">
+        <Style Selector="^ /template/ console|SymbolsControl#ExpandCollapseChevronLeft">
             <Setter Property="Text"
-                    Value="◂" />
+                    Value="{StaticResource ThemeLeftArrowSymbol}" />
         </Style>
     </ControlTheme>
 

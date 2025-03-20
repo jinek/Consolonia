@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:Consolonia.Themes.Templates.Controls.Helpers;assembly=Consolonia.Themes">
+                    xmlns:console="https://github.com/jinek/consolonia">
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="{x:Type ComboBoxItem}"
                   TargetType="ComboBoxItem">
         <Setter Property="Foreground"
@@ -13,7 +14,7 @@
                 Value="Left" />
         <Setter Property="Template">
             <ControlTemplate>
-                <helpers:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
+                <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
                                       Background="Transparent">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Background="{TemplateBinding Background}"
@@ -24,7 +25,7 @@
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       Padding="{TemplateBinding Padding}" />
-                </helpers:CaretControl>
+                </console:CaretControl>
             </ControlTemplate>
         </Setter>
 

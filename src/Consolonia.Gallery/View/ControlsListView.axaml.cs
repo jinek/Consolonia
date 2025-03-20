@@ -96,11 +96,11 @@ namespace Consolonia.Gallery.View
                 "GalleryViews", $"{selectedItem.Type.Name}.axaml"));
             var dialog = new XamlDialogWindow
             {
+                Title = $"{selectedItem.Type.Name}.axaml",
                 // ReSharper disable once MethodHasAsyncOverload
                 DataContext = File.ReadAllText(path)
             };
-
-            await dialog.ShowDialogAsync(lifetime.MainView);
+            await dialog.ShowDialog();
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

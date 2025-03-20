@@ -1,6 +1,6 @@
 using System;
 using Avalonia.Media;
-using Consolonia.Controls;
+using Consolonia.Controls.Brushes;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
