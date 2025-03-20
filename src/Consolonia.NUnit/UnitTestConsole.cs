@@ -160,7 +160,8 @@ namespace Consolonia.NUnit
         public async Task KeyInput(Key key, RawInputModifiers modifiers = RawInputModifiers.None)
         {
             ulong timestamp = (ulong)Environment.TickCount64;
-            KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, true, timestamp, true);
+            KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, true, timestamp,
+                true);
             await Task.Yield();
             KeyEvent?.Invoke(key, char.MinValue /*will be skipped as control character*/, modifiers, false,
                 timestamp + 1, true);

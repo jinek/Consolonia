@@ -97,7 +97,8 @@ namespace Consolonia.Core.Infrastructure
             MouseEvent?.Invoke(eventType, point, wheelDelta, modifiers);
         }
 
-        protected void RaiseKeyPress(Key key, char character, RawInputModifiers modifiers, bool down, ulong timeStamp, bool tryAsTextInput = true)
+        protected void RaiseKeyPress(Key key, char character, RawInputModifiers modifiers, bool down, ulong timeStamp,
+            bool tryAsTextInput = true)
         {
             KeyEvent?.Invoke(key, character, modifiers, down, timeStamp, tryAsTextInput);
         }

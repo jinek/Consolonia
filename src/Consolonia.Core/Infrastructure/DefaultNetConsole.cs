@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using Avalonia.Input;
 using Consolonia.Core.Helpers;
@@ -70,12 +69,8 @@ namespace Consolonia.Core.Infrastructure
                     }
 
                     if (processSeparateKeys)
-                    {
                         foreach (ConsoleKeyInfo consoleKeyInfo in tuple.Item2)
-                        {
                             RaiseKeyInputInternal(consoleKeyInfo, false);
-                        }
-                    }
                 }, ToChar),
                 new GenericMatcher<ConsoleKeyInfo>(consoleKeyInfo => RaiseKeyInputInternal(consoleKeyInfo))
             ]);
@@ -118,12 +113,9 @@ namespace Consolonia.Core.Infrastructure
                 {
                     PauseTask?.Wait();
 
-                    ConsoleKeyInfo[] consoleKeyInfos = _inputBuffer.Dequeue();
+                    var consoleKeyInfos = _inputBuffer.Dequeue();
 
-                    await DispatchInputAsync(() =>
-                    {
-                        _inputProcessor.ProcessChunk(consoleKeyInfos);
-                    });
+                    await DispatchInputAsync(() => { _inputProcessor.ProcessChunk(consoleKeyInfos); });
                 }
             });
         }
