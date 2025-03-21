@@ -33,6 +33,8 @@ namespace Consolonia
         public string[] Args { get; set; }
 #pragma warning restore CA1819 // Properties should not return arrays
 
+        public static IConsole Console => AvaloniaLocator.Current.GetRequiredService<IConsole>();
+
         public event EventHandler<ControlledApplicationLifetimeStartupEventArgs> Startup;
 
         public event EventHandler<ControlledApplicationLifetimeExitEventArgs> Exit;
@@ -54,8 +56,6 @@ namespace Consolonia
                 TopLevel.Content = value;
             }
         }
-
-        public static IConsole Console => AvaloniaLocator.Current.GetRequiredService<IConsole>();
 
         public event EventHandler<ShutdownRequestedEventArgs> ShutdownRequested;
 

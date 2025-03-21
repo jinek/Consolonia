@@ -138,6 +138,7 @@ namespace Consolonia.PlatformSupport
             Console.WriteLine(Esc.EnableAllMouseEvents);
             //Console.WriteLine(Esc.EnableExtendedMouseTracking);
             base.PrepareConsole();
+            WriteText(Esc.EnableBracketedPasteMode);
         }
 
         public override void RestoreConsole()

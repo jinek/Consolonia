@@ -46,6 +46,7 @@ namespace Consolonia.Controls.Markup
     internal static class OnPlatformConsoleExtensionBaseHelper
     {
         private static bool? _isConsole;
+
         public static bool IsConsole()
         {
             if (_isConsole.HasValue)
@@ -67,6 +68,7 @@ namespace Consolonia.Controls.Markup
                 {
                     _isConsole = false;
                 }
+
                 return _isConsole.Value;
             }
 
@@ -76,7 +78,6 @@ namespace Consolonia.Controls.Markup
                            Console.IsErrorRedirected);
             return _isConsole.Value;
         }
-
     }
 
     public abstract class

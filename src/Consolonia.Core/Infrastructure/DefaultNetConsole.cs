@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Avalonia.Input;
 using Consolonia.Core.Helpers;
+using Consolonia.Core.Helpers.InputProcessing;
 using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Infrastructure
@@ -56,6 +57,23 @@ namespace Consolonia.Core.Infrastructure
             : base(new DefaultNetConsoleOutput())
         {
             _inputBuffer = new FastBuffer<ConsoleKeyInfo>(ReadDataFunction);
+            _inputProcessor = new InputProcessor<ConsoleKeyInfo>([
+                new TextInputMatcher<ConsoleKeyInfo>(tuple =>
+                {
+                    bool processSeparateKeys = true;
+                    if (tuple.Item1.Length >= 10) // todo: low: magic number here
+                    {
+                        CanBeHandledEventArgs canBeHandledEventArgs = new();
+                        RaiseTextInput(tuple.Item1, (ulong)Environment.TickCount64, canBeHandledEventArgs);
+                        processSeparateKeys = !canBeHandledEventArgs.Handled;
+                    }
+
+                    if (processSeparateKeys)
+                        foreach (ConsoleKeyInfo consoleKeyInfo in tuple.Item2)
+                            RaiseKeyInputInternal(consoleKeyInfo, false);
+                }, ToChar),
+                new GenericMatcher<ConsoleKeyInfo>(consoleKeyInfo => RaiseKeyInputInternal(consoleKeyInfo))
+            ]);
             // ReSharper disable VirtualMemberCallInConstructor
             PrepareConsole();
 
@@ -64,7 +82,13 @@ namespace Consolonia.Core.Infrastructure
             _inputBuffer.RunAsync();
         }
 
+        private static char ToChar(ConsoleKeyInfo arg)
+        {
+            return arg.KeyChar;
+        }
+
         private readonly FastBuffer<ConsoleKeyInfo> _inputBuffer;
+        private readonly InputProcessor<ConsoleKeyInfo> _inputProcessor;
 
         private static ConsoleKeyInfo ReadDataFunction()
         {
@@ -91,25 +115,24 @@ namespace Consolonia.Core.Infrastructure
 
                     var consoleKeyInfos = _inputBuffer.Dequeue();
 
-                    await DispatchInputAsync(() =>
-                    {
-                        foreach (ConsoleKeyInfo consoleKeyInfo in consoleKeyInfos)
-                        {
-                            Key key = ConvertToKey(consoleKeyInfo.Key);
-
-                            RawInputModifiers rawInputModifiers =
-                                ModifiersFlagsTranslator.Translate(consoleKeyInfo.Modifiers);
-
-                            RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
-                                (ulong)Environment.TickCount64);
-                            Thread.Yield(); //todo: low is yielding necessary here?
-                            RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
-                                (ulong)Environment.TickCount64);
-                            Thread.Yield();
-                        }
-                    });
+                    await DispatchInputAsync(() => { _inputProcessor.ProcessChunk(consoleKeyInfos); });
                 }
             });
+        }
+
+        private void RaiseKeyInputInternal(ConsoleKeyInfo consoleKeyInfo, bool tryAsTextInput = true)
+        {
+            Key key = ConvertToKey(consoleKeyInfo.Key);
+
+            RawInputModifiers rawInputModifiers =
+                ModifiersFlagsTranslator.Translate(consoleKeyInfo.Modifiers);
+
+            RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, true,
+                (ulong)Environment.TickCount64);
+            Thread.Yield(); //todo: low is yielding necessary here?
+            RaiseKeyPress(key, consoleKeyInfo.KeyChar, rawInputModifiers, false,
+                (ulong)Environment.TickCount64, tryAsTextInput);
+            Thread.Yield();
         }
 
         public static Key ConvertToKey(ConsoleKey consoleKey)
