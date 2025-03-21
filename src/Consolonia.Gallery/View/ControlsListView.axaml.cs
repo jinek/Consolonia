@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -87,21 +89,35 @@ namespace Consolonia.Gallery.View
 
         private async void OnShowXaml(object sender, RoutedEventArgs e)
         {
+            var selectedItem = GalleryGrid.SelectedItem as GalleryItem;
+            var xamlFile = $"{selectedItem.Type.Name}.axaml";
+            await ShowCode(xamlFile);
+        }
+        private async void OnShowCodeBehind(object sender, RoutedEventArgs e)
+        {
+            var selectedItem = GalleryGrid.SelectedItem as GalleryItem;
+            var xamlFile = $"{selectedItem.Type.Name}.axaml.cs";
+            await ShowCode(xamlFile);
+        }
+
+        private static async Task ShowCode(string xamlFile)
+        {
             var lifetime = Application.Current.ApplicationLifetime as ISingleViewApplicationLifetime;
             if (lifetime == null)
                 throw new InvalidOperationException("ApplicationLifetime is not ISingleViewApplicationLifetime");
 
-            var selectedItem = GalleryGrid.SelectedItem as GalleryItem;
-            string path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..", "..", "..", "Gallery",
-                "GalleryViews", $"{selectedItem.Type.Name}.axaml"));
+            HttpClient client = new HttpClient();
+            string xaml = await client.GetStringAsync($"https://raw.githubusercontent.com/jinek/Consolonia/refs/heads/main/src/Consolonia.Gallery/Gallery/GalleryViews/{xamlFile}");
+
             var dialog = new XamlDialogWindow
             {
-                Title = $"{selectedItem.Type.Name}.axaml",
+                Title = xamlFile,
                 // ReSharper disable once MethodHasAsyncOverload
-                DataContext = File.ReadAllText(path)
+                DataContext = xaml
             };
             await dialog.ShowDialog();
         }
+
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
