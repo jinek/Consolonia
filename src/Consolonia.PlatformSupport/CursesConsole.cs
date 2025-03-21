@@ -7,12 +7,14 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
@@ -93,35 +95,79 @@ namespace Consolonia.PlatformSupport
         private KeyModifiers _keyModifiers;
 
         private RawInputModifiers _moveModifers = RawInputModifiers.None;
+        
+        private readonly FastBuffer<(int, int)> _inputBuffer;
 
         public CursesConsole()
             : base(new AnsiConsoleOutput())
         {
+            _inputBuffer = new FastBuffer<(int, int)>(ReadInputFunction);
             StartSizeCheckTimerAsync(2500);
             StartEventLoop();
         }
 
         public override bool SupportsAltSolo => false;
+
         public override bool SupportsMouse => true;
+
         public override bool SupportsMouseMove => true;
 
         private void StartEventLoop()
         {
             // ReSharper disable VirtualMemberCallInConstructor
             PrepareConsole();
-
+            
             Task _ = Task.Run(async () =>
             {
                 await WaitDispatcherInitialized();
 
+                await _inputBuffer.RunAsync();
+                
                 while (!Disposed)
                 {
-                    Task pauseTask = PauseTask;
-                    if (pauseTask != null)
-                        await pauseTask;
-                    await ProcessInput();
+                    
                 }
             });
+        }
+
+        private readonly List<(int code, int wch)> _rowInputBuffer = new(1000);//todo: low magic number
+
+        private (int, int)[] ReadInputFunction()
+        {
+            Task pauseTask = PauseTask;
+            pauseTask?.Wait();
+
+            _rowInputBuffer.Clear();
+            do
+            {
+                int code = Curses.get_wch(out int wch);
+                if(code!=Curses.ERR)
+                {
+                    _rowInputBuffer.Add((code, wch));
+                    //check if was escape, wait for one more escape
+
+                    if (code != Curses.KEY_CODE_YES)
+                    {
+                        Thread.Sleep(200); //todo: low: magic number, copied from GUIcs
+                        int code2 = Curses.get_wch(out int wch2);
+                        
+                        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                        if (code2 == Curses.ERR)
+                        {
+                            // it looks like first one was solo ESCAPE and terminal does send escape of escape
+                            // Hence, simulating it
+                            _rowInputBuffer.Add((code, wch));
+                        }
+                        else
+                        {
+                            _rowInputBuffer.Add((code2, wch2));
+                        }
+                    }
+                }
+                else break;
+            } while (true);
+
+            return [.. _rowInputBuffer];
         }
 
         public override void PrepareConsole()
@@ -681,6 +727,14 @@ namespace Consolonia.PlatformSupport
                 Curses.AltCtrlKeyEnd => Key.End | Key.AltMask | Key.CtrlMask,
                 _ => Key.Unknown
             };
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+                _inputBuffer.Dispose();
+            
+            base.Dispose(disposing);
         }
     }
 }
