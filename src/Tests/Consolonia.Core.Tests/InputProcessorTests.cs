@@ -109,6 +109,7 @@ namespace Consolonia.Core.Tests
         [TestCase("ab <13>c</13> <14>d</14>", "a b !c !!d")]
         [TestCase("ab<13>c</13 ><14 >d</14>", "a b !c !!d")]
         [TestCase("ab <13>c</13> <14>d</14> e", "a b !c !!d e")]
+        [TestCase("ab <14>c</14> <13>d</13> e", "a b !!c !d e")]
         [TestCase("ab<13>c</13 ><14 >d</14> e", "a b !c !!d e")]
         [TestCase("ab <13>c</13> <14>d</14> <13>e</13>", "a b !c !!d !e")]
         [TestCase("ab<13>c</13 ><14 >d</14> <13>e</13>", "a b !c !!d !e")]
