@@ -73,7 +73,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             dialog.SizeToBounds(Bounds);
 
-            string result = await dialog.ShowDialog<string?>(this);
+            string result = await dialog.ShowDialog<string>(this);
             if (result != null)
                 ViewModel.Text = result;
         }

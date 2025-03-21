@@ -5,8 +5,8 @@ using System.Reflection;
 namespace Consolonia.Controls
 {
     /// <summary>
-    /// Marks an entity as part of the Consolonia framework.
-    /// Used for reflection-based identification.
+    ///     Marks an entity as part of the Consolonia framework.
+    ///     Used for reflection-based identification.
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public class ConsoloniaAttribute : Attribute
