@@ -58,7 +58,12 @@ namespace Consolonia.Core.Infrastructure
                     if (pauseTask != null)
                         await pauseTask;
 
-                    int timeout = (int)(await CheckSizeAsync() ? 1 : slowInterval);
+
+                    int timeout=-1;
+                    await DispatchInputAsync(() =>
+                    {
+                        timeout = (int)(CheckSize() ? 1 : slowInterval);
+                    });
                     await Task.Delay(timeout);
                 }
             }); //todo: we should rethrow in main thread, or may be we should keep the loop running, but raise some general handler if it already exists, like Dispatcher.UnhandledException or whatever + check other places we use Task.Run and async void
@@ -195,15 +200,10 @@ namespace Consolonia.Core.Infrastructure
             _consoleOutput.WriteText(str);
         }
 
-        public async Task<bool> CheckSizeAsync()
+        protected bool CheckSize()
         {
             if (Size.Width == Console.WindowWidth && Size.Height == Console.WindowHeight) return false;
-
-            await DispatchInputAsync(() =>
-            {
-                Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
-            });
-
+            Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
             return true;
         }
 

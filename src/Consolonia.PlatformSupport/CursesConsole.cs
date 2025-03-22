@@ -28,17 +28,15 @@ namespace Consolonia.PlatformSupport
     public class CursesConsole : ConsoleBase
     {
         private static readonly FlagTranslator<Key, RawInputModifiers>
-            KeyModifiersFlagTranslator = new(new[]
-            {
+            KeyModifiersFlagTranslator = new([
                 (Key.ShiftMask, RawInputModifiers.Shift),
                 (Key.AltMask, RawInputModifiers.Alt),
                 (Key.CtrlMask, RawInputModifiers.Control),
                 (Key.BackTab, RawInputModifiers.Shift)
-            });
+            ]);
 
         private static readonly FlagTranslator<Key, ConsoleKey>
-            KeyFlagTranslator = new(new[]
-            {
+            KeyFlagTranslator = new([
                 (Key.BackTab, ConsoleKey.Tab),
                 (Key.Backspace, ConsoleKey.Backspace),
                 (Key.CursorDown, ConsoleKey.DownArrow),
@@ -81,22 +79,21 @@ namespace Consolonia.PlatformSupport
                 ((Key)91, ConsoleKey.Oem4), // '[' key
                 ((Key)93, ConsoleKey.Oem6), // ']' key
                 ((Key)39, ConsoleKey.Oem7) // '\'' key
-            });
+            ]);
 
         private static readonly FlagTranslator<Curses.Event, RawInputModifiers>
-            MouseModifiersFlagTranslator = new(new[]
-            {
+            MouseModifiersFlagTranslator = new([
                 (Curses.Event.ButtonAlt, RawInputModifiers.Alt),
                 (Curses.Event.ButtonCtrl, RawInputModifiers.Control),
                 (Curses.Event.ButtonShift, RawInputModifiers.Shift)
-            });
+            ]);
 
         private Curses.Window _cursesWindow;
 
-        private KeyModifiers _keyModifiers;
+        private KeyModifiers _keyModifiers; // todo: something wrong with it. It's never used
 
         private RawInputModifiers _moveModifers = RawInputModifiers.None;
-        
+
         private readonly FastBuffer<(int, int)> _inputBuffer;
         private readonly InputProcessor<(int, int)> _inputProcessor;
 
@@ -119,13 +116,13 @@ namespace Consolonia.PlatformSupport
         {
             // ReSharper disable VirtualMemberCallInConstructor
             PrepareConsole();
-            
+
             Task _ = Task.Run(async () =>
             {
                 await WaitDispatcherInitialized();
 
                 await _inputBuffer.RunAsync();
-                
+
                 while (!Disposed)
                 {
                     await DispatchInputAsync(() =>
@@ -137,7 +134,7 @@ namespace Consolonia.PlatformSupport
             });
         }
 
-        private readonly List<(int code, int wch)> _rowInputBuffer = new(1000);//todo: low magic number
+        private readonly List<(int code, int wch)> _rowInputBuffer = new(1000); //todo: low magic number
 
         private (int, int)[] ReadInputFunction()
         {
@@ -148,7 +145,7 @@ namespace Consolonia.PlatformSupport
             do
             {
                 int code = Curses.get_wch(out int wch);
-                if(code!=Curses.ERR)
+                if (code != Curses.ERR)
                 {
                     _rowInputBuffer.Add((code, wch));
                     //check if was escape, wait for one more escape
@@ -157,7 +154,7 @@ namespace Consolonia.PlatformSupport
                     {
                         Thread.Sleep(200); //todo: low: magic number, copied from GUIcs
                         int code2 = Curses.get_wch(out int wch2);
-                        
+
                         // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                         if (code2 == Curses.ERR)
                         {
@@ -216,33 +213,146 @@ namespace Consolonia.PlatformSupport
 
         private IEnumerable<IMatcher<(int, int)>> GetMatchers()
         {
-            throw new NotImplementedException();
-        }
-
-        ///this is copied from CursesDriver.cs -> ProcessInput
-        private async Task ProcessInput()
-        {//todo: should be replaced by proper matchers in GetMatchers
-            int code = Curses.get_wch(out int wch);
-            if (code == Curses.ERR)
-                return;
-
-            _keyModifiers = new KeyModifiers();
-            var k = Key.Unknown;
-
-            if (code == Curses.KEY_CODE_YES)
+            // PASTE block
+            yield return new SafeLockMatcher(new PasteBlockMatcher<int>(buffer =>
             {
-                switch (wch)
+                RaiseTextInput(buffer, (ulong)Environment.TickCount64);
+            }, ToChar), 0, 0, 0);
+            
+            (string, Key)[] fSequences =
+            [
+                // Ctrl+Alt+(F1 - F4)
+                (@"\x1B[1;7P", Key.CtrlMask | Key.AltMask | MapCursesKey(80+185)),
+                (@"\x1B[1;7Q", Key.CtrlMask | Key.AltMask | MapCursesKey(81+185)),
+                (@"\x1B[1;7R", Key.CtrlMask | Key.AltMask | MapCursesKey(82+185)),
+                (@"\x1B[1;7S", Key.CtrlMask | Key.AltMask | MapCursesKey(83+185)),
+                // Ctrl+Alt+(F5 - F8)
+                (@"\x1B[53;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(53+216)),
+                (@"\x1B[54;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(55+215)),
+                (@"\x1B[55;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(56+215)),
+                (@"\x1B[56;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(57+215)),
+                // Ctrl+Alt+(F9 - F12)
+                (@"\x1B[48;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(48+225)),
+                (@"\x1B[49;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(49+225)),
+                (@"\x1B[50;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(50+225)),
+                (@"\x1B[51;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(51+225)),
+                // Ctrl+Shift+Alt+(F1 - F4)
+                (@"\x1B[1;8;7P", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(80+185)),
+                (@"\x1B[1;8;7Q", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(81+185)),
+                (@"\x1B[1;8;7R", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(82+185)),
+                (@"\x1B[1;8;7S", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(83+185)),
+                // Ctrl+Shift+Alt+(F5 - F8)
+                (@"\x1B[53;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(53+216)),
+                (@"\x1B[54;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(55+215)),
+                (@"\x1B[55;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(56+215)),
+                (@"\x1B[56;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(57+215)),
+                // Ctrl+Shift+Alt+(F9 - F12)
+                (@"\x1B[48;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(48+225)),
+                (@"\x1B[49;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(49+225)),
+                (@"\x1B[50;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(50+225)),
+                (@"\x1B[51;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(51+225)),
+                // Shift+Alt+(F4)
+                (@"\x1B[1;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(268)),
+                // Shift+Alt+(F5 - F8)
+                (@"\x1B[53;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(53+216)),
+                (@"\x1B[54;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(55+215)),
+                (@"\x1B[55;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(56+215)),
+                (@"\x1B[56;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(57+215)),
+                // Shift+Alt+(F9 - F12)
+                (@"\x1B[48;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(48+225)),
+                (@"\x1B[49;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(49+225)),
+                (@"\x1B[50;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(50+225)),
+                (@"\x1B[51;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(51+225)),
+                // Shift+Ctrl+Alt+KeyNPage
+                (@"\x1B[54;6~", Key.ShiftMask | Key.CtrlMask | Key.AltMask | Key.PageDown),
+                // Shift+Ctrl+Alt+KeyPPage
+                (@"\x1B[53;6~", Key.ShiftMask | Key.CtrlMask | Key.AltMask | Key.PageUp),
+                // Shift+Ctrl+Alt+KeyHome
+                (@"\x1B[1;6H", Key.ShiftMask | Key.CtrlMask | Key.AltMask | Key.Home),
+                // Shift+Ctrl+Alt+KeyEnd
+                (@"\x1B[1;6F", Key.ShiftMask | Key.CtrlMask | Key.AltMask | Key.End)
+            ];
+
+            foreach ((string, Key) fSequence in fSequences)
+            {
+                yield return new SafeLockMatcher(
+                    new StartsEndsWithMatcher<int>(_ => { RaiseKeyPressInternal(fSequence.Item2); }, ToChar,
+                        fSequence.Item1, fSequence.Item1), 0, 0, 0);
+            }
+            
+            // escape of ESC
+            yield return new SafeLockMatcher(new RegexMatcher<int>(_ =>
+            {
+                RaiseKeyPressInternal(Key.Esc);
+            }, ToChar, @"^\x1B+$", 2), 0, 0);
+            
+            // The ESC-number handling, debatable.
+            yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
+            {
+                Key k = Key.Unknown;
+                // Simulates the AltMask itself by pressing Alt + Space.
+                int wch = tuple.Item2[0];
+                int wch2 = tuple.Item2[1];
+                
+                if (wch2 == (int)Key.Space)
+                    k = Key.AltMask;
+                else if (wch2 - (int)Key.Space >= (uint)Key.A && wch2 - (int)Key.Space <= (uint)Key.Z)
+                    k = (Key)((uint)Key.AltMask + (wch2 - (int)Key.Space));
+                else if (wch2 >= (uint)Key.A - 64 && wch2 <= (uint)Key.Z - 64)
+                    k = (Key)((uint)(Key.AltMask | Key.CtrlMask) + (wch2 + 64));
+                else if (wch2 >= (uint)Key.D0 && wch2 <= (uint)Key.D9)
+                    k = (Key)((uint)Key.AltMask + (uint)Key.D0 + (wch2 - (uint)Key.D0));
+                else
+                {
+                    // Unfortunately there are no way to differentiate Ctrl+Alt+alfa and Ctrl+Shift+Alt+alfa.
+                    if (((Key)wch2 & Key.CtrlMask) != 0) _keyModifiers.Ctrl = true;
+
+                    if (wch2 == 0)
+                    {
+                        k = Key.CtrlMask | Key.AltMask | Key.Space;
+                    }
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse todo: check why
+                    else if (wch >= (uint)Key.A && wch <= (uint)Key.Z)
+                    {
+                        _keyModifiers.Shift = true;
+                        _keyModifiers.Alt = true;
+                    }
+                    else if (wch2 < 256)
+                    {
+                        k = (Key)wch2;
+                        _keyModifiers.Alt = true;
+                    }
+                    else
+                    {
+                        k = (Key)((uint)(Key.AltMask | Key.CtrlMask) + wch2);
+                    }
+                }
+                RaiseKeyPressInternal(k);
+            }, ToChar, @"^\x1B[^\x1B\[]*$", 2), 0, 0);
+            
+            // alt mask
+            yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
+            {
+                int wch = tuple.Item2[0];
+                Key k = Key.AltMask | MapCursesKey(wch);
+                RaiseKeyPressInternal(k);
+            }, ToChar, @"^\x1B[^\x00]*$", 2), 0, Curses.KEY_CODE_YES);
+            
+            // mouse and resize detection and some special processing
+            yield return new SafeLockMatcher(new GenericMatcher<int>(wch =>
+            {
+                 switch (wch)
                 {
                     case Curses.KeyResize when Curses.CheckWinChange():
-                        await CheckSizeAsync();
+                        CheckSize();
                         return;
                     case Curses.KeyMouse:
                         Curses.getmouse(out Curses.MouseEvent ev);
-                        await HandleMouseInputAsync(ev);
+                        HandleMouseInput(ev);
                         return;
                 }
 
-                k = MapCursesKey(wch);
+                Key k = MapCursesKey(wch);
 
                 switch (wch)
                 {
@@ -282,190 +392,33 @@ namespace Consolonia.PlatformSupport
                         break;
                 }
 
-                await RaiseKeyPressInternalAsync(k);
-                return;
-            }
-
-            switch (wch)
+                RaiseKeyPressInternal(k);
+            }), Curses.KEY_CODE_YES);
+            
+            // text detection
+            yield return new SafeLockMatcher(new TextInputMatcher<int>(tuple =>
             {
-                // Special handling for ESC, we want to try to catch ESC+letter to simulate alt-letter as well as Alt-Fkey
-                case 27:
+                bool processSeparateKeys = true;
+                if (tuple.Item1.Length >= 10) // todo: low: magic number here
                 {
-                    Curses.timeout(200);
-
-                    code = Curses.get_wch(out int wch2);
-
-                    if (code == Curses.KEY_CODE_YES) k = Key.AltMask | MapCursesKey(wch);
-
-                    if (code == 0)
-                    {
-                        //KeyEvent key;
-
-                        // The ESC-number handling, debatable.
-                        // Simulates the AltMask itself by pressing Alt + Space.
-                        if (wch2 == (int)Key.Space)
-                            k = Key.AltMask;
-                        else if (wch2 - (int)Key.Space >= (uint)Key.A && wch2 - (int)Key.Space <= (uint)Key.Z)
-                            k = (Key)((uint)Key.AltMask + (wch2 - (int)Key.Space));
-                        else if (wch2 >= (uint)Key.A - 64 && wch2 <= (uint)Key.Z - 64)
-                            k = (Key)((uint)(Key.AltMask | Key.CtrlMask) + (wch2 + 64));
-                        else if (wch2 >= (uint)Key.D0 && wch2 <= (uint)Key.D9)
-                            k = (Key)((uint)Key.AltMask + (uint)Key.D0 + (wch2 - (uint)Key.D0));
-                        else
-                            switch (wch2)
-                            {
-                                case 27:
-                                    k = (Key)wch2;
-                                    break;
-                                case Curses.KEY_CODE_SEQ:
-                                {
-                                    int[] c = null;
-                                    while (code == 0)
-                                    {
-                                        code = Curses.get_wch(out wch2);
-                                        if (wch2 <= 0) continue;
-                                        int length = 1;
-                                        if (c != null)
-                                            length += c.Length;
-                                        Array.Resize(ref c, length);
-
-                                        c[^1] = wch2;
-                                    }
-
-                                    switch (c![0])
-                                    {
-                                        case 49 when c[1] == 59 && c[2] == 55 && c[3] >= 80 && c[3] <= 83:
-                                            // Ctrl+Alt+(F1 - F4)
-                                            wch2 = c[3] + 185;
-                                            k = Key.CtrlMask | Key.AltMask | MapCursesKey(wch2);
-                                            break;
-                                        case 49
-                                            when c[2] == 59 && c[3] == 55 && c[4] == 126 && c[1] >= 53 && c[1] <= 57:
-                                            // Ctrl+Alt+(F5 - F8)
-                                            wch2 = c[1] == 53 ? c[1] + 216 : c[1] + 215;
-                                            k = Key.CtrlMask | Key.AltMask | MapCursesKey(wch2);
-                                            break;
-                                        case 50
-                                            when c[2] == 59 && c[3] == 55 && c[4] == 126 && c[1] >= 48 && c[1] <= 52:
-                                            // Ctrl+Alt+(F9 - F12)
-                                            wch2 = c[1] < 51 ? c[1] + 225 : c[1] + 224;
-                                            k = Key.CtrlMask | Key.AltMask | MapCursesKey(wch2);
-                                            break;
-                                        case 49 when c[1] == 59 && c[2] == 56 && c[3] >= 80 && c[3] <= 83:
-                                            // Ctrl+Shift+Alt+(F1 - F4)
-                                            wch2 = c[3] + 185;
-                                            k = Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(wch2);
-                                            break;
-                                        case 49
-                                            when c[2] == 59 && c[3] == 56 && c[4] == 126 && c[1] >= 53 && c[1] <= 57:
-                                            // Ctrl+Shift+Alt+(F5 - F8)
-                                            wch2 = c[1] == 53 ? c[1] + 216 : c[1] + 215;
-                                            k = Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(wch2);
-                                            break;
-                                        case 50
-                                            when c[2] == 59 && c[3] == 56 && c[4] == 126 && c[1] >= 48 && c[1] <= 52:
-                                            // Ctrl+Shift+Alt+(F9 - F12)
-                                            wch2 = c[1] < 51 ? c[1] + 225 : c[1] + 224;
-                                            k = Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(wch2);
-                                            break;
-                                        case 49 when c[1] == 59 && c[2] == 52 && c[3] == 83:
-                                            // Shift+Alt+(F4)
-                                            wch2 = 268;
-                                            k = Key.ShiftMask | Key.AltMask | MapCursesKey(wch2);
-                                            break;
-                                        case 49
-                                            when c[2] == 59 && c[3] == 52 && c[4] == 126 && c[1] >= 53 && c[1] <= 57:
-                                            // Shift+Alt+(F5 - F8)
-                                            wch2 = c[1] < 55 ? c[1] + 216 : c[1] + 215;
-                                            k = Key.ShiftMask | Key.AltMask | MapCursesKey(wch2);
-                                            break;
-                                        case 50
-                                            when c[2] == 59 && c[3] == 52 && c[4] == 126 && c[1] >= 48 && c[1] <= 52:
-                                            // Shift+Alt+(F9 - F12)
-                                            wch2 = c[1] < 51 ? c[1] + 225 : c[1] + 224;
-                                            k = Key.ShiftMask | Key.AltMask | MapCursesKey(wch2);
-                                            break;
-                                        case 54 when c[1] == 59 && c[2] == 56 && c[3] == 126:
-                                            // Shift+Ctrl+Alt+KeyNPage
-                                            k = Key.ShiftMask | Key.CtrlMask | Key.AltMask | Key.PageDown;
-                                            break;
-                                        case 53 when c[1] == 59 && c[2] == 56 && c[3] == 126:
-                                            // Shift+Ctrl+Alt+KeyPPage
-                                            k = Key.ShiftMask | Key.CtrlMask | Key.AltMask | Key.PageUp;
-                                            break;
-                                        case 49 when c[1] == 59 && c[2] == 56 && c[3] == 72:
-                                            // Shift+Ctrl+Alt+KeyHome
-                                            k = Key.ShiftMask | Key.CtrlMask | Key.AltMask | Key.Home;
-                                            break;
-                                        case 49 when c[1] == 59 && c[2] == 56 && c[3] == 70:
-                                            // Shift+Ctrl+Alt+KeyEnd
-                                            k = Key.ShiftMask | Key.CtrlMask | Key.AltMask | Key.End;
-                                            break;
-
-                                        // ESC [200~ 
-                                        case 50 when c[1] == 48 && c[2] == 48 && c[3] == 126:
-                                            var sb = new StringBuilder();
-                                            for (int i = 4; i < c.Length; i++) sb.Append((char)c[i]);
-                                            string bufferText = sb.ToString();
-                                            int index = bufferText.IndexOf("\u001b[201~", StringComparison.Ordinal);
-                                            if (index > 0)
-                                            {
-                                                string text = bufferText[..--index];
-                                                await DispatchInputAsync(() =>
-                                                {
-                                                    RaiseTextInput(text, (ulong)Environment.TickCount64);
-                                                });
-                                            }
-
-                                            break;
-
-                                        default:
-                                            k = MapCursesKey(wch2);
-                                            break;
-                                    }
-
-                                    break;
-                                }
-                                default:
-                                {
-                                    // Unfortunately there are no way to differentiate Ctrl+Alt+alfa and Ctrl+Shift+Alt+alfa.
-                                    if (((Key)wch2 & Key.CtrlMask) != 0) _keyModifiers.Ctrl = true;
-
-                                    if (wch2 == 0)
-                                    {
-                                        k = Key.CtrlMask | Key.AltMask | Key.Space;
-                                    }
-                                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse todo: check why
-                                    else if (wch >= (uint)Key.A && wch <= (uint)Key.Z)
-                                    {
-                                        _keyModifiers.Shift = true;
-                                        _keyModifiers.Alt = true;
-                                    }
-                                    else if (wch2 < 256)
-                                    {
-                                        k = (Key)wch2;
-                                        _keyModifiers.Alt = true;
-                                    }
-                                    else
-                                    {
-                                        k = (Key)((uint)(Key.AltMask | Key.CtrlMask) + wch2);
-                                    }
-
-                                    break;
-                                }
-                            }
-                    }
-                    else
-                    {
-                        k = Key.Esc;
-                    }
-
-                    break;
+                    CanBeHandledEventArgs canBeHandledEventArgs = new();
+                    RaiseTextInput(tuple.Item1, (ulong)Environment.TickCount64, canBeHandledEventArgs);
+                    processSeparateKeys = !canBeHandledEventArgs.Handled;
                 }
-                case Curses.KeyTab:
+
+                if (processSeparateKeys)
+                    foreach (int key in tuple.Item2)
+                        RaiseKeyPressInternal((Key)key);
+
+            }, ToChar), 0);
+            
+            // general keys backup
+            yield return new SafeLockMatcher(new GenericMatcher<int>(wch =>
+            {
+                Key k;
+                if (wch == Curses.KeyTab)
                     k = MapCursesKey(wch);
-                    break;
-                default:
+                else
                 {
                     // Unfortunately there are no way to differentiate Ctrl+alfa and Ctrl+Shift+alfa.
                     k = (Key)wch;
@@ -481,16 +434,18 @@ namespace Consolonia.PlatformSupport
                     {
                         _keyModifiers.Shift = true;
                     }
-
-                    break;
                 }
-            }
-
-            await RaiseKeyPressInternalAsync(k);
+                
+                RaiseKeyPressInternal(k);
+            }), 0);
         }
 
+        private static char ToChar(int arg)
+        {
+            return (char)arg;
+        }
 
-        private async Task RaiseKeyPressInternalAsync(Key key)
+        private void RaiseKeyPressInternal(Key key)
         {
             int keyValue = (int)key;
             RawInputModifiers modifiers = KeyModifiersFlagTranslator.Translate(key);
@@ -528,17 +483,15 @@ namespace Consolonia.PlatformSupport
 
             Avalonia.Input.Key convertToKey = DefaultNetConsole.ConvertToKey(consoleKey);
 
-            await DispatchInputAsync(() =>
-            {
-                RaiseKeyPress(convertToKey,
-                    character, modifiers, true, (ulong)Environment.TickCount64);
-                Thread.Yield();
-                RaiseKeyPress(convertToKey,
-                    character, modifiers, false, (ulong)Environment.TickCount64);
-            });
+            RaiseKeyPress(convertToKey,
+                character, modifiers, true, (ulong)Environment.TickCount64);
+            Thread.Yield();
+            RaiseKeyPress(convertToKey,
+                character, modifiers, false, (ulong)Environment.TickCount64);
+            Thread.Yield();
         }
 
-        private async Task HandleMouseInputAsync(Curses.MouseEvent ev)
+        private void HandleMouseInput(Curses.MouseEvent ev)
         {
             // System.Diagnostics.Debug.WriteLine($"{JsonConvert.SerializeObject(ev)} {(Curses.Event)ev.ButtonState}");
 
@@ -546,9 +499,7 @@ namespace Consolonia.PlatformSupport
 
             RawInputModifiers rawInputModifiers = MouseModifiersFlagTranslator.Translate(ev.ButtonState);
 
-            await DispatchInputAsync(() =>
-            {
-                Vector? wheelDelta = null;
+              Vector? wheelDelta = null;
                 if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledDown))
                     wheelDelta = new Vector(0, -velocity);
                 if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledUp))
@@ -644,7 +595,6 @@ namespace Consolonia.PlatformSupport
                         default:
                             throw new NotImplementedException("Unknown mouse event");
                     }
-            });
         }
 
         // emit pairs of mouse click events (down/up)
@@ -743,9 +693,9 @@ namespace Consolonia.PlatformSupport
 
         protected override void Dispose(bool disposing)
         {
-            if(disposing)
+            if (disposing)
                 _inputBuffer.Dispose();
-            
+
             base.Dispose(disposing);
         }
     }

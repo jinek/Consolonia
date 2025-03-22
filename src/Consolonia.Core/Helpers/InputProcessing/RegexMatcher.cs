@@ -5,7 +5,11 @@ using System.Text.RegularExpressions;
 
 namespace Consolonia.Core.Helpers.InputProcessing
 {
-    public class RegexMatcher<T>(Action<(string, T[])> onComplete, Func<T, char> toChar, string regex)
+    public class RegexMatcher<T>(
+        Action<(string, T[])> onComplete,
+        Func<T, char> toChar,
+        string regex,
+        int? autoFlushOnLength = null)
         : MatcherWithComplete<T, (string, T[])>(onComplete)
     {
         private readonly List<T> _accumulatedKeys = [];
@@ -19,9 +23,19 @@ namespace Consolonia.Core.Helpers.InputProcessing
 
             _accumulator.Append(c);
 
-            AppendResult matchResultInternal = MatchResultInternal(_accumulator.ToString());
+            string accumulatedString = _accumulator.ToString();
+            AppendResult matchResultInternal = MatchResultInternal(accumulatedString);
             if (matchResultInternal != AppendResult.NoMatch)
+            {
                 _accumulatedKeys.Add(input);
+                
+                if (autoFlushOnLength != null && _accumulator.Length == (int)autoFlushOnLength)
+                {
+                    Complete((accumulatedString, _accumulatedKeys.ToArray()));
+                    Reset();
+                    return AppendResult.AutoFlushed;
+                }
+            }
             else
                 _accumulator.Length--;
 
@@ -37,6 +51,9 @@ namespace Consolonia.Core.Helpers.InputProcessing
         public override bool TryFlush()
         {
             if (_accumulator.Length == 0) return false;
+
+            if (autoFlushOnLength != null)
+                return false;
 
             string currentAccumulated = _accumulator.ToString();
             bool matches = MatchResultInternal(currentAccumulated) == AppendResult.Match;
