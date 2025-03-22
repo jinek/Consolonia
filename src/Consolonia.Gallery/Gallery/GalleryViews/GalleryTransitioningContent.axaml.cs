@@ -1,3 +1,4 @@
+#pragma warning disable CA1002 // Do not expose generic lists
 using System;
 using System.Collections.Generic;
 using System.Linq;

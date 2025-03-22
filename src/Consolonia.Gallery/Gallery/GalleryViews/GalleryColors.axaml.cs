@@ -9,6 +9,7 @@ using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "This is not a security context")]
     public partial class GalleryColors : UserControl
     {
         public GalleryColors()

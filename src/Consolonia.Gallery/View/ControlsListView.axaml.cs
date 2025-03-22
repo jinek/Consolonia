@@ -14,7 +14,7 @@ using Consolonia.Themes;
 
 namespace Consolonia.Gallery.View
 {
-    public enum Themes
+    public enum ThemesList
     {
         Material,
         Fluent,
@@ -59,7 +59,7 @@ namespace Consolonia.Gallery.View
             try
             {
                 itemToSelect = _items.SingleOrDefault(item =>
-                    string.Equals(item.Name, itemToSelectName, StringComparison.CurrentCultureIgnoreCase));
+                    string.Equals(item.Name, itemToSelectName, StringComparison.OrdinalIgnoreCase));
                 if (itemToSelect == null)
                     throw new ArgumentOutOfRangeException(
                         $"No item with name {itemToSelectName} found. List of possible item names: {string.Join(", ", GalleryItem.Enumerated.Select(item => item.Name))}");
@@ -100,14 +100,15 @@ namespace Consolonia.Gallery.View
             await ShowCode(xamlFile);
         }
 
+        private static readonly HttpClient Client = new HttpClient();
+
         private static async Task ShowCode(string xamlFile)
         {
             var lifetime = Application.Current.ApplicationLifetime as ISingleViewApplicationLifetime;
             if (lifetime == null)
                 throw new InvalidOperationException("ApplicationLifetime is not ISingleViewApplicationLifetime");
 
-            HttpClient client = new HttpClient();
-            string xaml = await client.GetStringAsync($"https://raw.githubusercontent.com/jinek/Consolonia/refs/heads/main/src/Consolonia.Gallery/Gallery/GalleryViews/{xamlFile}");
+            string xaml = await Client.GetStringAsync(new Uri($"https://raw.githubusercontent.com/jinek/Consolonia/refs/heads/main/src/Consolonia.Gallery/Gallery/GalleryViews/{xamlFile}"));
 
             var dialog = new XamlDialogWindow
             {
@@ -123,24 +124,24 @@ namespace Consolonia.Gallery.View
         {
             if (ThemeCombo?.SelectedItem is not ComboBoxItem selectedItem ||
                 selectedItem.Content is not string themeName ||
-                !Enum.TryParse(themeName, out Themes selectedTheme))
+                !Enum.TryParse(themeName, out ThemesList selectedTheme))
                 return;
 
             Application.Current.Styles[0] = selectedTheme switch
             {
-                Themes.Material => new MaterialTheme(),
-                Themes.Fluent => new FluentTheme(),
-                Themes.TurboVision => new TurboVisionTheme(),
-                Themes.TurboVisionDark => new TurboVisionDarkTheme(),
-                Themes.TurboVisionBlack => new TurboVisionBlackTheme(),
-                _ => throw new ArgumentOutOfRangeException(nameof(selectedTheme))
+                ThemesList.Material => new MaterialTheme(),
+                ThemesList.Fluent => new FluentTheme(),
+                ThemesList.TurboVision => new TurboVisionTheme(),
+                ThemesList.TurboVisionDark => new TurboVisionDarkTheme(),
+                ThemesList.TurboVisionBlack => new TurboVisionBlackTheme(),
+                _ => throw new InvalidDataException("Unknown theme name")
             };
         }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             string themeName = Application.Current.Styles[0].GetType().Name[..^5];
-            ThemeCombo.SelectedIndex = (int)Enum.Parse<Themes>(themeName);
+            ThemeCombo.SelectedIndex = (int)Enum.Parse<ThemesList>(themeName);
         }
     }
 
@@ -154,10 +155,10 @@ namespace Consolonia.Gallery.View
         [NotifyPropertyChangedFor(nameof(IsMaterial))]
         private string _selectedTheme;
 
-        public bool IsMaterial => SelectedTheme == nameof(Themes.Material);
-        public bool IsFluent => SelectedTheme == nameof(Themes.Fluent);
-        public bool IsTurboVision => SelectedTheme == nameof(Themes.TurboVision);
-        public bool IsTurboVisionDark => SelectedTheme == nameof(Themes.TurboVisionDark);
-        public bool IsTurboVisionBlack => SelectedTheme == nameof(Themes.TurboVisionBlack);
+        public bool IsMaterial => SelectedTheme == nameof(ThemesList.Material);
+        public bool IsFluent => SelectedTheme == nameof(ThemesList.Fluent);
+        public bool IsTurboVision => SelectedTheme == nameof(ThemesList.TurboVision);
+        public bool IsTurboVisionDark => SelectedTheme == nameof(ThemesList.TurboVisionDark);
+        public bool IsTurboVisionBlack => SelectedTheme == nameof(ThemesList.TurboVisionBlack);
     }
 }

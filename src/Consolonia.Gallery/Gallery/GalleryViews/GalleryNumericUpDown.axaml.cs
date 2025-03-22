@@ -9,7 +9,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public partial class GalleryNumericUpDown : UserControl
     {
-        public static IValueConverter CultureConverter =
+        public readonly static IValueConverter CultureConverter =
             new FuncValueConverter<CultureInfo, NumberFormatInfo>(c => (c ?? CultureInfo.CurrentCulture).NumberFormat);
 
         public GalleryNumericUpDown()

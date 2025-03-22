@@ -1,3 +1,4 @@
+#pragma warning disable CA5394 // Do not use insecure randomness
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -76,9 +77,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private void SelectRandomItem()
         {
-            var random = new Random();
-            int depth = random.Next(4);
-            var indexes = Enumerable.Range(0, depth).Select(x => random.Next(10));
+            int depth = Random.Shared.Next(4);
+            var indexes = Enumerable.Range(0, depth).Select(x => Random.Shared.Next(10));
             Node node = _root;
 
             foreach (int i in indexes) node = node.Children[i];
@@ -87,7 +87,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             SelectedItems.Add(node);
         }
 
+#pragma warning disable CA1034 // Nested types should not be visible
         public class Node
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             private int _childIndex = 10;
             private ObservableCollection<Node> _children;

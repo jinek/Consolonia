@@ -1,3 +1,5 @@
+#pragma warning disable CA1822 // Mark members as static
+
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -70,7 +72,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public MiniCommand OpenCommand { get; }
         public MiniCommand SaveCommand { get; }
         public MiniCommand OpenRecentCommand { get; }
-
         public Task Open()
         {
             return Task.CompletedTask;
