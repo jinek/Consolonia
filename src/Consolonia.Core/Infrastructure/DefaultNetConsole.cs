@@ -90,11 +90,12 @@ namespace Consolonia.Core.Infrastructure
         private readonly FastBuffer<ConsoleKeyInfo> _inputBuffer;
         private readonly InputProcessor<ConsoleKeyInfo> _inputProcessor;
 
-        private static ConsoleKeyInfo[] ReadDataFunction()
+        private ConsoleKeyInfo[] ReadDataFunction()
         {
             while (true)
                 try
                 {
+                    PauseTask?.Wait();
                     return [Console.ReadKey(true)];
                 }
                 catch (InvalidOperationException)
@@ -111,9 +112,7 @@ namespace Consolonia.Core.Infrastructure
 
                 while (!Disposed)
                 {
-                    PauseTask?.Wait();
-
-                    var consoleKeyInfos = _inputBuffer.Dequeue();
+                    ConsoleKeyInfo[] consoleKeyInfos = _inputBuffer.Dequeue();
 
                     await DispatchInputAsync(() => { _inputProcessor.ProcessChunk(consoleKeyInfos); });
                 }

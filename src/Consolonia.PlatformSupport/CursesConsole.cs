@@ -15,6 +15,7 @@ using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Consolonia.Core.Helpers;
+using Consolonia.Core.Helpers.InputProcessing;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
@@ -97,11 +98,13 @@ namespace Consolonia.PlatformSupport
         private RawInputModifiers _moveModifers = RawInputModifiers.None;
         
         private readonly FastBuffer<(int, int)> _inputBuffer;
+        private readonly InputProcessor<(int, int)> _inputProcessor;
 
         public CursesConsole()
             : base(new AnsiConsoleOutput())
         {
             _inputBuffer = new FastBuffer<(int, int)>(ReadInputFunction);
+            _inputProcessor = new InputProcessor<(int, int)>(GetMatchers());
             StartSizeCheckTimerAsync(2500);
             StartEventLoop();
         }
@@ -125,7 +128,11 @@ namespace Consolonia.PlatformSupport
                 
                 while (!Disposed)
                 {
-                    
+                    await DispatchInputAsync(() =>
+                    {
+                        (int, int)[] inputs = _inputBuffer.Dequeue();
+                        _inputProcessor.ProcessChunk(inputs);
+                    });
                 }
             });
         }
@@ -207,9 +214,14 @@ namespace Consolonia.PlatformSupport
             Curses.unget_wch((int)Key.Unknown);
         }
 
+        private IEnumerable<IMatcher<(int, int)>> GetMatchers()
+        {
+            throw new NotImplementedException();
+        }
+
         ///this is copied from CursesDriver.cs -> ProcessInput
         private async Task ProcessInput()
-        {
+        {//todo: should be replaced by proper matchers in GetMatchers
             int code = Curses.get_wch(out int wch);
             if (code == Curses.ERR)
                 return;
