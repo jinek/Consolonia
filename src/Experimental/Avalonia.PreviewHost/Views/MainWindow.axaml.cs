@@ -17,28 +17,27 @@ namespace Avalonia.PreviewHost.Views
             InitializeComponent();
         }
 
-        public MainViewModel Model => (MainViewModel)DataContext!;
-
-        // ReSharper disable VariableCanBeNotNullable
+        public MainViewModel Model => (MainViewModel)DataContext!; // ReSharper disable VariableCanBeNotNullable
         private async void OnOpen(object? sender, RoutedEventArgs e)
         {
             // Get top level from the current control. Alternatively, you can use Window reference instead.
             TopLevel? topLevel = GetTopLevel(this);
             ArgumentNullException.ThrowIfNull(topLevel);
-            
+
             // Start async operation to open the dialog.
-            var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
-            {
-                Title = "Open csproj",
-                AllowMultiple = false,
-                FileTypeFilter =
-                [
-                    new("C# Project")
-                    {
-                        Patterns = ["*.csproj"]
-                    }
-                ]
-            });
+            IReadOnlyList<IStorageFile>? files = await topLevel.StorageProvider.OpenFilePickerAsync(
+                new FilePickerOpenOptions
+                {
+                    Title = "Open csproj",
+                    AllowMultiple = false,
+                    FileTypeFilter =
+                    [
+                        new FilePickerFileType("C# Project")
+                        {
+                            Patterns = ["*.csproj"]
+                        }
+                    ]
+                });
 
             if (!files.Any()) return;
 

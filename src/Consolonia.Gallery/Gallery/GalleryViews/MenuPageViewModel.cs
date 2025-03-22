@@ -72,6 +72,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public MiniCommand OpenCommand { get; }
         public MiniCommand SaveCommand { get; }
         public MiniCommand OpenRecentCommand { get; }
+
         public Task Open()
         {
             return Task.CompletedTask;

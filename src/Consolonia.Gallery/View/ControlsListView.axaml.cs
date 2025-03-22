@@ -25,6 +25,7 @@ namespace Consolonia.Gallery.View
 
     public partial class ControlsListView : DockPanel
     {
+        private static readonly HttpClient Client = new();
         private readonly IEnumerable<GalleryItem> _items;
         private string[] _commandLineArgs;
 
@@ -90,17 +91,16 @@ namespace Consolonia.Gallery.View
         private async void OnShowXaml(object sender, RoutedEventArgs e)
         {
             var selectedItem = GalleryGrid.SelectedItem as GalleryItem;
-            var xamlFile = $"{selectedItem.Type.Name}.axaml";
-            await ShowCode(xamlFile);
-        }
-        private async void OnShowCodeBehind(object sender, RoutedEventArgs e)
-        {
-            var selectedItem = GalleryGrid.SelectedItem as GalleryItem;
-            var xamlFile = $"{selectedItem.Type.Name}.axaml.cs";
+            string xamlFile = $"{selectedItem.Type.Name}.axaml";
             await ShowCode(xamlFile);
         }
 
-        private static readonly HttpClient Client = new HttpClient();
+        private async void OnShowCodeBehind(object sender, RoutedEventArgs e)
+        {
+            var selectedItem = GalleryGrid.SelectedItem as GalleryItem;
+            string xamlFile = $"{selectedItem.Type.Name}.axaml.cs";
+            await ShowCode(xamlFile);
+        }
 
         private static async Task ShowCode(string xamlFile)
         {
@@ -108,7 +108,8 @@ namespace Consolonia.Gallery.View
             if (lifetime == null)
                 throw new InvalidOperationException("ApplicationLifetime is not ISingleViewApplicationLifetime");
 
-            string xaml = await Client.GetStringAsync(new Uri($"https://raw.githubusercontent.com/jinek/Consolonia/refs/heads/main/src/Consolonia.Gallery/Gallery/GalleryViews/{xamlFile}"));
+            string xaml = await Client.GetStringAsync(new Uri(
+                $"https://raw.githubusercontent.com/jinek/Consolonia/refs/heads/main/src/Consolonia.Gallery/Gallery/GalleryViews/{xamlFile}"));
 
             var dialog = new XamlDialogWindow
             {

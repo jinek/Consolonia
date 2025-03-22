@@ -14,7 +14,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private static readonly Random Random = new();
 
         public SomeDialogWindow(double width, double height)
-            : base()
         {
             InitializeComponent();
             Title = DialogTitle;

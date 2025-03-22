@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Consolonia.Controls;
 using Consolonia.Core.Helpers;
 using NUnit.Framework;
@@ -11,7 +12,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void GetGlyphsEmptyStringReturnsEmptyList()
         {
             string text = string.Empty;
-            var glyphs = text.GetGlyphs(true);
+            IReadOnlyList<string> glyphs = text.GetGlyphs(true);
             Assert.IsEmpty(glyphs);
         }
 
@@ -21,7 +22,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "a";
             Assert.AreEqual(1, text.MeasureText());
 
-            var glyphs = text.GetGlyphs(true);
+            IReadOnlyList<string> glyphs = text.GetGlyphs(true);
             Assert.AreEqual(1, glyphs.Count);
             Assert.AreEqual("a", glyphs[0]);
         }
@@ -32,7 +33,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "hello";
             Assert.AreEqual(5, text.MeasureText());
 
-            var glyphs = text.GetGlyphs(true);
+            IReadOnlyList<string> glyphs = text.GetGlyphs(true);
             Assert.AreEqual(5, glyphs.Count);
             Assert.AreEqual("h", glyphs[0]);
             Assert.AreEqual("e", glyphs[1]);
@@ -47,7 +48,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "𝔉𝔞𝔫𝔠𝔶";
             Assert.AreEqual(5, text.MeasureText());
 
-            var glyphs = text.GetGlyphs(true);
+            IReadOnlyList<string> glyphs = text.GetGlyphs(true);
             Assert.AreEqual(5, glyphs.Count);
             Assert.AreEqual("𝔉", glyphs[0]);
             Assert.AreEqual("𝔞", glyphs[1]);
@@ -62,7 +63,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "👍";
             Assert.AreEqual(2, text.MeasureText());
 
-            var glyphs = text.GetGlyphs(true);
+            IReadOnlyList<string> glyphs = text.GetGlyphs(true);
             Assert.AreEqual(1, glyphs.Count);
             Assert.AreEqual("👍", glyphs[0]);
         }
@@ -73,7 +74,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "👨‍👩‍👧‍👦";
             Assert.AreEqual(2, text.MeasureText());
 
-            var glyphs = text.GetGlyphs(true);
+            IReadOnlyList<string> glyphs = text.GetGlyphs(true);
             Assert.AreEqual(1, glyphs.Count);
             Assert.AreEqual("👨‍👩‍👧‍👦", glyphs[0]);
         }
@@ -84,7 +85,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "a👍";
             Assert.AreEqual(3, text.MeasureText());
 
-            var glyphs = text.GetGlyphs(true);
+            IReadOnlyList<string> glyphs = text.GetGlyphs(true);
             Assert.AreEqual(2, glyphs.Count);
             Assert.AreEqual("a", glyphs[0]);
             Assert.AreEqual("👍", glyphs[1]);
@@ -96,7 +97,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "👨‍👩‍👧‍👦";
             Assert.AreEqual(2, text.MeasureText());
 
-            var glyphs = text.GetGlyphs(false);
+            IReadOnlyList<string> glyphs = text.GetGlyphs(false);
             Assert.AreEqual(4, glyphs.Count);
             Assert.AreEqual("👨", glyphs[0]);
             Assert.AreEqual("👩", glyphs[1]);

@@ -226,7 +226,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             var tasks = new List<Task>();
             Visual parent = GetVisualParent(from, to);
-            var scaleProperty = ScaleTransform.ScaleYProperty;
+            StyledProperty<double> scaleProperty = ScaleTransform.ScaleYProperty;
 
             if (from != null)
             {

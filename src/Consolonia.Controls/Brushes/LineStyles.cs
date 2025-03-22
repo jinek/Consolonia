@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Consolonia.Controls.Brushes
@@ -15,7 +16,7 @@ namespace Consolonia.Controls.Brushes
 
         public LineStyles(string text)
         {
-            var styles = text.Split(' ', ',')
+            List<LineStyle> styles = text.Split(' ', ',')
                 .Select(token => Enum.Parse<LineStyle>(token))
                 .ToList();
 

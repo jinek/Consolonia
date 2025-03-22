@@ -1,5 +1,6 @@
 #pragma warning disable CA5394 // Do not use insecure randomness
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Controls;
@@ -78,7 +79,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private void SelectRandomItem()
         {
             int depth = Random.Shared.Next(4);
-            var indexes = Enumerable.Range(0, depth).Select(x => Random.Shared.Next(10));
+            IEnumerable<int> indexes = Enumerable.Range(0, depth).Select(x => Random.Shared.Next(10));
             Node node = _root;
 
             foreach (int i in indexes) node = node.Children[i];

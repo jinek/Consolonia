@@ -8,10 +8,6 @@ namespace Consolonia.Controls
 {
     public class Window : ManagedWindow
     {
-        public Window()
-            : base()
-        {
-        }
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
