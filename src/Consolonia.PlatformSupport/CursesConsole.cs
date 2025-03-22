@@ -131,6 +131,7 @@ namespace Consolonia.PlatformSupport
                     (int, int)[] inputs = _inputBuffer.Dequeue();
                     await DispatchInputAsync(() =>
                     {
+                        _keyModifiers = new KeyModifiers();
                         _inputProcessor.ProcessChunk(inputs);
                     });
                 }
