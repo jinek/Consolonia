@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>Consolonia.Gallery</ToolCommandName>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
