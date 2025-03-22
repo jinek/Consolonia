@@ -136,6 +136,7 @@ namespace Consolonia.PlatformSupport
         }
 
         private readonly List<(int code, int wch)> _rowInputBuffer = new(1000); //todo: low magic number
+        private const int NoInputTimeout = 200;
 
         private (int, int)[] ReadInputFunction()
         {
@@ -153,7 +154,7 @@ namespace Consolonia.PlatformSupport
 
                     if (code != Curses.KEY_CODE_YES && wch == 27)
                     {
-                        Thread.Sleep(200); //todo: low: magic number, copied from GUIcs
+                        Thread.Sleep(NoInputTimeout); //todo: low: magic number, copied from GUIcs
                         int code2 = Curses.get_wch(out int wch2);
 
                         // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
@@ -188,6 +189,7 @@ namespace Consolonia.PlatformSupport
                 out Curses.Event _);
             Curses.mouseinterval(0); // if we don't do this mouse events are dropped
             Console.WriteLine(Esc.EnableAllMouseEvents);
+            Curses.timeout(NoInputTimeout);
             //Console.WriteLine(Esc.EnableExtendedMouseTracking);
             base.PrepareConsole();
             WriteText(Esc.EnableBracketedPasteMode);
@@ -484,7 +486,7 @@ namespace Consolonia.PlatformSupport
             }
 
             Avalonia.Input.Key convertToKey = DefaultNetConsole.ConvertToKey(consoleKey);
-Debug.WriteLine("Key: "+ convertToKey);
+
             RaiseKeyPress(convertToKey,
                 character, modifiers, true, (ulong)Environment.TickCount64);
             Thread.Yield();
