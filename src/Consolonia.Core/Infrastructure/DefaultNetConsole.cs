@@ -90,12 +90,13 @@ namespace Consolonia.Core.Infrastructure
         private readonly FastBuffer<ConsoleKeyInfo> _inputBuffer;
         private readonly InputProcessor<ConsoleKeyInfo> _inputProcessor;
 
-        private static ConsoleKeyInfo ReadDataFunction()
+        private ConsoleKeyInfo[] ReadDataFunction()
         {
             while (true)
                 try
                 {
-                    return Console.ReadKey(true);
+                    PauseTask?.Wait();
+                    return [Console.ReadKey(true)];
                 }
                 catch (InvalidOperationException)
                 {
