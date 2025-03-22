@@ -8,8 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -89,14 +87,14 @@ namespace Consolonia.PlatformSupport
                 (Curses.Event.ButtonShift, RawInputModifiers.Shift)
             ]);
 
+        private readonly FastBuffer<(int, int)> _inputBuffer;
+        private readonly InputProcessor<(int, int)> _inputProcessor;
+
         private Curses.Window _cursesWindow;
 
         private KeyModifiers _keyModifiers; // todo: something wrong with it. It's never used
 
         private RawInputModifiers _moveModifers = RawInputModifiers.None;
-
-        private readonly FastBuffer<(int, int)> _inputBuffer;
-        private readonly InputProcessor<(int, int)> _inputProcessor;
 
         public CursesConsole()
             : base(new AnsiConsoleOutput())
@@ -139,9 +137,9 @@ namespace Consolonia.PlatformSupport
         }
 
         private readonly List<(int code, int wch)> _rowInputBuffer = new(1000); //todo: low magic number
-        
+
         /// <summary>
-        /// https://github.com/gui-cs/Terminal.Gui/blob/v2_develop/Terminal.Gui/ConsoleDrivers/CursesDriver/CursesDriver.cs#L790
+        ///     https://github.com/gui-cs/Terminal.Gui/blob/v2_develop/Terminal.Gui/ConsoleDrivers/CursesDriver/CursesDriver.cs#L790
         /// </summary>
         private const int NoInputTimeout = 10;
 
@@ -152,7 +150,7 @@ namespace Consolonia.PlatformSupport
             {
                 Task pauseTask = PauseTask;
                 pauseTask?.Wait();
-                
+
                 int code = Curses.get_wch(out int wch);
                 if (code != Curses.ERR)
                 {
@@ -175,7 +173,10 @@ namespace Consolonia.PlatformSupport
                         _rowInputBuffer.Add((code2, wch2));
                     }
                 }
-                else break;
+                else
+                {
+                    break;
+                }
             } while (true);
 
             return [.. _rowInputBuffer];
@@ -222,55 +223,54 @@ namespace Consolonia.PlatformSupport
         private IEnumerable<IMatcher<(int, int)>> GetMatchers()
         {
             // PASTE block
-            yield return new SafeLockMatcher(new PasteBlockMatcher<int>(buffer =>
-            {
-                RaiseTextInput(buffer, (ulong)Environment.TickCount64);
-            }, ToChar), 0, 0, 0);
-            
+            yield return new SafeLockMatcher(
+                new PasteBlockMatcher<int>(buffer => { RaiseTextInput(buffer, (ulong)Environment.TickCount64); },
+                    ToChar), 0, 0, 0);
+
             (string, Key)[] fSequences =
             [
                 // Ctrl+Alt+(F1 - F4)
-                (@"\x1B[1;7P", Key.CtrlMask | Key.AltMask | MapCursesKey(80+185)),
-                (@"\x1B[1;7Q", Key.CtrlMask | Key.AltMask | MapCursesKey(81+185)),
-                (@"\x1B[1;7R", Key.CtrlMask | Key.AltMask | MapCursesKey(82+185)),
-                (@"\x1B[1;7S", Key.CtrlMask | Key.AltMask | MapCursesKey(83+185)),
+                (@"\x1B[1;7P", Key.CtrlMask | Key.AltMask | MapCursesKey(80 + 185)),
+                (@"\x1B[1;7Q", Key.CtrlMask | Key.AltMask | MapCursesKey(81 + 185)),
+                (@"\x1B[1;7R", Key.CtrlMask | Key.AltMask | MapCursesKey(82 + 185)),
+                (@"\x1B[1;7S", Key.CtrlMask | Key.AltMask | MapCursesKey(83 + 185)),
                 // Ctrl+Alt+(F5 - F8)
-                (@"\x1B[53;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(53+216)),
-                (@"\x1B[54;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(55+215)),
-                (@"\x1B[55;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(56+215)),
-                (@"\x1B[56;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(57+215)),
+                (@"\x1B[53;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(53 + 216)),
+                (@"\x1B[54;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(55 + 215)),
+                (@"\x1B[55;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(56 + 215)),
+                (@"\x1B[56;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(57 + 215)),
                 // Ctrl+Alt+(F9 - F12)
-                (@"\x1B[48;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(48+225)),
-                (@"\x1B[49;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(49+225)),
-                (@"\x1B[50;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(50+225)),
-                (@"\x1B[51;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(51+225)),
+                (@"\x1B[48;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(48 + 225)),
+                (@"\x1B[49;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(49 + 225)),
+                (@"\x1B[50;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(50 + 225)),
+                (@"\x1B[51;7~", Key.CtrlMask | Key.AltMask | MapCursesKey(51 + 225)),
                 // Ctrl+Shift+Alt+(F1 - F4)
-                (@"\x1B[1;8;7P", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(80+185)),
-                (@"\x1B[1;8;7Q", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(81+185)),
-                (@"\x1B[1;8;7R", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(82+185)),
-                (@"\x1B[1;8;7S", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(83+185)),
+                (@"\x1B[1;8;7P", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(80 + 185)),
+                (@"\x1B[1;8;7Q", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(81 + 185)),
+                (@"\x1B[1;8;7R", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(82 + 185)),
+                (@"\x1B[1;8;7S", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(83 + 185)),
                 // Ctrl+Shift+Alt+(F5 - F8)
-                (@"\x1B[53;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(53+216)),
-                (@"\x1B[54;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(55+215)),
-                (@"\x1B[55;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(56+215)),
-                (@"\x1B[56;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(57+215)),
+                (@"\x1B[53;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(53 + 216)),
+                (@"\x1B[54;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(55 + 215)),
+                (@"\x1B[55;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(56 + 215)),
+                (@"\x1B[56;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(57 + 215)),
                 // Ctrl+Shift+Alt+(F9 - F12)
-                (@"\x1B[48;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(48+225)),
-                (@"\x1B[49;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(49+225)),
-                (@"\x1B[50;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(50+225)),
-                (@"\x1B[51;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(51+225)),
+                (@"\x1B[48;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(48 + 225)),
+                (@"\x1B[49;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(49 + 225)),
+                (@"\x1B[50;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(50 + 225)),
+                (@"\x1B[51;8;7~", Key.CtrlMask | Key.ShiftMask | Key.AltMask | MapCursesKey(51 + 225)),
                 // Shift+Alt+(F4)
                 (@"\x1B[1;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(268)),
                 // Shift+Alt+(F5 - F8)
-                (@"\x1B[53;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(53+216)),
-                (@"\x1B[54;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(55+215)),
-                (@"\x1B[55;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(56+215)),
-                (@"\x1B[56;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(57+215)),
+                (@"\x1B[53;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(53 + 216)),
+                (@"\x1B[54;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(55 + 215)),
+                (@"\x1B[55;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(56 + 215)),
+                (@"\x1B[56;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(57 + 215)),
                 // Shift+Alt+(F9 - F12)
-                (@"\x1B[48;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(48+225)),
-                (@"\x1B[49;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(49+225)),
-                (@"\x1B[50;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(50+225)),
-                (@"\x1B[51;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(51+225)),
+                (@"\x1B[48;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(48 + 225)),
+                (@"\x1B[49;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(49 + 225)),
+                (@"\x1B[50;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(50 + 225)),
+                (@"\x1B[51;6~", Key.ShiftMask | Key.AltMask | MapCursesKey(51 + 225)),
                 // Shift+Ctrl+Alt+KeyNPage
                 (@"\x1B[54;6~", Key.ShiftMask | Key.CtrlMask | Key.AltMask | Key.PageDown),
                 // Shift+Ctrl+Alt+KeyPPage
@@ -282,34 +282,38 @@ namespace Consolonia.PlatformSupport
             ];
 
             foreach ((string, Key) fSequence in fSequences)
-            {
                 yield return new SafeLockMatcher(
                     new StartsEndsWithMatcher<int>(_ => { RaiseKeyPressInternal(fSequence.Item2); }, ToChar,
                         fSequence.Item1, fSequence.Item1), 0, 0, 0);
-            }
-            
+
             // escape of ESC
-            yield return new SafeLockMatcher(new RegexMatcher<int>(_ =>
-            {
-                RaiseKeyPressInternal(Key.Esc);
-            }, ToChar, @"^\x1B+$", 2), 0, 0);
-            
+            yield return new SafeLockMatcher(
+                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.Esc); }, ToChar, @"^\x1B+$", 2), 0, 0);
+
             // The ESC-number handling, debatable.
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
             {
-                Key k = Key.Unknown;
+                var k = Key.Unknown;
                 // Simulates the AltMask itself by pressing Alt + Space.
                 int wch = tuple.Item2[0];
                 int wch2 = tuple.Item2[1];
-                
+
                 if (wch2 == (int)Key.Space)
+                {
                     k = Key.AltMask;
+                }
                 else if (wch2 - (int)Key.Space >= (uint)Key.A && wch2 - (int)Key.Space <= (uint)Key.Z)
+                {
                     k = (Key)((uint)Key.AltMask + (wch2 - (int)Key.Space));
+                }
                 else if (wch2 >= (uint)Key.A - 64 && wch2 <= (uint)Key.Z - 64)
+                {
                     k = (Key)((uint)(Key.AltMask | Key.CtrlMask) + (wch2 + 64));
+                }
                 else if (wch2 >= (uint)Key.D0 && wch2 <= (uint)Key.D9)
+                {
                     k = (Key)((uint)Key.AltMask + (uint)Key.D0 + (wch2 - (uint)Key.D0));
+                }
                 else
                 {
                     // Unfortunately there are no way to differentiate Ctrl+Alt+alfa and Ctrl+Shift+Alt+alfa.
@@ -335,9 +339,10 @@ namespace Consolonia.PlatformSupport
                         k = (Key)((uint)(Key.AltMask | Key.CtrlMask) + wch2);
                     }
                 }
+
                 RaiseKeyPressInternal(k);
             }, ToChar, @"^\x1B[^\x1B\[]*$", 2), 0, 0);
-            
+
             // alt mask
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
             {
@@ -345,11 +350,11 @@ namespace Consolonia.PlatformSupport
                 Key k = Key.AltMask | MapCursesKey(wch);
                 RaiseKeyPressInternal(k);
             }, ToChar, @"^\x1B[^\x00]*$", 2), 0, Curses.KEY_CODE_YES);
-            
+
             // mouse and resize detection and some special processing
             yield return new SafeLockMatcher(new GenericMatcher<int>(wch =>
             {
-                 switch (wch)
+                switch (wch)
                 {
                     case Curses.KeyResize when Curses.CheckWinChange():
                         CheckSize();
@@ -402,7 +407,7 @@ namespace Consolonia.PlatformSupport
 
                 RaiseKeyPressInternal(k);
             }), Curses.KEY_CODE_YES);
-            
+
             // text detection
             yield return new SafeLockMatcher(new TextInputMatcher<int>(tuple =>
             {
@@ -417,9 +422,8 @@ namespace Consolonia.PlatformSupport
                 if (processSeparateKeys)
                     foreach (int key in tuple.Item2)
                         ProcessKeyInternal(key);
-
             }, ToChar), 0);
-            
+
             // general keys backup
             yield return new SafeLockMatcher(new GenericMatcher<int>(ProcessKeyInternal), 0);
         }
@@ -428,7 +432,9 @@ namespace Consolonia.PlatformSupport
         {
             Key k;
             if (wch == Curses.KeyTab)
+            {
                 k = MapCursesKey(wch);
+            }
             else
             {
                 // Unfortunately there are no way to differentiate Ctrl+alfa and Ctrl+Shift+alfa.
@@ -446,7 +452,7 @@ namespace Consolonia.PlatformSupport
                     _keyModifiers.Shift = true;
                 }
             }
-                
+
             RaiseKeyPressInternal(k);
         }
 
@@ -509,102 +515,102 @@ namespace Consolonia.PlatformSupport
 
             RawInputModifiers rawInputModifiers = MouseModifiersFlagTranslator.Translate(ev.ButtonState);
 
-              Vector? wheelDelta = null;
-                if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledDown))
-                    wheelDelta = new Vector(0, -velocity);
-                if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledUp))
-                    wheelDelta = new Vector(0, velocity);
-                var point = new Point(ev.X, ev.Y);
-                foreach (Curses.Event flag in ev.ButtonState.GetFlags())
-                    switch (flag)
-                    {
-                        case Curses.Event.ButtonAlt:
-                        case Curses.Event.ButtonCtrl:
-                        case Curses.Event.ButtonShift:
-                            // we ignore these, as they are picked up by input modifiers
-                            break;
-                        case Curses.Event.Button1Clicked:
-                            RaiseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp,
-                                1, point, rawInputModifiers);
-                            break;
-                        case Curses.Event.Button1DoubleClicked:
-                            RaiseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp,
-                                2, point, rawInputModifiers);
-                            break;
-                        case Curses.Event.Button1TripleClicked:
-                            RaiseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp,
-                                3, point, rawInputModifiers);
-                            break;
-                        case Curses.Event.Button2Clicked:
-                            RaiseMouseClickedEvent(RawPointerEventType.MiddleButtonDown,
-                                RawPointerEventType.MiddleButtonUp, 1, point, rawInputModifiers);
-                            break;
-                        case Curses.Event.Button2DoubleClicked:
-                            RaiseMouseClickedEvent(RawPointerEventType.MiddleButtonDown,
-                                RawPointerEventType.MiddleButtonUp, 2, point, rawInputModifiers);
-                            break;
-                        case Curses.Event.Button2TripleClicked:
-                            RaiseMouseClickedEvent(RawPointerEventType.MiddleButtonDown,
-                                RawPointerEventType.MiddleButtonUp, 3, point, rawInputModifiers);
-                            break;
-                        case Curses.Event.Button3Clicked:
-                        case Curses.Event.Button4Clicked:
-                            RaiseMouseClickedEvent(RawPointerEventType.RightButtonDown,
-                                RawPointerEventType.RightButtonUp, 1, point, rawInputModifiers);
-                            break;
-                        case Curses.Event.Button3DoubleClicked:
-                        case Curses.Event.Button4DoubleClicked:
-                            RaiseMouseClickedEvent(RawPointerEventType.RightButtonDown,
-                                RawPointerEventType.RightButtonUp, 2, point, rawInputModifiers);
-                            break;
-                        case Curses.Event.Button3TripleClicked:
-                        case Curses.Event.Button4TripleClicked:
-                            RaiseMouseClickedEvent(RawPointerEventType.RightButtonDown,
-                                RawPointerEventType.RightButtonUp, 3, point, rawInputModifiers);
-                            break;
-                        case Curses.Event.Button1Pressed:
-                            _moveModifers = rawInputModifiers | RawInputModifiers.LeftMouseButton;
-                            RaiseMouseEvent(RawPointerEventType.LeftButtonDown, point, wheelDelta, _moveModifers);
-                            break;
-                        case Curses.Event.Button2Pressed:
-                            _moveModifers = rawInputModifiers | RawInputModifiers.MiddleMouseButton;
-                            RaiseMouseEvent(RawPointerEventType.MiddleButtonDown, point, wheelDelta, _moveModifers);
-                            break;
-                        case Curses.Event.Button3Pressed:
-                            _moveModifers = rawInputModifiers | RawInputModifiers.RightMouseButton;
-                            RaiseMouseEvent(RawPointerEventType.RightButtonDown, point, wheelDelta,
-                                rawInputModifiers | _moveModifers);
-                            break;
-                        case Curses.Event.Button1Released:
-                            _moveModifers = RawInputModifiers.None;
-                            RaiseMouseEvent(RawPointerEventType.LeftButtonUp, point, wheelDelta,
-                                RawInputModifiers.None);
-                            break;
-                        case Curses.Event.Button2Released:
-                            _moveModifers = RawInputModifiers.None;
-                            RaiseMouseEvent(RawPointerEventType.MiddleButtonUp, point, wheelDelta,
-                                RawInputModifiers.None);
-                            break;
-                        case Curses.Event.Button3Released:
-                        case Curses.Event.Button4Released:
-                            _moveModifers = RawInputModifiers.None;
-                            RaiseMouseEvent(RawPointerEventType.RightButtonUp, point, wheelDelta,
-                                RawInputModifiers.None);
-                            break;
+            Vector? wheelDelta = null;
+            if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledDown))
+                wheelDelta = new Vector(0, -velocity);
+            if (ev.ButtonState.HasFlag(Curses.Event.ButtonWheeledUp))
+                wheelDelta = new Vector(0, velocity);
+            var point = new Point(ev.X, ev.Y);
+            foreach (Curses.Event flag in ev.ButtonState.GetFlags())
+                switch (flag)
+                {
+                    case Curses.Event.ButtonAlt:
+                    case Curses.Event.ButtonCtrl:
+                    case Curses.Event.ButtonShift:
+                        // we ignore these, as they are picked up by input modifiers
+                        break;
+                    case Curses.Event.Button1Clicked:
+                        RaiseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp,
+                            1, point, rawInputModifiers);
+                        break;
+                    case Curses.Event.Button1DoubleClicked:
+                        RaiseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp,
+                            2, point, rawInputModifiers);
+                        break;
+                    case Curses.Event.Button1TripleClicked:
+                        RaiseMouseClickedEvent(RawPointerEventType.LeftButtonDown, RawPointerEventType.LeftButtonUp,
+                            3, point, rawInputModifiers);
+                        break;
+                    case Curses.Event.Button2Clicked:
+                        RaiseMouseClickedEvent(RawPointerEventType.MiddleButtonDown,
+                            RawPointerEventType.MiddleButtonUp, 1, point, rawInputModifiers);
+                        break;
+                    case Curses.Event.Button2DoubleClicked:
+                        RaiseMouseClickedEvent(RawPointerEventType.MiddleButtonDown,
+                            RawPointerEventType.MiddleButtonUp, 2, point, rawInputModifiers);
+                        break;
+                    case Curses.Event.Button2TripleClicked:
+                        RaiseMouseClickedEvent(RawPointerEventType.MiddleButtonDown,
+                            RawPointerEventType.MiddleButtonUp, 3, point, rawInputModifiers);
+                        break;
+                    case Curses.Event.Button3Clicked:
+                    case Curses.Event.Button4Clicked:
+                        RaiseMouseClickedEvent(RawPointerEventType.RightButtonDown,
+                            RawPointerEventType.RightButtonUp, 1, point, rawInputModifiers);
+                        break;
+                    case Curses.Event.Button3DoubleClicked:
+                    case Curses.Event.Button4DoubleClicked:
+                        RaiseMouseClickedEvent(RawPointerEventType.RightButtonDown,
+                            RawPointerEventType.RightButtonUp, 2, point, rawInputModifiers);
+                        break;
+                    case Curses.Event.Button3TripleClicked:
+                    case Curses.Event.Button4TripleClicked:
+                        RaiseMouseClickedEvent(RawPointerEventType.RightButtonDown,
+                            RawPointerEventType.RightButtonUp, 3, point, rawInputModifiers);
+                        break;
+                    case Curses.Event.Button1Pressed:
+                        _moveModifers = rawInputModifiers | RawInputModifiers.LeftMouseButton;
+                        RaiseMouseEvent(RawPointerEventType.LeftButtonDown, point, wheelDelta, _moveModifers);
+                        break;
+                    case Curses.Event.Button2Pressed:
+                        _moveModifers = rawInputModifiers | RawInputModifiers.MiddleMouseButton;
+                        RaiseMouseEvent(RawPointerEventType.MiddleButtonDown, point, wheelDelta, _moveModifers);
+                        break;
+                    case Curses.Event.Button3Pressed:
+                        _moveModifers = rawInputModifiers | RawInputModifiers.RightMouseButton;
+                        RaiseMouseEvent(RawPointerEventType.RightButtonDown, point, wheelDelta,
+                            rawInputModifiers | _moveModifers);
+                        break;
+                    case Curses.Event.Button1Released:
+                        _moveModifers = RawInputModifiers.None;
+                        RaiseMouseEvent(RawPointerEventType.LeftButtonUp, point, wheelDelta,
+                            RawInputModifiers.None);
+                        break;
+                    case Curses.Event.Button2Released:
+                        _moveModifers = RawInputModifiers.None;
+                        RaiseMouseEvent(RawPointerEventType.MiddleButtonUp, point, wheelDelta,
+                            RawInputModifiers.None);
+                        break;
+                    case Curses.Event.Button3Released:
+                    case Curses.Event.Button4Released:
+                        _moveModifers = RawInputModifiers.None;
+                        RaiseMouseEvent(RawPointerEventType.RightButtonUp, point, wheelDelta,
+                            RawInputModifiers.None);
+                        break;
 
-                        case Curses.Event.ReportMousePosition:
-                            RaiseMouseEvent(RawPointerEventType.Move, point, wheelDelta,
-                                rawInputModifiers | _moveModifers);
-                            break;
+                    case Curses.Event.ReportMousePosition:
+                        RaiseMouseEvent(RawPointerEventType.Move, point, wheelDelta,
+                            rawInputModifiers | _moveModifers);
+                        break;
 
-                        case Curses.Event.ButtonWheeledDown:
-                        case Curses.Event.ButtonWheeledUp:
-                            RaiseMouseEvent(RawPointerEventType.Wheel, point, wheelDelta, rawInputModifiers);
-                            break;
+                    case Curses.Event.ButtonWheeledDown:
+                    case Curses.Event.ButtonWheeledUp:
+                        RaiseMouseEvent(RawPointerEventType.Wheel, point, wheelDelta, rawInputModifiers);
+                        break;
 
-                        default:
-                            throw new NotImplementedException("Unknown mouse event");
-                    }
+                    default:
+                        throw new NotImplementedException("Unknown mouse event");
+                }
         }
 
         // emit pairs of mouse click events (down/up)

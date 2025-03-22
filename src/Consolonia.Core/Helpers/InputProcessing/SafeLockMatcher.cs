@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Consolonia.Core.Helpers.InputProcessing
 {
     /// <summary>
-    /// Safe with integer array key
+    ///     Safe with integer array key
     /// </summary>
     public class SafeLockMatcher : IMatcher<(int, int)>
     {
@@ -16,15 +16,9 @@ namespace Consolonia.Core.Helpers.InputProcessing
             _lockedMatcher = lockedMatcher;
 
             var key = new List<int>([key1]);
-            if (key2.HasValue)
-            {
-                key.Add(key2.Value);
-            }
+            if (key2.HasValue) key.Add(key2.Value);
 
-            if (otherKeys.HasValue)
-            {
-                key.Add(otherKeys.Value);
-            }
+            if (otherKeys.HasValue) key.Add(otherKeys.Value);
 
             _key = [.. key];
         }

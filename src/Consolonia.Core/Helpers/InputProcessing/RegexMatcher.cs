@@ -28,7 +28,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
             if (matchResultInternal != AppendResult.NoMatch)
             {
                 _accumulatedKeys.Add(input);
-                
+
                 if (autoFlushOnLength != null && _accumulator.Length == (int)autoFlushOnLength)
                 {
                     Complete((accumulatedString, _accumulatedKeys.ToArray()));
@@ -37,7 +37,9 @@ namespace Consolonia.Core.Helpers.InputProcessing
                 }
             }
             else
+            {
                 _accumulator.Length--;
+            }
 
             return matchResultInternal;
         }

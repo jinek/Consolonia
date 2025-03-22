@@ -59,11 +59,8 @@ namespace Consolonia.Core.Infrastructure
                         await pauseTask;
 
 
-                    int timeout=-1;
-                    await DispatchInputAsync(() =>
-                    {
-                        timeout = (int)(CheckSize() ? 1 : slowInterval);
-                    });
+                    int timeout = -1;
+                    await DispatchInputAsync(() => { timeout = (int)(CheckSize() ? 1 : slowInterval); });
                     await Task.Delay(timeout);
                 }
             }); //todo: we should rethrow in main thread, or may be we should keep the loop running, but raise some general handler if it already exists, like Dispatcher.UnhandledException or whatever + check other places we use Task.Run and async void
