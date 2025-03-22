@@ -144,12 +144,12 @@ namespace Consolonia.PlatformSupport
 
         private (int, int)[] ReadInputFunction()
         {
-            Task pauseTask = PauseTask;
-            pauseTask?.Wait();
-
             _rowInputBuffer.Clear();
             do
             {
+                Task pauseTask = PauseTask;
+                pauseTask?.Wait();
+                
                 int code = Curses.get_wch(out int wch);
                 if (code != Curses.ERR)
                 {
