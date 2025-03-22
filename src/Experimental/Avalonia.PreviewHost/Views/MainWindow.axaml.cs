@@ -18,6 +18,7 @@ namespace Avalonia.PreviewHost.Views
         }
 
         public MainViewModel Model => (MainViewModel)DataContext!; // ReSharper disable VariableCanBeNotNullable
+
         private async void OnOpen(object? sender, RoutedEventArgs e)
         {
             // Get top level from the current control. Alternatively, you can use Window reference instead.
