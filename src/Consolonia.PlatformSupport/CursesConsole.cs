@@ -136,7 +136,11 @@ namespace Consolonia.PlatformSupport
         }
 
         private readonly List<(int code, int wch)> _rowInputBuffer = new(1000); //todo: low magic number
-        private const int NoInputTimeout = 200;
+        
+        /// <summary>
+        /// https://github.com/gui-cs/Terminal.Gui/blob/v2_develop/Terminal.Gui/ConsoleDrivers/CursesDriver/CursesDriver.cs#L790
+        /// </summary>
+        private const int NoInputTimeout = 10;
 
         private (int, int)[] ReadInputFunction()
         {
@@ -154,7 +158,6 @@ namespace Consolonia.PlatformSupport
 
                     if (code != Curses.KEY_CODE_YES && wch == 27)
                     {
-                        Thread.Sleep(NoInputTimeout); //todo: low: magic number, copied from GUIcs
                         int code2 = Curses.get_wch(out int wch2);
 
                         // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
@@ -163,12 +166,10 @@ namespace Consolonia.PlatformSupport
                             // it looks like first one was solo ESCAPE and terminal does send escape of escape
                             // Hence, simulating it
                             _rowInputBuffer.Add((code, wch));
-                        }
-                        else
-                        {
-                            _rowInputBuffer.Add((code2, wch2));
                             break;
                         }
+
+                        _rowInputBuffer.Add((code2, wch2));
                     }
                 }
                 else break;
@@ -189,7 +190,7 @@ namespace Consolonia.PlatformSupport
                 out Curses.Event _);
             Curses.mouseinterval(0); // if we don't do this mouse events are dropped
             Console.WriteLine(Esc.EnableAllMouseEvents);
-            //Curses.timeout(NoInputTimeout);
+            Curses.timeout(NoInputTimeout);
             //Console.WriteLine(Esc.EnableExtendedMouseTracking);
             base.PrepareConsole();
             WriteText(Esc.EnableBracketedPasteMode);
@@ -412,36 +413,38 @@ namespace Consolonia.PlatformSupport
 
                 if (processSeparateKeys)
                     foreach (int key in tuple.Item2)
-                        RaiseKeyPressInternal((Key)key);
+                        ProcessKeyInternal(key);
 
             }, ToChar), 0);
             
             // general keys backup
-            yield return new SafeLockMatcher(new GenericMatcher<int>(wch =>
+            yield return new SafeLockMatcher(new GenericMatcher<int>(ProcessKeyInternal), 0);
+        }
+
+        private void ProcessKeyInternal(int wch)
+        {
+            Key k;
+            if (wch == Curses.KeyTab)
+                k = MapCursesKey(wch);
+            else
             {
-                Key k;
-                if (wch == Curses.KeyTab)
-                    k = MapCursesKey(wch);
-                else
+                // Unfortunately there are no way to differentiate Ctrl+alfa and Ctrl+Shift+alfa.
+                k = (Key)wch;
+                if (wch == 0)
                 {
-                    // Unfortunately there are no way to differentiate Ctrl+alfa and Ctrl+Shift+alfa.
-                    k = (Key)wch;
-                    if (wch == 0)
-                    {
-                        k = Key.CtrlMask | Key.Space;
-                    }
-                    else if (wch >= (uint)Key.A - 64 && wch <= (uint)Key.Z - 64)
-                    {
-                        if ((Key)(wch + 64) != Key.J) k = Key.CtrlMask | (Key)(wch + 64);
-                    }
-                    else if (wch >= (uint)Key.A && wch <= (uint)Key.Z)
-                    {
-                        _keyModifiers.Shift = true;
-                    }
+                    k = Key.CtrlMask | Key.Space;
                 }
+                else if (wch >= (uint)Key.A - 64 && wch <= (uint)Key.Z - 64)
+                {
+                    if ((Key)(wch + 64) != Key.J) k = Key.CtrlMask | (Key)(wch + 64);
+                }
+                else if (wch >= (uint)Key.A && wch <= (uint)Key.Z)
+                {
+                    _keyModifiers.Shift = true;
+                }
+            }
                 
-                RaiseKeyPressInternal(k);
-            }), 0);
+            RaiseKeyPressInternal(k);
         }
 
         private static char ToChar(int arg)
