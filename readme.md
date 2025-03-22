@@ -16,7 +16,7 @@ Solution contains one more readme file with coding information.
 ## Try it out
 To try it out install the Consolonia.Gallery tool from nuget:
 ```
-dotnet tool install -g Consolonia.Gallery
+dotnet tool install -g Consolonia.Gallery --prerelease
 ```
 Then run the gallery:
 ```
