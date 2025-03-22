@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,20 +23,21 @@ namespace Avalonia.PreviewHost.Views
         {
             // Get top level from the current control. Alternatively, you can use Window reference instead.
             TopLevel? topLevel = GetTopLevel(this);
+            ArgumentNullException.ThrowIfNull(topLevel);
 
             // Start async operation to open the dialog.
-            var files = await topLevel!.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 Title = "Open csproj",
                 AllowMultiple = false,
-                FileTypeFilter = new List<FilePickerFileType>
-                {
+                FileTypeFilter =
+                [
                     new("C# Project")
                     {
-                        Patterns = new List<string> { "*.csproj" }
+                        Patterns = ["*.csproj"]
                     }
-                }
-            }).ConfigureAwait(false);
+                ]
+            });
 
             if (!files.Any()) return;
 
