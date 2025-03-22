@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -7,6 +6,7 @@
         <Nullable>enable</Nullable>
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>Consolonia.PreviewHost</ToolCommandName>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>

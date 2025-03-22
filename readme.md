@@ -13,5 +13,20 @@ Example of usage: https://github.com/jinek/ToolUI
 
 Solution contains one more readme file with coding information.
 
+## Try it out
+To try it out install the Consolonia.Gallery tool from nuget:
+```
+dotnet tool install -g Consolonia.Gallery --prerelease
+```
+Then run the gallery:
+```
+Consolonia.Gallery
+```
+
+To uninstall the Gallery app.
+```
+dotnet tool uninstall -g Consolonia.Gallery
+```
+
 ## See wiki for more documentation
 https://github.com/jinek/Consolonia/wiki

@@ -1,3 +1,4 @@
+#pragma warning disable CA5394 // Do not use insecure randomness
 using System;
 using Avalonia;
 using Avalonia.Controls;
@@ -13,7 +14,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         private static int _windowCount;
 
-        private static readonly IImmutableSolidColorBrush[] _brushes =
+        private static readonly IImmutableSolidColorBrush[] SomeBrushes =
         [
             Brushes.LightBlue,
             Brushes.LightGreen,
@@ -50,7 +51,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private void OnColor(object sender, RoutedEventArgs args)
         {
-            Background = _brushes[Random.Shared.Next(0, _brushes.Length)];
+            Background = SomeBrushes[Random.Shared.Next(0, SomeBrushes.Length)];
         }
 
         private void OnClose(object sender, RoutedEventArgs args)

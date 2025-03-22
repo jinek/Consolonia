@@ -112,6 +112,8 @@ namespace Consolonia.Core.Infrastructure
 
                 while (!Disposed)
                 {
+                    PauseTask?.Wait();
+
                     ConsoleKeyInfo[] consoleKeyInfos = _inputBuffer.Dequeue();
 
                     await DispatchInputAsync(() => { _inputProcessor.ProcessChunk(consoleKeyInfos); });

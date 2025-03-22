@@ -1,4 +1,6 @@
+#pragma warning disable CA5394 // Do not use insecure randomness
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Controls;
@@ -39,19 +41,17 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             RemoveItemCommand = MiniCommand.Create(() =>
             {
-                var items = Selection.SelectedItems.ToList();
+                List<string> items = Selection.SelectedItems.ToList();
 
                 foreach (string item in items) Items.Remove(item);
             });
 
             SelectRandomItemCommand = MiniCommand.Create(() =>
             {
-                var random = new Random();
-
                 using (Selection.BatchUpdate())
                 {
                     Selection.Clear();
-                    Selection.Select(random.Next(Items.Count - 1));
+                    Selection.Select(Random.Shared.Next(Items.Count - 1));
                 }
             });
         }
@@ -90,7 +90,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private string GenerateItem()
         {
-            return $"Item {_counter++.ToString()}";
+            return $"Item {_counter++}";
         }
     }
 }

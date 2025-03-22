@@ -1,3 +1,5 @@
+#pragma warning disable CA1822 // Mark members as static
+
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;

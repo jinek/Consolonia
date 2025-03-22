@@ -1,0 +1,13 @@
+<Project>
+    <PropertyGroup>
+        <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+        <IsPackable>true</IsPackable>
+        <!--todo: enable nullable-->
+        <Nullable>disable</Nullable>
+        <EnableNETAnalyzers>false</EnableNETAnalyzers>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+        <AnalysisLevel>6.0</AnalysisLevel>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <TreatWarningsAsErrors Condition=" '$(Configuration)' == 'RELEASE' ">true</TreatWarningsAsErrors>
+    </PropertyGroup>
+</Project>

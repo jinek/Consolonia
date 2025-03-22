@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -118,7 +119,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 }
                 else if (e.Data.Contains(DataFormats.Files))
                 {
-                    var files = e.Data.GetFiles() ?? Array.Empty<IStorageItem>();
+                    IEnumerable<IStorageItem> files = e.Data.GetFiles() ?? Array.Empty<IStorageItem>();
                     string contentStr = $"({e.DragEffects}) {Environment.NewLine}";
 
                     foreach (IStorageItem item in files)
@@ -140,7 +141,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 #pragma warning disable CS0618 // Type or member is obsolete
                 else if (e.Data.Contains(DataFormats.FileNames))
                 {
-                    var files = e.Data.GetFileNames();
+                    IEnumerable<string> files = e.Data.GetFileNames();
                     _dropState.Text =
                         $"({e.DragEffects})  {string.Join(Environment.NewLine, files ?? Array.Empty<string>())}";
                 }

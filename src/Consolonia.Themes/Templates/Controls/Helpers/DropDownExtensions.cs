@@ -48,7 +48,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             }
             else
             {
-                var disposables = dropDownControl.GetValue(DisposablesProperty);
+                IDisposable[] disposables = dropDownControl.GetValue(DisposablesProperty);
                 foreach (IDisposable disposable in disposables)
                     disposable.Dispose();
 
