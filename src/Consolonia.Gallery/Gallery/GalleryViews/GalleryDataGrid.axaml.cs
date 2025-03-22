@@ -662,7 +662,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         public IEnumerable GetErrors(string propertyName)
         {
-            return _errorLookup.TryGetValue(propertyName, out var errorList) ? errorList : null;
+            return _errorLookup.TryGetValue(propertyName, out List<string> errorList) ? errorList : null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -676,7 +676,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             }
             else
             {
-                if (_errorLookup.TryGetValue(propertyName, out var errorList))
+                if (_errorLookup.TryGetValue(propertyName, out List<string> errorList))
                 {
                     errorList.Clear();
                     errorList.Add(error);

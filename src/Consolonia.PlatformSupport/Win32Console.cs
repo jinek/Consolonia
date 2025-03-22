@@ -120,7 +120,7 @@ namespace Consolonia.PlatformSupport
                 while (!Disposed /*inject ThreadAbortException*/)
                 {
                     PauseTask?.Wait();
-                    var inputRecords = _windowsConsole.ReadConsoleInput();
+                    INPUT_RECORD[] inputRecords = _windowsConsole.ReadConsoleInput();
                     var clipboard = AvaloniaLocator.Current.GetService<IClipboard>();
                     if (clipboard != null &&
                         inputRecords.Where(evt => evt.EventType == EVENT_TYPE.KEY_EVENT).Skip(1).Any())

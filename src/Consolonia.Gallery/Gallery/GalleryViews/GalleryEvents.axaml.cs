@@ -210,7 +210,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Details =
                 $"""
                  Key: {key.ToString()}
-                 Char: '{ch}' {(int)ch} 0x{((int)ch).ToString("x")}
+                 Char: '{ch}' {(int)ch} 0x{(int)ch:x}
                  Modifiers: {modifiers.ToString()}
                  IsDown: {isDown}
                  Timestamp: {timestamp}

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
@@ -14,7 +15,7 @@ namespace Consolonia.Core.Text
         {
             var console = AvaloniaLocator.Current.GetRequiredService<IConsoleOutput>();
 
-            var glyphs = text.Span.ToString().GetGlyphs(console.SupportsComplexEmoji);
+            IReadOnlyList<string> glyphs = text.Span.ToString().GetGlyphs(console.SupportsComplexEmoji);
 
             var shapedBuffer = new ShapedBuffer(text, glyphs.Count,
                 options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);

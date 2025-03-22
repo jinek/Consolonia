@@ -1,3 +1,4 @@
+#pragma warning disable CA1002 // Do not expose generic lists
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -225,7 +226,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             var tasks = new List<Task>();
             Visual parent = GetVisualParent(from, to);
-            var scaleProperty = ScaleTransform.ScaleYProperty;
+            StyledProperty<double> scaleProperty = ScaleTransform.ScaleYProperty;
 
             if (from != null)
             {

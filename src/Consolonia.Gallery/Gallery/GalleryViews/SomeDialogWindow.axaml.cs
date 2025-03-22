@@ -1,3 +1,4 @@
+#pragma warning disable CA5394 // Do not use insecure randomness
 using System;
 using Avalonia;
 using Avalonia.Interactivity;

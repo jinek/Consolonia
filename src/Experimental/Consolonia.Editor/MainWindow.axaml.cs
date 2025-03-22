@@ -21,13 +21,12 @@ namespace ConsoloniaEdit.Demo
         private readonly TextEditor _textEditor;
         private FoldingManager _foldingManager;
         private readonly TextMate.Installation _textMateInstallation;
-        private CompletionWindow _completionWindow;
-        private OverloadInsightWindow _insightWindow;
         private ComboBox _syntaxModeCombo;
         private TextBlock _statusTextBlock;
         private RegistryOptions _registryOptions;
         private int _currentTheme = (int)ThemeName.SolarizedLight;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         public MainWindow()
         {
             InitializeComponent();

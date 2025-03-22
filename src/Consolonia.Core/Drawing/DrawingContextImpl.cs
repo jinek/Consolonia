@@ -105,7 +105,7 @@ namespace Consolonia.Core.Drawing
                 int py = (int)targetRect.TopLeft.Y + y / 2;
 
                 // get the quad pixel the bitmap
-                var quadColors = new[]
+                SKColor[] quadColors = new[]
                 {
                     bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
                     bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
@@ -162,7 +162,7 @@ namespace Consolonia.Core.Drawing
                     {
                         pen = pen ?? new Pen(brush);
 
-                        var strokePositions = InferStrokePositions(streamGeometry);
+                        RectangleLinePosition[] strokePositions = InferStrokePositions(streamGeometry);
                         for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
                         {
                             Line stroke = streamGeometry.Strokes[iStroke];
@@ -525,7 +525,7 @@ namespace Consolonia.Core.Drawing
 
             Point head = line.PStart;
 
-            var extractColorCheckPlatformSupported =
+            Color? extractColorCheckPlatformSupported =
                 ExtractColorOrNullWithPlatformCheck(pen, out LineStyles lineStyles);
             if (extractColorCheckPlatformSupported == null)
                 return;
@@ -976,7 +976,7 @@ namespace Consolonia.Core.Drawing
                 var newClusterCenters = new SKColor[2];
                 for (int cluster = 0; cluster < 2; cluster++)
                 {
-                    var clusteredColors = colors.Where((_, i) => clusters[i] == cluster).ToList();
+                    List<SKColor> clusteredColors = colors.Where((_, i) => clusters[i] == cluster).ToList();
                     if (clusteredColors.Any())
                         newClusterCenters[cluster] = GetAverageColor(clusteredColors);
                     if (clusteredColors.Count != 4) continue;

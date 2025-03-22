@@ -32,13 +32,13 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         public ScrollViewerPageViewModel()
         {
-            AvailableVisibility = new List<ScrollBarVisibility>
-            {
+            AvailableVisibility =
+            [
                 ScrollBarVisibility.Auto,
                 ScrollBarVisibility.Visible,
                 ScrollBarVisibility.Hidden,
                 ScrollBarVisibility.Disabled
-            };
+            ];
 
             HorizontalScrollVisibility = ScrollBarVisibility.Auto;
             VerticalScrollVisibility = ScrollBarVisibility.Visible;
@@ -88,9 +88,11 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             init => RaiseAndSetIfChanged(ref _verticalScrollVisibility, value);
         }
 
-        public List<ScrollBarVisibility> AvailableVisibility { get; }
+        public IReadOnlyList<ScrollBarVisibility> AvailableVisibility { get; init; }
 
+#pragma warning disable CA1819 // Properties should not return arrays
         public string[] Cows
+#pragma warning restore CA1819 // Properties should not return arrays
         {
             get => _cows;
             init => RaiseAndSetIfChanged(ref _cows, value);
