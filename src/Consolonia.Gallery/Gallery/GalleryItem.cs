@@ -31,7 +31,7 @@ namespace Consolonia.Gallery.Gallery
                     .GetTypes()
                     .Where(type =>
                         type.Namespace == "Consolonia.Gallery.Gallery.GalleryViews" &&
-                        type.Name.StartsWith(galleryPrefix) &&
+                        type.Name.StartsWith(galleryPrefix, StringComparison.OrdinalIgnoreCase) &&
                         type.IsAssignableTo(typeof(UserControl)))
                     .OrderBy(GalleryOrderAttribute.GetOrder)
                     .Select(type => new GalleryItem(type.Name[galleryPrefix.Length..], type));

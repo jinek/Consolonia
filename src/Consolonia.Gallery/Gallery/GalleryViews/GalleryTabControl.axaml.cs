@@ -40,7 +40,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         private Dock _tabPlacement;
 
+#pragma warning disable CA1819 // Properties should not return arrays
         public TabItemViewModel[] Tabs { get; set; }
+#pragma warning restore CA1819 // Properties should not return arrays
 
         public Dock TabPlacement
         {

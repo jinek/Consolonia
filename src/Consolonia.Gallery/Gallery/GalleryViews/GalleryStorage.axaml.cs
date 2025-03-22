@@ -43,7 +43,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             {
                 IStorageFolder startLocation =
                     await storageProvider.TryGetFolderFromPathAsync(Environment.CurrentDirectory);
-                var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+                IReadOnlyList<IStorageFile> files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
                 {
                     Title = title,
                     AllowMultiple = allowMultiple,
@@ -82,12 +82,13 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     IStorageFolder startLocation =
                         await storageProvider.TryGetFolderFromPathAsync(Environment.CurrentDirectory);
 
-                    var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
-                    {
-                        Title = title,
-                        SuggestedStartLocation = startLocation,
-                        AllowMultiple = allowMultiple
-                    });
+                    IReadOnlyList<IStorageFolder> folders = await storageProvider.OpenFolderPickerAsync(
+                        new FolderPickerOpenOptions
+                        {
+                            Title = title,
+                            SuggestedStartLocation = startLocation,
+                            AllowMultiple = allowMultiple
+                        });
                     ViewModel.Folders = folders;
                 }
             }

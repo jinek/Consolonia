@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -41,8 +42,9 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
 
                                     if (focusedControl != null)
                                     {
-                                        var focusedTree = focusedControl.GetLogicalAncestors();
-                                        var menuItems = visual.GetLogicalAncestors().OfType<MenuItem>();
+                                        IEnumerable<ILogical> focusedTree = focusedControl.GetLogicalAncestors();
+                                        IEnumerable<MenuItem> menuItems =
+                                            visual.GetLogicalAncestors().OfType<MenuItem>();
 
                                         foreach (MenuItem menuItem in menuItems
                                                      .Where(item => !focusedTree.Contains(item))

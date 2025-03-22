@@ -52,6 +52,11 @@
                     HorizontalAlignment="Right">
                 _Show XAML
             </Button>
+            <Button Click="OnShowCodeBehind"
+                    IsTabStop="False"
+                    HorizontalAlignment="Right">
+                Show _Code Behind
+            </Button>
             <Button Click="Exit_Click"
                     IsTabStop="False">
                 E_xit
