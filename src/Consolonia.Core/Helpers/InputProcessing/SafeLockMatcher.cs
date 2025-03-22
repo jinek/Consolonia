@@ -36,7 +36,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
                 if (_key.Length > _keyStep + 1)
                     _keyStep++;
                 AppendResult appendResult = _lockedMatcher.Append(input.Item2);
-                if (appendResult == AppendResult.AutoFlushed)
+                if (appendResult is AppendResult.AutoFlushed or AppendResult.NoMatch)
                     _keyStep = 0;
 
                 return appendResult;

@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -121,13 +122,13 @@ namespace Consolonia.PlatformSupport
             {
                 await WaitDispatcherInitialized();
 
-                await _inputBuffer.RunAsync();
+                _inputBuffer.RunAsync();
 
                 while (!Disposed)
                 {
+                    (int, int)[] inputs = _inputBuffer.Dequeue();
                     await DispatchInputAsync(() =>
                     {
-                        (int, int)[] inputs = _inputBuffer.Dequeue();
                         _inputProcessor.ProcessChunk(inputs);
                     });
                 }
@@ -150,7 +151,7 @@ namespace Consolonia.PlatformSupport
                     _rowInputBuffer.Add((code, wch));
                     //check if was escape, wait for one more escape
 
-                    if (code != Curses.KEY_CODE_YES)
+                    if (code != Curses.KEY_CODE_YES && wch == 27)
                     {
                         Thread.Sleep(200); //todo: low: magic number, copied from GUIcs
                         int code2 = Curses.get_wch(out int wch2);
@@ -167,6 +168,7 @@ namespace Consolonia.PlatformSupport
                             _rowInputBuffer.Add((code2, wch2));
                         }
                     }
+                    else break;
                 }
                 else break;
             } while (true);
@@ -482,7 +484,7 @@ namespace Consolonia.PlatformSupport
             }
 
             Avalonia.Input.Key convertToKey = DefaultNetConsole.ConvertToKey(consoleKey);
-
+Debug.WriteLine("Key: "+ convertToKey);
             RaiseKeyPress(convertToKey,
                 character, modifiers, true, (ulong)Environment.TickCount64);
             Thread.Yield();
