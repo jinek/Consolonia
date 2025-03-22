@@ -167,9 +167,9 @@ namespace Consolonia.PlatformSupport
                         else
                         {
                             _rowInputBuffer.Add((code2, wch2));
+                            break;
                         }
                     }
-                    else break;
                 }
                 else break;
             } while (true);
@@ -189,7 +189,7 @@ namespace Consolonia.PlatformSupport
                 out Curses.Event _);
             Curses.mouseinterval(0); // if we don't do this mouse events are dropped
             Console.WriteLine(Esc.EnableAllMouseEvents);
-            Curses.timeout(NoInputTimeout);
+            //Curses.timeout(NoInputTimeout);
             //Console.WriteLine(Esc.EnableExtendedMouseTracking);
             base.PrepareConsole();
             WriteText(Esc.EnableBracketedPasteMode);
