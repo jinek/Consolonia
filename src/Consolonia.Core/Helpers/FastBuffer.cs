@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Consolonia.Core.Helpers
 {
-    public sealed class FastBuffer<T>(Func<T> readDataFunction) : IDisposable
+    public sealed class FastBuffer<T>(Func<T[]> readDataFunction) : IDisposable
     {
         private readonly object _lock = new();
         private readonly ManualResetEvent _manualResetEvent = new(false);
@@ -29,18 +29,20 @@ namespace Consolonia.Core.Helpers
             {
                 while (!_disposed)
                 {
-                    T newData = readDataFunction();
+                    T[] newData = readDataFunction();
                     Enqueue(newData);
                     //todo: low should continue the loop in case of exceptions?
                 }
             });
         }
 
-        private void Enqueue(T item)
+        private void Enqueue(IEnumerable<T> items)
         {
             lock (_lock)
             {
-                _queue.Enqueue(item);
+                foreach (T item in items)
+                    _queue.Enqueue(item);
+
                 _manualResetEvent.Set();
             }
         }
