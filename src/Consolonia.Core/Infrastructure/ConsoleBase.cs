@@ -154,6 +154,7 @@ namespace Consolonia.Core.Infrastructure
 
         public virtual void PrepareConsole()
         {
+            Console.TreatControlCAsInput = true;
             _consoleOutput.PrepareConsole();
         }
 
