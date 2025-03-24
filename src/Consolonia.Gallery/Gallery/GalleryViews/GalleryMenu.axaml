@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d"
-             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryMenu">
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryMenu"
+             Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
     <StackPanel Orientation="Horizontal"
                 Margin="1"
                 HorizontalAlignment="Center"

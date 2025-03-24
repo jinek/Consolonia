@@ -5,8 +5,8 @@
                   TargetType="Button">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeActionBackgroundBrush}" />
-        <!--<Setter Property="Foreground"
-                Value="{DynamicResource ThemeBackgroundBrush}" />-->
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
         <Setter Property="BorderBrush"
                 Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="(console:ButtonExtensions.Shadow)"

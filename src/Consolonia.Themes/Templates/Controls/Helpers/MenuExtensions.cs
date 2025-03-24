@@ -9,21 +9,27 @@ using Avalonia.LogicalTree;
 using Avalonia.Reactive;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using Consolonia.Controls;
 using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers
 {
-    internal static class MenuExtensions
+    public static class MenuExtensions
     {
+        public static readonly AttachedProperty<bool> IsMenuProperty =
+            AvaloniaProperty.RegisterAttached<Control, bool>(ControlUtils.GetStyledPropertyName(),
+                typeof(MenuExtensions),
+                inherits: true);
+        
         public static readonly AttachedProperty<bool> FocusOnLoadProperty =
-            AvaloniaProperty.RegisterAttached<Control, bool>("FocusOnLoad", typeof(MenuExtensions));
+            AvaloniaProperty.RegisterAttached<Control, bool>(ControlUtils.GetStyledPropertyName(), typeof(MenuExtensions));
 
         private static readonly AttachedProperty<IDisposable[]> DisposablesProperty =
-            AvaloniaProperty.RegisterAttached<ItemsPresenter, IDisposable[]>("Disposables", typeof(MenuExtensions));
+            AvaloniaProperty.RegisterAttached<ItemsPresenter, IDisposable[]>(ControlUtils.GetStyledPropertyName(), typeof(MenuExtensions));
 
         static MenuExtensions()
         {
-            FocusOnLoadProperty.Changed.SubscribeAction(args =>
+            UtilityExtensions.SubscribeAction(FocusOnLoadProperty.Changed, args =>
             {
                 var visual = (Visual)args.Sender;
                 if (args.NewValue.Value)

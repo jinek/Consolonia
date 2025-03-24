@@ -48,6 +48,7 @@
     </Styles.Resources>
 
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ConsoloniaAccessRun.axaml" />
 
     <wm:WindowManagerTheme />
 

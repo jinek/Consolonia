@@ -9,7 +9,7 @@
     <ControlTheme x:Key="{x:Type MenuItem}"
                   TargetType="MenuItem">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="BorderBrush"
@@ -18,7 +18,7 @@
                 Value="1,0,0,0" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="root">
+                <Border Name="root" Background="{TemplateBinding Background}">
                     <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -71,7 +71,7 @@
                                             Margin="0,0,2,1"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ScrollViewer>
+                                        <ScrollViewer Background="{DynamicResource ThemeBackgroundBrush}">
                                             <ItemsPresenter Name="PART_ItemsPresenter"
                                                             ItemsPanel="{TemplateBinding ItemsPanel}"
                                                             Grid.IsSharedSizeScope="True">
@@ -101,8 +101,9 @@
         </Style>
 
         <Style Selector="^:selected /template/ Border#root">
+            <!--TurboVision approach-->
             <Setter Property="Background"
-                    Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+                    Value="{DynamicResource ThemeActionBackgroundBrush}" />
             <!--<Setter Property="(TemplatedControl.Foreground)"
                 Value="{DynamicResource ThemeBackgroundBrush}" />-->
         </Style>
