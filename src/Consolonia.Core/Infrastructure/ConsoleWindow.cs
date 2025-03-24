@@ -106,7 +106,15 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetCursor(ICursorImpl cursor)
         {
-            this._cursorType = (cursor == null) ? StandardCursorType.Arrow : ((CursorImpl)cursor).CursorType;
+            if (cursor is null)
+            {
+                // default to arrow
+                _cursorType = StandardCursorType.Arrow;
+            }
+            else
+            {
+                _cursorType = ((CursorImpl)cursor).CursorType;
+            }
         }
 
         public IPopupImpl CreatePopup()

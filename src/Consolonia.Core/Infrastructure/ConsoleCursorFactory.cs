@@ -8,15 +8,18 @@ namespace Consolonia.Core.Infrastructure
 {
     internal class ConsoleCursorFactory : ICursorFactory, ICursorImpl
     {
-        private static Dictionary<StandardCursorType, CursorImpl> standardCursors = new Dictionary<StandardCursorType, CursorImpl>();
+        private readonly Dictionary<StandardCursorType, CursorImpl> standardCursors = new Dictionary<StandardCursorType, CursorImpl>();
 
         public ICursorImpl GetCursor(StandardCursorType cursorType)
         {
-            if (standardCursors.TryGetValue(cursorType, out var cursor))
+            lock (standardCursors)
+            {
+                if (standardCursors.TryGetValue(cursorType, out var cursor))
+                    return cursor;
+                cursor = new CursorImpl(cursorType);
+                standardCursors.Add(cursorType, cursor);
                 return cursor;
-            cursor = new CursorImpl(cursorType);
-            standardCursors.Add(cursorType, cursor);
-            return cursor;
+            }
         }
 
         public ICursorImpl CreateCursor(IBitmapImpl cursor, PixelPoint hotSpot)
@@ -34,7 +37,7 @@ namespace Consolonia.Core.Infrastructure
         public CursorImpl(StandardCursorType cursorType)
         {
             CursorType = cursorType;
-        }   
+        }
 
         public StandardCursorType CursorType { get; init; }
 
