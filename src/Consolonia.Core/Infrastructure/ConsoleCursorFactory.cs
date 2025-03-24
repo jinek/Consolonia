@@ -7,7 +7,7 @@ using Avalonia.Platform;
 namespace Consolonia.Core.Infrastructure
 {
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix
-    internal sealed class ConsoleCursorFactory : ICursorFactory, ICursorImpl
+    internal sealed class ConsoleCursorFactory : ICursorFactory
     {
         private readonly Dictionary<StandardCursorType, CursorImpl> _standardCursors = new();
 
@@ -27,14 +27,9 @@ namespace Consolonia.Core.Infrastructure
         {
             throw new NotSupportedException("Consolonia doesn't support bitmap based cursors");
         }
-
-        public void Dispose()
-        {
-            // No unmanaged resources to dispose
-            GC.SuppressFinalize(this);
-        }
     }
 
+    // ReSharp disable GCSuppressFinalizeForTypeWithoutDestructor
     public sealed class CursorImpl : ICursorImpl
     {
         public CursorImpl(StandardCursorType cursorType)
