@@ -574,7 +574,7 @@ namespace Consolonia.Core.Infrastructure
         {
             return _cursorType switch
             {
-                StandardCursorType.Arrow => "▘",
+                StandardCursorType.Arrow => "◤",
                 StandardCursorType.Cross => "+",
                 StandardCursorType.Hand => "👆",
                 StandardCursorType.Help => "?",
@@ -593,9 +593,9 @@ namespace Consolonia.Core.Infrastructure
                 StandardCursorType.TopRightCorner => "⤢",       // "⬈",
                 StandardCursorType.BottomLeftCorner => "⤢",     // "⬋",
                 StandardCursorType.BottomRightCorner => "⤡",    // "⬊",
-                StandardCursorType.DragCopy => "▘+",
-                StandardCursorType.DragLink => "▘⤻",
-                StandardCursorType.DragMove => "▘",
+                StandardCursorType.DragCopy => "◤+",
+                StandardCursorType.DragLink => "◤⤻",
+                StandardCursorType.DragMove => "◤",
                 StandardCursorType.AppStarting => "⧖",
                 StandardCursorType.None => " ",
                 _ => " "

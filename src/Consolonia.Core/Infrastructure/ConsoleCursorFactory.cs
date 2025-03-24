@@ -9,16 +9,16 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix
     internal sealed class ConsoleCursorFactory : ICursorFactory, ICursorImpl
     {
-        private readonly Dictionary<StandardCursorType, CursorImpl> standardCursors = new Dictionary<StandardCursorType, CursorImpl>();
+        private readonly Dictionary<StandardCursorType, CursorImpl> _standardCursors = new Dictionary<StandardCursorType, CursorImpl>();
 
         public ICursorImpl GetCursor(StandardCursorType cursorType)
         {
-            lock (standardCursors)
+            lock (_standardCursors)
             {
-                if (standardCursors.TryGetValue(cursorType, out var cursor))
+                if (_standardCursors.TryGetValue(cursorType, out var cursor))
                     return cursor;
                 cursor = new CursorImpl(cursorType);
-                standardCursors.Add(cursorType, cursor);
+                _standardCursors.Add(cursorType, cursor);
                 return cursor;
             }
         }
