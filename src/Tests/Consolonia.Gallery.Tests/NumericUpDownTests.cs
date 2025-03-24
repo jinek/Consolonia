@@ -15,11 +15,11 @@ namespace Consolonia.Gallery.Tests
             for (int i = 0; i < 7; i++)
                 await UITest.KeyInput(Key.Tab);
 
-            await UITest.AssertHasText("│ Minimum:    0  ▴▾");
+            await UITest.AssertHasText("│ Minimum:    0  ˄˅");
             await UITest.KeyInput(Key.Up);
-            await UITest.AssertHasText("│ Minimum:    1.0  ▴▾");
+            await UITest.AssertHasText("│ Minimum:    1.0  ˄˅");
             await UITest.KeyInput(Key.Down);
-            await UITest.AssertHasText("│ Minimum:    0.0  ▴▾");
+            await UITest.AssertHasText("│ Minimum:    0.0  ˄˅");
         }
     }
 }

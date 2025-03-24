@@ -35,7 +35,7 @@ namespace Consolonia.Gallery.Tests
             await UITest.AssertHasText(
                 "│Left aligned text    ",
                 "   Center aligned text    ",
-                "        Right aligned text│");
+                "        Right aligned text");
         }
 
         [Test]
@@ -43,9 +43,9 @@ namespace Consolonia.Gallery.Tests
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText(
-                "│Lorem ipsum dolor sit amet, consectetur adipiscing     │",
-                "│elit. Vivamus magna. Cras in mi at felis aliquet       │",
-                "│congue. Ut a est eget ligula molestie gravida.         │");
+                "│Lorem ipsum dolor sit amet, consectetur adipiscing",
+                "│elit. Vivamus magna. Cras in mi at felis aliquet   ",
+                "│congue. Ut a est eget ligula molestie gravida.     ");
         }
 
         [Test]
