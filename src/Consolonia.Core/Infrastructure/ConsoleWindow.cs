@@ -14,8 +14,10 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
+using Window = Avalonia.Controls.Window;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -23,9 +25,9 @@ namespace Consolonia.Core.Infrastructure
     ///     ConsoleWindow - a TopLevel which uses the ConsoleWindowImpl to interact with the console.
     /// </summary>
     /// <remarks>
-    ///     This window content is the MainView 
+    ///     This window content is the MainView
     /// </remarks>
-    public class ConsoleWindow : Avalonia.Controls.Window
+    public class ConsoleWindow : Window
     {
         public ConsoleWindow() :
             this(new ConsoleWindowImpl())
@@ -55,13 +57,13 @@ namespace Consolonia.Core.Infrastructure
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
+        private readonly List<Rect> _refreshRects = new();
 
         [NotNull] internal readonly IConsole Console;
-        private bool _disposedValue;
-        private IInputRoot _inputRoot;
 
         private StandardCursorType _cursorType = StandardCursorType.Arrow;
-        private readonly List<Rect> _refreshRects = new List<Rect>();
+        private bool _disposedValue;
+        private IInputRoot _inputRoot;
 
         public ConsoleWindowImpl()
         {
@@ -78,7 +80,8 @@ namespace Consolonia.Core.Infrastructure
             _accessKeysAlwaysOn = !Console.SupportsAltSolo;
             if (_accessKeysAlwaysOn)
                 _accessKeysAlwaysOnDisposable =
-                    AccessText.ShowAccessKeyProperty.Changed.SubscribeAction(OnShowAccessKeyPropertyChanged);
+                    UtilityExtensions.SubscribeAction(AccessText.ShowAccessKeyProperty.Changed,
+                        OnShowAccessKeyPropertyChanged);
         }
 
         public PixelBuffer PixelBuffer { get; private set; }
@@ -107,14 +110,10 @@ namespace Consolonia.Core.Infrastructure
         public void SetCursor(ICursorImpl cursor)
         {
             if (cursor is null)
-            {
                 // default to arrow
                 _cursorType = StandardCursorType.Arrow;
-            }
             else
-            {
                 _cursorType = ((CursorImpl)cursor).CursorType;
-            }
         }
 
         public IPopupImpl CreatePopup()
@@ -485,9 +484,9 @@ namespace Consolonia.Core.Infrastructure
         }
 
         /// <summary>
-        /// This works by creating a Software cursor, aka a sprite that is drawn on top of the screen.
-        /// It draws the current cursor directly to the console buffer, but maintains a list of the pixels need to be redrawn
-        /// whenever the cursor moves.
+        ///     This works by creating a Software cursor, aka a sprite that is drawn on top of the screen.
+        ///     It draws the current cursor directly to the console buffer, but maintains a list of the pixels need to be redrawn
+        ///     whenever the cursor moves.
         /// </summary>
         /// <param name="point"></param>
         private void RenderSoftwareCursor(Point point)
@@ -495,10 +494,9 @@ namespace Consolonia.Core.Infrastructure
             lock (PixelBuffer)
             {
                 // we need to maintain the caret 
-                var oldCaretPosition = Console.GetCaretPosition();
+                PixelBufferCoordinate oldCaretPosition = Console.GetCaretPosition();
                 bool hasCaret = false;
                 for (int i = 0; i < PixelBuffer.Length; i++)
-                {
                     if (PixelBuffer[i].IsCaret)
                     {
                         hasCaret = true;
@@ -506,36 +504,32 @@ namespace Consolonia.Core.Infrastructure
                         Console.HideCaret();
                         break;
                     }
-                }
 
                 // draw any pixels from the pixelbuffer that
                 // need to be refreshed because the cursor has moved away
-                foreach (var rect in _refreshRects)
-                {
+                foreach (Rect rect in _refreshRects)
                     for (ushort x = (ushort)rect.Left; x <= (ushort)rect.Right; x++)
-                        for (ushort y = (ushort)rect.Top; y <= (ushort)rect.Bottom; y++)
+                    for (ushort y = (ushort)rect.Top; y <= (ushort)rect.Bottom; y++)
+                        if (x < PixelBuffer.Width && y < PixelBuffer.Height)
                         {
-                            if (x < PixelBuffer.Width && y < PixelBuffer.Height)
-                            {
-                                var pixel = PixelBuffer[x, y];
-                                Console.Print(new PixelBufferCoordinate(x, y),
-                                    pixel.Background.Color,
-                                    pixel.Foreground.Color,
-                                    pixel.Foreground.Style,
-                                    pixel.Foreground.Weight,
-                                    pixel.Foreground.TextDecoration,
-                                    pixel.Foreground.Symbol.Text);
-                            }
+                            Pixel pixel = PixelBuffer[x, y];
+                            Console.Print(new PixelBufferCoordinate(x, y),
+                                pixel.Background.Color,
+                                pixel.Foreground.Color,
+                                pixel.Foreground.Style,
+                                pixel.Foreground.Weight,
+                                pixel.Foreground.TextDecoration,
+                                pixel.Foreground.Symbol.Text);
                         }
-                }
+
                 _refreshRects.Clear();
 
                 var cursorPosition = new PixelBufferCoordinate((ushort)Math.Max(0, point.X), (ushort)point.Y);
-                var cursorText = GetCursorText();
+                string cursorText = GetCursorText();
 
-                if (!String.IsNullOrEmpty(cursorText))
+                if (!string.IsNullOrEmpty(cursorText))
                 {
-                    var width = (int)Consolonia.Controls.ControlUtils.MeasureText(cursorText);
+                    int width = ControlUtils.MeasureText(cursorText);
                     if (width <= PixelBuffer.Width - cursorPosition.X)
                     {
                         // add the rect to the refresh list
@@ -543,12 +537,12 @@ namespace Consolonia.Core.Infrastructure
                         _refreshRects.Add(new Rect((ushort)Math.Max(0, (int)point.X - 1), point.Y, width, 1));
 
                         // get current pixel so we know the background color
-                        var currentPixel = PixelBuffer[(ushort)point.X, (ushort)point.Y];
-                        
+                        Pixel currentPixel = PixelBuffer[(ushort)point.X, (ushort)point.Y];
+
                         // Calculate the inverse color
-                        var invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
-                                                        (byte)(255 - currentPixel.Background.Color.G),
-                                                        (byte)(255 - currentPixel.Background.Color.B));
+                        Color invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
+                            (byte)(255 - currentPixel.Background.Color.G),
+                            (byte)(255 - currentPixel.Background.Color.B));
 
                         // draw the cursor directly to console.
                         Console.Print(new PixelBufferCoordinate((ushort)point.X, (ushort)point.Y),
@@ -570,7 +564,7 @@ namespace Consolonia.Core.Infrastructure
             }
         }
 
-        private String GetCursorText()
+        private string GetCursorText()
         {
             return _cursorType switch
             {
@@ -585,14 +579,14 @@ namespace Consolonia.Core.Infrastructure
                 StandardCursorType.Wait => "⧖",
                 StandardCursorType.Ibeam => "I",
                 StandardCursorType.UpArrow => "⬆",
-                StandardCursorType.TopSide => "⬍",              // "⬆",
-                StandardCursorType.BottomSide => "⬍",           // "⬇",
-                StandardCursorType.LeftSide => "⬌",             // "⬅",
-                StandardCursorType.RightSide => "⬌",            // "⮕",
-                StandardCursorType.TopLeftCorner => "⤡",        // "⬉",
-                StandardCursorType.TopRightCorner => "⤢",       // "⬈",
-                StandardCursorType.BottomLeftCorner => "⤢",     // "⬋",
-                StandardCursorType.BottomRightCorner => "⤡",    // "⬊",
+                StandardCursorType.TopSide => "⬍", // "⬆",
+                StandardCursorType.BottomSide => "⬍", // "⬇",
+                StandardCursorType.LeftSide => "⬌", // "⬅",
+                StandardCursorType.RightSide => "⬌", // "⮕",
+                StandardCursorType.TopLeftCorner => "⤡", // "⬉",
+                StandardCursorType.TopRightCorner => "⤢", // "⬈",
+                StandardCursorType.BottomLeftCorner => "⤢", // "⬋",
+                StandardCursorType.BottomRightCorner => "⤡", // "⬊",
                 StandardCursorType.DragCopy => "◤+",
                 StandardCursorType.DragLink => "◤⤻",
                 StandardCursorType.DragMove => "◤",
@@ -601,6 +595,5 @@ namespace Consolonia.Core.Infrastructure
                 _ => " "
             };
         }
-
     }
 }

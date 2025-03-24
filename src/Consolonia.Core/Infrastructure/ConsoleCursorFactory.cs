@@ -9,13 +9,13 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix
     internal sealed class ConsoleCursorFactory : ICursorFactory, ICursorImpl
     {
-        private readonly Dictionary<StandardCursorType, CursorImpl> _standardCursors = new Dictionary<StandardCursorType, CursorImpl>();
+        private readonly Dictionary<StandardCursorType, CursorImpl> _standardCursors = new();
 
         public ICursorImpl GetCursor(StandardCursorType cursorType)
         {
             lock (_standardCursors)
             {
-                if (_standardCursors.TryGetValue(cursorType, out var cursor))
+                if (_standardCursors.TryGetValue(cursorType, out CursorImpl cursor))
                     return cursor;
                 cursor = new CursorImpl(cursorType);
                 _standardCursors.Add(cursorType, cursor);
@@ -25,7 +25,7 @@ namespace Consolonia.Core.Infrastructure
 
         public ICursorImpl CreateCursor(IBitmapImpl cursor, PixelPoint hotSpot)
         {
-            throw new NotSupportedException($"Consolonia doesn't support bitmap based cursors");
+            throw new NotSupportedException("Consolonia doesn't support bitmap based cursors");
         }
 
         public void Dispose()
@@ -46,5 +46,4 @@ namespace Consolonia.Core.Infrastructure
         {
         }
     }
-
 }
