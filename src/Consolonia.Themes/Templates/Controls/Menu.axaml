@@ -4,7 +4,8 @@
 
     <ControlTheme x:Key="TurboVisionTopLevelMenuItem"
                   TargetType="MenuItem">
-        <Setter Property="(console:MenuExtensions.IsMenu)" Value="True"/>
+        <Setter Property="(console:MenuExtensions.IsMenu)"
+                Value="True" />
         <Setter Property="Background"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="BorderThickness"

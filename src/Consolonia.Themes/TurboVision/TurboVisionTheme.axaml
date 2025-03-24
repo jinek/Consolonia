@@ -60,9 +60,9 @@
         <Setter Property="Margin"
                 Value="1 0" />
     </Style>
-    
+
     <wm:WindowManagerTheme />
 
     <StyleInclude Source="/TurboVision/Controls/Button.axaml" />
-    <StyleInclude Source="/TurboVision/Controls/ConsoloniaAccessRun.axaml"/>
+    <StyleInclude Source="/TurboVision/Controls/ConsoloniaAccessRun.axaml" />
 </Styles>

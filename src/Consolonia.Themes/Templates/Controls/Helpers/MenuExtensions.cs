@@ -20,12 +20,14 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             AvaloniaProperty.RegisterAttached<Control, bool>(ControlUtils.GetStyledPropertyName(),
                 typeof(MenuExtensions),
                 inherits: true);
-        
+
         public static readonly AttachedProperty<bool> FocusOnLoadProperty =
-            AvaloniaProperty.RegisterAttached<Control, bool>(ControlUtils.GetStyledPropertyName(), typeof(MenuExtensions));
+            AvaloniaProperty.RegisterAttached<Control, bool>(ControlUtils.GetStyledPropertyName(),
+                typeof(MenuExtensions));
 
         private static readonly AttachedProperty<IDisposable[]> DisposablesProperty =
-            AvaloniaProperty.RegisterAttached<ItemsPresenter, IDisposable[]>(ControlUtils.GetStyledPropertyName(), typeof(MenuExtensions));
+            AvaloniaProperty.RegisterAttached<ItemsPresenter, IDisposable[]>(ControlUtils.GetStyledPropertyName(),
+                typeof(MenuExtensions));
 
         static MenuExtensions()
         {

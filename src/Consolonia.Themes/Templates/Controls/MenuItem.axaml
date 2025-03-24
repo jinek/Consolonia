@@ -18,7 +18,8 @@
                 Value="1,0,0,0" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="root" Background="{TemplateBinding Background}">
+                <Border Name="root"
+                        Background="{TemplateBinding Background}">
                     <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
                         <Grid>
                             <Grid.ColumnDefinitions>
