@@ -30,6 +30,8 @@ namespace Consolonia.Core.Infrastructure
 
         public void Dispose()
         {
+            // No unmanaged resources to dispose
+            GC.SuppressFinalize(this);
         }
     }
 
@@ -44,6 +46,8 @@ namespace Consolonia.Core.Infrastructure
 
         public void Dispose()
         {
+            // No unmanaged resources to dispose
+            GC.SuppressFinalize(this);
         }
     }
 }
