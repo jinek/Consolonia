@@ -10,6 +10,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
+using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
@@ -22,10 +23,9 @@ namespace Consolonia.Core.Infrastructure
     ///     ConsoleWindow - a TopLevel which uses the ConsoleWindowImpl to interact with the console.
     /// </summary>
     /// <remarks>
-    ///     This window content is a WindowManager panel to handle managed overlapping windows
-    ///     and the MainView is the WindowsPanel.Content
+    ///     This window content is the MainView 
     /// </remarks>
-    public class ConsoleWindow : Window
+    public class ConsoleWindow : Avalonia.Controls.Window
     {
         public ConsoleWindow() :
             this(new ConsoleWindowImpl())
@@ -59,6 +59,9 @@ namespace Consolonia.Core.Infrastructure
         [NotNull] internal readonly IConsole Console;
         private bool _disposedValue;
         private IInputRoot _inputRoot;
+
+        private StandardCursorType _cursorType = StandardCursorType.Arrow;
+        private readonly List<Rect> _refreshRects = new List<Rect>();
 
         public ConsoleWindowImpl()
         {
@@ -103,7 +106,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetCursor(ICursorImpl cursor)
         {
-            //todo: check whether we can work with cursors
+            this._cursorType = (cursor == null) ? StandardCursorType.Arrow : ((CursorImpl)cursor).CursorType;
         }
 
         public IPopupImpl CreatePopup()
@@ -384,6 +387,9 @@ namespace Consolonia.Core.Infrastructure
                         (Vector)wheelDelta!, modifiers));
                     break;
             }
+
+            // draw the software cursor at this mouse position
+            RenderSoftwareCursor(point);
         }
 
         private void ConsoleOnFocusEvent(bool focused)
@@ -469,5 +475,124 @@ namespace Consolonia.Core.Infrastructure
                 _disposedValue = true;
             }
         }
+
+        /// <summary>
+        /// This works by creating a Software cursor, aka a sprite that is drawn on top of the screen.
+        /// It draws the current cursor directly to the console buffer, but maintains a list of the pixels need to be redrawn
+        /// whenever the cursor moves.
+        /// </summary>
+        /// <param name="point"></param>
+        private void RenderSoftwareCursor(Point point)
+        {
+            lock (PixelBuffer)
+            {
+                // we need to maintain the caret 
+                var oldCaretPosition = Console.GetCaretPosition();
+                bool hasCaret = false;
+                for (int i = 0; i < PixelBuffer.Length; i++)
+                {
+                    if (PixelBuffer[i].IsCaret)
+                    {
+                        hasCaret = true;
+                        // hide the caret while drawing
+                        Console.HideCaret();
+                        break;
+                    }
+                }
+
+                // draw any pixels from the pixelbuffer that
+                // need to be refreshed because the cursor has moved away
+                foreach (var rect in _refreshRects)
+                {
+                    for (ushort x = (ushort)rect.Left; x <= (ushort)rect.Right; x++)
+                        for (ushort y = (ushort)rect.Top; y <= (ushort)rect.Bottom; y++)
+                        {
+                            if (x < PixelBuffer.Width && y < PixelBuffer.Height)
+                            {
+                                var pixel = PixelBuffer[x, y];
+                                Console.Print(new PixelBufferCoordinate(x, y),
+                                    pixel.Background.Color,
+                                    pixel.Foreground.Color,
+                                    pixel.Foreground.Style,
+                                    pixel.Foreground.Weight,
+                                    pixel.Foreground.TextDecoration,
+                                    pixel.Foreground.Symbol.Text);
+                            }
+                        }
+                }
+                _refreshRects.Clear();
+
+                var cursorPosition = new PixelBufferCoordinate((ushort)Math.Max(0, point.X), (ushort)point.Y);
+                var cursorText = GetCursorText();
+
+                if (!String.IsNullOrEmpty(cursorText))
+                {
+                    var width = (int)Consolonia.Controls.ControlUtils.MeasureText(cursorText);
+                    if (width <= PixelBuffer.Width - cursorPosition.X)
+                    {
+                        // add the rect to the refresh list
+                        // NOTE: we maintain a list because for when cursor moves faster then refresh
+                        _refreshRects.Add(new Rect((ushort)Math.Max(0, (int)point.X - 1), point.Y, width, 1));
+
+                        // get current pixel so we know the background color
+                        var currentPixel = PixelBuffer[(ushort)point.X, (ushort)point.Y];
+                        
+                        // Calculate the inverse color
+                        var invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
+                                                        (byte)(255 - currentPixel.Background.Color.G),
+                                                        (byte)(255 - currentPixel.Background.Color.B));
+
+                        // draw the cursor directly to console.
+                        Console.Print(new PixelBufferCoordinate((ushort)point.X, (ushort)point.Y),
+                            currentPixel.Background.Color,
+                            invertColor,
+                            null,
+                            null,
+                            null,
+                            cursorText);
+                    }
+                }
+
+                // restore the caret position if it was visible
+                if (hasCaret)
+                {
+                    Console.SetCaretPosition(oldCaretPosition);
+                    Console.ShowCaret();
+                }
+            }
+        }
+
+        private String GetCursorText()
+        {
+            return _cursorType switch
+            {
+                StandardCursorType.Arrow => "▘",
+                StandardCursorType.Cross => "+",
+                StandardCursorType.Hand => "👆",
+                StandardCursorType.Help => "?",
+                StandardCursorType.No => "🚫",
+                StandardCursorType.SizeAll => "*",
+                StandardCursorType.SizeNorthSouth => "⬍",
+                StandardCursorType.SizeWestEast => "⬌",
+                StandardCursorType.Wait => "⧖",
+                StandardCursorType.Ibeam => "I",
+                StandardCursorType.UpArrow => "⬆",
+                StandardCursorType.TopSide => "⬍",              // "⬆",
+                StandardCursorType.BottomSide => "⬍",           // "⬇",
+                StandardCursorType.LeftSide => "⬌",             // "⬅",
+                StandardCursorType.RightSide => "⬌",            // "⮕",
+                StandardCursorType.TopLeftCorner => "⤡",        // "⬉",
+                StandardCursorType.TopRightCorner => "⤢",       // "⬈",
+                StandardCursorType.BottomLeftCorner => "⤢",     // "⬋",
+                StandardCursorType.BottomRightCorner => "⤡",    // "⬊",
+                StandardCursorType.DragCopy => "▘+",
+                StandardCursorType.DragLink => "▘⤻",
+                StandardCursorType.DragMove => "▘",
+                StandardCursorType.AppStarting => "⧖",
+                StandardCursorType.None => " ",
+                _ => " "
+            };
+        }
+
     }
 }
