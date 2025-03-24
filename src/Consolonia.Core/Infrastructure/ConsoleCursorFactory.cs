@@ -6,7 +6,8 @@ using Avalonia.Platform;
 
 namespace Consolonia.Core.Infrastructure
 {
-    internal class ConsoleCursorFactory : ICursorFactory, ICursorImpl
+#pragma warning disable CA1711 // Identifiers should not have incorrect suffix
+    internal sealed class ConsoleCursorFactory : ICursorFactory, ICursorImpl
     {
         private readonly Dictionary<StandardCursorType, CursorImpl> standardCursors = new Dictionary<StandardCursorType, CursorImpl>();
 
@@ -32,7 +33,7 @@ namespace Consolonia.Core.Infrastructure
         }
     }
 
-    public class CursorImpl : ICursorImpl
+    public sealed class CursorImpl : ICursorImpl
     {
         public CursorImpl(StandardCursorType cursorType)
         {
