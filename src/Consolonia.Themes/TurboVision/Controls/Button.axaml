@@ -21,15 +21,17 @@
                 <Setter Property="Margin"
                         Value="1,0,1,1" />
             </Style>
-            
-            
+
+
             <Style Selector="^ /template/ TextBlock#Part_RightBracket">
-                <Setter Property="IsVisible" Value="True"/>
+                <Setter Property="IsVisible"
+                        Value="True" />
             </Style>
             <Style Selector="^ /template/ TextBlock#Part_LeftBracket">
-                <Setter Property="IsVisible" Value="True"/>
+                <Setter Property="IsVisible"
+                        Value="True" />
             </Style>
-            
+
         </ControlTheme>
     </Styles.Resources>
 </Styles>
