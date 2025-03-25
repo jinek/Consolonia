@@ -25,20 +25,20 @@
                     <Border Background="{TemplateBinding Background}"
                             x:Name="InternalBorder">
                         <Grid ColumnDefinitions="Auto,*,Auto">
-                            <!--<TextBlock Grid.Column="0"
+                            <TextBlock Grid.Column="0" Name="Part_LeftBracket"
                                                     Text="["
-                                                    Foreground="{TemplateBinding BorderBrush}"
+                                                    Foreground="{TemplateBinding Background}"
                                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                            <TextBlock Grid.Column="2"
+                            <TextBlock Grid.Column="2" Name="Part_RightBracket"
                                                     Text="]"
-                                                    Foreground="{TemplateBinding BorderBrush}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />-->
+                                                    Foreground="{TemplateBinding Background}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                             <console:CaretControl Grid.Column="1"
                                                   Padding="0,0,0,0"
                                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                                   Margin="{TemplateBinding Padding}"
-                                                  IsCaretShown="{TemplateBinding IsFocused}">
+                                                  IsCaretShown="False">
 
                                 <ContentPresenter Name="PART_ContentPresenter"
                                                   BorderBrush="{TemplateBinding BorderBrush}"
@@ -99,14 +99,27 @@
 
             </ControlTemplate>
         </Setter>
+        
+        <Style Selector="^ /template/ TextBlock#Part_RightBracket">
+            <Setter Property="IsVisible" Value="False"/>
+        </Style>
+        <Style Selector="^ /template/ TextBlock#Part_LeftBracket">
+            <Setter Property="IsVisible" Value="False"/>
+        </Style>
+        
         <Style Selector="^:disabled">
             <Setter Property="Foreground"
                     Value="{DynamicResource ThemeNoDisturbBrush}" />
         </Style>
-        <Style Selector="^:focus">
-            <Setter Property="BorderBrush"
-                    Value="{DynamicResource ThemeForegroundBrush}" />
+        
+      
+        <Style Selector="^:focus /template/ TextBlock#Part_RightBracket">
+            <Setter Property="Foreground" Value="{TemplateBinding Foreground}"/>
         </Style>
+        <Style Selector="^:focus /template/ TextBlock#Part_LeftBracket">
+            <Setter Property="Foreground" Value="{TemplateBinding Foreground}"/>
+        </Style>
+        
         <Style Selector="^:clickdelayed">
             <!--<Setter Property="Foreground"
                 Value="{DynamicResource ThemeAccentBackgroundBrush}" />-->
