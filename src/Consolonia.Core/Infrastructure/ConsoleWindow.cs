@@ -509,25 +509,25 @@ namespace Consolonia.Core.Infrastructure
                 // need to be refreshed because the cursor has moved away
                 foreach (Rect rect in _refreshRects)
                     for (ushort x = (ushort)rect.Left; x <= (ushort)rect.Right; x++)
-                    for (ushort y = (ushort)rect.Top; y <= (ushort)rect.Bottom; y++)
-                        if (x < PixelBuffer.Width && y < PixelBuffer.Height)
-                        {
-                            Pixel pixel = PixelBuffer[x, y];
-                            Console.Print(new PixelBufferCoordinate(x, y),
-                                pixel.Background.Color,
-                                pixel.Foreground.Color,
-                                pixel.Foreground.Style,
-                                pixel.Foreground.Weight,
-                                pixel.Foreground.TextDecoration,
-                                pixel.Foreground.Symbol.Text);
-                        }
+                        for (ushort y = (ushort)rect.Top; y <= (ushort)rect.Bottom; y++)
+                            if (x < PixelBuffer.Width && y < PixelBuffer.Height)
+                            {
+                                Pixel pixel = PixelBuffer[x, y];
+                                Console.Print(new PixelBufferCoordinate(x, y),
+                                    pixel.Background.Color,
+                                    pixel.Foreground.Color,
+                                    pixel.Foreground.Style,
+                                    pixel.Foreground.Weight,
+                                    pixel.Foreground.TextDecoration,
+                                    pixel.Foreground.Symbol.Text);
+                            }
 
                 _refreshRects.Clear();
 
                 var cursorPosition = new PixelBufferCoordinate((ushort)Math.Max(0, point.X), (ushort)point.Y);
                 string cursorText = GetCursorText();
 
-                if (!string.IsNullOrEmpty(cursorText))
+                if (!string.IsNullOrWhiteSpace(cursorText))
                 {
                     int width = ControlUtils.MeasureText(cursorText);
                     if (width <= PixelBuffer.Width - cursorPosition.X)
@@ -568,7 +568,7 @@ namespace Consolonia.Core.Infrastructure
         {
             return _cursorType switch
             {
-                StandardCursorType.Arrow => "◤",
+                StandardCursorType.Arrow => " ",
                 StandardCursorType.Cross => "+",
                 StandardCursorType.Hand => "👆",
                 StandardCursorType.Help => "?",
@@ -587,8 +587,8 @@ namespace Consolonia.Core.Infrastructure
                 StandardCursorType.TopRightCorner => "⤢", // "⬈",
                 StandardCursorType.BottomLeftCorner => "⤢", // "⬋",
                 StandardCursorType.BottomRightCorner => "⤡", // "⬊",
-                StandardCursorType.DragCopy => "◤+",
-                StandardCursorType.DragLink => "◤⤻",
+                StandardCursorType.DragCopy => "+",
+                StandardCursorType.DragLink => "⤻",
                 StandardCursorType.DragMove => "◤",
                 StandardCursorType.AppStarting => "⧖",
                 StandardCursorType.None => " ",
