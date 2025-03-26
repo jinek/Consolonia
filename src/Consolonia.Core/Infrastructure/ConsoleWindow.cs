@@ -509,18 +509,18 @@ namespace Consolonia.Core.Infrastructure
                 // need to be refreshed because the cursor has moved away
                 foreach (Rect rect in _refreshRects)
                     for (ushort x = (ushort)rect.Left; x <= (ushort)rect.Right; x++)
-                        for (ushort y = (ushort)rect.Top; y <= (ushort)rect.Bottom; y++)
-                            if (x < PixelBuffer.Width && y < PixelBuffer.Height)
-                            {
-                                Pixel pixel = PixelBuffer[x, y];
-                                Console.Print(new PixelBufferCoordinate(x, y),
-                                    pixel.Background.Color,
-                                    pixel.Foreground.Color,
-                                    pixel.Foreground.Style,
-                                    pixel.Foreground.Weight,
-                                    pixel.Foreground.TextDecoration,
-                                    pixel.Foreground.Symbol.Text);
-                            }
+                    for (ushort y = (ushort)rect.Top; y <= (ushort)rect.Bottom; y++)
+                        if (x < PixelBuffer.Width && y < PixelBuffer.Height)
+                        {
+                            Pixel pixel = PixelBuffer[x, y];
+                            Console.Print(new PixelBufferCoordinate(x, y),
+                                pixel.Background.Color,
+                                pixel.Foreground.Color,
+                                pixel.Foreground.Style,
+                                pixel.Foreground.Weight,
+                                pixel.Foreground.TextDecoration,
+                                pixel.Foreground.Symbol.Text);
+                        }
 
                 _refreshRects.Clear();
 
@@ -529,7 +529,7 @@ namespace Consolonia.Core.Infrastructure
 
                 if (!string.IsNullOrWhiteSpace(cursorText))
                 {
-                    int width = ControlUtils.MeasureText(cursorText);
+                    int width = cursorText.MeasureText();
                     if (width <= PixelBuffer.Width - cursorPosition.X)
                     {
                         // add the rect to the refresh list
