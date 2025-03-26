@@ -29,7 +29,7 @@ namespace Consolonia.Core.Infrastructure
         }
     }
 
-    // ReSharp disable GCSuppressFinalizeForTypeWithoutDestructor
+    // ReSharper disable GCSuppressFinalizeForTypeWithoutDestructor
     public sealed class CursorImpl : ICursorImpl
     {
         public CursorImpl(StandardCursorType cursorType)
