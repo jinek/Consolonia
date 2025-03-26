@@ -6,10 +6,8 @@ TUI (Text User Interface) (GUI Framework) implementation for [Avalonia UI](https
 
 Supports XAML, data bindings, animation, styling and the rest from Avalonia.
 
-## Showcase (click picture to see video)
-[![datagridpic](https://user-images.githubusercontent.com/10516222/141980173-4eb4057a-6996-45bf-83f6-931316c98d88.png)](https://youtu.be/ttgZmbruk3Y)
-
-Example of usage: https://github.com/jinek/ToolUI
+## Showcase 
+![quickTour](https://github.com/user-attachments/assets/cf40c5e9-9315-48ce-a91a-e56dafb83801)
 
 Solution contains one more readme file with coding information.
 
