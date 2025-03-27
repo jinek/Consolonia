@@ -54,7 +54,7 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IFontManagerImpl>().ToConstant(new FontManagerImpl())
                 .Bind<ITextShaperImpl>().ToConstant(new TextShaper())
                 .Bind<IMouseDevice>().ToConstant(new MouseDevice())
-                .Bind<ICursorFactory>().ToConstant(new DummyCursorFactory())
+                .Bind<ICursorFactory>().ToConstant(new ConsoleCursorFactory())
                 .Bind<IPlatformIconLoader>().ToConstant(new DummyIconLoader())
                 .Bind<IPlatformSettings>().ToSingleton<ConsoloniaPlatformSettings>()
                 // .Bind<IStorageProvider>().ToSingleton<BclStorageProvider>()

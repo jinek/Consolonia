@@ -62,7 +62,10 @@ namespace Consolonia.Core.Drawing
         {
             try
             {
-                RenderToDevice();
+                lock (_consoleTopLevelImpl.PixelBuffer)
+                {
+                    RenderToDevice();
+                }
             }
             catch (InvalidDrawingContextException)
             {
