@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -67,7 +68,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                               Bill Ames
 
                               """.Split((char[]) ['\r', '\n'], StringSplitOptions.RemoveEmptyEntries));
-            Cows = [.. text];
+            int lineNumber = 1;
+            Cows = [.. text.Select(l => $"{lineNumber++,3} {l}")];
         }
 
         public bool AllowAutoHide
