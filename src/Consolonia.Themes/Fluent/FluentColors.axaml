@@ -14,12 +14,12 @@
                      Color="#CCCCCC" />
     <!-- Fluent: Communication Blue -->
     <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"
-                     Color="#0078D4" />
-    <SolidColorBrush x:Key="ThemeChooserForegroundBrush"
-                     Color="#FFFFFF" />
+                     Color="#D0C7F6" />
     <!-- Fluent: Communication Blue -->
     <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
-                     Color="#D0C7F6" />
+                     Color="#0078D4" />
+    <SolidColorBrush x:Key="ThemeActionForegroundBrush"
+                     Color="#FFFFFF" />
     <!-- Fluent: Light Gray (Neutral Background) -->
     <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
                      Color="#FFFFFF" />

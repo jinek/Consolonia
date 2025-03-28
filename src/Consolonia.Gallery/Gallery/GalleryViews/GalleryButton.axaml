@@ -30,8 +30,9 @@
                 </Style>
             </StackPanel.Styles>
             <Button>Standard _XAML Button</Button>
-            <Button Background="DarkBlue"
-                    Foreground="Yellow">
+            <Button IsDefault="True">Default Button</Button>
+            <Button Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                    Foreground="{DynamicResource ThemeErrorBrush}">
                 Custom Colors
             </Button>
 
