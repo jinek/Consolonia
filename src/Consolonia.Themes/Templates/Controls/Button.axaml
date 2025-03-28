@@ -21,136 +21,115 @@
                 Value="0:0:0.25" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Panel>
-                    <Border Background="{TemplateBinding Background}"
-                            x:Name="InternalBorder">
-                        <Grid ColumnDefinitions="Auto,*,Auto">
-                            <TextBlock Grid.Column="0"
-                                       Name="Part_LeftBracket"
-                                       Text="["
-                                       Foreground="{TemplateBinding Background}"
-                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                            <TextBlock Grid.Column="2"
-                                       Name="Part_RightBracket"
-                                       Text="]"
-                                       Foreground="{TemplateBinding Background}"
-                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                            <console:CaretControl Grid.Column="1"
-                                                  Padding="0,0,0,0"
-                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  Margin="{TemplateBinding Padding}"
-                                                  IsCaretShown="False">
+                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <Panel Background="{TemplateBinding Background}">
+                        <Border x:Name="InternalBorder">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <TextBlock Grid.Column="0"
+                                           Name="Part_LeftBracket"
+                                           Text="["
+                                           Foreground="{TemplateBinding Background}"
+                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                <TextBlock Grid.Column="2"
+                                           Name="Part_RightBracket"
+                                           Text="]"
+                                           Foreground="{TemplateBinding Background}"
+                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                <console:CaretControl Grid.Column="1"
+                                                      Padding="0,0,0,0"
+                                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                      Margin="{TemplateBinding Padding}"
+                                                      IsCaretShown="False">
 
-                                <ContentPresenter Name="PART_ContentPresenter"
-                                                  BorderBrush="{TemplateBinding BorderBrush}"
-                                                  BorderThickness="{TemplateBinding BorderThickness}"
-                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                  RecognizesAccessKey="True"
-                                                  Content="{TemplateBinding Content}"
-                                                  HorizontalContentAlignment="Stretch"
-                                                  VerticalContentAlignment="Stretch"
-                                                  TextBlock.Foreground="{TemplateBinding Foreground}" />
-                            </console:CaretControl>
-                        </Grid>
-                    </Border>
+                                    <ContentPresenter Name="PART_ContentPresenter"
+                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                      RecognizesAccessKey="True"
+                                                      Content="{TemplateBinding Content}"
+                                                      HorizontalContentAlignment="Stretch"
+                                                      VerticalContentAlignment="Stretch"
+                                                      TextBlock.Foreground="{TemplateBinding Foreground}" />
+                                </console:CaretControl>
+                            </Grid>
+                        </Border>
 
-                    <!--Shadows-->
+                        <!--Shadows-->
 
-                    <!--Shadow under-->
-                    <console:SymbolsControl Fill="True"
-                                            Margin="1,0,1,0"
-                                            Text="▀"
-                                            Classes="shaded"
-                                            Height="1"
-                                            IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
-                                            VerticalAlignment="Bottom"
-                                            Foreground="{DynamicResource ThemePseudoShadeBrush}" />
+                        <!--Shadow under-->
+                        <console:SymbolsControl Fill="True"
+                                                Margin="1,0,1,0"
+                                                Text="▀"
+                                                Classes="shaded"
+                                                Height="1"
+                                                IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
+                                                VerticalAlignment="Bottom"
+                                                Foreground="{DynamicResource ThemePseudoShadeBrush}" />
 
-                    <!--Right shadow-->
-                    <console:SymbolsControl Margin="0,1,0,1"
-                                            Text="█"
-                                            Width="1"
-                                            Classes="shaded"
-                                            IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
-                                            VerticalAlignment="Stretch"
-                                            Fill="True"
-                                            HorizontalAlignment="Right"
-                                            Foreground="{DynamicResource ThemePseudoShadeBrush}" />
-                    <!--Right shadow top half-->
-                    <console:SymbolsControl Margin="0,0,0,0"
-                                            Text="▄"
-                                            Width="1"
-                                            Height="1"
-                                            IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
-                                            Classes="shaded"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Top"
-                                            Foreground="{DynamicResource ThemePseudoShadeBrush}" />
-                    <!--Right shadow bottom half-->
-                    <console:SymbolsControl Margin="0,0,0,0"
-                                            Text="▀"
-                                            Width="1"
-                                            Classes="shaded"
-                                            Height="1"
-                                            IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Bottom"
-                                            Foreground="{DynamicResource ThemePseudoShadeBrush}" />
-                </Panel>
+                        <!--Right shadow-->
+                        <console:SymbolsControl Margin="0,1,0,1"
+                                                Text="█"
+                                                Width="1"
+                                                Classes="shaded"
+                                                IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
+                                                VerticalAlignment="Stretch"
+                                                Fill="True"
+                                                HorizontalAlignment="Right"
+                                                Foreground="{DynamicResource ThemePseudoShadeBrush}" />
+                        <!--Right shadow top half-->
+                        <console:SymbolsControl Margin="0,0,0,0"
+                                                Text="▄"
+                                                Width="1"
+                                                Height="1"
+                                                IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
+                                                Classes="shaded"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Top"
+                                                Foreground="{DynamicResource ThemePseudoShadeBrush}" />
+                        <!--Right shadow bottom half-->
+                        <console:SymbolsControl Margin="0,0,0,0"
+                                                Text="▀"
+                                                Width="1"
+                                                Classes="shaded"
+                                                Height="1"
+                                                IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                Foreground="{DynamicResource ThemePseudoShadeBrush}" />
+                    </Panel></Border>
 
             </ControlTemplate>
         </Setter>
-
+        
         <Style Selector="^ /template/ TextBlock#Part_RightBracket">
-            <Setter Property="IsVisible"
-                    Value="False" />
+            <Setter Property="IsVisible" Value="False"/>
         </Style>
         <Style Selector="^ /template/ TextBlock#Part_LeftBracket">
-            <Setter Property="IsVisible"
-                    Value="False" />
+            <Setter Property="IsVisible" Value="False"/>
         </Style>
-
+        
         <Style Selector="^:disabled">
             <Setter Property="Foreground"
                     Value="{DynamicResource ThemeNoDisturbBrush}" />
         </Style>
-
-
+        
+      
         <Style Selector="^:focus /template/ TextBlock#Part_RightBracket">
-            <Setter Property="Foreground"
-                    Value="{TemplateBinding Foreground}" />
+            <Setter Property="Foreground" Value="{TemplateBinding Foreground}"/>
         </Style>
         <Style Selector="^:focus /template/ TextBlock#Part_LeftBracket">
-            <Setter Property="Foreground"
-                    Value="{TemplateBinding Foreground}" />
+            <Setter Property="Foreground" Value="{TemplateBinding Foreground}"/>
         </Style>
-
-        <Style Selector="^:clickdelayed">
-            <!--<Setter Property="Foreground"
-                Value="{DynamicResource ThemeAccentBackgroundBrush}" />-->
-            <!--<Setter Property="Background"
-                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />-->
-            <Setter Property="Padding"
-                    Value="1,0,0,0" />
-        </Style>
+        
         <!--<Style Selector="^:clickdelayed /template/ Border#InternalBorder">
         <Setter Property="Padding"
                 Value="1,0" />
     </Style>-->
-        <Style Selector="^:clickdelayed /template/ console|SymbolsControl.shaded">
-            <Setter Property="IsVisible"
-                    Value="False" />
-        </Style>
+        
 
         <Style Selector="^ /template/ Border#InternalBorder">
             <Setter Property="Margin"
                     Value="0,0,1,0" />
-        </Style>
-
-        <Style Selector="^:clickdelayed /template/ Border#InternalBorder">
-            <Setter Property="Margin"
-                    Value="1,0,1,0" />
         </Style>
 
     </ControlTheme>

@@ -51,6 +51,7 @@
             </Button>
             <Button Click="OnShowCodeBehind"
                     IsTabStop="False"
+                    IsDefault="True"
                     HorizontalAlignment="Right">
                 Show _Code Behind
             </Button>

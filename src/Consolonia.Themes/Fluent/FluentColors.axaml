@@ -8,25 +8,27 @@
                      Color="#323130" />
     <!-- Fluent: White -->
     <SolidColorBrush x:Key="ThemeBackgroundBrush"
-                     Color="#FFFFFF" />
+                     Color="#B0D9E8" />
+    <!-- Fluent: Light Gray (Alternative Background) -->
+    <SolidColorBrush x:Key="ThemeAlternativeBackgroundBrush"
+                     Color="#CCCCCC" />
     <!-- Fluent: Communication Blue -->
     <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"
                      Color="#0078D4" />
+    <SolidColorBrush x:Key="ThemeChooserForegroundBrush"
+                     Color="#FFFFFF" />
     <!-- Fluent: Communication Blue -->
     <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
-                     Color="#0078D4" />
+                     Color="#D0C7F6" />
     <!-- Fluent: Light Gray (Neutral Background) -->
     <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
-                     Color="#EDEBE9" />
+                     Color="#FFFFFF" />
     <!-- Fluent: Black (Neutral Foreground) -->
     <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
                      Color="#323130" />
-    <!-- Fluent: Light Gray (Alternative Background) -->
-    <SolidColorBrush x:Key="ThemeAlternativeBackgroundBrush"
-                     Color="#F3F2F1" />
     <!-- Fluent: Gray (Neutral Stroke) -->
     <SolidColorBrush x:Key="ThemeBorderBrush"
-                     Color="#D2D2D2" />
+                     Color="#8A8886" />
     <!-- Fluent: Yellow (Warning) -->
     <SolidColorBrush x:Key="ThemeNoDisturbBrush"
                      Color="#FFB900" />
