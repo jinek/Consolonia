@@ -7,6 +7,7 @@ namespace Consolonia.Controls
         BlinkingBlock,
         SteadyBlock,
         BlinkingUnderline,
-        SteadyUnderline
+        SteadyUnderline,
+        None
     }
 }

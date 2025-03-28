@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
@@ -141,10 +142,12 @@ namespace Consolonia.Core.Drawing
 
             flushingBuffer.Flush();
 
-            if (caretPosition != null)
+            CaretStyle pixelBufferCaretStyle = pixelBuffer.CaretStyle;
+            
+            if (caretPosition != null && pixelBufferCaretStyle != CaretStyle.None)
             {
                 _console.SetCaretPosition((PixelBufferCoordinate)caretPosition);
-                _console.SetCaretStyle(pixelBuffer.CaretStyle);
+                _console.SetCaretStyle(pixelBufferCaretStyle);
                 _console.ShowCaret();
             }
             else

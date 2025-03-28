@@ -22,6 +22,11 @@
                 Value="0,0" />
         <Setter Property="ScrollViewer.IsScrollChainingEnabled"
                 Value="True" />
+        <Setter Property="CaretBrush">
+            <Setter.Value>
+                <console:MoveConsoleCaretToPositionBrush CaretStyle="BlinkingBar" />
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="border"
@@ -91,7 +96,7 @@
                                                 </MultiBinding>
                                             </TextBlock.IsVisible>
                                         </TextBlock>
-                                        <console:TextBoxCaret>
+                                        <console:TextBoxCaret CaretBrush="{TemplateBinding CaretBrush}">
                                             <console:TextBoxCaret.Active>
                                                 <MultiBinding Converter="{StaticResource BooleanAndConverter}">
                                                     <TemplateBinding Property="IsFocused" />

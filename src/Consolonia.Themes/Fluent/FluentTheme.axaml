@@ -50,6 +50,8 @@
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
     <StyleInclude Source="/Fluent/Controls/ConsoloniaAccessRun.axaml" />
     <StyleInclude Source="/Fluent/Controls/Button.axaml" />
+    <StyleInclude Source="/Fluent/Controls/DataGridRow.axaml" />
+    <StyleInclude Source="/Fluent/Controls/TextBox.axaml" />
 
     <wm:WindowManagerTheme />
 

@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Reactive;
-using Consolonia.Controls.Brushes;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers
 {
@@ -14,6 +13,9 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
 
         public static readonly StyledProperty<Point> PositionProperty =
             AvaloniaProperty.Register<TextBoxCaret, Point>(nameof(Position));
+
+        public static readonly StyledProperty<IBrush> CaretBrushProperty =
+            TextBox.CaretBrushProperty.AddOwner<TextBoxCaret>();
 
         public TextBoxCaret()
         {
@@ -43,13 +45,19 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             get => GetValue(PositionProperty);
             set => SetValue(PositionProperty, value);
         }
+        
+        public IBrush CaretBrush
+        {
+            get => GetValue(CaretBrushProperty);
+            set => SetValue(CaretBrushProperty, value);
+        }
 
         public override void Render(DrawingContext context)
         {
             if (!Active)
                 return;
 
-            context.DrawLine(new ImmutablePen(new MoveConsoleCaretToPositionBrush()), Position,
+            context.DrawLine(new ImmutablePen(CaretBrush.ToImmutable()), Position,
                 Position.WithY(Position.Y + 1));
         }
     }
