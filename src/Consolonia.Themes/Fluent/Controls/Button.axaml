@@ -3,7 +3,7 @@
         xmlns:brushes="https://github.com/jinek/consolonia">
     <Style Selector="Button">
         <Setter Property="Padding"
-                Value="1,0,0,0" />
+                Value="1,0,1,0" />
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="Foreground"

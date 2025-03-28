@@ -12,15 +12,16 @@
             <Setter Property="(console:ButtonExtensions.Shadow)"
                     Value="True" />
 
-            <Style Selector="^ /template/ Border#InternalBorder">
+            <Style Selector="^ /template/ Panel#InternalBorder">
                 <Setter Property="Margin"
                         Value="0,0,1,1" />
             </Style>
 
-            <Style Selector="^:clickdelayed /template/ Border#InternalBorder">
+            <Style Selector="^:clickdelayed /template/ Panel#InternalBorder">
                 <Setter Property="Margin"
                         Value="1,0,1,1" />
             </Style>
+            
             <Style Selector="^:clickdelayed">
                 <!--<Setter Property="Foreground"
                 Value="{DynamicResource ThemeAccentBackgroundBrush}" />-->
@@ -45,9 +46,9 @@
                         Value="False" />
             </Style>
 
-            <Style Selector="^:clickdelayed /template/ Border#InternalBorder">
+            <Style Selector="^:clickdelayed /template/ Panel#InternalBorder">
                 <Setter Property="Margin"
-                        Value="1,0,1,0" />
+                        Value="1,0,1,1" />
             </Style>
 
         </ControlTheme>

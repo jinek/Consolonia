@@ -23,8 +23,8 @@
             <ControlTemplate>
                 <Border BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
-                    <Panel Background="{TemplateBinding Background}">
-                        <Border x:Name="InternalBorder">
+                    <Panel>
+                        <Panel x:Name="InternalBorder" Background="{TemplateBinding Background}">
                             <Grid ColumnDefinitions="Auto,*,Auto">
                                 <TextBlock Grid.Column="0"
                                            Name="Part_LeftBracket"
@@ -37,7 +37,7 @@
                                            Foreground="{TemplateBinding Background}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                                 <console:CaretControl Grid.Column="1"
-                                                      Padding="0,0,0,0"
+                                                      Padding="0"
                                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                                       Margin="{TemplateBinding Padding}"
@@ -52,7 +52,7 @@
                                                       TextBlock.Foreground="{TemplateBinding Foreground}" />
                                 </console:CaretControl>
                             </Grid>
-                        </Border>
+                        </Panel>
 
                         <!--Shadows-->
 
@@ -96,7 +96,8 @@
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Bottom"
                                                 Foreground="{DynamicResource ThemePseudoShadeBrush}" />
-                    </Panel></Border>
+                    </Panel>
+                </Border>
 
             </ControlTemplate>
         </Setter>
@@ -125,12 +126,6 @@
         <Setter Property="Padding"
                 Value="1,0" />
     </Style>-->
-        
-
-        <Style Selector="^ /template/ Border#InternalBorder">
-            <Setter Property="Margin"
-                    Value="0,0,1,0" />
-        </Style>
 
     </ControlTheme>
 
