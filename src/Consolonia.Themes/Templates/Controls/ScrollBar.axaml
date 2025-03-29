@@ -41,14 +41,14 @@
                                ViewportSize="{TemplateBinding ViewportSize}"
                                Orientation="{TemplateBinding Orientation}"
                                IsDirectionReversed="True">
-                            <!--<Track.DecreaseButton>
+                            <Track.DecreaseButton>
                                 <RepeatButton Name="PART_PageUpButton"
                                               Focusable="False" />
                             </Track.DecreaseButton>
                             <Track.IncreaseButton>
                                 <RepeatButton Name="PART_PageDownButton"
                                               Focusable="False" />
-                            </Track.IncreaseButton>-->
+                            </Track.IncreaseButton>
                             <Thumb Name="thumb" />
                         </Track>
                         <RepeatButton Name="PART_LineDownButton"
@@ -94,14 +94,14 @@
                                    Value="{TemplateBinding Value, Mode=TwoWay}"
                                    ViewportSize="{TemplateBinding ViewportSize}"
                                    Orientation="{TemplateBinding Orientation}">
-                                <!--<Track.DecreaseButton>
+                                <Track.DecreaseButton>
                                     <RepeatButton Name="PART_PageUpButton"
                                                   Focusable="False" />
                                 </Track.DecreaseButton>
                                 <Track.IncreaseButton>
                                     <RepeatButton Name="PART_PageDownButton"
                                                   Focusable="False" />
-                                </Track.IncreaseButton>-->
+                                </Track.IncreaseButton>
                                 <Thumb Name="thumb" />
                             </Track>
                             <RepeatButton Name="PART_LineDownButton"
