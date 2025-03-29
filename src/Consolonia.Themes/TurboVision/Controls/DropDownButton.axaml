@@ -1,0 +1,42 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="https://github.com/jinek/consolonia">
+    <Style Selector="DropDownButton">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
+    </Style>
+
+    <Style Selector="DropDownButton /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Margin"
+                Value="2,0,1,0" />
+    </Style>
+    <Style Selector="DropDownButton /template/ controls|SymbolsControl#DropDownGlyph">
+        <Setter Property="Margin"
+                Value="0,0,1,0" />
+    </Style>
+    
+    <Style Selector="DropDownButton:focus /template/ controls|SymbolsControl#Part_LeftBracket">
+        <Setter Property="IsVisible"
+                Value="True" />
+    </Style>
+
+    <Style Selector="DropDownButton:focus /template/ controls|SymbolsControl#Part_RightBracket">
+        <Setter Property="IsVisible"
+                Value="True" />
+    </Style>
+    <Style Selector="DropDownButton:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Margin"
+                Value="1,0,1,0" />
+    </Style>
+    <Style Selector="DropDownButton:focus /template/ controls|SymbolsControl#DropDownGlyph">
+        <Setter Property="Margin"
+                Value="0,0,0,0" />
+    </Style>
+
+    <Style Selector="DropDownButton:pressed">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+    </Style>
+</Styles>

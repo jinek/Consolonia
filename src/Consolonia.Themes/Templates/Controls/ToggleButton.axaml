@@ -43,7 +43,8 @@
                                 <ContentPresenter Name="PART_ContentPresenter"
                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                                   Content="{TemplateBinding Content}"
-                                                  TextBlock.Foreground="{TemplateBinding Foreground}" />
+                                                  TextBlock.Foreground="{TemplateBinding Foreground}" 
+                                                  RecognizesAccessKey="True"/>
                             </console:CaretControl>
                         </Grid>
                     </Border>
