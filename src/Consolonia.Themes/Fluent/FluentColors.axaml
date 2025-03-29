@@ -8,7 +8,7 @@
                      Color="#323130" />
     <!-- Fluent: White -->
     <SolidColorBrush x:Key="ThemeBackgroundBrush"
-                     Color="#B0D9E8" />
+                     Color="#FFFFFF" />
     <!-- Fluent: Light Gray (Alternative Background) -->
     <SolidColorBrush x:Key="ThemeAlternativeBackgroundBrush"
                      Color="#CCCCCC" />
@@ -22,7 +22,7 @@
                      Color="#005A9E" />
     <!-- Fluent: Light Gray (Neutral Background) -->
     <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
-                     Color="#FFFFFF" />
+                     Color="#B0D9E8" />
     <!-- Fluent: Black (Neutral Foreground) -->
     <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
                      Color="#323130" />
