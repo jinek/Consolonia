@@ -108,7 +108,7 @@
             <Setter Property="(TemplatedControl.Foreground)"
                     Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
-        
+
         <Style Selector="^:focus /template/ Border#root">
             <Setter Property="Background"
                     Value="{DynamicResource ThemeActionBackgroundBrush}" />

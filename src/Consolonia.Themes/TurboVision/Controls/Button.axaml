@@ -21,7 +21,7 @@
                 <Setter Property="Margin"
                         Value="1,0,1,1" />
             </Style>
-            
+
             <Style Selector="^:clickdelayed">
                 <!--<Setter Property="Foreground"
                 Value="{DynamicResource ThemeAccentBackgroundBrush}" />-->

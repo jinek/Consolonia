@@ -146,7 +146,7 @@ namespace Consolonia.Core.Drawing
             flushingBuffer.Flush();
 
             CaretStyle pixelBufferCaretStyle = pixelBuffer.CaretStyle;
-            
+
             if (caretPosition != null && pixelBufferCaretStyle != CaretStyle.None)
             {
                 _console.SetCaretPosition((PixelBufferCoordinate)caretPosition);

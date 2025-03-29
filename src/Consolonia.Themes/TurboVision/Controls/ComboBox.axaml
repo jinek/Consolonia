@@ -3,7 +3,8 @@
     <Style Selector="ComboBox /template/ ToggleButton#toggle">
         <Setter Property="Background"
                 Value="{x:Null}" />
-        <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}"/>
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
 
     <Style Selector="ComboBox /template/ ToggleButton#toggle /template/ ContentPresenter#PART_ContentPresenter">

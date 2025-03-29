@@ -59,7 +59,7 @@
                 </Border>
             </ControlTemplate>
         </Setter>
-        
+
         <Style Selector="^ /template/ console|CaretControl#PART_CaretControl">
             <Setter Property="CaretStyle"
                     Value="None" />

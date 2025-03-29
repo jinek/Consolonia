@@ -45,7 +45,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             get => GetValue(PositionProperty);
             set => SetValue(PositionProperty, value);
         }
-        
+
         public IBrush CaretBrush
         {
             get => GetValue(CaretBrushProperty);

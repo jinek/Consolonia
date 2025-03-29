@@ -58,7 +58,7 @@
             <Setter Property="Background"
                     Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         </Style>
-        
+
         <!--todo: Copypaste from MenuItem-->
         <Style Selector="^:selected /template/ Border#root">
             <!--TurboVision approach-->

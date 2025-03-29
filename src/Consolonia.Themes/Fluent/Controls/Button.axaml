@@ -1,4 +1,4 @@
-    <Styles xmlns="https://github.com/avaloniaui"
+<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:brushes="https://github.com/jinek/consolonia">
     <Style Selector="Button">
@@ -30,7 +30,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-        
+
     <Style Selector="Button:focus">
         <Setter Property="BorderBrush">
             <Setter.Value>
@@ -50,16 +50,16 @@
             </Setter.Value>
         </Setter>
     </Style>
-        
-        <Style Selector="Button[IsDefault=True]:clickdelayed">
-            <Setter Property="Background"
-                    Value="{DynamicResource ThemeActionBackgroundBrush}" />
-            <Setter Property="BorderBrush">
-                <Setter.Value>
-                    <brushes:LineBrush Brush="Transparent"
-                                       LineStyle="Edge" />
-                </Setter.Value>
-            </Setter>
-        </Style>
+
+    <Style Selector="Button[IsDefault=True]:clickdelayed">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <brushes:LineBrush Brush="Transparent"
+                                   LineStyle="Edge" />
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </Styles>

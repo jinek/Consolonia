@@ -16,7 +16,7 @@
         <Setter Property="Margin"
                 Value="0,0,1,0" />
     </Style>
-    
+
     <Style Selector="DropDownButton:focus /template/ controls|SymbolsControl#Part_LeftBracket">
         <Setter Property="IsVisible"
                 Value="True" />

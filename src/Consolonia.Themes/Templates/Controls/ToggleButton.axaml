@@ -43,15 +43,15 @@
                                 <ContentPresenter Name="PART_ContentPresenter"
                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                                   Content="{TemplateBinding Content}"
-                                                  TextBlock.Foreground="{TemplateBinding Foreground}" 
-                                                  RecognizesAccessKey="True"/>
+                                                  TextBlock.Foreground="{TemplateBinding Foreground}"
+                                                  RecognizesAccessKey="True" />
                             </console:CaretControl>
                         </Grid>
                     </Border>
                 </Border>
             </ControlTemplate>
         </Setter>
-        
+
         <Style Selector="^ /template/ console|CaretControl#PART_CaretControl">
             <Setter Property="CaretStyle"
                     Value="None" />
