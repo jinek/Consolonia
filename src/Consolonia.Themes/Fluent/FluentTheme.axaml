@@ -53,6 +53,7 @@
     <StyleInclude Source="/Fluent/Controls/DataGridRow.axaml" />
     <StyleInclude Source="/Fluent/Controls/TextBox.axaml" />
     <StyleInclude Source="/Fluent/Controls/ComboBox.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ToggleButton.axaml" />
 
     <wm:WindowManagerTheme />
 

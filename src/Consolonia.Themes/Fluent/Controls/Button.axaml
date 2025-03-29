@@ -30,6 +30,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+        
     <Style Selector="Button:focus">
         <Setter Property="BorderBrush">
             <Setter.Value>
@@ -41,9 +42,7 @@
 
     <Style Selector="Button:clickdelayed">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeChooserForegroundBrush}" />
+                Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="BorderBrush">
             <Setter.Value>
                 <brushes:LineBrush Brush="Transparent"
@@ -54,9 +53,7 @@
         
         <Style Selector="Button[IsDefault=True]:clickdelayed">
             <Setter Property="Background"
-                    Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-            <Setter Property="Foreground"
-                    Value="{DynamicResource ThemeForegroundBrush}" />
+                    Value="{DynamicResource ThemeActionBackgroundBrush}" />
             <Setter Property="BorderBrush">
                 <Setter.Value>
                     <brushes:LineBrush Brush="Transparent"

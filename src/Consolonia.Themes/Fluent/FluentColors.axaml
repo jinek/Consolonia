@@ -19,7 +19,7 @@
                      Color="#FFFFFF" />
     <!-- Fluent: Communication Blue -->
     <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
-                     Color="#D0C7F6" />
+                     Color="#005A9E" />
     <!-- Fluent: Light Gray (Neutral Background) -->
     <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
                      Color="#FFFFFF" />

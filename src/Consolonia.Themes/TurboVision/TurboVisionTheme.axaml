@@ -65,4 +65,6 @@
 
     <StyleInclude Source="/TurboVision/Controls/Button.axaml" />
     <StyleInclude Source="/TurboVision/Controls/ConsoloniaAccessRun.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/ToggleButton.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/ComboBox.axaml" />
 </Styles>

@@ -1,0 +1,52 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="https://github.com/jinek/consolonia">
+    <Style Selector="ToggleButton">
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <controls:LineBrush Brush="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                    LineStyle="Edge" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="ToggleButton:checked">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeChooserForegroundBrush}" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <controls:LineBrush Brush="{DynamicResource ThemeChooserBackgroundBrush}"
+                                    LineStyle="Edge" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style Selector="ToggleButton:pressed">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <controls:LineBrush Brush="Transparent"
+                                    LineStyle="Edge" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="ToggleButton:focus">
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <controls:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
+                                    LineStyle="Edge" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</Styles>
