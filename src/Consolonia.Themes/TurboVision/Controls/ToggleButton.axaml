@@ -3,11 +3,13 @@
         xmlns:controls="https://github.com/jinek/consolonia">
     <Style Selector="ToggleButton">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeBorderBrush}" />
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
     </Style>
     <Style Selector="ToggleButton:checked">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeSelectionForegroundBrush}" />
     </Style>
