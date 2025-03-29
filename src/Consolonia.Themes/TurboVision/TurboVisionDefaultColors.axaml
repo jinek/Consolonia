@@ -12,6 +12,8 @@
                      Color="{consolonia:EgaColor Gray}" />
     <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"
                      Color="{consolonia:EgaColor DarkYellow}" />
+    <SolidColorBrush x:Key="ThemeChooserForegroundBrush"
+                     Color="{consolonia:EgaColor White}" />
     <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
                      Color="{consolonia:EgaColor DarkGreen}" />
     <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"

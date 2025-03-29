@@ -7,7 +7,7 @@
         <Setter Property="(console:MenuExtensions.IsMenu)"
                 Value="True" />
         <Setter Property="Background"
-                Value="{DynamicResource ThemeBackgroundBrush}" />
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="BorderBrush"
@@ -54,20 +54,25 @@
             </ControlTemplate>
         </Setter>
 
+        <Style Selector="^ /template/ Border#root">
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        </Style>
+        
         <!--todo: Copypaste from MenuItem-->
         <Style Selector="^:selected /template/ Border#root">
             <!--TurboVision approach-->
             <Setter Property="Background"
                     Value="{DynamicResource ThemeActionBackgroundBrush}" />
-            <!--<Setter Property="(TemplatedControl.Foreground)"
-                Value="{DynamicResource ThemeBackgroundBrush}" />-->
+            <Setter Property="(TemplatedControl.Foreground)"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
 
         <Style Selector="^:focus /template/ Border#root">
             <Setter Property="Background"
                     Value="{DynamicResource ThemeActionBackgroundBrush}" />
-            <!--<Setter Property="(TemplatedControl.Foreground)"
-                Value="{DynamicResource ThemeBackgroundBrush}" />-->
+            <Setter Property="(TemplatedControl.Foreground)"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
 
         <Style Selector="^:empty /template/ TextBlock#rightArrow">
