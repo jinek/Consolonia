@@ -100,11 +100,11 @@
 
             <DropDownButton HorizontalAlignment="Left"
                             Flyout="{StaticResource SharedMenuFlyout}">
-                <Border Background="Teal"
+                <Border Background="{DynamicResource ThemeNoDisturbBrush}"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Height="3">
-                    <TextBlock Text="Content "
+                    <TextBlock Text="Content"
                                VerticalAlignment="Center" />
                 </Border>
             </DropDownButton>
