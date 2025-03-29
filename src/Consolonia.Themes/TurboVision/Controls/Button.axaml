@@ -16,7 +16,7 @@
                 <Setter Property="Margin"
                         Value="0,0,1,1" />
             </Style>
-            
+
             <Style Selector="^:clickdelayed">
                 <Setter Property="Padding"
                         Value="1,0,0,0" />
