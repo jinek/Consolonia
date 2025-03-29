@@ -8,15 +8,15 @@
                 <ResourceInclude Source="/Fluent/FluentColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <x:String x:Key="ThemeLeftArrowSymbol">˂</x:String>
-            <x:String x:Key="ThemeRightArrowSymbol">˃</x:String>
-            <x:String x:Key="ThemeUpArrowSymbol">˄</x:String>
-            <x:String x:Key="ThemeDownArrowSymbol">˅</x:String>
+            <x:String x:Key="ThemeLeftArrowSymbol">&lt;</x:String>
+            <x:String x:Key="ThemeRightArrowSymbol">&gt;</x:String>
+            <x:String x:Key="ThemeUpArrowSymbol">^</x:String>
+            <x:String x:Key="ThemeDownArrowSymbol">v</x:String>
 
-            <x:String x:Key="ThemeScrollBarLeftSymbol">˂</x:String>
-            <x:String x:Key="ThemeScrollBarRightSymbol">˃</x:String>
-            <x:String x:Key="ThemeScrollBarUpSymbol">˄</x:String>
-            <x:String x:Key="ThemeScrollBarDownSymbol">˅</x:String>
+            <x:String x:Key="ThemeScrollBarLeftSymbol">&lt;</x:String>
+            <x:String x:Key="ThemeScrollBarRightSymbol">&gt;</x:String>
+            <x:String x:Key="ThemeScrollBarUpSymbol">^</x:String>
+            <x:String x:Key="ThemeScrollBarDownSymbol">v</x:String>
 
             <x:String x:Key="ThemeScrollBarHorizontalBackgroundSymbol">░</x:String>
             <x:String x:Key="ThemeScrollBarHorizontalThumbSymbol">█</x:String>
@@ -48,6 +48,13 @@
     </Styles.Resources>
 
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ConsoloniaAccessRun.axaml" />
+    <StyleInclude Source="/Fluent/Controls/Button.axaml" />
+    <StyleInclude Source="/Fluent/Controls/DataGridRow.axaml" />
+    <StyleInclude Source="/Fluent/Controls/TextBox.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ToggleButton.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ComboBox.axaml" />
+    <StyleInclude Source="/Fluent/Controls/DropDownButton.axaml" />
 
     <wm:WindowManagerTheme />
 

@@ -23,7 +23,7 @@ namespace Consolonia.Gallery
             /*Styles.Add(new FluentTheme());*/
 
             if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode())
-                Styles.Add(new MaterialTheme());
+                Styles.Add(new FluentTheme());
             else
                 Styles.Add(new TurboVisionTheme());
 
