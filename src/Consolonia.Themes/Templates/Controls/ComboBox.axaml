@@ -109,5 +109,10 @@
             <Setter Property="PlaceholderForeground"
                     Value="{DynamicResource ThemeNoDisturbBrush}" />
         </Style>
+        
+        <Style Selector="^ /template/ ToggleButton#toggle">
+            <Setter Property="Background"
+                    Value="{x:Null}" />
+        </Style>
     </ControlTheme>
 </ResourceDictionary>
