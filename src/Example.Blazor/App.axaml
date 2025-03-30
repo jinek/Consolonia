@@ -7,6 +7,6 @@
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <local:App.Styles>
-        <console:MaterialTheme />
+        <console:FluentTheme />
     </local:App.Styles>
 </local:App>

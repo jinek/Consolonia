@@ -14,10 +14,10 @@ namespace Consolonia.Gallery.Tests
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
-            await UITest.AssertHasText(" ◯─────");
+            await UITest.AssertHasText(" 🠷─────");
             await UITest.KeyInput(Key.Right);
             await UITest.KeyInput(Key.Right);
-            await UITest.AssertHasText(" ─◯────");
+            await UITest.AssertHasText(" ─🠷────");
         }
     }
 }
