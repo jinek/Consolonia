@@ -13,15 +13,15 @@ namespace Consolonia.Gallery.Tests
         public async Task PerformSingleTest()
         {
             await UITest.KeyInput(Key.Tab);
-            await UITest.AssertHasText("│◯    Nope");
+            await UITest.AssertHasText("│●    Nope");
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Space);
             await Task.Delay(200); // Wait for the animation to finish
-            await UITest.AssertHasText("│   ⬤ Yep    ");
+            await UITest.AssertHasText(@"⬤.+Yep");
             await UITest.KeyInput(Key.Enter);
             await Task.Delay(200); // Wait for the animation to finish
-            await UITest.AssertHasText("│◯    Nope");
+            await UITest.AssertHasText("●    Nope");
         }
     }
 }
