@@ -106,7 +106,9 @@
                                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                               Margin="{TemplateBinding Padding}"
-                                              IsCaretShown="{TemplateBinding IsFocused}">
+                                              IsCaretShown="{TemplateBinding IsFocused}"
+                                              CaretStyle="BlinkingBlock"
+                                              x:Name="CaretControl">
 
                             <Canvas x:Name="PART_SwitchKnob"
                                     HorizontalAlignment="Left"
@@ -119,10 +121,10 @@
 
                                     <console:SymbolsControl x:Name="SwitchKnobOn"
                                                             Text="{StaticResource ThemeToggleSwitchOnSymbol}"
-                                                            Foreground="{DynamicResource ThemeBackgroundBrush}" />
+                                                            Foreground="{DynamicResource ThemeChooserForegroundBrush}" />
                                     <console:SymbolsControl x:Name="SwitchKnobOff"
                                                             Text="{StaticResource ThemeToggleSwitchOffSymbol}"
-                                                            Foreground="{DynamicResource ThemeForegroundBrush}" />
+                                                            Foreground="{DynamicResource ThemeSelectionForegroundBrush}" />
                                 </Grid>
                             </Canvas>
                         </console:CaretControl>
@@ -237,6 +239,11 @@
         <Style Selector="^:checked /template/ ContentPresenter#PART_OnContentPresenter">
             <Setter Property="Opacity"
                     Value="1" />
+        </Style>
+        
+        <Style Selector="^:checked /template/ console|CaretControl#CaretControl">
+            <Setter Property="CaretMargin"
+                    Value="3,0,0,0" />
         </Style>
 
         <!--UncheckedState -->

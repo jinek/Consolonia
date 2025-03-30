@@ -2,44 +2,50 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
     <system:Double x:Key="FontSizeNormal">1</system:Double>
-    <!-- Fluent Design Color Scheme -->
-    <!-- Fluent: Black -->
+
+    <!--Main content foreground. Text on background or alternative background-->
     <SolidColorBrush x:Key="ThemeForegroundBrush"
                      Color="#323130" />
-    <!-- Fluent: White -->
+    <!--Main content background.-->
     <SolidColorBrush x:Key="ThemeBackgroundBrush"
-                     Color="#FFFFFF" />
-    <!-- Fluent: Light Gray (Alternative Background) -->
+                     Color="#B0D9E8" />
+    <!--Alternative to main background. Must fit same foreground. Used where there is a need to make difference, for instance, button background in fluent theme, popup background etc-->
     <SolidColorBrush x:Key="ThemeAlternativeBackgroundBrush"
                      Color="#CCCCCC" />
-    <!-- Fluent: Communication Blue -->
+    
+    <!--Used to highlight selected but no focused item (selected list item, on switch etc-->
     <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"
                      Color="#0078D4" />
     <SolidColorBrush x:Key="ThemeChooserForegroundBrush"
                      Color="#FFFFFF" />
-    <!-- Fluent: Communication Blue -->
+    
+    <!--Mostly used as focus highlight. But sometimes forced, like turbovision buttons, menu parent item highlight-->
     <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
                      Color="#005A9E" />
-    <!-- Fluent: Light Gray (Neutral Background) -->
+    
+    <!--Background of edit items: combobox, textbox-->
     <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
-                     Color="#B0D9E8" />
-    <!-- Fluent: Black (Neutral Foreground) -->
+                     Color="#FFFFFF" />
+    <!--Foeground of edit items: combobox, textbox. Must fit background-->
     <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
                      Color="#323130" />
-    <!-- Fluent: Gray (Neutral Stroke) -->
+  
+    <!--Color of borders ( grid borders, panel borders etc)-->
     <SolidColorBrush x:Key="ThemeBorderBrush"
                      Color="#8A8886" />
-    <!-- Fluent: Yellow (Warning) -->
+
+    <!--Disabled foreground or background. e.g. disabled menu item foreground, disabled button foreground-->
     <SolidColorBrush x:Key="ThemeNoDisturbBrush"
                      Color="#FFB900" />
-    <!-- Fluent: Semi-transparent Gray -->
+    
+    <!--Background of the shade pixel. Will be applied to shade background around popups etc, dialogs-->
     <SolidColorBrush x:Key="ThemeShadeBrush"
                      Color="#7F767676" />
-    <!-- Fluent: Light Gray (Neutral Fill) -->
+    <!--When shade needs to be done using foreground ASCII symbols, not background-->
     <SolidColorBrush x:Key="ThemePseudoShadeBrush"
                      Color="#A0A0A0" />
-    <!-- Fluent: Red (Error) -->
+    
+    <!--Indicating an error, failure etc, foreground only-->
     <SolidColorBrush x:Key="ThemeErrorBrush"
                      Color="#D83B01" />
-
 </ResourceDictionary>

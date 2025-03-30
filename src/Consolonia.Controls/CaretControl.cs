@@ -11,6 +11,9 @@ namespace Consolonia.Controls
 
         public static readonly StyledProperty<CaretStyle> CaretStyleProperty =
             AvaloniaProperty.Register<CaretControl, CaretStyle>(nameof(CaretStyle));
+        
+        public static readonly StyledProperty<Thickness> CaretMarginProperty =
+            AvaloniaProperty.Register<CaretControl, Thickness>(ControlUtils.GetStyledPropertyName());
 
         public bool IsCaretShown
         {
@@ -22,6 +25,12 @@ namespace Consolonia.Controls
         {
             get => GetValue(CaretStyleProperty);
             set => SetValue(CaretStyleProperty, value);
+        }
+        
+        public Thickness CaretMargin
+        {
+            get => GetValue(CaretMarginProperty);
+            set => SetValue(CaretMarginProperty, value);
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
