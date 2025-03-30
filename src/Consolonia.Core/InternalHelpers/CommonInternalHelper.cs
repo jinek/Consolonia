@@ -9,7 +9,7 @@ namespace Consolonia.Core.InternalHelpers
             //todo: strange implementation for this name
             return value.CompareTo(compareTo) == 0;
         }
-       
+
 
         public static T NotNull<T>(this T? t) where T : struct
         {

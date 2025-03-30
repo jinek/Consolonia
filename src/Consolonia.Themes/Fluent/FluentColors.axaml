@@ -12,24 +12,24 @@
     <!--Alternative to main background. Must fit same foreground. Used where there is a need to make difference, for instance, button background in fluent theme, popup background etc-->
     <SolidColorBrush x:Key="ThemeAlternativeBackgroundBrush"
                      Color="#CCCCCC" />
-    
+
     <!--Used to highlight selected but no focused item (selected list item, on switch etc-->
     <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"
                      Color="#0078D4" />
     <SolidColorBrush x:Key="ThemeChooserForegroundBrush"
                      Color="#FFFFFF" />
-    
+
     <!--Mostly used as focus highlight. But sometimes forced, like turbovision buttons, menu parent item highlight-->
     <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
                      Color="#005A9E" />
-    
+
     <!--Background of edit items: combobox, textbox-->
     <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
                      Color="#FFFFFF" />
     <!--Foeground of edit items: combobox, textbox. Must fit background-->
     <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
                      Color="#323130" />
-  
+
     <!--Color of borders ( grid borders, panel borders etc)-->
     <SolidColorBrush x:Key="ThemeBorderBrush"
                      Color="#8A8886" />
@@ -37,14 +37,14 @@
     <!--Disabled foreground or background. e.g. disabled menu item foreground, disabled button foreground-->
     <SolidColorBrush x:Key="ThemeNoDisturbBrush"
                      Color="#FFB900" />
-    
+
     <!--Background of the shade pixel. Will be applied to shade background around popups etc, dialogs-->
     <SolidColorBrush x:Key="ThemeShadeBrush"
                      Color="#7F767676" />
     <!--When shade needs to be done using foreground ASCII symbols, not background-->
     <SolidColorBrush x:Key="ThemePseudoShadeBrush"
                      Color="#A0A0A0" />
-    
+
     <!--Indicating an error, failure etc, foreground only-->
     <SolidColorBrush x:Key="ThemeErrorBrush"
                      Color="#D83B01" />

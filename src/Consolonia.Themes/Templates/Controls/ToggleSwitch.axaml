@@ -240,7 +240,7 @@
             <Setter Property="Opacity"
                     Value="1" />
         </Style>
-        
+
         <Style Selector="^:checked /template/ console|CaretControl#CaretControl">
             <Setter Property="CaretMargin"
                     Value="3,0,0,0" />
