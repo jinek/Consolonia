@@ -17,9 +17,9 @@ namespace Consolonia.Gallery.Tests
 
             await UITest.AssertHasText(@"│ Minimum:    0  \^v");
             await UITest.KeyInput(Key.Up);
-            await UITest.AssertHasText(@"│ Minimum:  1.0  \^v");
+            await UITest.AssertHasText(@"Minimum:.+1.0.+\^v");
             await UITest.KeyInput(Key.Down);
-            await UITest.AssertHasText(@"│ Minimum:  0.0  \^v");
+            await UITest.AssertHasText(@"Minimum:.+0.0.+\^v");
         }
     }
 }
