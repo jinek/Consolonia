@@ -4,10 +4,12 @@ concurrency: build_checks_deploy
 
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+      - pre-main
 
-jobs:
-  build:
+jobs:  
+  inspection:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     # from https://github.com/marketplace/actions/dotnet-format
