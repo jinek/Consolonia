@@ -36,7 +36,7 @@
 
     <!--Disabled foreground or background. e.g. disabled menu item foreground, disabled button foreground-->
     <SolidColorBrush x:Key="ThemeNoDisturbBrush"
-                     Color="#FFB900" />
+                     Color="#E0E0E0" />
 
     <!--Background of the shade pixel. Will be applied to shade background around popups etc, dialogs-->
     <SolidColorBrush x:Key="ThemeShadeBrush"

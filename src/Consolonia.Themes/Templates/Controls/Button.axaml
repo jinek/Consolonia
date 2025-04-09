@@ -130,4 +130,26 @@
 
     </ControlTheme>
 
+    <ControlTheme x:Key="ThemeNakedButton"
+                  TargetType="Button">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeTransparentBrush}" />
+        <Setter Property="Foreground"
+                 Value="{DynamicResource ThemeForegroundBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      RecognizesAccessKey="True"
+                                      Content="{TemplateBinding Content}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      TextBlock.Foreground="{TemplateBinding Foreground}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </ControlTheme>
+    
 </ResourceDictionary>

@@ -6,7 +6,7 @@
         <Setter Property="HorizontalAlignment"
                 Value="Center" />
         <Setter Property="Padding"
-                Value="1,0,0,0" />
+                Value="0,0,0,0" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
@@ -22,12 +22,10 @@
                                 <Style Selector="Button.CalendarHeader">
                                     <Setter Property="Background"
                                             Value="{DynamicResource ThemeTransparentBrush}" />
-                                    <Setter Property="BorderThickness"
-                                            Value="0" />
                                     <Setter Property="(console:ButtonExtensions.Shadow)"
                                             Value="False" />
-                                    <Setter Property="Margin"
-                                            Value="0,0,-1,-1" />
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <!--<Setter Property="Theme" Value="{DynamicResource ThemeNakedButton}"/>-->
                                 </Style>
                                 <Style Selector="Button.CalendarHeader:pressed  /template/ ContentPresenter">
                                     <!--todo: needs some color may be-->
@@ -36,10 +34,7 @@
                                 </Style>
 
                                 <Style Selector="Button.CalendarNavigation">
-                                    <!--<Setter Property="Height" Value="1"/>
-                          <Setter Property="Width" Value="1"/>-->
-                                    <Setter Property="Padding"
-                                            Value="0" />
+                                    
                                 </Style>
                                 <Style Selector="Button.CalendarNavigation > TextBlock">
                                     <Setter Property="Foreground"
@@ -65,13 +60,14 @@
 todo: while it's not needed it also does not work when set in the style-->
 
                             <Button Name="PART_PreviousButton"
+                                    
                                     Classes="CalendarHeader CalendarNavigation"
                                     IsVisible="False"
                                     HorizontalAlignment="Left"
-                                    Content="&lt;"
-                                    Margin="1,0,-1,-1" />
+                                    Content="&lt;" />
 
                             <Button Name="PART_HeaderButton"
+                                    
                                     Classes="CalendarHeader"
                                     Grid.Row="0"
                                     Grid.Column="1"
@@ -80,12 +76,12 @@ todo: while it's not needed it also does not work when set in the style-->
 
                             <Button Name="PART_NextButton"
                                     Classes="CalendarHeader CalendarNavigation"
+                                    
                                     Grid.Row="0"
                                     Grid.Column="2"
                                     IsVisible="False"
                                     HorizontalAlignment="Right"
-                                    Content="&gt;"
-                                    Margin="0,0,1,-1" />
+                                    Content="&gt;"/>
 
                             <Grid Name="PART_MonthView"
                                   Grid.Row="1"
