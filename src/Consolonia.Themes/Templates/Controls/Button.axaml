@@ -135,7 +135,7 @@
         <Setter Property="Background"
                 Value="{DynamicResource ThemeTransparentBrush}" />
         <Setter Property="Foreground"
-                 Value="{DynamicResource ThemeForegroundBrush}"/>
+                Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -151,5 +151,5 @@
             </Setter.Value>
         </Setter>
     </ControlTheme>
-    
+
 </ResourceDictionary>
