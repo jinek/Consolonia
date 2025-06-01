@@ -77,8 +77,7 @@ namespace Consolonia.Core.Infrastructure
             _accessKeysAlwaysOn = !Console.SupportsAltSolo;
             if (_accessKeysAlwaysOn)
                 _accessKeysAlwaysOnDisposable =
-                    UtilityExtensions.SubscribeAction(AccessText.ShowAccessKeyProperty.Changed,
-                        OnShowAccessKeyPropertyChanged);
+                    AccessText.ShowAccessKeyProperty.Changed.SubscribeAction(OnShowAccessKeyPropertyChanged);
         }
 
         public PixelBuffer PixelBuffer { get; private set; }
