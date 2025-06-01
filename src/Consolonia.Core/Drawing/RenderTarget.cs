@@ -104,13 +104,13 @@ namespace Consolonia.Core.Drawing
 
             return cache;
         }
-        
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void RenderToDevice()
         {
             //todo: somewhere in this chain introduce _dirtyRects and render only those regions, BEB6BF21-2724-4E1B-B097-5563EE4C27D9
             //todo: then refactor cursor drawing assuming this BEB6BF21-2724-4E1B-B097-5563EE4C27D9
-            
+
             PixelBuffer pixelBuffer = _consoleTopLevelImpl.PixelBuffer;
 
             _console.HideCaret();
@@ -132,12 +132,12 @@ namespace Consolonia.Core.Drawing
                     caretPosition = new PixelBufferCoordinate(x, y);
                     caretStyle = pixel.CaretStyle;
                 }
-                
+
                 // injecting cursor
                 if (!_consoleCursor.IsEmpty() && _consoleCursor.Coordinate.X == x && _consoleCursor.Coordinate.Y == y)
                 {
                     Pixel currentPixel = pixel;
-                    
+
                     // Calculate the inverse color
                     Color invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
                         (byte)(255 - currentPixel.Background.Color.G),

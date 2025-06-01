@@ -12,7 +12,8 @@ using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("'{Foreground.Symbol.Text}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
+    [DebuggerDisplay(
+        "'{Foreground.Symbol.Text}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
     public readonly struct Pixel : IEquatable<Pixel>
     {
         public Pixel()
@@ -126,7 +127,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             var newBackground = new PixelBackground(MergeColors(Background.Color, pixelAbove.Background.Color));
 
             CaretStyle newCaretStyle;
-            
+
             //todo: logic of IsNothingToDraw overlaps with following if which overlaps Foreground.Blend - do we do double checks?
             bool isNoForegroundOnTop = pixelAbove.Foreground.IsNothingToDraw();
             if (pixelAbove.Background.Color.A == 0x0 /*todo: can be approximate, extract to extension method*/)

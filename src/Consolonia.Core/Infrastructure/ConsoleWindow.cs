@@ -10,11 +10,9 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
-using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
-using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
 using Window = Avalonia.Controls.Window;
@@ -54,14 +52,13 @@ namespace Consolonia.Core.Infrastructure
     public class ConsoleWindowImpl : IWindowImpl
 #pragma warning restore CA1711 // Identifiers should not have incorrect suffix
     {
+        [NotNull] internal readonly IConsole Console;
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
-
-        [NotNull] internal readonly IConsole Console;
+        private Point _cursorPosition = new(0, 0);
 
         private StandardCursorType _cursorType = StandardCursorType.Arrow;
-        private Point _cursorPosition = new(0, 0);
         private bool _disposedValue;
         private IInputRoot _inputRoot;
 
@@ -159,7 +156,6 @@ namespace Consolonia.Core.Infrastructure
 
         public Action<Rect> Paint { get; set; }
         public Action<Size, WindowResizeReason> Resized { get; set; }
-        public event Action<ConsoleCursor> CursorChanged;
 
 
         public Action<double> ScalingChanged { get; set; }
@@ -360,6 +356,8 @@ namespace Consolonia.Core.Infrastructure
             GC.SuppressFinalize(this);
         }
 
+        public event Action<ConsoleCursor> CursorChanged;
+
         private void OnShowAccessKeyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> args)
         {
             if (args.Sender != _inputRoot) return;
@@ -485,12 +483,12 @@ namespace Consolonia.Core.Infrastructure
                 _disposedValue = true;
             }
         }
-        
+
         private void UpdateCursor()
         {
             OnCursorChanged(
                 new ConsoleCursor(
-                    new PixelBufferCoordinate((ushort)_cursorPosition.X,(ushort)_cursorPosition.Y),
+                    new PixelBufferCoordinate((ushort)_cursorPosition.X, (ushort)_cursorPosition.Y),
                     GetCursorText()));
         }
 

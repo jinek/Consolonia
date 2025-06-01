@@ -7,6 +7,9 @@ namespace Consolonia.Core.Infrastructure
         public PixelBufferCoordinate Coordinate { get; init; } = coordinate;
         public string Type { get; init; } = type;
 
-        public bool IsEmpty() => string.IsNullOrEmpty(Type);
+        public bool IsEmpty()
+        {
+            return string.IsNullOrEmpty(Type);
+        }
     }
 }
