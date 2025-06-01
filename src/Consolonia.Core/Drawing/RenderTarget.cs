@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
@@ -22,14 +23,15 @@ namespace Consolonia.Core.Drawing
 
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
+        private ConsoleCursor _consoleCursor;
 
         internal RenderTarget(ConsoleWindowImpl consoleTopLevelImpl)
         {
             _console = AvaloniaLocator.Current.GetService<IConsoleOutput>()!;
             _consoleTopLevelImpl = consoleTopLevelImpl;
-            _consoleTopLevelImpl.Resized += OnResized;
-
             _cache = InitializeCache(_consoleTopLevelImpl.PixelBuffer.Width, _consoleTopLevelImpl.PixelBuffer.Height);
+            _consoleTopLevelImpl.Resized += OnResized;
+            _consoleTopLevelImpl.CursorChanged += OnCursorChanged;
         }
 
         public RenderTarget(IEnumerable<object> surfaces)
@@ -43,6 +45,7 @@ namespace Consolonia.Core.Drawing
         public void Dispose()
         {
             _consoleTopLevelImpl.Resized -= OnResized;
+            _consoleTopLevelImpl.CursorChanged -= OnCursorChanged;
         }
 
         public void Save(string fileName, int? quality = null)
@@ -56,17 +59,16 @@ namespace Consolonia.Core.Drawing
         }
 
         public Vector Dpi { get; } = Vector.One;
+
         public PixelSize PixelSize { get; } = new(1, 1);
+
         public int Version => 0;
 
         void IDrawingContextLayerImpl.Blit(IDrawingContextImpl context)
         {
             try
             {
-                lock (_consoleTopLevelImpl.PixelBuffer)
-                {
-                    RenderToDevice();
-                }
+                RenderToDevice();
             }
             catch (InvalidDrawingContextException)
             {
@@ -102,9 +104,13 @@ namespace Consolonia.Core.Drawing
 
             return cache;
         }
-
+        
+        [MethodImpl(MethodImplOptions.Synchronized)]
         private void RenderToDevice()
         {
+            //todo: somewhere in this chain introduce _dirtyRects and render only those regions, BEB6BF21-2724-4E1B-B097-5563EE4C27D9
+            //todo: then refactor cursor drawing assuming this BEB6BF21-2724-4E1B-B097-5563EE4C27D9
+            
             PixelBuffer pixelBuffer = _consoleTopLevelImpl.PixelBuffer;
 
             _console.HideCaret();
@@ -126,8 +132,23 @@ namespace Consolonia.Core.Drawing
                     caretPosition = new PixelBufferCoordinate(x, y);
                     caretStyle = pixel.CaretStyle;
                 }
+                
+                // injecting cursor
+                if (!_consoleCursor.IsEmpty() && _consoleCursor.Coordinate.X == x && _consoleCursor.Coordinate.Y == y)
+                {
+                    Pixel currentPixel = pixel;
+                    
+                    // Calculate the inverse color
+                    Color invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
+                        (byte)(255 - currentPixel.Background.Color.G),
+                        (byte)(255 - currentPixel.Background.Color.B));
 
-                /* todo: There is not IWindowImpl.Invalidate anymore.
+                    pixel = new Pixel(new PixelForeground(new SimpleSymbol(_consoleCursor.Type), invertColor),
+                        new PixelBackground(currentPixel.Background.Color), pixel.CaretStyle);
+                }
+
+                /* BEB6BF21-2724-4E1B-B097-5563EE4C27D9
+                 todo: There is not IWindowImpl.Invalidate anymore.
                      if (!_consoleWindow.InvalidatedRects.Any(rect =>
                         rect.ContainsExclusive(new Point(x, y)))) continue;*/
 
@@ -157,6 +178,12 @@ namespace Consolonia.Core.Drawing
             {
                 _console.HideCaret();
             }
+        }
+
+        private void OnCursorChanged(ConsoleCursor consoleCursor)
+        {
+            _consoleCursor = consoleCursor;
+            RenderToDevice(); // assuming invalidated rects and caching
         }
 
         private struct FlushingBuffer
