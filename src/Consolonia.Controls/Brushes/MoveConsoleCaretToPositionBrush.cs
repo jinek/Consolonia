@@ -9,7 +9,7 @@ namespace Consolonia.Controls.Brushes
     public class MoveConsoleCaretToPositionBrush : AvaloniaObject, IImmutableBrush
     {
         public static readonly StyledProperty<CaretStyle> CaretStyleProperty =
-            AvaloniaProperty.Register<MoveConsoleCaretToPositionBrush, CaretStyle>(nameof(CaretStyle));
+            AvaloniaProperty.Register<MoveConsoleCaretToPositionBrush, CaretStyle>(nameof(CaretStyle), CaretStyle.BlinkingBar);
 
         /// <summary>
         ///     style of caret

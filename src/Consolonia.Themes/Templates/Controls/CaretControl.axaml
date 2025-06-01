@@ -5,13 +5,16 @@
                   TargetType="console:CaretControl">
         <Setter Property="Focusable"
                 Value="False" />
+        <Setter Property="CaretStyle"
+                Value="BlinkingBlock" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate>
+                <ControlTemplate TargetType="console:CaretControl">
                     <Grid Background="{TemplateBinding Background}">
                         <ContentPresenter Name="PART_ContentPresenter"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
                                           Content="{TemplateBinding Content}"
+                                          Margin="{TemplateBinding Padding}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
                         <!-- Caret should be drawn last so it is overlayed on top of any chars in the content -->
@@ -23,7 +26,9 @@
                                    IsHitTestVisible="False"
                                    IsVisible="{TemplateBinding IsCaretShown}">
                             <Rectangle.Fill>
-                                <console:MoveConsoleCaretToPositionBrush CaretStyle="{TemplateBinding CaretStyle}" />
+                                <!--todo: TemplateBinding does not work, seems Avalonia bug-->
+                                <console:MoveConsoleCaretToPositionBrush
+                                    CaretStyle="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CaretStyle}" />
                             </Rectangle.Fill>
                         </Rectangle>
                     </Grid>
