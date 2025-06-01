@@ -591,7 +591,6 @@ namespace Consolonia.Core.Infrastructure
                 StandardCursorType.DragLink => "⤻",
                 StandardCursorType.DragMove => "◤",
                 StandardCursorType.AppStarting => "⧖",
-                StandardCursorType.None => " ",
                 _ => " "
             };
         }
