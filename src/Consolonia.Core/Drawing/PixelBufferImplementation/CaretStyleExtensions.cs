@@ -1,0 +1,23 @@
+using Consolonia.Controls;
+
+namespace Consolonia.Core.Drawing.PixelBufferImplementation
+{
+    public static class CaretStyleExtensions
+    {
+        public static CaretStyle Blend(this CaretStyle pixelBelow, CaretStyle pixelAbove)
+        {
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            if (pixelAbove == CaretStyle.None)
+            {
+                return pixelBelow;
+            }
+
+            //todo: low: this is simplified, create matrix of "what's overlaying what"
+            return pixelAbove;
+        }
+
+        public static bool IsCaret(this CaretStyle caretStyle) => caretStyle != CaretStyle.None;
+
+        public static bool IsCaret(this Pixel pixel) => pixel.CaretStyle.IsCaret();
+    }
+}

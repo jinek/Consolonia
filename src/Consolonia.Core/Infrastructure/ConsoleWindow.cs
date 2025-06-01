@@ -497,7 +497,7 @@ namespace Consolonia.Core.Infrastructure
                 PixelBufferCoordinate oldCaretPosition = Console.GetCaretPosition();
                 bool hasCaret = false;
                 for (int i = 0; i < PixelBuffer.Length; i++)
-                    if (PixelBuffer[i].IsCaret)
+                    if (PixelBuffer[i].IsCaret())
                     {
                         hasCaret = true;
                         // hide the caret while drawing

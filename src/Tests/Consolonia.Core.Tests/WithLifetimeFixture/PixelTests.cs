@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Avalonia.Media;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -12,8 +13,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void ConstructorCaret()
         {
-            var pixel = new Pixel(true);
-            Assert.That(pixel.IsCaret);
+            var pixel = new Pixel(CaretStyle.BlinkingBar);
+            Assert.That(pixel.IsCaret());
             Assert.That(pixel.Foreground == new PixelForeground());
             Assert.That(pixel.Background == new PixelBackground());
         }
@@ -97,8 +98,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void EqualityCaret()
         {
-            var pixel = new Pixel(true);
-            var pixel2 = new Pixel(true);
+            var pixel = new Pixel(CaretStyle.BlinkingBar);
+            var pixel2 = new Pixel(CaretStyle.BlinkingBar);
             Assert.That(pixel.Equals((object)pixel2));
             Assert.That(pixel.Equals(pixel2));
             Assert.That(pixel == pixel2);
@@ -107,8 +108,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void InequalityCaret()
         {
-            var pixel = new Pixel(true);
-            var pixel2 = new Pixel(false);
+            var pixel = new Pixel(CaretStyle.BlinkingBar);
+            var pixel2 = new Pixel(CaretStyle.None);
             Assert.That(!pixel.Equals((object)pixel2));
             Assert.That(!pixel.Equals(pixel2));
             Assert.That(pixel != pixel2);
