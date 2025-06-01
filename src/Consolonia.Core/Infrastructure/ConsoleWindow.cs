@@ -54,12 +54,11 @@ namespace Consolonia.Core.Infrastructure
     public class ConsoleWindowImpl : IWindowImpl
 #pragma warning restore CA1711 // Identifiers should not have incorrect suffix
     {
+        [NotNull] internal readonly IConsole Console;
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
         private readonly List<Rect> _refreshRects = new();
-
-        [NotNull] internal readonly IConsole Console;
 
         private StandardCursorType _cursorType = StandardCursorType.Arrow;
         private bool _disposedValue;
