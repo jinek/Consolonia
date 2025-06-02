@@ -18,10 +18,11 @@ namespace Consolonia.Core.Infrastructure
         }
 
         /// <summary>
-        /// Checks if a point is exclusively contained within any rectangle.
+        /// Checks if a point is contained within any rectangle.
         /// </summary>
         /// <param name="point">The point to check.</param>
-        /// <returns>True if the point is exclusively contained, false otherwise.</returns>
+        /// <param name="inclusive">If true, uses inclusive containment; if false, uses exclusive containment.</param>
+        /// <returns>True if the point is contained, false otherwise.</returns>
         public bool Contains(Point point, bool inclusive)
         {
             return _rectangles.Any(rect => inclusive ? rect.Contains(point) : rect.ContainsExclusive(point));
