@@ -1,7 +1,6 @@
 using System;
 using Avalonia;
 using Avalonia.Media;
-using Consolonia.Controls;
 using Newtonsoft.Json;
 
 // ReSharper disable UnusedMember.Global
@@ -33,8 +32,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public ushort Width { get; }
         public ushort Height { get; }
-
-        public CaretStyle CaretStyle { get; set; } = CaretStyle.BlinkingBar;
 
         // ReSharper disable once UnusedMember.Global
         [JsonIgnore]

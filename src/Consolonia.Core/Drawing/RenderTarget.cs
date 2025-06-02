@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 
@@ -109,6 +110,7 @@ namespace Consolonia.Core.Drawing
             _console.HideCaret();
 
             PixelBufferCoordinate? caretPosition = null;
+            CaretStyle? caretStyle = null;
 
             var flushingBuffer = new FlushingBuffer(_console);
 
@@ -117,11 +119,12 @@ namespace Consolonia.Core.Drawing
             {
                 Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
 
-                if (pixel.IsCaret)
+                if (pixel.IsCaret())
                 {
                     if (caretPosition != null)
                         throw new InvalidOperationException("Caret is already shown");
                     caretPosition = new PixelBufferCoordinate(x, y);
+                    caretStyle = pixel.CaretStyle;
                 }
 
                 /* todo: There is not IWindowImpl.Invalidate anymore.
@@ -147,7 +150,7 @@ namespace Consolonia.Core.Drawing
             if (caretPosition != null)
             {
                 _console.SetCaretPosition((PixelBufferCoordinate)caretPosition);
-                _console.SetCaretStyle(pixelBuffer.CaretStyle);
+                _console.SetCaretStyle((CaretStyle)caretStyle!);
                 _console.ShowCaret();
             }
             else

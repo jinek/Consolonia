@@ -54,12 +54,11 @@ namespace Consolonia.Core.Infrastructure
     public class ConsoleWindowImpl : IWindowImpl
 #pragma warning restore CA1711 // Identifiers should not have incorrect suffix
     {
+        [NotNull] internal readonly IConsole Console;
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
         private readonly List<Rect> _refreshRects = new();
-
-        [NotNull] internal readonly IConsole Console;
 
         private StandardCursorType _cursorType = StandardCursorType.Arrow;
         private bool _disposedValue;
@@ -497,7 +496,7 @@ namespace Consolonia.Core.Infrastructure
                 PixelBufferCoordinate oldCaretPosition = Console.GetCaretPosition();
                 bool hasCaret = false;
                 for (int i = 0; i < PixelBuffer.Length; i++)
-                    if (PixelBuffer[i].IsCaret)
+                    if (PixelBuffer[i].IsCaret())
                     {
                         hasCaret = true;
                         // hide the caret while drawing
@@ -591,7 +590,6 @@ namespace Consolonia.Core.Infrastructure
                 StandardCursorType.DragLink => "⤻",
                 StandardCursorType.DragMove => "◤",
                 StandardCursorType.AppStarting => "⧖",
-                StandardCursorType.None => " ",
                 _ => " "
             };
         }

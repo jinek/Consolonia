@@ -10,7 +10,7 @@ namespace Consolonia.Controls
             AvaloniaProperty.Register<CaretControl, bool>(nameof(IsCaretShown));
 
         public static readonly StyledProperty<CaretStyle> CaretStyleProperty =
-            AvaloniaProperty.Register<CaretControl, CaretStyle>(nameof(CaretStyle));
+            AvaloniaProperty.Register<CaretControl, CaretStyle>(nameof(CaretStyle), CaretStyle.BlinkingBar);
 
         public bool IsCaretShown
         {
