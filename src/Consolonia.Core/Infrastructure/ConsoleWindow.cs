@@ -64,6 +64,7 @@ namespace Consolonia.Core.Infrastructure
         private Point _cursorPosition = new(0, 0);
         private bool _disposedValue;
         private IInputRoot _inputRoot;
+        internal Snapshot.Regions DirtyRegions { get; } = new();
 
         public ConsoleWindowImpl()
         {
@@ -71,6 +72,7 @@ namespace Consolonia.Core.Infrastructure
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             Console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
             PixelBuffer = new PixelBuffer(Console.Size);
+            DirtyRegions.AddRect(PixelBuffer.Size);
             Console.Resized += OnConsoleOnResized;
             Console.KeyEvent += ConsoleOnKeyEvent;
             Console.TextInputEvent += ConsoleOnTextInputEvent;
