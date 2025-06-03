@@ -357,8 +357,6 @@ namespace Consolonia.Core.Infrastructure
             GC.SuppressFinalize(this);
         }
 
-        public event Action<ConsoleCursor> CursorChanged;
-
         private void OnShowAccessKeyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> args)
         {
             if (args.Sender != _inputRoot) return;
