@@ -57,7 +57,6 @@ namespace Consolonia.Core.Infrastructure
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
         private Point _cursorPosition = new(0, 0);
-
         private StandardCursorType _cursorType = StandardCursorType.Arrow;
         private bool _disposedValue;
         private IInputRoot _inputRoot;
@@ -68,6 +67,7 @@ namespace Consolonia.Core.Infrastructure
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             Console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
             PixelBuffer = new PixelBuffer(Console.Size);
+            DirtyRegions.AddRect(PixelBuffer.Size);
             Console.Resized += OnConsoleOnResized;
             Console.KeyEvent += ConsoleOnKeyEvent;
             Console.TextInputEvent += ConsoleOnTextInputEvent;
@@ -79,6 +79,8 @@ namespace Consolonia.Core.Infrastructure
                 _accessKeysAlwaysOnDisposable =
                     AccessText.ShowAccessKeyProperty.Changed.SubscribeAction(OnShowAccessKeyPropertyChanged);
         }
+
+        internal Snapshot.Regions DirtyRegions { get; } = new();
 
         public PixelBuffer PixelBuffer { get; private set; }
 
