@@ -843,10 +843,10 @@ namespace Consolonia.Core.Drawing
                     }
                         break;
                 }
-            }
-
-            /*copilot: The “+1” here is intentional: since Rect’s width/height are calculated as (endIndex – startIndex), adding 1 ensures the final column/row is included rather than excluded. */
-            var rectToRefresh = new Rect((int)whereToDraw.X, (int)whereToDraw.Y, currentXPosition + 1,
+            // Width/height are exclusive, so add 1 to include the last column/row
+            var rectToRefresh = new Rect((int)whereToDraw.X, (int)whereToDraw.Y,
+                                         currentXPosition + 1, currentYPosition + 1);
+            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
                 currentYPosition + 1);
             _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
