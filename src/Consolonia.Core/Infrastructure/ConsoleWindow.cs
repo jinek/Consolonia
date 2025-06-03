@@ -60,7 +60,6 @@ namespace Consolonia.Core.Infrastructure
         private StandardCursorType _cursorType = StandardCursorType.Arrow;
         private bool _disposedValue;
         private IInputRoot _inputRoot;
-        internal Snapshot.Regions DirtyRegions { get; } = new();
 
         public ConsoleWindowImpl()
         {
@@ -80,6 +79,8 @@ namespace Consolonia.Core.Infrastructure
                 _accessKeysAlwaysOnDisposable =
                     AccessText.ShowAccessKeyProperty.Changed.SubscribeAction(OnShowAccessKeyPropertyChanged);
         }
+
+        internal Snapshot.Regions DirtyRegions { get; } = new();
 
         public PixelBuffer PixelBuffer { get; private set; }
 
@@ -156,7 +157,6 @@ namespace Consolonia.Core.Infrastructure
 
         public Action<Rect> Paint { get; set; }
         public Action<Size, WindowResizeReason> Resized { get; set; }
-        public event Action<ConsoleCursor> CursorChanged;
 
 
         public Action<double> ScalingChanged { get; set; }
@@ -357,6 +357,8 @@ namespace Consolonia.Core.Infrastructure
             GC.SuppressFinalize(this);
         }
 
+        public event Action<ConsoleCursor> CursorChanged;
+
         private void OnShowAccessKeyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> args)
         {
             if (args.Sender != _inputRoot) return;
@@ -482,12 +484,12 @@ namespace Consolonia.Core.Infrastructure
                 _disposedValue = true;
             }
         }
-        
+
         private void UpdateCursor()
         {
             OnCursorChanged(
                 new ConsoleCursor(
-                    new PixelBufferCoordinate((ushort)_cursorPosition.X,(ushort)_cursorPosition.Y),
+                    new PixelBufferCoordinate((ushort)_cursorPosition.X, (ushort)_cursorPosition.Y),
                     GetCursorText()));
         }
 

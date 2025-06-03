@@ -6,7 +6,7 @@ using Consolonia.Core.Drawing;
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    /// A readonly snapshot of rectangles.
+    ///     A readonly snapshot of rectangles.
     /// </summary>
     internal class Snapshot
     {
@@ -18,7 +18,7 @@ namespace Consolonia.Core.Infrastructure
         }
 
         /// <summary>
-        /// Checks if a point is contained within any rectangle.
+        ///     Checks if a point is contained within any rectangle.
         /// </summary>
         /// <param name="point">The point to check.</param>
         /// <param name="inclusive">If true, uses inclusive containment; if false, uses exclusive containment.</param>
@@ -30,7 +30,7 @@ namespace Consolonia.Core.Infrastructure
 
 
         /// <summary>
-        /// A thread-safe collection of normalized rectangles.
+        ///     A thread-safe collection of normalized rectangles.
         /// </summary>
         public class Regions
         {
@@ -47,10 +47,7 @@ namespace Consolonia.Core.Infrastructure
                     for (int i = 0; i < _rectangles.Count; i++)
                     {
                         Rect existingRect = _rectangles[i];
-                        if (existingRect.Contains(rect))
-                        {
-                            return;
-                        }
+                        if (existingRect.Contains(rect)) return;
 
                         if (rect.Contains(existingRect))
                         {

@@ -105,7 +105,7 @@ namespace Consolonia.Core.Drawing
 
             return cache;
         }
-        
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void RenderToDevice()
         {
@@ -137,12 +137,12 @@ namespace Consolonia.Core.Drawing
 
                 if (!dirtyRegions.Contains(new Point(x, y), false)) /*checking caret duplication before to fail fast*/
                     continue;
-                
+
                 // injecting cursor
                 if (!_consoleCursor.IsEmpty() && _consoleCursor.Coordinate.X == x && _consoleCursor.Coordinate.Y == y)
                 {
                     Pixel currentPixel = pixel;
-                    
+
                     // Calculate the inverse color
                     Color invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
                         (byte)(255 - currentPixel.Background.Color.G),
@@ -180,13 +180,13 @@ namespace Consolonia.Core.Drawing
             ConsoleCursor oldConsoleCursor = _oldConsoleCursor;
             _oldConsoleCursor = _consoleCursor;
             _consoleCursor = consoleCursor;
-            
+
             //todo: low excessive refresh, emptiness can be checked
             _consoleTopLevelImpl.DirtyRegions.AddRect(new Rect(oldConsoleCursor.Coordinate.X,
                 oldConsoleCursor.Coordinate.Y, 1, 1));
             _consoleTopLevelImpl.DirtyRegions.AddRect(new Rect(consoleCursor.Coordinate.X,
                 consoleCursor.Coordinate.Y, 1, 1));
-            
+
             RenderToDevice();
         }
 

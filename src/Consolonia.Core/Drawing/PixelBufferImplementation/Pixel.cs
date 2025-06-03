@@ -127,7 +127,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             var newBackground = new PixelBackground(MergeColors(Background.Color, pixelAbove.Background.Color));
 
             CaretStyle newCaretStyle;
-            
+
             //todo: logic of IsNothingToDraw overlaps with following if which overlaps Foreground.Blend - do we do double checks?
             bool isNoForegroundOnTop = pixelAbove.Foreground.IsNothingToDraw();
             if (pixelAbove.Background.Color.A == 0x0 /*todo: can be approximate, extract to extension method*/)

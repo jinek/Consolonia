@@ -132,7 +132,7 @@ namespace Consolonia.Core.Drawing
 
             var rectToRefresh = new Rect((int)targetRect.TopLeft.X, (int)targetRect.TopLeft.Y, (int)targetRect.Width,
                 (int)targetRect.Height);
-            
+
             _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
 
@@ -214,7 +214,7 @@ namespace Consolonia.Core.Drawing
                     }
 
             if (rect.Rect.IsEmpty()) return;
-            
+
             Rect r = rect.Rect;
 
             if (brush is not null)
@@ -525,7 +525,7 @@ namespace Consolonia.Core.Drawing
                         });
                 });
             }
-            
+
             _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(new Rect(r2.TopLeft, r2.Size)));
         }
 
@@ -725,7 +725,7 @@ namespace Consolonia.Core.Drawing
                     ? head.WithY(head.Y + 1)
                     : head.WithX(head.X + 1);
             }
-            
+
             Rect rectToRefresh = isVertical
                 ? new Rect((int)head.X, (int)head.Y, 1, count)
                 : new Rect((int)head.X, (int)head.Y, count, 1);
@@ -844,7 +844,7 @@ namespace Consolonia.Core.Drawing
                         break;
                 }
             }
-            
+
             var rectToRefresh = new Rect((int)whereToDraw.X, (int)whereToDraw.Y, currentXPosition + 1,
                 currentYPosition + 1); //todo: why +1, done by copilot
             _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
