@@ -844,7 +844,7 @@ namespace Consolonia.Core.Drawing
                         break;
                 }
             }
-            
+
             /*copilot: The “+1” here is intentional: since Rect’s width/height are calculated as (endIndex – startIndex), adding 1 ensures the final column/row is included rather than excluded. */
             var rectToRefresh = new Rect((int)whereToDraw.X, (int)whereToDraw.Y, currentXPosition + 1,
                 currentYPosition + 1);
