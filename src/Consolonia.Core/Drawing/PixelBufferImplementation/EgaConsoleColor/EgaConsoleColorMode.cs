@@ -101,14 +101,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor
                 ConsoleColor.Red => ConsoleColor.DarkRed,
                 ConsoleColor.Magenta => ConsoleColor.DarkMagenta,
                 ConsoleColor.Yellow => ConsoleColor.DarkYellow,
-                ConsoleColor.DarkBlue or
-                    ConsoleColor.DarkGreen or
-                    ConsoleColor.DarkCyan or
-                    ConsoleColor.DarkRed or
-                    ConsoleColor.DarkMagenta or
-                    ConsoleColor.DarkYellow or
-                    ConsoleColor.DarkGray or
-                    ConsoleColor.Black => ConsoleColor.Black,
                 _ => ConsoleColor.Black
             };
         }

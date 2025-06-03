@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
@@ -22,14 +23,16 @@ namespace Consolonia.Core.Drawing
 
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
+        private ConsoleCursor _consoleCursor;
+        private ConsoleCursor _oldConsoleCursor;
 
         internal RenderTarget(ConsoleWindowImpl consoleTopLevelImpl)
         {
             _console = AvaloniaLocator.Current.GetService<IConsoleOutput>()!;
             _consoleTopLevelImpl = consoleTopLevelImpl;
-            _consoleTopLevelImpl.Resized += OnResized;
-
             _cache = InitializeCache(_consoleTopLevelImpl.PixelBuffer.Width, _consoleTopLevelImpl.PixelBuffer.Height);
+            _consoleTopLevelImpl.Resized += OnResized;
+            _consoleTopLevelImpl.CursorChanged += OnCursorChanged;
         }
 
         public RenderTarget(IEnumerable<object> surfaces)
@@ -43,6 +46,7 @@ namespace Consolonia.Core.Drawing
         public void Dispose()
         {
             _consoleTopLevelImpl.Resized -= OnResized;
+            _consoleTopLevelImpl.CursorChanged -= OnCursorChanged;
         }
 
         public void Save(string fileName, int? quality = null)
@@ -63,10 +67,7 @@ namespace Consolonia.Core.Drawing
         {
             try
             {
-                lock (_consoleTopLevelImpl.PixelBuffer)
-                {
-                    RenderToDevice();
-                }
+                RenderToDevice();
             }
             catch (InvalidDrawingContextException)
             {
@@ -103,44 +104,59 @@ namespace Consolonia.Core.Drawing
             return cache;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         private void RenderToDevice()
         {
+            //todo: somewhere in this chain introduce _dirtyRects and render only those regions, BEB6BF21-2724-4E1B-B097-5563EE4C27D9
+            //todo: then refactor cursor drawing assuming this BEB6BF21-2724-4E1B-B097-5563EE4C27D9
+
             PixelBuffer pixelBuffer = _consoleTopLevelImpl.PixelBuffer;
+            Snapshot dirtyRegions = _consoleTopLevelImpl.DirtyRegions.GetSnapshotAndClear();
 
             _console.HideCaret();
 
             PixelBufferCoordinate? caretPosition = null;
+            CaretStyle? caretStyle = null;
 
             var flushingBuffer = new FlushingBuffer(_console);
 
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-            for (ushort x = 0; x < pixelBuffer.Width;)
+            for (ushort x = 0; x < pixelBuffer.Width; x++)
             {
                 Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
 
-                if (pixel.IsCaret)
+                if (pixel.IsCaret())
                 {
                     if (caretPosition != null)
                         throw new InvalidOperationException("Caret is already shown");
                     caretPosition = new PixelBufferCoordinate(x, y);
+                    caretStyle = pixel.CaretStyle;
                 }
 
-                /* todo: There is not IWindowImpl.Invalidate anymore.
-                     if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                        rect.ContainsExclusive(new Point(x, y)))) continue;*/
+                if (!dirtyRegions.Contains(new Point(x, y), false)) /*checking caret duplication before to fail fast*/
+                    continue;
+
+                // injecting cursor
+                if (!_consoleCursor.IsEmpty() && _consoleCursor.Coordinate.X == x && _consoleCursor.Coordinate.Y == y)
+                {
+                    Pixel currentPixel = pixel;
+
+                    // Calculate the inverse color
+                    Color invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
+                        (byte)(255 - currentPixel.Background.Color.G),
+                        (byte)(255 - currentPixel.Background.Color.B));
+
+                    pixel = new Pixel(new PixelForeground(new SimpleSymbol(_consoleCursor.Type), invertColor),
+                        new PixelBackground(currentPixel.Background.Color), pixel.CaretStyle);
+                }
 
                 //todo: indexOutOfRange during resize
                 if (_cache[x, y] == pixel)
-                {
-                    x++;
                     continue;
-                }
 
                 _cache[x, y] = pixel;
 
                 flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
-
-                x++;
             }
 
             flushingBuffer.Flush();
@@ -150,13 +166,28 @@ namespace Consolonia.Core.Drawing
             if (caretPosition != null && pixelBufferCaretStyle != CaretStyle.None)
             {
                 _console.SetCaretPosition((PixelBufferCoordinate)caretPosition);
-                _console.SetCaretStyle(pixelBufferCaretStyle);
+                _console.SetCaretStyle((CaretStyle)caretStyle!);
                 _console.ShowCaret();
             }
             else
             {
-                _console.HideCaret();
+                _console.HideCaret(); //todo: Caret was hidden at the beginning of this method, why to hide it again?
             }
+        }
+
+        private void OnCursorChanged(ConsoleCursor consoleCursor)
+        {
+            ConsoleCursor oldConsoleCursor = _oldConsoleCursor;
+            _oldConsoleCursor = _consoleCursor;
+            _consoleCursor = consoleCursor;
+
+            //todo: low excessive refresh, emptiness can be checked
+            _consoleTopLevelImpl.DirtyRegions.AddRect(new Rect(oldConsoleCursor.Coordinate.X,
+                oldConsoleCursor.Coordinate.Y, 1, 1));
+            _consoleTopLevelImpl.DirtyRegions.AddRect(new Rect(consoleCursor.Coordinate.X,
+                consoleCursor.Coordinate.Y, 1, 1));
+
+            RenderToDevice();
         }
 
         private struct FlushingBuffer

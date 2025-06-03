@@ -1,7 +1,8 @@
 namespace Consolonia.Controls
 {
-    public enum CaretStyle
+    public enum CaretStyle : byte
     {
+        None = 0,
         BlinkingBar,
         SteadyBar,
         BlinkingBlock,
