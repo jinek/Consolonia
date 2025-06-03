@@ -12,7 +12,8 @@ using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("'{Foreground.Symbol.Text}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
+    [DebuggerDisplay(
+        "'{Foreground.Symbol.Text}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
     public readonly struct Pixel : IEquatable<Pixel>
     {
         public Pixel()

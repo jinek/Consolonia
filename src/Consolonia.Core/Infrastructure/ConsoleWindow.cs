@@ -10,11 +10,9 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
-using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
-using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
 using Window = Avalonia.Controls.Window;
@@ -54,14 +52,12 @@ namespace Consolonia.Core.Infrastructure
     public class ConsoleWindowImpl : IWindowImpl
 #pragma warning restore CA1711 // Identifiers should not have incorrect suffix
     {
+        [NotNull] internal readonly IConsole Console;
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
         private readonly IKeyboardDevice _myKeyboardDevice;
-
-        [NotNull] internal readonly IConsole Console;
-
-        private StandardCursorType _cursorType = StandardCursorType.Arrow;
         private Point _cursorPosition = new(0, 0);
+        private StandardCursorType _cursorType = StandardCursorType.Arrow;
         private bool _disposedValue;
         private IInputRoot _inputRoot;
         internal Snapshot.Regions DirtyRegions { get; } = new();
@@ -82,8 +78,7 @@ namespace Consolonia.Core.Infrastructure
             _accessKeysAlwaysOn = !Console.SupportsAltSolo;
             if (_accessKeysAlwaysOn)
                 _accessKeysAlwaysOnDisposable =
-                    UtilityExtensions.SubscribeAction(AccessText.ShowAccessKeyProperty.Changed,
-                        OnShowAccessKeyPropertyChanged);
+                    AccessText.ShowAccessKeyProperty.Changed.SubscribeAction(OnShowAccessKeyPropertyChanged);
         }
 
         public PixelBuffer PixelBuffer { get; private set; }
@@ -361,6 +356,8 @@ namespace Consolonia.Core.Infrastructure
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public event Action<ConsoleCursor> CursorChanged;
 
         private void OnShowAccessKeyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> args)
         {

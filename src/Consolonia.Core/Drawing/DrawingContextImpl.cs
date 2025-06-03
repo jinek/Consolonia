@@ -235,7 +235,8 @@ namespace Consolonia.Core.Drawing
                         CurrentClip.ExecuteWithClipping(head,
                             () =>
                             {
-                                _pixelBuffer.Set((PixelBufferCoordinate)head, pixel => pixel.Blend(new Pixel(moveBrush.CaretStyle)));
+                                _pixelBuffer.Set((PixelBufferCoordinate)head,
+                                    pixel => pixel.Blend(new Pixel(moveBrush.CaretStyle)));
                             });
                         _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(new Rect(head, new Size(1, 1))));
                         return;

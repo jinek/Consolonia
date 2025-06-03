@@ -109,6 +109,9 @@ namespace Consolonia.Core.Drawing
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void RenderToDevice()
         {
+            //todo: somewhere in this chain introduce _dirtyRects and render only those regions, BEB6BF21-2724-4E1B-B097-5563EE4C27D9
+            //todo: then refactor cursor drawing assuming this BEB6BF21-2724-4E1B-B097-5563EE4C27D9
+
             PixelBuffer pixelBuffer = _consoleTopLevelImpl.PixelBuffer;
             Snapshot dirtyRegions = _consoleTopLevelImpl.DirtyRegions.GetSnapshotAndClear();
 
