@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
@@ -87,9 +88,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool Equals(Pixel other)
         {
-            return Foreground.Equals(other.Foreground) &&
-                   Background.Equals(other.Background) &&
-                   CaretStyle.Equals(other.CaretStyle);
+            return EqualityComparer<PixelForeground>.Default.Equals(Foreground, other.Foreground) &&
+                   EqualityComparer<PixelBackground>.Default.Equals(Background, other.Background) &&
+                   CaretStyle == other.CaretStyle;
         }
 
         public Pixel Shade()
