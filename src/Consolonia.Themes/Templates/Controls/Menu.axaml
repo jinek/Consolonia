@@ -4,6 +4,8 @@
 
     <ControlTheme x:Key="TurboVisionTopLevelMenuItem"
                   TargetType="MenuItem">
+        <Setter Property="(console:MenuExtensions.IsMenu)"
+                Value="True" />
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="BorderThickness"
@@ -52,19 +54,25 @@
             </ControlTemplate>
         </Setter>
 
+        <Style Selector="^ /template/ Border#root">
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        </Style>
+
         <!--todo: Copypaste from MenuItem-->
         <Style Selector="^:selected /template/ Border#root">
+            <!--TurboVision approach-->
             <Setter Property="Background"
-                    Value="{DynamicResource ThemeChooserBackgroundBrush}" />
-            <!--<Setter Property="(TemplatedControl.Foreground)"
-                Value="{DynamicResource ThemeBackgroundBrush}" />-->
+                    Value="{DynamicResource ThemeActionBackgroundBrush}" />
+            <Setter Property="(TemplatedControl.Foreground)"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
 
         <Style Selector="^:focus /template/ Border#root">
             <Setter Property="Background"
                     Value="{DynamicResource ThemeActionBackgroundBrush}" />
-            <!--<Setter Property="(TemplatedControl.Foreground)"
-                Value="{DynamicResource ThemeBackgroundBrush}" />-->
+            <Setter Property="(TemplatedControl.Foreground)"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
 
         <Style Selector="^:empty /template/ TextBlock#rightArrow">
@@ -81,8 +89,9 @@
 
     <ControlTheme x:Key="{x:Type Menu}"
                   TargetType="Menu">
+        <!--TurboVision approach-->
         <Setter Property="Background"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="ItemContainerTheme"
                 Value="{StaticResource TurboVisionTopLevelMenuItem}" />
         <Setter Property="Template">

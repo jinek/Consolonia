@@ -19,39 +19,55 @@
                 Value="Center" />
         <Setter Property="Template">
             <ControlTemplate>
-                <console:CaretControl Padding="0,0,0,0"
-                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      Margin="{TemplateBinding Padding}"
-                                      IsCaretShown="{TemplateBinding IsFocused}">
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                      Background="{TemplateBinding Background}"
-                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                      BorderThickness="{TemplateBinding BorderThickness}"
-                                      ContentTemplate="{TemplateBinding ContentTemplate}"
-                                      Content="{TemplateBinding Content}"
-                                      Padding="{TemplateBinding Padding}"
-                                      TextBlock.Foreground="{TemplateBinding Foreground}"
-                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-                </console:CaretControl>
+                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border Background="{TemplateBinding Background}">
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <console:SymbolsControl Grid.Column="0"
+                                                    Name="Part_LeftBracket"
+                                                    Text="["
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            <console:SymbolsControl Grid.Column="2"
+                                                    Name="Part_RightBracket"
+                                                    Text="]"
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            <console:CaretControl x:Name="PART_CaretControl"
+                                                  Grid.Column="1"
+                                                  Padding="0,0,0,0"
+                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  IsCaretShown="{TemplateBinding IsFocused}">
+                                <ContentPresenter Name="PART_ContentPresenter"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                  Content="{TemplateBinding Content}"
+                                                  TextBlock.Foreground="{TemplateBinding Foreground}"
+                                                  RecognizesAccessKey="True" />
+                            </console:CaretControl>
+                        </Grid>
+                    </Border>
+                </Border>
             </ControlTemplate>
         </Setter>
-        <Style Selector="^:checked /template/ ContentPresenter">
-            <Setter Property="Background"
-                    Value="{DynamicResource ThemeChooserBackgroundBrush}" />
-            <!--<Setter Property="BorderBrush" Value="{DynamicResource ThemeForegroundBrush}"/>-->
-        </Style>
-        <!--<Style Selector="ToggleButton:pointerover /template/ ContentPresenter">
-    <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderMidBrush}"/>
-  </Style>-->
-        <Style Selector="^:pressed  /template/ ContentPresenter">
-            <Setter Property="Background"
-                    Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+
+        <Style Selector="^ /template/ console|CaretControl#PART_CaretControl">
+            <Setter Property="CaretStyle"
+                    Value="None" />
         </Style>
         <Style Selector="^:disabled">
             <Setter Property="Opacity"
                     Value="{DynamicResource ThemeDisabledOpacity}" />
+        </Style>
+        <Style Selector="^ /template/ console|SymbolsControl#Part_LeftBracket">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+
+        <Style Selector="^ /template/ console|SymbolsControl#Part_RightBracket">
+            <Setter Property="IsVisible"
+                    Value="False" />
         </Style>
     </ControlTheme>
 </ResourceDictionary>

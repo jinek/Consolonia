@@ -618,8 +618,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     {
         private readonly Dictionary<string, List<string>> _errorLookup = new();
         private readonly string _firstName;
+        private readonly bool _isBanned;
         private readonly string _lastName;
-        private bool _isBanned;
 
         public string FirstName
         {
