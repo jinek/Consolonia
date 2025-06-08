@@ -8,15 +8,15 @@
                 <ResourceInclude Source="/Fluent/FluentColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <x:String x:Key="ThemeLeftArrowSymbol">&lt;</x:String>
-            <x:String x:Key="ThemeRightArrowSymbol">&gt;</x:String>
-            <x:String x:Key="ThemeUpArrowSymbol">^</x:String>
-            <x:String x:Key="ThemeDownArrowSymbol">v</x:String>
+            <x:String x:Key="ThemeLeftArrowSymbol">˂</x:String>
+            <x:String x:Key="ThemeRightArrowSymbol">˃</x:String>
+            <x:String x:Key="ThemeUpArrowSymbol">˄</x:String>
+            <x:String x:Key="ThemeDownArrowSymbol">˅</x:String>
 
-            <x:String x:Key="ThemeScrollBarLeftSymbol">&lt;</x:String>
-            <x:String x:Key="ThemeScrollBarRightSymbol">&gt;</x:String>
-            <x:String x:Key="ThemeScrollBarUpSymbol">^</x:String>
-            <x:String x:Key="ThemeScrollBarDownSymbol">v</x:String>
+            <x:String x:Key="ThemeScrollBarLeftSymbol">˂</x:String>
+            <x:String x:Key="ThemeScrollBarRightSymbol">˃</x:String>
+            <x:String x:Key="ThemeScrollBarUpSymbol">˄</x:String>
+            <x:String x:Key="ThemeScrollBarDownSymbol">˅</x:String>
 
             <x:String x:Key="ThemeScrollBarHorizontalBackgroundSymbol">░</x:String>
             <x:String x:Key="ThemeScrollBarHorizontalThumbSymbol">█</x:String>
