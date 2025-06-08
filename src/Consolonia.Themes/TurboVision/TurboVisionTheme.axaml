@@ -68,4 +68,5 @@
     <StyleInclude Source="/TurboVision/Controls/ToggleButton.axaml" />
     <StyleInclude Source="/TurboVision/Controls/ComboBox.axaml" />
     <StyleInclude Source="/TurboVision/Controls/DropDownButton.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/CheckBox.axaml" />
 </Styles>
