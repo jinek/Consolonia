@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Media;
+using Consolonia.Controls;
 using Newtonsoft.Json;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -10,21 +12,21 @@ using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("'{Foreground.Symbol.Text}' [{Foreground.Color}, {Background.Color}]")]
+    [DebuggerDisplay(
+        "'{Foreground.Symbol.Text}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
     public readonly struct Pixel : IEquatable<Pixel>
     {
         public Pixel()
         {
             Foreground = new PixelForeground();
             Background = new PixelBackground();
-            IsCaret = false;
         }
 
-        public Pixel(bool isCaret)
+        public Pixel(CaretStyle caretStyle)
         {
             Foreground = new PixelForeground();
             Background = new PixelBackground();
-            IsCaret = isCaret;
+            CaretStyle = caretStyle;
         }
 
         /// <summary>
@@ -58,16 +60,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <summary>
         ///     Make a pixel with foreground and background
         /// </summary>
-        /// <param name="foreground"></param>
-        /// <param name="background"></param>
-        /// <param name="isCaret"></param>
         public Pixel(PixelForeground foreground,
             PixelBackground background,
-            bool isCaret = false)
+            CaretStyle caretStyle = CaretStyle.None)
         {
             Foreground = foreground;
             Background = background;
-            IsCaret = isCaret;
+            CaretStyle = caretStyle;
         }
 
         // Pixel empty is a non-pixel. It has no symbol, no color, no weight, no style, no text decoration, and no background.
@@ -83,25 +82,25 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public PixelBackground Background { get; init; }
 
-        public bool IsCaret { get; init; }
+        public CaretStyle CaretStyle { get; init; } = CaretStyle.BlinkingBar;
 
         [JsonIgnore] public ushort Width => Foreground.Symbol.Width;
 
         public bool Equals(Pixel other)
         {
-            return Foreground.Equals(other.Foreground) &&
-                   Background.Equals(other.Background) &&
-                   IsCaret.Equals(other.IsCaret);
+            return EqualityComparer<PixelForeground>.Default.Equals(Foreground, other.Foreground) &&
+                   EqualityComparer<PixelBackground>.Default.Equals(Background, other.Background) &&
+                   CaretStyle == other.CaretStyle;
         }
 
         public Pixel Shade()
         {
-            return new Pixel(Foreground.Shade(), Background.Shade(), IsCaret);
+            return new Pixel(Foreground.Shade(), Background.Shade(), CaretStyle);
         }
 
         public Pixel Brighten()
         {
-            return new Pixel(Foreground.Brighten(), Background.Brighten(), IsCaret);
+            return new Pixel(Foreground.Brighten(), Background.Brighten(), CaretStyle);
         }
 
         public Pixel Invert()
@@ -112,7 +111,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     Foreground.Style,
                     Foreground.TextDecoration),
                 new PixelBackground(Foreground.Color),
-                IsCaret);
+                CaretStyle);
         }
 
         /// <summary>
@@ -127,18 +126,18 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             var newBackground = new PixelBackground(MergeColors(Background.Color, pixelAbove.Background.Color));
 
-            bool newIsCaret;
+            CaretStyle newCaretStyle;
 
+            //todo: logic of IsNothingToDraw overlaps with following if which overlaps Foreground.Blend - do we do double checks?
+            bool isNoForegroundOnTop = pixelAbove.Foreground.IsNothingToDraw();
             if (pixelAbove.Background.Color.A == 0x0 /*todo: can be approximate, extract to extension method*/)
             {
-                newForeground = pixelAbove.Foreground.NothingToDraw()
-                    ? Foreground
-                    : Foreground.Blend(pixelAbove.Foreground);
-                newIsCaret = pixelAbove.IsCaret | IsCaret;
+                newForeground = isNoForegroundOnTop ? Foreground : Foreground.Blend(pixelAbove.Foreground);
+                newCaretStyle = CaretStyle.Blend(pixelAbove.CaretStyle);
             }
             else
             {
-                if (!pixelAbove.Foreground.NothingToDraw())
+                if (!isNoForegroundOnTop)
                 {
                     newForeground = pixelAbove.Foreground;
                 }
@@ -157,10 +156,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                             Foreground.TextDecoration);
                 }
 
-                newIsCaret = pixelAbove.IsCaret;
+                newCaretStyle = pixelAbove.CaretStyle;
             }
 
-            return new Pixel(newForeground, newBackground, newIsCaret);
+            return new Pixel(newForeground, newBackground, newCaretStyle);
         }
 
         /// <summary>
@@ -182,7 +181,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Foreground, Background, IsCaret);
+            return HashCode.Combine(Foreground, Background, CaretStyle);
         }
 
         public static bool operator ==(Pixel left, Pixel right)

@@ -1,0 +1,17 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="https://github.com/jinek/consolonia">
+    <Styles.Resources>
+        <ControlTheme x:Key="{x:Type CheckBox}"
+                      TargetType="CheckBox">
+            <ControlTheme.BasedOn>
+                <StaticResource ResourceKey="{x:Type CheckBox}" />
+            </ControlTheme.BasedOn>
+
+            <Style Selector="^ /template/ controls|CaretControl">
+                <Setter Property="CaretMargin"
+                        Value="1,0,0,0" />
+            </Style>
+        </ControlTheme>
+    </Styles.Resources>
+</Styles>

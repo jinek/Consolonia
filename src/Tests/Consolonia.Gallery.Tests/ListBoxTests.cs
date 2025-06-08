@@ -16,7 +16,7 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(Key.Tab, RawInputModifiers.Shift);
             await UITest.KeyInput(Key.Tab, RawInputModifiers.Shift);
             await UITest.KeyInput(Key.PageDown);
-            await UITest.AssertHasText("Item 49");
+            await UITest.AssertHasText("Item 45");
         }
     }
 }
