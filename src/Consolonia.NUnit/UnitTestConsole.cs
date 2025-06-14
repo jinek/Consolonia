@@ -181,7 +181,7 @@ namespace Consolonia.NUnit
                     if (i == PixelBuffer.Width - 1 && j == PixelBuffer.Height - 1)
                         break;
                     Pixel pixel = PixelBuffer[new PixelBufferCoordinate(i, j)];
-                    string text = pixel.IsCaret ? "Ꮖ" : pixel.Foreground.Symbol.Text;
+                    string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.Text;
                     //todo: check why cursor is not drawing
                     stringBuilder.Append(text);
                 }
