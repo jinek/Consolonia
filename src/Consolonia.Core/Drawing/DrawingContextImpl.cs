@@ -73,6 +73,7 @@ namespace Consolonia.Core.Drawing
 
         public void Clear(Color color)
         {
+            // todo: try to throw an exception here, there will be an exception in logger
             /*if (color != Colors.Transparent)
             {
                 ConsoloniaPlatform.RaiseNotSupported(1);
@@ -105,11 +106,11 @@ namespace Consolonia.Core.Drawing
                 int py = (int)targetRect.TopLeft.Y + y / 2;
 
                 // get the quad pixel the bitmap
-                SKColor[] quadColors = new[]
-                {
+                SKColor[] quadColors =
+                [
                     bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
                     bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
-                };
+                ];
 
                 // map it to a single char to represent the 4 pixels
                 char quadPixel = GetQuadPixelCharacter(quadColors);
@@ -128,6 +129,11 @@ namespace Consolonia.Core.Drawing
                             existingPixel => existingPixel.Blend(imagePixel));
                     });
             }
+
+            var rectToRefresh = new Rect((int)targetRect.TopLeft.X, (int)targetRect.TopLeft.Y, (int)targetRect.Width,
+                (int)targetRect.Height);
+
+            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
 
         public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
@@ -160,7 +166,7 @@ namespace Consolonia.Core.Drawing
                     // if we have strokes to draw
                     if (streamGeometry.Strokes.Count > 0)
                     {
-                        pen = pen ?? new Pen(brush);
+                        pen ??= new Pen(brush);
 
                         RectangleLinePosition[] strokePositions = InferStrokePositions(streamGeometry);
                         for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
@@ -208,6 +214,7 @@ namespace Consolonia.Core.Drawing
                     }
 
             if (rect.Rect.IsEmpty()) return;
+
             Rect r = rect.Rect;
 
             if (brush is not null)
@@ -219,7 +226,7 @@ namespace Consolonia.Core.Drawing
                     case ISceneBrush sceneBrush:
                     {
                         ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
-                        if (sceneBrushContent != null) sceneBrushContent.Render(this, Matrix.Identity);
+                        sceneBrushContent?.Render(this, Matrix.Identity);
                         return;
                     }
                     case MoveConsoleCaretToPositionBrush moveBrush:
@@ -231,6 +238,7 @@ namespace Consolonia.Core.Drawing
                                 _pixelBuffer.Set((PixelBufferCoordinate)head,
                                     pixel => pixel.Blend(new Pixel(moveBrush.CaretStyle)));
                             });
+                        _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(new Rect(head, new Size(1, 1))));
                         return;
                     }
                 }
@@ -440,6 +448,7 @@ namespace Consolonia.Core.Drawing
                         _pixelBuffer.Set((PixelBufferCoordinate)head,
                             pixel => pixel.Blend(new Pixel(moveBrush.CaretStyle)));
                     });
+                _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(new Rect(head, new Size(1, 1))));
                 return;
             }
 
@@ -478,6 +487,9 @@ namespace Consolonia.Core.Drawing
                 });
                 head = head.WithX(head.X + 1);
             }
+
+            var rectToRefresh = new Rect((int)line.PStart.X, (int)line.PStart.Y, line.Length, 1);
+            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
 
         private void FillRectangleWithBrush(IBrush brush, IPen pen, Rect r)
@@ -513,6 +525,8 @@ namespace Consolonia.Core.Drawing
                         });
                 });
             }
+
+            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(new Rect(r2.TopLeft, r2.Size)));
         }
 
         /// <summary>
@@ -690,6 +704,11 @@ namespace Consolonia.Core.Drawing
                     ? head.WithY(head.Y + 1)
                     : head.WithX(head.X + 1);
             }
+
+            Rect rectToRefresh = line.Vertical
+                ? new Rect((int)head.X, (int)head.Y, 1, count)
+                : new Rect((int)head.X, (int)head.Y, count, 1);
+            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
 
         private void DrawLineSymbolAndMoveHead(ref Point head, bool isVertical, ISymbol symbol, Color color, int count)
@@ -706,6 +725,11 @@ namespace Consolonia.Core.Drawing
                     ? head.WithY(head.Y + 1)
                     : head.WithX(head.X + 1);
             }
+
+            Rect rectToRefresh = isVertical
+                ? new Rect((int)head.X, (int)head.Y, 1, count)
+                : new Rect((int)head.X, (int)head.Y, count, 1);
+            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
 
         private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
@@ -820,6 +844,11 @@ namespace Consolonia.Core.Drawing
                         break;
                 }
             }
+
+            // Width/height are exclusive, so add 1 to include the last column/row
+            var rectToRefresh = new Rect((int)whereToDraw.X, (int)whereToDraw.Y, currentXPosition + 1,
+                currentYPosition + 1);
+            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
 
         /// <summary>

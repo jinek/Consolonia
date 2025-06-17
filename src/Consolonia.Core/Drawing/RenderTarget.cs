@@ -24,6 +24,7 @@ namespace Consolonia.Core.Drawing
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
         private ConsoleCursor _consoleCursor;
+        private ConsoleCursor _oldConsoleCursor;
 
         internal RenderTarget(ConsoleWindowImpl consoleTopLevelImpl)
         {
@@ -112,6 +113,7 @@ namespace Consolonia.Core.Drawing
             //todo: then refactor cursor drawing assuming this BEB6BF21-2724-4E1B-B097-5563EE4C27D9
 
             PixelBuffer pixelBuffer = _consoleTopLevelImpl.PixelBuffer;
+            Snapshot dirtyRegions = _consoleTopLevelImpl.DirtyRegions.GetSnapshotAndClear();
 
             _console.HideCaret();
 
@@ -121,7 +123,7 @@ namespace Consolonia.Core.Drawing
             var flushingBuffer = new FlushingBuffer(_console);
 
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-            for (ushort x = 0; x < pixelBuffer.Width;)
+            for (ushort x = 0; x < pixelBuffer.Width; x++)
             {
                 Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
 
@@ -132,6 +134,9 @@ namespace Consolonia.Core.Drawing
                     caretPosition = new PixelBufferCoordinate(x, y);
                     caretStyle = pixel.CaretStyle;
                 }
+
+                if (!dirtyRegions.Contains(new Point(x, y), false)) /*checking caret duplication before to fail fast*/
+                    continue;
 
                 // injecting cursor
                 if (!_consoleCursor.IsEmpty() && _consoleCursor.Coordinate.X == x && _consoleCursor.Coordinate.Y == y)
@@ -147,23 +152,13 @@ namespace Consolonia.Core.Drawing
                         new PixelBackground(currentPixel.Background.Color), pixel.CaretStyle);
                 }
 
-                /* BEB6BF21-2724-4E1B-B097-5563EE4C27D9
-                 todo: There is not IWindowImpl.Invalidate anymore.
-                     if (!_consoleWindow.InvalidatedRects.Any(rect =>
-                        rect.ContainsExclusive(new Point(x, y)))) continue;*/
-
                 //todo: indexOutOfRange during resize
                 if (_cache[x, y] == pixel)
-                {
-                    x++;
                     continue;
-                }
 
                 _cache[x, y] = pixel;
 
                 flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
-
-                x++;
             }
 
             flushingBuffer.Flush();
@@ -176,14 +171,23 @@ namespace Consolonia.Core.Drawing
             }
             else
             {
-                _console.HideCaret();
+                _console.HideCaret(); //todo: Caret was hidden at the beginning of this method, why to hide it again?
             }
         }
 
         private void OnCursorChanged(ConsoleCursor consoleCursor)
         {
+            ConsoleCursor oldConsoleCursor = _oldConsoleCursor;
+            _oldConsoleCursor = _consoleCursor;
             _consoleCursor = consoleCursor;
-            RenderToDevice(); // assuming invalidated rects and caching
+
+            //todo: low excessive refresh, emptiness can be checked
+            _consoleTopLevelImpl.DirtyRegions.AddRect(new Rect(oldConsoleCursor.Coordinate.X,
+                oldConsoleCursor.Coordinate.Y, 1, 1));
+            _consoleTopLevelImpl.DirtyRegions.AddRect(new Rect(consoleCursor.Coordinate.X,
+                consoleCursor.Coordinate.Y, 1, 1));
+
+            RenderToDevice();
         }
 
         private struct FlushingBuffer
