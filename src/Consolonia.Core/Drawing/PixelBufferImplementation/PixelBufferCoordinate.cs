@@ -5,7 +5,8 @@ using Avalonia;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    public readonly struct PixelBufferCoordinate(ushort x, ushort y) : IComparable<PixelBufferCoordinate>, IEquatable<PixelBufferCoordinate>
+    public readonly struct PixelBufferCoordinate(ushort x, ushort y)
+        : IComparable<PixelBufferCoordinate>, IEquatable<PixelBufferCoordinate>
     {
         public ushort X { get; } = x;
         public ushort Y { get; } = y;
@@ -62,10 +63,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override bool Equals(object obj)
         {
-            if (obj is PixelBufferCoordinate other)
-            {
-                return Equals(other);
-            }
+            if (obj is PixelBufferCoordinate other) return Equals(other);
 
             return false;
         }
@@ -101,4 +99,3 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
     }
 }
-
