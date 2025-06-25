@@ -5,9 +5,4 @@
         <Setter Property="CaretStyle"
                 Value="None" />
     </Style>
-
-    <Style Selector="DataGridRow:selected">
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeChooserForegroundBrush}" />
-    </Style>
 </Styles>
