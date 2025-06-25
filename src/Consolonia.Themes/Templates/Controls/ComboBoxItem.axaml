@@ -15,7 +15,8 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
-                                      Background="Transparent">
+                                      Background="Transparent"
+                                      Name="FocusControl">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Background="{TemplateBinding Background}"
                                       BorderBrush="{TemplateBinding BorderBrush}"

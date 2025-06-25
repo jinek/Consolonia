@@ -54,6 +54,7 @@
     <StyleInclude Source="/Fluent/Controls/TextBox.axaml" />
     <StyleInclude Source="/Fluent/Controls/ToggleButton.axaml" />
     <StyleInclude Source="/Fluent/Controls/ComboBox.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ComboBoxItem.axaml"/>
     <StyleInclude Source="/Fluent/Controls/DropDownButton.axaml" />
 
     <wm:WindowManagerTheme />
