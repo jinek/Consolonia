@@ -39,7 +39,7 @@ namespace Consolonia.Core.Infrastructure
             {
                 int hash = 17;
                 hash = hash * 23 + Coordinate.GetHashCode();
-                hash = hash * 23 + (Type?.GetHashCode() ?? 0);
+                hash = hash * 23 + (Type?.GetHashCode(StringComparison.Ordinal) ?? 0);
                 return hash;
             }
         }
@@ -80,3 +80,4 @@ namespace Consolonia.Core.Infrastructure
         }
     }
 }
+

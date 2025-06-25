@@ -44,9 +44,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return (PixelBufferCoordinate)point;
         }
 
-        public bool Equals(PixelBufferCoordinate secondPoint)
+        public bool Equals(PixelBufferCoordinate other)
         {
-            return X == secondPoint.X && Y == secondPoint.Y;
+            return X == other.X && Y == other.Y;
         }
 
         public override int GetHashCode()
@@ -101,3 +101,4 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
     }
 }
+
