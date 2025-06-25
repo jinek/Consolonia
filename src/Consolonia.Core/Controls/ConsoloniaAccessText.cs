@@ -8,7 +8,7 @@ namespace Consolonia.Core.Controls
     /// <summary>
     ///     A text block that displays a character prefixed with an underscore as an access key.
     /// </summary>
-    internal sealed class ConsoloniaAccessText : AccessText
+    public sealed class ConsoloniaAccessText : AccessText
     {
         private Run _accessRun;
 
@@ -35,7 +35,7 @@ namespace Consolonia.Core.Controls
                         if (iPos >= 0 && iPos < Text.Length - 1)
                         {
                             inlines.Add(new Run(Text[..iPos]));
-                            _accessRun = new Run(Text[++iPos..++iPos]);
+                            _accessRun = new ConsoloniaAccessRun(Text[++iPos..++iPos]);
                             inlines.Add(_accessRun);
                             inlines.Add(new Run(Text[iPos..]));
                         }
@@ -48,17 +48,6 @@ namespace Consolonia.Core.Controls
                         Inlines = inlines;
                     }
                 }
-                    break;
-
-                case nameof(ShowAccessKey):
-                    if (_accessRun != null)
-                    {
-                        if (ShowAccessKey)
-                            _accessRun.TextDecorations = Avalonia.Media.TextDecorations.Underline;
-                        else
-                            _accessRun.TextDecorations = null;
-                    }
-
                     break;
             }
         }
