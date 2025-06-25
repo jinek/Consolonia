@@ -35,7 +35,7 @@
                                Fill="{DynamicResource ThemeActionBackgroundBrush}" />
 
                     <Rectangle Name="Background"
-                               Fill="{DynamicResource ThemeSelectionBackgroundBrush}" />
+                               Fill="{DynamicResource ThemeAlternativeBackgroundBrush}" />
 
                     <ContentControl Name="Content"
                                     ContentTemplate="{TemplateBinding ContentTemplate}"
