@@ -38,16 +38,22 @@
         <Style Selector="^:selected /template/ ContentPresenter">
             <Setter Property="Background"
                     Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
 
         <Style Selector="^:selected:focus /template/ ContentPresenter">
             <Setter Property="Background"
                     Value="{DynamicResource ThemeActionBackgroundBrush}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
 
         <Style Selector="^:focus /template/ ContentPresenter">
             <Setter Property="Background"
                     Value="{DynamicResource ThemeActionBackgroundBrush}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
     </ControlTheme>
 </ResourceDictionary>
