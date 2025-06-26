@@ -107,4 +107,3 @@ namespace Consolonia.Gallery.Tests
         }
     }
 }
-
