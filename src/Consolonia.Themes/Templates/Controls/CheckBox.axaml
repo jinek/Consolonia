@@ -23,6 +23,7 @@
                     <Grid Name="border"
                           ColumnDefinitions="Auto,Auto,Auto">
                         <console:CaretControl Grid.Column="1"
+                                              CaretStyle="BlinkingUnderline"
                                               IsCaretShown="{TemplateBinding IsFocused}">
                             <Panel>
                                 <console:SymbolsControl Text="{StaticResource ThemeCheckBoxNotSelectedSymbol}" />

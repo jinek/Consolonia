@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:console="https://github.com/jinek/consolonia">
+
     <ControlTheme x:Key="{x:Type console:CaretControl}"
                   TargetType="console:CaretControl">
         <Setter Property="Focusable"
@@ -24,7 +25,8 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
                                    IsHitTestVisible="False"
-                                   IsVisible="{TemplateBinding IsCaretShown}">
+                                   IsVisible="{TemplateBinding IsCaretShown}"
+                                   Margin="{TemplateBinding CaretMargin}">
                             <Rectangle.Fill>
                                 <!--todo: TemplateBinding does not work, seems Avalonia bug-->
                                 <console:MoveConsoleCaretToPositionBrush
