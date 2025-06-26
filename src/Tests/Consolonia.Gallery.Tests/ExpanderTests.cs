@@ -27,15 +27,15 @@ namespace Consolonia.Gallery.Tests
         public async Task TestUp()
         {
             await UITest.KeyInput(Key.Tab);
-            await UITest.AssertHasText(@"Up.*▴");
+            await UITest.AssertHasText(@"Up.*˄");
             await UITest.AssertHasNoText("Top content");
 
             await UITest.KeyInput(Key.Space);
-            await UITest.AssertHasText(@"Up.*▾");
+            await UITest.AssertHasText(@"Up.*˅");
             await UITest.AssertHasText("Top content");
 
             await UITest.KeyInput(Key.Space);
-            await UITest.AssertHasText(@"Up.*▴");
+            await UITest.AssertHasText(@"Up.*˄");
             await UITest.AssertHasNoText("Top content");
             await UITest.KeyInput(1, Key.Tab, RawInputModifiers.Shift);
         }
@@ -46,15 +46,15 @@ namespace Consolonia.Gallery.Tests
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
-            await UITest.AssertHasText(@"Down.*▾");
+            await UITest.AssertHasText(@"Down.*˅");
             await UITest.AssertHasNoText("Bottom content");
 
             await UITest.KeyInput(Key.Space);
-            await UITest.AssertHasText(@"Down.*▴");
+            await UITest.AssertHasText(@"Down.*˄");
             await UITest.AssertHasText("Bottom content");
 
             await UITest.KeyInput(Key.Space);
-            await UITest.AssertHasText(@"Down.*▾");
+            await UITest.AssertHasText(@"Down.*˅");
             await UITest.AssertHasNoText("Bottom content");
             await UITest.KeyInput(1, Key.Tab, RawInputModifiers.Shift);
             await UITest.KeyInput(1, Key.Tab, RawInputModifiers.Shift);
@@ -67,15 +67,15 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
-            await UITest.AssertHasText("◂.*Left");
+            await UITest.AssertHasText("˂.*Left");
             await UITest.AssertHasNoText("Left content");
 
             await UITest.KeyInput(Key.Space);
-            await UITest.AssertHasText("▸.*Left");
+            await UITest.AssertHasText("˃.*Left");
             await UITest.AssertHasText("Left content");
 
             await UITest.KeyInput(Key.Space);
-            await UITest.AssertHasText("◂.*Left");
+            await UITest.AssertHasText("˂.*Left");
             await UITest.AssertHasNoText("Left content");
             await UITest.KeyInput(1, Key.Tab, RawInputModifiers.Shift);
             await UITest.KeyInput(1, Key.Tab, RawInputModifiers.Shift);
@@ -90,15 +90,15 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
-            await UITest.AssertHasText("Right.*▸");
+            await UITest.AssertHasText("Right.*˃");
             await UITest.AssertHasNoText("Right content");
 
             await UITest.KeyInput(Key.Space);
-            await UITest.AssertHasText("Right.*◂");
+            await UITest.AssertHasText("Right.*˂");
             await UITest.AssertHasText("Right content");
 
             await UITest.KeyInput(Key.Space);
-            await UITest.AssertHasText("Right.*▸");
+            await UITest.AssertHasText("Right.*˃");
             await UITest.AssertHasNoText("Right content");
             await UITest.KeyInput(1, Key.Tab, RawInputModifiers.Shift);
             await UITest.KeyInput(1, Key.Tab, RawInputModifiers.Shift);
@@ -107,3 +107,4 @@ namespace Consolonia.Gallery.Tests
         }
     }
 }
+
