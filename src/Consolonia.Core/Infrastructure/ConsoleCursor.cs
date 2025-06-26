@@ -25,7 +25,7 @@ namespace Consolonia.Core.Infrastructure
         public override bool Equals(object obj)
         {
             if (obj is ConsoleCursor other)
-                return Coordinate.Equals(other.Coordinate) && string.Equals(Type, other.Type, StringComparison.Ordinal);
+                return Equals(other);
 
             return false;
         }
@@ -74,7 +74,7 @@ namespace Consolonia.Core.Infrastructure
 
         public bool Equals(ConsoleCursor other)
         {
-            return Coordinate.Equals(other.Coordinate) && Type == other.Type;
+            return Coordinate.Equals(other.Coordinate) && string.Equals(Type, other.Type, StringComparison.Ordinal);
         }
     }
 }
