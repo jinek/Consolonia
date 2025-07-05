@@ -56,7 +56,7 @@
     <StyleInclude Source="/Fluent/Controls/ComboBox.axaml" />
     <StyleInclude Source="/Fluent/Controls/ComboBoxItem.axaml" />
     <StyleInclude Source="/Fluent/Controls/DropDownButton.axaml" />
-
+    <StyleInclude Source="/Fluent/Controls/ListBoxItem.axaml" />
     <wm:WindowManagerTheme />
 
 </Styles>
