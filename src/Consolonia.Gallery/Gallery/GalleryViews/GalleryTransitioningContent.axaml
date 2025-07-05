@@ -46,12 +46,12 @@
                 Command="{Binding PrevParagraph}"
                 Content="&lt;"
                 Background="{DynamicResource ThemeBackgroundBrush}"
-                Theme="{StaticResource ThemeNakedButton}"/>
+                Theme="{StaticResource ThemeNakedButton}" />
         <Button DockPanel.Dock="Right"
                 Command="{Binding NextParagraph}"
                 Content="&gt;"
-                Background="{DynamicResource ThemeBackgroundBrush}" 
-                Theme="{StaticResource ThemeNakedButton}"/>
+                Background="{DynamicResource ThemeBackgroundBrush}"
+                Theme="{StaticResource ThemeNakedButton}" />
 
         <Border ClipToBounds="{Binding ClipToBounds}"
                 Margin="1">
