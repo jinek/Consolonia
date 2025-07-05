@@ -136,6 +136,10 @@
                 Value="{DynamicResource ThemeTransparentBrush}" />
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
