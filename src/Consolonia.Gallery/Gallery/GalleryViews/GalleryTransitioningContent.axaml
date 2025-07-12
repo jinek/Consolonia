@@ -42,29 +42,41 @@
             </HeaderedContentControl>
         </StackPanel>
 
-        <Button DockPanel.Dock="Left"
-                Command="{Binding PrevParagraph}"
-                Content="&lt;"
-                Background="{DynamicResource ThemeBackgroundBrush}"
-                Theme="{StaticResource ThemeNakedButton}" />
-        <Button DockPanel.Dock="Right"
-                Command="{Binding NextParagraph}"
-                Content="&gt;"
-                Background="{DynamicResource ThemeBackgroundBrush}"
-                Theme="{StaticResource ThemeNakedButton}" />
-
-        <Border ClipToBounds="{Binding ClipToBounds}"
-                Margin="1">
-            <TransitioningContentControl Content="{Binding SelectedParagraph}"
-                                         PageTransition="{Binding SelectedTransition.Transition}"
-                                         IsTransitionReversed="{Binding Reversed}">
-                <TransitioningContentControl.ContentTemplate>
-                    <DataTemplate DataType="system:String">
-                        <TextBlock Text="{Binding}"
-                                   TextWrapping="Wrap" />
-                    </DataTemplate>
-                </TransitioningContentControl.ContentTemplate>
-            </TransitioningContentControl>
-        </Border>
+        <Grid ColumnDefinitions="Auto,*,Auto"
+              HorizontalAlignment="Stretch"
+              Margin="0 1 0 0">
+            <Button Name="left"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Height="3"
+                    Padding="1,2"
+                    Margin="1"
+                    Command="{Binding PrevParagraph}">
+                <TextBlock Text="&lt;" />
+            </Button>
+            <Border Grid.Column="1"
+                    ClipToBounds="{Binding ClipToBounds}"
+                    Margin="1">
+                <TransitioningContentControl Content="{Binding SelectedParagraph}"
+                                             PageTransition="{Binding SelectedTransition.Transition}"
+                                             IsTransitionReversed="{Binding Reversed}">
+                    <TransitioningContentControl.ContentTemplate>
+                        <DataTemplate DataType="system:String">
+                            <TextBlock Text="{Binding}"
+                                       TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </TransitioningContentControl.ContentTemplate>
+                </TransitioningContentControl>
+            </Border>
+            <Button Name="right"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Height="3"
+                    Padding="1,2"
+                    Margin="1"
+                    Command="{Binding NextParagraph}">
+                <TextBlock Text="&gt;" />
+            </Button>
+        </Grid>
     </DockPanel>
 </UserControl>
