@@ -24,8 +24,9 @@
                 <Border BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
                     <Panel>
-                        <Panel x:Name="InternalBorder"
-                               Background="{TemplateBinding Background}">
+                        <Panel x:Name="BackgroundBorder" 
+                               Background="{TemplateBinding Background}"/>
+                        <Panel x:Name="InternalBorder">
                             <Grid ColumnDefinitions="Auto,*,Auto">
                                 <TextBlock Grid.Column="0"
                                            Name="Part_LeftBracket"
