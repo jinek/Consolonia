@@ -85,7 +85,7 @@
                         <console:SymbolsControl Margin="0,0,0,0"
                                                 Text="▄"
                                                 Width="1"
-                                                Classes="shadedadsf"
+                                                Classes="shaded"
                                                 Height="1"
                                                 IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
                                                 HorizontalAlignment="Right"

@@ -21,13 +21,7 @@
                 <Setter Property="Margin"
                         Value="0,0,1,1" />
             </Style>
-
-            <Style Selector="^:clickdelayed">
-                <Setter Property="Padding"
-                        Value="1,0,0,0" />
-            </Style>
-
-
+            
             <Style Selector="^ /template/ TextBlock#Part_RightBracket">
                 <Setter Property="IsVisible"
                         Value="True" />
@@ -37,14 +31,21 @@
                         Value="True" />
             </Style>
 
+            <Style Selector="^:clickdelayed">
+                <Setter Property="Padding"
+                        Value="1,0,0,0" />
+            </Style>
             <Style Selector="^:clickdelayed /template/ console|SymbolsControl.shaded">
                 <Setter Property="IsVisible"
                         Value="False" />
             </Style>
-
             <Style Selector="^:clickdelayed /template/ Panel#InternalBorder">
                 <Setter Property="Margin"
-                        Value="1,0,1,1" />
+                        Value="1,0,0,1" />
+            </Style>
+            <Style Selector="^:clickdelayed /template/ Panel#BackgroundBorder">
+                <Setter Property="Margin"
+                        Value="1,0,0,1" />
             </Style>
 
         </ControlTheme>
