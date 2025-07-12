@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:console="https://github.com/jinek/consolonia">
+    
     <ControlTheme x:Key="{x:Type Button}"
                   TargetType="Button">
         <Setter Property="Background"
@@ -24,6 +25,11 @@
                 <Border BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
                     <Panel>
+                        <Panel.Resources>
+                            <!--Hacking the Warning: "[Xaml.StyleClassNotFound] Style class 'shaded' not found" on /home/runner/work/Consolonia/Consolonia/src/Consolonia.Themes/Templates/Controls/Button.axaml(66,58)-->
+                            <Style Selector="Button.shaded"
+                                   x:Key="7408B6B2-1F29-41DC-8C7D-B284D246520C" />
+                        </Panel.Resources>
                         <Panel x:Name="BackgroundBorder" 
                                Background="{TemplateBinding Background}"/>
                         <Panel x:Name="InternalBorder">
