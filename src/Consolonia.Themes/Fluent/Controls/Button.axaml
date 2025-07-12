@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:brushes="https://github.com/jinek/consolonia">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!--All buttons-->
     <Style Selector="Button">
         <Setter Property="Padding"
                 Value="1,0,1,0" />
@@ -8,58 +9,35 @@
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeForegroundBrush}" />
-        <Setter Property="BorderThickness"
-                Value="1" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <brushes:LineBrush Brush="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
     </Style>
 
+    <!--Default button-->
     <Style Selector="Button[IsDefault=True]">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeChooserBackgroundBrush}" />
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeChooserForegroundBrush}" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <brushes:LineBrush Brush="{DynamicResource ThemeChooserBackgroundBrush}"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
     </Style>
 
+    <!--Focused button-->
     <Style Selector="Button:focus">
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <brushes:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeChooserForegroundBrush}" />
     </Style>
-
-    <Style Selector="Button:clickdelayed">
-        <Setter Property="Background"
-                Value="{DynamicResource ThemeBorderBrush}" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <brushes:LineBrush Brush="Transparent"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style Selector="Button[IsDefault=True]:clickdelayed">
+    <Style Selector="Button:focus /template/ Panel#InternalBorder">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeActionBackgroundBrush}" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <brushes:LineBrush Brush="Transparent"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
+    </Style>
+
+    <!--Clicked buttons-->
+    <Style Selector="Button:clickdelayed /template/ Panel#InternalBorder">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
+    </Style>
+
+    <Style Selector="Button[IsDefault=True]:clickdelayed /template/ Panel#InternalBorder">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
     </Style>
 
 </Styles>

@@ -24,8 +24,9 @@
                 <Border BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
                     <Panel>
-                        <Panel x:Name="InternalBorder"
-                               Background="{TemplateBinding Background}">
+                        <Panel x:Name="BackgroundBorder" 
+                               Background="{TemplateBinding Background}"/>
+                        <Panel x:Name="InternalBorder">
                             <Grid ColumnDefinitions="Auto,*,Auto">
                                 <TextBlock Grid.Column="0"
                                            Name="Part_LeftBracket"
@@ -62,6 +63,7 @@
                                                 Margin="1,0,1,0"
                                                 Text="▀"
                                                 Height="1"
+                                                Classes="shaded"
                                                 IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
                                                 VerticalAlignment="Bottom"
                                                 Foreground="{DynamicResource ThemePseudoShadeBrush}" />
@@ -70,6 +72,7 @@
                         <console:SymbolsControl Margin="0,1,0,1"
                                                 Text="█"
                                                 Width="1"
+                                                Classes="shaded"
                                                 IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
                                                 VerticalAlignment="Stretch"
                                                 Fill="True"
@@ -79,6 +82,7 @@
                         <console:SymbolsControl Margin="0,0,0,0"
                                                 Text="▄"
                                                 Width="1"
+                                                Classes="shaded"
                                                 Height="1"
                                                 IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
                                                 HorizontalAlignment="Right"
@@ -88,6 +92,7 @@
                         <console:SymbolsControl Margin="0,0,0,0"
                                                 Text="▀"
                                                 Width="1"
+                                                Classes="shaded"
                                                 Height="1"
                                                 IsVisible="{TemplateBinding (console:ButtonExtensions.Shadow)}"
                                                 HorizontalAlignment="Right"
