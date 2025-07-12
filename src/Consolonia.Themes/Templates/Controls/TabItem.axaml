@@ -22,6 +22,7 @@
                         Background="{TemplateBinding Background}">
                     <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
                                           x:Name="PART_CaretControl"
+                                          CaretStyle="{DynamicResource ControlFocusCaretStyle}"
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
                         <ContentPresenter Name="PART_ContentPresenter"

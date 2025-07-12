@@ -56,6 +56,7 @@
                                 </RepeatButton>
                             </StackPanel>
                             <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
+                                                  CaretStyle="{DynamicResource ControlFocusCaretStyle}"
                                                   Name="FocusControl">
                                 <ContentPresenter Name="PART_ContentPresenter"
                                                   Background="{TemplateBinding Background}"

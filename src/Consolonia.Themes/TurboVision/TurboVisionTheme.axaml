@@ -46,6 +46,8 @@
 
             <x:String x:Key="ThemeToggleSwitchOffSymbol">■</x:String>
             <x:String x:Key="ThemeToggleSwitchOnSymbol">■</x:String>
+            
+            <console:CaretStyle x:Key="ControlFocusCaretStyle">BlinkingBlock</console:CaretStyle>
         </ResourceDictionary>
     </Styles.Resources>
 

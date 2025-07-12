@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
+        xmlns:controls="https://github.com/jinek/consolonia"
         x:Class="Consolonia.Themes.FluentTheme">
     <Styles.Resources>
         <ResourceDictionary>
@@ -44,6 +45,7 @@
 
             <x:String x:Key="ThemeToggleSwitchOffSymbol">◯</x:String>
             <x:String x:Key="ThemeToggleSwitchOnSymbol">⬤</x:String>
+            <controls:CaretStyle x:Key="ControlFocusCaretStyle">BlinkingUnderline</controls:CaretStyle>
         </ResourceDictionary>
     </Styles.Resources>
 

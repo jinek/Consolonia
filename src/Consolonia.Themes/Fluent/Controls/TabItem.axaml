@@ -1,6 +1,5 @@
 <Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="https://github.com/jinek/consolonia">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Styles.Resources>
         <ControlTheme x:Key="{x:Type TabItem}"
                       TargetType="TabItem">
@@ -8,11 +7,6 @@
             <ControlTheme.BasedOn>
                 <StaticResource ResourceKey="{x:Type TabItem}" />
             </ControlTheme.BasedOn>
-
-            <Style Selector="^ /template/ controls|CaretControl#PART_CaretControl">
-                <Setter Property="CaretStyle"
-                        Value="BlinkingUnderline" />
-            </Style>
 
             <Style Selector="^:selected">
                 <Setter Property="Foreground"
