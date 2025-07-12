@@ -9,13 +9,7 @@
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="BorderThickness"
-                Value="1" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <brushes:LineBrush Brush="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
+                Value="0" />
     </Style>
 
     <Style Selector="Button[IsDefault=True]">
@@ -23,43 +17,20 @@
                 Value="{DynamicResource ThemeChooserBackgroundBrush}" />
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeChooserForegroundBrush}" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <brushes:LineBrush Brush="{DynamicResource ThemeChooserBackgroundBrush}"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
     </Style>
 
-    <Style Selector="Button:focus">
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <brushes:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
+    <Style Selector="Button:focus /template/ Panel#FocusOverlay">
+        <Setter Property="IsVisible" Value="True" />
     </Style>
 
     <Style Selector="Button:clickdelayed">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeBorderBrush}" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <brushes:LineBrush Brush="Transparent"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <Style Selector="Button[IsDefault=True]:clickdelayed">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeActionBackgroundBrush}" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <brushes:LineBrush Brush="Transparent"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
     </Style>
 
 </Styles>

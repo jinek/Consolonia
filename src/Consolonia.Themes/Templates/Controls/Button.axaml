@@ -55,6 +55,10 @@
                             </Grid>
                         </Panel>
 
+                        <Panel x:Name="FocusOverlay"
+                               Background="#80000000"
+                               IsVisible="False" />
+
                         <!--Shadows-->
 
                         <!--Shadow under-->
