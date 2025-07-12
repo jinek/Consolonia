@@ -21,6 +21,7 @@
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Background="{TemplateBinding Background}">
                     <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
+                                          x:Name="PART_CaretControl"
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
                         <ContentPresenter Name="PART_ContentPresenter"
@@ -35,10 +36,20 @@
             <Setter Property="Foreground"
                     Value="{DynamicResource ThemeNoDisturbBrush}" />
         </Style>
+        
         <Style Selector="^:selected">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeChooserBackgroundBrush}"/>
             <Setter Property="Foreground"
-                    Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
+                    Value="{DynamicResource ThemeSelectionForegroundBrush}" />
+                    <Setter Property="ZIndex" Value="2"/>
         </Style>
+        <Style Selector="^[IsFocused=True]:selected">
+            <!--<Setter Property="BorderBrush" Value="{DynamicResource ThemeActionBackgroundBrush}"/>-->
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeSelectionForegroundBrush}" />
+            <Setter Property="ZIndex" Value="2"/>
+        </Style>
+        
         <Style Selector="^[TabStripPlacement=Right]">
             <Setter Property="HorizontalContentAlignment"
                     Value="Right" />
