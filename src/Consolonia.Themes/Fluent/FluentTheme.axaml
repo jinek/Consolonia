@@ -57,8 +57,8 @@
     <StyleInclude Source="/Fluent/Controls/ComboBoxItem.axaml" />
     <StyleInclude Source="/Fluent/Controls/DropDownButton.axaml" />
     <StyleInclude Source="/Fluent/Controls/ListBoxItem.axaml" />
-    <StyleInclude Source="/Fluent/Controls/TabItem.axaml"/>
-    <StyleInclude Source="/Fluent/Controls/ButtonSpinner.axaml"/>
+    <StyleInclude Source="/Fluent/Controls/TabItem.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ButtonSpinner.axaml" />
     <wm:WindowManagerTheme />
 
 </Styles>

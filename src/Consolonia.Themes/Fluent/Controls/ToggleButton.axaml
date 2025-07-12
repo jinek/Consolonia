@@ -25,7 +25,7 @@
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
-    
+
     <Style Selector="ToggleButton:focus:checked">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeActionBackgroundBrush}" />
