@@ -9,7 +9,7 @@
     <ControlTheme x:Key="{x:Type MenuItem}"
                   TargetType="MenuItem">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+                Value="{x:Null}" />
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="BorderBrush"
@@ -18,7 +18,8 @@
                 Value="1,0,0,0" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="root">
+                <Border Name="root"
+                        Background="{TemplateBinding Background}">
                     <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -67,7 +68,7 @@
                                 <Panel>
                                     <Border Background="{DynamicResource ThemeShadeBrush}"
                                             Margin="2,1,0,0" />
-                                    <Border Background="{TemplateBinding Background}"
+                                    <Border Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
                                             Margin="0,0,2,1"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}">
@@ -101,17 +102,18 @@
         </Style>
 
         <Style Selector="^:selected /template/ Border#root">
+            <!--TurboVision approach-->
             <Setter Property="Background"
-                    Value="{DynamicResource ThemeChooserBackgroundBrush}" />
-            <!--<Setter Property="(TemplatedControl.Foreground)"
-                Value="{DynamicResource ThemeBackgroundBrush}" />-->
+                    Value="{DynamicResource ThemeActionBackgroundBrush}" />
+            <Setter Property="(TemplatedControl.Foreground)"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
 
         <Style Selector="^:focus /template/ Border#root">
             <Setter Property="Background"
                     Value="{DynamicResource ThemeActionBackgroundBrush}" />
-            <!--<Setter Property="(TemplatedControl.Foreground)"
-                Value="{DynamicResource ThemeBackgroundBrush}" />-->
+            <Setter Property="(TemplatedControl.Foreground)"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
 
         <Style Selector="^:empty /template/ console|SymbolsControl#rightArrow">

@@ -35,7 +35,7 @@
                                Fill="{DynamicResource ThemeActionBackgroundBrush}" />
 
                     <Rectangle Name="Background"
-                               Fill="{DynamicResource ThemeSelectionBackgroundBrush}" />
+                               Fill="{DynamicResource ThemeAlternativeBackgroundBrush}" />
 
                     <ContentControl Name="Content"
                                     ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -82,6 +82,17 @@
             <Setter Property="Foreground"
                     Value="{DynamicResource ThemeForegroundBrush}" />
         </Style>
+
+        <Style Selector="^:dayfocused /template/ ContentControl#Content">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
+        </Style>
+
+        <Style Selector="^:selected /template/ ContentControl#Content">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
+        </Style>
+
         <Style Selector="^:disabled /template/ Rectangle#Background">
             <Setter Property="IsVisible"
                     Value="False" />
