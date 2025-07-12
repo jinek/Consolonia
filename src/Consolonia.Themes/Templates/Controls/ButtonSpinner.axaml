@@ -10,10 +10,6 @@
                 Value="Transparent" />
         <Setter Property="BorderBrush"
                 Value="Transparent" />
-        <!--<Style Selector="^ /template/ RepeatButton:pointerover">
-            <Setter Property="Background" Value="{DynamicResource ThemeControlMidBrush}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderMidBrush}" />
-        </Style>-->
     </ControlTheme>
 
     <ControlTheme x:Key="{x:Type ButtonSpinner}"
@@ -44,29 +40,32 @@
                         <DockPanel Width="{TemplateBinding Width}">
                             <StackPanel Name="PART_SpinnerPanel"
                                         Orientation="Horizontal"
-                                        TabIndex="2"
                                         DockPanel.Dock="Right"
                                         IsVisible="{TemplateBinding ShowButtonSpinner}">
                                 <RepeatButton Name="PART_IncreaseButton"
-                                              IsTabStop="{TemplateBinding IsTabStop}"
+                                              Focusable="False"
+                                              IsTabStop="False"
                                               Theme="{StaticResource ConsoleButtonSpinnerRepeatButton}">
                                     <console:SymbolsControl Text="{StaticResource ThemeUpArrowSymbol}" />
                                 </RepeatButton>
                                 <RepeatButton Name="PART_DecreaseButton"
-                                              IsTabStop="{TemplateBinding IsTabStop}"
+                                              Focusable="False"
+                                              IsTabStop="False"
                                               Theme="{StaticResource ConsoleButtonSpinnerRepeatButton}">
                                     <console:SymbolsControl Text="{StaticResource ThemeDownArrowSymbol}" />
                                 </RepeatButton>
                             </StackPanel>
-                            <ContentPresenter Name="PART_ContentPresenter"
-                                              TabIndex="1"
-                                              Background="{TemplateBinding Background}"
-                                              Foreground="{TemplateBinding Foreground}"
-                                              Padding="{TemplateBinding Padding}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Content="{TemplateBinding Content}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}"
+                                                  Name="FocusControl">
+                                <ContentPresenter Name="PART_ContentPresenter"
+                                                  Background="{TemplateBinding Background}"
+                                                  Foreground="{TemplateBinding Foreground}"
+                                                  Padding="{TemplateBinding Padding}"
+                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            </console:CaretControl>
                         </DockPanel>
                     </Border>
                 </DataValidationErrors>
