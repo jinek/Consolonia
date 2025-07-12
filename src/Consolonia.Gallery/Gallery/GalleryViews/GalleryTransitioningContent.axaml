@@ -51,7 +51,7 @@
                     Height="3"
                     Content="&lt;"
                     Margin="1"
-                    Command="{Binding PrevParagraph}"/>
+                    Command="{Binding PrevParagraph}" />
             <Border Grid.Column="1"
                     ClipToBounds="{Binding ClipToBounds}"
                     Margin="1">
@@ -72,7 +72,7 @@
                     Height="3"
                     Margin="1"
                     Content="&gt;"
-                    Command="{Binding NextParagraph}"/>
+                    Command="{Binding NextParagraph}" />
         </Grid>
     </DockPanel>
 </UserControl>
