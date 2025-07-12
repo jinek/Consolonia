@@ -36,36 +36,36 @@
                                                 Height="1"
                                                 VerticalAlignment="Center"
                                                 Foreground="{DynamicResource ThemeForegroundBrush}" />
-                        
-                            <Track Name="PART_Track"
-                                   IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
-                                   Orientation="Horizontal">
-                                <Track.DecreaseButton>
-                                    <RepeatButton Name="PART_DecreaseButton"
-                                                  Theme="{StaticResource SliderRepeatTrackTheme}" />
-                                </Track.DecreaseButton>
-                                <Track.IncreaseButton>
-                                    <RepeatButton Name="PART_IncreaseButton"
-                                                  Theme="{StaticResource SliderRepeatTrackTheme}" />
-                                </Track.IncreaseButton>
-                                <Thumb Name="thumb"
-                                       MinWidth="1"
-                                       MinHeight="1">
-                                    <Thumb.Template>
-                                        <ControlTemplate>
-                                            <console:CaretControl Foreground="{TemplateBinding Foreground}"
-                                                                  VerticalAlignment="Center"
-                                                                  CaretStyle="{DynamicResource ControlFocusCaretStyle}"
-                                                                  IsCaretShown="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Slider, Tree=Logical}, Path=IsFocused}">
-                                                <console:SymbolsControl
-                                                    Text="{StaticResource ThemeSliderHorizontalThumbSymbol}"
-                                                    VerticalAlignment="Center"
-                                                    Foreground="{DynamicResource ThemeForegroundBrush}" />
-                                            </console:CaretControl>
-                                        </ControlTemplate>
-                                    </Thumb.Template>
-                                </Thumb>
-                            </Track>
+
+                        <Track Name="PART_Track"
+                               IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
+                               Orientation="Horizontal">
+                            <Track.DecreaseButton>
+                                <RepeatButton Name="PART_DecreaseButton"
+                                              Theme="{StaticResource SliderRepeatTrackTheme}" />
+                            </Track.DecreaseButton>
+                            <Track.IncreaseButton>
+                                <RepeatButton Name="PART_IncreaseButton"
+                                              Theme="{StaticResource SliderRepeatTrackTheme}" />
+                            </Track.IncreaseButton>
+                            <Thumb Name="thumb"
+                                   MinWidth="1"
+                                   MinHeight="1">
+                                <Thumb.Template>
+                                    <ControlTemplate>
+                                        <console:CaretControl Foreground="{TemplateBinding Foreground}"
+                                                              VerticalAlignment="Center"
+                                                              CaretStyle="{DynamicResource ControlFocusCaretStyle}"
+                                                              IsCaretShown="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Slider, Tree=Logical}, Path=IsFocused}">
+                                            <console:SymbolsControl
+                                                Text="{StaticResource ThemeSliderHorizontalThumbSymbol}"
+                                                VerticalAlignment="Center"
+                                                Foreground="{DynamicResource ThemeForegroundBrush}" />
+                                        </console:CaretControl>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+                        </Track>
                     </Grid>
                 </ControlTemplate>
             </Setter>
@@ -85,37 +85,37 @@
                                                 HorizontalAlignment="Center"
                                                 Foreground="{DynamicResource ThemeForegroundBrush}" />
 
-                        
-                            <Track Name="PART_Track"
-                                   IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
-                                   Orientation="Vertical">
-                                <Track.DecreaseButton>
-                                    <RepeatButton Name="PART_DecreaseButton"
-                                                  Theme="{StaticResource SliderRepeatTrackTheme}" />
-                                </Track.DecreaseButton>
-                                <Track.IncreaseButton>
-                                    <RepeatButton Name="PART_IncreaseButton"
-                                                  Theme="{StaticResource SliderRepeatTrackTheme}" />
-                                </Track.IncreaseButton>
-                                <Thumb Name="thumb"
-                                       MinWidth="1"
-                                       MinHeight="1">
-                                    <Thumb.Template>
-                                        <ControlTemplate>
-                                            <console:CaretControl Foreground="{TemplateBinding Foreground}"
-                                                                  HorizontalAlignment="Center"
-                                                                  CaretStyle="{DynamicResource ControlFocusCaretStyle}"
-                                                                  IsCaretShown="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Slider, Tree=Logical}, Path=IsFocused}">
-                                                <console:SymbolsControl
-                                                    Text="{StaticResource ThemeSliderVerticalThumbSymbol}"
-                                                    HorizontalAlignment="Center"
-                                                    Foreground="{DynamicResource ThemeForegroundBrush}" />
-                                            </console:CaretControl>
-                                        </ControlTemplate>
-                                    </Thumb.Template>
-                                </Thumb>
-                            </Track>
-                        
+
+                        <Track Name="PART_Track"
+                               IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
+                               Orientation="Vertical">
+                            <Track.DecreaseButton>
+                                <RepeatButton Name="PART_DecreaseButton"
+                                              Theme="{StaticResource SliderRepeatTrackTheme}" />
+                            </Track.DecreaseButton>
+                            <Track.IncreaseButton>
+                                <RepeatButton Name="PART_IncreaseButton"
+                                              Theme="{StaticResource SliderRepeatTrackTheme}" />
+                            </Track.IncreaseButton>
+                            <Thumb Name="thumb"
+                                   MinWidth="1"
+                                   MinHeight="1">
+                                <Thumb.Template>
+                                    <ControlTemplate>
+                                        <console:CaretControl Foreground="{TemplateBinding Foreground}"
+                                                              HorizontalAlignment="Center"
+                                                              CaretStyle="{DynamicResource ControlFocusCaretStyle}"
+                                                              IsCaretShown="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Slider, Tree=Logical}, Path=IsFocused}">
+                                            <console:SymbolsControl
+                                                Text="{StaticResource ThemeSliderVerticalThumbSymbol}"
+                                                HorizontalAlignment="Center"
+                                                Foreground="{DynamicResource ThemeForegroundBrush}" />
+                                        </console:CaretControl>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+                        </Track>
+
                     </Grid>
                 </ControlTemplate>
             </Setter>
