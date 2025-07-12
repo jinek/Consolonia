@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryDialog">
-    <Panel Background="Magenta">
+    <Panel>
         <Button Content="Show Dialog"
                 Margin="1"
                 HorizontalAlignment="Left"
@@ -13,7 +13,7 @@
         <TextBlock xml:space="preserve"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"
-                   Foreground="DarkBlue">.
+                   Foreground="{DynamicResource ThemeErrorBrush}">.
                                        /;    ;\
                                    __  \\____//
                                   /{_\_/   `'\____

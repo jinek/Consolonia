@@ -5,7 +5,7 @@
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryImage">
 
-    <Grid RowDefinitions="20 *">
+    <Grid RowDefinitions="* 2*">
         <Image Source="avares://Consolonia.Gallery/Resources/happy.png"
                Margin="0 1 1 0" />
 
