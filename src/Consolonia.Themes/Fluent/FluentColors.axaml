@@ -8,7 +8,7 @@
                      Color="#323130" />
     <!--Main content background.-->
     <SolidColorBrush x:Key="ThemeBackgroundBrush"
-                     Color="#B0D9E8" />
+                     Color="#FFFFFF" />
     <!--Alternative to main background. Must fit same foreground. Used where there is a need to make difference, for instance, button background in fluent theme, popup background etc-->
     <SolidColorBrush x:Key="ThemeAlternativeBackgroundBrush"
                      Color="#CCCCCC" />
@@ -25,7 +25,7 @@
 
     <!--Background of edit items: combobox, textbox-->
     <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
-                     Color="#FFFFFF" />
+                     Color="#B0D9E8" />
     <!--Foeground of edit items: combobox, textbox. Must fit background-->
     <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
                      Color="#323130" />
