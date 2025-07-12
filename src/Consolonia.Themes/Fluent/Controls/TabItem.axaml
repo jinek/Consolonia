@@ -1,0 +1,17 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <ControlTheme x:Key="{x:Type TabItem}"
+                      TargetType="TabItem">
+
+            <ControlTheme.BasedOn>
+                <StaticResource ResourceKey="{x:Type TabItem}" />
+            </ControlTheme.BasedOn>
+
+            <Style Selector="^:selected">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+            </Style>
+        </ControlTheme>
+    </Styles.Resources>
+</Styles>

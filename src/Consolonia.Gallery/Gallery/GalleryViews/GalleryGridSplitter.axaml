@@ -12,15 +12,15 @@
 
         <Rectangle Grid.Row="0"
                    Grid.Column="0"
-                   Fill="LightBlue" />
+                   Fill="{DynamicResource ThemeErrorBrush}" />
         <Rectangle Grid.Row="0"
                    Grid.Column="2"
-                   Fill="LightCoral" />
+                   Fill="{DynamicResource ThemeActionBackgroundBrush}" />
         <Rectangle Grid.Row="2"
                    Grid.Column="0"
-                   Fill="LightGreen" />
+                   Fill="{DynamicResource ThemeChooserBackgroundBrush}" />
         <Rectangle Grid.Row="2"
                    Grid.Column="2"
-                   Fill="Purple" />
+                   Fill="{DynamicResource ThemeAlternativeBackgroundBrush}" />
     </Grid>
 </UserControl>
