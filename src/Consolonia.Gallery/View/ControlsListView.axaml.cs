@@ -46,7 +46,7 @@ namespace Consolonia.Gallery.View
 
         private void TrySetupSelected()
         {
-            if (_commandLineArgs.Length is not 1 and not 2)
+            if (_commandLineArgs.Length == 0)
             {
                 GalleryGrid.SelectedIndex = 0;
                 return;

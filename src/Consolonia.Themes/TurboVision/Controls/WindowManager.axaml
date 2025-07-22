@@ -1,0 +1,152 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager"
+        xmlns:brushes="https://github.com/jinek/consolonia">
+    <Styles.Resources>
+        <ControlTheme x:Key="{x:Type windowManager:ManagedWindow}"
+                      TargetType="windowManager:ManagedWindow">
+            <ControlTheme.BasedOn>
+                <StaticResource ResourceKey="{x:Type windowManager:ManagedWindow}" />
+            </ControlTheme.BasedOn>
+            <Setter Property="BorderBrush">
+                <Setter.Value>
+                    <brushes:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
+                                       LineStyle="DoubleLine" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Padding"
+                    Value="5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="windowManager:ManagedWindow">
+                        <Panel>
+                            <!--Shade-->
+                            <Border BorderThickness="0"
+                                    Background="{DynamicResource ThemeShadeBrush}"
+                                    Margin="2,1,0,0"
+                                    Width="{Binding ElementName=OuterBorder, Path=Width}"
+                                    Height="{Binding ElementName=OuterBorder, Path=Height}"/>
+                            
+                            <!--Frame-->
+                            <Border BorderThickness="{TemplateBinding BorderThickness}"
+                                    Margin="0,0,2,1"
+                                    Background="{TemplateBinding Background}"
+                                    x:Name="PART_WindowBorder">
+                                <Border.BorderBrush>
+                                    <brushes:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
+                                                       LineStyle="DoubleLine" />
+                                </Border.BorderBrush>
+                                <Panel>
+                                    <DockPanel LastChildFill="True"
+                                               Margin="0,-1,0,0">
+                                        <!--TitleBar-->
+                                        <Grid x:Name="PART_TitleBar"
+                                              Height="1"
+                                              DockPanel.Dock="Top"
+                                              Background="{DynamicResource ThemeTransparentBrush}"
+                                              IsHitTestVisible="True"
+                                              ColumnDefinitions="Auto * Auto">
+                                            <Grid.Styles>
+                                                <Style Selector="Button">
+                                                    <Setter Property="Foreground"
+                                                            Value="{DynamicResource ThemeActionBackgroundBrush}" />
+                                                    <Setter Property="IsTabStop"
+                                                            Value="False" />
+                                                    <Setter Property="Theme"
+                                                            Value="{DynamicResource ThemeNakedButton}" />
+                                                </Style>
+                                                <Style Selector="brushes|SymbolsControl">
+                                                    <Setter Property="Foreground"
+                                                            Value="{DynamicResource ThemeBorderBrush}" />
+                                                </Style>
+                                            </Grid.Styles>
+                                            <DockPanel Margin="1,0,0,0">
+                                                <brushes:SymbolsControl DockPanel.Dock="Left"
+                                                                        Text="[" />
+                                                <brushes:SymbolsControl DockPanel.Dock="Right"
+                                                                        Text="]" />
+                                                <Button Content="■"
+                                                        x:Name="PART_CloseButton" />
+                                            </DockPanel>
+                                            <!-- Title -->
+                                            <TextBlock Grid.Column="1"
+                                                       Padding="1,0"
+                                                       Name="PART_Title"
+                                                       Foreground="{DynamicResource ManagedWindow_TitleBarForegroundBrush}"
+                                                       Background="{TemplateBinding Background}"
+                                                       HorizontalAlignment="Center"
+                                                       FontFamily="{TemplateBinding FontFamily}"
+                                                       FontSize="{TemplateBinding FontSize}"
+                                                       FontWeight="{TemplateBinding FontWeight}"
+                                                       FontStyle="{TemplateBinding FontStyle}"
+                                                       Text="{TemplateBinding Title}" />
+                                            <DockPanel Grid.Column="2"
+                                                       Margin="0,0,1,0">
+                                                <brushes:SymbolsControl DockPanel.Dock="Left"
+                                                                        Text="[" />
+                                                <brushes:SymbolsControl DockPanel.Dock="Right"
+                                                                        Text="]" />
+                                                <Panel>
+                                                    <Button Content="↕"
+                                                            IsVisible="False"
+                                                            x:Name="PART_MaximizeButton" />
+                                                    <Button Content="↕"
+                                                            IsVisible="False"
+                                                            x:Name="PART_RestoreButton" />
+                                                </Panel>
+                                            </DockPanel>
+                                        </Grid>
+                                        
+                                        <!--Content-->
+                                        <ContentPresenter Name="PART_ContentPresenter"
+                                                          ClipToBounds="True"
+                                                          KeyboardNavigation.TabNavigation="Continue"
+                                                          Margin="{TemplateBinding Margin}"
+                                                          Padding="{TemplateBinding Padding}"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          Content="{TemplateBinding Content}" />
+                                    </DockPanel>
+                                </Panel>
+                            </Border>
+                            
+                            <!--Overlay shading-->
+                            <Panel Name="PART_ModalOverlay"
+                                   IsVisible="False"
+                                   Background="{DynamicResource ThemeShadeBrush}" />
+                        </Panel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style Selector="^:active /template/ Grid#PART_TitleBar">
+                <Setter Property="Background"
+                        Value="{x:Null}" />
+            </Style>
+
+            <Style Selector="^:active /template/ Grid#PART_TitleBar > TextBlock">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource ManagedWindow_Active_TitleBarForegroundBrush}" />
+            </Style>
+
+            <Style Selector="^:active /template/ Grid#PART_TitleBar > Button">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource ManagedWindow_Active_TitleBarForegroundBrush}" />
+            </Style>
+            
+            <Style Selector="^:noborder /template/ Border#PART_WindowBorder">
+                <Setter Property="BorderThickness" Value="{StaticResource NoThickness}"/>
+            </Style>
+
+            <Style Selector="^:maximized /template/ Border#PART_WindowBorder">
+                <Setter Property="Margin"
+                        Value="0" />
+            </Style>
+        </ControlTheme>
+    </Styles.Resources>
+    <Style Selector=":is(windowManager|ManagedWindow)">
+        <Setter Property="Theme"
+                Value="{StaticResource {x:Type windowManager:ManagedWindow}}" />
+    </Style>
+</Styles>

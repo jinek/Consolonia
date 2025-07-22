@@ -72,4 +72,5 @@
     <StyleInclude Source="/TurboVision/Controls/DropDownButton.axaml" />
     <StyleInclude Source="/TurboVision/Controls/CheckBox.axaml" />
     <StyleInclude Source="/TurboVision/Controls/RadioButton.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/WindowManager.axaml"/>
 </Styles>
