@@ -136,7 +136,7 @@
             </Style>
             
             <Style Selector="^:noborder /template/ Border#PART_WindowBorder">
-                <Setter Property="BorderThickness" Value="{StaticResource NoThickness}"/>
+                <Setter Property="BorderThickness" Value="{DynamicResource NoThickness}"/>
             </Style>
 
             <Style Selector="^:maximized /template/ Border#PART_WindowBorder">
