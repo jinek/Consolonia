@@ -25,8 +25,7 @@ namespace Consolonia.Gallery
 
 
             if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode()
-                && ((ConsoloniaLifetime)ApplicationLifetime).Args is not null
-                && !((ConsoloniaLifetime)ApplicationLifetime).Args.Any(argument =>
+                && !((ConsoloniaLifetime)ApplicationLifetime).Args.Any(argument => argument != null &&
                     argument.ToUpper().EndsWith("-TURBOVISION")))
                 Styles.Add(new FluentTheme());
             else
