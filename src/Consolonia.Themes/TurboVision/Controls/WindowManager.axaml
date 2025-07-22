@@ -27,8 +27,8 @@
                                     Background="{DynamicResource ThemeShadeBrush}"
                                     Margin="2,1,0,0"
                                     Width="{Binding ElementName=OuterBorder, Path=Width}"
-                                    Height="{Binding ElementName=OuterBorder, Path=Height}"/>
-                            
+                                    Height="{Binding ElementName=OuterBorder, Path=Height}" />
+
                             <!--Frame-->
                             <Border BorderThickness="{TemplateBinding BorderThickness}"
                                     Margin="0,0,2,1"
@@ -98,7 +98,7 @@
                                                 </Panel>
                                             </DockPanel>
                                         </Grid>
-                                        
+
                                         <!--Content-->
                                         <ContentPresenter Name="PART_ContentPresenter"
                                                           ClipToBounds="True"
@@ -110,7 +110,7 @@
                                     </DockPanel>
                                 </Panel>
                             </Border>
-                            
+
                             <!--Overlay shading-->
                             <Panel Name="PART_ModalOverlay"
                                    IsVisible="False"
@@ -134,9 +134,10 @@
                 <Setter Property="Foreground"
                         Value="{DynamicResource ManagedWindow_Active_TitleBarForegroundBrush}" />
             </Style>
-            
+
             <Style Selector="^:noborder /template/ Border#PART_WindowBorder">
-                <Setter Property="BorderThickness" Value="{DynamicResource NoThickness}"/>
+                <Setter Property="BorderThickness"
+                        Value="{DynamicResource NoThickness}" />
             </Style>
 
             <Style Selector="^:maximized /template/ Border#PART_WindowBorder">
