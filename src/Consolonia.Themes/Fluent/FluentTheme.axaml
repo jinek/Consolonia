@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
+        xmlns:controls="https://github.com/jinek/consolonia"
         x:Class="Consolonia.Themes.FluentTheme">
     <Styles.Resources>
         <ResourceDictionary>
@@ -44,11 +45,22 @@
 
             <x:String x:Key="ThemeToggleSwitchOffSymbol">◯</x:String>
             <x:String x:Key="ThemeToggleSwitchOnSymbol">⬤</x:String>
+            <controls:CaretStyle x:Key="ControlFocusCaretStyle">BlinkingUnderline</controls:CaretStyle>
         </ResourceDictionary>
     </Styles.Resources>
 
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
-
+    <StyleInclude Source="/Fluent/Controls/ConsoloniaAccessRun.axaml" />
+    <StyleInclude Source="/Fluent/Controls/Button.axaml" />
+    <StyleInclude Source="/Fluent/Controls/DataGridRow.axaml" />
+    <StyleInclude Source="/Fluent/Controls/TextBox.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ToggleButton.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ComboBox.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ComboBoxItem.axaml" />
+    <StyleInclude Source="/Fluent/Controls/DropDownButton.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ListBoxItem.axaml" />
+    <StyleInclude Source="/Fluent/Controls/TabItem.axaml" />
+    <StyleInclude Source="/Fluent/Controls/ButtonSpinner.axaml" />
     <wm:WindowManagerTheme />
 
 </Styles>

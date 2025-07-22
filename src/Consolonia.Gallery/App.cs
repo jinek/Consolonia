@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
@@ -22,8 +23,11 @@ namespace Consolonia.Gallery
             /*Styles.Add(new TurboVisionDarkTheme());*/
             /*Styles.Add(new FluentTheme());*/
 
-            if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode())
-                Styles.Add(new MaterialTheme());
+
+            if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode()
+                && !((ConsoloniaLifetime)ApplicationLifetime).Args.Any(argument => argument != null &&
+                    argument.ToUpper().EndsWith("-TURBOVISION")))
+                Styles.Add(new FluentTheme());
             else
                 Styles.Add(new TurboVisionTheme());
 
