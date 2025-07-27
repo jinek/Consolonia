@@ -346,7 +346,10 @@ namespace Consolonia.PlatformSupport
             // alt mask
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
             {
-                int wch = tuple.Item2[0];
+                // The first item is the ESC prefix, the second is the actual
+                // key pressed with Alt. Use the second element so combinations
+                // like Alt+Tab are properly detected.
+                int wch = tuple.Item2[1];
                 Key k = Key.AltMask | MapCursesKey(wch);
                 RaiseKeyPressInternal(k);
             }, ToChar, @"^\x1B[^\x00]*$", 2), 0, Curses.KEY_CODE_YES);
