@@ -348,10 +348,8 @@ namespace Consolonia.PlatformSupport
 
             // PASTE block
             yield return new SafeLockMatcher(
-                new PasteBlockMatcher<int>(buffer =>
-                {
-                    RaiseTextInput(buffer, (ulong)Environment.TickCount64);
-                }, ToChar), 0, 0, 0);
+                new PasteBlockMatcher<int>(buffer => { RaiseTextInput(buffer, (ulong)Environment.TickCount64); },
+                    ToChar), 0, 0, 0);
 
             // mouse and resize detection and some special processing
             yield return new SafeLockMatcher(new GenericMatcher<int>(wch =>
