@@ -222,11 +222,6 @@ namespace Consolonia.PlatformSupport
 
         private IEnumerable<IMatcher<(int, int)>> GetMatchers()
         {
-            // PASTE block
-            yield return new SafeLockMatcher(
-                new PasteBlockMatcher<int>(buffer => { RaiseTextInput(buffer, (ulong)Environment.TickCount64); },
-                    ToChar), 0, 0, 0);
-
             (string, Key)[] fSequences =
             [
                 // Ctrl+Alt+(F1 - F4)
@@ -350,6 +345,13 @@ namespace Consolonia.PlatformSupport
                 Key k = Key.AltMask | MapCursesKey(wch);
                 RaiseKeyPressInternal(k);
             }, ToChar, @"^\x1B[^\x00]*$", 2), 0, Curses.KEY_CODE_YES);
+
+            // PASTE block
+            yield return new SafeLockMatcher(
+                new PasteBlockMatcher<int>(buffer =>
+                {
+                    RaiseTextInput(buffer, (ulong)Environment.TickCount64);
+                }, ToChar), 0, 0, 0);
 
             // mouse and resize detection and some special processing
             yield return new SafeLockMatcher(new GenericMatcher<int>(wch =>
