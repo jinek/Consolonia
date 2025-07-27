@@ -288,7 +288,8 @@ namespace Consolonia.PlatformSupport
 
             // escape of ESC
             yield return new SafeLockMatcher(
-                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.Esc); }, ToChar, @"^\x1B+$", 2), (int)Key.Esc, 0);
+                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.Esc); }, ToChar, @"^\x1B+$", 2), (int)Key.Esc,
+                0);
 
             // The ESC-number handling, debatable.
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
