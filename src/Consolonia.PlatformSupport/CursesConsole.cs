@@ -331,8 +331,7 @@ namespace Consolonia.PlatformSupport
                     }
                     else if (wch2 < 256)
                     {
-                        k = (Key)wch2;
-                        _keyModifiers.Alt = true;
+                        k = Key.AltMask | MapCursesKey(wch2);
                     }
                     else
                     {
