@@ -288,7 +288,7 @@ namespace Consolonia.PlatformSupport
 
             // escape of ESC
             yield return new SafeLockMatcher(
-                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.Esc); }, ToChar, @"^\x1B+$", 2), 0, 0);
+                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.Esc); }, ToChar, @"^\x1B+$", 2), (int)Key.Esc, 0);
 
             // The ESC-number handling, debatable.
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
@@ -341,7 +341,7 @@ namespace Consolonia.PlatformSupport
                 }
 
                 RaiseKeyPressInternal(k);
-            }, ToChar, @"^\x1B[^\x1B\[]*$", 2), 0, 0);
+            }, ToChar, @"^\x1B[^\x1B\[]*$", 2), (int)Key.Esc, 0);
 
             // alt mask
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
@@ -349,7 +349,7 @@ namespace Consolonia.PlatformSupport
                 int wch = tuple.Item2[0];
                 Key k = Key.AltMask | MapCursesKey(wch);
                 RaiseKeyPressInternal(k);
-            }, ToChar, @"^\x1B[^\x00]*$", 2), 0, Curses.KEY_CODE_YES);
+            }, ToChar, @"^\x1B[^\x00]*$", 2), (int)Key.Esc, Curses.KEY_CODE_YES);
 
             // mouse and resize detection and some special processing
             yield return new SafeLockMatcher(new GenericMatcher<int>(wch =>
