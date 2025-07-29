@@ -6,13 +6,15 @@ namespace Consolonia.Core.Helpers.InputProcessing
     /// <summary>
     ///     Matches everything
     /// </summary>
-    public class GenericMatcher<TKey>(Action<TKey> onComplete)
+    public class GenericMatcher<TKey>(Action<TKey> onComplete, Func<TKey, bool> filter = null)
         : MatcherWithComplete<TKey, TKey>(onComplete)
     {
         private readonly List<TKey> _accumulatedKeys = [];
 
         public override AppendResult Append(TKey input)
         {
+            if (filter != null && !filter(input))
+                return AppendResult.NoMatch;
             _accumulatedKeys.Add(input);
             return AppendResult.Match;
         }

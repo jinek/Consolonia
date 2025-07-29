@@ -47,7 +47,8 @@ namespace Consolonia.Core.Helpers.InputProcessing
                     }
                 }
 
-                if (result == AppendResult.AutoFlushed && isPreviousTopMatcher)
+                if (result == AppendResult.AutoFlushed)
+                    /* && isPreviousTopMatcher having no idea what for this was needed. But if nothing was autoflashed, everything else should be reset because each single input must be processed only once*/
                 {
                     ResetMatchersFrom(0);
                     _previousTopMatcherIndex =

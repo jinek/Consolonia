@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -65,6 +66,7 @@ namespace Consolonia.PlatformSupport
                 (Key.PageUp, ConsoleKey.PageUp),
                 (Key.Space, ConsoleKey.Spacebar),
                 (Key.Tab, ConsoleKey.Tab),
+                (Key.BackTab, ConsoleKey.Tab), // backtab somehow contains SHIFT mask which does not deduct // todo: check why
                 // Proposed by ChatGPT, I've found supporting source: https://devblogs.microsoft.com/dotnet/console-readkey-improvements-in-net-7/   
                 (Key.Unknown, ConsoleKey.NoName),
                 ((Key)46, ConsoleKey.OemPeriod),
@@ -289,6 +291,10 @@ namespace Consolonia.PlatformSupport
             // escape of ESC
             yield return new SafeLockMatcher(
                 new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.Esc); }, ToChar, @"^\x1B+$", 2), 0, 0);
+            
+            // SHIFT+TAB is received as ESC then TAB, both locked by key 0: https://unix.stackexchange.com/a/238412
+            yield return new SafeLockMatcher(
+                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.BackTab); }, ToChar, @"^\x1B\t?$", 2), 0, 0);
 
             // The ESC-number handling, debatable.
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
