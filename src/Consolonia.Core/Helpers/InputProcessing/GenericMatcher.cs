@@ -38,13 +38,11 @@ namespace Consolonia.Core.Helpers.InputProcessing
 
         public override string GetDebugInfo()
         {
-            return $"{GetType().Name} ({GetAccumulatedData()})";
+            return $"{GetType().Name} {{{GetAccumulatedData()}";
 
             string GetAccumulatedData()
             {
-                if (_accumulatedKeys.Count == 0)
-                    return "_";
-                return string.Join(", ", _accumulatedKeys);
+                return _accumulatedKeys.Count == 0 ? "_" : string.Join(", ", _accumulatedKeys);
             }
         }
     }

@@ -60,7 +60,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
 
         public override string GetDebugInfo()
         {
-            return $"{GetType().Name} [{startsWith}...{endsWith}] ({GetAccumulatedData()})";
+            return $"{GetType().Name} [{startsWith}...{endsWith}] {{{GetAccumulatedData()}";
 
             string GetAccumulatedData()
             {

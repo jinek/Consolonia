@@ -19,18 +19,13 @@ namespace Consolonia.Core.Helpers.InputProcessing
         public void ProcessChunk(IReadOnlyCollection<T> chunk)
         {
             _logger.Trace("Processing input chunk with {Count} items...", chunk.Count);
-            LogMatchersState();
+            
             foreach (T input in chunk)
-                try
-                {
-                    ProcessSingleInput(input);
-                }
-                finally
-                {
-                    LogMatchersState();
-                }
-
-            FlushStartingFrom(0);
+                ProcessSingleInput(input);
+                
+            _logger.Info("Trying to flush starting from index 0");
+            TryFlushStartingFrom(0);
+            LogMatchersState();
         }
 
         private void ProcessSingleInput(T input)
@@ -38,60 +33,72 @@ namespace Consolonia.Core.Helpers.InputProcessing
             _logger.Info("Processing single input: {Input}", input);
             int currentTopMatcherIndex = Matchers.Length;
 
-
+            
+            StringBuilder logAllSb = new();
+            logAllSb.AppendLine();
+            logAllSb.AppendLine("-----------------------------------------------------");
             for (int i = 0; i < Matchers.Length; i++)
             {
-                IMatcher<T> matcher = Matchers[i];
-                _logger.Trace("Processing matcher {MatcherIndex}: {Matcher}", i, matcher.GetDebugInfo());
-                AppendResult result = matcher.Append(input);
-                _logger.Trace("Matcher {MatcherIndex} result: {Result}", i, result);
-                bool isPreviousTopMatcher = i == _previousTopMatcherIndex;
-                _logger.Trace("Is previous top matcher: {IsPreviousTopMatcher}", isPreviousTopMatcher);
-
-                if (result == AppendResult.NoMatch)
+                StringBuilder logSb = new();
+                try
                 {
-                    if (isPreviousTopMatcher)
+                    IMatcher<T> matcher = Matchers[i];
+
+                    _logger.Trace("Processing matcher {MatcherIndex}: {Matcher}", i, matcher.GetDebugInfo());
+                    logSb.AppendJoin(" ", i.ToString(), i == _previousTopMatcherIndex ? "*" : " ",
+                        matcher.GetDebugInfo());
+                    AppendResult result = matcher.Append(input);
+                    _logger.Trace("Matcher {MatcherIndex} result: {Result}", i, result);
+                    bool isPreviousTopMatcher = i == _previousTopMatcherIndex;
+                    _logger.Trace("Is previous top matcher: {IsPreviousTopMatcher}", isPreviousTopMatcher);
+
+                    if (result == AppendResult.NoMatch)
                     {
-                        _logger.Trace(
-                            "This matcher was previous top matcher, flushing starting from index {MatcherIndex}", i);
-                        FlushStartingFrom(i);
+                        logSb.Insert(0, '❌');
+                        if (isPreviousTopMatcher)
+                        {
+                            logSb.Insert(1, "?");
+                            TryFlushStartingFrom(i);
+                        }
+                        else
+                            matcher.Reset();
                     }
-                    else
+
+                    if (result != AppendResult.NoMatch)
                     {
-                        _logger.Trace("This matcher was not previous top matcher, resetting it");
-                        matcher.Reset();
+                        logSb.AppendJoin("", " + ", input?.ToString());
+                        currentTopMatcherIndex = Math.Min(currentTopMatcherIndex, i);
+                        logSb.Insert(0, i == currentTopMatcherIndex ? '*' : '✅');
+
+                        if (i < _previousTopMatcherIndex)
+                        {
+                            logSb.Insert(1, "?");
+                            TryFlushStartingFrom(_previousTopMatcherIndex);
+                            _previousTopMatcherIndex = currentTopMatcherIndex;
+                        }
+                    }
+
+                    if (result == AppendResult.AutoFlushed)
+                        /* && isPreviousTopMatcher having no idea what for this was needed. But if nothing was autoflashed, everything else should be reset because each single input must be processed only once*/
+                    {
+                        logSb.Insert(0, "⚡");
+                        ResetMatchersFrom(0);
+                        _previousTopMatcherIndex =
+                            currentTopMatcherIndex = -1; // redundant set of _previousTopMatcherIndex for readability
+                        break;
                     }
                 }
-
-                if (result != AppendResult.NoMatch)
+                finally
                 {
-                    _logger.Trace(
-                        "Matcher {MatcherIndex} matched, setting current top matcher index to minimum with {CurrentTopMatcherIndex}",
-                        i, currentTopMatcherIndex);
-                    currentTopMatcherIndex = Math.Min(currentTopMatcherIndex, i);
-
-                    if (i < _previousTopMatcherIndex)
-                    {
-                        _logger.Trace(
-                            "Matcher {MatcherIndex} is below previous top matcher index {PreviousTopMatcherIndex}, flushing starting from it",
-                            i, _previousTopMatcherIndex);
-                        FlushStartingFrom(_previousTopMatcherIndex);
-                        _logger.Trace("Resetting previous top matcher index to -1");
-                        _previousTopMatcherIndex = currentTopMatcherIndex;
-                    }
-                }
-
-                if (result == AppendResult.AutoFlushed)
-                    /* && isPreviousTopMatcher having no idea what for this was needed. But if nothing was autoflashed, everything else should be reset because each single input must be processed only once*/
-                {
-                    _logger.Trace(
-                        "Auto-flush occurred, resetting all matchers from index 0 and setting previous top matcher index to -1");
-                    ResetMatchersFrom(0);
-                    _previousTopMatcherIndex =
-                        currentTopMatcherIndex = -1; // redundant set of _previousTopMatcherIndex for readability
-                    break;
+                    logSb.AppendLine();
+                    logAllSb.Append(logSb);
                 }
             }
+            logAllSb.AppendLine("-----------------------------------------------------");
+            logAllSb.AppendLine("Legend: * - top matcher, ✅ - match, ❌ - no match, ⚡ - auto flushed, ? - reset matchers from this index");
+            logAllSb.AppendLine("-----------------------------------------------------");
+                
+            _logger.Info(logAllSb.ToString());
 
             _logger.Info(
                 "Finished processing input: {Input}, current top matcher index: {CurrentTopMatcherIndex}, previous top matcher index: {PreviousTopMatcherIndex}, updating previous to current",
@@ -99,7 +106,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
             _previousTopMatcherIndex = currentTopMatcherIndex;
         }
 
-        private void FlushStartingFrom(int startIndex)
+        private void TryFlushStartingFrom(int startIndex)
         {
             for (int i = startIndex; i < Matchers.Length; i++)
                 if (Matchers[i].TryFlush())
@@ -126,13 +133,14 @@ namespace Consolonia.Core.Helpers.InputProcessing
         {
             StringBuilder sb = new("Current matchers state(* - top matcher): ");
             sb.AppendLine();
+            sb.AppendLine("-----------------------------------------------------");
             for (int i = 0; i < Matchers.Length; i++)
             {
                 IMatcher<T> matcher = Matchers[i];
-                string topMatcherIndicator = i == _previousTopMatcherIndex ? "*" : string.Empty;
-                sb.AppendLine($"[{topMatcherIndicator}{i}{topMatcherIndicator}: {matcher.GetDebugInfo()}] ");
+                sb.AppendJoin(" ", i.ToString(), i == _previousTopMatcherIndex ? "*" : " ", matcher.GetDebugInfo());
+                sb.AppendLine();
             }
-
+            sb.AppendLine("-----------------------------------------------------");
             _logger.Info(sb.ToString());
         }
     }

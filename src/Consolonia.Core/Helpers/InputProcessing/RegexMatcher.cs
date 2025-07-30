@@ -81,7 +81,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
 
         public override string GetDebugInfo()
         {
-            return $"{GetType().Name} [{regex}, flush on {autoFlushOnLength}] ({GetAccumulatedData()})";
+            return $"{GetType().Name} [{regex}, max {autoFlushOnLength}] {{{GetAccumulatedData()}";
 
             string GetAccumulatedData()
             {
