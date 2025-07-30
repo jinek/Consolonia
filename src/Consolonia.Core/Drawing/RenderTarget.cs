@@ -175,6 +175,9 @@ namespace Consolonia.Core.Drawing
 
         private void OnCursorChanged(ConsoleCursor consoleCursor)
         {
+            if (_consoleCursor.CompareTo(consoleCursor) == 0)
+                return;
+
             ConsoleCursor oldConsoleCursor = _oldConsoleCursor;
             _oldConsoleCursor = _consoleCursor;
             _consoleCursor = consoleCursor;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Consolonia.Core.Helpers.InputProcessing
 {
@@ -48,13 +49,27 @@ namespace Consolonia.Core.Helpers.InputProcessing
 
         public bool TryFlush()
         {
-            return _lockedMatcher.TryFlush();
+            bool hasFlushed = _lockedMatcher.TryFlush();
+            if (hasFlushed)
+                _keyStep = 0;
+
+            return hasFlushed;
         }
 
         public void Reset()
         {
             _lockedMatcher.Reset();
             // doing nothing, we reset only when append does not match
+        }
+
+        public string GetDebugInfo()
+        {
+            return $"{GetType().Name} [{GetKeyWithCurrentStep()}] -> {_lockedMatcher.GetDebugInfo()}";
+
+            string GetKeyWithCurrentStep()
+            {
+                return string.Join(", ", _key.Select((k, i) => i == _keyStep ? $"[{k}]" : k.ToString()));
+            }
         }
     }
 }

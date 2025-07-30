@@ -65,6 +65,8 @@ namespace Consolonia.PlatformSupport
                 (Key.PageUp, ConsoleKey.PageUp),
                 (Key.Space, ConsoleKey.Spacebar),
                 (Key.Tab, ConsoleKey.Tab),
+                (Key.BackTab,
+                    ConsoleKey.Tab), // backtab somehow contains SHIFT mask which does not deduct // todo: check why
                 // Proposed by ChatGPT, I've found supporting source: https://devblogs.microsoft.com/dotnet/console-readkey-improvements-in-net-7/   
                 (Key.Unknown, ConsoleKey.NoName),
                 ((Key)46, ConsoleKey.OemPeriod),
@@ -175,6 +177,9 @@ namespace Consolonia.PlatformSupport
                 }
                 else
                 {
+                    if (_rowInputBuffer.Count == 0)
+                        continue;
+
                     break;
                 }
             } while (true);
@@ -289,6 +294,10 @@ namespace Consolonia.PlatformSupport
             // escape of ESC
             yield return new SafeLockMatcher(
                 new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.Esc); }, ToChar, @"^\x1B+$", 2), 0, 0);
+
+            // SHIFT+TAB is received as ESC then TAB, both locked by key 0: https://unix.stackexchange.com/a/238412
+            yield return new SafeLockMatcher(
+                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.BackTab); }, ToChar, @"^\x1B\t?$", 2), 0, 0);
 
             // The ESC-number handling, debatable.
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
@@ -409,23 +418,35 @@ namespace Consolonia.PlatformSupport
             }), Curses.KEY_CODE_YES);
 
             // text detection
-            yield return new SafeLockMatcher(new TextInputMatcher<int>(tuple =>
+            var textInputMatcher = new SafeLockMatcher(new TextInputMatcher<int>(tuple =>
             {
-                bool processSeparateKeys = true;
-                if (tuple.Item1.Length >= 10) // todo: low: magic number here
-                {
-                    CanBeHandledEventArgs canBeHandledEventArgs = new();
-                    RaiseTextInput(tuple.Item1, (ulong)Environment.TickCount64, canBeHandledEventArgs);
-                    processSeparateKeys = !canBeHandledEventArgs.Handled;
-                }
+                CanBeHandledEventArgs canBeHandledEventArgs = new();
+                RaiseTextInput(tuple.Item1, (ulong)Environment.TickCount64, canBeHandledEventArgs);
+                bool processSeparateKeys = !canBeHandledEventArgs.Handled;
 
                 if (processSeparateKeys)
                     foreach (int key in tuple.Item2)
                         ProcessKeyInternal(key);
-            }, ToChar), 0);
+            }, ToChar, 10 /* todo: low: magic number here*/), 0);
+            yield return textInputMatcher;
 
             // general keys backup
-            yield return new SafeLockMatcher(new GenericMatcher<int>(ProcessKeyInternal), 0);
+            yield return new SafeLockMatcher(
+                new GenericMatcher<int>(i =>
+                {
+                    ProcessKeyInternal(i);
+                    // related to 15F2A2C4-218D-4B4D-86CE-330A312EF6A6, we have to reset text input ourselves, because 
+                    // common logic of InputProcessor resets only everything below
+                    // todo: should we reset all other matchers actually?
+                    textInputMatcher.Reset();
+                }, EscapeDoesNotComeItselfInCurses), 0);
+
+            yield break;
+
+            static bool EscapeDoesNotComeItselfInCurses(int i)
+            {
+                return i != 27;
+            }
         }
 
         private void ProcessKeyInternal(int wch)

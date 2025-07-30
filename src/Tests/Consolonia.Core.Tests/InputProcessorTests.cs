@@ -41,7 +41,7 @@ namespace Consolonia.Core.Tests
 
             // sequence: right, up, a,
 
-            IEnumerable<ConsoleKeyInfo> chunk =
+            IReadOnlyCollection<ConsoleKeyInfo> chunk =
             [
                 new('\0', ConsoleKey.RightArrow, false, false, false),
                 new('\0', ConsoleKey.UpArrow, false, false, false),
@@ -127,7 +127,7 @@ namespace Consolonia.Core.Tests
             var chunkedDataProcessor = new InputProcessor<char>(matchers);
 
             string[] inputs = input.Split();
-            foreach (string chunk in inputs) chunkedDataProcessor.ProcessChunk(chunk);
+            foreach (string chunk in inputs) chunkedDataProcessor.ProcessChunk(chunk.ToCharArray());
 
             Assert.AreEqual(expected, result[1..]);
             return;
