@@ -1,0 +1,45 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:brushes="https://github.com/jinek/consolonia">
+    <Style Selector="DropDownButton">
+        <Setter Property="Padding"
+                Value="1,0" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <brushes:LineBrush Brush="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                   LineStyle="Edge" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="DropDownButton /template/ brushes|SymbolsControl#DropDownGlyph">
+        <Setter Property="Margin"
+                Value="1,0,0,0" />
+    </Style>
+
+    <Style Selector="DropDownButton:pressed">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <brushes:LineBrush Brush="Transparent"
+                                   LineStyle="Edge" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="DropDownButton:focus">
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <brushes:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
+                                   LineStyle="Edge" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+</Styles>

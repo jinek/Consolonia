@@ -46,6 +46,8 @@
 
             <x:String x:Key="ThemeToggleSwitchOffSymbol">■</x:String>
             <x:String x:Key="ThemeToggleSwitchOnSymbol">■</x:String>
+
+            <console:CaretStyle x:Key="ControlFocusCaretStyle">BlinkingBlock</console:CaretStyle>
         </ResourceDictionary>
     </Styles.Resources>
 
@@ -64,4 +66,11 @@
     <wm:WindowManagerTheme />
 
     <StyleInclude Source="/TurboVision/Controls/Button.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/ConsoloniaAccessRun.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/ToggleButton.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/ComboBox.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/DropDownButton.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/CheckBox.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/RadioButton.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/WindowManager.axaml" />
 </Styles>

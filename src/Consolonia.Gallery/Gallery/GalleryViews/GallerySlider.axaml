@@ -1,6 +1,16 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GallerySlider">
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="IsReadOnly"
+                    Value="True" />
+            <Setter Property="IsTabStop"
+                    Value="False" />
+            <Setter Property="Focusable"
+                    Value="False" />
+        </Style>
+    </UserControl.Styles>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical"
                     Spacing="1">
@@ -15,7 +25,6 @@
                         <TextBlock>Simple slider from 0-100</TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <TextBox Text="{Binding Value, ElementName=Slider1, StringFormat=F0}"
-                                     IsReadOnly="True"
                                      Margin="1"
                                      Width="4" />
 
@@ -31,7 +40,6 @@
                         <TextBlock>Simple slider from 0-100 steps of 10</TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <TextBox Text="{Binding Value, ElementName=SliderSteps, StringFormat=F0}"
-                                     IsReadOnly="True"
                                      Margin="1"
                                      Width="4" />
 
@@ -48,7 +56,6 @@
                         <TextBlock>Slider from 0-100 with custom steps</TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <TextBox Text="{Binding Value, ElementName=CustomTickedSlider, StringFormat=F0}"
-                                     IsReadOnly="True"
                                      Margin="1"
                                      Width="4" />
 
@@ -67,7 +74,6 @@
                         <TextBlock>Slider from 0-100 with Tooltip</TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <TextBox Text="{Binding Value, ElementName=SliderWithTooltip, StringFormat=F0}"
-                                     IsReadOnly="True"
                                      Margin="1"
                                      Width="4" />
 

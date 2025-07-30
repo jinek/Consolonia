@@ -1,0 +1,11 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--todo: Rather than doing Style+selector, should be ControlTheme based on default ControlTheme - see button in TurboVision-->
+    <Style Selector="ComboBox /template/ ToggleButton#toggle">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
+    </Style>
+</Styles>

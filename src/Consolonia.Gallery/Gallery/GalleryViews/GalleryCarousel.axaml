@@ -32,8 +32,7 @@
                     Grid.Column="0"
                     VerticalAlignment="Center"
                     Padding="1,2"
-                    Margin="1"
-                    Background="{DynamicResource ThemeBackgroundBrush}">
+                    Margin="1">
                 <TextBlock Text="&lt;" />
             </Button>
             <Carousel Name="carousel"
@@ -62,7 +61,6 @@
                     Grid.Column="2"
                     VerticalAlignment="Center"
                     Padding="1,2"
-                    Background="{DynamicResource ThemeBackgroundBrush}"
                     Margin="1">
                 <TextBlock Text="&gt;" />
             </Button>
