@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,13 +31,16 @@ namespace Consolonia.Core.Helpers
                 while (!_disposed)
                 {
                     T[] newData = readDataFunction();
+                    if (!newData.Any())
+                        throw new InvalidOperationException("No data read from the source.");
+
                     Enqueue(newData);
                     //todo: low should continue the loop in case of exceptions?
                 }
             });
         }
 
-        private void Enqueue(IEnumerable<T> items)
+        private void Enqueue(IReadOnlyCollection<T> items)
         {
             lock (_lock)
             {
