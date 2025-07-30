@@ -19,10 +19,10 @@ namespace Consolonia.Core.Helpers.InputProcessing
         public void ProcessChunk(IReadOnlyCollection<T> chunk)
         {
             _logger.Trace("Processing input chunk with {Count} items...", chunk.Count);
-            
+
             foreach (T input in chunk)
                 ProcessSingleInput(input);
-                
+
             _logger.Info("Trying to flush starting from index 0");
             TryFlushStartingFrom(0);
             LogMatchersState();
@@ -33,7 +33,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
             _logger.Info("Processing single input: {Input}", input);
             int currentTopMatcherIndex = Matchers.Length;
 
-            
+
             StringBuilder logAllSb = new();
             logAllSb.AppendLine();
             logAllSb.AppendLine("-----------------------------------------------------");
@@ -61,7 +61,9 @@ namespace Consolonia.Core.Helpers.InputProcessing
                             TryFlushStartingFrom(i);
                         }
                         else
+                        {
                             matcher.Reset();
+                        }
                     }
 
                     if (result != AppendResult.NoMatch)
@@ -94,10 +96,12 @@ namespace Consolonia.Core.Helpers.InputProcessing
                     logAllSb.Append(logSb);
                 }
             }
+
             logAllSb.AppendLine("-----------------------------------------------------");
-            logAllSb.AppendLine("Legend: * - top matcher, ✅ - match, ❌ - no match, ⚡ - auto flushed, ? - reset matchers from this index");
+            logAllSb.AppendLine(
+                "Legend: * - top matcher, ✅ - match, ❌ - no match, ⚡ - auto flushed, ? - reset matchers from this index");
             logAllSb.AppendLine("-----------------------------------------------------");
-                
+
             _logger.Info(logAllSb.ToString());
 
             _logger.Info(
@@ -140,6 +144,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
                 sb.AppendJoin(" ", i.ToString(), i == _previousTopMatcherIndex ? "*" : " ", matcher.GetDebugInfo());
                 sb.AppendLine();
             }
+
             sb.AppendLine("-----------------------------------------------------");
             _logger.Info(sb.ToString());
         }
