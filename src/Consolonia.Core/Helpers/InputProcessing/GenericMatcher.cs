@@ -15,7 +15,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
         {
             if (filter != null && !filter(input))
                 return AppendResult.NoMatch;
-            
+
             _accumulatedKeys.Add(input);
             return AppendResult.Match;
         }

@@ -68,7 +68,10 @@ namespace Consolonia.Core.Helpers.InputProcessing
             return matches;
         }
 
-        private protected int GetAccumulatedLength() => _accumulator.Length;
+        private protected int GetAccumulatedLength()
+        {
+            return _accumulator.Length;
+        }
 
         public override void Reset()
         {

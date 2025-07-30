@@ -52,7 +52,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
             bool hasFlushed = _lockedMatcher.TryFlush();
             if (hasFlushed)
                 _keyStep = 0;
-            
+
             return hasFlushed;
         }
 

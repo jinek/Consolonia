@@ -31,9 +31,9 @@ namespace Consolonia.Core.Helpers
                 while (!_disposed)
                 {
                     T[] newData = readDataFunction();
-                    if(!newData.Any())
+                    if (!newData.Any())
                         throw new InvalidOperationException("No data read from the source.");
-                    
+
                     Enqueue(newData);
                     //todo: low should continue the loop in case of exceptions?
                 }
