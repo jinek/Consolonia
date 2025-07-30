@@ -15,6 +15,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
         {
             if (filter != null && !filter(input))
                 return AppendResult.NoMatch;
+            
             _accumulatedKeys.Add(input);
             return AppendResult.Match;
         }
@@ -33,6 +34,18 @@ namespace Consolonia.Core.Helpers.InputProcessing
         public override void Reset()
         {
             _accumulatedKeys.Clear();
+        }
+
+        public override string GetDebugInfo()
+        {
+            return $"{GetType().Name} ({GetAccumulatedData()})";
+
+            string GetAccumulatedData()
+            {
+                if (_accumulatedKeys.Count == 0)
+                    return "_";
+                return string.Join(", ", _accumulatedKeys);
+            }
         }
     }
 }

@@ -68,10 +68,22 @@ namespace Consolonia.Core.Helpers.InputProcessing
             return matches;
         }
 
+        private protected int GetAccumulatedLength() => _accumulator.Length;
+
         public override void Reset()
         {
             _accumulator.Clear();
             _accumulatedKeys.Clear();
+        }
+
+        public override string GetDebugInfo()
+        {
+            return $"{GetType().Name} [{regex}, flush on {autoFlushOnLength}] ({GetAccumulatedData()})";
+
+            string GetAccumulatedData()
+            {
+                return _accumulatedKeys.Count == 0 ? "_" : string.Join(", ", _accumulatedKeys);
+            }
         }
     }
 }

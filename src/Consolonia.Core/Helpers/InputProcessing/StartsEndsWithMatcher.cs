@@ -57,5 +57,15 @@ namespace Consolonia.Core.Helpers.InputProcessing
         {
             // because of 15F2A2C4-218D-4B4D-86CE-330A312EF6A6 we are pretending to reset, but we are not buying the lie of the previous tag matcher 
         }
+
+        public override string GetDebugInfo()
+        {
+            return $"{GetType().Name} [{startsWith}...{endsWith}] ({GetAccumulatedData()})";
+
+            string GetAccumulatedData()
+            {
+                return _accumulator.Length == 0 ? "_" : _accumulator.ToString();
+            }
+        }
     }
 }

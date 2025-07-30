@@ -9,5 +9,6 @@ namespace Consolonia.Core.Helpers.InputProcessing
         AppendResult Append(T input);
         bool TryFlush();
         void Reset();
+        string GetDebugInfo();
     }
 }
