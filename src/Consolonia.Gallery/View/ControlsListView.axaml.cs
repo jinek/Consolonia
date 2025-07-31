@@ -46,7 +46,7 @@ namespace Consolonia.Gallery.View
 
         private void TrySetupSelected()
         {
-            string[] commandLineArgs = _commandLineArgs
+            string[] commandLineArgs = _commandLineArgs.Where(s => s != null)
                 .Where(s => !s.ToUpper().EndsWith(App.TurboVisionProgramParameterUpperCase)).ToArray();
             if (commandLineArgs.Length == 0)
             {
