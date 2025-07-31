@@ -177,7 +177,7 @@ namespace Consolonia
                 Dispatcher.UIThread.Post(() => { MainView.InvalidateVisual(); });
             }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
 
-            return Dispatcher.UIThread.InvokeAsync(() => { }).GetTask();
+            return pauseTask;
         }
 
 #pragma warning disable CA1822
