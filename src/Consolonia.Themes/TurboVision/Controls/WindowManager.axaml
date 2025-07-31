@@ -89,10 +89,19 @@
                                                 <brushes:SymbolsControl DockPanel.Dock="Right"
                                                                         Text="]" />
                                                 <Panel>
-                                                    <Button Content="↕"
+                                                    <!-- The original maximize icon
+                                                         used a vertical arrow which
+                                                         is not available in the
+                                                         IBM code page utilised by
+                                                         Linux consoles.  Using the
+                                                         up and down triangles
+                                                         instead keeps the
+                                                         intention clear and renders
+                                                         correctly across code pages. -->
+                                                    <Button Content="{StaticResource ThemeScrollBarUpSymbol}"
                                                             IsVisible="False"
                                                             x:Name="PART_MaximizeButton" />
-                                                    <Button Content="↕"
+                                                    <Button Content="{StaticResource ThemeScrollBarDownSymbol}"
                                                             IsVisible="False"
                                                             x:Name="PART_RestoreButton" />
                                                 </Panel>
