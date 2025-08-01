@@ -16,11 +16,8 @@ namespace Consolonia.Gallery.View
 {
     public enum ThemesList
     {
-        Material,
         Fluent,
-        TurboVision,
-        TurboVisionDark,
-        TurboVisionBlack
+        TurboVision
     }
 
     public partial class ControlsListView : DockPanel
@@ -49,13 +46,15 @@ namespace Consolonia.Gallery.View
 
         private void TrySetupSelected()
         {
-            if (_commandLineArgs.Length is not 1 and not 2)
+            string[] commandLineArgs = _commandLineArgs.Where(s => s != null)
+                .Where(s => !s.ToUpper().EndsWith(App.TurboVisionProgramParameterUpperCase)).ToArray();
+            if (commandLineArgs.Length == 0)
             {
                 GalleryGrid.SelectedIndex = 0;
                 return;
             }
 
-            string itemToSelectName = _commandLineArgs.Last();
+            string itemToSelectName = commandLineArgs.Last();
             GalleryItem itemToSelect;
             try
             {
@@ -130,11 +129,8 @@ namespace Consolonia.Gallery.View
 
             Application.Current.Styles[0] = selectedTheme switch
             {
-                ThemesList.Material => new MaterialTheme(),
                 ThemesList.Fluent => new FluentTheme(),
                 ThemesList.TurboVision => new TurboVisionTheme(),
-                ThemesList.TurboVisionDark => new TurboVisionDarkTheme(),
-                ThemesList.TurboVisionBlack => new TurboVisionBlackTheme(),
                 _ => throw new InvalidDataException("Unknown theme name")
             };
         }
@@ -149,17 +145,11 @@ namespace Consolonia.Gallery.View
     public partial class ControlsListViewModel : ObservableObject
     {
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsTurboVisionDark))]
-        [NotifyPropertyChangedFor(nameof(IsTurboVisionBlack))]
         [NotifyPropertyChangedFor(nameof(IsTurboVision))]
         [NotifyPropertyChangedFor(nameof(IsFluent))]
-        [NotifyPropertyChangedFor(nameof(IsMaterial))]
         private string _selectedTheme;
 
-        public bool IsMaterial => SelectedTheme == nameof(ThemesList.Material);
         public bool IsFluent => SelectedTheme == nameof(ThemesList.Fluent);
         public bool IsTurboVision => SelectedTheme == nameof(ThemesList.TurboVision);
-        public bool IsTurboVisionDark => SelectedTheme == nameof(ThemesList.TurboVisionDark);
-        public bool IsTurboVisionBlack => SelectedTheme == nameof(ThemesList.TurboVisionBlack);
     }
 }
