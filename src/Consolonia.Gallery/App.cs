@@ -11,6 +11,8 @@ namespace Consolonia.Gallery
 {
     internal class App : Application
     {
+        internal const string TurboVisionProgramParameterUpperCase = "-TURBOVISION";
+
         static App()
         {
             // we want tests and UI to be executed with same culture
@@ -26,7 +28,7 @@ namespace Consolonia.Gallery
 
             if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode()
                 && !((ConsoloniaLifetime)ApplicationLifetime).Args.Any(argument => argument != null &&
-                    argument.ToUpper().EndsWith("-TURBOVISION")))
+                    argument.ToUpper().EndsWith(TurboVisionProgramParameterUpperCase)))
                 Styles.Add(new FluentTheme());
             else
                 Styles.Add(new TurboVisionTheme());

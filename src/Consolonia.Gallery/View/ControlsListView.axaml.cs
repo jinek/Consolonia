@@ -46,13 +46,15 @@ namespace Consolonia.Gallery.View
 
         private void TrySetupSelected()
         {
-            if (_commandLineArgs.Length == 0)
+            string[] commandLineArgs = _commandLineArgs.Where(s => s != null)
+                .Where(s => !s.ToUpper().EndsWith(App.TurboVisionProgramParameterUpperCase)).ToArray();
+            if (commandLineArgs.Length == 0)
             {
                 GalleryGrid.SelectedIndex = 0;
                 return;
             }
 
-            string itemToSelectName = _commandLineArgs.Last();
+            string itemToSelectName = commandLineArgs.Last();
             GalleryItem itemToSelect;
             try
             {
