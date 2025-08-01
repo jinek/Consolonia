@@ -89,10 +89,10 @@
                                                 <brushes:SymbolsControl DockPanel.Dock="Right"
                                                                         Text="]" />
                                                 <Panel>
-                                                    <Button Content="↕"
+                                                    <Button Content="{DynamicResource ThemeScrollBarUpSymbol}"
                                                             IsVisible="False"
                                                             x:Name="PART_MaximizeButton" />
-                                                    <Button Content="↕"
+                                                    <Button Content="{DynamicResource ThemeScrollBarDownSymbol}"
                                                             IsVisible="False"
                                                             x:Name="PART_RestoreButton" />
                                                 </Panel>
