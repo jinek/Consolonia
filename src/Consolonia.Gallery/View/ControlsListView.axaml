@@ -30,11 +30,8 @@
                       IsTabStop="false"
                       SelectedIndex="0"
                       HorizontalContentAlignment="Stretch">
-                <ComboBoxItem Content="Material" />
                 <ComboBoxItem Content="Fluent" />
                 <ComboBoxItem Content="TurboVision" />
-                <ComboBoxItem Content="TurboVisionDark" />
-                <ComboBoxItem Content="TurboVisionBlack" />
             </ComboBox>
         </Grid>
 

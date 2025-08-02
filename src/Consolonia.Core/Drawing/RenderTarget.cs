@@ -60,9 +60,7 @@ namespace Consolonia.Core.Drawing
         }
 
         public Vector Dpi { get; } = Vector.One;
-
         public PixelSize PixelSize { get; } = new(1, 1);
-
         public int Version => 0;
 
         void IDrawingContextLayerImpl.Blit(IDrawingContextImpl context)
@@ -163,7 +161,7 @@ namespace Consolonia.Core.Drawing
 
             flushingBuffer.Flush();
 
-            if (caretPosition != null)
+            if (caretPosition != null && caretStyle != CaretStyle.None)
             {
                 _console.SetCaretPosition((PixelBufferCoordinate)caretPosition);
                 _console.SetCaretStyle((CaretStyle)caretStyle!);
