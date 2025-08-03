@@ -5,11 +5,16 @@ using Avalonia.Controls.Platform;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Threading;
+using Consolonia.Controls.Brushes;
+using Consolonia.Core.Drawing;
+using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Text;
+using TextShaper = Consolonia.Core.Text.TextShaper;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -17,14 +22,13 @@ namespace Consolonia.Core.Infrastructure
     {
         public IWindowImpl CreateWindow()
         {
-            throw new NotImplementedException();
+            return RaiseNotSupported<IWindowImpl>(NotSupportedRequestCode.CreateWindow);
             // return new ConsoleWindow();
         }
 
         public IWindowImpl CreateEmbeddableWindow()
         {
-            RaiseNotSupported(13);
-            return null!;
+            return RaiseNotSupported<IWindowImpl>(NotSupportedRequestCode.CreateEmbeddableWindow);
         }
 
         public ITrayIconImpl CreateTrayIcon()
@@ -39,7 +43,9 @@ namespace Consolonia.Core.Infrastructure
 
         public void Initialize()
         {
-            NotSupported += InternalIgnore;
+            NotSupported += InternalWorkaroundsIgnore;
+            NotSupported += KeyInputIgnore;
+            NotSupported += RenderNotSupportedIgnore;
 
             AvaloniaLocator.CurrentMutable.BindToSelf(this)
                 .Bind<IWindowingPlatform>().ToConstant(this)
@@ -56,7 +62,11 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IMouseDevice>().ToConstant(new MouseDevice())
                 .Bind<ICursorFactory>().ToConstant(new ConsoleCursorFactory())
                 .Bind<IPlatformIconLoader>().ToConstant(new DummyIconLoader())
-                .Bind<IPlatformSettings>().ToSingleton<ConsoloniaPlatformSettings>()
+                .Bind<IPlatformSettings>().ToConstant(new ConsoloniaPlatformSettings
+                {
+                    NoExceptionOnNotSupportedDrawing = false,
+                    NoExceptionOnUnknownKey = false
+                })
                 // .Bind<IStorageProvider>().ToSingleton<BclStorageProvider>()
                 .Bind<IRuntimePlatform>().ToConstant(new StandardRuntimePlatform())
                 //.Bind<IClipboard>().ToConstant(null)
@@ -68,24 +78,123 @@ namespace Consolonia.Core.Infrastructure
         }
 
         [DebuggerStepThrough]
-        internal static void RaiseNotSupported(int errorCode, params object[] information)
+        internal static TResult RaiseNotSupported<TResult>(NotSupportedRequestCode errorCode, params object[] information)
         {
             var notSupportedRequest = new NotSupportedRequest(errorCode, information);
             NotSupported?.Invoke(notSupportedRequest);
-            notSupportedRequest.CheckHandled();
+            notSupportedRequest.CheckHandled(typeof(TResult));
+            try
+            {
+                return (TResult)notSupportedRequest.Result;
+            }
+            catch (InvalidCastException exception)
+            {
+                throw new InvalidOperationException(
+                    $"The result of the NotSupportedRequest with code {errorCode} must be of type {typeof(TResult).FullName}.",
+                    exception);
+            }
+        }
+
+        internal static object RaiseNotSupported(NotSupportedRequestCode errorCode, params object[] information)
+        {
+            return RaiseNotSupported<object>(errorCode, information);
         }
 
         public static event Action<NotSupportedRequest> NotSupported;
 
-        private static void InternalIgnore(NotSupportedRequest notSupportedRequest)
+        /// <summary>
+        /// Something we have to skip as a workaround
+        /// </summary>
+        private static void InternalWorkaroundsIgnore(NotSupportedRequest notSupportedRequest)
         {
             switch (notSupportedRequest.ErrorCode)
             {
-                case 9 when ReferenceEquals(notSupportedRequest.Information[0], Brushes.White) &&
-                            notSupportedRequest.Information[1] is null &&
-                            ((RoundedRect)notSupportedRequest.Information[2]).Rect.TopLeft is { X: 0, Y: 0 }:
+                case NotSupportedRequestCode.OverlayPopupHostRender
+                    when ReferenceEquals(notSupportedRequest.Information[0], Brushes.White) &&
+                         notSupportedRequest.Information[1] is null &&
+                         ((RoundedRect)notSupportedRequest.Information[2]).Rect.TopLeft is { X: 0, Y: 0 }:
                     notSupportedRequest.SetHandled();
-                    //this is case of OverlayPopupHost.Render
+                    break;
+            }
+        }
+
+        private static void RenderNotSupportedIgnore(NotSupportedRequest notSupportedRequest)
+        {
+            if(!Settings.NoExceptionOnNotSupportedDrawing)
+                return;
+
+            switch (notSupportedRequest.ErrorCode)
+            {
+                case NotSupportedRequestCode.ColorFromBrushPosition:
+                    notSupportedRequest.SetHandled(Colors.Black);
+                    break;
+                case NotSupportedRequestCode.BackgroundWasNotColoredWhileMapping:
+                    var color = (Color)notSupportedRequest.Information[1];
+                    notSupportedRequest.SetHandled(
+                        ((EgaConsoleColorMode)notSupportedRequest.Information[0]).MapColors(
+                        Color.FromRgb(color.R, color.G, color.B),
+                        (Color)notSupportedRequest.Information[2],
+                        (FontWeight?)notSupportedRequest.Information[3]));
+                    break;
+                case NotSupportedRequestCode.DrawGlyphRunNotSupported:
+                    notSupportedRequest.SetHandled();
+                    break;
+                case NotSupportedRequestCode.DrawGlyphRunWithNonDefaultFontRenderingEmSize:
+                    notSupportedRequest.SetHandled();
+                    var glyphRunImpl = (IGlyphRunImpl)notSupportedRequest.Information[2];
+                    if (glyphRunImpl is GlyphRunImpl glyphRunImpl2)
+                    {
+                        ((DrawingContextImpl)notSupportedRequest.Information[0]).DrawGlyphRun(
+                            (IBrush)notSupportedRequest.Information[1], new GlyphRunImpl(glyphRunImpl.GlyphTypeface,
+                                glyphRunImpl2.GlyphInfos,
+                                glyphRunImpl2.BaselineOrigin));
+                    }
+
+                    break;
+                
+                case NotSupportedRequestCode.DrawStringWithNonSolidColorBrush:
+                    notSupportedRequest.SetHandled(Brushes.Black);
+                    break;
+                case NotSupportedRequestCode.ExtractColorFromPenNotSupported:
+                    notSupportedRequest.SetHandled((Colors.Black, new LineStyles
+                    {
+                        Bottom = LineStyle.SingleLine,
+                        Left = LineStyle.SingleLine,
+                        Right = LineStyle.SingleLine,
+                        Top = LineStyle.SingleLine
+                    }));
+                    break;
+                case NotSupportedRequestCode.TransformLineWithRotationNotSupported:
+                    notSupportedRequest.SetHandled(notSupportedRequest.Information[1]);
+                    break;
+                case NotSupportedRequestCode.PushClipWithRoundedRectNotSupported:
+                case NotSupportedRequestCode.PushOpacityNotSupported:
+                case NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle:
+                case NotSupportedRequestCode.DrawingBoxShadowNotSupported:
+                case NotSupportedRequestCode.DrawGeometryNotSupported:
+                    notSupportedRequest.SetHandled();
+                    break;
+                    
+            }
+        }
+
+        internal static ConsoloniaPlatformSettings Settings =>
+            AvaloniaLocator.Current.GetService<ConsoloniaPlatformSettings>();
+        
+        /// <summary>
+        /// Ignore key input requests that are not supported.
+        /// </summary>
+        /// <param name="notSupportedRequest"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private static void KeyInputIgnore(NotSupportedRequest notSupportedRequest)
+        {
+            if (!Settings.NoExceptionOnUnknownKey)
+                return; 
+            
+            switch (notSupportedRequest.ErrorCode)
+            {
+                case NotSupportedRequestCode.InputNotSupported:
+                    notSupportedRequest.SetHandled(Key.None);
                     break;
             }
         }
@@ -93,6 +202,9 @@ namespace Consolonia.Core.Infrastructure
 
     public class ConsoloniaPlatformSettings : DefaultPlatformSettings
     {
-        //todo:
+        //todo: does make sense to move colormode into here?
+        
+        public required bool NoExceptionOnUnknownKey { get; init; }
+        public required bool NoExceptionOnNotSupportedDrawing { get; init; }
     }
 }

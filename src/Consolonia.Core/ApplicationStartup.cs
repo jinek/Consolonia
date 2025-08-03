@@ -45,6 +45,15 @@ namespace Consolonia
                 .With<IConsoleCapabilities>(console);
         }
 
+        public static AppBuilder WithIgnoreErrorsSettings(this AppBuilder builder)
+        {
+            return builder.With(new ConsoloniaPlatformSettings
+            {
+                NoExceptionOnNotSupportedDrawing = true,
+                NoExceptionOnUnknownKey = true
+            });
+        }
+
         public static AppBuilder UseConsoleColorMode(this AppBuilder builder, IConsoleColorMode consoleColorMode)
         {
             return builder.With(consoleColorMode);
