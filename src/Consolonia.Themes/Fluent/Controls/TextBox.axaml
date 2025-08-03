@@ -1,14 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Styles.Resources>
-        <ControlTheme x:Key="{x:Type TextBox}"
-                      TargetType="TextBox">
-            <ControlTheme.BasedOn>
-                <StaticResource ResourceKey="{x:Type TextBox}" />
-            </ControlTheme.BasedOn>
-
-            <Setter Property="SelectionForegroundBrush"
-                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
-        </ControlTheme>
-    </Styles.Resources>
+    <Style Selector="TextBox">
+        <Setter Property="SelectionForegroundBrush"
+                Value="{DynamicResource ThemeChooserForegroundBrush}" />
+    </Style>
 </Styles>

@@ -1,42 +1,36 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Styles.Resources>
-        <ControlTheme x:Key="{x:Type ToggleButton}"
-                      TargetType="ToggleButton">
-            <ControlTheme.BasedOn>
-                <StaticResource ResourceKey="{x:Type ToggleButton}" />
-            </ControlTheme.BasedOn>
+    <Style Selector="ToggleButton">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+    </Style>
 
-            <Setter Property="Background"
-                    Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+    <Style Selector="ToggleButton:checked">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeChooserForegroundBrush}" />
+    </Style>
 
-            <Style Selector="^:checked">
-                <Setter Property="Background"
-                        Value="{DynamicResource ThemeChooserBackgroundBrush}" />
-                <Setter Property="Foreground"
-                        Value="{DynamicResource ThemeChooserForegroundBrush}" />
-            </Style>
+    <Style Selector="ToggleButton:pressed">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+    </Style>
 
-            <Style Selector="^:pressed">
-                <Setter Property="Background"
-                        Value="{DynamicResource ThemeBorderBrush}" />
-                <Setter Property="Foreground"
-                        Value="{DynamicResource ThemeForegroundBrush}" />
-            </Style>
+    <Style Selector="ToggleButton:focus">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeForegroundBrush}" />
+    </Style>
 
-            <Style Selector="^:focus">
-                <Setter Property="Background"
-                        Value="{DynamicResource ThemeActionBackgroundBrush}" />
-                <Setter Property="Foreground"
-                        Value="{DynamicResource ThemeForegroundBrush}" />
-            </Style>
+    <Style Selector="ToggleButton:focus:checked">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ThemeChooserForegroundBrush}" />
+    </Style>
 
-            <Style Selector="^:focus:checked">
-                <Setter Property="Background"
-                        Value="{DynamicResource ThemeActionBackgroundBrush}" />
-                <Setter Property="Foreground"
-                        Value="{DynamicResource ThemeChooserForegroundBrush}" />
-            </Style>
-        </ControlTheme>
-    </Styles.Resources>
 </Styles>
