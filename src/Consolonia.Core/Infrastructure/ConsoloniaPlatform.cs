@@ -66,8 +66,8 @@ namespace Consolonia.Core.Infrastructure
                 .Bind<IPlatformIconLoader>().ToConstant(new DummyIconLoader())
                 .Bind<IPlatformSettings>().ToConstant(new ConsoloniaPlatformSettings
                 {
-                    NoExceptionOnNotSupportedDrawing = false,
-                    NoExceptionOnUnknownKey = false
+                    UnsafeRendering = true,
+                    UnsafeInput = true
                 })
                 // .Bind<IStorageProvider>().ToSingleton<BclStorageProvider>()
                 .Bind<IRuntimePlatform>().ToConstant(new StandardRuntimePlatform())
@@ -98,9 +98,9 @@ namespace Consolonia.Core.Infrastructure
             }
         }
 
-        internal static object RaiseNotSupported(NotSupportedRequestCode errorCode, params object[] information)
+        internal static void RaiseNotSupported(NotSupportedRequestCode errorCode, params object[] information)
         {
-            return RaiseNotSupported<object>(errorCode, information);
+            RaiseNotSupported<object>(errorCode, information);
         }
 
         public static event Action<NotSupportedRequest> NotSupported;
@@ -123,7 +123,7 @@ namespace Consolonia.Core.Infrastructure
 
         private static void RenderNotSupportedIgnore(NotSupportedRequest notSupportedRequest)
         {
-            if (!Settings.NoExceptionOnNotSupportedDrawing)
+            if (!Settings.UnsafeRendering)
                 return;
 
             switch (notSupportedRequest.ErrorCode)
@@ -185,7 +185,7 @@ namespace Consolonia.Core.Infrastructure
         /// <exception cref="NotImplementedException"></exception>
         private static void KeyInputIgnore(NotSupportedRequest notSupportedRequest)
         {
-            if (!Settings.NoExceptionOnUnknownKey)
+            if (!Settings.UnsafeInput)
                 return;
 
             switch (notSupportedRequest.ErrorCode)
@@ -195,13 +195,5 @@ namespace Consolonia.Core.Infrastructure
                     break;
             }
         }
-    }
-
-    public class ConsoloniaPlatformSettings : DefaultPlatformSettings
-    {
-        //todo: does make sense to move colormode into here?
-
-        public required bool NoExceptionOnUnknownKey { get; init; }
-        public required bool NoExceptionOnNotSupportedDrawing { get; init; }
     }
 }
