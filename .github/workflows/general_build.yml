@@ -1,6 +1,8 @@
 name: General Build
 
-concurrency: build_checks_deploy
+concurrency:
+  group: build_checks_deploy-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 on:
   push:
