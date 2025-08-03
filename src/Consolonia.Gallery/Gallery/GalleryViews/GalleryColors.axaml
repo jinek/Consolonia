@@ -23,13 +23,13 @@
         <StackPanel Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="1">
-            <Button Content="Random Color"
+            <Button Content="Random C_olor"
                     Click="Random_Click" />
-            <Button Content="Random Red"
+            <Button Content="Random _Red"
                     Click="Red_Click" />
-            <Button Content="Random Green"
+            <Button Content="Random _Green"
                     Click="Green_Click" />
-            <Button Content="Random Blue"
+            <Button Content="Random _Blue"
                     Click="Blue_Click" />
         </StackPanel>
 

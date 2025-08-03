@@ -11,7 +11,8 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <console:CaretControl Foreground="{TemplateBinding Foreground}"
-                                      IsCaretShown="{TemplateBinding IsFocused}">
+                                      IsCaretShown="{TemplateBinding IsFocused}"
+                                      Name="FocusControl">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Background="{TemplateBinding Background}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
@@ -26,15 +27,25 @@
         </Setter>
 
         <Style Selector="^:selected">
-            <!--<Setter Property="Background"
-                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />-->
             <Setter Property="Background"
                     Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
+        </Style>
+
+        <Style Selector="^:selected:focus">
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeActionBackgroundBrush}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
 
         <Style Selector="^:focus">
             <Setter Property="Background"
                     Value="{DynamicResource ThemeActionBackgroundBrush}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
+
     </ControlTheme>
 </ResourceDictionary>

@@ -1,6 +1,8 @@
 name: Code Inspections
 
-concurrency: build_checks_deploy
+concurrency:
+  group: style_checks_deploy-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 on:
   pull_request:

@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.InternalHelpers
@@ -11,10 +10,6 @@ namespace Consolonia.Core.InternalHelpers
             return value.CompareTo(compareTo) == 0;
         }
 
-        public static string GetStyledPropertyName([CallerMemberName] string propertyFullName = null)
-        {
-            return propertyFullName![..^8];
-        }
 
         public static T NotNull<T>(this T? t) where T : struct
         {
