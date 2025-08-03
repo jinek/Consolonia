@@ -80,11 +80,11 @@
                     </Line>
 
                     <Line StartPoint="0,9"
-                          EndPoint="10,9"
+                          EndPoint="9,9"
                           Stroke="White"
                           StrokeThickness="1" />
                     <Line StartPoint="9,0"
-                          EndPoint="9,10"
+                          EndPoint="9,9"
                           Stroke="White"
                           StrokeThickness="1" />
                 </Canvas>

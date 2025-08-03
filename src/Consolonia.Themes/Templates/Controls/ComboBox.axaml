@@ -53,13 +53,11 @@
                                   IsChecked="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
                                   Grid.Column="1"
                                   Padding="0"
-                                  VerticalAlignment="Top"
-                                  Background="{x:Null}">
+                                  VerticalAlignment="Stretch">
                         <console:CaretControl Padding="0,0,0,0"
                                               IsCaretShown="{TemplateBinding IsFocused}"
-                                              Background="{x:Null}">
-                            <console:SymbolsControl Foreground="{TemplateBinding BorderBrush}"
-                                                    Text="{StaticResource ThemeDownArrowSymbol}"
+                                              VerticalAlignment="Top">
+                            <console:SymbolsControl Text="{StaticResource ThemeDownArrowSymbol}"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center" />
                         </console:CaretControl>
@@ -109,6 +107,11 @@
                     Value="{DynamicResource ThemeNoDisturbBrush}" />
             <Setter Property="PlaceholderForeground"
                     Value="{DynamicResource ThemeNoDisturbBrush}" />
+        </Style>
+
+        <Style Selector="^ /template/ ToggleButton#toggle">
+            <Setter Property="Background"
+                    Value="{x:Null}" />
         </Style>
     </ControlTheme>
 </ResourceDictionary>

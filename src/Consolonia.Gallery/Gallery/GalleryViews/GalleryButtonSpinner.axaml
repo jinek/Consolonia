@@ -7,7 +7,10 @@
 
     <StackPanel Orientation="Vertical"
                 Spacing="1">
-        <TextBlock Classes="h2">The ButtonSpinner control allows you to add button spinners to any element and then respond to the Spin event to manipulate that element.</TextBlock>
+        <TextBlock Classes="h2"
+                   TextWrapping="Wrap">
+            The ButtonSpinner control allows you to add button spinners to any element and then respond to the Spin event to manipulate that element.
+        </TextBlock>
 
         <StackPanel Orientation="Vertical"
                     Spacing="1">

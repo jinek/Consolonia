@@ -2,79 +2,80 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:console="https://github.com/jinek/consolonia"
                     x:ClassModifier="internal">
-    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="{x:Type DropDownButton}"
                   TargetType="DropDownButton">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
+                Value="{DynamicResource ThemeActionBackgroundBrush}" />
         <Setter Property="BorderBrush"
-                Value="Transparent" />
+                Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="BorderThickness"
                 Value="0" />
         <Setter Property="Foreground"
-                Value="{DynamicResource ThemeSelectionForegroundBrush}" />
+                Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Center" />
         <Setter Property="VerticalContentAlignment"
                 Value="Center" />
-        <Setter Property="Padding"
-                Value="0" />
         <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Border Name="RootBorder"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            ClipToBounds="True">
-                        <Grid Name="InnerGrid">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+            <ControlTemplate>
+                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border Background="{TemplateBinding Background}">
+                        <Grid ColumnDefinitions="Auto,*,Auto"
+                              Margin="{TemplateBinding Padding}">
+                            <console:SymbolsControl Grid.Column="0"
+                                                    Name="Part_LeftBracket"
+                                                    Text="["
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            <console:SymbolsControl Grid.Column="2"
+                                                    Name="Part_RightBracket"
+                                                    Text="]"
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
 
-                            <ContentPresenter Name="PART_ContentPresenter"
-                                              Grid.Column="0"
-                                              Padding="{TemplateBinding Padding}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Content="{TemplateBinding Content}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              RecognizesAccessKey="True" />
-                            <console:SymbolsControl Name="DropDownGlyph"
-                                                    Grid.Column="1"
-                                                    HorizontalAlignment="Right"
-                                                    VerticalAlignment="Center"
-                                                    IsHitTestVisible="False"
-                                                    Text="{StaticResource ThemeDownArrowSymbol}" />
-
+                            <console:CaretControl x:Name="PART_CaretControl"
+                                                  Grid.Column="1"
+                                                  Padding="0,0,0,0"
+                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  IsCaretShown="{TemplateBinding IsFocused}">
+                                <DockPanel LastChildFill="True">
+                                    <console:SymbolsControl Name="DropDownGlyph"
+                                                            DockPanel.Dock="Right"
+                                                            HorizontalAlignment="Right"
+                                                            VerticalAlignment="Center"
+                                                            IsHitTestVisible="False"
+                                                            Text="{DynamicResource ThemeDownArrowSymbol}" />
+                                    <ContentPresenter Name="PART_ContentPresenter"
+                                                      RecognizesAccessKey="True"
+                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                      Content="{TemplateBinding Content}"
+                                                      TextBlock.Foreground="{TemplateBinding Foreground}" />
+                                </DockPanel>
+                            </console:CaretControl>
                         </Grid>
                     </Border>
-                </ControlTemplate>
-            </Setter.Value>
+                </Border>
+            </ControlTemplate>
         </Setter>
 
-        <!--<Style Selector="^ /template/ TextBlock#DropDownGlyph">
-            <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
-            --><!--<Setter Property="Data" Value="M1939 486L2029 576L1024 1581L19 576L109 486L1024 1401L1939 486Z" />--><!--
-        </Style>-->
-
-        <Style Selector="^:pointerover /template/ Border#RootBorder">
-            <Setter Property="BorderBrush"
-                    Value="{DynamicResource ThemePseudoShadeBrush}" />
+        <Style Selector="^ /template/ console|CaretControl#PART_CaretControl">
+            <Setter Property="CaretStyle"
+                    Value="None" />
         </Style>
-
-        <Style Selector="^:pressed  /template/ Border#RootBorder">
-            <Setter Property="Background"
-                    Value="{DynamicResource ThemeShadeBrush}" />
-        </Style>
-
         <Style Selector="^:disabled">
-            <!--<Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />-->
-            <Setter Property="FontStyle"
-                    Value="Italic" />
-            <Setter Property="Background"
-                    Value="{DynamicResource ThemeShadeBrush}" />
+            <Setter Property="Opacity"
+                    Value="{DynamicResource ThemeDisabledOpacity}" />
+        </Style>
+        <Style Selector="^ /template/ console|SymbolsControl#Part_LeftBracket">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </Style>
+
+        <Style Selector="^ /template/ console|SymbolsControl#Part_RightBracket">
+            <Setter Property="IsVisible"
+                    Value="False" />
         </Style>
     </ControlTheme>
 </ResourceDictionary>

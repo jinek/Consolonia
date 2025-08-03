@@ -179,6 +179,8 @@
         <Style Selector="^:selected">
             <Setter Property="(console:DataGridExtensions.IsSelected)"
                     Value="True" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
     </ControlTheme>
 
