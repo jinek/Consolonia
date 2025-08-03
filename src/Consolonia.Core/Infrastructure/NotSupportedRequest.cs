@@ -9,6 +9,8 @@ namespace Consolonia.Core.Infrastructure
 {
     public sealed class NotSupportedRequest(NotSupportedRequestCode errorCode, IList<object> information)
     {
+        public const object HandledResult = null;
+
         //todo: low: would be much better to have an inheritor for each type of error, but we can not afford that currently
         public bool Handled { get; private set; }
         public object Result { get; private set; }
@@ -28,7 +30,5 @@ namespace Consolonia.Core.Infrastructure
             Result = result;
             Handled = true;
         }
-
-        public const object HandledResult = null;
     }
 }

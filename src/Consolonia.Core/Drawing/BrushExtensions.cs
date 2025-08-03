@@ -90,7 +90,8 @@ namespace Consolonia.Core.Drawing
                 case InvertBrush:
                     return Colors.Transparent;
                 default:
-                    return ConsoloniaPlatform.RaiseNotSupported<Color>(NotSupportedRequestCode.ColorFromBrushPosition, brush, x, y,
+                    return ConsoloniaPlatform.RaiseNotSupported<Color>(NotSupportedRequestCode.ColorFromBrushPosition,
+                        brush, x, y,
                         width,
                         height);
             }

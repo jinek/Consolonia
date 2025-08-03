@@ -12,8 +12,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             const int supportedRequestCode = -1;
             const NotSupportedRequestCode notSupportedRequestCode = (NotSupportedRequestCode)supportedRequestCode;
-            Assert.IsFalse(Enum.IsDefined(notSupportedRequestCode), $"Code {supportedRequestCode} is reserved for internal use: tests");
-            
+            Assert.IsFalse(Enum.IsDefined(notSupportedRequestCode),
+                $"Code {supportedRequestCode} is reserved for internal use: tests");
+
             var request = new NotSupportedRequest(notSupportedRequestCode, Array.Empty<object>());
             try
             {

@@ -5,7 +5,6 @@ using Avalonia.Controls.Platform;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Media;
-using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Threading;
@@ -20,6 +19,9 @@ namespace Consolonia.Core.Infrastructure
 {
     public class ConsoloniaPlatform : IWindowingPlatform
     {
+        internal static ConsoloniaPlatformSettings Settings =>
+            AvaloniaLocator.Current.GetService<ConsoloniaPlatformSettings>();
+
         public IWindowImpl CreateWindow()
         {
             return RaiseNotSupported<IWindowImpl>(NotSupportedRequestCode.CreateWindow);
@@ -78,7 +80,8 @@ namespace Consolonia.Core.Infrastructure
         }
 
         [DebuggerStepThrough]
-        internal static TResult RaiseNotSupported<TResult>(NotSupportedRequestCode errorCode, params object[] information)
+        internal static TResult RaiseNotSupported<TResult>(NotSupportedRequestCode errorCode,
+            params object[] information)
         {
             var notSupportedRequest = new NotSupportedRequest(errorCode, information);
             NotSupported?.Invoke(notSupportedRequest);
@@ -103,7 +106,7 @@ namespace Consolonia.Core.Infrastructure
         public static event Action<NotSupportedRequest> NotSupported;
 
         /// <summary>
-        /// Something we have to skip as a workaround
+        ///     Something we have to skip as a workaround
         /// </summary>
         private static void InternalWorkaroundsIgnore(NotSupportedRequest notSupportedRequest)
         {
@@ -120,7 +123,7 @@ namespace Consolonia.Core.Infrastructure
 
         private static void RenderNotSupportedIgnore(NotSupportedRequest notSupportedRequest)
         {
-            if(!Settings.NoExceptionOnNotSupportedDrawing)
+            if (!Settings.NoExceptionOnNotSupportedDrawing)
                 return;
 
             switch (notSupportedRequest.ErrorCode)
@@ -132,9 +135,9 @@ namespace Consolonia.Core.Infrastructure
                     var color = (Color)notSupportedRequest.Information[1];
                     notSupportedRequest.SetHandled(
                         ((EgaConsoleColorMode)notSupportedRequest.Information[0]).MapColors(
-                        Color.FromRgb(color.R, color.G, color.B),
-                        (Color)notSupportedRequest.Information[2],
-                        (FontWeight?)notSupportedRequest.Information[3]));
+                            Color.FromRgb(color.R, color.G, color.B),
+                            (Color)notSupportedRequest.Information[2],
+                            (FontWeight?)notSupportedRequest.Information[3]));
                     break;
                 case NotSupportedRequestCode.DrawGlyphRunNotSupported:
                     notSupportedRequest.SetHandled();
@@ -143,15 +146,13 @@ namespace Consolonia.Core.Infrastructure
                     notSupportedRequest.SetHandled();
                     var glyphRunImpl = (IGlyphRunImpl)notSupportedRequest.Information[2];
                     if (glyphRunImpl is GlyphRunImpl glyphRunImpl2)
-                    {
                         ((DrawingContextImpl)notSupportedRequest.Information[0]).DrawGlyphRun(
                             (IBrush)notSupportedRequest.Information[1], new GlyphRunImpl(glyphRunImpl.GlyphTypeface,
                                 glyphRunImpl2.GlyphInfos,
                                 glyphRunImpl2.BaselineOrigin));
-                    }
 
                     break;
-                
+
                 case NotSupportedRequestCode.DrawStringWithNonSolidColorBrush:
                     notSupportedRequest.SetHandled(Brushes.Black);
                     break;
@@ -174,23 +175,19 @@ namespace Consolonia.Core.Infrastructure
                 case NotSupportedRequestCode.DrawGeometryNotSupported:
                     notSupportedRequest.SetHandled();
                     break;
-                    
             }
         }
 
-        internal static ConsoloniaPlatformSettings Settings =>
-            AvaloniaLocator.Current.GetService<ConsoloniaPlatformSettings>();
-        
         /// <summary>
-        /// Ignore key input requests that are not supported.
+        ///     Ignore key input requests that are not supported.
         /// </summary>
         /// <param name="notSupportedRequest"></param>
         /// <exception cref="NotImplementedException"></exception>
         private static void KeyInputIgnore(NotSupportedRequest notSupportedRequest)
         {
             if (!Settings.NoExceptionOnUnknownKey)
-                return; 
-            
+                return;
+
             switch (notSupportedRequest.ErrorCode)
             {
                 case NotSupportedRequestCode.InputNotSupported:
@@ -203,7 +200,7 @@ namespace Consolonia.Core.Infrastructure
     public class ConsoloniaPlatformSettings : DefaultPlatformSettings
     {
         //todo: does make sense to move colormode into here?
-        
+
         public required bool NoExceptionOnUnknownKey { get; init; }
         public required bool NoExceptionOnNotSupportedDrawing { get; init; }
     }

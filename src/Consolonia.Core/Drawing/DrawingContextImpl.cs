@@ -197,7 +197,7 @@ namespace Consolonia.Core.Drawing
             if (brush == null && pen == null) return; //this is simple Panel for example
 
             if (rect.Rect.IsEmpty()) return;
-            
+
             if (rect.IsRounded || !rect.IsUniform)
             {
                 ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle, this,
@@ -212,10 +212,8 @@ namespace Consolonia.Core.Drawing
                     if (boxShadow.OffsetX != 0 ||
                         boxShadow.OffsetY != 0 ||
                         boxShadow.Color != Colors.Transparent)
-                    {
                         ConsoloniaPlatform.RaiseNotSupported(
                             NotSupportedRequestCode.DrawingBoxShadowNotSupported, this, brush, pen, rect, boxShadows);
-                    }
 
             Rect r = rect.Rect;
 
@@ -749,7 +747,7 @@ namespace Consolonia.Core.Drawing
             {
                 solidColorBrush = ConsoloniaPlatform.RaiseNotSupported<ISolidColorBrush>(
                     NotSupportedRequestCode.DrawStringWithNonSolidColorBrush, this, foreground, text, typeface, origin);
-                
+
                 if (solidColorBrush == null)
                     return;
             }
