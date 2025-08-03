@@ -28,7 +28,8 @@ namespace Consolonia
         public static void StartConsolonia<TApp>(IConsole console, IConsoleColorMode consoleColorMode,
             params string[] args) where TApp : Application, new()
         {
-            ConsoloniaLifetime lifetime = BuildLifetime<TApp>(console, consoleColorMode, new ConsoloniaPlatformSettings(), args);
+            ConsoloniaLifetime lifetime =
+                BuildLifetime<TApp>(console, consoleColorMode, new ConsoloniaPlatformSettings(), args);
 
             lifetime.Start(args);
         }
@@ -46,7 +47,7 @@ namespace Consolonia
         }
 
         /// <summary>
-        /// <seealso cref="ConsoloniaPlatformSettings"/>
+        ///     <seealso cref="ConsoloniaPlatformSettings" />
         /// </summary>
         public static AppBuilder ThrowOnErrors(this AppBuilder builder)
         {
