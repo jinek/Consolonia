@@ -7,16 +7,23 @@
                 <StaticResource ResourceKey="{x:Type ComboBox}" />
             </ControlTheme.BasedOn>
 
+            <ControlTheme.Resources>
+                <ControlTheme x:Key="ComboBoxToggleTheme"
+                              TargetType="ToggleButton">
+                    <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Margin"
+                                Value="0,0" />
+                    </Style>
+                </ControlTheme>
+            </ControlTheme.Resources>
+
             <Style Selector="^ /template/ ToggleButton#toggle">
                 <Setter Property="Background"
                         Value="{x:Null}" />
                 <Setter Property="Foreground"
                         Value="{DynamicResource ThemeForegroundBrush}" />
-            </Style>
-
-            <Style Selector="^ /template/ ToggleButton#toggle /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Margin"
-                        Value="0,0" />
+                <Setter Property="Theme"
+                        Value="{StaticResource ComboBoxToggleTheme}" />
             </Style>
         </ControlTheme>
     </Styles.Resources>
