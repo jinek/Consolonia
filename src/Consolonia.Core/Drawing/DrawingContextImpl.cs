@@ -186,7 +186,8 @@ namespace Consolonia.Core.Drawing
                 }
                     break;
                 default:
-                    ConsoloniaPlatform.RaiseNotSupported(5);
+                    ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawGeometryNotSupported, this, brush,
+                        pen, geometry);
                     break;
             }
         }
@@ -195,9 +196,12 @@ namespace Consolonia.Core.Drawing
         {
             if (brush == null && pen == null) return; //this is simple Panel for example
 
+            if (rect.Rect.IsEmpty()) return;
+
             if (rect.IsRounded || !rect.IsUniform)
             {
-                ConsoloniaPlatform.RaiseNotSupported(10);
+                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle, this,
+                    brush, pen, rect, boxShadows);
                 return;
             }
 
@@ -208,12 +212,8 @@ namespace Consolonia.Core.Drawing
                     if (boxShadow.OffsetX != 0 ||
                         boxShadow.OffsetY != 0 ||
                         boxShadow.Color != Colors.Transparent)
-                    {
-                        ConsoloniaPlatform.RaiseNotSupported(11);
-                        return;
-                    }
-
-            if (rect.Rect.IsEmpty()) return;
+                        ConsoloniaPlatform.RaiseNotSupported(
+                            NotSupportedRequestCode.DrawingBoxShadowNotSupported, this, brush, pen, rect, boxShadows);
 
             Rect r = rect.Rect;
 
@@ -264,17 +264,21 @@ namespace Consolonia.Core.Drawing
 
         public void DrawGlyphRun(IBrush foreground, IGlyphRunImpl glyphRun)
         {
-            if (glyphRun is not GlyphRunImpl glyphRunImpl)
-            {
-                ConsoloniaPlatform.RaiseNotSupported(17, glyphRun);
-                throw new InvalidProgramException();
-            }
-
             if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
             if (!glyphRun.FontRenderingEmSize.IsNearlyEqual(1))
             {
-                ConsoloniaPlatform.RaiseNotSupported(3);
+                ConsoloniaPlatform.RaiseNotSupported(
+                    NotSupportedRequestCode.DrawGlyphRunWithNonDefaultFontRenderingEmSize, this, foreground,
+                    glyphRun);
                 return;
+            }
+
+            if (glyphRun is not GlyphRunImpl glyphRunImpl)
+            {
+                glyphRunImpl = ConsoloniaPlatform.RaiseNotSupported<GlyphRunImpl>(
+                    NotSupportedRequestCode.DrawGlyphRunNotSupported, this, foreground, glyphRun);
+                if (glyphRunImpl == null)
+                    return;
             }
 
             var shapedBuffer = (ShapedBuffer)glyphRunImpl.GlyphInfos;
@@ -296,7 +300,8 @@ namespace Consolonia.Core.Drawing
         public void PushClip(RoundedRect clip)
         {
             if (clip.IsRounded)
-                ConsoloniaPlatform.RaiseNotSupported(2);
+                ConsoloniaPlatform.RaiseNotSupported(
+                    NotSupportedRequestCode.PushClipWithRoundedRectNotSupported, this, clip);
 
             PushClip(clip.Rect);
         }
@@ -314,7 +319,8 @@ namespace Consolonia.Core.Drawing
         public void PushOpacity(double opacity, Rect? bounds)
         {
             if (opacity.IsNearlyEqual(1)) return;
-            ConsoloniaPlatform.RaiseNotSupported(7);
+            ConsoloniaPlatform.RaiseNotSupported(
+                NotSupportedRequestCode.PushOpacityNotSupported, this, opacity, bounds);
         }
 
         public void PopOpacity()
@@ -632,7 +638,9 @@ namespace Consolonia.Core.Drawing
         /// <returns></returns>
         private Line TransformLineInternal(Line line)
         {
-            if (!Transform.NoRotation()) ConsoloniaPlatform.RaiseNotSupported(16);
+            if (!Transform.NoRotation())
+                return ConsoloniaPlatform.RaiseNotSupported<Line>(
+                    NotSupportedRequestCode.TransformLineWithRotationNotSupported, this, line);
 
             line = (Line)line.WithTransform(Transform);
             return line;
@@ -657,8 +665,9 @@ namespace Consolonia.Core.Drawing
                     //LineJoin: PenLineJoin.Miter
                 })
             {
-                ConsoloniaPlatform.RaiseNotSupported(6);
-                return null;
+                (Color? color, lineStyles) = ConsoloniaPlatform.RaiseNotSupported<(Color?, LineStyles)>(
+                    NotSupportedRequestCode.ExtractColorFromPenNotSupported, null, pen);
+                return color;
             }
 
             IBrush brush = pen.Brush;
@@ -736,8 +745,11 @@ namespace Consolonia.Core.Drawing
         {
             if (foreground is not ISolidColorBrush solidColorBrush)
             {
-                ConsoloniaPlatform.RaiseNotSupported(4);
-                return;
+                solidColorBrush = ConsoloniaPlatform.RaiseNotSupported<ISolidColorBrush>(
+                    NotSupportedRequestCode.DrawStringWithNonSolidColorBrush, this, foreground, text, typeface, origin);
+
+                if (solidColorBrush == null)
+                    return;
             }
 
             // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15); //todo: what to do if a rotation?
