@@ -12,7 +12,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private async void Button_OnClick(object _, RoutedEventArgs e)
         {
-            var dialog = new SomeDialogWindow(50, 15);
+            var dialog = new SomeDialogWindow(50, 35);
             await dialog.ShowDialog();
         }
     }
