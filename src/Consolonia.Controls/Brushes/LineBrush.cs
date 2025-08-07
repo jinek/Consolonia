@@ -10,7 +10,6 @@ namespace Consolonia.Controls.Brushes
     /// </summary>
     public class LineBrush : Animatable, IImmutableBrush
     {
-        //todo: we don't really implement immutable brush
         public static readonly StyledProperty<IBrush> BrushProperty =
             AvaloniaProperty.Register<LineBrush, IBrush>(
                 ControlUtils.GetStyledPropertyName() /*todo: re-use this method everywhere*/);
@@ -30,9 +29,38 @@ namespace Consolonia.Controls.Brushes
             set => SetValue(LineStyleProperty, value);
         }
 
-        //todo: how did it work without following 3 items? How should it work now, check avalonia. Search for B75ABC91-2CDD-4557-9201-16AC483C8D7B
-        public double Opacity => 1;
-        public ITransform Transform => null;
-        public RelativePoint TransformOrigin => RelativePoint.TopLeft;
+        /// <inheritdoc />
+        public double Opacity => Brush?.Opacity ?? 1;
+
+        /// <inheritdoc />
+        public ITransform Transform => Brush?.Transform;
+
+        /// <inheritdoc />
+        public RelativePoint TransformOrigin => Brush?.TransformOrigin ?? RelativePoint.TopLeft;
+
+        /// <summary>
+        ///     Creates an immutable snapshot of this brush.
+        /// </summary>
+        public IImmutableBrush ToImmutable()
+        {
+            return new ImmutableLineBrush(Brush?.ToImmutable(),
+                new LineStyles(LineStyle.Left, LineStyle.Top, LineStyle.Right, LineStyle.Bottom));
+        }
+
+        private sealed class ImmutableLineBrush : IImmutableBrush
+        {
+            public ImmutableLineBrush(IImmutableBrush brush, LineStyles lineStyle)
+            {
+                Brush = brush;
+                LineStyle = lineStyle;
+            }
+
+            public IImmutableBrush Brush { get; }
+            public LineStyles LineStyle { get; }
+
+            public double Opacity => Brush?.Opacity ?? 1;
+            public ITransform Transform => Brush?.Transform;
+            public RelativePoint TransformOrigin => Brush?.TransformOrigin ?? RelativePoint.TopLeft;
+        }
     }
 }
