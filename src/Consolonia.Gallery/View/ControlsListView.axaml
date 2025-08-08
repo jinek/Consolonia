@@ -43,6 +43,7 @@
             BorderBrush="{DynamicResource ThemeBorderBrush}" />
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
+                    Spacing="1"
                     Grid.Row="1">
             <Button Click="OnShowXaml"
                     IsTabStop="False"
