@@ -4,16 +4,16 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Utilities;
+using Consolonia.Controls;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
-using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers
 {
     internal static class SelectTextWithPointerUpExtension
     {
         public static readonly AttachedProperty<bool> SelectOnMouseLeftUpProperty =
-            AvaloniaProperty.RegisterAttached<SelectableTextBlock, bool>(CommonInternalHelper.GetStyledPropertyName(),
+            AvaloniaProperty.RegisterAttached<SelectableTextBlock, bool>(ControlUtils.GetStyledPropertyName(),
                 typeof(SelectTextWithPointerUpExtension));
 
         static SelectTextWithPointerUpExtension()
@@ -24,7 +24,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             if (!supportsMouse || supportsMouseMove)
                 return;
 
-            SelectOnMouseLeftUpProperty.Changed.SubscribeAction(OnPropertyChanged);
+            UtilityExtensions.SubscribeAction(SelectOnMouseLeftUpProperty.Changed, OnPropertyChanged);
         }
 
         private static void OnPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> args)

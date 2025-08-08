@@ -15,11 +15,11 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText(
                 "☐.+Unchecked",
-                "☒.+Checked",
+                "🗹.+Checked",
                 @"■.+Indeterminate",
                 "Disabled",
                 "☐.+Three State: Unchecked",
-                "☒.+Three State: Checked",
+                "🗹.+Three State: Checked",
                 @"■.+Three State: Indeterminate",
                 @"■.+Three State: Disabled"
             );
@@ -27,11 +27,11 @@ namespace Consolonia.Gallery.Tests
             for (int i = 0; i < 6; i++) await UITest.KeyInput(Key.Space, Key.Tab);
 
             await UITest.AssertHasText(
-                "☒.+Unchecked",
+                "🗹.+Unchecked",
                 "☐.+Checked",
                 "☐.+Indeterminate",
                 "Disabled",
-                "☒.+Three State: Unchecked",
+                "🗹.+Three State: Unchecked",
                 @"■.+Three State: Checked",
                 "☐.+Three State: Indeterminate",
                 @"■.+Three State: Disabled"

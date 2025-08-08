@@ -18,7 +18,7 @@ namespace Consolonia.Gallery.Tests
                 "│🞂 Item 2  ");
             await UITest.AssertHasNoText("│ 🞂 Item 0 0  ");
             await UITest.KeyInput(Key.Enter);
-            await UITest.AssertHasText("│▾ Item 0   ",
+            await UITest.AssertHasText("│˅ Item 0   ",
                 "│ 🞂 Item 0 0  ",
                 "│ 🞂 Item 0 1  ",
                 "│ 🞂 Item 0 2  ",

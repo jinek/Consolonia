@@ -29,7 +29,8 @@
 
             <StackPanel Orientation="Vertical"
                         Margin="0"
-                        Background="DarkGray">
+                        Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                        MaxWidth="70">
                 <TextBlock TextTrimming="CharacterEllipsis"
                            Text="Text trimming with character ellipsis. Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
                 <TextBlock TextTrimming="WordEllipsis"

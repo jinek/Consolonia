@@ -30,8 +30,9 @@
                 </Style>
             </StackPanel.Styles>
             <Button>Standard _XAML Button</Button>
-            <Button Background="DarkBlue"
-                    Foreground="Yellow">
+            <Button IsDefault="True">Default Button</Button>
+            <Button Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                    Foreground="{DynamicResource ThemeErrorBrush}">
                 Custom Colors
             </Button>
 
@@ -99,11 +100,11 @@
 
             <DropDownButton HorizontalAlignment="Left"
                             Flyout="{StaticResource SharedMenuFlyout}">
-                <Border Background="Teal"
+                <Border Background="{DynamicResource ThemeNoDisturbBrush}"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Height="3">
-                    <TextBlock Text="Content "
+                    <TextBlock Text="Content"
                                VerticalAlignment="Center" />
                 </Border>
             </DropDownButton>

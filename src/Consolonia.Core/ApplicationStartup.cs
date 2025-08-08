@@ -28,7 +28,8 @@ namespace Consolonia
         public static void StartConsolonia<TApp>(IConsole console, IConsoleColorMode consoleColorMode,
             params string[] args) where TApp : Application, new()
         {
-            ConsoloniaLifetime lifetime = BuildLifetime<TApp>(console, consoleColorMode, args);
+            ConsoloniaLifetime lifetime =
+                BuildLifetime<TApp>(console, consoleColorMode, new ConsoloniaPlatformSettings(), args);
 
             lifetime.Start(args);
         }
@@ -43,6 +44,18 @@ namespace Consolonia
             return builder.With(console)
                 .With<IConsoleOutput>(console)
                 .With<IConsoleCapabilities>(console);
+        }
+
+        /// <summary>
+        ///     <seealso cref="ConsoloniaPlatformSettings" />
+        /// </summary>
+        public static AppBuilder ThrowOnErrors(this AppBuilder builder)
+        {
+            return builder.With<IPlatformSettings>(new ConsoloniaPlatformSettings
+            {
+                UnsafeRendering = false,
+                UnsafeInput = false
+            });
         }
 
         public static AppBuilder UseConsoleColorMode(this AppBuilder builder, IConsoleColorMode consoleColorMode)
@@ -65,13 +78,14 @@ namespace Consolonia
         }
 
         public static ConsoloniaLifetime BuildLifetime<TApp>(IConsole console,
-            IConsoleColorMode consoleColorMode, string[] args)
+            IConsoleColorMode consoleColorMode, ConsoloniaPlatformSettings settings, string[] args)
             where TApp : Application, new()
         {
             AppBuilder consoloniaAppBuilder = AppBuilder.Configure<TApp>()
                 .UseConsole(console)
                 .UseConsolonia()
                 .UseConsoleColorMode(consoleColorMode)
+                .With<IPlatformSettings>(settings)
                 .LogToException();
 
             return CreateLifetime(consoloniaAppBuilder, args);

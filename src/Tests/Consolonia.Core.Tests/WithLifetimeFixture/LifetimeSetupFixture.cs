@@ -42,7 +42,11 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             _scope = AvaloniaLocator.EnterScope();
             _lifetime = ApplicationStartup.BuildLifetime<ContextApp2>(new DummyConsole(), new RgbConsoleColorMode(),
-                []);
+                new ConsoloniaPlatformSettings
+                {
+                    UnsafeInput = false,
+                    UnsafeRendering = false
+                }, []);
         }
 
         [OneTimeTearDown]
