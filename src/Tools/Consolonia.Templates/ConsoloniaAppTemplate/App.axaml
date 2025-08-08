@@ -4,6 +4,6 @@
              x:Class="ConsoloniaAppTemplate.App"
              RequestedThemeVariant="Default">
     <Application.Styles>
-        <console:MaterialTheme />
+        <console:FluentTheme />
     </Application.Styles>
 </Application>

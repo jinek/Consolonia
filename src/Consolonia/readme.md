@@ -32,7 +32,7 @@ public class HelloWorldApp : ConsoloniaApplication<HelloWorldWindow>
     public override void Initialize()
     {
         // set the theme
-        Styles.Add(new MaterialTheme());
+        Styles.Add(new FluentTheme());
     }
 }
 ```
