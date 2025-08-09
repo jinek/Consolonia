@@ -24,7 +24,6 @@ namespace Consolonia.Core.Drawing
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
         private ConsoleCursor _consoleCursor;
-        private ConsoleCursor _oldConsoleCursor;
 
         internal RenderTarget(ConsoleWindowImpl consoleTopLevelImpl)
         {
@@ -178,8 +177,7 @@ namespace Consolonia.Core.Drawing
             if (_consoleCursor.CompareTo(consoleCursor) == 0)
                 return;
 
-            ConsoleCursor oldConsoleCursor = _oldConsoleCursor;
-            _oldConsoleCursor = _consoleCursor;
+            ConsoleCursor oldConsoleCursor = _consoleCursor;
             _consoleCursor = consoleCursor;
 
             //todo: low excessive refresh, emptiness can be checked
