@@ -140,11 +140,9 @@ namespace Consolonia.Core.Infrastructure
         {
             if (KeyMapping.TryGetValue(consoleKey, out Key key)) return key;
 
-            if (!Enum.IsDefined(consoleKey))
-                throw new NotImplementedException();
+            if (!Enum.IsDefined(consoleKey) || !Enum.TryParse(consoleKey.ToString(), out key))
+                return ConsoloniaPlatform.RaiseNotSupported<Key>(NotSupportedRequestCode.InputNotSupported, consoleKey);
 
-            if (!Enum.TryParse(consoleKey.ToString(), out key))
-                throw new NotImplementedException();
             return key;
         }
 

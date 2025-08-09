@@ -8,16 +8,22 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
     public class MiscTests
     {
         [Test]
-        public void TestExectpionRequest()
+        public void TestExceptionRequest()
         {
-            var request = new NotSupportedRequest(5, Array.Empty<object>());
+            const int supportedRequestCode = -1;
+            const NotSupportedRequestCode notSupportedRequestCode = (NotSupportedRequestCode)supportedRequestCode;
+            Assert.IsFalse(Enum.IsDefined(notSupportedRequestCode),
+                $"Code {supportedRequestCode} is reserved for internal use: tests");
+
+            var request = new NotSupportedRequest(notSupportedRequestCode, Array.Empty<object>());
             try
             {
-                throw new ConsoloniaNotSupportedException(request);
+                throw new ConsoloniaNotSupportedException(request, typeof(object));
             }
             catch (ConsoloniaNotSupportedException ex)
             {
-                Assert.AreEqual(request, ex.Request);
+                Assert.AreEqual(request.ErrorCode, ex.Request.ErrorCode);
+                Assert.IsFalse(request.Handled);
             }
         }
     }
