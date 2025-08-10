@@ -26,12 +26,6 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="windowManager:ManagedWindow">
                         <Panel>
-                            <Panel.KeyBindings>
-                                <KeyBinding Gesture="Alt+-"
-                                            Command="{Binding $parent[wm:ManagedWindow].ShowSystemMenuCommand}" />
-                                <KeyBinding Gesture="Ctrl+F4"
-                                            Command="{Binding $parent[wm:ManagedWindow].CloseCommand}" />
-                             </Panel.KeyBindings>
 
                                 <!--Shade-->
                             <Border BorderThickness="0"
