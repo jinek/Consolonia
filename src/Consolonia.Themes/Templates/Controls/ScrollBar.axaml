@@ -128,6 +128,8 @@
                     Value="{StaticResource ThemeScrollBarVerticalThumbSymbol}" />
             <Setter Property="Width"
                     Value="1" />
+            <Setter Property="Padding"
+                    Value="0" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
@@ -152,7 +154,7 @@
             <Setter Property="Width"
                     Value="NaN" />
             <Setter Property="Padding"
-                    Value="1,0" />
+                    Value="0" />
         </Style>
         <!--<Style Selector="^ /template/ Thumb#thumb:pointerover">
     <Setter Property="Background" Value="{DynamicResource ThemeControlHighBrush}"/>
