@@ -29,5 +29,3 @@ dotnet tool uninstall -g Consolonia.Gallery
 ## See wiki for more documentation
 https://github.com/jinek/Consolonia/wiki
 
-## See the Orthodox Design Principles used in Consolonia
-https://github.com/jinek/Consolonia/wiki/Orthodox-Design-Principles
