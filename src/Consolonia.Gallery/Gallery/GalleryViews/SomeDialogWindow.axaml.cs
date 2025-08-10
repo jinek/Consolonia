@@ -16,6 +16,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public SomeDialogWindow(double width, double height)
         {
             InitializeComponent();
+
             Title = DialogTitle;
             Width = width;
             Height = height;
@@ -27,7 +28,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
         // ReSharper disable once MemberCanBePrivate.Global Can be used by constructor
-        public SomeDialogWindow() : this(10 + Random.Next(20), 10 + Random.Next(10))
+        public SomeDialogWindow() : this(26 + Random.Next(20), 20 + Random.Next(10))
         {
         }
 
