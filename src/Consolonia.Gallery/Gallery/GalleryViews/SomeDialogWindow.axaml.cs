@@ -16,7 +16,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public SomeDialogWindow(double width, double height)
         {
             InitializeComponent();
-            
+
             Title = DialogTitle;
             Width = width;
             Height = height;
