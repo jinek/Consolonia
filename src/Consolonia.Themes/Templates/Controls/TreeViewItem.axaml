@@ -82,29 +82,18 @@
                     Value="1" />
         </Style>
 
-        <Style Selector="^ /template/ Border#SelectionBorder:pointerover">
-            <Setter Property="Background"
-                    Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-        </Style>
-
         <Style Selector="^:selected /template/ Border#SelectionBorder">
             <Setter Property="Background"
-                    Value="{DynamicResource ThemeBorderBrush}" />
+                    Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+            <Setter Property="(TemplatedControl.Foreground)"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
 
-        <Style Selector="^:selected /template/ Border#SelectionBorder:focus">
+        <Style Selector="^:selected:focus /template/ Border#SelectionBorder">
             <Setter Property="Background"
-                    Value="{DynamicResource ThemeBorderBrush}" />
-        </Style>
-
-        <Style Selector="^:selected /template/ Border#SelectionBorder:pointerover">
-            <Setter Property="Background"
-                    Value="{DynamicResource ThemeBorderBrush}" />
-        </Style>
-
-        <Style Selector="^:selected /template/ Border#SelectionBorder:pointerover:focus">
-            <Setter Property="Background"
-                    Value="{DynamicResource ThemeBorderBrush}" />
+                    Value="{DynamicResource ThemeActionBackgroundBrush}" />
+            <Setter Property="(TemplatedControl.Foreground)"
+                    Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
 
         <Style Selector="^:empty /template/ ToggleButton#PART_ExpandCollapseChevron">

@@ -28,3 +28,4 @@ dotnet tool uninstall -g Consolonia.Gallery
 
 ## See wiki for more documentation
 https://github.com/jinek/Consolonia/wiki
+

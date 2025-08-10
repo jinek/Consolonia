@@ -71,7 +71,7 @@ namespace Consolonia.Gallery.Tests
             await UITest.AssertHasNoText("Left content");
 
             await UITest.KeyInput(Key.Space);
-            await UITest.AssertHasText("˃.*Left");
+            await UITest.AssertHasText("Left.*˃");
             await UITest.AssertHasText("Left content");
 
             await UITest.KeyInput(Key.Space);
@@ -94,7 +94,7 @@ namespace Consolonia.Gallery.Tests
             await UITest.AssertHasNoText("Right content");
 
             await UITest.KeyInput(Key.Space);
-            await UITest.AssertHasText("Right.*˂");
+            await UITest.AssertHasText("˂.*Right");
             await UITest.AssertHasText("Right content");
 
             await UITest.KeyInput(Key.Space);
