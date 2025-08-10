@@ -81,14 +81,14 @@
             <Setter Property="Padding"
                     Value="1" />
         </Style>
-        
+
         <Style Selector="^:selected /template/ Border#SelectionBorder">
             <Setter Property="Background"
                     Value="{DynamicResource ThemeChooserBackgroundBrush}" />
             <Setter Property="(TemplatedControl.Foreground)"
                     Value="{DynamicResource ThemeChooserForegroundBrush}" />
         </Style>
-        
+
         <Style Selector="^:selected:focus /template/ Border#SelectionBorder">
             <Setter Property="Background"
                     Value="{DynamicResource ThemeActionBackgroundBrush}" />

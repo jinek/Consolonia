@@ -20,7 +20,8 @@
             <ControlTemplate>
                 <Border Name="root"
                         Background="{TemplateBinding Background}">
-                    <console:CaretControl x:Name="CaretControl" IsCaretShown="{TemplateBinding IsFocused}">
+                    <console:CaretControl x:Name="CaretControl"
+                                          IsCaretShown="{TemplateBinding IsFocused}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"
