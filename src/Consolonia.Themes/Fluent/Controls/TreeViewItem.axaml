@@ -1,0 +1,31 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="https://github.com/jinek/consolonia">
+    <Styles.Resources>
+        <ControlTheme x:Key="{x:Type TreeViewItem}"
+                      TargetType="TreeViewItem">
+            <ControlTheme.BasedOn>
+                <StaticResource ResourceKey="{x:Type TreeViewItem}" />
+            </ControlTheme.BasedOn>
+            <Style Selector="^ /template/ controls|CaretControl">
+                <Setter Property="CaretStyle"
+                        Value="None" />
+            </Style>
+
+            <Style Selector="^:pointerover /template/ Border#SelectionBorder">
+                <Setter Property="Background"
+                        Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+            </Style>
+
+            <Style Selector="^:selected:pointerover /template/ Border#SelectionBorder">
+                <Setter Property="Background"
+                        Value="{DynamicResource ThemeBorderBrush}" />
+            </Style>
+
+            <Style Selector="^:selected:pointerover:focus /template/ Border#SelectionBorder">
+                <Setter Property="Background"
+                        Value="{DynamicResource ThemeBorderBrush}" />
+            </Style>
+        </ControlTheme>
+    </Styles.Resources>
+</Styles>
