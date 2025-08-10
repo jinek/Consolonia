@@ -22,7 +22,14 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="windowManager:ManagedWindow">
                         <Panel>
-                            <!--Shade-->
+                            <Panel.KeyBindings>
+                                <KeyBinding Gesture="Alt+-"
+                                            Command="{Binding $parent[wm:ManagedWindow].ShowSystemMenuCommand}" />
+                                <KeyBinding Gesture="Ctrl+F4"
+                                            Command="{Binding $parent[wm:ManagedWindow].CloseCommand}" />
+                             </Panel.KeyBindings>
+
+                                <!--Shade-->
                             <Border BorderThickness="0"
                                     Background="{DynamicResource ThemeShadeBrush}"
                                     Margin="2,1,0,0"
@@ -47,7 +54,7 @@
                                               DockPanel.Dock="Top"
                                               Background="{DynamicResource ThemeTransparentBrush}"
                                               IsHitTestVisible="True"
-                                              ColumnDefinitions="Auto * Auto">
+                                              ColumnDefinitions="Auto Auto * Auto">
                                             <Grid.Styles>
                                                 <Style Selector="Button">
                                                     <Setter Property="Foreground"
@@ -70,8 +77,43 @@
                                                 <Button Content="■"
                                                         x:Name="PART_CloseButton" />
                                             </DockPanel>
+                                            
+                                            <!--system button-->
+                                            <!-- NOTE: hide system menu for turbo vision -->
+                                            <Menu Name="PART_SystemMenu"
+                                                  IsVisible="False"  
+                                                  Grid.Column="1"
+                                                  IsTabStop="True"
+                                                  Foreground="{DynamicResource ManagedWindow_TitleBarForegroundBrush}">
+                                                <MenuItem Name="PART_SystemMenuItem" Header="☰">
+                                                    <MenuItem Header="_Restore" Command="{Binding $parent[windowManager:ManagedWindow].RestoreCommand}">
+                                                        <MenuItem.Icon>
+                                                            <ContentControl ContentTemplate="{StaticResource RestoreIcon}" />
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                    <MenuItem Header="_Move" Command="{Binding $parent[windowManager:ManagedWindow].MoveCommand}" />
+                                                    <MenuItem Header="_Size" Command="{Binding $parent[windowManager:ManagedWindow].SizeCommand}" />
+                                                    <MenuItem Header="Mi_nimize" Command="{Binding $parent[windowManager:ManagedWindow].MinimizeCommand}" >
+                                                        <MenuItem.Icon>
+                                                            <ContentControl ContentTemplate="{StaticResource MinimizeIcon}" />
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                    <MenuItem Header="Ma_ximize" Command="{Binding $parent[windowManager:ManagedWindow].MaximizeCommand}" >
+                                                        <MenuItem.Icon>
+                                                            <ContentControl ContentTemplate="{StaticResource MaximizeIcon}" />
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                    <Separator/>
+                                                    <MenuItem Header="_Close" Command="{Binding $parent[windowManager:ManagedWindow].CloseCommand}" InputGesture="Ctrl+F4" >
+                                                        <MenuItem.Icon>
+                                                            <ContentControl ContentTemplate="{StaticResource CloseIcon}" />
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                </MenuItem>
+                                            </Menu>
+                                            
                                             <!-- Title -->
-                                            <TextBlock Grid.Column="1"
+                                            <TextBlock Grid.Column="2"
                                                        Padding="1,0"
                                                        Name="PART_Title"
                                                        Foreground="{DynamicResource ManagedWindow_TitleBarForegroundBrush}"
@@ -82,7 +124,8 @@
                                                        FontWeight="{TemplateBinding FontWeight}"
                                                        FontStyle="{TemplateBinding FontStyle}"
                                                        Text="{TemplateBinding Title}" />
-                                            <DockPanel Grid.Column="2"
+                                            
+                                            <DockPanel Grid.Column="3"
                                                        Margin="0,0,1,0">
                                                 <brushes:SymbolsControl DockPanel.Dock="Left"
                                                                         Text="[" />
@@ -115,10 +158,25 @@
                             <Panel Name="PART_ModalOverlay"
                                    IsVisible="False"
                                    Background="{DynamicResource ThemeShadeBrush}" />
-                        </Panel>
+                    </Panel>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            
+            <!--maximized-->
+            <Style Selector="^:maximized /template/ Border#PART_WindowBorder">
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BoxShadow" Value="0 0 0 Transparent"/>
+            </Style>
+
+            <Style Selector="^:maximized /template/ Button#PART_RestoreButton" >
+                <Setter Property="IsVisible" Value="True"/>
+            </Style>
+
+            <!--normal-->
+            <Style Selector="^:normal /template/ Button#PART_MaximizeButton" >
+                <Setter Property="IsVisible" Value="True"/>
+            </Style>
 
             <Style Selector="^:active /template/ Grid#PART_TitleBar">
                 <Setter Property="Background"
