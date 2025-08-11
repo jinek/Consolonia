@@ -12,9 +12,10 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
-                    <!--<Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />-->
+                    <!--Some time ago HiTest was false, but for cursor to revert to back it needs to hit some control-->
                     <Border Background="{TemplateBinding Background}"
-                            IsHitTestVisible="False" />
+                            IsHitTestVisible="True"
+                            x:Name="PART_TransparencyFallback" />
                     <!--<Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" /> -->
                     <VisualLayerManager>
                         <!--<VisualLayerManager.ChromeOverlayLayer>
