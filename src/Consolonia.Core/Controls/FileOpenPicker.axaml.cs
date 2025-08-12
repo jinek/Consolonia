@@ -4,11 +4,11 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Window = Consolonia.Controls.Window;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FileOpenPicker : Window
+    internal partial class FileOpenPicker : ManagedWindow
     {
         public FileOpenPicker()
             : this(new FilePickerOpenOptions())

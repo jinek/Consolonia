@@ -1,17 +1,17 @@
-<console:Window xmlns="https://github.com/avaloniaui"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:console="https://github.com/jinek/consolonia"
-                xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
-                xmlns:core-Controls="clr-namespace:Consolonia.Core.Controls"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                CanResize="True"
-                WindowStartupLocation="Manual"
-                SizeToContent="Manual"
-                x:DataType="core-Controls:FileSavePickerViewModel"
-                x:Class="Consolonia.Core.Controls.FileSavePicker"
-                Icon="📰"
-                Title="{Binding Options.Title}">
+<windowManager:ManagedWindow xmlns="https://github.com/avaloniaui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:storage="clr-namespace:Avalonia.Platform.Storage;assembly=Avalonia.Base"
+               xmlns:core-Controls="clr-namespace:Consolonia.Core.Controls"
+               xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               CanResize="True"
+               WindowStartupLocation="Manual"
+               SizeToContent="Manual"
+               x:DataType="core-Controls:FileSavePickerViewModel"
+               x:Class="Consolonia.Core.Controls.FileSavePicker"
+               Icon="📰"
+               Title="{Binding Options.Title}">
     <Grid RowDefinitions="Auto * Auto Auto">
         <Grid ColumnDefinitions="Auto *">
             <TextBlock Text="📁 " />
@@ -65,4 +65,4 @@
                     Click="OnCancel" />
         </StackPanel>
     </Grid>
-</console:Window>
+</windowManager:ManagedWindow>

@@ -3,11 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Window = Consolonia.Controls.Window;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FolderPicker : Window
+    internal partial class FolderPicker : ManagedWindow
     {
         public FolderPicker()
             : this(new FolderPickerOpenOptions())
