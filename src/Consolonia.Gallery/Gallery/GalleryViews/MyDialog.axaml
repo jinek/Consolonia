@@ -1,7 +1,7 @@
-<console:Window xmlns="https://github.com/avaloniaui"
-                xmlns:console="https://github.com/jinek/consolonia"
+<windowManager:ManagedWindow xmlns="https://github.com/avaloniaui"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
+                xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager"
                 MinWidth="10"
                 Padding="1"
                 Icon="😎"
@@ -38,4 +38,4 @@
             </Button>
         </StackPanel>
     </StackPanel>
-</console:Window>
+</windowManager:ManagedWindow>

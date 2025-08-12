@@ -2,12 +2,11 @@
 using System;
 using Avalonia;
 using Avalonia.Interactivity;
-using Consolonia.Controls;
-using Consolonia.Core.Infrastructure;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public partial class SomeDialogWindow : Window
+    public partial class SomeDialogWindow : ManagedWindow
     {
         internal const string DialogTitle = "Dialog popup";
 

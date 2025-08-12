@@ -4,10 +4,11 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Controls;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public partial class MyDialog : Window
+    public partial class MyDialog : ManagedWindow
     {
         private static int _dialogCount;
 

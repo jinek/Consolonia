@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Iciclecreek.Avalonia.WindowManager;
 
 // ReSharper disable CheckNamespace
 
@@ -40,7 +41,7 @@ namespace Consolonia.Controls
         No
     }
 
-    public class MessageBox : Window
+    public class MessageBox : ManagedWindow
     {
         /// <summary>
         ///     Defines the <see cref="SizeToContent" /> property.
