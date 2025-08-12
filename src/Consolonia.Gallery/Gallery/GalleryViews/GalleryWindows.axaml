@@ -2,47 +2,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryWindows">
-    <Grid RowDefinitions="Auto *">
-        <!-- Gallery Windows has it's own window panel -->
-        <wm:WindowsPanel />
+    <!-- Gallery Windows has it's own window panel -->
+    <wm:WindowsPanel x:Name="Windows">
+        <Grid RowDefinitions="Auto *">
 
-        <StackPanel Spacing="1">
-            <StackPanel Orientation="Horizontal"
-                        Spacing="1">
-                <Label>SizeToContent for new Window</Label>
-                <ComboBox Name="SizeToContentCombo"
-                          SelectedIndex="3">
-                    <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
-                    <ComboBoxItem Tag="Width">Width</ComboBoxItem>
-                    <ComboBoxItem Tag="Height">Height</ComboBoxItem>
-                    <ComboBoxItem Tag="WidthAndHeight">WidthAndHeight</ComboBoxItem>
-                </ComboBox>
+            <StackPanel Spacing="1">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
+                    <Label>SizeToContent for new Window</Label>
+                    <ComboBox Name="SizeToContentCombo"
+                              SelectedIndex="3">
+                        <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
+                        <ComboBoxItem Tag="Width">Width</ComboBoxItem>
+                        <ComboBoxItem Tag="Height">Height</ComboBoxItem>
+                        <ComboBoxItem Tag="WidthAndHeight">WidthAndHeight</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
+                    <Label>StartupLocation for new Window</Label>
+                    <ComboBox Name="StartupLocationCombo"
+                              SelectedIndex="0">
+                        <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
+                        <ComboBoxItem Tag="CenterOwner">CenterOwner</ComboBoxItem>
+                        <ComboBoxItem Tag="CenterScreen">CenterScreen</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="1">
+                    <Label>WindowState</Label>
+                    <ComboBox Name="WindowStateCombo"
+                              SelectedIndex="0">
+                        <ComboBoxItem Tag="Normal">Normal</ComboBoxItem>
+                        <ComboBoxItem Tag="Minimized">Minimized</ComboBoxItem>
+                        <ComboBoxItem Tag="Maximized">Maximized</ComboBoxItem>
+                        <ComboBoxItem Tag="FullScreen">FullScreen</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                <Button Content="Add Window"
+                        Click="OnShowWindowClick"
+                        HorizontalAlignment="Left" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal"
-                        Spacing="1">
-                <Label>StartupLocation for new Window</Label>
-                <ComboBox Name="StartupLocationCombo"
-                          SelectedIndex="0">
-                    <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
-                    <ComboBoxItem Tag="CenterOwner">CenterOwner</ComboBoxItem>
-                    <ComboBoxItem Tag="CenterScreen">CenterScreen</ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal"
-                        Spacing="1">
-                <Label>WindowState</Label>
-                <ComboBox Name="WindowStateCombo"
-                          SelectedIndex="0">
-                    <ComboBoxItem Tag="Normal">Normal</ComboBoxItem>
-                    <ComboBoxItem Tag="Minimized">Minimized</ComboBoxItem>
-                    <ComboBoxItem Tag="Maximized">Maximized</ComboBoxItem>
-                    <ComboBoxItem Tag="FullScreen">FullScreen</ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
-            <Button Content="Add Window"
-                    Click="OnShowWindowClick"
-                    HorizontalAlignment="Left" />
-        </StackPanel>
-
-    </Grid>
+        </Grid>
+    </wm:WindowsPanel>
 </UserControl>

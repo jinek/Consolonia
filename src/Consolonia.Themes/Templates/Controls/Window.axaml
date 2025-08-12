@@ -22,9 +22,8 @@
                         <!--<VisualLayerManager.ChromeOverlayLayer>
                         <TitleBar />Red
                     </VisualLayerManager.ChromeOverlayLayer>-->
-                        <Panel>
-                            <!-- application wide windows panel -->
-                            <windowManager:WindowsPanel/>
+                        <!-- application wide windows panel -->
+                        <windowManager:WindowsPanel>
                             <ContentPresenter Name="PART_ContentPresenter"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               Content="{TemplateBinding Content}"
@@ -32,7 +31,7 @@
                                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
 
-                        </Panel>
+                        </windowManager:WindowsPanel>
                     </VisualLayerManager>
                 </Panel>
             </ControlTemplate>
