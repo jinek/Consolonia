@@ -31,8 +31,8 @@ namespace Consolonia.Core.Controls
             base.OnLoaded(e);
 
             Position = new PixelPoint(2, 2);
-            Width = OverlayLayer.Bounds.Width - 4;
-            Height = OverlayLayer.Bounds.Height - 4;
+            Width = WindowsPanel.Bounds.Width - 4;
+            Height = WindowsPanel.Bounds.Height - 4;
         }
 
         private void OnDoubleTapped(object sender, TappedEventArgs e)

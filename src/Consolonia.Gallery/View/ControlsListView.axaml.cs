@@ -20,7 +20,7 @@ namespace Consolonia.Gallery.View
         TurboVision
     }
 
-    public partial class ControlsListView : DockPanel
+    public partial class ControlsListView : Grid
     {
         private static readonly HttpClient Client = new();
         private readonly IEnumerable<GalleryItem> _items;

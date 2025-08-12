@@ -4,8 +4,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
-using Avalonia.VisualTree;
-using Iciclecreek.Avalonia.WindowManager;
 
 // ReSharper disable CheckNamespace
 
@@ -196,7 +194,34 @@ namespace Consolonia.Controls
             };
         }
 
-        public static Task<MessageBoxResult> ShowDialog(Visual visual, string title, string message,
+        /// <summary>
+        /// Show this messagebox as a global modal dialog.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="message"></param>
+        /// <param name="style"></param>
+        /// <returns></returns>
+        public static Task<MessageBoxResult> ShowDialog(string title, string message,
+            MessageBoxStyle style = MessageBoxStyle.Ok)
+            => ShowDialog(null, title, message, style);
+
+        /// <summary>
+        /// Show this messagebox as a global modal dialog.
+        /// </summary>
+        /// <returns></returns>
+        public Task<MessageBoxResult> ShowDialog()
+            => ShowDialog(null);
+
+
+        /// <summary>
+        /// Show this messagebox scoped to the specified visual.
+        /// </summary>
+        /// <param name="visual"></param>
+        /// <param name="title"></param>
+        /// <param name="message"></param>
+        /// <param name="style"></param>
+        /// <returns></returns>
+        public static Task<MessageBoxResult> ShowDialog(Visual? visual, string title, string message,
             MessageBoxStyle style = MessageBoxStyle.Ok)
         {
             var mb = new MessageBox
@@ -205,12 +230,17 @@ namespace Consolonia.Controls
                 Title = title,
                 Message = message
             };
-            return mb.ShowDialog<MessageBoxResult>(visual.FindAncestorOfType<ManagedWindow>());
+            return mb.ShowDialog<MessageBoxResult>(visual);
         }
 
-        public async Task<MessageBoxResult> ShowDialog(Visual visual)
+        /// <summary>
+        /// Show this messagebox scoped to the specified visual.
+        /// </summary>
+        /// <param name="visual"></param>
+        /// <returns></returns>
+        public async Task<MessageBoxResult> ShowDialog(Visual? visual)
         {
-            return await ShowDialog<MessageBoxResult>(visual.FindAncestorOfType<ManagedWindow>());
+            return await ShowDialog<MessageBoxResult>(visual);
         }
 
         private void OnOk(object sender, RoutedEventArgs e)

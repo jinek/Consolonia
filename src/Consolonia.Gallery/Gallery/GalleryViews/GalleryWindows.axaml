@@ -1,7 +1,11 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryWindows">
     <Grid RowDefinitions="Auto *">
+        <!-- Gallery Windows has it's own window panel -->
+        <wm:WindowsPanel />
+
         <StackPanel Spacing="1">
             <StackPanel Orientation="Horizontal"
                         Spacing="1">
