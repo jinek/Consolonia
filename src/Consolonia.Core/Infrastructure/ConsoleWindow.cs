@@ -25,7 +25,7 @@ namespace Consolonia.Core.Infrastructure
     /// <remarks>
     ///     This window content is the MainView
     /// </remarks>
-    public class ConsoleWindow : Window
+    internal class ConsoleWindow : Window
     {
         public ConsoleWindow() :
             this(new ConsoleWindowImpl())

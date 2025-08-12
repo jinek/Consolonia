@@ -9,6 +9,7 @@ using Avalonia.Threading;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
+using Window = Avalonia.Controls.Window;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable NotNullOrRequiredMemberIsNotInitialized
@@ -25,6 +26,7 @@ namespace Consolonia
         private bool _disposedValue;
         private int _exitCode;
         private bool _isShuttingDown;
+        private Control _mainView;
 
         /// <summary>
         ///     Gets the arguments passed to the AppBuilder Start method.
@@ -48,12 +50,22 @@ namespace Consolonia
 
         public Control MainView
         {
-            get => TopLevel.Content as Control;
+            get => _mainView;
             set
             {
-                if (TopLevel == null)
-                    TopLevel = new ConsoleWindow();
-                TopLevel.Content = value;
+                _mainView = value;
+                
+                if (value is TopLevel topLevel)
+                {
+                    TopLevel = topLevel;
+                }
+                else
+                {
+                    TopLevel = new ConsoleWindow
+                    {
+                        Content = value
+                    };
+                }
             }
         }
 
@@ -95,7 +107,7 @@ namespace Consolonia
         {
             SetupCore(args);
 
-            (TopLevel as ConsoleWindow).Show();
+            (TopLevel as Window).Show();
 
             try
             {

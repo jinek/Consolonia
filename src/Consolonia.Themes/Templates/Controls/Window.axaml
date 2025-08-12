@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager">
     <ControlTheme x:Key="{x:Type Window}"
                   TargetType="Window">
         <Setter Property="Background"
@@ -18,15 +19,21 @@
                             x:Name="PART_TransparencyFallback" />
                     <!--<Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" /> -->
                     <VisualLayerManager>
+
                         <!--<VisualLayerManager.ChromeOverlayLayer>
                         <TitleBar />Red
                     </VisualLayerManager.ChromeOverlayLayer>-->
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          Content="{TemplateBinding Content}"
-                                          Margin="{TemplateBinding Padding}"
-                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <Panel>
+                            <!-- application wide windows panel -->
+                            <windowManager:WindowsPanel Margin="10" />
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Content="{TemplateBinding Content}"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+
+                        </Panel>
                     </VisualLayerManager>
                 </Panel>
             </ControlTemplate>

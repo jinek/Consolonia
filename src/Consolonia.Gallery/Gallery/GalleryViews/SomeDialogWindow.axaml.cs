@@ -20,10 +20,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Title = DialogTitle;
             Width = width;
             Height = height;
-            var lifetime = Application.Current.ApplicationLifetime as ConsoloniaLifetime;
-            var consoleWindow = lifetime?.TopLevel as ConsoleWindow;
             AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole";
-
             AttachedToVisualTree += OnShowDialog;
         }
 
