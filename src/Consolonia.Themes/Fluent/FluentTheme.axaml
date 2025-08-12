@@ -46,6 +46,39 @@
             <x:String x:Key="ThemeToggleSwitchOffSymbol">◯</x:String>
             <x:String x:Key="ThemeToggleSwitchOnSymbol">⬤</x:String>
             <controls:CaretStyle x:Key="ControlFocusCaretStyle">BlinkingUnderline</controls:CaretStyle>
+            
+            <!-- window manager resources-->
+            <controls:LineBrush x:Key="ManagedWindow_BorderBrush"
+                        Brush="#CCCCCC"
+                        LineStyle="Edge"/>
+            <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush"
+                            Brush="#EEEEEE"
+                            LineStyle="Edge"/>
+            <BoxShadows x:Key="ManagedWindow_BoxShadows">none</BoxShadows>
+            <Thickness x:Key='ManagedWindow_BorderThickness'>1</Thickness>
+            <x:Double x:Key="ManagedWindow_SystemIconSpacing">0</x:Double>
+            <x:Int32 x:Key="ManagedWindow_SizingVector">1</x:Int32>
+            <Thickness x:Key='ManagedWindow_TitleMargin'>1 0 0 0</Thickness>
+            <DataTemplate x:Key="ManagedWindow_MinimizeIcon">
+                <ContentControl Content="🗕"/>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ManagedWindow_MaximizeIcon">
+                <ContentControl Content="🗖"/>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ManagedWindow_RestoreIcon">
+                <ContentControl Content="🗗"/>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ManagedWindow_CloseIcon">
+                <ContentControl Content="🗙"/>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ManagedWindow_SystemMenuIcon">
+                <ContentControl Content="☰"/>
+            </DataTemplate>
+            <!-- window manager resources end -->
         </ResourceDictionary>
     </Styles.Resources>
 

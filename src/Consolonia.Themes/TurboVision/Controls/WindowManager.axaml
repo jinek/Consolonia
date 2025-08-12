@@ -27,7 +27,7 @@
                     <ControlTemplate TargetType="windowManager:ManagedWindow">
                         <Panel>
 
-                                <!--Shade-->
+                            <!--Shade-->
                             <Border BorderThickness="0"
                                     Background="{DynamicResource ThemeShadeBrush}"
                                     Margin="2,1,0,0"
@@ -75,41 +75,43 @@
                                                 <Button Content="■"
                                                         x:Name="PART_CloseButton" />
                                             </DockPanel>
-                                            
+
                                             <!--system button-->
                                             <!-- NOTE: hide system menu for turbo vision -->
                                             <Menu Name="PART_SystemMenu"
-                                                  IsVisible="False"  
+                                                  IsVisible="False"
                                                   Grid.Column="1"
                                                   IsTabStop="True"
                                                   Foreground="{DynamicResource ManagedWindow_TitleBarForegroundBrush}">
-                                                <MenuItem Name="PART_SystemMenuItem" Header="☰">
+                                                <MenuItem Name="PART_SystemMenuItem">
+                                                    <MenuItem.Header>
+                                                        <ContentControl ContentTemplate="{DynamicResource ManagedWindow_SystemMenuIcon}" />
+                                                    </MenuItem.Header>
                                                     <MenuItem Header="_Restore" Command="{Binding $parent[windowManager:ManagedWindow].RestoreCommand}">
                                                         <MenuItem.Icon>
-                                                            <ContentControl ContentTemplate="{StaticResource RestoreIcon}" />
+                                                            <ContentControl ContentTemplate="{DynamicResource ManagedWindow_RestoreIcon}" />
                                                         </MenuItem.Icon>
                                                     </MenuItem>
                                                     <MenuItem Header="_Move" Command="{Binding $parent[windowManager:ManagedWindow].MoveCommand}" />
                                                     <MenuItem Header="_Size" Command="{Binding $parent[windowManager:ManagedWindow].SizeCommand}" />
                                                     <MenuItem Header="Mi_nimize" Command="{Binding $parent[windowManager:ManagedWindow].MinimizeCommand}" >
                                                         <MenuItem.Icon>
-                                                            <ContentControl ContentTemplate="{StaticResource MinimizeIcon}" />
+                                                            <ContentControl ContentTemplate="{DynamicResource ManagedWindow_MinimizeIcon}" />
                                                         </MenuItem.Icon>
                                                     </MenuItem>
                                                     <MenuItem Header="Ma_ximize" Command="{Binding $parent[windowManager:ManagedWindow].MaximizeCommand}" >
                                                         <MenuItem.Icon>
-                                                            <ContentControl ContentTemplate="{StaticResource MaximizeIcon}" />
+                                                            <ContentControl ContentTemplate="{DynamicResource ManagedWindow_MaximizeIcon}" />
                                                         </MenuItem.Icon>
                                                     </MenuItem>
                                                     <Separator/>
                                                     <MenuItem Header="_Close" Command="{Binding $parent[windowManager:ManagedWindow].CloseCommand}" InputGesture="Ctrl+F4" >
                                                         <MenuItem.Icon>
-                                                            <ContentControl ContentTemplate="{StaticResource CloseIcon}" />
+                                                            <ContentControl ContentTemplate="{DynamicResource ManagedWindow_CloseIcon}" />
                                                         </MenuItem.Icon>
                                                     </MenuItem>
                                                 </MenuItem>
                                             </Menu>
-                                            
                                             <!-- Title -->
                                             <TextBlock Grid.Column="2"
                                                        Padding="1,0"
@@ -122,7 +124,7 @@
                                                        FontWeight="{TemplateBinding FontWeight}"
                                                        FontStyle="{TemplateBinding FontStyle}"
                                                        Text="{TemplateBinding Title}" />
-                                            
+
                                             <DockPanel Grid.Column="3"
                                                        Margin="0,0,1,0">
                                                 <brushes:SymbolsControl DockPanel.Dock="Left"
@@ -159,11 +161,11 @@
                             <Panel Name="PART_ModalOverlay"
                                    IsVisible="False"
                                    Background="{DynamicResource ThemeShadeBrush}" />
-                    </Panel>
+                        </Panel>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            
+
             <!--maximized-->
             <Style Selector="^:maximized /template/ Border#PART_WindowBorder">
                 <Setter Property="BorderThickness" Value="1"/>
