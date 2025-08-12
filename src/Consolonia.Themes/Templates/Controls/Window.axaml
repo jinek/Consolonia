@@ -15,8 +15,7 @@
                 <Panel>
                     <!--Some time ago HiTest was false, but for cursor to revert to back it needs to hit some control-->
                     <Border Background="{TemplateBinding Background}"
-                            IsHitTestVisible="True"
-                            x:Name="PART_TransparencyFallback" />
+                            IsHitTestVisible="True"/>
                     <!--<Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" /> -->
                     <VisualLayerManager>
 
@@ -25,7 +24,7 @@
                     </VisualLayerManager.ChromeOverlayLayer>-->
                         <Panel>
                             <!-- application wide windows panel -->
-                            <windowManager:WindowsPanel Margin="10" />
+                            <windowManager:WindowsPanel/>
                             <ContentPresenter Name="PART_ContentPresenter"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               Content="{TemplateBinding Content}"
