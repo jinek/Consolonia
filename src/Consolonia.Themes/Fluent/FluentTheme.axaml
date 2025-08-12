@@ -54,6 +54,8 @@
             <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush"
                             Brush="#EEEEEE"
                             LineStyle="Edge"/>
+            <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush" Color="#7F767676"/>
+
             <BoxShadows x:Key="ManagedWindow_BoxShadows">none</BoxShadows>
             <Thickness x:Key='ManagedWindow_BorderThickness'>1</Thickness>
             <x:Double x:Key="ManagedWindow_SystemIconSpacing">0</x:Double>
