@@ -61,10 +61,7 @@ namespace Consolonia
                 }
                 else
                 {
-                    TopLevel = new ConsoleWindow
-                    {
-                        Content = value
-                    };
+                    throw new ConsoloniaException("MainView must be a TopLevel control (e.g. Window)");
                 }
             }
         }
