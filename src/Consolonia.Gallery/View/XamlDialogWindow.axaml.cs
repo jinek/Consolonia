@@ -2,11 +2,11 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
-using Consolonia.Controls;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Gallery.View
 {
-    public partial class XamlDialogWindow : Window
+    public partial class XamlDialogWindow : ManagedWindow
     {
         public XamlDialogWindow()
         {

@@ -6,11 +6,10 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Iciclecreek.Avalonia.WindowManager;
-using Window = Consolonia.Controls.Window;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public partial class MyWindow : Window
+    public partial class MyWindow : ManagedWindow
     {
         private static int _windowCount;
 
