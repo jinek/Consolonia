@@ -94,7 +94,7 @@ namespace Consolonia.PlatformSupport
 
         private Curses.Window _cursesWindow;
 
-        private KeyModifiers _keyModifiers; // todo: something wrong with it. It's never used
+        private KeyModifiers _keyModifiers; // todo: it's left from GUI.cs, we should remove this
 
         private RawInputModifiers _moveModifers = RawInputModifiers.None;
 
@@ -486,6 +486,19 @@ namespace Consolonia.PlatformSupport
         {
             int keyValue = (int)key;
             RawInputModifiers modifiers = KeyModifiersFlagTranslator.Translate(key);
+
+            if (_keyModifiers.Alt)
+            {
+                modifiers |= RawInputModifiers.Alt;
+            }
+            if (_keyModifiers.Ctrl)
+            {
+                modifiers |= RawInputModifiers.Control;
+            }
+            if (_keyModifiers.Shift)
+            {
+                modifiers |= RawInputModifiers.Shift;
+            }
 
             key = key & ~Key.CtrlMask & ~Key.ShiftMask & ~Key.AltMask;
 

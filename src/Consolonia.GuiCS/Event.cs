@@ -472,7 +472,12 @@ namespace Terminal.Gui {
 		/// <summary>
 		/// A key with an unknown mapping was raised.
 		/// </summary>
-		Unknown
+		Unknown,
+		
+		/// <summary>
+		/// Hyphen/minus
+		/// </summary>
+		Minus = 45,
 	}
 
 	/// <summary>
