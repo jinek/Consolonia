@@ -9,9 +9,12 @@
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeSelectionForegroundBrush}" />
         <Setter Property="BorderThickness"
-                Value="0" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeForegroundBrush}" />
+                Value="1" />
+        <Setter Property="BorderBrush" >
+            <Setter.Value>
+                <console:LineBrush Brush="Gray" LineStyle="Edge" />
+            </Setter.Value>
+        </Setter>
         <Setter Property="HorizontalContentAlignment"
                 Value="Left" />
         <Setter Property="VerticalContentAlignment"
@@ -69,16 +72,13 @@
                            MaxHeight="{TemplateBinding MaxDropDownHeight}"
                            PlacementTarget="{TemplateBinding}"
                            IsLightDismissEnabled="True">
-                        <Panel>
-                            <Border Background="{DynamicResource ThemeShadeBrush}"
-                                    Margin="2,1,0,0" />
-                            <Border BorderBrush="{DynamicResource ThemeBorderBrush}"
-                                    BorderThickness="1"
-                                    Margin="0,0,2,1"
-                                    Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
-                                <ScrollViewer
-                                    HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                    VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                        <Panel Margin="0 -1 0 0">
+                            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+
+                                    <ScrollViewer Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                                    HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                                    VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                                     <ItemsPresenter Name="PART_ItemsPresenter"
                                                     ItemsPanel="{TemplateBinding ItemsPanel}">
                                         <ItemsPresenter.Styles>

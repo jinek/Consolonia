@@ -5,8 +5,11 @@
                   TargetType="MenuFlyoutPresenter">
         <Setter Property="BorderThickness"
                 Value="1" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <console:LineBrush Brush="Gray" LineStyle="Edge" />
+            </Setter.Value>
+        </Setter>
         <Setter Property="Padding"
                 Value="1,0,0,0" />
         <Setter Property="Background"
@@ -19,16 +22,13 @@
                 Value="Auto" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Panel>
-                    <Border Background="{DynamicResource ThemeShadeBrush}"
-                            Margin="2,1,0,0" />
+                <Panel Margin="0 -1 0 0">
                     <Border Name="LayoutRoot"
-                            Margin="0,0,2,1"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding CornerRadius}">
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
                         <ScrollViewer
+                            Background="{TemplateBinding Background}"
                             HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                             VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                             <ItemsPresenter Name="PART_ItemsPresenter"
