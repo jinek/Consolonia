@@ -22,6 +22,19 @@
                     Value="Stretch" />
             <Setter Property="VerticalContentAlignment"
                     Value="Stretch" />
+            
+            <!--keys of turbovision by chatGPT-->
+            <Setter Property="brushes:ManagedWindowExtensions.CloseWindowGesture"
+                    Value="ALT+F3" />
+            <Setter Property="brushes:ManagedWindowExtensions.MaximizeWindowGesture"
+                    Value="F5" />
+            <Setter Property="brushes:ManagedWindowExtensions.RestoreWindowGesture"
+                    Value="F5" />
+            <Setter Property="brushes:ManagedWindowExtensions.MoveWindowGesture"
+                    Value="CTRL+F7" />
+            <Setter Property="brushes:ManagedWindowExtensions.SizeWindowGesture"
+                    Value="CTRL+F5"/>
+            
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="windowManager:ManagedWindow">
@@ -38,11 +51,8 @@
                             <Border BorderThickness="{TemplateBinding BorderThickness}"
                                     Margin="0,0,2,1"
                                     Background="{TemplateBinding Background}"
-                                    x:Name="PART_WindowBorder">
-                                <Border.BorderBrush>
-                                    <brushes:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
-                                                       LineStyle="DoubleLine" />
-                                </Border.BorderBrush>
+                                    x:Name="PART_WindowBorder"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
                                 <Panel>
                                     <DockPanel LastChildFill="True"
                                                Margin="0,-1,0,0">
@@ -76,42 +86,6 @@
                                                         x:Name="PART_CloseButton" />
                                             </DockPanel>
 
-                                            <!--system button-->
-                                            <!-- NOTE: hide system menu for turbo vision -->
-                                            <Menu Name="PART_SystemMenu"
-                                                  IsVisible="False"
-                                                  Grid.Column="1"
-                                                  IsTabStop="True"
-                                                  Foreground="{DynamicResource ManagedWindow_TitleBarForegroundBrush}">
-                                                <MenuItem Name="PART_SystemMenuItem">
-                                                    <MenuItem.Header>
-                                                        <ContentControl ContentTemplate="{DynamicResource ManagedWindow_SystemMenuIcon}" />
-                                                    </MenuItem.Header>
-                                                    <MenuItem Header="_Restore" Command="{Binding $parent[windowManager:ManagedWindow].RestoreCommand}">
-                                                        <MenuItem.Icon>
-                                                            <ContentControl ContentTemplate="{DynamicResource ManagedWindow_RestoreIcon}" />
-                                                        </MenuItem.Icon>
-                                                    </MenuItem>
-                                                    <MenuItem Header="_Move" Command="{Binding $parent[windowManager:ManagedWindow].MoveCommand}" />
-                                                    <MenuItem Header="_Size" Command="{Binding $parent[windowManager:ManagedWindow].SizeCommand}" />
-                                                    <MenuItem Header="Mi_nimize" Command="{Binding $parent[windowManager:ManagedWindow].MinimizeCommand}" >
-                                                        <MenuItem.Icon>
-                                                            <ContentControl ContentTemplate="{DynamicResource ManagedWindow_MinimizeIcon}" />
-                                                        </MenuItem.Icon>
-                                                    </MenuItem>
-                                                    <MenuItem Header="Ma_ximize" Command="{Binding $parent[windowManager:ManagedWindow].MaximizeCommand}" >
-                                                        <MenuItem.Icon>
-                                                            <ContentControl ContentTemplate="{DynamicResource ManagedWindow_MaximizeIcon}" />
-                                                        </MenuItem.Icon>
-                                                    </MenuItem>
-                                                    <Separator/>
-                                                    <MenuItem Header="_Close" Command="{Binding $parent[windowManager:ManagedWindow].CloseCommand}" InputGesture="Ctrl+F4" >
-                                                        <MenuItem.Icon>
-                                                            <ContentControl ContentTemplate="{DynamicResource ManagedWindow_CloseIcon}" />
-                                                        </MenuItem.Icon>
-                                                    </MenuItem>
-                                                </MenuItem>
-                                            </Menu>
                                             <!-- Title -->
                                             <TextBlock Grid.Column="2"
                                                        Padding="1,0"
@@ -204,6 +178,27 @@
             <Style Selector="^:maximized /template/ Border#PART_WindowBorder">
                 <Setter Property="Margin"
                         Value="0" />
+            </Style>
+            
+            <Style Selector="^:sizing">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <brushes:LineBrush LineStyle="DoubleLine"
+                                           Brush="{DynamicResource ThemeActionBackgroundBrush}" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style Selector="^:moving">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <brushes:LineBrush LineStyle="DoubleLine"
+                                           Brush="{DynamicResource ThemeActionBackgroundBrush}" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style Selector="^:moving /template/ Panel#PART_ModalOverlay">
+                <Setter Property="IsVisible"
+                        Value="False" />
             </Style>
         </ControlTheme>
     </Styles.Resources>

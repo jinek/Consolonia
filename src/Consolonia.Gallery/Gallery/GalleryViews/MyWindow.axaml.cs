@@ -38,6 +38,14 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 Counter = 0,
                 Title = $"New Window {++_windowCount}"
             };
+            
+            AttachedToVisualTree+=OnAttachedToVisualTree;
+        }
+
+        private void OnAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
+        {
+            if ((string)this.FindResource("ThemeName") == "TurboVision")
+                TurboVisionShortCutsTextBlock.IsVisible = true;
         }
 
         public MyWindowViewModel ViewModel => (MyWindowViewModel)DataContext;
