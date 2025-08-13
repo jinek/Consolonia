@@ -44,7 +44,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private void OnAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
-            if ((string)this.FindResource("ThemeName") == "TurboVision")
+            if (this.FindResource("ThemeName") as string == "TurboVision")
                 TurboVisionShortCutsTextBlock.IsVisible = true;
         }
 
