@@ -62,6 +62,8 @@
     <StyleInclude Source="/Fluent/Controls/TabItem.axaml" />
     <StyleInclude Source="/Fluent/Controls/ButtonSpinner.axaml" />
     <StyleInclude Source="/Fluent/Controls/TreeViewItem.axaml" />
+    <StyleInclude Source="/Fluent/Controls/Menu.axaml" />
+    <StyleInclude Source="/Fluent/Controls/MenuItem.axaml" />
     <wm:WindowManagerTheme />
 
 </Styles>
