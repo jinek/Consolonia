@@ -10,8 +10,12 @@
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="BorderThickness"
                 Value="1" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderBrush}" />
+        <Setter Property="BorderBrush" >
+            <Setter.Value>
+                <console:LineBrush Brush="Gray"
+                                   LineStyle="Edge" />
+            </Setter.Value>
+        </Setter>
         <Setter Property="Padding"
                 Value="1 0" />
         <Setter Property="Template">
@@ -25,17 +29,13 @@
                                               Margin="{TemplateBinding Padding}" />
                         </console:CaretControl>
                         <Popup Name="PART_Popup"
-                               IsLightDismissEnabled="True"
+                               IsLightDismissEnabled="True" 
                                OverlayInputPassThroughElement="{Binding $parent[Menu]}"
                                IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
-                            <Panel>
-                                <Border Background="{DynamicResource ThemeShadeBrush}"
-                                        Margin="2,1,0,0" />
-                                <Border Background="{TemplateBinding Background}"
-                                        Margin="0,0,2,1"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
+                            <Panel Margin="0 -1 0 0">
+                                <Border BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ScrollViewer>
+                                    <ScrollViewer Background="{TemplateBinding Background}">
                                         <ItemsPresenter Name="PART_ItemsPresenter"
                                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                                         Grid.IsSharedSizeScope="True">
