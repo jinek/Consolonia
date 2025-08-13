@@ -8,12 +8,6 @@
             <ControlTheme.BasedOn>
                 <StaticResource ResourceKey="{x:Type windowManager:ManagedWindow}" />
             </ControlTheme.BasedOn>
-            <Setter Property="BorderBrush">
-                <Setter.Value>
-                    <brushes:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
-                                       LineStyle="DoubleLine" />
-                </Setter.Value>
-            </Setter>
             <Setter Property="BorderThickness"
                     Value="1" />
             <Setter Property="Padding"
@@ -51,8 +45,11 @@
                             <Border BorderThickness="{TemplateBinding BorderThickness}"
                                     Margin="0,0,2,1"
                                     Background="{TemplateBinding Background}"
-                                    x:Name="PART_WindowBorder"
-                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                    x:Name="PART_WindowBorder_tv">
+                                <Border.BorderBrush>
+                                    <brushes:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
+                                                       LineStyle="DoubleLine" />
+                                </Border.BorderBrush>
                                 <Panel>
                                     <DockPanel LastChildFill="True"
                                                Margin="0,-1,0,0">
@@ -141,7 +138,7 @@
             </Setter>
 
             <!--maximized-->
-            <Style Selector="^:maximized /template/ Border#PART_WindowBorder">
+            <Style Selector="^:maximized /template/ Border#PART_WindowBorder_tv">
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="BoxShadow" Value="0 0 0 Transparent"/>
             </Style>
@@ -170,29 +167,33 @@
                         Value="{DynamicResource ManagedWindow_Active_TitleBarForegroundBrush}" />
             </Style>
 
-            <Style Selector="^:noborder /template/ Border#PART_WindowBorder">
+            <Style Selector="^:noborder /template/ Border#PART_WindowBorder_tv">
                 <Setter Property="BorderThickness"
                         Value="{DynamicResource NoThickness}" />
             </Style>
 
-            <Style Selector="^:maximized /template/ Border#PART_WindowBorder">
+            <Style Selector="^:maximized /template/ Border#PART_WindowBorder_tv">
                 <Setter Property="Margin"
                         Value="0" />
             </Style>
             
-            <Style Selector="^:sizing">
+            <Style Selector="^:sizing /template/ Border#PART_WindowBorder_tv">
                 <Setter Property="BorderBrush">
                     <Setter.Value>
                         <brushes:LineBrush LineStyle="DoubleLine"
-                                           Brush="{DynamicResource ThemeActionBackgroundBrush}" />
+                                           Brush="{StaticResource ThemeActionBackgroundBrush}" />
                     </Setter.Value>
                 </Setter>
             </Style>
-            <Style Selector="^:moving">
+            <Style Selector="^:sizing /template/ Panel#PART_ModalOverlay">
+                <Setter Property="IsVisible"
+                        Value="False" />
+            </Style>
+            <Style Selector="^:moving /template/ Border#PART_WindowBorder_tv">
                 <Setter Property="BorderBrush">
                     <Setter.Value>
                         <brushes:LineBrush LineStyle="DoubleLine"
-                                           Brush="{DynamicResource ThemeActionBackgroundBrush}" />
+                                           Brush="{StaticResource ThemeActionBackgroundBrush}" />
                     </Setter.Value>
                 </Setter>
             </Style>
