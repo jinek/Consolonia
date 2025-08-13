@@ -18,7 +18,8 @@
             <ControlTemplate>
                 <Border Name="root">
                     <Panel>
-                        <console:CaretControl IsCaretShown="{TemplateBinding IsFocused}">
+                        <console:CaretControl x:Name="CaretControl"
+                                              IsCaretShown="{TemplateBinding IsFocused}">
                             <ContentPresenter Name="PART_HeaderPresenter"
                                               Content="{TemplateBinding Header}"
                                               Margin="{TemplateBinding Padding}" />
@@ -93,7 +94,7 @@
         <Setter Property="Background"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="ItemContainerTheme"
-                Value="{StaticResource TurboVisionTopLevelMenuItem}" />
+                Value="{DynamicResource TurboVisionTopLevelMenuItem}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}"

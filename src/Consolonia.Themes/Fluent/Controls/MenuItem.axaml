@@ -1,0 +1,14 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="https://github.com/jinek/consolonia">
+    <Styles.Resources>
+        <ControlTheme x:Key="{x:Type MenuItem}"
+                      BasedOn="{StaticResource {x:Type MenuItem}}"
+                      TargetType="MenuItem">
+            <Style Selector="^ /template/ controls|CaretControl#CaretControl">
+                <Setter Property="CaretStyle"
+                        Value="None" />
+            </Style>
+        </ControlTheme>
+    </Styles.Resources>
+</Styles>
