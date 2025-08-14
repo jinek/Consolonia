@@ -222,7 +222,7 @@ namespace Consolonia.Controls
         /// <param name="message"></param>
         /// <param name="style"></param>
         /// <returns></returns>
-        public static Task<MessageBoxResult> ShowDialog(Visual? visual, string title, string message,
+        public static Task<MessageBoxResult> ShowDialog(Visual visual, string title, string message,
             MessageBoxStyle style = MessageBoxStyle.Ok)
         {
             var mb = new MessageBox
@@ -239,7 +239,7 @@ namespace Consolonia.Controls
         /// </summary>
         /// <param name="visual"></param>
         /// <returns></returns>
-        public async Task<MessageBoxResult> ShowDialog(Visual? visual)
+        public new async Task<MessageBoxResult> ShowDialog(Visual visual)
         {
             return await ShowDialog<MessageBoxResult>(visual);
         }
