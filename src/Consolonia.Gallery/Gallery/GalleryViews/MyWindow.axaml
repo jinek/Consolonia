@@ -66,10 +66,10 @@
         <TextBlock xml:space="preserve"
                    IsVisible="False"
                    x:Name="TurboVisionShortCutsTextBlock">TurboVision window shortcuts:
-ALT+F3 - close
-F5 - maximize/restore
-CTRL+F7 - moving
-CTRL+F5 - resize
+ALT+C - close
+ALT+R - maximize/restore
+CTRL+M - moving
+CTRL+S - resize
 </TextBlock>
     </StackPanel>
 </wm:ManagedWindow>

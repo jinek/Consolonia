@@ -21,15 +21,15 @@
             
             <!--keys of turbovision by chatGPT-->
             <Setter Property="brushes:ManagedWindowExtensions.CloseWindowGesture"
-                    Value="ALT+F3" />
+                    Value="ALT+c" />
             <Setter Property="brushes:ManagedWindowExtensions.MaximizeWindowGesture"
-                    Value="F5" />
+                    Value="ALT+r" />
             <Setter Property="brushes:ManagedWindowExtensions.RestoreWindowGesture"
-                    Value="F5" />
+                    Value="ALT+r" />
             <Setter Property="brushes:ManagedWindowExtensions.MoveWindowGesture"
-                    Value="CTRL+F7" />
+                    Value="ALT+m" />
             <Setter Property="brushes:ManagedWindowExtensions.SizeWindowGesture"
-                    Value="CTRL+F5"/>
+                    Value="ALT+s"/>
             
             <Setter Property="Template">
                 <Setter.Value>
