@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 
 namespace ConsoloniaAppTemplate
 {
-    public partial class MainView : UserControl
+    public partial class MainView : Window
     {
         public MainView()
         {
