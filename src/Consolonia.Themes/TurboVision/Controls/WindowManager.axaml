@@ -16,6 +16,8 @@
                     Value="Stretch" />
             <Setter Property="VerticalContentAlignment"
                     Value="Stretch" />
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeBackgroundBrush}"/>
             
             <!--keys of turbovision by chatGPT-->
             <Setter Property="brushes:ManagedWindowExtensions.CloseWindowGesture"
@@ -47,8 +49,8 @@
                                     Background="{TemplateBinding Background}"
                                     x:Name="PART_WindowBorder_tv">
                                 <Border.BorderBrush>
-                                    <brushes:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
-                                                       LineStyle="DoubleLine" />
+                                    <brushes:LineBrush LineStyle="DoubleLine"
+                                                       Brush="{StaticResource ThemeBorderBrush}" />
                                 </Border.BorderBrush>
                                 <Panel>
                                     <DockPanel LastChildFill="True"
@@ -87,7 +89,7 @@
                                             <TextBlock Grid.Column="2"
                                                        Padding="1,0"
                                                        Name="PART_Title"
-                                                       Foreground="{DynamicResource ManagedWindow_TitleBarForegroundBrush}"
+                                                       Foreground="{DynamicResource ThemeNoDisturbBrush}"
                                                        Background="{TemplateBinding Background}"
                                                        HorizontalAlignment="Center"
                                                        FontFamily="{TemplateBinding FontFamily}"
@@ -152,21 +154,16 @@
                 <Setter Property="IsVisible" Value="True"/>
             </Style>
 
+            <Style Selector="^:active /template/ TextBlock#PART_Title">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource ThemeForegroundBrush}" />
+            </Style>
+
             <Style Selector="^:active /template/ Grid#PART_TitleBar">
                 <Setter Property="Background"
                         Value="{x:Null}" />
             </Style>
-
-            <Style Selector="^:active /template/ Grid#PART_TitleBar > TextBlock">
-                <Setter Property="Foreground"
-                        Value="{DynamicResource ManagedWindow_Active_TitleBarForegroundBrush}" />
-            </Style>
-
-            <Style Selector="^:active /template/ Grid#PART_TitleBar > Button">
-                <Setter Property="Foreground"
-                        Value="{DynamicResource ManagedWindow_Active_TitleBarForegroundBrush}" />
-            </Style>
-
+            
             <Style Selector="^:noborder /template/ Border#PART_WindowBorder_tv">
                 <Setter Property="BorderThickness"
                         Value="{DynamicResource NoThickness}" />
