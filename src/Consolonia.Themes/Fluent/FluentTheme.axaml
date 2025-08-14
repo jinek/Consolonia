@@ -49,7 +49,7 @@
             
             <!-- window manager resources-->
             <controls:LineBrush x:Key="ManagedWindow_BorderBrush"
-                        Brush="#CCCCCC"
+                        Brush="{DynamicResource ThemeAlternativeBackgroundBrush}"
                         LineStyle="Edge"/>
             <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush"
                             Brush="#EEEEEE"

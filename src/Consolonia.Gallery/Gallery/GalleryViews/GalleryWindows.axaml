@@ -4,8 +4,7 @@
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryWindows">
     <!-- Gallery Windows has it's own window panel -->
     <wm:WindowsPanel x:Name="Windows">
-        <Grid RowDefinitions="Auto *"
-              Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
+        <Grid RowDefinitions="Auto *">
 
             <StackPanel Spacing="1">
                 <StackPanel Orientation="Horizontal"
