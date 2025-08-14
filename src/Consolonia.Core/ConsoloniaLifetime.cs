@@ -91,7 +91,7 @@ namespace Consolonia
         {
             SetupCore(args);
 
-            (TopLevel as Window).Show();
+            ((Window)TopLevel).Show();
 
             try
             {
