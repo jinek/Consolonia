@@ -161,7 +161,7 @@
 
             <Style Selector="^:active /template/ Grid#PART_TitleBar">
                 <Setter Property="Background"
-                        Value="{x:Null}" />
+                        Value="{DynamicResource ThemeTransparentBrush}" />
             </Style>
             
             <Style Selector="^:noborder /template/ Border#PART_WindowBorder_tv">
