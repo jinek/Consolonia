@@ -141,11 +141,6 @@
             </Setter>
 
             <!--maximized-->
-            <Style Selector="^:maximized /template/ Border#PART_WindowBorder_tv">
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="BoxShadow" Value="0 0 0 Transparent"/>
-            </Style>
-
             <Style Selector="^:maximized /template/ Button#PART_RestoreButton" >
                 <Setter Property="IsVisible" Value="True"/>
             </Style>
@@ -173,6 +168,10 @@
             <Style Selector="^:maximized /template/ Border#PART_WindowBorder_tv">
                 <Setter Property="Margin"
                         Value="0" />
+                <Setter Property="BorderThickness"
+                        Value="1" />
+                <Setter Property="BoxShadow"
+                        Value="0 0 0 Transparent" />
             </Style>
             
             <Style Selector="^:sizing /template/ Border#PART_WindowBorder_tv">
