@@ -46,11 +46,14 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             ICommand command = commandAccessor(managedWindow);
             KeyBinding existingCommand = managedWindow.KeyBindings.LastOrDefault(binding => binding.Command == command);
             if (existingCommand != null) managedWindow.KeyBindings.Remove(existingCommand);
-            managedWindow.KeyBindings.Add(new KeyBinding
+            if (gesture != null)
             {
-                Command = command,
-                Gesture = gesture
-            });
+                managedWindow.KeyBindings.Add(new KeyBinding
+                {
+                    Command = command,
+                    Gesture = gesture
+                });
+            }
         }
 
         public static readonly AttachedProperty<KeyGesture> CloseWindowGestureProperty =
