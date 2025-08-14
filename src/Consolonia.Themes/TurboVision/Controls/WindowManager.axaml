@@ -49,6 +49,7 @@
                                     Background="{TemplateBinding Background}"
                                     x:Name="PART_WindowBorder_tv">
                                 <Border.BorderBrush>
+                                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
                                     <brushes:LineBrush LineStyle="DoubleLine"
                                                        Brush="{StaticResource ThemeBorderBrush}" />
                                 </Border.BorderBrush>
@@ -177,6 +178,7 @@
             <Style Selector="^:sizing /template/ Border#PART_WindowBorder_tv">
                 <Setter Property="BorderBrush">
                     <Setter.Value>
+                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
                         <brushes:LineBrush LineStyle="DoubleLine"
                                            Brush="{StaticResource ThemeActionBackgroundBrush}" />
                     </Setter.Value>
@@ -189,6 +191,7 @@
             <Style Selector="^:moving /template/ Border#PART_WindowBorder_tv">
                 <Setter Property="BorderBrush">
                     <Setter.Value>
+                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
                         <brushes:LineBrush LineStyle="DoubleLine"
                                            Brush="{StaticResource ThemeActionBackgroundBrush}" />
                     </Setter.Value>
