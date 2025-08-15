@@ -47,7 +47,7 @@
                             <Border BorderThickness="{TemplateBinding BorderThickness}"
                                     Margin="0,0,2,1"
                                     Background="{TemplateBinding Background}"
-                                    x:Name="PART_WindowBorder_tv">
+                                    x:Name="PART_WindowBorder">
                                 <Border.BorderBrush>
                                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
                                     <brushes:LineBrush LineStyle="DoubleLine"
@@ -160,12 +160,12 @@
                         Value="{DynamicResource ThemeTransparentBrush}" />
             </Style>
             
-            <Style Selector="^:noborder /template/ Border#PART_WindowBorder_tv">
+            <Style Selector="^:noborder /template/ Border#PART_WindowBorder">
                 <Setter Property="BorderThickness"
                         Value="{DynamicResource NoThickness}" />
             </Style>
 
-            <Style Selector="^:maximized /template/ Border#PART_WindowBorder_tv">
+            <Style Selector="^:maximized /template/ Border#PART_WindowBorder">
                 <Setter Property="Margin"
                         Value="0" />
                 <Setter Property="BorderThickness"
@@ -174,7 +174,7 @@
                         Value="0 0 0 Transparent" />
             </Style>
             
-            <Style Selector="^:sizing /template/ Border#PART_WindowBorder_tv">
+            <Style Selector="^:sizing /template/ Border#PART_WindowBorder">
                 <Setter Property="BorderBrush">
                     <Setter.Value>
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
@@ -187,7 +187,7 @@
                 <Setter Property="IsVisible"
                         Value="False" />
             </Style>
-            <Style Selector="^:moving /template/ Border#PART_WindowBorder_tv">
+            <Style Selector="^:moving /template/ Border#PART_WindowBorder">
                 <Setter Property="BorderBrush">
                     <Setter.Value>
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
