@@ -40,19 +40,18 @@
                            MaxHeight="{TemplateBinding MaxDropDownHeight}"
                            IsLightDismissEnabled="True"
                            PlacementTarget="{TemplateBinding}">
-                        <Panel Margin="0 -1 0 0">
-                            <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}">
-                                
-                                <ListBox Name="PART_SelectingItemsControl"
+                        <console:BorderPanel 
+                            Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}"                            >
+
+                            <ListBox Name="PART_SelectingItemsControl"
                                          Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
                                          BorderThickness="0"
                                          Foreground="{DynamicResource ThemeForegroundBrush}"
                                          ItemTemplate="{TemplateBinding ItemTemplate}"
                                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                          ScrollViewer.VerticalScrollBarVisibility="Auto" />
-                            </Border>
-                        </Panel>
+                        </console:BorderPanel>
                     </Popup>
                 </Panel>
             </ControlTemplate>

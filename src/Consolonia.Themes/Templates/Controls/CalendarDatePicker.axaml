@@ -57,13 +57,11 @@
                            Name="PART_Popup"
                            PlacementTarget="{TemplateBinding}"
                            IsLightDismissEnabled="True">
-                        <Panel Margin="0 -1 0 0">
-                            <Border BorderThickness="1">
-                                <Border.BorderBrush>
-                                    <console:LineBrush Brush="Gray" LineStyle="Edge" />
-                                </Border.BorderBrush>
 
-                                <Calendar Name="PART_Calendar"
+                        <console:BorderPanel
+                            Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}">
+                            <Calendar Name="PART_Calendar"
                                       BorderThickness="0"
                                       Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
                                       FirstDayOfWeek="{TemplateBinding FirstDayOfWeek}"
@@ -72,15 +70,14 @@
                                       DisplayDate="{TemplateBinding DisplayDate}"
                                       DisplayDateStart="{TemplateBinding DisplayDateStart}"
                                       DisplayDateEnd="{TemplateBinding DisplayDateEnd}">
-                                    <Calendar.Styles>
-                                        <Style Selector="Calendar">
-                                            <Setter Property="(console:CalendarDatePickerExtensions.FocusOnOpen)"
-                                                    Value="True" />
-                                        </Style>
-                                    </Calendar.Styles>
-                                </Calendar>
-                            </Border>
-                        </Panel>
+                                <Calendar.Styles>
+                                    <Style Selector="Calendar">
+                                        <Setter Property="(console:CalendarDatePickerExtensions.FocusOnOpen)"
+                                                Value="True" />
+                                    </Style>
+                                </Calendar.Styles>
+                            </Calendar>
+                        </console:BorderPanel>
                     </Popup>
                 </Grid>
             </ControlTemplate>

@@ -22,30 +22,27 @@
                 Value="Auto" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Panel Margin="0 -1 0 0">
-                    <Border Name="LayoutRoot"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
-                        <ScrollViewer
+                <console:BorderPanel x:Name="PART_LayoutRoot"
+                                            Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                            BorderBrush="{DynamicResource ThemeBorderBrush}">
+                    <ScrollViewer
                             Background="{TemplateBinding Background}"
                             HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                             VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                            <ItemsPresenter Name="PART_ItemsPresenter"
-                                            ItemsPanel="{TemplateBinding ItemsPanel}"
-                                            Margin="{TemplateBinding Padding}"
-                                            KeyboardNavigation.TabNavigation="Continue"
-                                            Grid.IsSharedSizeScope="True">
-                                <ItemsPresenter.Styles>
-                                    <Style Selector="ItemsPresenter">
-                                        <Setter Property="(console:MenuExtensions.FocusOnLoad)"
-                                                Value="True" />
-                                    </Style>
-                                </ItemsPresenter.Styles>
-                            </ItemsPresenter>
-                        </ScrollViewer>
-                    </Border>
-                </Panel>
+                        <ItemsPresenter Name="PART_ItemsPresenter"
+                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                        Margin="{TemplateBinding Padding}"
+                                        KeyboardNavigation.TabNavigation="Continue"
+                                        Grid.IsSharedSizeScope="True">
+                            <ItemsPresenter.Styles>
+                                <Style Selector="ItemsPresenter">
+                                    <Setter Property="(console:MenuExtensions.FocusOnLoad)"
+                                            Value="True" />
+                                </Style>
+                            </ItemsPresenter.Styles>
+                        </ItemsPresenter>
+                    </ScrollViewer>
+                </console:BorderPanel>
             </ControlTemplate>
         </Setter>
     </ControlTheme>

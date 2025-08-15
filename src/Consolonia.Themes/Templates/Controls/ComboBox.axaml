@@ -8,13 +8,6 @@
                 Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeSelectionForegroundBrush}" />
-        <Setter Property="BorderThickness"
-                Value="1" />
-        <Setter Property="BorderBrush" >
-            <Setter.Value>
-                <console:LineBrush Brush="Gray" LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
         <Setter Property="HorizontalContentAlignment"
                 Value="Left" />
         <Setter Property="VerticalContentAlignment"
@@ -72,25 +65,24 @@
                            MaxHeight="{TemplateBinding MaxDropDownHeight}"
                            PlacementTarget="{TemplateBinding}"
                            IsLightDismissEnabled="True">
-                        <Panel Margin="0 -1 0 0">
-                            <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}">
+                        <console:BorderPanel
+                            Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                            BorderBrush="{DynamicResource ThemeBorderBrush}">
 
-                                    <ScrollViewer Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                            <ScrollViewer Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
                                                     HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                                     VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                                    <ItemsPresenter Name="PART_ItemsPresenter"
-                                                    ItemsPanel="{TemplateBinding ItemsPanel}">
-                                        <ItemsPresenter.Styles>
-                                            <Style Selector="ItemsPresenter">
-                                                <Setter Property="(console:ComboBoxExtensions.FocusOnOpen)"
-                                                        Value="true" />
-                                            </Style>
-                                        </ItemsPresenter.Styles>
-                                    </ItemsPresenter>
-                                </ScrollViewer>
-                            </Border>
-                        </Panel>
+                                <ItemsPresenter Name="PART_ItemsPresenter"
+                                                ItemsPanel="{TemplateBinding ItemsPanel}">
+                                    <ItemsPresenter.Styles>
+                                        <Style Selector="ItemsPresenter">
+                                            <Setter Property="(console:ComboBoxExtensions.FocusOnOpen)"
+                                                    Value="true" />
+                                        </Style>
+                                    </ItemsPresenter.Styles>
+                                </ItemsPresenter>
+                            </ScrollViewer>
+                        </console:BorderPanel>
                     </Popup>
                 </Grid>
 
