@@ -16,10 +16,8 @@
                         <Border x:Name="PART_Border" 
                                 BorderThickness="1" 
                                 Background="{TemplateBinding Background}"
-                                Margin="0,0,2,1">
-                            <Border.BorderBrush>
-                                <console:LineBrush LineStyle="SingleLine" Brush="Gray"/>
-                            </Border.BorderBrush>
+                                Margin="0,0,2,1"
+                                BorderBrush="{DynamicResource ThemeBorderBrush}">
                             <ContentPresenter Name="PART_ContentPresenter"
                                               Padding="{TemplateBinding Padding}"
                                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"

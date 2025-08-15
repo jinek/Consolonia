@@ -13,7 +13,7 @@
                         <Border x:Name="PART_Border"
                                 BorderThickness="1" >
                             <Border.BorderBrush>
-                                <console:LineBrush LineStyle="Edge" Brush="Gray"/>
+                                <console:LineBrush LineStyle="Edge" Brush="{DynamicResource ThemeBorderBrush}"/>
                             </Border.BorderBrush>
                             <ContentPresenter Name="PART_ContentPresenter"
                                               Padding="{TemplateBinding Padding}"
