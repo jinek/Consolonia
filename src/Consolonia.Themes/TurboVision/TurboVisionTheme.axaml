@@ -52,7 +52,9 @@
             <console:CaretStyle x:Key="ControlFocusCaretStyle">BlinkingBlock</console:CaretStyle>
 
             <!-- window manager resources-->
+            <!-- ReSharper disable InconsistentNaming -->
             <x:Int32 x:Key="ManagedWindow_SizingVector">1</x:Int32>
+            <!-- ReSharper restore InconsistentNaming -->
             <!-- window manager resources end -->
 
         </ResourceDictionary>
