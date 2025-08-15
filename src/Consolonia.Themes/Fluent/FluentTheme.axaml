@@ -48,12 +48,13 @@
             <controls:CaretStyle x:Key="ControlFocusCaretStyle">BlinkingUnderline</controls:CaretStyle>
             
             <!-- window manager resources-->
+            <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
             <controls:LineBrush x:Key="ManagedWindow_BorderBrush"
-                        Brush="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                        LineStyle="Edge"/>
+                                Brush="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                LineStyle="Edge"/>
             <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush"
-                            Brush="#EEEEEE"
-                            LineStyle="Edge"/>
+                                Brush="#EEEEEE"
+                                LineStyle="Edge"/>
             <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush" Color="#7F767676"/>
 
             <BoxShadows x:Key="ManagedWindow_BoxShadows">none</BoxShadows>
@@ -80,6 +81,7 @@
             <DataTemplate x:Key="ManagedWindow_SystemMenuIcon">
                 <ContentControl Content="☰"/>
             </DataTemplate>
+            <!-- ReSharper restore InconsistentNaming -->
             <!-- window manager resources end -->
         </ResourceDictionary>
     </Styles.Resources>
