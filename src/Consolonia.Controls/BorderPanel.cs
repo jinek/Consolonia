@@ -107,7 +107,10 @@ public class BorderPanel : ContentControl
 
     private bool HasEdgeStyle()
     {
-        var lineBrush = _border?.BorderBrush as LineBrush;
+        if (_border == null || _border.BorderBrush == null)
+            return false;
+
+        var lineBrush = _border.BorderBrush as LineBrush;
         return (lineBrush != null &&
             (lineBrush.LineStyle.Left == LineStyle.Edge ||
              lineBrush.LineStyle.Top == LineStyle.Edge ||
