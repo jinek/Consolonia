@@ -50,6 +50,7 @@
     </Styles.Resources>
 
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
+    <StyleInclude Source="/Fluent/Controls/BorderPanel.axaml" />
     <StyleInclude Source="/Fluent/Controls/ConsoloniaAccessRun.axaml" />
     <StyleInclude Source="/Fluent/Controls/Button.axaml" />
     <StyleInclude Source="/Fluent/Controls/DataGridRow.axaml" />

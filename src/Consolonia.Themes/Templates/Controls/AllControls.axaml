@@ -4,6 +4,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <MergeResourceInclude Source="/Templates/Controls/AutoCompleteBox.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/BorderPanel.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Button.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ButtonSpinner.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Calendar.axaml" />

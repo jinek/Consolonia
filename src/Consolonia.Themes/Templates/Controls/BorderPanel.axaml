@@ -1,0 +1,24 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:console="https://github.com/jinek/consolonia"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ControlTheme x:Key="{x:Type console:BorderPanel}"
+                  TargetType="console:BorderPanel">
+        <Setter Property="Background"
+                Value="{DynamicResource ThemeAlternateBackgroundBrush}"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel x:Name="PART_Panel">
+                    <ContentPresenter Background="{TemplateBinding Background}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                      Padding="{TemplateBinding Padding}"
+                                      Margin="{TemplateBinding Margin}"
+                                      RecognizesAccessKey="True"
+                                      Content="{TemplateBinding Content}"/>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

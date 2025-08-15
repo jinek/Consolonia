@@ -1,0 +1,36 @@
+<!-- TURBOVISION-->
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:console="https://github.com/jinek/consolonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <ControlTheme x:Key="{x:Type console:BorderPanel}"
+                      TargetType="console:BorderPanel">
+            <Setter Property="Background"
+                Value="{DynamicResource ThemeAlternateBackgroundBrush}"/>
+
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Panel x:Name="PART_Panel">
+                        <Border Background="{DynamicResource ThemeShadeBrush}"
+                                Margin="2,1,0,0" />
+                        <Border x:Name="PART_Border" 
+                                BorderThickness="1" 
+                                Background="{TemplateBinding Background}"
+                                Margin="0,0,2,1">
+                            <Border.BorderBrush>
+                                <console:LineBrush LineStyle="SingleLine" Brush="Gray"/>
+                            </Border.BorderBrush>
+                            <ContentPresenter Background="{TemplateBinding Background}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                              Padding="{TemplateBinding Padding}"
+                                              Margin="{TemplateBinding Margin}"
+                                              RecognizesAccessKey="True"
+                                              Content="{TemplateBinding Content}"/>
+                        </Border>
+                    </Panel>
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
+    </Styles.Resources>
+</Styles>
