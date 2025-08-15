@@ -25,6 +25,8 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
+            await UITest.KeyInput(Key.Tab);
+            await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Enter); // close button
             //await Task.Delay(100);  // animation
             foreach (string x in new[] { "New Window 1", "DialogResult:", "🗕", "🗖", "🗙" })

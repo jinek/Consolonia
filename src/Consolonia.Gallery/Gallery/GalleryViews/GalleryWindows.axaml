@@ -23,8 +23,8 @@
                     <Label>StartupLocation for new Window</Label>
                     <ComboBox Name="StartupLocationCombo"
                               SelectedIndex="0">
-                        <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
                         <ComboBoxItem Tag="CenterOwner">CenterOwner</ComboBoxItem>
+                        <ComboBoxItem Tag="Manual">Manual</ComboBoxItem>
                         <ComboBoxItem Tag="CenterScreen">CenterScreen</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
