@@ -69,8 +69,11 @@ public class BorderPanel : ContentControl
                 var popup = sender as Popup;
                 if (popup != null && (bool)e.NewValue)
                 {
+                    if (_panel == null)
+                        return;
+
                     // Automatically crop the margin to get rid of gap between button and popup
-                    switch (popup?.Placement)
+                    switch (popup.Placement)
                     {
                         case PlacementMode.Top:
                         case PlacementMode.TopEdgeAlignedLeft:
