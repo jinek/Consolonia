@@ -85,7 +85,7 @@
         <Setter Property="Background"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="ItemContainerTheme"
-                Value="{DynamicResource TurboVisionTopLevelMenuItem}" />
+                Value="{DynamicResource TopLevelMenuItem}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}"
