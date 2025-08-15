@@ -10,6 +10,8 @@
                 <Panel x:Name="PART_Panel">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Padding="{TemplateBinding Padding}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       Background="{TemplateBinding Background}"
