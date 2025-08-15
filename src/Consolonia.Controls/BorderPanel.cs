@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.LogicalTree;
-using Avalonia.Metadata;
 using Consolonia.Controls.Brushes;
 
 namespace Consolonia.Controls;
@@ -18,28 +17,15 @@ namespace Consolonia.Controls;
 /// </remarks>
 [TemplatePart(PART_Panel, typeof(Panel))]
 [TemplatePart(PART_Border, typeof(Border))]
-public class BorderPanel : TemplatedControl
+public class BorderPanel : ContentControl
 {
     private const string PART_Panel = "PART_Panel";
     private const string PART_Border = "PART_Border";
     private Panel _panel;
     private Border _border;
 
-    public static readonly StyledProperty<object> ContentProperty =
-     AvaloniaProperty.Register<BorderPanel, object>(nameof(Content));
-
-
     public BorderPanel()
     {
-        ContentControl
-    }
-
-    [Content]
-    [TemplateContent]
-    public object Content
-    {
-        get => GetValue(ContentProperty);
-        set => SetValue(ContentProperty, value);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
