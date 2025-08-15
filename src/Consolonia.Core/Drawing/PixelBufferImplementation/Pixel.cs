@@ -12,6 +12,9 @@ using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
+    [SuppressMessage("ReSharper", "NotResolvedInText", Justification = "Properties are accessible but are not seen by resharper", Scope = "type")]
+    [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Color")]
+    [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Symbol")]
     [DebuggerDisplay(
         "'{Foreground.Symbol.Text}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
     public readonly struct Pixel : IEquatable<Pixel>
