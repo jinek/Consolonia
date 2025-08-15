@@ -20,10 +20,13 @@ namespace Consolonia.Controls;
 [TemplatePart(PART_Border, typeof(Border))]
 public class BorderPanel : ContentControl
 {
+    // ReSharper disable InconsistentNaming
 #pragma warning disable CA1707 // Identifiers should not contain underscores
     public const string PART_Panel = "PART_Panel";
     public const string PART_Border = "PART_Border";
 #pragma warning restore CA1707 // Identifiers should not contain underscores
+    // ReSharper restore InconsistentNaming
+
     private Panel _panel;
     private Border _border;
     private Popup _popup;
