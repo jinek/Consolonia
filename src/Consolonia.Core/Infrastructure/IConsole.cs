@@ -29,7 +29,7 @@ namespace Consolonia.Core.Infrastructure
         /// </summary>
         bool SupportsMouseMove { get; }
 
-        public event Action Resized;
+        event Action Resized;
 
         event Action<Key, char, RawInputModifiers, bool, ulong, bool> KeyEvent;
         event Action<string, ulong, CanBeHandledEventArgs> TextInputEvent;
@@ -37,6 +37,6 @@ namespace Consolonia.Core.Infrastructure
 
         event Action<bool> FocusEvent;
 
-        public void PauseIO(Task task);
+        void PauseIO(Task task);
     }
 }

@@ -17,8 +17,8 @@
             <Setter Property="VerticalContentAlignment"
                     Value="Stretch" />
             <Setter Property="Background"
-                    Value="{DynamicResource ThemeBackgroundBrush}"/>
-            
+                    Value="{DynamicResource ThemeBackgroundBrush}" />
+
             <!--keys of turbovision by chatGPT-->
             <Setter Property="brushes:ManagedWindowExtensions.CloseWindowGesture"
                     Value="ALT+c" />
@@ -29,8 +29,8 @@
             <Setter Property="brushes:ManagedWindowExtensions.MoveWindowGesture"
                     Value="ALT+m" />
             <Setter Property="brushes:ManagedWindowExtensions.SizeWindowGesture"
-                    Value="ALT+s"/>
-            
+                    Value="ALT+s" />
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="windowManager:ManagedWindow">
@@ -141,13 +141,15 @@
             </Setter>
 
             <!--maximized-->
-            <Style Selector="^:maximized /template/ Button#PART_RestoreButton" >
-                <Setter Property="IsVisible" Value="True"/>
+            <Style Selector="^:maximized /template/ Button#PART_RestoreButton">
+                <Setter Property="IsVisible"
+                        Value="True" />
             </Style>
 
             <!--normal-->
-            <Style Selector="^:normal /template/ Button#PART_MaximizeButton" >
-                <Setter Property="IsVisible" Value="True"/>
+            <Style Selector="^:normal /template/ Button#PART_MaximizeButton">
+                <Setter Property="IsVisible"
+                        Value="True" />
             </Style>
 
             <Style Selector="^:active /template/ TextBlock#PART_Title">
@@ -159,7 +161,7 @@
                 <Setter Property="Background"
                         Value="{DynamicResource ThemeTransparentBrush}" />
             </Style>
-            
+
             <Style Selector="^:noborder /template/ Border#PART_WindowBorder">
                 <Setter Property="BorderThickness"
                         Value="{DynamicResource NoThickness}" />
@@ -173,7 +175,7 @@
                 <Setter Property="BoxShadow"
                         Value="0 0 0 Transparent" />
             </Style>
-            
+
             <Style Selector="^:sizing /template/ Border#PART_WindowBorder">
                 <Setter Property="BorderBrush">
                     <Setter.Value>

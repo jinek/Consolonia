@@ -10,7 +10,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <x:String x:Key="ThemeName">TurboVision</x:String>
-            
+
             <x:String x:Key="ThemeLeftArrowSymbol">←</x:String>
             <x:String x:Key="ThemeRightArrowSymbol">→</x:String>
             <x:String x:Key="ThemeUpArrowSymbol">↑</x:String>

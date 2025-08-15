@@ -196,7 +196,7 @@ namespace Consolonia.Controls
         }
 
         /// <summary>
-        /// Show this messagebox as a global modal dialog.
+        ///     Show this messagebox as a global modal dialog.
         /// </summary>
         /// <param name="title"></param>
         /// <param name="message"></param>
@@ -204,18 +204,22 @@ namespace Consolonia.Controls
         /// <returns></returns>
         public static Task<MessageBoxResult> ShowDialog(string title, string message,
             MessageBoxStyle style = MessageBoxStyle.Ok)
-            => ShowDialog(null, title, message, style);
+        {
+            return ShowDialog(null, title, message, style);
+        }
 
         /// <summary>
-        /// Show this messagebox as a global modal dialog.
+        ///     Show this messagebox as a global modal dialog.
         /// </summary>
         /// <returns></returns>
         public Task<MessageBoxResult> ShowDialog()
-            => ShowDialog(null);
+        {
+            return ShowDialog(null);
+        }
 
 
         /// <summary>
-        /// Show this messagebox scoped to the specified visual.
+        ///     Show this messagebox scoped to the specified visual.
         /// </summary>
         /// <param name="visual"></param>
         /// <param name="title"></param>
@@ -235,7 +239,7 @@ namespace Consolonia.Controls
         }
 
         /// <summary>
-        /// Show this messagebox scoped to the specified visual.
+        ///     Show this messagebox scoped to the specified visual.
         /// </summary>
         /// <param name="visual"></param>
         /// <returns></returns>

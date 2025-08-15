@@ -15,7 +15,7 @@
                 <Panel>
                     <!--Some time ago HiTest was false, but for cursor to revert to back it needs to hit some control-->
                     <Border Background="{TemplateBinding Background}"
-                            IsHitTestVisible="True"/>
+                            IsHitTestVisible="True" />
                     <!--<Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" /> -->
                     <VisualLayerManager>
 

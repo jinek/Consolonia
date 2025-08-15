@@ -487,18 +487,9 @@ namespace Consolonia.PlatformSupport
             int keyValue = (int)key;
             RawInputModifiers modifiers = KeyModifiersFlagTranslator.Translate(key);
 
-            if (_keyModifiers.Alt)
-            {
-                modifiers |= RawInputModifiers.Alt;
-            }
-            if (_keyModifiers.Ctrl)
-            {
-                modifiers |= RawInputModifiers.Control;
-            }
-            if (_keyModifiers.Shift)
-            {
-                modifiers |= RawInputModifiers.Shift;
-            }
+            if (_keyModifiers.Alt) modifiers |= RawInputModifiers.Alt;
+            if (_keyModifiers.Ctrl) modifiers |= RawInputModifiers.Control;
+            if (_keyModifiers.Shift) modifiers |= RawInputModifiers.Shift;
 
             key = key & ~Key.CtrlMask & ~Key.ShiftMask & ~Key.AltMask;
 

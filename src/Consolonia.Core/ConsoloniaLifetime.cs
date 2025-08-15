@@ -26,7 +26,7 @@ namespace Consolonia
         private bool _disposedValue;
         private int _exitCode;
         private bool _isShuttingDown;
-        
+
         /// <summary>
         ///     Gets the arguments passed to the AppBuilder Start method.
         /// </summary>
@@ -50,7 +50,8 @@ namespace Consolonia
         public Control MainView
         {
             get => TopLevel;
-            set => TopLevel = value as TopLevel ?? throw new ConsoloniaException("MainView must be a TopLevel control (e.g. Window)");
+            set => TopLevel = value as TopLevel ??
+                              throw new ConsoloniaException("MainView must be a TopLevel control (e.g. Window)");
         }
 
         public event EventHandler<ShutdownRequestedEventArgs> ShutdownRequested;
