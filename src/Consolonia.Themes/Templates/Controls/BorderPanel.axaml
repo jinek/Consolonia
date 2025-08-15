@@ -8,15 +8,14 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel x:Name="PART_Panel">
-                    <ContentPresenter Background="{TemplateBinding Background}"
-                                      BorderThickness="{TemplateBinding BorderThickness}"
-                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                      HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                      VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                    <ContentPresenter Name="PART_ContentPresenter"
                                       Padding="{TemplateBinding Padding}"
-                                      Margin="{TemplateBinding Margin}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Background="{TemplateBinding Background}"
                                       RecognizesAccessKey="True"
-                                      Content="{TemplateBinding Content}"/>
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}" />
                 </Panel>
             </ControlTemplate>
         </Setter>
