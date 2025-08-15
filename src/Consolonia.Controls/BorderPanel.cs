@@ -24,7 +24,7 @@ public class BorderPanel : ContentControl
     private const string PART_Border = "PART_Border";
     private Panel _panel;
     private Border _border;
-    private Popup? _popup;
+    private Popup _popup;
 
     public BorderPanel()
     {
