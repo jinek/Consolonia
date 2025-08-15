@@ -23,8 +23,8 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <console:BorderPanel x:Name="PART_LayoutRoot"
-                                            Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                                            BorderBrush="{DynamicResource ThemeBorderBrush}">
+                                     Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                     BorderBrush="{DynamicResource ThemeBorderBrush}">
                     <ScrollViewer
                             Background="{TemplateBinding Background}"
                             HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"

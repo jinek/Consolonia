@@ -14,34 +14,25 @@
                 Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
                 Value="Auto" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <console:LineBrush Brush="Gray" LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="BorderThickness"
-                Value="1" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Panel Margin="0 -1 0 0">
-                    <Border Name="LayoutRoot"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
-                        <ScrollViewer
+                <console:BorderPanel x:Name="PART_LayoutRoot"
+                                                 Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                                 BorderBrush="{DynamicResource ThemeBorderBrush}">
+
+                    <ScrollViewer
                             Background="{TemplateBinding Background}"
                             HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                             VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                            <ContentPresenter Content="{TemplateBinding Content}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              Margin="{TemplateBinding Padding}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              HorizontalContentAlignment="Stretch"
-                                              VerticalContentAlignment="Stretch" />
-                        </ScrollViewer>
-                    </Border>
-                </Panel>
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalContentAlignment="Stretch"
+                                          VerticalContentAlignment="Stretch" />
+                    </ScrollViewer>
+                </console:BorderPanel>
             </ControlTemplate>
         </Setter>
     </ControlTheme>

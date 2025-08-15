@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -23,6 +24,7 @@ public class BorderPanel : ContentControl
     private const string PART_Border = "PART_Border";
     private Panel _panel;
     private Border _border;
+    private Popup? _popup;
 
     public BorderPanel()
     {
@@ -34,10 +36,27 @@ public class BorderPanel : ContentControl
 
         this._panel = e.NameScope.Find<Panel>(PART_Panel);
         this._border = e.NameScope.Find<Border>(PART_Border);
-        var popup = this.FindLogicalAncestorOfType<Popup>();
-        if (popup != null)
+        
+        if (_popup != null)
         {
-            popup.PropertyChanged += Popup_PropertyChanged;
+            _popup.PropertyChanged -= Popup_PropertyChanged;
+            _popup = null;
+        }
+        _popup = this.FindLogicalAncestorOfType<Popup>();
+        if (_popup != null)
+        {
+            _popup.PropertyChanged += Popup_PropertyChanged;
+        }
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        if (_popup != null)
+        {
+            _popup.PropertyChanged -= Popup_PropertyChanged;
+            _popup = null;
         }
     }
 
