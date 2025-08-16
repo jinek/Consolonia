@@ -51,10 +51,7 @@ If that’s you, kick the tires, and help us refine Consolonia into a powerhouse
 
 ---
 
-**💡 Ready to explore?**  
-The console just got an upgrade. With Consolonia + Avalonia, the gap between TUI and GUI is officially closing.
-
-## Try it out
+# 💡 Ready to explore?
 To try it out install the Consolonia.Gallery tool from nuget:
 ```
 dotnet tool install -g Consolonia.Gallery --prerelease
