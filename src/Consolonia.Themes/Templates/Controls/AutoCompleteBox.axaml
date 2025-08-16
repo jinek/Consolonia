@@ -1,4 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     x:ClassModifier="internal">
     <ControlTheme x:Key="{x:Type AutoCompleteBox}"
@@ -7,8 +8,6 @@
                 Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeSelectionForegroundBrush}" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
         <Setter Property="Padding"
                 Value="0,0" />
         <Setter Property="MaxDropDownHeight"
@@ -34,22 +33,15 @@
                            MaxHeight="{TemplateBinding MaxDropDownHeight}"
                            IsLightDismissEnabled="True"
                            PlacementTarget="{TemplateBinding}">
-                        <Panel>
-                            <Border Background="{DynamicResource ThemeShadeBrush}"
-                                    Margin="2,1,0,0" />
-                            <Border BorderBrush="{DynamicResource ThemeBorderBrush}"
-                                    BorderThickness="1"
-                                    Margin="0,0,2,1"
-                                    Background="{DynamicResource ThemeAlternativeBackgroundBrush}">
-                                <ListBox Name="PART_SelectingItemsControl"
-                                         Background="{x:Null}"
-                                         BorderThickness="0"
-                                         Foreground="{DynamicResource ThemeForegroundBrush}"
-                                         ItemTemplate="{TemplateBinding ItemTemplate}"
-                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
-                            </Border>
-                        </Panel>
+                        <console:BorderPanel>
+                            <ListBox Name="PART_SelectingItemsControl"
+                                     Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                     BorderThickness="0"
+                                     Foreground="{DynamicResource ThemeForegroundBrush}"
+                                     ItemTemplate="{TemplateBinding ItemTemplate}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                        </console:BorderPanel>
                     </Popup>
                 </Panel>
             </ControlTemplate>

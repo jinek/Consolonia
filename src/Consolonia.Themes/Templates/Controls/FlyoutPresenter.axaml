@@ -1,5 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:console="https://github.com/jinek/consolonia">
+
     <ControlTheme x:Key="{x:Type FlyoutPresenter}"
                   TargetType="FlyoutPresenter">
         <Setter Property="HorizontalContentAlignment"
@@ -14,28 +16,22 @@
                 Value="Auto" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Panel>
-                    <Border Background="{DynamicResource ThemeShadeBrush}"
-                            Margin="2,1,0,0" />
-                    <Border Name="LayoutRoot"
-                            Margin="0,0,2,1"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding CornerRadius}">
-                        <ScrollViewer
-                            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                            <ContentPresenter Content="{TemplateBinding Content}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              Margin="{TemplateBinding Padding}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              HorizontalContentAlignment="Stretch"
-                                              VerticalContentAlignment="Stretch" />
-                        </ScrollViewer>
-                    </Border>
-                </Panel>
+                <console:BorderPanel x:Name="PART_LayoutRoot"
+                                     Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                     BorderBrush="{DynamicResource ThemeBorderBrush}">
+
+                    <ScrollViewer Background="{TemplateBinding Background}"
+                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalContentAlignment="Stretch"
+                                          VerticalContentAlignment="Stretch" />
+                    </ScrollViewer>
+                </console:BorderPanel>
             </ControlTemplate>
         </Setter>
     </ControlTheme>

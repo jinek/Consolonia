@@ -3,12 +3,6 @@
                     xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type MenuFlyoutPresenter}"
                   TargetType="MenuFlyoutPresenter">
-        <Setter Property="BorderThickness"
-                Value="1" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderBrush}" />
-        <Setter Property="Padding"
-                Value="1,0,0,0" />
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
@@ -19,33 +13,24 @@
                 Value="Auto" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Panel>
-                    <Border Background="{DynamicResource ThemeShadeBrush}"
-                            Margin="2,1,0,0" />
-                    <Border Name="LayoutRoot"
-                            Margin="0,0,2,1"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding CornerRadius}">
-                        <ScrollViewer
-                            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                            <ItemsPresenter Name="PART_ItemsPresenter"
-                                            ItemsPanel="{TemplateBinding ItemsPanel}"
-                                            Margin="{TemplateBinding Padding}"
-                                            KeyboardNavigation.TabNavigation="Continue"
-                                            Grid.IsSharedSizeScope="True">
-                                <ItemsPresenter.Styles>
-                                    <Style Selector="ItemsPresenter">
-                                        <Setter Property="(console:MenuExtensions.FocusOnLoad)"
-                                                Value="True" />
-                                    </Style>
-                                </ItemsPresenter.Styles>
-                            </ItemsPresenter>
-                        </ScrollViewer>
-                    </Border>
-                </Panel>
+                <console:BorderPanel x:Name="PART_LayoutRoot">
+                    <ScrollViewer Background="{TemplateBinding Background}"
+                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                        <ItemsPresenter Name="PART_ItemsPresenter"
+                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                        Margin="{TemplateBinding Padding}"
+                                        KeyboardNavigation.TabNavigation="Continue"
+                                        Grid.IsSharedSizeScope="True">
+                            <ItemsPresenter.Styles>
+                                <Style Selector="ItemsPresenter">
+                                    <Setter Property="(console:MenuExtensions.FocusOnLoad)"
+                                            Value="True" />
+                                </Style>
+                            </ItemsPresenter.Styles>
+                        </ItemsPresenter>
+                    </ScrollViewer>
+                </console:BorderPanel>
             </ControlTemplate>
         </Setter>
     </ControlTheme>

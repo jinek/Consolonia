@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
+    [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Text")]
     [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
     public readonly struct PixelForeground : IEquatable<PixelForeground>
     {

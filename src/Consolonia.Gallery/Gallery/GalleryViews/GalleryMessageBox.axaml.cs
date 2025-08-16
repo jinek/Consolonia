@@ -23,7 +23,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         private async void OnOk(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = await MessageBox.ShowDialog(this, "OK Message box", "Do you want to OK?");
+            MessageBoxResult result = await MessageBox.ShowDialog("OK Message box", "Do you want to OK?");
             ViewModel.Result = result.ToString();
         }
 
@@ -36,7 +36,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 Message = "Do you want to OK or cancel?",
                 AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
-            MessageBoxResult result = await mb.ShowDialog(this);
+            MessageBoxResult result = await mb.ShowDialog();
             ViewModel.Result = result.ToString();
         }
 
@@ -49,7 +49,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 Message = "Do you want to Yes or No?",
                 AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
-            MessageBoxResult result = await mb.ShowDialog(this);
+            MessageBoxResult result = await mb.ShowDialog();
             ViewModel.Result = result.ToString();
         }
 
@@ -62,7 +62,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 Message = "Do you want to Yes, No or Cancel?",
                 AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
-            MessageBoxResult result = await mb.ShowDialog(this);
+            MessageBoxResult result = await mb.ShowDialog();
             ViewModel.Result = result.ToString();
         }
 
@@ -89,7 +89,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 },
                 AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole"
             };
-            MessageBoxResult result = await mb.ShowDialog(this);
+            MessageBoxResult result = await mb.ShowDialog();
             ViewModel.Result = result.ToString();
         }
     }
