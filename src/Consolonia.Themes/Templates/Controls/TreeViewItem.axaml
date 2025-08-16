@@ -14,7 +14,7 @@
             <ControlTemplate>
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           Text="🞂"
+                           Text="{DynamicResource ThemeRightArrowSymbol}"
                            Background="Transparent" />
             </ControlTemplate>
         </Setter>
