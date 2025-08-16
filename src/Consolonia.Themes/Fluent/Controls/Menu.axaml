@@ -4,7 +4,7 @@
         xmlns:controls="https://github.com/jinek/consolonia">
     <Styles.Resources>
 
-        <ControlTheme x:Key="FluentTopLevelMenu"
+        <ControlTheme x:Key="TopLevelMenuItem"
                       TargetType="MenuItem"
                       BasedOn="{StaticResource TopLevelMenuItem}">
             <Style Selector="^ /template/ controls|CaretControl#CaretControl">
@@ -17,7 +17,7 @@
                       BasedOn="{StaticResource {x:Type Menu}}"
                       TargetType="Menu">
             <Setter Property="ItemContainerTheme"
-                    Value="{StaticResource FluentTopLevelMenu}" />
+                    Value="{StaticResource TopLevelMenuItem}" />
         </ControlTheme>
     </Styles.Resources>
 </Styles>
