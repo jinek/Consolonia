@@ -10,9 +10,7 @@
                 Value="1" />
         <Setter Property="Template">
             <ControlTemplate>
-                <console:BorderPanel x:Name="PART_LayoutRoot"
-                                     Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                                     BorderBrush="{DynamicResource ThemeBorderBrush}">
+                <console:BorderPanel x:Name="PART_LayoutRoot">
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Padding="{TemplateBinding Padding}"
                                       Background="{TemplateBinding Background}"

@@ -25,9 +25,7 @@
                                OverlayInputPassThroughElement="{Binding $parent[Menu]}"
                                IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
 
-                            <console:BorderPanel Background="{TemplateBinding Background}"
-                                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                                 BorderThickness="{TemplateBinding BorderThickness}">
+                            <console:BorderPanel>
                                 <ScrollViewer>
                                     <ItemsPresenter Name="PART_ItemsPresenter"
                                                     ItemsPanel="{TemplateBinding ItemsPanel}"

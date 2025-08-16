@@ -23,9 +23,7 @@
                 Value="Auto" />
         <Setter Property="Template">
             <ControlTemplate>
-                <console:BorderPanel x:Name="PART_LayoutRoot"
-                                     Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                                     BorderBrush="{DynamicResource ThemeBorderBrush}">
+                <console:BorderPanel x:Name="PART_LayoutRoot">
                     <ScrollViewer Background="{TemplateBinding Background}"
                                   HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                   VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">

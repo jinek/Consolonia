@@ -58,8 +58,7 @@
                            PlacementTarget="{TemplateBinding}"
                            IsLightDismissEnabled="True">
 
-                        <console:BorderPanel Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                                             BorderBrush="{DynamicResource ThemeBorderBrush}">
+                        <console:BorderPanel>
                             <Calendar Name="PART_Calendar"
                                       BorderThickness="0"
                                       Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
