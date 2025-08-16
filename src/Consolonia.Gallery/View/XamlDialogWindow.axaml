@@ -7,7 +7,8 @@
                              Icon="🔬"
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"
-                             WindowStartupLocation="CenterScreen"
+                             WindowStartupLocation="CenterOwner"
+                             WindowState="Maximized"
                              x:Class="Consolonia.Gallery.View.XamlDialogWindow">
     <ScrollViewer HorizontalScrollBarVisibility="Visible"
                   VerticalScrollBarVisibility="Visible"
