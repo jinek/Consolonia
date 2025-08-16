@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RepoRoot", "RepoRoot", "{09
 		..\Directory.Build.props = ..\Directory.Build.props
 		..\Directory.Core.Build.props = ..\Directory.Core.Build.props
 		..\LICENSE = ..\LICENSE
-		..\README.md = ..\README.md
+		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{A8CC5246-0D48-4418-B3E8-AC82ADB269E9}"
@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 	ProjectSection(SolutionItems) = preProject
 		..\.github\workflows\editorconfig.yml = ..\.github\workflows\editorconfig.yml
 		..\.github\workflows\general_build.yml = ..\.github\workflows\general_build.yml
+		..\.github\workflows\PublishIncrementalNuget.yml = ..\.github\workflows\PublishIncrementalNuget.yml
+		..\.github\workflows\PublishNuget.yml = ..\.github\workflows\PublishNuget.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F756B909-46C5-43FF-8322-86EC36B51841}"
