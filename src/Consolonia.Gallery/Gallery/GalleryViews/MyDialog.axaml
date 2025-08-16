@@ -1,14 +1,14 @@
-<console:Window xmlns="https://github.com/avaloniaui"
-                xmlns:console="https://github.com/jinek/consolonia"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
-                MinWidth="10"
-                Padding="1"
-                Icon="😎"
-                x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyDialog"
-                x:DataType="local:MyDialogViewModel"
-                ShowActivated="True"
-                Title="{Binding Title}">
+<windowManager:ManagedWindow xmlns="https://github.com/avaloniaui"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
+                             xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager"
+                             MinWidth="10"
+                             Padding="1"
+                             Icon="😎"
+                             x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyDialog"
+                             x:DataType="local:MyDialogViewModel"
+                             ShowActivated="True"
+                             Title="{Binding Title}">
     <StackPanel Spacing="1">
         <StackPanel Orientation="Horizontal"
                     Spacing="1">
@@ -38,4 +38,4 @@
             </Button>
         </StackPanel>
     </StackPanel>
-</console:Window>
+</windowManager:ManagedWindow>

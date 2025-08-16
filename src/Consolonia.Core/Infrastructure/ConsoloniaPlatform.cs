@@ -24,8 +24,9 @@ namespace Consolonia.Core.Infrastructure
 
         public IWindowImpl CreateWindow()
         {
-            return RaiseNotSupported<IWindowImpl>(NotSupportedRequestCode.CreateWindow);
-            // return new ConsoleWindow();
+            //todo: throw notSupported if more than one window
+            //return RaiseNotSupported<IWindowImpl>(NotSupportedRequestCode.CreateWindow);
+            return new ConsoleWindowImpl();
         }
 
         public IWindowImpl CreateEmbeddableWindow()

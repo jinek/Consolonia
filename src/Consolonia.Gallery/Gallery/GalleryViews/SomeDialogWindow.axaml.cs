@@ -2,12 +2,11 @@
 using System;
 using Avalonia;
 using Avalonia.Interactivity;
-using Consolonia.Controls;
-using Consolonia.Core.Infrastructure;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public partial class SomeDialogWindow : Window
+    public partial class SomeDialogWindow : ManagedWindow
     {
         internal const string DialogTitle = "Dialog popup";
 
@@ -20,10 +19,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Title = DialogTitle;
             Width = width;
             Height = height;
-            var lifetime = Application.Current.ApplicationLifetime as ConsoloniaLifetime;
-            var consoleWindow = lifetime?.TopLevel as ConsoleWindow;
             AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole";
-
             AttachedToVisualTree += OnShowDialog;
         }
 

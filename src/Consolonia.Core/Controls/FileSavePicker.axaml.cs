@@ -5,11 +5,11 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Window = Consolonia.Controls.Window;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FileSavePicker : Window
+    internal partial class FileSavePicker : ManagedWindow
     {
         public FileSavePicker()
             : this(new FilePickerSaveOptions())
@@ -44,8 +44,8 @@ namespace Consolonia.Core.Controls
             base.OnLoaded(e);
 
             Position = new PixelPoint(2, 2);
-            Width = OverlayLayer.Bounds.Width - 4;
-            Height = OverlayLayer.Bounds.Height - 4;
+            Width = WindowsPanel.Bounds.Width - 4;
+            Height = WindowsPanel.Bounds.Height - 4;
         }
 
         private void OnDoubleTapped(object sender, TappedEventArgs e)
