@@ -26,8 +26,8 @@
                                IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
 
                             <console:BorderPanel Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                                 BorderBrush="{TemplateBinding BorderBrush}"
+                                                 BorderThickness="{TemplateBinding BorderThickness}">
                                 <ScrollViewer>
                                     <ItemsPresenter Name="PART_ItemsPresenter"
                                                     ItemsPanel="{TemplateBinding ItemsPanel}"

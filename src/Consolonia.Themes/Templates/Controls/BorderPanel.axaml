@@ -8,16 +8,16 @@
                 <Panel x:Name="PART_Panel">
                     <Border x:Name="PART_Border"
                             Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                            BorderThickness="1" >
+                            BorderThickness="1">
                         <ContentPresenter Padding="{TemplateBinding Padding}"
-                                      BorderThickness="{TemplateBinding BorderThickness}"
-                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      Background="{TemplateBinding Background}"
-                                      RecognizesAccessKey="True"
-                                      Content="{TemplateBinding Content}"
-                                      ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Background="{TemplateBinding Background}"
+                                          RecognizesAccessKey="True"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
                     </Border>
                 </Panel>
             </ControlTemplate>

@@ -7,7 +7,8 @@
                 Value="1" />
         <Setter Property="BorderBrush">
             <Setter.Value>
-                <console:LineBrush Brush="Gray" LineStyle="Edge" />
+                <console:LineBrush Brush="Gray"
+                                   LineStyle="Edge" />
             </Setter.Value>
         </Setter>
         <Setter Property="Padding"
@@ -25,10 +26,9 @@
                 <console:BorderPanel x:Name="PART_LayoutRoot"
                                      Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
                                      BorderBrush="{DynamicResource ThemeBorderBrush}">
-                    <ScrollViewer
-                            Background="{TemplateBinding Background}"
-                            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                    <ScrollViewer Background="{TemplateBinding Background}"
+                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                         <ItemsPresenter Name="PART_ItemsPresenter"
                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                         Margin="{TemplateBinding Padding}"

@@ -6,14 +6,15 @@
         <ControlTheme x:Key="{x:Type console:BorderPanel}"
                       TargetType="console:BorderPanel">
             <Setter Property="Background"
-                    Value="{DynamicResource ThemeAlternativeBackgroundBrush}"/>
+                    Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
             <Setter Property="Template">
                 <ControlTemplate>
                     <Panel x:Name="PART_Panel">
                         <Border x:Name="PART_Border"
-                                BorderThickness="1" >
+                                BorderThickness="1">
                             <Border.BorderBrush>
-                                <console:LineBrush LineStyle="Edge" Brush="{DynamicResource ThemeBorderBrush}"/>
+                                <console:LineBrush LineStyle="Edge"
+                                                   Brush="{DynamicResource ThemeBorderBrush}" />
                             </Border.BorderBrush>
                             <ContentPresenter Name="PART_ContentPresenter"
                                               Padding="{TemplateBinding Padding}"

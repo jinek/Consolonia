@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:console="https://github.com/jinek/consolonia"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     x:ClassModifier="internal">
     <ControlTheme x:Key="{x:Type AutoCompleteBox}"
                   TargetType="AutoCompleteBox">
@@ -8,13 +8,14 @@
                 Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeSelectionForegroundBrush}" />
-        <Setter Property="BorderBrush" >
+        <Setter Property="BorderBrush">
             <Setter.Value>
-                <console:LineBrush Brush="Gray" LineStyle="Edge" />
+                <console:LineBrush Brush="Gray"
+                                   LineStyle="Edge" />
             </Setter.Value>
         </Setter>
-        <Setter Property="BorderThickness" 
-                Value="1"/>
+        <Setter Property="BorderThickness"
+                Value="1" />
         <Setter Property="Padding"
                 Value="0,0" />
         <Setter Property="MaxDropDownHeight"
@@ -40,17 +41,16 @@
                            MaxHeight="{TemplateBinding MaxDropDownHeight}"
                            IsLightDismissEnabled="True"
                            PlacementTarget="{TemplateBinding}">
-                        <console:BorderPanel 
-                            Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                            BorderBrush="{DynamicResource ThemeBorderBrush}"                            >
+                        <console:BorderPanel Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                             BorderBrush="{DynamicResource ThemeBorderBrush}">
 
                             <ListBox Name="PART_SelectingItemsControl"
-                                         Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                                         BorderThickness="0"
-                                         Foreground="{DynamicResource ThemeForegroundBrush}"
-                                         ItemTemplate="{TemplateBinding ItemTemplate}"
-                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                                     Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                     BorderThickness="0"
+                                     Foreground="{DynamicResource ThemeForegroundBrush}"
+                                     ItemTemplate="{TemplateBinding ItemTemplate}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto" />
                         </console:BorderPanel>
                     </Popup>
                 </Panel>

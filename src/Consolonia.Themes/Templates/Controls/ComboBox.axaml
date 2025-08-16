@@ -65,13 +65,12 @@
                            MaxHeight="{TemplateBinding MaxDropDownHeight}"
                            PlacementTarget="{TemplateBinding}"
                            IsLightDismissEnabled="True">
-                        <console:BorderPanel
-                            Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                            BorderBrush="{DynamicResource ThemeBorderBrush}">
+                        <console:BorderPanel Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                                             BorderBrush="{DynamicResource ThemeBorderBrush}">
 
                             <ScrollViewer Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                                                    HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                                    VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                                          HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                          VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                                 <ItemsPresenter Name="PART_ItemsPresenter"
                                                 ItemsPanel="{TemplateBinding ItemsPanel}">
                                     <ItemsPresenter.Styles>
