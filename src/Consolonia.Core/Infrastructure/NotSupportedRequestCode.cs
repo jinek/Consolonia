@@ -20,12 +20,6 @@ namespace Consolonia.Core.Infrastructure
         CreateEmbeddableWindow = 13,
 
         /// <summary>
-        ///     Attempt to create a window.
-        ///     Handler must return <see cref="IWindowImpl" />
-        /// </summary>
-        CreateWindow = 62721,
-
-        /// <summary>
         ///     Pressed key is not supported.
         ///     Handler receives <see cref="ConsoleKey" /> and must return <see cref="Key" />
         /// </summary>

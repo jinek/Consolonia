@@ -67,7 +67,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                                       `^'     \ :/           `^'  `-^-'   \v/ :  \/ 
                               Bill Ames
 
-                              """.Split((char[]) ['\r', '\n'], StringSplitOptions.RemoveEmptyEntries));
+                              """.Split((char[])['\r', '\n'], StringSplitOptions.RemoveEmptyEntries));
             int lineNumber = 1;
             Cows = [.. text.Select(l => $"{lineNumber++,3} {l}")];
         }

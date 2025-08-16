@@ -1,18 +1,18 @@
-<console:Window xmlns="https://github.com/avaloniaui"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:console="https://github.com/jinek/consolonia"
-                mc:Ignorable="d"
-                Icon="🔬"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                WindowStartupLocation="CenterScreen"
-                x:Class="Consolonia.Gallery.View.XamlDialogWindow">
+<windowManager:ManagedWindow xmlns="https://github.com/avaloniaui"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                             xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager"
+                             mc:Ignorable="d"
+                             Icon="🔬"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             WindowStartupLocation="CenterScreen"
+                             x:Class="Consolonia.Gallery.View.XamlDialogWindow">
     <ScrollViewer HorizontalScrollBarVisibility="Visible"
                   VerticalScrollBarVisibility="Visible"
                   Focusable="True">
         <SelectableTextBlock Name="Xaml"
                              Text="{Binding}" />
     </ScrollViewer>
-</console:Window>
+</windowManager:ManagedWindow>
