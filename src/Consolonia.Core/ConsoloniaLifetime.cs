@@ -49,9 +49,18 @@ namespace Consolonia
 
         public Control MainView
         {
-            get => TopLevel;
-            set => TopLevel = value as TopLevel ??
-                              throw new ConsoloniaException("MainView must be a TopLevel control (e.g. Window)");
+            get => (Control)TopLevel.Content;
+            set
+            {
+                if (value is TopLevel topLevel)
+                    this.TopLevel = topLevel;
+                else
+                {
+                    if (this.TopLevel == null)
+                        this.TopLevel = new Window();
+                    this.TopLevel.Content = value;
+                }
+            }
         }
 
         public event EventHandler<ShutdownRequestedEventArgs> ShutdownRequested;

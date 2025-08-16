@@ -7,6 +7,6 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="BlazorBindingsAvalonia" Version="0.1.2" />
+        <PackageReference Include="Blazonia" Version="0.0.*-*" />
     </ItemGroup>
 </Project>
