@@ -43,10 +43,12 @@
                                IsDirectionReversed="True">
                             <Track.DecreaseButton>
                                 <RepeatButton Name="PART_PageUpButton"
+                                              Background="Transparent"
                                               Focusable="False" />
                             </Track.DecreaseButton>
                             <Track.IncreaseButton>
                                 <RepeatButton Name="PART_PageDownButton"
+                                              Background="Transparent"
                                               Focusable="False" />
                             </Track.IncreaseButton>
                             <Thumb Name="thumb" />
@@ -96,10 +98,12 @@
                                    Orientation="{TemplateBinding Orientation}">
                                 <Track.DecreaseButton>
                                     <RepeatButton Name="PART_PageUpButton"
+                                                  Background="Transparent"
                                                   Focusable="False" />
                                 </Track.DecreaseButton>
                                 <Track.IncreaseButton>
                                     <RepeatButton Name="PART_PageDownButton"
+                                                  Background="Transparent"
                                                   Focusable="False" />
                                 </Track.IncreaseButton>
                                 <Thumb Name="thumb" />
