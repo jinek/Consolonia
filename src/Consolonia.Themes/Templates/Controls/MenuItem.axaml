@@ -63,7 +63,7 @@
                                    Placement="BottomEdgeAlignedLeft"
                                    IsLightDismissEnabled="False"
                                    IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
-                                <console:BorderPanel >
+                                <console:BorderPanel>
                                     <ScrollViewer>
                                         <ItemsPresenter Name="PART_ItemsPresenter"
                                                         ItemsPanel="{TemplateBinding ItemsPanel}"

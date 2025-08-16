@@ -41,7 +41,7 @@
                            MaxHeight="{TemplateBinding MaxDropDownHeight}"
                            IsLightDismissEnabled="True"
                            PlacementTarget="{TemplateBinding}">
-                        <console:BorderPanel >
+                        <console:BorderPanel>
                             <ListBox Name="PART_SelectingItemsControl"
                                      Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
                                      BorderThickness="0"
