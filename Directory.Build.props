@@ -7,8 +7,8 @@
     <PropertyGroup>
         <VersionPrefix>11.2.5</VersionPrefix>
         <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
-        <Description>Text User Interface implementation of Avalonia UI (GUI Framework)</Description>
-        <Copyright>Copyright © Evgeny Gorbovoy 2021 - 2022</Copyright>
+        <Description>.NET TUI framework: Avalonia engine, terminal output, modern UX</Description>
+        <Copyright>© 2021–2025 Evgeny Gorbovoy &amp; Tom Laird-McConnell</Copyright>
         <PackageIcon>Icon.png</PackageIcon>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
