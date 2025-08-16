@@ -33,6 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 	ProjectSection(SolutionItems) = preProject
 		..\.github\workflows\editorconfig.yml = ..\.github\workflows\editorconfig.yml
 		..\.github\workflows\general_build.yml = ..\.github\workflows\general_build.yml
+		..\.github\workflows\dismiss-approvals.yml = ..\.github\workflows\dismiss-approvals.yml
 		..\.github\workflows\PublishIncrementalNuget.yml = ..\.github\workflows\PublishIncrementalNuget.yml
 		..\.github\workflows\PublishNuget.yml = ..\.github\workflows\PublishNuget.yml
 	EndProjectSection
