@@ -9,6 +9,8 @@
                 <MergeResourceInclude Source="/TurboVision/TurboVisionDefaultColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <x:String x:Key="ThemeName">TurboVision</x:String>
+
             <x:String x:Key="ThemeLeftArrowSymbol">←</x:String>
             <x:String x:Key="ThemeRightArrowSymbol">→</x:String>
             <x:String x:Key="ThemeUpArrowSymbol">↑</x:String>
@@ -48,6 +50,13 @@
             <x:String x:Key="ThemeToggleSwitchOnSymbol">■</x:String>
 
             <console:CaretStyle x:Key="ControlFocusCaretStyle">BlinkingBlock</console:CaretStyle>
+
+            <!-- window manager resources-->
+            <!-- ReSharper disable InconsistentNaming -->
+            <x:Int32 x:Key="ManagedWindow_SizingVector">1</x:Int32>
+            <!-- ReSharper restore InconsistentNaming -->
+            <!-- window manager resources end -->
+
         </ResourceDictionary>
     </Styles.Resources>
 

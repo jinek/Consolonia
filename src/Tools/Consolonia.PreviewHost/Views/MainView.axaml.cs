@@ -5,7 +5,7 @@ using Consolonia.PreviewHost.ViewModels;
 
 namespace Consolonia.PreviewHost.Views
 {
-    public partial class MainView : UserControl
+    public partial class MainView : Window
     {
         public MainView()
         {

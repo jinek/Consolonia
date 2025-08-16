@@ -14,7 +14,7 @@ namespace Consolonia.Gallery.Tests
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Enter);
-            await UITest.AssertHasText(@"Item 1         ˃",
+            await UITest.AssertHasText(@"Item 1\s+˃",
                 "Item 2");
             await UITest.KeyInput(Key.Right);
             await UITest.AssertHasText("Subitem 1",
