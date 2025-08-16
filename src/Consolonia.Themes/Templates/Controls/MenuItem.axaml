@@ -9,13 +9,7 @@
     <ControlTheme x:Key="{x:Type MenuItem}"
                   TargetType="MenuItem">
         <Setter Property="Background"
-                Value="{x:Null}" />
-        <Setter Property="BorderThickness"
-                Value="1" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderBrush}" />
-        <Setter Property="Padding"
-                Value="1,0,0,0" />
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="root"
@@ -46,6 +40,7 @@
                                                     Margin="0,0,0,0"
                                                     VerticalAlignment="Center" />
                             <ContentPresenter Name="PART_HeaderPresenter"
+                                              Padding="1 0"
                                               Content="{TemplateBinding Header}"
                                               Margin="{TemplateBinding Padding}"
                                               VerticalAlignment="Center"
@@ -66,27 +61,20 @@
                                    Placement="BottomEdgeAlignedLeft"
                                    IsLightDismissEnabled="False"
                                    IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
-                                <Panel>
-                                    <Border Background="{DynamicResource ThemeShadeBrush}"
-                                            Margin="2,1,0,0" />
-                                    <Border Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                                            Margin="0,0,2,1"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ScrollViewer>
-                                            <ItemsPresenter Name="PART_ItemsPresenter"
-                                                            ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                            Grid.IsSharedSizeScope="True">
-                                                <ItemsPresenter.Styles>
-                                                    <Style Selector="ItemsPresenter">
-                                                        <Setter Property="(console:MenuExtensions.FocusOnLoad)"
-                                                                Value="True" />
-                                                    </Style>
-                                                </ItemsPresenter.Styles>
-                                            </ItemsPresenter>
-                                        </ScrollViewer>
-                                    </Border>
-                                </Panel>
+                                <console:BorderPanel>
+                                    <ScrollViewer>
+                                        <ItemsPresenter Name="PART_ItemsPresenter"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        Grid.IsSharedSizeScope="True">
+                                            <ItemsPresenter.Styles>
+                                                <Style Selector="ItemsPresenter">
+                                                    <Setter Property="(console:MenuExtensions.FocusOnLoad)"
+                                                            Value="True" />
+                                                </Style>
+                                            </ItemsPresenter.Styles>
+                                        </ItemsPresenter>
+                                    </ScrollViewer>
+                                </console:BorderPanel>
                             </Popup>
                         </Grid>
                     </console:CaretControl>
@@ -103,7 +91,6 @@
         </Style>
 
         <Style Selector="^:selected /template/ Border#root">
-            <!--TurboVision approach-->
             <Setter Property="Background"
                     Value="{DynamicResource ThemeActionBackgroundBrush}" />
             <Setter Property="(TemplatedControl.Foreground)"

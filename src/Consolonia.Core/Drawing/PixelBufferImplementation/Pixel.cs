@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
-
+// ReSharper disable NotResolvedInText
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [SuppressMessage("ReSharper", "NotResolvedInText",

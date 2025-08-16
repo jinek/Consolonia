@@ -74,6 +74,7 @@
 
     <wm:WindowManagerTheme />
 
+    <StyleInclude Source="/TurboVision/Controls/BorderPanel.axaml" />
     <StyleInclude Source="/TurboVision/Controls/Button.axaml" />
     <StyleInclude Source="/TurboVision/Controls/ConsoloniaAccessRun.axaml" />
     <StyleInclude Source="/TurboVision/Controls/ToggleButton.axaml" />

@@ -2,16 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:console="https://github.com/jinek/consolonia">
 
-    <ControlTheme x:Key="TurboVisionTopLevelMenuItem"
+    <ControlTheme x:Key="TopLevelMenuItem"
                   TargetType="MenuItem">
         <Setter Property="(console:MenuExtensions.IsMenu)"
                 Value="True" />
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-        <Setter Property="BorderThickness"
-                Value="1" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ThemeBorderBrush}" />
         <Setter Property="Padding"
                 Value="1 0" />
         <Setter Property="Template">
@@ -28,27 +24,21 @@
                                IsLightDismissEnabled="True"
                                OverlayInputPassThroughElement="{Binding $parent[Menu]}"
                                IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
-                            <Panel>
-                                <Border Background="{DynamicResource ThemeShadeBrush}"
-                                        Margin="2,1,0,0" />
-                                <Border Background="{TemplateBinding Background}"
-                                        Margin="0,0,2,1"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ScrollViewer>
-                                        <ItemsPresenter Name="PART_ItemsPresenter"
-                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                        Grid.IsSharedSizeScope="True">
-                                            <ItemsPresenter.Styles>
-                                                <Style Selector="ItemsPresenter">
-                                                    <Setter Property="(console:MenuExtensions.FocusOnLoad)"
-                                                            Value="True" />
-                                                </Style>
-                                            </ItemsPresenter.Styles>
-                                        </ItemsPresenter>
-                                    </ScrollViewer>
-                                </Border>
-                            </Panel>
+
+                            <console:BorderPanel>
+                                <ScrollViewer>
+                                    <ItemsPresenter Name="PART_ItemsPresenter"
+                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                    Grid.IsSharedSizeScope="True">
+                                        <ItemsPresenter.Styles>
+                                            <Style Selector="ItemsPresenter">
+                                                <Setter Property="(console:MenuExtensions.FocusOnLoad)"
+                                                        Value="True" />
+                                            </Style>
+                                        </ItemsPresenter.Styles>
+                                    </ItemsPresenter>
+                                </ScrollViewer>
+                            </console:BorderPanel>
                         </Popup>
                     </Panel>
                 </Border>
@@ -90,11 +80,10 @@
 
     <ControlTheme x:Key="{x:Type Menu}"
                   TargetType="Menu">
-        <!--TurboVision approach-->
         <Setter Property="Background"
                 Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="ItemContainerTheme"
-                Value="{DynamicResource TurboVisionTopLevelMenuItem}" />
+                Value="{DynamicResource TopLevelMenuItem}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}"

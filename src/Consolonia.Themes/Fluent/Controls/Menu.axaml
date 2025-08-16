@@ -1,11 +1,12 @@
+<!-- FLUENT THEME-->
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="https://github.com/jinek/consolonia">
     <Styles.Resources>
 
-        <ControlTheme x:Key="TurboVisionTopLevelMenuItem"
+        <ControlTheme x:Key="TopLevelMenuItem"
                       TargetType="MenuItem"
-                      BasedOn="{StaticResource TurboVisionTopLevelMenuItem}">
+                      BasedOn="{StaticResource TopLevelMenuItem}">
             <Style Selector="^ /template/ controls|CaretControl#CaretControl">
                 <Setter Property="CaretStyle"
                         Value="None" />
@@ -16,7 +17,7 @@
                       BasedOn="{StaticResource {x:Type Menu}}"
                       TargetType="Menu">
             <Setter Property="ItemContainerTheme"
-                    Value="{StaticResource TurboVisionTopLevelMenuItem}" />
+                    Value="{StaticResource TopLevelMenuItem}" />
         </ControlTheme>
     </Styles.Resources>
 </Styles>
