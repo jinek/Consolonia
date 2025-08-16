@@ -23,11 +23,11 @@
                                 </Border.BorderBrush>
 
                                 <ContentPresenter Name="PART_ContentPresenter"
-                                              Foreground="{TemplateBinding Foreground}"
-                                              Background="{TemplateBinding Background}"
-                                              BorderBrush="{TemplateBinding BorderBrush}"
-                                              BorderThickness="{TemplateBinding BorderThickness}"
-                                              Content="{TemplateBinding Content}" />
+                                                  Foreground="{TemplateBinding Foreground}"
+                                                  Background="{TemplateBinding Background}"
+                                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                                  Content="{TemplateBinding Content}" />
                             </Border>
                         </Panel>
                     </LayoutTransformControl>
