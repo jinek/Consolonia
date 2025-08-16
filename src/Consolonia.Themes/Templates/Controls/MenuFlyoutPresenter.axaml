@@ -3,16 +3,6 @@
                     xmlns:console="https://github.com/jinek/consolonia">
     <ControlTheme x:Key="{x:Type MenuFlyoutPresenter}"
                   TargetType="MenuFlyoutPresenter">
-        <Setter Property="BorderThickness"
-                Value="1" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <console:LineBrush Brush="Gray"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Padding"
-                Value="1,0,0,0" />
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"

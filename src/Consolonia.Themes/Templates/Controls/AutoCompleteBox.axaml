@@ -8,14 +8,6 @@
                 Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeSelectionForegroundBrush}" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <console:LineBrush Brush="Gray"
-                                   LineStyle="Edge" />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="BorderThickness"
-                Value="1" />
         <Setter Property="Padding"
                 Value="0,0" />
         <Setter Property="MaxDropDownHeight"

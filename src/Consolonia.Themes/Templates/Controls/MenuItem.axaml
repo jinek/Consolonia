@@ -10,8 +10,6 @@
                   TargetType="MenuItem">
         <Setter Property="Background"
                 Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
-        <Setter Property="Padding"
-                Value="1,0" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Name="root"
