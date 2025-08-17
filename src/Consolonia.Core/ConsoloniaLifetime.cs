@@ -55,12 +55,14 @@ namespace Consolonia
             {
                 _mainView = value;
                 if (value is TopLevel topLevel)
-                    this.TopLevel = topLevel;
+                {
+                    TopLevel = topLevel;
+                }
                 else
                 {
-                    if (this.TopLevel == null)
-                        this.TopLevel = new Window();
-                    this.TopLevel.Content = value;
+                    if (TopLevel == null)
+                        TopLevel = new Window();
+                    TopLevel.Content = value;
                 }
             }
         }
