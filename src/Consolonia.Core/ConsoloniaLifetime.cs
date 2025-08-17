@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -17,9 +18,7 @@ using Window = Avalonia.Controls.Window;
 namespace Consolonia
 {
     [Consolonia]
-    public class ConsoloniaLifetime : ISingleViewApplicationLifetime,
-        IControlledApplicationLifetime,
-        ISingleTopLevelApplicationLifetime,
+    public class ConsoloniaLifetime : IClassicDesktopStyleApplicationLifetime,
         IDisposable
     {
         private CancellationTokenSource _cts = new();
@@ -27,7 +26,7 @@ namespace Consolonia
         private int _exitCode;
         private bool _isShuttingDown;
 
-        private Control _mainView;
+        public static IConsole Console => AvaloniaLocator.Current.GetRequiredService<IConsole>();
 
         /// <summary>
         ///     Gets the arguments passed to the AppBuilder Start method.
@@ -35,8 +34,6 @@ namespace Consolonia
 #pragma warning disable CA1819 // Properties should not return arrays
         public string[] Args { get; set; }
 #pragma warning restore CA1819 // Properties should not return arrays
-
-        public static IConsole Console => AvaloniaLocator.Current.GetRequiredService<IConsole>();
 
         public event EventHandler<ControlledApplicationLifetimeStartupEventArgs> Startup;
 
@@ -47,26 +44,11 @@ namespace Consolonia
             DoShutdown(new ShutdownRequestedEventArgs(), true, true, exitCode);
         }
 
-        public TopLevel TopLevel { get; private set; }
+        public ShutdownMode ShutdownMode { get; set; } = ShutdownMode.OnExplicitShutdown;
 
-        public Control MainView
-        {
-            get => _mainView;
-            set
-            {
-                _mainView = value;
-                if (value is TopLevel topLevel)
-                {
-                    TopLevel = topLevel;
-                }
-                else
-                {
-                    if (TopLevel == null)
-                        TopLevel = new Window();
-                    TopLevel.Content = value;
-                }
-            }
-        }
+        public Window MainWindow { get; set; }
+
+        public IReadOnlyList<Window> Windows => new List<Window> { MainWindow };
 
         public event EventHandler<ShutdownRequestedEventArgs> ShutdownRequested;
 
@@ -84,7 +66,7 @@ namespace Consolonia
             if (lifetimeEvents != null)
                 lifetimeEvents.ShutdownRequested += OnShutdownRequested;
 
-            TopLevel.Closed += (_, _) => TryShutdown();
+            MainWindow.Closed += (_, _) => TryShutdown();
         }
 
         public int Start(string[] args)
@@ -106,7 +88,7 @@ namespace Consolonia
         {
             SetupCore(args);
 
-            ((Window)TopLevel).Show();
+            MainWindow.Show();
 
             try
             {
@@ -174,8 +156,8 @@ namespace Consolonia
             var taskToWaitFor = new TaskCompletionSource();
             cancellationToken.Register(() => taskToWaitFor.SetResult());
 
-            var consoleTopLevelImpl = (ConsoleWindowImpl)TopLevel.PlatformImpl;
-            IConsole console = consoleTopLevelImpl!.Console;
+            var consoleWindow = (ConsoleWindowImpl)MainWindow.PlatformImpl;
+            IConsole console = consoleWindow!.Console;
 
             Task pauseTask = taskToWaitFor.Task;
 
@@ -183,9 +165,9 @@ namespace Consolonia
 
             pauseTask.ContinueWith(_ =>
             {
-                consoleTopLevelImpl.Console.ClearScreen();
+                consoleWindow.Console.ClearScreen();
 
-                Dispatcher.UIThread.Post(() => { MainView.InvalidateVisual(); });
+                Dispatcher.UIThread.Post(() => { MainWindow.InvalidateVisual(); });
             }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
 
             return Dispatcher.UIThread.InvokeAsync(() => { }).GetTask();
@@ -212,7 +194,7 @@ namespace Consolonia
                     // TODO: dispose managed state (managed objects)
                     _cts?.Dispose();
                     _cts = null;
-                    var consoleTopLevelImpl = (ConsoleWindowImpl)TopLevel.PlatformImpl;
+                    var consoleTopLevelImpl = (ConsoleWindowImpl)MainWindow.PlatformImpl;
                     ArgumentNullException.ThrowIfNull(consoleTopLevelImpl, nameof(consoleTopLevelImpl));
                     consoleTopLevelImpl.Dispose();
                 }

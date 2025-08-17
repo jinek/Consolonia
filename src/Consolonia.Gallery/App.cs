@@ -32,9 +32,7 @@ namespace Consolonia.Gallery
             else
                 Styles.Add(new TurboVisionTheme());
 
-            if (ApplicationLifetime is ISingleViewApplicationLifetime lifetime)
-                lifetime.MainView = new ControlsListView();
-            else if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 desktop.MainWindow = new ControlsListView(); // designer runs as classic desktop
 
             base.OnFrameworkInitializationCompleted();

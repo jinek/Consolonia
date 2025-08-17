@@ -7,7 +7,7 @@ using Avalonia.Interactivity;
 
 namespace Example.Views
 {
-    public partial class DataGridView : Window
+    public partial class DataGridView : Grid
     {
         private readonly ObservableCollection<TheItem> _items;
 
