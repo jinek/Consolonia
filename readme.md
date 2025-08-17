@@ -6,6 +6,24 @@
 
 The wait is over. After months of passionate building, testing, and refining, **Consolonia** is stepping into the light — now available in **beta** for all who dare to reimagine what’s possible in the console world.
 
+## 💡 Quick Start
+
+The quickest way to get started is to install the dotnet template and create a project using the template:
+```
+dotnet new install Consolonia.Templates
+```
+Then you create a project using the template like this:
+```
+dotnet new consolonia.app
+```
+
+And you compile and run it like this:
+```
+cd MyConsoloniaApp
+dotnet run
+```
+[Learn more](https://github.com/jinek/Consolonia/wiki/QuickStart)
+
 ## 🎯 Why Consolonia Matters
 
 Consolonia isn’t just another toolkit or framework. It’s a bold rethinking of the console environment — one that **injects the benefits of the Avalonia UI framework directly into TUI applications**.
@@ -22,17 +40,17 @@ With Consolonia, console developers finally get modern UI principles — data bi
 
 Here’s how Consolonia compares to traditional TUI frameworks:
 
-| **Feature** | **Traditional TUIs** | **Consolonia + Avalonia** |
-|-------------|----------------------|---------------------------|
-| **Layout & Positioning** | Manual coordinates or simple grid; brittle with resizing | Avalonia’s flexible layout system with responsive panels, alignment, and scaling |
-| **Styling & Theming** | Limited color palettes, hard‑coded styles | Rich theming via Avalonia’s styling engine — full color schemes, gradients, and reusable style resources |
+| **Feature** | **Traditional TUIs** | **Consolonia + Avalonia**                                                                                       |
+|-------------|----------------------|-----------------------------------------------------------------------------------------------------------------|
+| **Layout & Positioning** | Manual coordinates or simple grid; brittle with resizing | Avalonia’s flexible layout system with responsive panels and alignment                             |
+| **Styling & Theming** | Limited color palettes, hard‑coded styles | Rich theming via Avalonia’s styling engine — full color schemes, gradients, and reusable style resources        |
 | **Control Set** | Minimal: basic text input, list, menu | Unified control library modeled on Avalonia’s UI elements — buttons, sliders, tree views, tab controls, and more |
-| **Data Binding** | Rarely supported; requires manual refresh logic | Full Avalonia data binding system — bind to properties, collections, and commands for instant UI updates |
-| **Cross‑Platform Behavior** | Inconsistent rendering and key handling across OSes | Avalonia’s mature cross‑platform abstraction layer for identical look and feel on Windows, macOS, and Linux |
-| **Event Handling** | Ad‑hoc input loops; blocking or OS‑specific quirks | Async‑friendly event system, same patterns as Avalonia GUI apps |
-| **Templating** | Usually none; monolithic rendering logic | Avalonia’s control templates — swap visual structure without touching logic |
-| **Tooling & Reuse** | No shared patterns with GUI frameworks | Reuse Avalonia XAML, styles, and component patterns in both console and desktop contexts |
-| **Developer Experience** | Steep learning curve for newcomers, few docs | Leverages Avalonia’s documentation, patterns, and ecosystem for instant productivity |
+| **Data Binding** | Rarely supported; requires manual refresh logic | Full Avalonia data binding system — bind to properties, collections, and commands for instant UI updates        |
+| **Cross‑Platform Behavior** | Inconsistent rendering and key handling across OSes | Avalonia’s mature cross‑platform abstraction layer for identical look and feel on Windows, macOS, and Linux     |
+| **Event Handling** | Ad‑hoc input loops; blocking or OS‑specific quirks | Async‑friendly event system, same patterns as Avalonia GUI apps                                                 |
+| **Templating** | Usually none; monolithic rendering logic | Avalonia’s control templates — swap visual structure without touching logic                                     |
+| **Tooling & Reuse** | No shared patterns with GUI frameworks | Reuse Avalonia XAML, styles, and component patterns in both console and desktop contexts                        |
+| **Developer Experience** | Steep learning curve for newcomers, few docs | Leverages Avalonia’s documentation, patterns, and ecosystem for instant productivity                            |
 
 
 ## 🛠 Built for Builders
