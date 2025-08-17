@@ -103,10 +103,6 @@ namespace Consolonia.Gallery.View
 
         private static async Task ShowCode(string xamlFile)
         {
-            var lifetime = Application.Current.ApplicationLifetime as ISingleViewApplicationLifetime;
-            if (lifetime == null)
-                throw new InvalidOperationException("ApplicationLifetime is not ISingleViewApplicationLifetime");
-
             string xaml = await Client.GetStringAsync(new Uri(
                 $"https://raw.githubusercontent.com/jinek/Consolonia/refs/heads/main/src/Consolonia.Gallery/Gallery/GalleryViews/{xamlFile}"));
 

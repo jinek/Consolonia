@@ -76,7 +76,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             if (Application.Current.ApplicationLifetime is ConsoloniaLifetime lifetime)
             {
-                IStorageProvider storageProvider = lifetime.TopLevel.StorageProvider;
+                IStorageProvider storageProvider = lifetime.MainWindow.StorageProvider;
                 if (storageProvider.CanOpen)
                 {
                     IStorageFolder startLocation =

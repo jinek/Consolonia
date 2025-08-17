@@ -72,7 +72,7 @@ namespace Consolonia.NUnit
                 {
                     bool windowFound = await Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        var mainWindow = _lifetime?.TopLevel as Window;
+                        var mainWindow = _lifetime?.MainWindow as Window;
                         return mainWindow != null;
                     });
                     if (windowFound)
