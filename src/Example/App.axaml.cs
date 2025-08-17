@@ -14,9 +14,7 @@ namespace Example
 
         public override void OnFrameworkInitializationCompleted()
         {
-            if (ApplicationLifetime is ISingleViewApplicationLifetime singleLifetime)
-                singleLifetime.MainView = new DataGridView();
-            else if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
                 desktopLifetime.MainWindow = new MainWindow();
 
             base.OnFrameworkInitializationCompleted();
