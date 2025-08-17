@@ -27,6 +27,8 @@ namespace Consolonia
         private int _exitCode;
         private bool _isShuttingDown;
 
+        private Control _mainView;
+
         /// <summary>
         ///     Gets the arguments passed to the AppBuilder Start method.
         /// </summary>
@@ -47,7 +49,6 @@ namespace Consolonia
 
         public TopLevel TopLevel { get; private set; }
 
-        private Control _mainView;
         public Control MainView
         {
             get => _mainView;
