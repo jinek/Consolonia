@@ -6,5 +6,11 @@
         xmlns:local="clr-namespace:ConsoloniaAppTemplate"
         x:Class="ConsoloniaAppTemplate.MainWindow"
         Title="Consolonia">
-        <local:MainView />
+    <StackPanel 
+        VerticalAlignment="Center" 
+        HorizontalAlignment="Center">
+        <TextBlock Text="Welcome to Consolonia!" />
+        <Button Content="_Exit"
+                Click="OnExit" />
+    </StackPanel>
 </Window>
