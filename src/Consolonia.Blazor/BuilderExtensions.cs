@@ -1,7 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using BlazorBindingsAvalonia;
+using Blazonia;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
