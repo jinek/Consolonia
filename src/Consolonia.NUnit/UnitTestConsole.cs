@@ -10,7 +10,6 @@ using Avalonia.Threading;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
-using Window = Avalonia.Controls.Window;
 
 namespace Consolonia.NUnit
 {

@@ -30,9 +30,9 @@ namespace Consolonia
                         ArgumentNullException.ThrowIfNull(lifetime);
                         return lifetime;
                     });
-                    sc.AddSingleton(sp => 
-                        (IClassicDesktopStyleApplicationLifetime)sp.GetRequiredService<ConsoloniaLifetime>() );
-                    sc.AddSingleton(sp => 
+                    sc.AddSingleton(sp =>
+                        (IClassicDesktopStyleApplicationLifetime)sp.GetRequiredService<ConsoloniaLifetime>());
+                    sc.AddSingleton(sp =>
                         (IControlledApplicationLifetime)sp.GetRequiredService<ConsoloniaLifetime>());
                     sc.AddTransient(sp =>
                         sp.GetRequiredService<ConsoloniaLifetime>().MainWindow?.StorageProvider);

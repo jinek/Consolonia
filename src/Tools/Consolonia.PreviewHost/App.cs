@@ -1,6 +1,5 @@
 using System.Globalization;
 using Avalonia;
-using Avalonia.Controls;
 using Consolonia.PreviewHost.ViewModels;
 using Consolonia.PreviewHost.Views;
 using Consolonia.Themes;
@@ -55,19 +54,19 @@ namespace Consolonia.PreviewHost
                                 f.Name!.Equals(Path.GetFileName(path), StringComparison.OrdinalIgnoreCase))
                             ?? throw new ArgumentException($"{path} not found in project", nameof(path));
                     applicationLifetime.MainWindow.Content = new MainView
-                        {
-                            DataContext = appViewModel
-                        };
+                    {
+                        DataContext = appViewModel
+                    };
                 }
                 else
                 {
                     string projectFile = FindProjectFileFromPath(Environment.CurrentDirectory);
                     appViewModel.Project = new ProjectViewModel(projectFile);
                     applicationLifetime.MainWindow.Content = new MainView
-                    {
-                        DataContext = appViewModel
-                    }
-                    ;
+                        {
+                            DataContext = appViewModel
+                        }
+                        ;
                 }
 
                 base.OnFrameworkInitializationCompleted();

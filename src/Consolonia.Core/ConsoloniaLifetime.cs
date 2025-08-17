@@ -26,14 +26,14 @@ namespace Consolonia
         private int _exitCode;
         private bool _isShuttingDown;
 
+        public static IConsole Console => AvaloniaLocator.Current.GetRequiredService<IConsole>();
+
         /// <summary>
         ///     Gets the arguments passed to the AppBuilder Start method.
         /// </summary>
 #pragma warning disable CA1819 // Properties should not return arrays
         public string[] Args { get; set; }
 #pragma warning restore CA1819 // Properties should not return arrays
-
-        public static IConsole Console => AvaloniaLocator.Current.GetRequiredService<IConsole>();
 
         public event EventHandler<ControlledApplicationLifetimeStartupEventArgs> Startup;
 
@@ -156,7 +156,7 @@ namespace Consolonia
             var taskToWaitFor = new TaskCompletionSource();
             cancellationToken.Register(() => taskToWaitFor.SetResult());
 
-            var consoleWindow = (ConsoleWindowImpl)this.MainWindow.PlatformImpl;
+            var consoleWindow = (ConsoleWindowImpl)MainWindow.PlatformImpl;
             IConsole console = consoleWindow!.Console;
 
             Task pauseTask = taskToWaitFor.Task;

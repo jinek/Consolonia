@@ -1,8 +1,8 @@
 <Grid xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:views="clr-namespace:Example.Views"
-        x:Class="Example.Views.DataGridView"
-        ColumnDefinitions="* 35">
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:views="clr-namespace:Example.Views"
+      x:Class="Example.Views.DataGridView"
+      ColumnDefinitions="* 35">
     <Grid>
         <DataGrid ItemsSource="{Binding}"
                   Name="Grid"
