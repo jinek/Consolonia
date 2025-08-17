@@ -19,6 +19,7 @@ dotnet new consolonia.app
 
 And you compile and run it like this:
 ```
+cd MyConsoloniaApp
 dotnet run
 ```
 [Learn more](https://github.com/jinek/Consolonia/wiki/QuickStart)
