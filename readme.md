@@ -6,6 +6,23 @@
 
 The wait is over. After months of passionate building, testing, and refining, **Consolonia** is stepping into the light — now available in **beta** for all who dare to reimagine what’s possible in the console world.
 
+## 💡 Quick Start
+
+The quickest way to get started is to install the dotnet template and create a project using the template:
+```
+dotnet new install Consolonia.Templates
+```
+Then you create a project using the template like this:
+```
+dotnet new consolonia.app
+```
+
+And you compile and run it like this:
+```
+dotnet run
+```
+[Learn more](https://github.com/jinek/Consolonia/wiki/QuickStart)
+
 ## 🎯 Why Consolonia Matters
 
 Consolonia isn’t just another toolkit or framework. It’s a bold rethinking of the console environment — one that **injects the benefits of the Avalonia UI framework directly into TUI applications**.
