@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -71,7 +72,7 @@ namespace Consolonia.NUnit
                 {
                     bool windowFound = await Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        var mainWindow = _lifetime?.MainWindow;
+                        Window mainWindow = _lifetime?.MainWindow;
                         return mainWindow != null;
                     });
                     if (windowFound)
