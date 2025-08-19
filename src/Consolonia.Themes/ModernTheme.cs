@@ -12,7 +12,7 @@ namespace Consolonia.Themes
         }
     }
 
-    // TODO: Remove this class when FluentTheme is no longer needed.
+    [Obsolete("FluentTheme is deprecated. Use ModernTheme instead.")]
     public class FluentTheme : ModernTheme
     { 
     }
