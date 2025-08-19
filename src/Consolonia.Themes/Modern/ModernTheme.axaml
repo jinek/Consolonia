@@ -2,11 +2,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
         xmlns:controls="https://github.com/jinek/consolonia"
-        x:Class="Consolonia.Themes.FluentTheme">
+        x:Class="Consolonia.Themes.ModernTheme">
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="/Fluent/FluentColors.axaml" />
+                <ResourceInclude Source="/Modern/ModernColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <x:String x:Key="ThemeLeftArrowSymbol">⏴</x:String>
@@ -88,21 +88,21 @@
     </Styles.Resources>
 
     <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
-    <StyleInclude Source="/Fluent/Controls/BorderPanel.axaml" />
-    <StyleInclude Source="/Fluent/Controls/ConsoloniaAccessRun.axaml" />
-    <StyleInclude Source="/Fluent/Controls/Button.axaml" />
-    <StyleInclude Source="/Fluent/Controls/DataGridRow.axaml" />
-    <StyleInclude Source="/Fluent/Controls/TextBox.axaml" />
-    <StyleInclude Source="/Fluent/Controls/ToggleButton.axaml" />
-    <StyleInclude Source="/Fluent/Controls/ComboBox.axaml" />
-    <StyleInclude Source="/Fluent/Controls/ComboBoxItem.axaml" />
-    <StyleInclude Source="/Fluent/Controls/DropDownButton.axaml" />
-    <StyleInclude Source="/Fluent/Controls/ListBoxItem.axaml" />
-    <StyleInclude Source="/Fluent/Controls/TabItem.axaml" />
-    <StyleInclude Source="/Fluent/Controls/ButtonSpinner.axaml" />
-    <StyleInclude Source="/Fluent/Controls/TreeViewItem.axaml" />
-    <StyleInclude Source="/Fluent/Controls/Menu.axaml" />
-    <StyleInclude Source="/Fluent/Controls/MenuItem.axaml" />
+    <StyleInclude Source="/Modern/Controls/BorderPanel.axaml" />
+    <StyleInclude Source="/Modern/Controls/ConsoloniaAccessRun.axaml" />
+    <StyleInclude Source="/Modern/Controls/Button.axaml" />
+    <StyleInclude Source="/Modern/Controls/DataGridRow.axaml" />
+    <StyleInclude Source="/Modern/Controls/TextBox.axaml" />
+    <StyleInclude Source="/Modern/Controls/ToggleButton.axaml" />
+    <StyleInclude Source="/Modern/Controls/ComboBox.axaml" />
+    <StyleInclude Source="/Modern/Controls/ComboBoxItem.axaml" />
+    <StyleInclude Source="/Modern/Controls/DropDownButton.axaml" />
+    <StyleInclude Source="/Modern/Controls/ListBoxItem.axaml" />
+    <StyleInclude Source="/Modern/Controls/TabItem.axaml" />
+    <StyleInclude Source="/Modern/Controls/ButtonSpinner.axaml" />
+    <StyleInclude Source="/Modern/Controls/TreeViewItem.axaml" />
+    <StyleInclude Source="/Modern/Controls/Menu.axaml" />
+    <StyleInclude Source="/Modern/Controls/MenuItem.axaml" />
     <wm:WindowManagerTheme />
 
 </Styles>
