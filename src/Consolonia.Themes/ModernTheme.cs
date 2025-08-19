@@ -14,6 +14,6 @@ namespace Consolonia.Themes
 
     [Obsolete("FluentTheme is deprecated. Use ModernTheme instead.")]
     public class FluentTheme : ModernTheme
-    { 
+    {
     }
 }
