@@ -57,6 +57,7 @@ namespace Consolonia.Core.Drawing
         private readonly PixelBuffer _pixelBuffer;
         private readonly Matrix _postTransform = Matrix.Identity;
         private Matrix _transform = Matrix.Identity;
+        private readonly Stack<RenderOptions> _renderOptions = new Stack<RenderOptions>();
 
         public DrawingContextImpl(ConsoleWindowImpl consoleWindowImpl)
         {
@@ -351,12 +352,12 @@ namespace Consolonia.Core.Drawing
 
         public void PushRenderOptions(RenderOptions renderOptions)
         {
-            throw new NotImplementedException();
+            _renderOptions.Push(renderOptions);
         }
 
         public void PopRenderOptions()
         {
-            throw new NotImplementedException();
+            _renderOptions.Pop();
         }
 
         public object GetFeature(Type t)
