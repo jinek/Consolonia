@@ -6,7 +6,7 @@
   <Application.Styles>
     <SimpleTheme/>
     
-    <themes:FluentTheme />
+    <themes:ModernTheme />
 
     <StyleInclude Source="avares://AvaloniaEdit/Themes/Simple/AvaloniaEdit.xaml" />
   </Application.Styles>

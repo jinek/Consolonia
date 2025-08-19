@@ -15,7 +15,7 @@ namespace Consolonia.Gallery.View
 {
     public enum ThemesList
     {
-        Fluent,
+        Modern,
         TurboVision
     }
 
@@ -124,7 +124,7 @@ namespace Consolonia.Gallery.View
 
             Application.Current.Styles[0] = selectedTheme switch
             {
-                ThemesList.Fluent => new FluentTheme(),
+                ThemesList.Modern => new ModernTheme(),
                 ThemesList.TurboVision => new TurboVisionTheme(),
                 _ => throw new InvalidDataException("Unknown theme name")
             };
@@ -141,10 +141,10 @@ namespace Consolonia.Gallery.View
     {
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsTurboVision))]
-        [NotifyPropertyChangedFor(nameof(IsFluent))]
+        [NotifyPropertyChangedFor(nameof(IsModern))]
         private string _selectedTheme;
 
-        public bool IsFluent => SelectedTheme == nameof(ThemesList.Fluent);
+        public bool IsModern => SelectedTheme == nameof(ThemesList.Modern);
         public bool IsTurboVision => SelectedTheme == nameof(ThemesList.TurboVision);
     }
 }
