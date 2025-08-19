@@ -14,6 +14,6 @@ namespace Consolonia.Themes
 
     // TODO: Remove this class when FluentTheme is no longer needed.
     public class FluentTheme : ModernTheme
-    { 
+    {
     }
 }
