@@ -114,10 +114,27 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public Task<string[]> GetFormatsAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new[] { "Text", "UnicodeText" });
         }
 
-        public Task<object> GetDataAsync(string format)
+        public async Task<object> GetDataAsync(string format)
+        {
+
+            if (String.Equals(format, "text", StringComparison.OrdinalIgnoreCase) ||
+               String.Equals(format, "unicodetext", StringComparison.OrdinalIgnoreCase))
+            {
+                return await GetTextAsync();
+            }
+            return null;
+        }
+
+
+        public Task FlushAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task<IDataObject> TryGetInProcessDataObjectAsync()
         {
             throw new NotImplementedException();
         }

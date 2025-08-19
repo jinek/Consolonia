@@ -32,17 +32,25 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public Task ClearAsync()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
-        public Task<object> GetDataAsync(string format)
+        public Task FlushAsync()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
+        }
+
+        public async Task<object> GetDataAsync(string format)
+        {
+            if (String.Equals(format, "text", StringComparison.OrdinalIgnoreCase) ||
+                String.Equals(format, "unicodetext", StringComparison.OrdinalIgnoreCase))
+                return await this.GetTextAsync();
+            return null;
         }
 
         public Task<string[]> GetFormatsAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new string[] { "text", "unicodetext" });
         }
 
         public async Task<string> GetTextAsync()
@@ -82,6 +90,11 @@ namespace Consolonia.PlatformSupport.Clipboard
             if (exitCode != 0) throw new NotSupportedException($"\"{_xclipPath} {xclipargs} < {text}\" failed");
 
             return Task.CompletedTask;
+        }
+
+        public Task<IDataObject> TryGetInProcessDataObjectAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

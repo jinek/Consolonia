@@ -502,5 +502,15 @@ namespace Consolonia.Core.Infrastructure
         {
             CursorChanged?.Invoke(obj);
         }
+
+        public void SetCanMinimize(bool value)
+        {
+            // ignore, we can't
+        }
+
+        public void SetCanMaximize(bool value)
+        {
+            // ignore, we can't
+        }
     }
 }

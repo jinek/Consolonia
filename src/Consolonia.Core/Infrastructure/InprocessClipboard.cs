@@ -11,6 +11,8 @@ namespace Consolonia.Core.Infrastructure
     public class InprocessClipboard : IClipboard
     {
         private string _text = string.Empty;
+        private IDataObject _dataObject = null;
+
 #pragma warning disable CA1822 // Mark members as static
         public async Task ClearAsync()
         {
@@ -18,14 +20,19 @@ namespace Consolonia.Core.Infrastructure
             _text = string.Empty;
         }
 
+        public Task FlushAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         public Task<object> GetDataAsync(string format)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_dataObject?.Get(format));
         }
 
         public Task<string[]> GetFormatsAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new string[] { "text", "unicodetext"});
         }
 
         public Task<string> GetTextAsync()
@@ -35,13 +42,21 @@ namespace Consolonia.Core.Infrastructure
 
         public Task SetDataObjectAsync(IDataObject data)
         {
-            throw new NotImplementedException();
+            this._text = null;
+            this._dataObject = data;
+            return Task.CompletedTask;
         }
 
         public Task SetTextAsync(string text)
         {
             _text = text;
+            _dataObject = null;
             return Task.CompletedTask;
+        }
+
+        public Task<IDataObject> TryGetInProcessDataObjectAsync()
+        {
+            return Task.FromResult(_dataObject);
         }
     }
 }
