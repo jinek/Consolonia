@@ -53,7 +53,7 @@ namespace Consolonia.PreviewHost
                             ?? appViewModel.Project.Files.SingleOrDefault(f =>
                                 f.Name!.Equals(Path.GetFileName(path), StringComparison.OrdinalIgnoreCase))
                             ?? throw new ArgumentException($"{path} not found in project", nameof(path));
-                    applicationLifetime.MainWindow.Content = new MainView
+                    applicationLifetime.MainWindow = new MainView
                     {
                         DataContext = appViewModel
                     };
