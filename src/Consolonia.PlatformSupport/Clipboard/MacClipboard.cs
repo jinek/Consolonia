@@ -90,6 +90,16 @@ namespace Consolonia.PlatformSupport.Clipboard
             throw new NotImplementedException();
         }
 
+        public Task FlushAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task<IDataObject> TryGetInProcessDataObjectAsync()
+        {
+            return Task.FromResult<IDataObject>(null);
+        }
+
         private static bool CheckSupport()
         {
             (int exitCode, string result) = ClipboardProcessRunner.Bash("which pbcopy", waitForOutput: true);
@@ -118,15 +128,5 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         [DllImport("/System/Library/Frameworks/AppKit.framework/AppKit", CharSet = CharSet.Unicode)]
         private static extern nint sel_registerName(string selectorName);
-
-        public Task FlushAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task<IDataObject> TryGetInProcessDataObjectAsync()
-        {
-            return Task.FromResult<IDataObject>(null);
-        }
     }
 }

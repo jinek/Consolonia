@@ -23,17 +23,15 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public async Task<object> GetDataAsync(string format)
         {
-            if (String.Equals(format, "text", StringComparison.OrdinalIgnoreCase) ||
-                String.Equals(format, "unicodetext", StringComparison.OrdinalIgnoreCase))
-            {
+            if (string.Equals(format, "text", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(format, "unicodetext", StringComparison.OrdinalIgnoreCase))
                 return await GetTextAsync();
-            }
             return null;
         }
 
         public Task<string[]> GetFormatsAsync()
         {
-            return Task.FromResult(new string[] { "text", "unicodetext" });
+            return Task.FromResult(new[] { "text", "unicodetext" });
         }
 
         public Task<string> GetTextAsync()

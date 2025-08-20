@@ -50,7 +50,6 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public Task<string[]> GetFormatsAsync()
         {
-
             // implement
             if (!_isSupported) return Task.FromResult(Array.Empty<string>());
             (int exitCode, string output) =
@@ -61,13 +60,9 @@ namespace Consolonia.PlatformSupport.Clipboard
                 .Select(format =>
                 {
                     // Remove the "Format: " prefix
-                    if (format.StartsWith("Format: ", StringComparison.Ordinal))
-                    {
-                        return format[8..];
-                    }
+                    if (format.StartsWith("Format: ", StringComparison.Ordinal)) return format[8..];
                     return format;
                 }).ToArray());
-
         }
 
         public Task<string> GetTextAsync()
