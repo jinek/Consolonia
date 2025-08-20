@@ -32,7 +32,7 @@
                           IsTabStop="false"
                           SelectedIndex="0"
                           HorizontalContentAlignment="Stretch">
-                    <ComboBoxItem Content="Fluent" />
+                    <ComboBoxItem Content="Modern" />
                     <ComboBoxItem Content="TurboVision" />
                 </ComboBox>
             </Grid>
