@@ -11,7 +11,7 @@ namespace Consolonia.Core.Infrastructure
     public class InprocessClipboard : IClipboard
     {
         private string _text = string.Empty;
-        private IDataObject _dataObject = null;
+        private IDataObject _dataObject;
 
 #pragma warning disable CA1822 // Mark members as static
         public async Task ClearAsync()
