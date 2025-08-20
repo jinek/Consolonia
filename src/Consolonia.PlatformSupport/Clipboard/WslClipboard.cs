@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
@@ -37,6 +38,11 @@ namespace Consolonia.PlatformSupport.Clipboard
             await SetTextAsync(string.Empty);
         }
 
+        public Task FlushAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         public Task<object> GetDataAsync(string format)
         {
             throw new NotImplementedException();
@@ -44,7 +50,19 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public Task<string[]> GetFormatsAsync()
         {
-            throw new NotImplementedException();
+            // implement
+            if (!_isSupported) return Task.FromResult(Array.Empty<string>());
+            (int exitCode, string output) =
+                ClipboardProcessRunner.Process(_powershellPath, "-noprofile -command \"Get-Clipboard -Format List\"");
+            if (exitCode != 0) return Task.FromResult(Array.Empty<string>());
+
+            return Task.FromResult(output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(format =>
+                {
+                    // Remove the "Format: " prefix
+                    if (format.StartsWith("Format: ", StringComparison.Ordinal)) return format[8..];
+                    return format;
+                }).ToArray());
         }
 
         public Task<string> GetTextAsync()
@@ -78,6 +96,11 @@ namespace Consolonia.PlatformSupport.Clipboard
             }
 
             return Task.CompletedTask;
+        }
+
+        public Task<IDataObject> TryGetInProcessDataObjectAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

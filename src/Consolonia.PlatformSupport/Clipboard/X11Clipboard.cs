@@ -16,14 +16,22 @@ namespace Consolonia.PlatformSupport.Clipboard
             return Task.CompletedTask;
         }
 
-        public Task<object> GetDataAsync(string format)
+        public Task FlushAsync()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
+        }
+
+        public async Task<object> GetDataAsync(string format)
+        {
+            if (string.Equals(format, "text", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(format, "unicodetext", StringComparison.OrdinalIgnoreCase))
+                return await GetTextAsync();
+            return null;
         }
 
         public Task<string[]> GetFormatsAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new[] { "text", "unicodetext" });
         }
 
         public Task<string> GetTextAsync()
@@ -41,6 +49,11 @@ namespace Consolonia.PlatformSupport.Clipboard
         {
             Medo.X11.X11Clipboard.Clipboard.SetText(text ?? string.Empty);
             return Task.CompletedTask;
+        }
+
+        public Task<IDataObject> TryGetInProcessDataObjectAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -59,6 +59,18 @@ namespace Consolonia.Core.Controls
             return Task.FromResult(properties);
         }
 
+        public Task<IStorageFile> GetFileAsync(string name)
+        {
+            string path = System.IO.Path.Combine(directoryInfo.FullName, name);
+            return Task.FromResult<IStorageFile>(new SystemStorageFile(path));
+        }
+
+        public Task<IStorageFolder> GetFolderAsync(string name)
+        {
+            string path = System.IO.Path.Combine(directoryInfo.FullName, name);
+            return Task.FromResult<IStorageFolder>(new SystemStorageFolder(path));
+        }
+
         public async IAsyncEnumerable<IStorageItem> GetItemsAsync()
         {
             await Task.CompletedTask;

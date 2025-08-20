@@ -56,6 +56,9 @@ namespace Consolonia.Core.Drawing
         private readonly ConsoleWindowImpl _consoleWindowImpl;
         private readonly PixelBuffer _pixelBuffer;
         private readonly Matrix _postTransform = Matrix.Identity;
+
+        // ReSharper disable once CollectionNeverQueried.Local
+        private readonly Stack<RenderOptions> _renderOptions = new();
         private Matrix _transform = Matrix.Identity;
 
         public DrawingContextImpl(ConsoleWindowImpl consoleWindowImpl)
@@ -351,12 +354,12 @@ namespace Consolonia.Core.Drawing
 
         public void PushRenderOptions(RenderOptions renderOptions)
         {
-            throw new NotImplementedException();
+            _renderOptions.Push(renderOptions);
         }
 
         public void PopRenderOptions()
         {
-            throw new NotImplementedException();
+            _renderOptions.Pop();
         }
 
         public object GetFeature(Type t)

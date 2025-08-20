@@ -331,6 +331,16 @@ namespace Consolonia.Core.Infrastructure
             GC.SuppressFinalize(this);
         }
 
+        public void SetCanMinimize(bool value)
+        {
+            // ignore, we can't
+        }
+
+        public void SetCanMaximize(bool value)
+        {
+            // ignore, we can't
+        }
+
         public event Action<ConsoleCursor> CursorChanged;
 
         private void OnShowAccessKeyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> args)

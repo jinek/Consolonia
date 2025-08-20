@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
@@ -10,7 +9,9 @@ namespace Consolonia.Core.Infrastructure
     /// </summary>
     public class InprocessClipboard : IClipboard
     {
+        private IDataObject _dataObject;
         private string _text = string.Empty;
+
 #pragma warning disable CA1822 // Mark members as static
         public async Task ClearAsync()
         {
@@ -18,14 +19,19 @@ namespace Consolonia.Core.Infrastructure
             _text = string.Empty;
         }
 
+        public Task FlushAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         public Task<object> GetDataAsync(string format)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_dataObject?.Get(format));
         }
 
         public Task<string[]> GetFormatsAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new[] { "text", "unicodetext" });
         }
 
         public Task<string> GetTextAsync()
@@ -35,13 +41,21 @@ namespace Consolonia.Core.Infrastructure
 
         public Task SetDataObjectAsync(IDataObject data)
         {
-            throw new NotImplementedException();
+            _text = null;
+            _dataObject = data;
+            return Task.CompletedTask;
         }
 
         public Task SetTextAsync(string text)
         {
             _text = text;
+            _dataObject = null;
             return Task.CompletedTask;
+        }
+
+        public Task<IDataObject> TryGetInProcessDataObjectAsync()
+        {
+            return Task.FromResult(_dataObject);
         }
     }
 }
