@@ -94,7 +94,7 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public Task<IDataObject> TryGetInProcessDataObjectAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult<IDataObject>(null);
         }
     }
 }
