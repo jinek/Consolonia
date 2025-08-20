@@ -61,7 +61,7 @@ namespace Consolonia.PlatformSupport.Clipboard
                 .Select(format =>
                 {
                     // Remove the "Format: " prefix
-                    if (format.StartsWith("Format: "))
+                    if (format.StartsWith("Format: ", StringComparison.Ordinal))
                     {
                         return format[8..];
                     }
