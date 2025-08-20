@@ -57,6 +57,7 @@ namespace Consolonia.Core.Drawing
         private readonly PixelBuffer _pixelBuffer;
         private readonly Matrix _postTransform = Matrix.Identity;
         private Matrix _transform = Matrix.Identity;
+        // ReSharper disable once NotAccessedField.Local
         private readonly Stack<RenderOptions> _renderOptions = new Stack<RenderOptions>();
 
         public DrawingContextImpl(ConsoleWindowImpl consoleWindowImpl)
