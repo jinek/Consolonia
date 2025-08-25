@@ -32,7 +32,7 @@
     <!-- Actions -->
     <x:String x:Key="Icon_Add">＋</x:String>
     <x:String x:Key="Icon_Remove">−</x:String>
-    <x:String x:Key="Icon_Close">✖</x:String>
+    <x:String x:Key="Icon_Close">🗙</x:String>
     <x:String x:Key="Icon_Edit">✎</x:String>
     <x:String x:Key="Icon_Delete">🗑</x:String>
     <x:String x:Key="Icon_Attach">📎</x:String>
@@ -50,9 +50,8 @@
     <x:String x:Key="Icon_Refresh2">⟳</x:String>
     <x:String x:Key="Icon_Reload">🔃</x:String>
     <x:String x:Key="Icon_Sync">🔄</x:String>
-    <x:String x:Key="Icon_Cancel">❌</x:String>
+    <x:String x:Key="Icon_Cancel">🗙</x:String>
     <x:String x:Key="Icon_Check">✓</x:String>
-    <x:String x:Key="Icon_Cross">✕</x:String>
     <x:String x:Key="Icon_Plus">+</x:String>
     <x:String x:Key="Icon_Minus">−</x:String>
     <x:String x:Key="Icon_Maximize">🗖</x:String>

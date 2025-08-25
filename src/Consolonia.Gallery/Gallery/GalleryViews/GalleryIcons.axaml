@@ -225,10 +225,6 @@
                 <TextBlock Text="{StaticResource Icon_Check}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Width="20" Text="Cross"/>
-                <TextBlock Text="{StaticResource Icon_Cross}"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20" Text="Plus"/>
                 <TextBlock Text="{StaticResource Icon_Plus}"/>
             </StackPanel>
