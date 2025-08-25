@@ -73,6 +73,8 @@
     <x:String x:Key="Icon_Reply">⬏</x:String>
     <x:String x:Key="Icon_ReplyAll">⮆</x:String>
     <x:String x:Key="Icon_ReplyForward">⭜</x:String>
+    <x:String x:Key="Icon_Loudspeaker">📢</x:String>
+    <x:String x:Key="Icon_Megaphone">📣</x:String>
 
     <!-- Files & Folders -->
     <x:String x:Key="Icon_Folder">📁</x:String>
@@ -175,6 +177,16 @@
     <x:String x:Key="Icon_PowerButton">⏻</x:String>
     <x:String x:Key="Icon_Battery">🔋</x:String>
     <x:String x:Key="Icon_PluggedIn">🔌</x:String>
+
+    <!-- Office & Education -->
+    <x:String x:Key="Icon_Pencil">✏</x:String>
+    <x:String x:Key="Icon_Pen">✒</x:String>
+    <x:String x:Key="Icon_Book">📖</x:String>
+    <x:String x:Key="Icon_Books">📚</x:String>
+    <x:String x:Key="Icon_Notebook">📓</x:String>
+    <x:String x:Key="Icon_Ruler">📏</x:String>
+    <x:String x:Key="Icon_Graph">📊</x:String>
+    <x:String x:Key="Icon_Newspaper">📰</x:String>
 
     <!-- User & People -->
     <x:String x:Key="Icon_User">👤</x:String>

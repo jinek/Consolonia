@@ -303,6 +303,14 @@
                 <TextBlock Width="20" Text="ReplyForward"/>
                 <TextBlock Text="{StaticResource Icon_ReplyForward}"/>
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="Loudspeaker"/>
+                <TextBlock Text="{StaticResource Icon_Loudspeaker}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="Megaphone"/>
+                <TextBlock Text="{StaticResource Icon_Megaphone}"/>
+            </StackPanel>
 
             <!-- Files & Folders -->
             <TextBlock Text="═══ Files &amp; Folders ═══" FontWeight="Bold" />
@@ -647,6 +655,41 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20" Text="PluggedIn"/>
                 <TextBlock Text="{StaticResource Icon_PluggedIn}"/>
+            </StackPanel>
+
+            <!-- Office & Education -->
+            <TextBlock Text="═══ Office &amp; Education ═══" FontWeight="Bold" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="Pencil"/>
+                <TextBlock Text="{StaticResource Icon_Pencil}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="Pen"/>
+                <TextBlock Text="{StaticResource Icon_Pen}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="Book"/>
+                <TextBlock Text="{StaticResource Icon_Book}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="Books"/>
+                <TextBlock Text="{StaticResource Icon_Books}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="Notebook"/>
+                <TextBlock Text="{StaticResource Icon_Notebook}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="Ruler"/>
+                <TextBlock Text="{StaticResource Icon_Ruler}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="Graph"/>
+                <TextBlock Text="{StaticResource Icon_Graph}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="Newspaper"/>
+                <TextBlock Text="{StaticResource Icon_Newspaper}"/>
             </StackPanel>
 
             <!-- User & People -->
