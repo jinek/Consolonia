@@ -1,0 +1,227 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:console="https://github.com/jinek/consolonia">
+
+    <!-- Icon Resources -->
+    <!-- Navigation & UI -->
+    <x:String x:Key="Icon_Home">🏡</x:String>
+    <x:String x:Key="Icon_Search">🔍</x:String>
+    <x:String x:Key="Icon_Settings">⚙</x:String>
+    <x:String x:Key="Icon_Info">ℹ</x:String>
+    <x:String x:Key="Icon_Warning">⚠</x:String>
+    <x:String x:Key="Icon_Help">❓</x:String>
+    <x:String x:Key="Icon_Menu">☰</x:String>
+    <x:String x:Key="Icon_MoreHorizontal">⋯</x:String>
+    <x:String x:Key="Icon_MoreVertical">⋮</x:String>
+    <x:String x:Key="Icon_Refresh">🔄</x:String>
+    <x:String x:Key="Icon_ArrowLeft">←</x:String>
+    <x:String x:Key="Icon_ArrowRight">→</x:String>
+    <x:String x:Key="Icon_ArrowUp">↑</x:String>
+    <x:String x:Key="Icon_ArrowDown">↓</x:String>
+    <x:String x:Key="Icon_ArrowUpLeft">↖</x:String>
+    <x:String x:Key="Icon_ArrowUpRight">↗</x:String>
+    <x:String x:Key="Icon_ArrowDownLeft">↙</x:String>
+    <x:String x:Key="Icon_ArrowDownRight">↘</x:String>
+    <x:String x:Key="Icon_ChevronLeft">◀</x:String>
+    <x:String x:Key="Icon_ChevronRight">▶</x:String>
+    <x:String x:Key="Icon_ChevronUp">▲</x:String>
+    <x:String x:Key="Icon_ChevronDown">▼</x:String>
+    <x:String x:Key="Icon_Back">⇦</x:String>
+    <x:String x:Key="Icon_Forward">⇨</x:String>
+
+    <!-- Actions -->
+    <x:String x:Key="Icon_Add">＋</x:String>
+    <x:String x:Key="Icon_Remove">−</x:String>
+    <x:String x:Key="Icon_Close">✖</x:String>
+    <x:String x:Key="Icon_Edit">✎</x:String>
+    <x:String x:Key="Icon_Delete">🗑</x:String>
+    <x:String x:Key="Icon_Attach">📎</x:String>
+    <x:String x:Key="Icon_Tag">🏷</x:String>
+    <x:String x:Key="Icon_Bookmark">🔖</x:String>
+    <x:String x:Key="Icon_Share">🔗</x:String>
+    <x:String x:Key="Icon_Download">📥</x:String>
+    <x:String x:Key="Icon_Upload">📤</x:String>
+    <x:String x:Key="Icon_Filter">🔍</x:String>
+    <x:String x:Key="Icon_Sort">⇅</x:String>
+    <x:String x:Key="Icon_Open">📂</x:String>
+    <x:String x:Key="Icon_New">📄</x:String>
+    <x:String x:Key="Icon_Undo">⤺</x:String>
+    <x:String x:Key="Icon_Redo">⤻</x:String>
+    <x:String x:Key="Icon_Refresh2">⟳</x:String>
+    <x:String x:Key="Icon_Reload">🔃</x:String>
+    <x:String x:Key="Icon_Sync">🔄</x:String>
+    <x:String x:Key="Icon_Cancel">❌</x:String>
+    <x:String x:Key="Icon_Check">✓</x:String>
+    <x:String x:Key="Icon_Cross">✕</x:String>
+    <x:String x:Key="Icon_Plus">+</x:String>
+    <x:String x:Key="Icon_Minus">−</x:String>
+    <x:String x:Key="Icon_Maximize">🗖</x:String>
+    <x:String x:Key="Icon_Minimize">🗕</x:String>
+    <x:String x:Key="Icon_Restore">🗗</x:String>
+
+    <!-- Communication -->
+    <x:String x:Key="Icon_Mail">✉</x:String>
+    <x:String x:Key="Icon_Phone">📞</x:String>
+    <x:String x:Key="Icon_Chat">💬</x:String>
+    <x:String x:Key="Icon_Comment">💭</x:String>
+    <x:String x:Key="Icon_Lock">🔒</x:String>
+    <x:String x:Key="Icon_Unlock">🔓</x:String>
+    <x:String x:Key="Icon_Bell">🔔</x:String>
+    <x:String x:Key="Icon_BellOff">🔕</x:String>
+    <x:String x:Key="Icon_Send">📤</x:String>
+    <x:String x:Key="Icon_Receive">📥</x:String>
+    <x:String x:Key="Icon_Reply">⬏</x:String>
+    <x:String x:Key="Icon_ReplyAll">⮆</x:String>
+    <x:String x:Key="Icon_ReplyForward">⭜</x:String>
+
+    <!-- Files & Folders -->
+    <x:String x:Key="Icon_Folder">📁</x:String>
+    <x:String x:Key="Icon_FolderOpen">📂</x:String>
+    <x:String x:Key="Icon_Document">📄</x:String>
+    <x:String x:Key="Icon_Copy">🗐</x:String>
+    <x:String x:Key="Icon_Cut">✂</x:String>
+    <x:String x:Key="Icon_Paste">📋</x:String>
+    <x:String x:Key="Icon_Save">💾</x:String>
+    <x:String x:Key="Icon_Print">🖨</x:String>
+    <x:String x:Key="Icon_Archive">🗄</x:String>
+    <x:String x:Key="Icon_File">📄</x:String>
+    <x:String x:Key="Icon_FileText">📃</x:String>
+    <x:String x:Key="Icon_FileImage">🖼</x:String>
+    <x:String x:Key="Icon_FileVideo">📹</x:String>
+    <x:String x:Key="Icon_FileAudio">🎵</x:String>
+    <x:String x:Key="Icon_FilePdf">📕</x:String>
+    <x:String x:Key="Icon_FileZip">🗜</x:String>
+    <x:String x:Key="Icon_FileCode">📝</x:String>
+    <x:String x:Key="Icon_SaveAs">💾</x:String>
+    <x:String x:Key="Icon_Export">⭸</x:String>
+    <x:String x:Key="Icon_Import">⭶</x:String>
+    <x:String x:Key="Icon_Trashcan">🗑</x:String>
+    <x:String x:Key="Icon_Recycle">♻</x:String>
+
+    <!-- Media -->
+    <x:String x:Key="Icon_Camera">📷</x:String>
+    <x:String x:Key="Icon_Video">📹</x:String>
+    <x:String x:Key="Icon_Image">🖼</x:String>
+    <x:String x:Key="Icon_Music">🎵</x:String>
+    <x:String x:Key="Icon_VolumeUp">🔊</x:String>
+    <x:String x:Key="Icon_VolumeDown">🔉</x:String>
+    <x:String x:Key="Icon_VolumeMute">🔇</x:String>
+    <x:String x:Key="Icon_Microphone">🎤</x:String>
+    <x:String x:Key="Icon_Play">▶</x:String>
+    <x:String x:Key="Icon_Pause">⏸</x:String>
+    <x:String x:Key="Icon_Stop">⏹</x:String>
+    <x:String x:Key="Icon_FastForward">⏩</x:String>
+    <x:String x:Key="Icon_Rewind">⏪</x:String>
+    <x:String x:Key="Icon_First">⏮</x:String>
+    <x:String x:Key="Icon_Last">⏭</x:String>
+    <x:String x:Key="Icon_Record">⏺</x:String>
+    <x:String x:Key="Icon_LivePhoto">📸</x:String>
+    <x:String x:Key="Icon_SkipNext">⏭</x:String>
+    <x:String x:Key="Icon_SkipPrevious">⏮</x:String>
+    <x:String x:Key="Icon_Shuffle">🔀</x:String>
+    <x:String x:Key="Icon_Repeat">🔁</x:String>
+    <x:String x:Key="Icon_RepeatOne">🔂</x:String>
+
+    <!-- Time & Date -->
+    <x:String x:Key="Icon_Calendar">📅</x:String>
+    <x:String x:Key="Icon_Clock">🕒</x:String>
+    <x:String x:Key="Icon_Alarm">⏰</x:String>
+    <x:String x:Key="Icon_Stopwatch">⏱</x:String>
+    <x:String x:Key="Icon_Timer">⏲</x:String>
+    <x:String x:Key="Icon_Schedule">📋</x:String>
+    <x:String x:Key="Icon_Event">🗓</x:String>
+    <x:String x:Key="Icon_Today">📅</x:String>
+    <x:String x:Key="Icon_History">🕘</x:String>
+
+    <!-- Location & Travel -->
+    <x:String x:Key="Icon_Location">📍</x:String>
+    <x:String x:Key="Icon_Map">🗺</x:String>
+    <x:String x:Key="Icon_Compass">🧭</x:String>
+    <x:String x:Key="Icon_Pin">📌</x:String>
+    <x:String x:Key="Icon_PinOff">📍</x:String>
+    <x:String x:Key="Icon_Navigation">🧭</x:String>
+    <x:String x:Key="Icon_Route">🛤</x:String>
+    <x:String x:Key="Icon_GPS">🛰</x:String>
+
+    <!-- Commerce -->
+    <x:String x:Key="Icon_ShoppingCart">🛒</x:String>
+    <x:String x:Key="Icon_CreditCard">💳</x:String>
+    <x:String x:Key="Icon_Gift">🎁</x:String>
+    <x:String x:Key="Icon_Purchase">💰</x:String>
+    <x:String x:Key="Icon_Sale">🏷</x:String>
+    <x:String x:Key="Icon_Receipt">🧾</x:String>
+
+    <!-- Weather -->
+    <x:String x:Key="Icon_Sun">☀</x:String>
+    <x:String x:Key="Icon_Moon">🌙</x:String>
+    <x:String x:Key="Icon_Cloud">☁</x:String>
+    <x:String x:Key="Icon_Rain">🌧</x:String>
+    <x:String x:Key="Icon_Snow">❄</x:String>
+    <x:String x:Key="Icon_Thunderstorm">⛈</x:String>
+    <x:String x:Key="Icon_Umbrella">☂</x:String>
+    <x:String x:Key="Icon_Wind">💨</x:String>
+    <x:String x:Key="Icon_Temperature">🌡</x:String>
+
+    <!-- Technology & Development -->
+    <x:String x:Key="Icon_Code">💻</x:String>
+    <x:String x:Key="Icon_Terminal">⌨</x:String>
+    <x:String x:Key="Icon_Database">🗃</x:String>
+    <x:String x:Key="Icon_Server">🖥</x:String>
+    <x:String x:Key="Icon_Network">🌐</x:String>
+    <x:String x:Key="Icon_Wifi">📶</x:String>
+    <x:String x:Key="Icon_WifiOff">📴</x:String>
+    <x:String x:Key="Icon_Bluetooth">📱</x:String>
+    <x:String x:Key="Icon_Power">⚡</x:String>
+    <x:String x:Key="Icon_PowerButton">⏻</x:String>
+    <x:String x:Key="Icon_Battery">🔋</x:String>
+    <x:String x:Key="Icon_PluggedIn">🔌</x:String>
+
+    <!-- User & People -->
+    <x:String x:Key="Icon_User">👤</x:String>
+    <x:String x:Key="Icon_Users">👥</x:String>
+    <x:String x:Key="Icon_Profile">👤</x:String>
+    <x:String x:Key="Icon_Account">👤</x:String>
+    <x:String x:Key="Icon_Group">👥</x:String>
+    <x:String x:Key="Icon_Team">👥</x:String>
+    <x:String x:Key="Icon_Contact">👤</x:String>
+    <x:String x:Key="Icon_Person">👤</x:String>
+
+    <!-- Status & Feedback -->
+    <x:String x:Key="Icon_Success">✅</x:String>
+    <x:String x:Key="Icon_Error">❌</x:String>
+    <x:String x:Key="Icon_Loading">⏳</x:String>
+    <x:String x:Key="Icon_Progress">📊</x:String>
+    <x:String x:Key="Icon_Complete">✔</x:String>
+    <x:String x:Key="Icon_Pending">⏳</x:String>
+    <x:String x:Key="Icon_Active">🟢</x:String>
+    <x:String x:Key="Icon_Inactive">🟡</x:String>
+    <x:String x:Key="Icon_Online">🟢</x:String>
+    <x:String x:Key="Icon_Busy">🔴</x:String>
+    <x:String x:Key="Icon_Away">🟡</x:String>
+    <x:String x:Key="Icon_Offline">⚪</x:String>
+
+    <!-- Misc -->
+    <x:String x:Key="Icon_Star">★</x:String>
+    <x:String x:Key="Icon_Heart">♥</x:String>
+    <x:String x:Key="Icon_HeartBroken">💔</x:String>
+    <x:String x:Key="Icon_Key">🔑</x:String>
+    <x:String x:Key="Icon_Lightbulb">💡</x:String>
+    <x:String x:Key="Icon_Trophy">🏆</x:String>
+    <x:String x:Key="Icon_Flag">🚩</x:String>
+    <x:String x:Key="Icon_Globe">🌐</x:String>
+    <x:String x:Key="Icon_Eye">👁</x:String>
+    <x:String x:Key="Icon_Question">❓</x:String>
+    <x:String x:Key="Icon_Exclamation">❗</x:String>
+    <x:String x:Key="Icon_Favorite">💖</x:String>
+    <x:String x:Key="Icon_Like">👍</x:String>
+    <x:String x:Key="Icon_Dislike">👎</x:String>
+    <x:String x:Key="Icon_ThumbsUp">👍</x:String>
+    <x:String x:Key="Icon_ThumbsDown">👎</x:String>
+    <x:String x:Key="Icon_Award">🏅</x:String>
+    <x:String x:Key="Icon_Certificate">📜</x:String>
+    <x:String x:Key="Icon_Shield">🛡</x:String>
+    <x:String x:Key="Icon_Security">🔒</x:String>
+    <x:String x:Key="Icon_Private">🔒</x:String>
+    <x:String x:Key="Icon_Public">🔓</x:String>
+
+</ResourceDictionary>

@@ -26,6 +26,7 @@
                 <MergeResourceInclude Source="/Templates/Controls/GridSplitter.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/HeaderedContentControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/HyperlinkButton.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Icons.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ItemsControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/LightDismissOverlaylayer.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ListBox.axaml" />
