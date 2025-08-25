@@ -691,6 +691,18 @@
                 <TextBlock Width="20" Text="Newspaper"/>
                 <TextBlock Text="{StaticResource Icon_Newspaper}"/>
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="ChartUp"/>
+                <TextBlock Text="{StaticResource Icon_ChartUp}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="ChartDown"/>
+                <TextBlock Text="{StaticResource Icon_ChartDown}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="20" Text="BarChart"/>
+                <TextBlock Text="{StaticResource Icon_BarChart}"/>
+            </StackPanel>
 
             <!-- User & People -->
             <TextBlock Text="═══ User &amp; People ═══" FontWeight="Bold" />
