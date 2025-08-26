@@ -22,8 +22,12 @@ namespace Consolonia.PreviewHost.Views
             // Get top level from the current control. Alternatively, you can use Window reference instead.
             var topLevel = TopLevel.GetTopLevel(this);
 
-            // Start async operation to open the dialog.
-            var startLocation = await topLevel!.StorageProvider.TryGetFolderFromPathAsync(new Uri(Path.GetDirectoryName(Model.Project!.ProjectPath)));
+            ArgumentNullException.ThrowIfNull(Model.Project);
+            ArgumentNullException.ThrowIfNull(Model.Project.ProjectPath);
+            
+            // Start async operation to open the dialog
+            var uri = new Uri(Path.GetDirectoryName(Model.Project.ProjectPath)!);
+            var startLocation = await topLevel!.StorageProvider.TryGetFolderFromPathAsync(uri);
 
             var files = await topLevel!.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
