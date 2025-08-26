@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:console="https://github.com/jinek/consolonia">
 
+    <!-- ReSharper disable InconsistentNaming -->
+
     <!-- Icon Resources -->
     <!-- Navigation & UI -->
     <x:String x:Key="Icon_Home">🏡</x:String>
