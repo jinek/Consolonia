@@ -2,17 +2,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:console="https://github.com/jinek/consolonia"
         xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
-        x:Class="Consolonia.Themes.TurboVisionTheme">
+        x:Class="Consolonia.Themes.TurboVisionDarkTheme">
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <MergeResourceInclude Source="/TurboVision/TurboVisionDefaultColors.axaml" />
+                <MergeResourceInclude Source="/TurboVision/TurboVisionDarkColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <x:String x:Key="ThemeName">TurboVision</x:String>
+            <x:String x:Key="ThemeName">TurboVisionDark</x:String>
         </ResourceDictionary>
     </Styles.Resources>
 
     <StyleInclude Source="/TurboVision/TurboVisionBase.axaml" />
-    <StyleInclude Source="/TurboVision/Controls/Button.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/ButtonNoShadow.axaml" />
 </Styles>

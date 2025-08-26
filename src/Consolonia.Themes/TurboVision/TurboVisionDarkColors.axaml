@@ -1,0 +1,58 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:consolonia="clr-namespace:Consolonia;assembly=Consolonia.Core">
+    <!-- Dark TurboVision colors. Considering 7 bit colors -->
+    <system:Double x:Key="FontSizeNormal">1</system:Double>
+
+    <!--Main content foreground. Text on background or alternative background-->
+    <SolidColorBrush x:Key="ThemeForegroundBrush"
+                     Color="{consolonia:EgaColor Gray}" />
+    <!--Main content background.-->
+    <SolidColorBrush x:Key="ThemeBackgroundBrush"
+                     Color="{consolonia:EgaColor Black}" />
+    <!--Alternative to main background. Must fit same foreground.-->
+    <SolidColorBrush x:Key="ThemeAlternativeBackgroundBrush"
+                     Color="{consolonia:EgaColor DarkBlue}" />
+
+    <!--Used to highlight selected but no focused item (selected list item, on switch etc-->
+    <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"
+                     Color="{consolonia:EgaColor DarkCyan}" />
+    <SolidColorBrush x:Key="ThemeChooserForegroundBrush"
+                     Color="{consolonia:EgaColor White}" />
+
+    <!--Mostly used as focus highlight. But sometimes forced, like turbovision buttons, menu parent item highlight-->
+    <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
+                     Color="{consolonia:EgaColor DarkMagenta}" />
+
+    <!--Background of edit items: combobox, textbox-->
+    <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
+                     Color="{consolonia:EgaColor DarkRed}" />
+    <!--Foeground of edit items: combobox, textbox. Must fit background-->
+    <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
+                     Color="{consolonia:EgaColor White}" />
+
+    <!--Color of borders ( grid borders, panel borders etc)-->
+    <SolidColorBrush x:Key="ThemeBorderBrush"
+                     Color="{consolonia:EgaColor Gray}" />
+
+    <!--Disabled foreground or background. e.g. disabled menu item foreground, disabled button foreground-->
+    <SolidColorBrush x:Key="ThemeNoDisturbBrush"
+                     Color="{consolonia:EgaColor Gray}" />
+
+    <!--Background of the shade pixel. Will be applied to shade background around popups etc, dialogs-->
+    <SolidColorBrush x:Key="ThemeShadeBrush"
+                     Color="{consolonia:EgaColor Mode=Shaded}" />
+    <!--When shade needs to be done using foreground ASCII symbols, not background-->
+    <SolidColorBrush x:Key="ThemePseudoShadeBrush"
+                     Color="{consolonia:EgaColor Black}" />
+
+    <!--Indicating an error, failure etc, foreground only-->
+    <SolidColorBrush x:Key="ThemeErrorBrush"
+                     Color="{consolonia:EgaColor Red}" />
+
+    <!--Just transparent background or foreground-->
+    <SolidColorBrush x:Key="ThemeTransparentBrush"
+                     Color="{consolonia:EgaColor Mode=Transparent}" />
+
+</ResourceDictionary>
