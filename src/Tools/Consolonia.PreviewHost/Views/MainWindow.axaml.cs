@@ -47,15 +47,6 @@ namespace Consolonia.PreviewHost.Views
             Model.Project = new ProjectViewModel(projectFile);
         }
 
-        private async void OnSave(object? sender, RoutedEventArgs e)
-
-        {
-
-            await Task.CompletedTask;
-
-        }
-
-
         private void OnExit(object? sender, RoutedEventArgs e)
         {
             Application.Current!.ApplicationLifetime!.Shutdown();
