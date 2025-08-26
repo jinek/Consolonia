@@ -34,6 +34,8 @@
                           HorizontalContentAlignment="Stretch">
                     <ComboBoxItem Content="Modern" />
                     <ComboBoxItem Content="TurboVision" />
+                    <ComboBoxItem Content="TurboVisionDark" />
+                    <ComboBoxItem Content="TurboVisionDarkGray" />
                 </ComboBox>
             </Grid>
 
