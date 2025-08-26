@@ -1,7 +1,5 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:console="https://github.com/jinek/consolonia"
-        xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
         x:Class="Consolonia.Themes.TurboVisionDarkTheme">
     <Styles.Resources>
         <ResourceDictionary>
