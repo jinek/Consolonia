@@ -41,7 +41,7 @@ namespace ConsoloniaEdit.Demo
             _textEditor.Options.AllowToggleOverstrikeMode = true;
             _textEditor.Options.EnableTextDragDrop = true;
             _textEditor.Options.ShowBoxForControlCharacters = true;
-            _textEditor.Options.HighlightCurrentLine = false;
+            _textEditor.Options.HighlightCurrentLine = true;
             _textEditor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(_textEditor.Options);
             _textEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
             _textEditor.TextArea.RightClickMovesCaret = true;
@@ -129,8 +129,10 @@ namespace ConsoloniaEdit.Demo
                 _textEditor.LineNumbersForeground = _textEditor.Foreground;
             }
 
-            // disable border around selection
-            _textEditor.TextArea.SelectionBorder = null;  
+            // make border around selection for current line and selection text
+            var transparentBorder = new Pen(Brushes.Transparent, thickness: 0);
+            _textEditor.TextArea.TextView.CurrentLineBorder = transparentBorder;
+            _textEditor.TextArea.SelectionBorder = transparentBorder;
             _textEditor.TextArea.SelectionCornerRadius = 0;
         }
 
