@@ -21,9 +21,17 @@
                         Value="0" />
             </Style>
 
-            <Style Selector="^:pressed /template/ Panel#BackgroundBorder">
-                <Setter Property="Background"
-                        Value="{DynamicResource ThemeActionBackgroundBrush}" />
+            <Style Selector="^:clickdelayed">
+                <Setter Property="Padding"
+                        Value="1,0,0,0" />
+            </Style>
+            <Style Selector="^:clickdelayed /template/ Panel#InternalBorder">
+                <Setter Property="Margin"
+                        Value="1,0,0,0" />
+            </Style>
+            <Style Selector="^:clickdelayed /template/ Panel#BackgroundBorder">
+                <Setter Property="Margin"
+                        Value="1,0,0,0" />
             </Style>
         </ControlTheme>
     </Styles.Resources>
