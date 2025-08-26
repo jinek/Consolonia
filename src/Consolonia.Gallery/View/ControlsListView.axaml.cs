@@ -128,9 +128,9 @@ namespace Consolonia.Gallery.View
                 ThemesList.Modern => new ModernTheme(),
                 ThemesList.TurboVision => new TurboVisionTheme(),
                 ThemesList.TurboVisionDark => new TurboVisionDarkTheme(),
-                  _ => throw new InvalidDataException("Unknown theme name")
-              };
-          }
+                _ => throw new InvalidDataException("Unknown theme name")
+            };
+        }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
@@ -149,7 +149,7 @@ namespace Consolonia.Gallery.View
         public bool IsModern => SelectedTheme == nameof(ThemesList.Modern);
 
         public bool IsTurboVision =>
-              SelectedTheme == nameof(ThemesList.TurboVision) ||
-              SelectedTheme == nameof(ThemesList.TurboVisionDark);
-      }
+            SelectedTheme == nameof(ThemesList.TurboVision) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionDark);
+    }
 }
