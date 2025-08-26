@@ -64,23 +64,23 @@
             <x:Int32 x:Key="ManagedWindow_SizingVector">1</x:Int32>
             <Thickness x:Key='ManagedWindow_TitleMargin'>1 0 0 0</Thickness>
             <DataTemplate x:Key="ManagedWindow_MinimizeIcon">
-                <ContentControl Content="🗕" />
+                <ContentControl Content="{DynamicResource Icon_Minimize}" />
             </DataTemplate>
 
             <DataTemplate x:Key="ManagedWindow_MaximizeIcon">
-                <ContentControl Content="🗖" />
+                <ContentControl Content="{DynamicResource Icon_Maximize}" />
             </DataTemplate>
 
             <DataTemplate x:Key="ManagedWindow_RestoreIcon">
-                <ContentControl Content="🗗" />
+                <ContentControl Content="{DynamicResource Icon_Restore}" />
             </DataTemplate>
 
             <DataTemplate x:Key="ManagedWindow_CloseIcon">
-                <ContentControl Content="🗙" />
+                <ContentControl Content="{DynamicResource Icon_Close}" />
             </DataTemplate>
 
             <DataTemplate x:Key="ManagedWindow_SystemMenuIcon">
-                <ContentControl Content="☰" />
+                <ContentControl Content="{DynamicResource Icon_Menu}" />
             </DataTemplate>
             <!-- ReSharper restore InconsistentNaming -->
             <!-- window manager resources end -->
