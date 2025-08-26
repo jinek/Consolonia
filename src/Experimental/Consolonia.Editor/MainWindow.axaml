@@ -30,8 +30,20 @@
         <AvalonEdit:TextEditor Name="Editor" Grid.Row="2"
                                FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
                                ShowLineNumbers="True"
-                               HorizontalScrollBarVisibility="Auto"
-                               VerticalScrollBarVisibility="Visible">
+                               FontSize="0.7407407407407407"
+                               HorizontalScrollBarVisibility="Visible"
+                               VerticalScrollBarVisibility="Visible"
+                               Background="Transparent">
+            <AvalonEdit:TextEditor.Options>
+                <AvalonEdit:TextEditorOptions 
+                     AllowToggleOverstrikeMode = "true"
+                     EnableTextDragDrop = "true"
+                     EnableRectangularSelection = "False"
+                     ShowBoxForControlCharacters = "true"
+                     EnableVirtualSpace="False"
+                     HighlightCurrentLine = "true"/>
+            </AvalonEdit:TextEditor.Options>
+            
             <!--Watermark="Start typing to bring your ideas to life...">-->
             <AvalonEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>

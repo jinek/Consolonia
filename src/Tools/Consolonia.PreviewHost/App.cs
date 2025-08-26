@@ -62,7 +62,7 @@ namespace Consolonia.PreviewHost
                 {
                     string projectFile = FindProjectFileFromPath(Environment.CurrentDirectory);
                     appViewModel.Project = new ProjectViewModel(projectFile);
-                    applicationLifetime.MainWindow.Content = new MainView
+                    applicationLifetime.MainWindow = new MainView
                         {
                             DataContext = appViewModel
                         }
