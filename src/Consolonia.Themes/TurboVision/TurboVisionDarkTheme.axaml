@@ -1,0 +1,86 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:console="https://github.com/jinek/consolonia"
+        xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
+        x:Class="Consolonia.Themes.TurboVisionDarkTheme">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <MergeResourceInclude Source="/TurboVision/TurboVisionDarkColors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <x:String x:Key="ThemeName">TurboVisionDark</x:String>
+
+            <x:String x:Key="ThemeLeftArrowSymbol">←</x:String>
+            <x:String x:Key="ThemeRightArrowSymbol">→</x:String>
+            <x:String x:Key="ThemeUpArrowSymbol">↑</x:String>
+            <x:String x:Key="ThemeDownArrowSymbol">↓</x:String>
+
+            <x:String x:Key="ThemeScrollBarLeftSymbol">←</x:String>
+            <x:String x:Key="ThemeScrollBarRightSymbol">→</x:String>
+            <x:String x:Key="ThemeScrollBarUpSymbol">↑</x:String>
+            <x:String x:Key="ThemeScrollBarDownSymbol">↓</x:String>
+
+            <x:String x:Key="ThemeScrollBarHorizontalBackgroundSymbol">░</x:String>
+            <x:String x:Key="ThemeScrollBarHorizontalThumbSymbol">█</x:String>
+
+            <x:String x:Key="ThemeScrollBarVerticalBackgroundSymbol">░</x:String>
+            <x:String x:Key="ThemeScrollBarVerticalThumbSymbol">█</x:String>
+
+            <x:String x:Key="ThemeProgressBarBackgroundSymbol">░</x:String>
+
+            <x:String x:Key="ThemeSliderHorizontalThumbSymbol">O</x:String>
+            <x:String x:Key="ThemeSliderHorizontalBackgroundSymbol">─</x:String>
+
+            <x:String x:Key="ThemeSliderVerticalThumbSymbol">O</x:String>
+            <x:String x:Key="ThemeSliderVerticalBackgroundSymbol">│</x:String>
+
+            <x:String x:Key="ThemeRadioButtonNotSelectedSymbol">( )</x:String>
+            <x:String x:Key="ThemeRadioButtonSelectedSymbol">(*)</x:String>
+            <x:String x:Key="ThemeRadioButtonIndeterminateSymbol">(■)</x:String>
+
+            <x:String x:Key="ThemeCheckBoxNotSelectedSymbol">[ ]</x:String>
+            <x:String x:Key="ThemeCheckBoxSelectedSymbol">[x]</x:String>
+            <x:String x:Key="ThemeCheckBoxIndeterminateSymbol">[■]</x:String>
+
+            <x:String x:Key="ThemeCheckedSymbol">X</x:String>
+            <x:String x:Key="ThemeCloseSymbol">X</x:String>
+
+            <x:String x:Key="ThemeToggleSwitchOffSymbol">■</x:String>
+            <x:String x:Key="ThemeToggleSwitchOnSymbol">■</x:String>
+
+            <console:CaretStyle x:Key="ControlFocusCaretStyle">BlinkingBlock</console:CaretStyle>
+
+            <!-- window manager resources-->
+            <!-- ReSharper disable InconsistentNaming -->
+            <x:Int32 x:Key="ManagedWindow_SizingVector">1</x:Int32>
+            <!-- ReSharper restore InconsistentNaming -->
+            <!-- window manager resources end -->
+
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
+
+    <Style Selector="CheckBox console|CaretControl Rectangle#PART_CaretLine">
+        <Setter Property="Margin"
+                Value="1 0" />
+    </Style>
+
+    <Style Selector="RadioButton console|CaretControl Rectangle#PART_CaretLine">
+        <Setter Property="Margin"
+                Value="1 0" />
+    </Style>
+
+    <wm:WindowManagerTheme />
+
+    <StyleInclude Source="/TurboVision/Controls/BorderPanel.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/Button.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/ConsoloniaAccessRun.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/ToggleButton.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/ComboBox.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/DropDownButton.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/CheckBox.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/RadioButton.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/WindowManager.axaml" />
+</Styles>
