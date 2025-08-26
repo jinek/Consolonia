@@ -21,4 +21,10 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Consolonia\Consolonia.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="MainWindow.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>
