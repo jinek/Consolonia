@@ -115,7 +115,7 @@ namespace Consolonia.Gallery.View
         }
 
 
-        private void OnThemeMenuItemClick(object? sender, RoutedEventArgs e)
+        private void OnThemeMenuItemClick(object sender, RoutedEventArgs e)
         {
             if (sender is not MenuItem { Tag: string themeName } ||
                 !Enum.TryParse(themeName, out ThemesList selectedTheme))
@@ -129,9 +129,10 @@ namespace Consolonia.Gallery.View
             };
 
             UpdateThemeMenuItems();
+            GalleryGrid.Focus();
         }
 
-        private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
+        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             UpdateThemeMenuItems();
         }
