@@ -8,9 +8,9 @@ using Consolonia.PreviewHost.ViewModels;
 
 namespace Consolonia.PreviewHost.Views
 {
-    public partial class MainView : Window
+    public partial class MainWindow : Window
     {
-        public MainView()
+        public MainWindow()
         {
             InitializeComponent();
         }

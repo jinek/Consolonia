@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:Consolonia.PreviewHost.ViewModels"
         mc:Ignorable="d"
-        x:Class="Consolonia.PreviewHost.Views.MainView"
+        x:Class="Consolonia.PreviewHost.Views.MainWindow"
         x:DataType="vm:ProjectViewModel">
 
     <Grid RowDefinitions="Auto *">
