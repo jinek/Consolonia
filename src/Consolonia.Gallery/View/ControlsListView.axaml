@@ -11,12 +11,15 @@
             <gallery:GalleryItemConverter x:Key="GalleryItemConverter" />
         </DockPanel.Resources>
 
-        <Menu DockPanel.Dock="Top" IsTabStop="False">
-            <MenuItem Header="_File" IsTabStop="False">
+        <Menu DockPanel.Dock="Top"
+              IsTabStop="False">
+            <MenuItem Header="_File"
+                      IsTabStop="False">
                 <MenuItem Header="E_xit"
                           Click="Exit_Click" />
             </MenuItem>
-            <MenuItem Header="_Theme" IsTabStop="False">
+            <MenuItem Header="_Theme"
+                      IsTabStop="False">
                 <MenuItem.Styles>
                     <Style Selector="MenuItem">
                         <Setter Property="Icon">
@@ -39,7 +42,8 @@
                           Tag="TurboVision"
                           Click="OnThemeMenuItemClick" />
             </MenuItem>
-            <MenuItem Header="_View" IsTabStop="False">
+            <MenuItem Header="_View"
+                      IsTabStop="False">
                 <MenuItem Header="Show _XAML"
                           Click="OnShowXaml" />
                 <MenuItem Header="Show _Code Behind"
