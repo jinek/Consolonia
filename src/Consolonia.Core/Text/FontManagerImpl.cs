@@ -42,8 +42,10 @@ namespace Consolonia.Core.Text
             return true;
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public bool TryCreateGlyphTypeface(Stream stream, FontSimulations fontSimulations,
             [NotNullWhen(true)] out IGlyphTypeface glyphTypeface)
+#pragma warning restore CA1822 // Mark members as static
         {
             glyphTypeface = new GlyphTypeface
             {
@@ -51,7 +53,9 @@ namespace Consolonia.Core.Text
             return true;
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public bool TryCreateGlyphTypeface(Stream stream, out IGlyphTypeface glyphTypeface)
+#pragma warning restore CA1822 // Mark members as static
         {
             glyphTypeface = new GlyphTypeface
             {
