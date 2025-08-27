@@ -38,7 +38,7 @@
                      Color="{consolonia:EgaColor Yellow}" />
     <SolidColorBrush x:Key="ThemeHighlightForegroundBrush2"
                      Color="{consolonia:EgaColor Yellow}" />
-    
+
     <!--Color of borders ( grid borders, panel borders etc)-->
     <SolidColorBrush x:Key="ThemeBorderBrush"
                      Color="{consolonia:EgaColor White}" />
