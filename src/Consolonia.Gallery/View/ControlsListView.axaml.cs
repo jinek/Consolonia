@@ -144,6 +144,7 @@ namespace Consolonia.Gallery.View
             string themeName = Application.Current.Styles[0].GetType().Name[..^5];
             ThemeModernMenuItem.IsChecked = themeName == nameof(ThemesList.Modern);
             ThemeTurboVisionMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVision);
+            ThemeTurboVisionDarkMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionDark);
         }
     }
 
