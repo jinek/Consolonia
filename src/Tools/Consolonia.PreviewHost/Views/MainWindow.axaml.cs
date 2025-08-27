@@ -41,7 +41,7 @@ namespace Consolonia.PreviewHost.Views
                 },
             });
 
-            if (files == null || !files.Any())
+            if (!files.Any())
             {
                 return;
             }
