@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Avalonia.Styling;
 
 namespace Consolonia.Core.Text
 {
@@ -44,12 +45,18 @@ namespace Consolonia.Core.Text
         public bool TryCreateGlyphTypeface(Stream stream, FontSimulations fontSimulations,
             [NotNullWhen(true)] out IGlyphTypeface glyphTypeface)
         {
-            throw new NotImplementedException();
+            glyphTypeface = new GlyphTypeface
+            {
+            };
+            return true;
         }
 
         public bool TryCreateGlyphTypeface(Stream stream, out IGlyphTypeface glyphTypeface)
         {
-            throw new NotImplementedException();
+            glyphTypeface = new GlyphTypeface
+            {
+            };
+            return true;
         }
 
         public static string GetTheOnlyFontFamilyName()
