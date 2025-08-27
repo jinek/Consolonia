@@ -115,10 +115,9 @@ namespace Consolonia.Gallery.View
         }
 
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnThemeMenuItemClick(object? sender, RoutedEventArgs e)
         {
-            if (ThemeCombo?.SelectedItem is not ComboBoxItem selectedItem ||
-                selectedItem.Content is not string themeName ||
+            if (sender is not MenuItem { Tag: string themeName } ||
                 !Enum.TryParse(themeName, out ThemesList selectedTheme))
                 return;
 
@@ -128,12 +127,20 @@ namespace Consolonia.Gallery.View
                 ThemesList.TurboVision => new TurboVisionTheme(),
                 _ => throw new InvalidDataException("Unknown theme name")
             };
+
+            UpdateThemeMenuItems();
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
+        {
+            UpdateThemeMenuItems();
+        }
+
+        private void UpdateThemeMenuItems()
         {
             string themeName = Application.Current.Styles[0].GetType().Name[..^5];
-            ThemeCombo.SelectedIndex = (int)Enum.Parse<ThemesList>(themeName);
+            ThemeModernMenuItem.IsChecked = themeName == nameof(ThemesList.Modern);
+            ThemeTurboVisionMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVision);
         }
     }
 

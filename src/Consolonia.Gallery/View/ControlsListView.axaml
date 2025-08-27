@@ -10,59 +10,38 @@
         <DockPanel.Resources>
             <gallery:GalleryItemConverter x:Key="GalleryItemConverter" />
         </DockPanel.Resources>
-        <Grid RowDefinitions="* Auto"
-              DockPanel.Dock="Left">
-            <DataGrid x:Name="GalleryGrid"
-                      Grid.Row="0"
-                      SelectedIndex="0"
-                      SelectionMode="Single">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name"
-                                        Binding="{Binding Name}" />
-                </DataGrid.Columns>
-            </DataGrid>
-            <Grid Grid.Row="1"
-                  RowDefinitions="Auto Auto"
-                  ColumnDefinitions="Auto *"
-                  Margin="0 0 0 1">
-                <Label Content="_Theme" />
-                <ComboBox Grid.Column="1"
-                          x:Name="ThemeCombo"
-                          SelectionChanged="ComboBox_SelectionChanged"
-                          IsTabStop="false"
-                          SelectedIndex="0"
-                          HorizontalContentAlignment="Stretch">
-                    <ComboBoxItem Content="Modern" />
-                    <ComboBoxItem Content="TurboVision" />
-                </ComboBox>
-            </Grid>
 
-        </Grid>
-        <Grid RowDefinitions="* Auto">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Show XAML" Click="OnShowXaml" />
+                <MenuItem Header="Show _Code Behind" Click="OnShowCodeBehind" />
+                <MenuItem Header="E_xit" Click="Exit_Click" />
+            </MenuItem>
+            <MenuItem Header="_Theme">
+                <MenuItem x:Name="ThemeModernMenuItem"
+                          Header="_Modern"
+                          Tag="Modern"
+                          Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionMenuItem"
+                          Header="_TurboVision"
+                          Tag="TurboVision"
+                          Click="OnThemeMenuItemClick" />
+            </MenuItem>
+        </Menu>
 
-            <Border
-                Child="{Binding ElementName=GalleryGrid,Path=SelectedItem, Converter={StaticResource GalleryItemConverter}}"
-                BorderThickness="1"
-                BorderBrush="{DynamicResource ThemeBorderBrush}" />
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        Spacing="1"
-                        Grid.Row="1">
-                <Button Click="OnShowXaml"
-                        IsTabStop="False"
-                        HorizontalAlignment="Right">
-                    _Show XAML
-                </Button>
-                <Button Click="OnShowCodeBehind"
-                        IsTabStop="False"
-                        HorizontalAlignment="Right">
-                    Show _Code Behind
-                </Button>
-                <Button Click="Exit_Click"
-                        IsTabStop="False">
-                    E_xit
-                </Button>
-            </StackPanel>
-        </Grid>
+        <DataGrid x:Name="GalleryGrid"
+                  DockPanel.Dock="Left"
+                  SelectedIndex="0"
+                  SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name"
+                                    Binding="{Binding Name}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border
+            Child="{Binding ElementName=GalleryGrid,Path=SelectedItem, Converter={StaticResource GalleryItemConverter}}"
+            BorderThickness="1"
+            BorderBrush="{DynamicResource ThemeBorderBrush}" />
     </DockPanel>
 </Window>
