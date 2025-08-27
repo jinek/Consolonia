@@ -23,7 +23,7 @@
 
     <!--Mostly used as focus highlight. But sometimes forced, like turbovision buttons, menu parent item highlight-->
     <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
-                     Color="{consolonia:EgaColor DarkGreen}" />
+                     Color="{consolonia:EgaColor DarkMagenta}" />
 
     <!--Background of edit items: combobox, textbox-->
     <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
