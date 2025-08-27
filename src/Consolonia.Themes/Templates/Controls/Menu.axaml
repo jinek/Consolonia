@@ -81,7 +81,7 @@
     <ControlTheme x:Key="{x:Type Menu}"
                   TargetType="Menu">
         <Setter Property="Background"
-                Value="{DynamicResource ThemeBackgroundBrush}" />
+                Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
         <Setter Property="ItemContainerTheme"
                 Value="{DynamicResource TopLevelMenuItem}" />
         <Setter Property="Template">

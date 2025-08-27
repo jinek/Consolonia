@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         x:Class="Consolonia.Gallery.View.ControlsListView">
 
-    <DockPanel>
+    <DockPanel x:Name="Root">
         <DockPanel.Resources>
             <gallery:GalleryItemConverter x:Key="GalleryItemConverter" />
         </DockPanel.Resources>
@@ -21,6 +21,19 @@
                           Click="Exit_Click" />
             </MenuItem>
             <MenuItem Header="_Theme">
+                <MenuItem.Styles>
+                    <Style Selector="MenuItem">
+                        <Setter Property="Icon">
+                            <Setter.Value>
+                                <Template>
+                                    <CheckBox BorderThickness="0"
+                                              IsHitTestVisible="False"
+                                              IsChecked="{Binding $parent[MenuItem].IsChecked}" />
+                                </Template>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </MenuItem.Styles>
                 <MenuItem x:Name="ThemeModernMenuItem"
                           Header="_Modern"
                           Tag="Modern"

@@ -19,7 +19,7 @@
         <Label Target="FirstNameEdit"
                Grid.Row="1"
                Grid.Column="0">
-            _First name
+            First _name
         </Label>
         <TextBox Name="FirstNameEdit"
                  Grid.Column="2"

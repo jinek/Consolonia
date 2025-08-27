@@ -127,10 +127,10 @@ namespace Consolonia.Gallery.View
                 ThemesList.TurboVision => new TurboVisionTheme(),
                 _ => throw new InvalidDataException("Unknown theme name")
             };
-
+            
             UpdateThemeMenuItems();
         }
-
+        
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
             UpdateThemeMenuItems();
