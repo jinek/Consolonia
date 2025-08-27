@@ -34,14 +34,7 @@ namespace ConsoloniaEdit.Demo
             // this.AttachDevTools();
 
             _textEditor = this.FindControl<TextEditor>("Editor")!;
-            _textEditor.HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
-            _textEditor.Background = Brushes.Transparent;
-            _textEditor.ShowLineNumbers = true;
-            _textEditor.TextArea.Background = this.Background;
-            _textEditor.Options.AllowToggleOverstrikeMode = true;
-            _textEditor.Options.EnableTextDragDrop = true;
-            _textEditor.Options.ShowBoxForControlCharacters = true;
-            _textEditor.Options.HighlightCurrentLine = true;
+            
             _textEditor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(_textEditor.Options);
             _textEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
             _textEditor.TextArea.RightClickMovesCaret = true;
@@ -67,12 +60,6 @@ namespace ConsoloniaEdit.Demo
 
             _statusTextBlock = this.Find<TextBlock>("StatusText")!;
 
-            this.AddHandler(PointerWheelChangedEvent, (o, i) =>
-            {
-                if (i.KeyModifiers != KeyModifiers.Control) return;
-                if (i.Delta.Y > 0) _textEditor.FontSize++;
-                else _textEditor.FontSize = _textEditor.FontSize > 1 ? _textEditor.FontSize - 1 : 1;
-            }, RoutingStrategies.Bubble, true);
 
             var mainWindowVM = new MainWindowViewModel(_textMateInstallation, _registryOptions);
             foreach (ThemeName themeName in Enum.GetValues<ThemeName>())
@@ -99,15 +86,20 @@ namespace ConsoloniaEdit.Demo
         {
             ApplyBrushAction(e, "editor.background", brush => _textEditor.Background = brush);
             ApplyBrushAction(e, "editor.foreground", brush => _textEditor.Foreground = brush);
+            var noBorder = new Pen(Brushes.Blue, thickness: 0);
 
             if (!ApplyBrushAction(e, "editor.selectionBackground",
                     brush => _textEditor.TextArea.SelectionBrush = brush))
             {
-                if (Application.Current!.TryGetResource("TextAreaSelectionBrush", out var resourceObject))
+                if (!ApplyBrushAction(e, "editor.selectionHighlightBackground",
+                        brush => _textEditor.TextArea.SelectionBrush = brush))
                 {
-                    if (resourceObject is IBrush brush)
+                    if (Application.Current!.TryGetResource("TextAreaSelectionBrush", out var resourceObject))
                     {
-                        _textEditor.TextArea.SelectionBrush = brush;
+                        if (resourceObject is IBrush brush)
+                        {
+                            _textEditor.TextArea.SelectionBrush = brush;
+                        }
                     }
                 }
             }
@@ -116,7 +108,6 @@ namespace ConsoloniaEdit.Demo
                     brush =>
                     {
                         _textEditor.TextArea.TextView.CurrentLineBackground = brush;
-                        _textEditor.TextArea.TextView.CurrentLineBorder = new Pen(brush); // Todo: VS Code didn't seem to have a border but it might be nice to have that option. For now just make it the same..
                     }))
             {
                 _textEditor.TextArea.TextView.SetDefaultHighlightLineColors();

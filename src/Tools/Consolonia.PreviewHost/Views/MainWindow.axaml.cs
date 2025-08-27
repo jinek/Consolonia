@@ -1,51 +1,49 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using Consolonia.PreviewHost.ViewModels;
 
 namespace Consolonia.PreviewHost.Views
 {
-    public partial class MainView : Window
+    public partial class MainWindow : Window
     {
-        public MainView()
+        public MainWindow()
         {
             InitializeComponent();
         }
 
         public AppViewModel Model => (AppViewModel)DataContext!;
 
-#if FILE_OPEN
         private async void OnOpen(object? sender, RoutedEventArgs e)
         {
             // Get top level from the current control. Alternatively, you can use Window reference instead.
-            var topLevel = TopLevel.GetTopLevel(this);
+            ArgumentNullException.ThrowIfNull(Model.Project);
+            ArgumentNullException.ThrowIfNull(Model.Project.ProjectPath);
 
-            // Start async operation to open the dialog.
-            var files = await topLevel!.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            // Start async operation to open the dialog
+            var uri = new Uri(Path.GetDirectoryName(Model.Project.ProjectPath)!);
+            IStorageFolder? startLocation = await StorageProvider.TryGetFolderFromPathAsync(uri);
+
+            IReadOnlyList<IStorageFile> files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 Title = "Open csproj",
                 AllowMultiple = false,
-                SuggestedStartLocation = new SystemStorageFolder(Path.GetDirectoryName(Model.Project!.ProjectPath)),
+                SuggestedStartLocation = startLocation,
                 FileTypeFilter = new List<FilePickerFileType>
                 {
-                    new FilePickerFileType("C# Project")
+                    new("C# Project")
                     {
                         Patterns = new List<string> { "*.csproj" }
-                    },
-                },
-            }).ConfigureAwait(false);
-
-            if (files == null || !files.Any())
-            {
-                return;
-            }
-            var projectFile = files[0].Path.AbsolutePath; 
-            Dispatcher.UIThread.Invoke(() =>
-            {
-                Model.Project = new ProjectViewModel(projectFile);
+                    }
+                }
             });
+
+            if (!files.Any()) return;
+            string projectFile = files[0].Path.AbsolutePath;
+            Model.Project = new ProjectViewModel(projectFile);
         }
-#endif
+
         private void OnExit(object? sender, RoutedEventArgs e)
         {
             Application.Current!.ApplicationLifetime!.Shutdown();
