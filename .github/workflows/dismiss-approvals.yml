@@ -14,23 +14,37 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
-    - name: Decide if commits are “real”
-      id: diff
-      env:
-        BEFORE: ${{ github.event.pull_request.base.sha }}
-        AFTER:  ${{ github.event.pull_request.head.sha }}
-      run: |
-        NON_MERGE=$(gh api repos/${{ github.repository }}/compare/$BEFORE...$AFTER \
-                    --jq '[.commits[] | select(.parents|length==1)] | length')
-        echo "nonmerge=$NON_MERGE" >>"$GITHUB_OUTPUT"
+      - name: Compute PR diff hash
+        id: diff
+        run: |
+          PR=${{ github.event.pull_request.number }}
+          # Hash current PR diff (files + patches)
+          HASH=$(gh api repos/${{ github.repository }}/pulls/$PR/files --paginate \
+            --jq '.[] | [ .filename, .status, (.patch // "") ] | join("\u0001")' \
+            | sha256sum | cut -d" " -f1)
+          echo "hash=$HASH" >> "$GITHUB_OUTPUT"
+          
+          # Read last stored hash from a bot comment
+          PREV=$(gh api repos/${{ github.repository }}/issues/$PR/comments --paginate \
+            --jq '[.[] | select(.user.type=="Bot" or .user.login=="github-actions[bot]") | .body]
+                  | map(capture("(?s)<!-- pr-diff-hash: (?<h>[0-9a-f]{64}) -->")?.h)
+                  | last // empty')
+          echo "prev=$PREV" >> "$GITHUB_OUTPUT"
 
-    - name: Dismiss every current approval
-      if: steps.diff.outputs.nonmerge != '0'
-      run: |
-        PR=${{ github.event.pull_request.number }}
-        gh api repos/${{ github.repository }}/pulls/$PR/reviews \
-          --jq '.[] | select(.state=="APPROVED") | .id' | \
-        while read RID; do
-          gh api -X PUT repos/${{ github.repository }}/pulls/$PR/reviews/$RID/dismissals \
-              -f message="New code pushed – review stale"
-        done
+      - name: Dismiss approvals if PR diff changed
+        if: steps.diff.outputs.hash != steps.diff.outputs.prev
+        run: |
+          PR=${{ github.event.pull_request.number }}
+          gh api repos/${{ github.repository }}/pulls/$PR/reviews \
+            --jq '.[] | select(.state=="APPROVED") | .id' | \
+          while read RID; do
+            gh api -X PUT repos/${{ github.repository }}/pulls/$PR/reviews/$RID/dismissals \
+              -f message="PR diff changed – review stale"
+          done
+          # Store new hash as a hidden marker comment
+          echo "<!-- pr-diff-hash: ${{ steps.diff.outputs.hash }} -->" > body.txt
+          gh api repos/${{ github.repository }}/issues/$PR/comments -f body="@body.txt"
+
+      - name: Note unchanged diff
+        if: steps.diff.outputs.hash == steps.diff.outputs.prev
+        run: echo "PR diff unchanged; approvals kept."
