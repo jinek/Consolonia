@@ -13,9 +13,12 @@
 
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Show XAML" Click="OnShowXaml" />
-                <MenuItem Header="Show _Code Behind" Click="OnShowCodeBehind" />
-                <MenuItem Header="E_xit" Click="Exit_Click" />
+                <MenuItem Header="_Show XAML"
+                          Click="OnShowXaml" />
+                <MenuItem Header="Show _Code Behind"
+                          Click="OnShowCodeBehind" />
+                <MenuItem Header="E_xit"
+                          Click="Exit_Click" />
             </MenuItem>
             <MenuItem Header="_Theme">
                 <MenuItem x:Name="ThemeModernMenuItem"
