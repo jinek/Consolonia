@@ -21,11 +21,10 @@
     <SolidColorBrush x:Key="ThemeChooserForegroundBrush"
                      Color="{consolonia:EgaColor Black}" />
 
-    <!--Mostly used as focus highlight. But sometimes forced, like turbovision buttons, menu parent item highlight-->
+    <!--Mostly used as focus highlight. But sometimes forced, like turbovision buttons, menu parent item highlight
+                Value must be in some readable contrast with ThemeForegroundBrush-->
     <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
                      Color="{consolonia:EgaColor DarkMagenta}" />
-    <SolidColorBrush x:Key="ThemeActionForegroundBrush"
-                     Color="{consolonia:EgaColor White}" />
 
     <!--Background of edit items: combobox, textbox-->
     <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
