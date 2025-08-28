@@ -37,6 +37,14 @@
                           Header="_Modern"
                           Tag="Modern"
                           Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeModernDarkMenuItem"
+                          Header="Modern _Dark"
+                          Tag="ModernDark"
+                          Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeModernContrastMenuItem"
+                          Header="Modern _Contrast"
+                          Tag="ModernContrast"
+                          Click="OnThemeMenuItemClick" />
                 <MenuItem x:Name="ThemeTurboVisionMenuItem"
                           Header="_TurboVision"
                           Tag="TurboVision"

@@ -6,6 +6,7 @@
                   Padding="1"
                   x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyWindow"
                   x:DataType="local:MyWindowViewModel"
+                  Foreground="{StaticResource ThemeForegroundBrush}"
                   Title="{Binding Title}">
     <StackPanel Spacing="1">
         <StackPanel Orientation="Horizontal"
