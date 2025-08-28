@@ -52,13 +52,23 @@
 
     <!-- ManagedWindow resources -->
     <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
-    <SolidColorBrush x:Key="ManagedWindow_BackgroundBrush" Color="#2D2D30" />
-    <SolidColorBrush x:Key="ManagedWindow_TitleBarBackgroundBrush" Color="#3F3F46" />
-    <SolidColorBrush x:Key="ManagedWindow_TitleBarForegroundBrush" Color="#F0F0F0" />
-    <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarBackgroundBrush" Color="#555558" />
-    <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarForegroundBrush" Color="#FFFFFF" />
-    <controls:LineBrush x:Key="ManagedWindow_BorderBrush" Brush="#3F3F46" LineStyle="Edge" />
-    <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush" Brush="#6B6B70" LineStyle="Edge" />
-    <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush" Color="#7F000000" />
+    <SolidColorBrush x:Key="ManagedWindow_BackgroundBrush"
+                     Color="#2D2D30" />
+    <SolidColorBrush x:Key="ManagedWindow_TitleBarBackgroundBrush"
+                     Color="#3F3F46" />
+    <SolidColorBrush x:Key="ManagedWindow_TitleBarForegroundBrush"
+                     Color="#F0F0F0" />
+    <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarBackgroundBrush"
+                     Color="#555558" />
+    <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarForegroundBrush"
+                     Color="#FFFFFF" />
+    <controls:LineBrush x:Key="ManagedWindow_BorderBrush"
+                        Brush="#3F3F46"
+                        LineStyle="Edge" />
+    <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush"
+                        Brush="#6B6B70"
+                        LineStyle="Edge" />
+    <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush"
+                     Color="#7F000000" />
     <!-- ReSharper enable InconsistentNaming We need to keep same names as in WindowManager-->
 </ResourceDictionary>
