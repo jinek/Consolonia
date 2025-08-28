@@ -13,5 +13,5 @@
 
     <StyleInclude Source="/TurboVision/TurboVisionBase.axaml" />
     <StyleInclude Source="/TurboVision/Controls/Button.axaml" />
-    <StyleInclude Source="/TurboVision/Controls/ButtonNoShadow.axaml" />
+    <!--<StyleInclude Source="/TurboVision/Controls/ButtonNoShadow.axaml" />-->
 </Styles>
