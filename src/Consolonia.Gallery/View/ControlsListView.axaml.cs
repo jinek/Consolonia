@@ -16,7 +16,8 @@ namespace Consolonia.Gallery.View
     public enum ThemesList
     {
         Modern,
-        TurboVision
+        TurboVision,
+        TurboVisionDark
     }
 
     public partial class ControlsListView : Window
@@ -125,6 +126,7 @@ namespace Consolonia.Gallery.View
             {
                 ThemesList.Modern => new ModernTheme(),
                 ThemesList.TurboVision => new TurboVisionTheme(),
+                ThemesList.TurboVisionDark => new TurboVisionDarkTheme(),
                 _ => throw new InvalidDataException("Unknown theme name")
             };
 
@@ -142,6 +144,7 @@ namespace Consolonia.Gallery.View
             string themeName = Application.Current.Styles[0].GetType().Name[..^5];
             ThemeModernMenuItem.IsChecked = themeName == nameof(ThemesList.Modern);
             ThemeTurboVisionMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVision);
+            ThemeTurboVisionDarkMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionDark);
         }
     }
 
@@ -153,6 +156,9 @@ namespace Consolonia.Gallery.View
         private string _selectedTheme;
 
         public bool IsModern => SelectedTheme == nameof(ThemesList.Modern);
-        public bool IsTurboVision => SelectedTheme == nameof(ThemesList.TurboVision);
+
+        public bool IsTurboVision =>
+            SelectedTheme == nameof(ThemesList.TurboVision) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionDark);
     }
 }

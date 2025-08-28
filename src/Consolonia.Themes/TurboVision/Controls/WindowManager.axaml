@@ -18,6 +18,8 @@
                     Value="Stretch" />
             <Setter Property="Background"
                     Value="{DynamicResource ThemeBackgroundBrush}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeForegroundBrush}" />
 
             <!--keys of turbovision by chatGPT-->
             <Setter Property="brushes:ManagedWindowExtensions.CloseWindowGesture"
