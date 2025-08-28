@@ -51,6 +51,7 @@
                      Color="#D83B01" />
 
     <!-- ManagedWindow resources -->
+    <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
     <SolidColorBrush x:Key="ManagedWindow_BackgroundBrush" Color="#FFFFFF" />
     <SolidColorBrush x:Key="ManagedWindow_TitleBarBackgroundBrush" Color="#F8F8F8" />
     <SolidColorBrush x:Key="ManagedWindow_TitleBarForegroundBrush" Color="#323130" />
@@ -59,4 +60,5 @@
     <controls:LineBrush x:Key="ManagedWindow_BorderBrush" Brush="#CCCCCC" LineStyle="Edge" />
     <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush" Brush="#8A8886" LineStyle="Edge" />
     <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush" Color="#7F767676" />
+    <!-- ReSharper enable InconsistentNaming We need to keep same names as in WindowManager-->
 </ResourceDictionary>
