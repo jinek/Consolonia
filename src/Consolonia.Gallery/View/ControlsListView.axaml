@@ -41,6 +41,10 @@
                           Header="_TurboVision"
                           Tag="TurboVision"
                           Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionDarkMenuItem"
+                          Header="TurboVision_Dark"
+                          Tag="TurboVisionDark"
+                          Click="OnThemeMenuItemClick" />
             </MenuItem>
             <MenuItem Header="_View"
                       IsTabStop="False">
