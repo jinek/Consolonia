@@ -38,15 +38,15 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor
                     return color1;
 
                 case EgaColorMode.Shaded when mode1 == EgaColorMode.Shaded:
-                    {
-                        ConsoleColor doubleShadedColor = Shade(Shade(consoleColor1));
-                        return ConvertToAvaloniaColor(doubleShadedColor);
-                    }
+                {
+                    ConsoleColor doubleShadedColor = Shade(Shade(consoleColor1));
+                    return ConvertToAvaloniaColor(doubleShadedColor);
+                }
                 case EgaColorMode.Shaded:
-                    {
-                        ConsoleColor shadedColor = Shade(consoleColor1);
-                        return ConvertToAvaloniaColor(shadedColor);
-                    }
+                {
+                    ConsoleColor shadedColor = Shade(consoleColor1);
+                    return ConvertToAvaloniaColor(shadedColor);
+                }
                 case EgaColorMode.Colored:
                 default:
                     return ConvertToAvaloniaColor(consoleColor2);

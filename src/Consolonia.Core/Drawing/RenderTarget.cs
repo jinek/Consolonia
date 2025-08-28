@@ -97,8 +97,8 @@ namespace Consolonia.Core.Drawing
 
             // initialize the cache with Pixel.Empty as it literally means nothing
             for (ushort y = 0; y < height; y++)
-                for (ushort x = 0; x < width; x++)
-                    cache[x, y] = Pixel.Empty;
+            for (ushort x = 0; x < width; x++)
+                cache[x, y] = Pixel.Empty;
 
             return cache;
         }
@@ -120,43 +120,43 @@ namespace Consolonia.Core.Drawing
             var flushingBuffer = new FlushingBuffer(_console);
 
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-                for (ushort x = 0; x < pixelBuffer.Width; x++)
+            for (ushort x = 0; x < pixelBuffer.Width; x++)
+            {
+                Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
+
+                if (pixel.IsCaret())
                 {
-                    Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
-
-                    if (pixel.IsCaret())
-                    {
-                        if (caretPosition != null)
-                            throw new InvalidOperationException("Caret is already shown");
-                        caretPosition = new PixelBufferCoordinate(x, y);
-                        caretStyle = pixel.CaretStyle;
-                    }
-
-                    if (!dirtyRegions.Contains(new Point(x, y), false)) /*checking caret duplication before to fail fast*/
-                        continue;
-
-                    // injecting cursor
-                    if (!_consoleCursor.IsEmpty() && _consoleCursor.Coordinate.X == x && _consoleCursor.Coordinate.Y == y)
-                    {
-                        Pixel currentPixel = pixel;
-
-                        // Calculate the inverse color
-                        Color invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
-                            (byte)(255 - currentPixel.Background.Color.G),
-                            (byte)(255 - currentPixel.Background.Color.B));
-
-                        pixel = new Pixel(new PixelForeground(new SimpleSymbol(_consoleCursor.Type), invertColor),
-                            new PixelBackground(currentPixel.Background.Color), pixel.CaretStyle);
-                    }
-
-                    //todo: indexOutOfRange during resize
-                    if (_cache[x, y] == pixel)
-                        continue;
-
-                    _cache[x, y] = pixel;
-
-                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+                    if (caretPosition != null)
+                        throw new InvalidOperationException("Caret is already shown");
+                    caretPosition = new PixelBufferCoordinate(x, y);
+                    caretStyle = pixel.CaretStyle;
                 }
+
+                if (!dirtyRegions.Contains(new Point(x, y), false)) /*checking caret duplication before to fail fast*/
+                    continue;
+
+                // injecting cursor
+                if (!_consoleCursor.IsEmpty() && _consoleCursor.Coordinate.X == x && _consoleCursor.Coordinate.Y == y)
+                {
+                    Pixel currentPixel = pixel;
+
+                    // Calculate the inverse color
+                    Color invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
+                        (byte)(255 - currentPixel.Background.Color.G),
+                        (byte)(255 - currentPixel.Background.Color.B));
+
+                    pixel = new Pixel(new PixelForeground(new SimpleSymbol(_consoleCursor.Type), invertColor),
+                        new PixelBackground(currentPixel.Background.Color), pixel.CaretStyle);
+                }
+
+                //todo: indexOutOfRange during resize
+                if (_cache[x, y] == pixel)
+                    continue;
+
+                _cache[x, y] = pixel;
+
+                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+            }
 
             flushingBuffer.Flush();
 
