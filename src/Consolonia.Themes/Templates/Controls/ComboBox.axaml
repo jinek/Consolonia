@@ -19,7 +19,7 @@
         <Setter Property="MinHeight"
                 Value="1" />
         <Setter Property="PlaceholderForeground"
-                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+                Value="{DynamicResource ThemeHighlightForegroundBrush2}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
                 Value="Disabled" />
         <Setter Property="MaxDropDownHeight"

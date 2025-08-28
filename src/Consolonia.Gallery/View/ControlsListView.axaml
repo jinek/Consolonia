@@ -45,6 +45,18 @@
                           Header="TurboVision_Dark"
                           Tag="TurboVisionDark"
                           Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionCompatibleMenuItem"
+                          Header="TurboVision_Compatible"
+                          Tag="TurboVisionCompatible"
+                          Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionGrayMenuItem"
+                          Header="TurboVision_Gray"
+                          Tag="TurboVisionGray"
+                          Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionElegantMenuItem"
+                          Header="TurboVision_Elegant"
+                          Tag="TurboVisionElegant"
+                          Click="OnThemeMenuItemClick" />
             </MenuItem>
             <MenuItem Header="_View"
                       IsTabStop="False">
