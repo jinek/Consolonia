@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:controls="https://github.com/jinek/consolonia">
     <system:Double x:Key="FontSizeNormal">1</system:Double>
 
     <!--Main content foreground. Text on background or alternative background-->
@@ -48,4 +49,14 @@
     <!--Indicating an error, failure etc, foreground only-->
     <SolidColorBrush x:Key="ThemeErrorBrush"
                      Color="#D83B01" />
+
+    <!-- ManagedWindow resources -->
+    <SolidColorBrush x:Key="ManagedWindow_BackgroundBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ManagedWindow_TitleBarBackgroundBrush" Color="#F8F8F8" />
+    <SolidColorBrush x:Key="ManagedWindow_TitleBarForegroundBrush" Color="#323130" />
+    <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarBackgroundBrush" Color="#E6E6E6" />
+    <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarForegroundBrush" Color="#000000" />
+    <controls:LineBrush x:Key="ManagedWindow_BorderBrush" Brush="#CCCCCC" LineStyle="Edge" />
+    <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush" Brush="#8A8886" LineStyle="Edge" />
+    <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush" Color="#7F767676" />
 </ResourceDictionary>
