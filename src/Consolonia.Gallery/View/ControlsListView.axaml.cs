@@ -16,6 +16,8 @@ namespace Consolonia.Gallery.View
     public enum ThemesList
     {
         Modern,
+        ModernDark,
+        ModernContrast,
         TurboVision,
         TurboVisionDark
     }
@@ -125,6 +127,8 @@ namespace Consolonia.Gallery.View
             Application.Current.Styles[0] = selectedTheme switch
             {
                 ThemesList.Modern => new ModernTheme(),
+                ThemesList.ModernDark => new ModernDarkTheme(),
+                ThemesList.ModernContrast => new ModernContrastTheme(),
                 ThemesList.TurboVision => new TurboVisionTheme(),
                 ThemesList.TurboVisionDark => new TurboVisionDarkTheme(),
                 _ => throw new InvalidDataException("Unknown theme name")
@@ -143,6 +147,8 @@ namespace Consolonia.Gallery.View
         {
             string themeName = Application.Current.Styles[0].GetType().Name[..^5];
             ThemeModernMenuItem.IsChecked = themeName == nameof(ThemesList.Modern);
+            ThemeModernDarkMenuItem.IsChecked = themeName == nameof(ThemesList.ModernDark);
+            ThemeModernContrastMenuItem.IsChecked = themeName == nameof(ThemesList.ModernContrast);
             ThemeTurboVisionMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVision);
             ThemeTurboVisionDarkMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionDark);
         }
@@ -155,7 +161,9 @@ namespace Consolonia.Gallery.View
         [NotifyPropertyChangedFor(nameof(IsModern))]
         private string _selectedTheme;
 
-        public bool IsModern => SelectedTheme == nameof(ThemesList.Modern);
+        public bool IsModern => SelectedTheme == nameof(ThemesList.Modern) ||
+                                SelectedTheme == nameof(ThemesList.ModernDark) ||
+                                SelectedTheme == nameof(ThemesList.ModernContrast);
 
         public bool IsTurboVision =>
             SelectedTheme == nameof(ThemesList.TurboVision) ||
