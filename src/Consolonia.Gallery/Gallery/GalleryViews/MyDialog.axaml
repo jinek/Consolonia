@@ -7,6 +7,7 @@
                              Icon="😎"
                              x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyDialog"
                              x:DataType="local:MyDialogViewModel"
+                             Foreground="{StaticResource ThemeForegroundBrush}"
                              ShowActivated="True"
                              Title="{Binding Title}">
     <StackPanel Spacing="1">
