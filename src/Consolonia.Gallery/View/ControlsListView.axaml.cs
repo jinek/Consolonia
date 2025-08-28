@@ -17,7 +17,10 @@ namespace Consolonia.Gallery.View
     {
         Modern,
         TurboVision,
-        TurboVisionDark
+        TurboVisionDark,
+        TurboVisionCompatible,
+        TurboVisionGray,
+        TurboVisionElegant
     }
 
     public partial class ControlsListView : Window
@@ -127,6 +130,9 @@ namespace Consolonia.Gallery.View
                 ThemesList.Modern => new ModernTheme(),
                 ThemesList.TurboVision => new TurboVisionTheme(),
                 ThemesList.TurboVisionDark => new TurboVisionDarkTheme(),
+                ThemesList.TurboVisionCompatible => new TurboVisionCompatibleTheme(),
+                ThemesList.TurboVisionGray => new TurboVisionGrayTheme(),
+                ThemesList.TurboVisionElegant => new TurboVisionElegantTheme(),
                 _ => throw new InvalidDataException("Unknown theme name")
             };
 
@@ -145,6 +151,9 @@ namespace Consolonia.Gallery.View
             ThemeModernMenuItem.IsChecked = themeName == nameof(ThemesList.Modern);
             ThemeTurboVisionMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVision);
             ThemeTurboVisionDarkMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionDark);
+            ThemeTurboVisionCompatibleMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionCompatible);
+            ThemeTurboVisionGrayMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionGray);
+            ThemeTurboVisionElegantMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionElegant);
         }
     }
 
@@ -159,6 +168,9 @@ namespace Consolonia.Gallery.View
 
         public bool IsTurboVision =>
             SelectedTheme == nameof(ThemesList.TurboVision) ||
-            SelectedTheme == nameof(ThemesList.TurboVisionDark);
+            SelectedTheme == nameof(ThemesList.TurboVisionDark) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionCompatible) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionGray) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionElegant);
     }
 }
