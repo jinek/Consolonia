@@ -1,0 +1,17 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Consolonia.Themes.TurboVisionCompatibleTheme">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <MergeResourceInclude Source="/TurboVision/TurboVisionCompatibleColors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <x:String x:Key="ThemeName">TurboVisionCompatible</x:String>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <StyleInclude Source="/TurboVision/TurboVisionBase.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/Button.axaml" />
+    <StyleInclude Source="/TurboVision/Controls/ButtonNoShadow.axaml" />
+</Styles>
