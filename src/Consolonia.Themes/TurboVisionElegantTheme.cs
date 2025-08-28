@@ -5,7 +5,7 @@ using Avalonia.Styling;
 namespace Consolonia.Themes
 {
     /// <summary>
-    ///     Turbo Vision theme identical to TurboVisionDark. Placeholder for future customization.
+    ///     Turbo Vision theme Blue. Compatible with 3bit background, but expands to 4bit backgrounds
     /// </summary>
     public class TurboVisionElegantTheme : Styles
     {
