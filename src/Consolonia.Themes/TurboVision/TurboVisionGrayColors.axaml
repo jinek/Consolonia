@@ -7,7 +7,7 @@
 
     <!--Main content foreground. Text on background or alternative background-->
     <SolidColorBrush x:Key="ThemeForegroundBrush"
-                     Color="{consolonia:EgaColor Gray}" />
+                     Color="{consolonia:EgaColor White}" />
     <!--Main content background.-->
     <SolidColorBrush x:Key="ThemeBackgroundBrush"
                      Color="{consolonia:EgaColor Black}" />
@@ -17,31 +17,31 @@
 
     <!--Used to highlight selected but no focused item (selected list item, on switch etc-->
     <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"
-                     Color="{consolonia:EgaColor DarkYellow}" />
+                     Color="{consolonia:EgaColor Gray}" />
     <SolidColorBrush x:Key="ThemeChooserForegroundBrush"
                      Color="{consolonia:EgaColor Black}" />
 
     <!--Mostly used as focus highlight. But sometimes forced, like turbovision buttons, menu parent item highlight
                 Value must be in some readable contrast with ThemeForegroundBrush-->
     <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
-                     Color="{consolonia:EgaColor DarkMagenta}" />
+                     Color="{consolonia:EgaColor DarkCyan}" />
 
     <!--Background of edit items: combobox, textbox-->
     <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
-                     Color="{consolonia:EgaColor DarkCyan}" />
+                     Color="{consolonia:EgaColor Gray}" />
     <!--Foeground of edit items: combobox, textbox. Must fit background-->
     <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
-                     Color="{consolonia:EgaColor White}" />
+                     Color="{consolonia:EgaColor DarkRed}" />
 
     <!--Highlights. Access key colors for buttons and menus-->
     <SolidColorBrush x:Key="ThemeHighlightForegroundBrush"
-                     Color="{consolonia:EgaColor Yellow}" />
+                     Color="{consolonia:EgaColor Magenta}" />
     <SolidColorBrush x:Key="ThemeHighlightForegroundBrush2"
                      Color="{consolonia:EgaColor Yellow}" />
 
     <!--Color of borders ( grid borders, panel borders etc)-->
     <SolidColorBrush x:Key="ThemeBorderBrush"
-                     Color="{consolonia:EgaColor White}" />
+                     Color="{consolonia:EgaColor Gray}" />
 
     <!--Disabled foreground or background. e.g. disabled menu item foreground, disabled button foreground-->
     <SolidColorBrush x:Key="ThemeNoDisturbBrush"

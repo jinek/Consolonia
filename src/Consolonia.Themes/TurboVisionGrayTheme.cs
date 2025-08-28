@@ -5,7 +5,7 @@ using Avalonia.Styling;
 namespace Consolonia.Themes
 {
     /// <summary>
-    ///     Turbo Vision theme identical to TurboVisionDark. Placeholder for future customization.
+    ///     Turbo Vision Dark Grayed. Compatible with 16-fg / 8-bg ANSI
     /// </summary>
     public class TurboVisionGrayTheme : Styles
     {
