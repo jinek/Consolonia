@@ -503,10 +503,10 @@ namespace Consolonia.PlatformSupport
                 case ConsoleKey.NoName:
                     return;
                 case 0:
-                {
-                    bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
-                    break;
-                }
+                    {
+                        bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
+                        break;
+                    }
             }
 
             if (((uint)keyValue & (uint)Key.CharMask) > 27)

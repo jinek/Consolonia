@@ -19,7 +19,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
             Random rnd = Random.Shared;
             DataContext = new RgbModel
-                { Color = Color.FromRgb((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255)) };
+            { Color = Color.FromRgb((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255)) };
 
             FourBitControl.ItemsSource = ConsoleColorItem.GetAll();
         }

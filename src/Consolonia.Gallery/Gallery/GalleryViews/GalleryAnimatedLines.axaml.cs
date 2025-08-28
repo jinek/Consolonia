@@ -15,7 +15,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
 
         private async void PauseButton_OnClick(object _, RoutedEventArgs _2)
-            // ReSharper restore UnusedParameter.Local
+        // ReSharper restore UnusedParameter.Local
         {
             var cts = new CancellationTokenSource();
             cts.CancelAfter(5000);

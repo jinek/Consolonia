@@ -160,7 +160,7 @@ namespace Consolonia.Designer
             catch (UnauthorizedAccessException ex)
             {
                 Content = new TextBlock
-                    { Text = $"Unable to access XAML file. {ex.Message}", Foreground = Brushes.Red };
+                { Text = $"Unable to access XAML file. {ex.Message}", Foreground = Brushes.Red };
                 return;
             }
             catch (IOException ex)

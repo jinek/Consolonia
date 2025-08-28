@@ -3,14 +3,14 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using AvaloniaEdit;
 using AvaloniaEdit.CodeCompletion;
-using ConsoloniaEdit.Demo.Resources;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Folding;
 using AvaloniaEdit.TextMate;
-using TextMateSharp.Grammars;
+using ConsoloniaEdit.Demo.Resources;
 using ConsoloniaEdit.Demo.ViewModels;
-using AvaloniaEdit;
+using TextMateSharp.Grammars;
 
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable UnusedMember.Local
@@ -34,7 +34,7 @@ namespace ConsoloniaEdit.Demo
             // this.AttachDevTools();
 
             _textEditor = this.FindControl<TextEditor>("Editor")!;
-            
+
             _textEditor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(_textEditor.Options);
             _textEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
             _textEditor.TextArea.RightClickMovesCaret = true;
@@ -203,7 +203,7 @@ namespace ConsoloniaEdit.Demo
             }
         }
 
-  
+
 
     }
 }

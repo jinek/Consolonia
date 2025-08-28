@@ -26,8 +26,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             // initialize the buffer with space so it draws any background color
             // blended into it.
             for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-                _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
+                for (ushort x = 0; x < width; x++)
+                    _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
         }
 
         public ushort Width { get; }
@@ -94,11 +94,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public void ForeachReadonly(Action<PixelBufferCoordinate, Pixel> action)
         {
             for (ushort j = 0; j < Height; j++)
-            for (ushort i = 0; i < Width; i++)
-            {
-                Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
-                action(new PixelBufferCoordinate(i, j), pixel);
-            }
+                for (ushort i = 0; i < Width; i++)
+                {
+                    Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
+                    action(new PixelBufferCoordinate(i, j), pixel);
+                }
         }
 
         private (ushort x, ushort y) ToXY(int i)

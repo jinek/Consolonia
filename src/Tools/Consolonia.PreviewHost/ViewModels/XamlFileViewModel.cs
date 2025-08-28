@@ -17,7 +17,8 @@ namespace Consolonia.PreviewHost.ViewModels
         private bool _disposedValue;
         private FileSystemWatcher? _fileWatcher;
 
-        [ObservableProperty] [NotifyPropertyChangedFor(nameof(Name))]
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(Name))]
         private string? _fullName;
 
         [ObservableProperty] private string? _name;
