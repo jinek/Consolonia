@@ -1,5 +1,9 @@
 using System;
+using System.Diagnostics;
+using System.Net;
 using Avalonia;
+using Avalonia.Input;
+using AvaloniaUI.DiagnosticsSupport;
 
 namespace Consolonia.Gallery
 {
@@ -19,7 +23,30 @@ namespace Consolonia.Gallery
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
                 .ThrowOnErrors()
+                .WithDeveloperTools(o =>
+                {
+                    o.Gesture =  new KeyGesture(Key.F1);
+                   // o.Runner = new MyRunner();
+                })
                 .LogToException();
         }
+    }
+}
+public record MyRunner : DeveloperToolsRunner
+{
+    public override bool Run(string args)
+    {
+        Process process = new Process();
+        // process.StartInfo.WorkingDirectory = Environemnt.
+        process.StartInfo.FileName = "avdt";
+        process.StartInfo.UseShellExecute = true;
+        process.StartInfo.CreateNoWindow = false;
+        process.StartInfo.Arguments = args;
+        if (process.Start())
+        {
+            return true;
+        }
+
+        return false;
     }
 }

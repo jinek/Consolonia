@@ -201,7 +201,12 @@ namespace Consolonia.Core.Drawing
 
             if (rect.Rect.IsEmpty()) return;
 
-            if (rect.IsRounded || !rect.IsUniform)
+            if (rect.IsRounded)
+            {
+                rect = new RoundedRect(rect.Rect, 0.0f, 0.0f, 0.0f, 0.0f);
+            }
+
+            if (!rect.IsUniform)
             {
                 ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle, this,
                     brush, pen, rect, boxShadows);
@@ -321,6 +326,7 @@ namespace Consolonia.Core.Drawing
 
         public void PushOpacity(double opacity, Rect? bounds)
         {
+            return;
             if (opacity.IsNearlyEqual(1)) return;
             ConsoloniaPlatform.RaiseNotSupported(
                 NotSupportedRequestCode.PushOpacityNotSupported, this, opacity, bounds);
@@ -328,6 +334,7 @@ namespace Consolonia.Core.Drawing
 
         public void PopOpacity()
         {
+            return;
             throw new NotImplementedException();
         }
 
