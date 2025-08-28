@@ -29,7 +29,7 @@
     <!--Foeground of edit items: combobox, textbox. Must fit background-->
     <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
                      Color="#323130" />
-    
+
     <!--Highlights. Access key colors for buttons and menus-->
     <SolidColorBrush x:Key="ThemeHighlightForegroundBrush"
                      Color="Yellow" />
