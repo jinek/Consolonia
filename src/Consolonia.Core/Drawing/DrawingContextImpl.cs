@@ -111,10 +111,8 @@ namespace Consolonia.Core.Drawing
                 // get the quad pixel the bitmap
                 SKColor[] quadColors =
                 [
-                    bitmap.GetPixel(x, y),
-                    bitmap.GetPixel(x + 1, y),
-                    bitmap.GetPixel(x, y + 1),
-                    bitmap.GetPixel(x + 1, y + 1)
+                    bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
+                    bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
                 ];
 
                 // map it to a single char to represent the 4 pixels

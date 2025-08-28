@@ -31,7 +31,7 @@ public class MainWindowViewModel(TextMate.Installation _textMateInstallation, Re
     {
         ApplicationCommands.Cut.Execute(null, textArea);
     }
-
+    
     public void PasteMouseCommmand(TextArea textArea)
     {
         ApplicationCommands.Paste.Execute(null, textArea);

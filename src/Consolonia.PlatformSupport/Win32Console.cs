@@ -14,9 +14,9 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Terminal.Gui;
-using static Vanara.PInvoke.Kernel32;
 using Key = Avalonia.Input.Key;
 using Point = Avalonia.Point;
+using static Vanara.PInvoke.Kernel32;
 
 // ReSharper disable UnusedMember.Local
 #pragma warning disable CS0649

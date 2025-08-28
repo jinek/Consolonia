@@ -9,7 +9,7 @@ class CSharp
             last = acc.ToList();
             acc = PassList(last.ToList());
         }
-        while (!acc.SequenceEqual(last));
+        while(!acc.SequenceEqual(last));
         return acc;
     }
 
@@ -22,21 +22,21 @@ class CSharp
         if (x1 < x0)
         {
             xs.RemoveAt(1);
-            return new List<int>() { x1 }.Concat(PassList(xs)).ToList();
+            return new List<int>() {x1}.Concat(PassList(xs)).ToList();
         }
         else
         {
             xs.RemoveAt(0);
-            return new List<int>() { x0 }.Concat(PassList(xs)).ToList();
+            return new List<int>() {x0}.Concat(PassList(xs)).ToList();
         }
     }
-
+    
     public static void ErrorAndExit()
     {
         Console.WriteLine("Usage: please provide a list of at least two integers to sort in the format \"1, 2, 3, 4, 5\"");
-        Environment.Exit(1);
+        Environment.Exit(1);   
     }
-
+    
     //public static void Main(string[] args)
     //{
     //    if (args.Length != 1)

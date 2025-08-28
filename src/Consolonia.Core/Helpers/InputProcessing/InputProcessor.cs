@@ -14,7 +14,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
         private readonly ILogger _logger = Log.CreateInputLogger();
 
         private int _previousTopMatcherIndex = -1;
-        private ImmutableArray<IMatcher<T>> Matchers { get; } = [.. matchers];
+        private ImmutableArray<IMatcher<T>> Matchers { get; } = [..matchers];
 
         public void ProcessChunk(IReadOnlyCollection<T> chunk)
         {

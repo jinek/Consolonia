@@ -44,8 +44,7 @@ namespace Consolonia.Core.Infrastructure
 
         private static readonly FlagTranslator<ConsoleModifiers, RawInputModifiers> ModifiersFlagsTranslator = new([
             (ConsoleModifiers.Control, RawInputModifiers.Control),
-            (ConsoleModifiers.Shift, RawInputModifiers.Shift),
-            (ConsoleModifiers.Alt, RawInputModifiers.Alt)
+            (ConsoleModifiers.Shift, RawInputModifiers.Shift), (ConsoleModifiers.Alt, RawInputModifiers.Alt)
         ]);
 
         public override bool SupportsAltSolo => false;
