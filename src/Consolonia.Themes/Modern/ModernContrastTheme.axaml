@@ -1,7 +1,5 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
-        xmlns:controls="https://github.com/jinek/consolonia"
         x:Class="Consolonia.Themes.ModernContrastTheme">
     <Styles.Resources>
         <ResourceDictionary>
@@ -9,100 +7,10 @@
                 <ResourceInclude Source="/Modern/ModernContrastColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <x:String x:Key="ThemeLeftArrowSymbol">⏴</x:String>
-            <x:String x:Key="ThemeRightArrowSymbol">⏵</x:String>
-            <x:String x:Key="ThemeUpArrowSymbol">▴</x:String>
-            <x:String x:Key="ThemeDownArrowSymbol">▾</x:String>
-
-            <x:String x:Key="ThemeScrollBarLeftSymbol">⏴</x:String>
-            <x:String x:Key="ThemeScrollBarRightSymbol">⏵</x:String>
-            <x:String x:Key="ThemeScrollBarUpSymbol">▴</x:String>
-            <x:String x:Key="ThemeScrollBarDownSymbol">▾</x:String>
-
-            <x:String x:Key="ThemeScrollBarHorizontalBackgroundSymbol">░</x:String>
-            <x:String x:Key="ThemeScrollBarHorizontalThumbSymbol">█</x:String>
-            <x:String x:Key="ThemeScrollBarVerticalBackgroundSymbol">░</x:String>
-            <x:String x:Key="ThemeScrollBarVerticalThumbSymbol">█</x:String>
-
-            <x:String x:Key="ThemeProgressBarBackgroundSymbol">░</x:String>
-
-            <x:String x:Key="ThemeSliderHorizontalThumbSymbol">🠷</x:String>
-            <x:String x:Key="ThemeSliderHorizontalBackgroundSymbol">─</x:String>
-
-            <x:String x:Key="ThemeSliderVerticalThumbSymbol">🠴</x:String>
-            <x:String x:Key="ThemeSliderVerticalBackgroundSymbol">│</x:String>
-
-            <x:String x:Key="ThemeRadioButtonNotSelectedSymbol">◯</x:String>
-            <x:String x:Key="ThemeRadioButtonSelectedSymbol">⬤</x:String>
-            <x:String x:Key="ThemeRadioButtonIndeterminateSymbol">🟗</x:String>
-
-            <x:String x:Key="ThemeCheckBoxNotSelectedSymbol">☐</x:String>
-            <x:String x:Key="ThemeCheckBoxSelectedSymbol">🗹</x:String>
-            <x:String x:Key="ThemeCheckBoxIndeterminateSymbol">■</x:String>
-
-            <x:String x:Key="ThemeCheckedSymbol">✓</x:String>
-            <x:String x:Key="ThemeCloseSymbol">✕</x:String>
-
-            <x:String x:Key="ThemeToggleSwitchOffSymbol">◯</x:String>
-            <x:String x:Key="ThemeToggleSwitchOnSymbol">⬤</x:String>
-            <controls:CaretStyle x:Key="ControlFocusCaretStyle">BlinkingUnderline</controls:CaretStyle>
-
-            <!-- window manager resources-->
-            <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
-            <controls:LineBrush x:Key="ManagedWindow_BorderBrush"
-                                Brush="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                                LineStyle="Edge" />
-            <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush"
-                                Brush="#EEEEEE"
-                                LineStyle="Edge" />
-            <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush"
-                             Color="#7F767676" />
-
-            <BoxShadows x:Key="ManagedWindow_BoxShadows">none</BoxShadows>
-            <Thickness x:Key='ManagedWindow_BorderThickness'>1</Thickness>
-            <x:Double x:Key="ManagedWindow_SystemIconSpacing">0</x:Double>
-            <x:Int32 x:Key="ManagedWindow_SizingVector">1</x:Int32>
-            <Thickness x:Key='ManagedWindow_TitleMargin'>1 0 0 0</Thickness>
-            <DataTemplate x:Key="ManagedWindow_MinimizeIcon">
-                <ContentControl Content="{DynamicResource Icon_Minimize}" />
-            </DataTemplate>
-
-            <DataTemplate x:Key="ManagedWindow_MaximizeIcon">
-                <ContentControl Content="{DynamicResource Icon_Maximize}" />
-            </DataTemplate>
-
-            <DataTemplate x:Key="ManagedWindow_RestoreIcon">
-                <ContentControl Content="{DynamicResource Icon_Restore}" />
-            </DataTemplate>
-
-            <DataTemplate x:Key="ManagedWindow_CloseIcon">
-                <ContentControl Content="{DynamicResource Icon_Close}" />
-            </DataTemplate>
-
-            <DataTemplate x:Key="ManagedWindow_SystemMenuIcon">
-                <ContentControl Content="{DynamicResource Icon_Menu}" />
-            </DataTemplate>
-            <!-- ReSharper restore InconsistentNaming -->
-            <!-- window manager resources end -->
+            <x:String x:Key="ThemeName">ModernContrast</x:String>
         </ResourceDictionary>
     </Styles.Resources>
 
-    <StyleInclude Source="/Templates/Controls/AllControls.axaml" />
-    <StyleInclude Source="/Modern/Controls/BorderPanel.axaml" />
-    <StyleInclude Source="/Modern/Controls/ConsoloniaAccessRun.axaml" />
-    <StyleInclude Source="/Modern/Controls/Button.axaml" />
-    <StyleInclude Source="/Modern/Controls/DataGridRow.axaml" />
-    <StyleInclude Source="/Modern/Controls/TextBox.axaml" />
-    <StyleInclude Source="/Modern/Controls/ToggleButton.axaml" />
-    <StyleInclude Source="/Modern/Controls/ComboBox.axaml" />
-    <StyleInclude Source="/Modern/Controls/ComboBoxItem.axaml" />
-    <StyleInclude Source="/Modern/Controls/DropDownButton.axaml" />
-    <StyleInclude Source="/Modern/Controls/ListBoxItem.axaml" />
-    <StyleInclude Source="/Modern/Controls/TabItem.axaml" />
-    <StyleInclude Source="/Modern/Controls/ButtonSpinner.axaml" />
-    <StyleInclude Source="/Modern/Controls/TreeViewItem.axaml" />
-    <StyleInclude Source="/Modern/Controls/Menu.axaml" />
-    <StyleInclude Source="/Modern/Controls/MenuItem.axaml" />
-    <wm:WindowManagerTheme />
+    <StyleInclude Source="/Modern/ModernBase.axaml" />
 
 </Styles>
