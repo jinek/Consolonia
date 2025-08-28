@@ -48,10 +48,10 @@
                                 Brush="{DynamicResource ThemeAlternativeBackgroundBrush}"
                                 LineStyle="Edge" />
             <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush"
-                                Brush="#EEEEEE"
+                                Brush="{DynamicResource ThemeForegroundBrush}"
                                 LineStyle="Edge" />
             <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush"
-                             Color="#7F767676" />
+                             Color="{DynamicResource ThemeShadeBrush}" />
 
             <BoxShadows x:Key="ManagedWindow_BoxShadows">none</BoxShadows>
             <Thickness x:Key='ManagedWindow_BorderThickness'>1</Thickness>
