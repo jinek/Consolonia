@@ -209,7 +209,7 @@ namespace Consolonia.Core.Drawing
                 if (IsSimpleRectangle(strokes, bounds))
                 {
                     // Create a rectangle that fills the interior (excluding the stroke boundary)
-                    var interiorRect = bounds;
+                    Rect interiorRect = bounds;
                     //new Rect(
                     //    bounds.X + 1,                                                                          
                     //    bounds.Y + 1,

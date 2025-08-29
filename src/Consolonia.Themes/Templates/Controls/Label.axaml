@@ -3,6 +3,7 @@
                     x:ClassModifier="internal">
     <ControlTheme x:Key="{x:Type Label}"
                   TargetType="Label">
-        <Setter Property="Padding" Value="0 0 1 0" />
+        <Setter Property="Padding"
+                Value="0 0 1 0" />
     </ControlTheme>
 </ResourceDictionary>
