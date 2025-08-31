@@ -291,7 +291,7 @@ namespace Consolonia.Core.Drawing
                             double xEnd = intersections[i + 1];
 
                             // Create fill rectangle for this span, excluding the boundary
-                            double fillXStart = xStart + 1;
+                            double fillXStart = xStart;
                             double fillWidth = xEnd - fillXStart;
 
                             if (fillWidth > 0) fillRects.Add(new Rect(fillXStart, y, fillWidth, 1));
