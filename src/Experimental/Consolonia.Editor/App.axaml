@@ -10,10 +10,8 @@
     </Application.Resources>
 
     <Application.Styles>
-        <SimpleTheme/>
-        
+
         <console:ModernTheme />
-        
-        <StyleInclude Source="avares://AvaloniaEdit/Themes/Simple/AvaloniaEdit.xaml" />
+        <StyleInclude Source="avares:/AvaloniaEdit.Consolonia.Themes.axaml" />
     </Application.Styles>
 </Application>
