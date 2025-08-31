@@ -8,20 +8,36 @@
             <ControlTheme.BasedOn>
                 <StaticResource ResourceKey="{x:Type windowManager:ManagedWindow}" />
             </ControlTheme.BasedOn>
-            <Setter Property="BorderBrush">
-                <Setter.Value>
-                    <brushes:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
-                                       LineStyle="DoubleLine" />
-                </Setter.Value>
-            </Setter>
             <Setter Property="BorderThickness"
                     Value="1" />
             <Setter Property="Padding"
-                    Value="5" />
+                    Value="0" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Stretch" />
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeBackgroundBrush}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ThemeForegroundBrush}" />
+
+            <!--keys of turbovision by chatGPT-->
+            <Setter Property="brushes:ManagedWindowExtensions.CloseWindowGesture"
+                    Value="ALT+c" />
+            <Setter Property="brushes:ManagedWindowExtensions.MaximizeWindowGesture"
+                    Value="ALT+r" />
+            <Setter Property="brushes:ManagedWindowExtensions.RestoreWindowGesture"
+                    Value="ALT+r" />
+            <Setter Property="brushes:ManagedWindowExtensions.MoveWindowGesture"
+                    Value="ALT+m" />
+            <Setter Property="brushes:ManagedWindowExtensions.SizeWindowGesture"
+                    Value="ALT+s" />
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="windowManager:ManagedWindow">
                         <Panel>
+
                             <!--Shade-->
                             <Border BorderThickness="0"
                                     Background="{DynamicResource ThemeShadeBrush}"
@@ -35,8 +51,9 @@
                                     Background="{TemplateBinding Background}"
                                     x:Name="PART_WindowBorder">
                                 <Border.BorderBrush>
-                                    <brushes:LineBrush Brush="{DynamicResource ThemeBorderBrush}"
-                                                       LineStyle="DoubleLine" />
+                                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
+                                    <brushes:LineBrush LineStyle="DoubleLine"
+                                                       Brush="{StaticResource ThemeBorderBrush}" />
                                 </Border.BorderBrush>
                                 <Panel>
                                     <DockPanel LastChildFill="True"
@@ -47,7 +64,7 @@
                                               DockPanel.Dock="Top"
                                               Background="{DynamicResource ThemeTransparentBrush}"
                                               IsHitTestVisible="True"
-                                              ColumnDefinitions="Auto * Auto">
+                                              ColumnDefinitions="Auto Auto * Auto">
                                             <Grid.Styles>
                                                 <Style Selector="Button">
                                                     <Setter Property="Foreground"
@@ -70,11 +87,12 @@
                                                 <Button Content="■"
                                                         x:Name="PART_CloseButton" />
                                             </DockPanel>
+
                                             <!-- Title -->
-                                            <TextBlock Grid.Column="1"
+                                            <TextBlock Grid.Column="2"
                                                        Padding="1,0"
                                                        Name="PART_Title"
-                                                       Foreground="{DynamicResource ManagedWindow_TitleBarForegroundBrush}"
+                                                       Foreground="{DynamicResource ThemeNoDisturbBrush}"
                                                        Background="{TemplateBinding Background}"
                                                        HorizontalAlignment="Center"
                                                        FontFamily="{TemplateBinding FontFamily}"
@@ -82,7 +100,8 @@
                                                        FontWeight="{TemplateBinding FontWeight}"
                                                        FontStyle="{TemplateBinding FontStyle}"
                                                        Text="{TemplateBinding Title}" />
-                                            <DockPanel Grid.Column="2"
+
+                                            <DockPanel Grid.Column="3"
                                                        Margin="0,0,1,0">
                                                 <brushes:SymbolsControl DockPanel.Dock="Left"
                                                                         Text="[" />
@@ -102,9 +121,12 @@
                                         <!--Content-->
                                         <ContentPresenter Name="PART_ContentPresenter"
                                                           ClipToBounds="True"
+                                                          HorizontalContentAlignment="Stretch"
+                                                          VerticalContentAlignment="Stretch"
+                                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                           KeyboardNavigation.TabNavigation="Continue"
-                                                          Margin="{TemplateBinding Margin}"
-                                                          Padding="{TemplateBinding Padding}"
+                                                          Margin="{TemplateBinding Padding}"
                                                           ContentTemplate="{TemplateBinding ContentTemplate}"
                                                           Content="{TemplateBinding Content}" />
                                     </DockPanel>
@@ -120,19 +142,26 @@
                 </Setter.Value>
             </Setter>
 
+            <!--maximized-->
+            <Style Selector="^:maximized /template/ Button#PART_RestoreButton">
+                <Setter Property="IsVisible"
+                        Value="True" />
+            </Style>
+
+            <!--normal-->
+            <Style Selector="^:normal /template/ Button#PART_MaximizeButton">
+                <Setter Property="IsVisible"
+                        Value="True" />
+            </Style>
+
+            <Style Selector="^:active /template/ TextBlock#PART_Title">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource ThemeForegroundBrush}" />
+            </Style>
+
             <Style Selector="^:active /template/ Grid#PART_TitleBar">
                 <Setter Property="Background"
-                        Value="{x:Null}" />
-            </Style>
-
-            <Style Selector="^:active /template/ Grid#PART_TitleBar > TextBlock">
-                <Setter Property="Foreground"
-                        Value="{DynamicResource ManagedWindow_Active_TitleBarForegroundBrush}" />
-            </Style>
-
-            <Style Selector="^:active /template/ Grid#PART_TitleBar > Button">
-                <Setter Property="Foreground"
-                        Value="{DynamicResource ManagedWindow_Active_TitleBarForegroundBrush}" />
+                        Value="{DynamicResource ThemeTransparentBrush}" />
             </Style>
 
             <Style Selector="^:noborder /template/ Border#PART_WindowBorder">
@@ -143,6 +172,37 @@
             <Style Selector="^:maximized /template/ Border#PART_WindowBorder">
                 <Setter Property="Margin"
                         Value="0" />
+                <Setter Property="BorderThickness"
+                        Value="1" />
+                <Setter Property="BoxShadow"
+                        Value="0 0 0 Transparent" />
+            </Style>
+
+            <Style Selector="^:sizing /template/ Border#PART_WindowBorder">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
+                        <brushes:LineBrush LineStyle="DoubleLine"
+                                           Brush="{StaticResource ThemeActionBackgroundBrush}" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style Selector="^:sizing /template/ Panel#PART_ModalOverlay">
+                <Setter Property="IsVisible"
+                        Value="False" />
+            </Style>
+            <Style Selector="^:moving /template/ Border#PART_WindowBorder">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
+                        <brushes:LineBrush LineStyle="DoubleLine"
+                                           Brush="{StaticResource ThemeActionBackgroundBrush}" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style Selector="^:moving /template/ Panel#PART_ModalOverlay">
+                <Setter Property="IsVisible"
+                        Value="False" />
             </Style>
         </ControlTheme>
     </Styles.Resources>

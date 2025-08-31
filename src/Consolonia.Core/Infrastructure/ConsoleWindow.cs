@@ -20,32 +20,6 @@ using Window = Avalonia.Controls.Window;
 namespace Consolonia.Core.Infrastructure
 {
     /// <summary>
-    ///     ConsoleWindow - a TopLevel which uses the ConsoleWindowImpl to interact with the console.
-    /// </summary>
-    /// <remarks>
-    ///     This window content is the MainView
-    /// </remarks>
-    public class ConsoleWindow : Window
-    {
-        public ConsoleWindow() :
-            this(new ConsoleWindowImpl())
-
-        {
-        }
-
-        public ConsoleWindow(IWindowImpl impl)
-            : base(impl)
-        {
-        }
-
-        public Control MainView
-        {
-            get => Content as Control;
-            set => Content = value;
-        }
-    }
-
-    /// <summary>
     ///     ConsoleWindowImpl - An IWindowImpl which uses a PixelBuffer to render.
     /// </summary>
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix
@@ -355,6 +329,16 @@ namespace Consolonia.Core.Infrastructure
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void SetCanMinimize(bool value)
+        {
+            // ignore, we can't
+        }
+
+        public void SetCanMaximize(bool value)
+        {
+            // ignore, we can't
         }
 
         public event Action<ConsoleCursor> CursorChanged;

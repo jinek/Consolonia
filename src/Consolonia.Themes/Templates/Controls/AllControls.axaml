@@ -4,6 +4,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <MergeResourceInclude Source="/Templates/Controls/AutoCompleteBox.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/BorderPanel.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Button.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ButtonSpinner.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Calendar.axaml" />
@@ -25,7 +26,9 @@
                 <MergeResourceInclude Source="/Templates/Controls/GridSplitter.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/HeaderedContentControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/HyperlinkButton.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Icons.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ItemsControl.axaml" />
+                <MergeResourceInclude Source="/Templates/Controls/Label.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/LightDismissOverlaylayer.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ListBox.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/ListBoxItem.axaml" />

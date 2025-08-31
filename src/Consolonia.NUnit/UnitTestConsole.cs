@@ -10,7 +10,6 @@ using Avalonia.Threading;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
-using Window = Avalonia.Controls.Window;
 
 namespace Consolonia.NUnit
 {
@@ -136,11 +135,10 @@ namespace Consolonia.NUnit
         {
             await Dispatcher.UIThread.InvokeAsync(async () =>
             {
-                var mainWindow = _lifetime.TopLevel as Window;
-                mainWindow!.InvalidateVisual();
-                await mainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Rendered
+                _lifetime.MainWindow!.InvalidateVisual();
+                await _lifetime.MainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Rendered
                     .ConfigureAwait(true);
-                await mainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Processed
+                await _lifetime.MainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Processed
                     .ConfigureAwait(true);
             }, DispatcherPriority.Render).ConfigureAwait(true);
 

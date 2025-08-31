@@ -90,6 +90,16 @@ namespace Consolonia.PlatformSupport.Clipboard
             throw new NotImplementedException();
         }
 
+        public Task FlushAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task<IDataObject> TryGetInProcessDataObjectAsync()
+        {
+            return Task.FromResult<IDataObject>(null);
+        }
+
         private static bool CheckSupport()
         {
             (int exitCode, string result) = ClipboardProcessRunner.Bash("which pbcopy", waitForOutput: true);

@@ -2,12 +2,11 @@
 using System;
 using Avalonia;
 using Avalonia.Interactivity;
-using Consolonia.Controls;
-using Consolonia.Core.Infrastructure;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public partial class SomeDialogWindow : Window
+    public partial class SomeDialogWindow : ManagedWindow
     {
         internal const string DialogTitle = "Dialog popup";
 
@@ -16,18 +15,16 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public SomeDialogWindow(double width, double height)
         {
             InitializeComponent();
+
             Title = DialogTitle;
             Width = width;
             Height = height;
-            var lifetime = Application.Current.ApplicationLifetime as ConsoloniaLifetime;
-            var consoleWindow = lifetime?.TopLevel as ConsoleWindow;
             AnimateWindow = ConsoloniaLifetime.Console.GetType().Name != "UnitTestConsole";
-
             AttachedToVisualTree += OnShowDialog;
         }
 
         // ReSharper disable once MemberCanBePrivate.Global Can be used by constructor
-        public SomeDialogWindow() : this(10 + Random.Next(20), 10 + Random.Next(10))
+        public SomeDialogWindow() : this(26 + Random.Next(20), 20 + Random.Next(10))
         {
         }
 

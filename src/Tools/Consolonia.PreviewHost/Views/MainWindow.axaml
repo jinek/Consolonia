@@ -1,17 +1,19 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:Consolonia.PreviewHost.ViewModels"
-             mc:Ignorable="d"
-             x:Class="Consolonia.PreviewHost.Views.MainView"
-             x:DataType="vm:ProjectViewModel">
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Consolonia.PreviewHost.ViewModels"
+        mc:Ignorable="d"
+        x:Class="Consolonia.PreviewHost.Views.MainWindow"
+        x:DataType="vm:ProjectViewModel">
 
     <Grid RowDefinitions="Auto *">
         <Menu>
             <MenuItem Header="_File">
-                <!--<MenuItem Header="_Open..."
-                          Click="OnOpen" />-->
+                <MenuItem Header="_Open..."
+                          Click="OnOpen" />
+                <!--<MenuItem Header="_Save..."
+                          Click="OnSave" />-->
                 <MenuItem Header="E_xit"
                           Click="OnExit" />
             </MenuItem>
@@ -44,4 +46,4 @@
             </StackPanel>
         </Grid>
     </Grid>
-</UserControl>
+</Window>

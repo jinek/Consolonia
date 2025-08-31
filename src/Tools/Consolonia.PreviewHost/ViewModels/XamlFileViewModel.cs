@@ -161,7 +161,7 @@ namespace Consolonia.PreviewHost.ViewModels
         //    {
         //        Dispatcher.UIThread.Invoke(() =>
         //        {
-        //            var applicationLifetime = (ISingleViewApplicationLifetime)ApplicationLifetime!;
+        //            var applicationLifetime = (IClassicDesktopApplicationLifetime)ApplicationLifetime!;
         //            _loadContext.Unload();
         //            _loadContext.LoadFromStream(new MemoryStream(File.ReadAllBytes(_assemblyPath)));
 

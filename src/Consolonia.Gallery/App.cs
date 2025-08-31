@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Consolonia.Gallery.View;
 using Consolonia.Themes;
@@ -29,14 +28,12 @@ namespace Consolonia.Gallery
             if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode()
                 && !((ConsoloniaLifetime)ApplicationLifetime).Args.Any(argument => argument != null &&
                     argument.ToUpper().EndsWith(TurboVisionProgramParameterUpperCase)))
-                Styles.Add(new FluentTheme());
+                Styles.Add(new ModernTheme());
             else
                 Styles.Add(new TurboVisionTheme());
 
-            if (ApplicationLifetime is ISingleViewApplicationLifetime lifetime)
-                lifetime.MainView = new ControlsListView();
-            else if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                desktop.MainWindow = new Window { Content = new ControlsListView() };
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                desktop.MainWindow = new ControlsListView(); // designer runs as classic desktop
 
             base.OnFrameworkInitializationCompleted();
         }

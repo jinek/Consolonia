@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
@@ -16,11 +15,17 @@ namespace Consolonia.Gallery.View
 {
     public enum ThemesList
     {
-        Fluent,
-        TurboVision
+        Modern,
+        ModernDark,
+        ModernContrast,
+        TurboVision,
+        TurboVisionDark,
+        TurboVisionCompatible,
+        TurboVisionGray,
+        TurboVisionElegant
     }
 
-    public partial class ControlsListView : DockPanel
+    public partial class ControlsListView : Window
     {
         private static readonly HttpClient Client = new();
         private readonly IEnumerable<GalleryItem> _items;
@@ -103,10 +108,6 @@ namespace Consolonia.Gallery.View
 
         private static async Task ShowCode(string xamlFile)
         {
-            var lifetime = Application.Current.ApplicationLifetime as ISingleViewApplicationLifetime;
-            if (lifetime == null)
-                throw new InvalidOperationException("ApplicationLifetime is not ISingleViewApplicationLifetime");
-
             string xaml = await Client.GetStringAsync(new Uri(
                 $"https://raw.githubusercontent.com/jinek/Consolonia/refs/heads/main/src/Consolonia.Gallery/Gallery/GalleryViews/{xamlFile}"));
 
@@ -120,25 +121,45 @@ namespace Consolonia.Gallery.View
         }
 
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnThemeMenuItemClick(object sender, RoutedEventArgs e)
         {
-            if (ThemeCombo?.SelectedItem is not ComboBoxItem selectedItem ||
-                selectedItem.Content is not string themeName ||
+            if (sender is not MenuItem { Tag: string themeName } ||
                 !Enum.TryParse(themeName, out ThemesList selectedTheme))
                 return;
 
             Application.Current.Styles[0] = selectedTheme switch
             {
-                ThemesList.Fluent => new FluentTheme(),
+                ThemesList.Modern => new ModernTheme(),
+                ThemesList.ModernDark => new ModernDarkTheme(),
+                ThemesList.ModernContrast => new ModernContrastTheme(),
                 ThemesList.TurboVision => new TurboVisionTheme(),
+                ThemesList.TurboVisionDark => new TurboVisionDarkTheme(),
+                ThemesList.TurboVisionCompatible => new TurboVisionCompatibleTheme(),
+                ThemesList.TurboVisionGray => new TurboVisionGrayTheme(),
+                ThemesList.TurboVisionElegant => new TurboVisionElegantTheme(),
                 _ => throw new InvalidDataException("Unknown theme name")
             };
+
+            UpdateThemeMenuItems();
+            GalleryGrid.Focus();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
+            UpdateThemeMenuItems();
+        }
+
+        private void UpdateThemeMenuItems()
+        {
             string themeName = Application.Current.Styles[0].GetType().Name[..^5];
-            ThemeCombo.SelectedIndex = (int)Enum.Parse<ThemesList>(themeName);
+            ThemeModernMenuItem.IsChecked = themeName == nameof(ThemesList.Modern);
+            ThemeModernDarkMenuItem.IsChecked = themeName == nameof(ThemesList.ModernDark);
+            ThemeModernContrastMenuItem.IsChecked = themeName == nameof(ThemesList.ModernContrast);
+            ThemeTurboVisionMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVision);
+            ThemeTurboVisionDarkMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionDark);
+            ThemeTurboVisionCompatibleMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionCompatible);
+            ThemeTurboVisionGrayMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionGray);
+            ThemeTurboVisionElegantMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionElegant);
         }
     }
 
@@ -146,10 +167,18 @@ namespace Consolonia.Gallery.View
     {
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsTurboVision))]
-        [NotifyPropertyChangedFor(nameof(IsFluent))]
+        [NotifyPropertyChangedFor(nameof(IsModern))]
         private string _selectedTheme;
 
-        public bool IsFluent => SelectedTheme == nameof(ThemesList.Fluent);
-        public bool IsTurboVision => SelectedTheme == nameof(ThemesList.TurboVision);
+        public bool IsModern => SelectedTheme == nameof(ThemesList.Modern) ||
+                                SelectedTheme == nameof(ThemesList.ModernDark) ||
+                                SelectedTheme == nameof(ThemesList.ModernContrast);
+
+        public bool IsTurboVision =>
+            SelectedTheme == nameof(ThemesList.TurboVision) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionDark) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionCompatible) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionGray) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionElegant);
     }
 }

@@ -1,13 +1,13 @@
-<console:Window xmlns="https://github.com/avaloniaui"
-                xmlns:console="https://github.com/jinek/consolonia"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
-                xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
-                Icon="😎"
-                Padding="1"
-                x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyWindow"
-                x:DataType="local:MyWindowViewModel"
-                Title="{Binding Title}">
+<wm:ManagedWindow xmlns="https://github.com/avaloniaui"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:wm="using:Iciclecreek.Avalonia.WindowManager"
+                  xmlns:local="using:Consolonia.Gallery.Gallery.GalleryViews"
+                  Icon="😎"
+                  Padding="1"
+                  x:Class="Consolonia.Gallery.Gallery.GalleryViews.MyWindow"
+                  x:DataType="local:MyWindowViewModel"
+                  Foreground="{StaticResource ThemeForegroundBrush}"
+                  Title="{Binding Title}">
     <StackPanel Spacing="1">
         <StackPanel Orientation="Horizontal"
                     Spacing="1">
@@ -62,5 +62,14 @@
 
         <ToggleSwitch Content="CanResize"
                       IsChecked="{Binding CanResize, RelativeSource={RelativeSource AncestorType={x:Type wm:ManagedWindow}}}" />
+
+        <TextBlock xml:space="preserve"
+                   IsVisible="False"
+                   x:Name="TurboVisionShortCutsTextBlock">TurboVision window shortcuts:
+ALT+C - close
+ALT+R - maximize/restore
+CTRL+M - moving
+CTRL+S - resize
+</TextBlock>
     </StackPanel>
-</console:Window>
+</wm:ManagedWindow>

@@ -12,14 +12,14 @@
           RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*">
         <TextBlock Grid.Row="0"
                    Grid.ColumnSpan="3"
-                   Text="Press ALT+F, ALT+L, ALT+B to focus on a field. Or use arrow keys to jump between fields with XYFocus"
+                   Text="Press ALT+N, ALT+L, ALT+B to focus on a field. Or use arrow keys to jump between fields using XYFocus"
                    Margin="0,0,0,1"
                    TextWrapping="Wrap"
                    Foreground="{DynamicResource ThemeNoDisturbBrush}" />
         <Label Target="FirstNameEdit"
                Grid.Row="1"
                Grid.Column="0">
-            _First name
+            First _name
         </Label>
         <TextBox Name="FirstNameEdit"
                  Grid.Column="2"

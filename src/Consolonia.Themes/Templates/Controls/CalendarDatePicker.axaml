@@ -11,7 +11,6 @@
     <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="{x:Type CalendarDatePicker}"
                   TargetType="CalendarDatePicker">
-
         <Setter Property="(console:CalendarDatePickerExtensions.OpenOnEnter)"
                 Value="True" />
         <Setter Property="Background"
@@ -58,13 +57,11 @@
                            Name="PART_Popup"
                            PlacementTarget="{TemplateBinding}"
                            IsLightDismissEnabled="True">
-                        <Panel>
-                            <Border Background="{DynamicResource ThemeShadeBrush}"
-                                    Margin="2,1,0,0" />
 
+                        <console:BorderPanel>
                             <Calendar Name="PART_Calendar"
+                                      BorderThickness="0"
                                       Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
-                                      Margin="0,0,2,1"
                                       FirstDayOfWeek="{TemplateBinding FirstDayOfWeek}"
                                       IsTodayHighlighted="{TemplateBinding IsTodayHighlighted}"
                                       SelectedDate="{TemplateBinding SelectedDate, Mode=TwoWay}"
@@ -78,7 +75,7 @@
                                     </Style>
                                 </Calendar.Styles>
                             </Calendar>
-                        </Panel>
+                        </console:BorderPanel>
                     </Popup>
                 </Grid>
             </ControlTemplate>

@@ -6,11 +6,10 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Iciclecreek.Avalonia.WindowManager;
-using Window = Consolonia.Controls.Window;
 
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
-    public partial class MyWindow : Window
+    public partial class MyWindow : ManagedWindow
     {
         private static int _windowCount;
 
@@ -39,9 +38,17 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 Counter = 0,
                 Title = $"New Window {++_windowCount}"
             };
+
+            AttachedToVisualTree += OnAttachedToVisualTree;
         }
 
         public MyWindowViewModel ViewModel => (MyWindowViewModel)DataContext;
+
+        private void OnAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
+        {
+            if ((this.FindResource("ThemeName") as string)?.StartsWith("TurboVision") == true)
+                TurboVisionShortCutsTextBlock.IsVisible = true;
+        }
 
         private void OnIncrement(object sender, RoutedEventArgs args)
         {

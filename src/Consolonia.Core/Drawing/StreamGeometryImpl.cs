@@ -173,7 +173,13 @@ namespace Consolonia.Core.Drawing
             {
                 Rect bound = _geometryImpl._strokes.Aggregate(new Rect(), (rect, line) => rect.Union(line.Bounds));
                 _geometryImpl.Bounds = bound;
-                if (_isFilled) _geometryImpl._fills.Add(new Rectangle(bound));
+                if (_isFilled)
+                {
+                    // Process vertical and horizontal strokes to determine fill rectangles
+                    List<Rect> fillRectangles =
+                        ProcessRectilinearStrokesToFillRectangles(_geometryImpl._strokes, bound);
+                    foreach (Rect rect in fillRectangles) _geometryImpl._fills.Add(new Rectangle(rect, _geometryImpl));
+                }
             }
 
             /// <inheritdoc />
@@ -183,6 +189,116 @@ namespace Consolonia.Core.Drawing
 
             public void Dispose()
             {
+            }
+
+            /// <summary>
+            ///     Processes rectilinear (only horizontal and vertical) strokes to determine fill rectangles
+            /// </summary>
+            /// <param name="strokes">Collection of horizontal and vertical strokes</param>
+            /// <param name="bounds">Bounding rectangle of all strokes</param>
+            /// <returns>Collection of rectangles that represent the filled area</returns>
+            private static List<Rect> ProcessRectilinearStrokesToFillRectangles(IReadOnlyList<Line> strokes,
+                Rect bounds)
+            {
+                var fillRects = new List<Rect>();
+
+                if (strokes.Count == 0 || bounds.IsEmpty())
+                    return fillRects;
+
+                // For simple rectangular shapes (most common case)
+                if (IsSimpleRectangle(strokes, bounds))
+                {
+                    // Create a rectangle that fills the interior (excluding the stroke boundary)
+                    Rect interiorRect = bounds;
+                    //new Rect(
+                    //    bounds.X + 1,                                                                          
+                    //    bounds.Y + 1,
+                    //    Math.Max(0, bounds.Width - 2),
+                    //    Math.Max(0, bounds.Height - 2));
+
+                    if (!interiorRect.IsEmpty())
+                        fillRects.Add(interiorRect);
+
+                    return fillRects;
+                }
+
+                // For complex rectilinear polygons, use horizontal scanline approach
+                return HorizontalScanlineFill(strokes, bounds);
+            }
+
+            /// <summary>
+            ///     Determines if the strokes form a simple rectangle
+            /// </summary>
+            private static bool IsSimpleRectangle(IReadOnlyList<Line> strokes, Rect bounds)
+            {
+                if (strokes.Count != 4)
+                    return false;
+
+                List<Line> horizontalLines = strokes.Where(s => !s.Vertical).ToList();
+                List<Line> verticalLines = strokes.Where(s => s.Vertical).ToList();
+
+                if (horizontalLines.Count != 2 || verticalLines.Count != 2)
+                    return false;
+
+                // Check if we have top, bottom, left, and right edges
+                bool hasTop = horizontalLines.Any(l => Math.Abs(l.PStart.Y - bounds.Top) < 0.5);
+                bool hasBottom = horizontalLines.Any(l => Math.Abs(l.PStart.Y - bounds.Bottom) < 0.5);
+                bool hasLeft = verticalLines.Any(l => Math.Abs(l.PStart.X - bounds.Left) < 0.5);
+                bool hasRight = verticalLines.Any(l => Math.Abs(l.PStart.X - bounds.Right) < 0.5);
+
+                return hasTop && hasBottom && hasLeft && hasRight;
+            }
+
+            /// <summary>
+            ///     Fills rectilinear polygon using horizontal scanlines
+            /// </summary>
+            private static List<Rect> HorizontalScanlineFill(IReadOnlyList<Line> strokes, Rect bounds)
+            {
+                var fillRects = new List<Rect>();
+
+                // Get all vertical edges (these will determine fill spans)
+                List<Line> verticalEdges = strokes.Where(s => s.Vertical).ToList();
+
+                if (verticalEdges.Count == 0)
+                    return fillRects;
+
+                // Process each integer Y coordinate within bounds
+                for (int y = (int)Math.Ceiling(bounds.Top); y < (int)Math.Floor(bounds.Bottom); y++)
+                {
+                    var intersections = new List<double>();
+
+                    // Find X coordinates where vertical edges intersect current scanline
+                    foreach (Line edge in verticalEdges)
+                    {
+                        // Check if this vertical edge spans the current Y coordinate
+                        double yMin = Math.Min(edge.PStart.Y, edge.PEnd.Y);
+                        double yMax = Math.Max(edge.PStart.Y, edge.PEnd.Y);
+
+                        if (y >= yMin && y < yMax) intersections.Add(edge.PStart.X); // Vertical line has constant X
+                    }
+
+                    // Sort intersections and create horizontal fill spans
+                    intersections.Sort();
+
+                    // Remove duplicates (in case of overlapping edges)
+                    intersections = intersections.Distinct().ToList();
+
+                    // Pair up intersections to create fill spans (inside-outside rule)
+                    for (int i = 0; i < intersections.Count - 1; i += 2)
+                        if (i + 1 < intersections.Count)
+                        {
+                            double xStart = intersections[i];
+                            double xEnd = intersections[i + 1];
+
+                            // Create fill rectangle for this span, excluding the boundary
+                            double fillXStart = xStart + 1;
+                            double fillWidth = xEnd - fillXStart;
+
+                            if (fillWidth > 0) fillRects.Add(new Rect(fillXStart, y, fillWidth, 1));
+                        }
+                }
+
+                return fillRects;
             }
         }
     }

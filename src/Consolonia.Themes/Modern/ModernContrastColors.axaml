@@ -1,0 +1,75 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:controls="https://github.com/jinek/consolonia">
+    <system:Double x:Key="FontSizeNormal">1</system:Double>
+
+    <!--Main content foreground. Text on background or alternative background-->
+    <SolidColorBrush x:Key="ThemeForegroundBrush"
+                     Color="#FFFFFF" />
+    <!--Main content background.-->
+    <SolidColorBrush x:Key="ThemeBackgroundBrush"
+                     Color="#000000" />
+    <!--Alternative to main background. Must fit same foreground. Used where there is a need to make difference, for instance, button background in fluent theme, popup background etc-->
+    <SolidColorBrush x:Key="ThemeAlternativeBackgroundBrush"
+                     Color="#404040" />
+
+    <!--Used to highlight selected but no focused item (selected list item, on switch etc-->
+    <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"
+                     Color="#00FFFF" />
+    <SolidColorBrush x:Key="ThemeChooserForegroundBrush"
+                     Color="#000000" />
+
+    <!--Mostly used as focus highlight. But sometimes forced, like turbovision buttons, menu parent item highlight-->
+    <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
+                     Color="#0080FF" />
+
+    <!--Background of edit items: combobox, textbox-->
+    <SolidColorBrush x:Key="ThemeSelectionBackgroundBrush"
+                     Color="#800080" />
+    <!--Foeground of edit items: combobox, textbox. Must fit background-->
+    <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
+                     Color="#FFFFFF" />
+
+    <!--Color of borders ( grid borders, panel borders etc)-->
+    <SolidColorBrush x:Key="ThemeBorderBrush"
+                     Color="#FFFFFF" />
+
+    <!--Disabled foreground or background. e.g. disabled menu item foreground, disabled button foreground-->
+    <SolidColorBrush x:Key="ThemeNoDisturbBrush"
+                     Color="#808080" />
+
+    <!--Background of the shade pixel. Will be applied to shade background around popups etc, dialogs-->
+    <SolidColorBrush x:Key="ThemeShadeBrush"
+                     Color="#7F404040" />
+    <!--When shade needs to be done using foreground ASCII symbols, not background-->
+    <SolidColorBrush x:Key="ThemePseudoShadeBrush"
+                     Color="#C0C0C0" />
+
+    <!--Indicating an error, failure etc, foreground only-->
+    <SolidColorBrush x:Key="ThemeErrorBrush"
+                     Color="#FF0000" />
+
+    <!-- ManagedWindow resources -->
+    <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
+    <SolidColorBrush x:Key="ManagedWindow_BackgroundBrush"
+                     Color="#000000" />
+    <SolidColorBrush x:Key="ManagedWindow_TitleBarBackgroundBrush"
+                     Color="#404040" />
+    <SolidColorBrush x:Key="ManagedWindow_TitleBarForegroundBrush"
+                     Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarBackgroundBrush"
+                     Color="#808080" />
+    <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarForegroundBrush"
+                     Color="#FFFFFF" />
+    <controls:LineBrush x:Key="ManagedWindow_BorderBrush"
+                        Brush="#FFFFFF"
+                        LineStyle="Edge" />
+    <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush"
+                        Brush="#00FFFF"
+                        LineStyle="Edge" />
+    <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush"
+                     Color="#7F404040" />
+    <!-- ReSharper enable InconsistentNaming We need to keep same names as in WindowManager-->
+
+</ResourceDictionary>

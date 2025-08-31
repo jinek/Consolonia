@@ -23,7 +23,7 @@
     <SolidColorBrush x:Key="ThemeChooserForegroundBrush"
                      Color="{consolonia:EgaColor White}" />
 
-    <!--Mostly used as focus highlight. But sometimes forced, like turbovision buttons, menu parent item highlight-->
+    <!--Accent. Mostly used as focus highlight. But sometimes forced, like turbovision buttons, menu parent item highlight-->
     <SolidColorBrush x:Key="ThemeActionBackgroundBrush"
                      Color="{consolonia:EgaColor DarkGreen}" />
 
@@ -34,6 +34,11 @@
     <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
                      Color="{consolonia:EgaColor White}" />
 
+    <!--Highlights. Access key colors for buttons and menus-->
+    <SolidColorBrush x:Key="ThemeHighlightForegroundBrush"
+                     Color="{consolonia:EgaColor Yellow}" />
+    <SolidColorBrush x:Key="ThemeHighlightForegroundBrush2"
+                     Color="{consolonia:EgaColor DarkRed}" />
 
     <!--Color of borders ( grid borders, panel borders etc)-->
     <SolidColorBrush x:Key="ThemeBorderBrush"
