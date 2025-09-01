@@ -1,0 +1,43 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:console="https://github.com/jinek/consolonia"
+        xmlns:local="clr-namespace:Edit.NET"
+        x:Class="Edit.NET.MainWindow"
+        Title="Edit.NET">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" Click="OnNewFile_OnClick" InputGesture="Ctrl+N"/>
+                <MenuItem Header="_Open..." InputGesture="Ctrl+O"/>
+                <MenuItem Header="_Save" InputGesture="Ctrl+S"/>
+                <MenuItem Header="Save _As..." InputGesture="Ctrl+Shift+S"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="Exit_OnClick"/>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Undo" Command="{Binding UndoCommand}" InputGesture="Ctrl+Z"/>
+                <MenuItem Header="_Redo" Command="{Binding RedoCommand}" InputGesture="Ctrl+Y"/>
+                <Separator/>
+                <MenuItem Header="Cu_t" Click="Cut_OnClick" InputGesture="Ctrl+X"/>
+                <MenuItem Header="_Copy" Command="{Binding CopyCommand}" InputGesture="Ctrl+C"/>
+                <MenuItem Header="_Paste" Command="{Binding PasteCommand}" InputGesture="Ctrl+V"/>
+                <Separator/>
+                <MenuItem Header="Select _All" Command="{Binding SelectAllCommand}" InputGesture="Ctrl+A"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About" Command="{Binding AboutCommand}"/>
+            </MenuItem>
+        </Menu>
+        <Border x:Name="BottomPanel" Background="{DynamicResource ThemeBorderBrush}" DockPanel.Dock="Bottom">
+            <TextBlock>sometext at the bottom</TextBlock>
+        </Border>
+        <TextBox x:Name="Editor"
+                 AcceptsReturn="True"
+                 AcceptsTab="True"
+                 TextWrapping="NoWrap"
+                 Background="{x:Null}"
+                 Text="{Binding DocumentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    </DockPanel>
+</Window>
