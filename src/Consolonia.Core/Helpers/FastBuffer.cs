@@ -30,7 +30,6 @@ namespace Consolonia.Core.Helpers
             return Task.Run(() =>
             {
                 while (!_disposed)
-                {
                     try
                     {
                         T[] newData = readDataFunction();
@@ -44,7 +43,6 @@ namespace Consolonia.Core.Helpers
                         if (!LogOrThrow(exception))
                             throw;
                     }
-                }
             });
         }
 
@@ -90,7 +88,8 @@ namespace Consolonia.Core.Helpers
             ParametrizedLogger? logger = Logger.TryGet(LogEventLevel.Error, "Consolonia");
             if (logger != null)
             {
-                ((ParametrizedLogger)logger).Log("Consolonia","Exception in Curses event loop: {Exception}", exception);
+                ((ParametrizedLogger)logger).Log("Consolonia", "Exception in Curses event loop: {Exception}",
+                    exception);
                 return true;
             }
 

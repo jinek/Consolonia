@@ -14,12 +14,10 @@ namespace Consolonia.Gallery
         {
             TaskScheduler.UnobservedTaskException += (sender, eventArgs) =>
             {
-                if (Debugger.IsAttached)
-                {
-                    Debugger.Break();
-                }
+                if (Debugger.IsAttached) Debugger.Break();
 
-                ThreadPool.QueueUserWorkItem(state => throw new InvalidOperationException("An unobserved task exception occurred.", eventArgs.Exception));
+                ThreadPool.QueueUserWorkItem(state =>
+                    throw new InvalidOperationException("An unobserved task exception occurred.", eventArgs.Exception));
             };
 
             BuildAvaloniaApp()
