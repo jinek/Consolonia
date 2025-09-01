@@ -1,4 +1,6 @@
+using System;
 using System.Globalization;
+using System.Threading;
 using Avalonia.Logging;
 
 namespace Consolonia.Core.Infrastructure
@@ -34,23 +36,32 @@ namespace Consolonia.Core.Infrastructure
             Log(level, area, source, messageTemplate, [propertyValue0, propertyValue1, propertyValue2]);
         }
 
-        public void Log(LogEventLevel level, string area, object source, string messageTemplate,
-            params object[] propertyValues)
+        public void Log(LogEventLevel level, string area, object source, string messageTemplate, params object[] propertyValues)
         {
-            var consoloniaException =
-                new ConsoloniaException($"{area}: " +
-                                        string.Format(CultureInfo.CurrentCulture, messageTemplate, propertyValues))
+            // Build message: area + template + property values (if any)
+            string message = $"{area}: {messageTemplate}";
+            if (propertyValues is { Length: > 0 })
+            {
+                message += " | Values: ";
+                for (int i = 0; i < propertyValues.Length; i++)
                 {
-                    Source = source?.ToString()
-                };
+                    message += $"[{i}]={propertyValues[i]} ";
+                }
+                message = message.TrimEnd();
+            }
+
+            var consoloniaException = new ConsoloniaException(message)
+            {
+                Source = source?.ToString()
+            };
 
             for (int i = 0; i < propertyValues.Length; i++)
             {
-                object propertyValue = propertyValues[i];
-                consoloniaException.Data.Add(i, propertyValue);
+                consoloniaException.Data.Add(i, propertyValues[i]);
             }
 
-            throw consoloniaException;
+            // debugger does not stop like this: Environment.FailFast(consoloniaException.Message, consoloniaException);
+            ThreadPool.QueueUserWorkItem(_ => throw consoloniaException);
         }
     }
     // ReSharper restore UnusedMember.Global
