@@ -153,14 +153,12 @@ namespace Consolonia.Core.Infrastructure
 
         public void Hide()
         {
-            // toplevel never hides
-            throw new NotImplementedException();
+            // console window can't do this.
         }
 
         public void Activate()
         {
-            // toplevel is always visible
-            throw new NotImplementedException();
+            // console window is always activated
         }
 
         public void SetTopmost(bool value)
@@ -197,7 +195,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetEnabled(bool enable)
         {
-            throw new NotImplementedException();
+            // console window can't do this.
         }
 
         public void SetSystemDecorations(SystemDecorations enabled)
