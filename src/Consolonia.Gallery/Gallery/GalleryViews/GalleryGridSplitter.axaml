@@ -1,14 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:console="https://github.com/jinek/consolonia"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryGridSplitter">
     <Grid ColumnDefinitions="*, 1, *"
           RowDefinitions="*,1,*">
-        <GridSplitter Grid.Column="1"
-                      Grid.RowSpan="3"
-                      Background="Transparent" />
-        <GridSplitter Grid.Row="1"
-                      Grid.ColumnSpan="3"
-                      Background="Transparent" />
 
         <Rectangle Grid.Row="0"
                    Grid.Column="0"
@@ -22,5 +17,25 @@
         <Rectangle Grid.Row="2"
                    Grid.Column="2"
                    Fill="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+
+        <!-- use line LineSeparator to show where the horizontal splitter is -->
+        <console:LineSeparator Grid.Row="1"
+                               Grid.ColumnSpan="3"
+                               Orientation="Horizontal"
+                               Brush="{DynamicResource ThemeBorderBrush}" />
+
+        <!-- use LineSeparator to show where the veritical splitter is -->
+        <console:LineSeparator Grid.Column="1"
+                               Grid.RowSpan="3"
+                               Orientation="Vertical"
+                               Brush="{DynamicResource ThemeBorderBrush}" />
+
+        <GridSplitter Grid.Column="1"
+                      Grid.RowSpan="3"
+                      Background="Transparent" />
+        <GridSplitter Grid.Row="1"
+                      Grid.ColumnSpan="3"
+                      Background="Transparent" />
+
     </Grid>
 </UserControl>
