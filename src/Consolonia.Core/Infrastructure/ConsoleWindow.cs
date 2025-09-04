@@ -153,18 +153,17 @@ namespace Consolonia.Core.Infrastructure
 
         public void Hide()
         {
-            // console window can't do this.
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowHideNotSupported);
         }
 
         public void Activate()
         {
-            // console window is always activated
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowActivateNotSupported);
         }
 
         public void SetTopmost(bool value)
         {
-            // todo
-            Debug.WriteLine($"ConsoleWindow.SetTopmost({value}) called, not implemented");
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetTopmostNotSupported);
         }
 
         public double DesktopScaling => 1d;
@@ -190,72 +189,76 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetParent(IWindowImpl parent)
         {
-            throw new NotSupportedException("You can't set a toplevel parent");
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetParentNotSupported);
         }
 
         public void SetEnabled(bool enable)
         {
-            // console window can't do this.
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetEnabledNotSupported);
         }
 
         public void SetSystemDecorations(SystemDecorations enabled)
         {
-            // console window has no system decorations
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetSystemDecroationsNotSupported);
         }
 
         public void SetIcon(IWindowIconImpl icon)
         {
-            // console window has no icon
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetIconNotSupported);
         }
 
         public void ShowTaskbarIcon(bool value)
         {
-            // console window has no icon
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowShowTaskbarIconNotSupported);
         }
 
         public void CanResize(bool value)
         {
-            // console app can't do this.
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowCanResizeNotSupported);
         }
 
         public void BeginMoveDrag(PointerPressedEventArgs e)
         {
-            // console app can't do this.
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowBeginMoveDragNotSupported);
         }
 
         public void BeginResizeDrag(WindowEdge edge, PointerPressedEventArgs e)
         {
-            // console app can't do this.
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowBeginResizeDragNotSupported);
         }
 
         public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
-            // console app can't do this.
+            // this is called a lot, this is optimization for unchanged.
+            if (this.ClientSize.Width == clientSize.Width && this.ClientSize.Height == clientSize.Height)
+                return;
+
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowBeginResizeNotSupported);
         }
 
         public void Move(PixelPoint point)
         {
-            // console app can't do this.
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowMoveNotSupported);
         }
 
         public void SetMinMaxSize(Size minSize, Size maxSize)
         {
-            // console app can't do this.
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetMinMaxSizeNotSupported);
         }
 
         public void SetExtendClientAreaToDecorationsHint(bool extendIntoClientAreaHint)
         {
-            // console app can't do this.
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetExtendClientAreaToDecorationsHintNotSupported);
         }
 
         public void SetExtendClientAreaChromeHints(ExtendClientAreaChromeHints hints)
         {
-            // console app can't do this.
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetExtendClientAreaChromeHintsNotSupported);
         }
 
         public void SetExtendClientAreaTitleBarHeightHint(double titleBarHeight)
         {
-            // console app can't do this.
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetExtendClientAreaTitleBarHeightHintNotSupported);
         }
 
         public WindowState WindowState { get; set; }
@@ -331,12 +334,12 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetCanMinimize(bool value)
         {
-            // ignore, we can't
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetCanMinimizeNotSupported);
         }
 
         public void SetCanMaximize(bool value)
         {
-            // ignore, we can't
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetCanMaximizeNotSupported);
         }
 
         public event Action<ConsoleCursor> CursorChanged;
