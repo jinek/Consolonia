@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime"
                     xmlns:controls="https://github.com/jinek/consolonia">
-    <system:Double x:Key="FontSizeNormal">1</system:Double>
 
     <!--Main content foreground. Text on background or alternative background-->
     <SolidColorBrush x:Key="ThemeForegroundBrush"
