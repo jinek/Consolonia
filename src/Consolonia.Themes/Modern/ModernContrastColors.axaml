@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=System.Runtime"
                     xmlns:controls="https://github.com/jinek/consolonia">
     <ResourceDictionary.ThemeDictionaries>
 

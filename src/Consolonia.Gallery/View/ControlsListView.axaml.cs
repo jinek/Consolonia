@@ -121,13 +121,13 @@ namespace Consolonia.Gallery.View
 
         private void OnThemeVariantLightMenuClick(object sender, RoutedEventArgs e)
         {
-            this.RequestedThemeVariant = ThemeVariant.Light;
+            RequestedThemeVariant = ThemeVariant.Light;
             UpdateThemeMenuItems();
         }
 
         private void OnThemeVariantDarkMenuClick(object sender, RoutedEventArgs e)
         {
-            this.RequestedThemeVariant = ThemeVariant.Dark;
+            RequestedThemeVariant = ThemeVariant.Dark;
             UpdateThemeMenuItems();
         }
 
@@ -168,8 +168,8 @@ namespace Consolonia.Gallery.View
             ThemeTurboVisionGrayMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionGray);
             ThemeTurboVisionElegantMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionElegant);
 
-            ThemeDarkMenuItem.IsChecked = this.ActualThemeVariant == ThemeVariant.Dark;
-            ThemeLightMenuItem.IsChecked = this.ActualThemeVariant == ThemeVariant.Light;
+            ThemeDarkMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Dark;
+            ThemeLightMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Light;
         }
     }
 
