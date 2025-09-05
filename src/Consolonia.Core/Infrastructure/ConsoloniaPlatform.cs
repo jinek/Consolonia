@@ -19,7 +19,8 @@ namespace Consolonia.Core.Infrastructure
 {
     public class ConsoloniaPlatform : IWindowingPlatform
     {
-        internal static ConsoloniaPlatformSettings Settings { get => AvaloniaLocator.Current.GetService<IPlatformSettings>() as ConsoloniaPlatformSettings; }
+        internal static ConsoloniaPlatformSettings Settings =>
+            AvaloniaLocator.Current.GetService<IPlatformSettings>() as ConsoloniaPlatformSettings;
 
         public IWindowImpl CreateWindow()
         {

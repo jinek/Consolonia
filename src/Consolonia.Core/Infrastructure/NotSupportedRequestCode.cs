@@ -59,7 +59,7 @@ namespace Consolonia.Core.Infrastructure
         ConsoleWindowCreateTrayIconNotSupported = 62723,
         ConsoleWindowCreateEmbeddableTopLevelNotSupported = 62724,
         ConsoleWindowHideNotSupported = 62725,
-        ConsoleWindowActivateNotSupported  = 62726,
+        ConsoleWindowActivateNotSupported = 62726,
         ConsoleWindowSetTopmostNotSupported = 62727,
         ConsoleWindowSetParentNotSupported = 62728,
         ConsoleWindowSetEnabledNotSupported = 62729,

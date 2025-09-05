@@ -230,7 +230,7 @@ namespace Consolonia.Core.Infrastructure
         public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
             // this is called a lot, this is optimization for unchanged.
-            if ((int)this.ClientSize.Width == (int)clientSize.Width && (int)this.ClientSize.Height == (int)clientSize.Height)
+            if ((int)ClientSize.Width == (int)clientSize.Width && (int)ClientSize.Height == (int)clientSize.Height)
                 return;
 
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowBeginResizeNotSupported);
@@ -248,17 +248,20 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetExtendClientAreaToDecorationsHint(bool extendIntoClientAreaHint)
         {
-            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetExtendClientAreaToDecorationsHintNotSupported);
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode
+                .ConsoleWindowSetExtendClientAreaToDecorationsHintNotSupported);
         }
 
         public void SetExtendClientAreaChromeHints(ExtendClientAreaChromeHints hints)
         {
-            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetExtendClientAreaChromeHintsNotSupported);
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode
+                .ConsoleWindowSetExtendClientAreaChromeHintsNotSupported);
         }
 
         public void SetExtendClientAreaTitleBarHeightHint(double titleBarHeight)
         {
-            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetExtendClientAreaTitleBarHeightHintNotSupported);
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode
+                .ConsoleWindowSetExtendClientAreaTitleBarHeightHintNotSupported);
         }
 
         public WindowState WindowState { get; set; }
