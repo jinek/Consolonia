@@ -107,6 +107,12 @@
             <SolidColorBrush x:Key="ThemeSelectionForegroundBrush"
                              Color="#FFFFFF" />
 
+            <!--Highlights. Access key colors for buttons and menus-->
+            <SolidColorBrush x:Key="ThemeHighlightForegroundBrush"
+                             Color="#FFFF80" />
+            <SolidColorBrush x:Key="ThemeHighlightForegroundBrush2"
+                             Color="#FFFF80" />
+
             <!--Color of borders ( grid borders, panel borders etc)-->
             <SolidColorBrush x:Key="ThemeBorderBrush"
                              Color="#6B6B70" />
