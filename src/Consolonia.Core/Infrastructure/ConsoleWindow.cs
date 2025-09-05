@@ -230,7 +230,7 @@ namespace Consolonia.Core.Infrastructure
         public void Resize(Size clientSize, WindowResizeReason reason = WindowResizeReason.Application)
         {
             // this is called a lot, this is optimization for unchanged.
-            if (this.ClientSize.Width == clientSize.Width && this.ClientSize.Height == clientSize.Height)
+            if ((int)this.ClientSize.Width == (int)clientSize.Width && (int)this.ClientSize.Height == (int)clientSize.Height)
                 return;
 
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowBeginResizeNotSupported);
