@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=System.Runtime"
                     xmlns:consolonia="clr-namespace:Consolonia;assembly=Consolonia.Core">
     <!--https://www.mikrocontroller.net/attachment/483578/Turbo_Vision.gif-->
     <!--Considering 7 bit colors-->
