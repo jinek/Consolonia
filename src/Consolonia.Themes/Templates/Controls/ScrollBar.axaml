@@ -23,7 +23,7 @@
                                       Focusable="False">
                             <console:SymbolsControl HorizontalAlignment="Center"
                                                     Foreground="{TemplateBinding Foreground}"
-                                                    Text="{StaticResource ThemeScrollBarUpSymbol}" />
+                                                    Text="{DynamicResource ThemeScrollBarUpSymbol}" />
                         </RepeatButton>
 
                         <Border Grid.Row="1"
@@ -31,7 +31,7 @@
                                 Background="{TemplateBinding Background}">
                             <console:SymbolsControl Fill="True"
                                                     Width="1"
-                                                    Text="{StaticResource ThemeScrollBarVerticalBackgroundSymbol}"
+                                                    Text="{DynamicResource ThemeScrollBarVerticalBackgroundSymbol}"
                                                     Foreground="{TemplateBinding BorderBrush}" />
                         </Border>
                         <Track Grid.Row="1"
@@ -62,7 +62,7 @@
                                                     Foreground="{TemplateBinding Foreground}"
                                                     Focusable="False"
                                                     MinHeight="1"
-                                                    Text="{StaticResource ThemeScrollBarDownSymbol}" />
+                                                    Text="{DynamicResource ThemeScrollBarDownSymbol}" />
                         </RepeatButton>
                     </Grid>
                 </Border>
@@ -79,7 +79,7 @@
                                           Focusable="False">
                                 <console:SymbolsControl HorizontalAlignment="Center"
                                                         Foreground="{TemplateBinding Foreground}"
-                                                        Text="{StaticResource ThemeScrollBarLeftSymbol}" />
+                                                        Text="{DynamicResource ThemeScrollBarLeftSymbol}" />
                             </RepeatButton>
 
                             <Border Grid.Column="1"
@@ -87,7 +87,7 @@
                                     Background="{TemplateBinding Background}">
                                 <console:SymbolsControl Fill="True"
                                                         Height="1"
-                                                        Text="{StaticResource ThemeScrollBarHorizontalBackgroundSymbol}"
+                                                        Text="{DynamicResource ThemeScrollBarHorizontalBackgroundSymbol}"
                                                         Foreground="{TemplateBinding BorderBrush}" />
                             </Border>
                             <Track Grid.Column="1"
@@ -115,7 +115,7 @@
                                           Focusable="False">
                                 <console:SymbolsControl HorizontalAlignment="Center"
                                                         Foreground="{TemplateBinding Foreground}"
-                                                        Text="{StaticResource ThemeScrollBarRightSymbol}" />
+                                                        Text="{DynamicResource ThemeScrollBarRightSymbol}" />
                             </RepeatButton>
 
                         </Grid>
@@ -129,7 +129,7 @@
             <Setter Property="Background"
                     Value="{DynamicResource ThemeSelectionBackgroundBrush}" />
             <Setter Property="Tag"
-                    Value="{StaticResource ThemeScrollBarVerticalThumbSymbol}" />
+                    Value="{DynamicResource ThemeScrollBarVerticalThumbSymbol}" />
             <Setter Property="Width"
                     Value="1" />
             <Setter Property="Padding"
@@ -152,7 +152,7 @@
         </Style>
         <Style Selector="^:horizontal /template/ Thumb#thumb">
             <Setter Property="Tag"
-                    Value="{StaticResource ThemeScrollBarHorizontalThumbSymbol}" />
+                    Value="{DynamicResource ThemeScrollBarHorizontalThumbSymbol}" />
             <Setter Property="Height"
                     Value="1" />
             <Setter Property="Width"

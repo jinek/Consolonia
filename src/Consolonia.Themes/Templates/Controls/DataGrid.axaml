@@ -96,14 +96,14 @@
             <Setter Property="IsVisible"
                     Value="True" />
             <Setter Property="Text"
-                    Value="{StaticResource ThemeDownArrowSymbol}" />
+                    Value="{DynamicResource ThemeDownArrowSymbol}" />
         </Style>
 
         <Style Selector="^:sortdescending /template/ TextBlock#SortIcon">
             <Setter Property="IsVisible"
                     Value="True" />
             <Setter Property="Text"
-                    Value="{StaticResource ThemeUpArrowSymbol}" />
+                    Value="{DynamicResource ThemeUpArrowSymbol}" />
         </Style>
     </ControlTheme>
 

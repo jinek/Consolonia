@@ -5,9 +5,10 @@
         xmlns:console="https://github.com/jinek/consolonia"
         xmlns:local="clr-namespace:ConsoloniaAppTemplate"
         x:Class="ConsoloniaAppTemplate.MainWindow"
+        RequestedThemeVariant="Dark"
         Title="Consolonia">
-    <StackPanel 
-        VerticalAlignment="Center" 
+    <StackPanel
+        VerticalAlignment="Center"
         HorizontalAlignment="Center">
         <TextBlock Text="Welcome to Consolonia!" />
         <Button Content="_Exit"

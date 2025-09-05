@@ -32,7 +32,7 @@
                           Background="Transparent">
                         <console:SymbolsControl Name="TrackBackground"
                                                 Fill="True"
-                                                Text="{StaticResource ThemeSliderHorizontalBackgroundSymbol}"
+                                                Text="{DynamicResource ThemeSliderHorizontalBackgroundSymbol}"
                                                 Height="1"
                                                 VerticalAlignment="Center"
                                                 Foreground="{DynamicResource ThemeForegroundBrush}" />
@@ -58,7 +58,7 @@
                                                               CaretStyle="{DynamicResource ControlFocusCaretStyle}"
                                                               IsCaretShown="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Slider, Tree=Logical}, Path=IsFocused}">
                                             <console:SymbolsControl
-                                                Text="{StaticResource ThemeSliderHorizontalThumbSymbol}"
+                                                Text="{DynamicResource ThemeSliderHorizontalThumbSymbol}"
                                                 VerticalAlignment="Center"
                                                 Foreground="{DynamicResource ThemeForegroundBrush}" />
                                         </console:CaretControl>
@@ -80,7 +80,7 @@
                     <Grid Background="Transparent">
                         <console:SymbolsControl Name="TrackBackground"
                                                 Fill="True"
-                                                Text="{StaticResource ThemeSliderVerticalBackgroundSymbol}"
+                                                Text="{DynamicResource ThemeSliderVerticalBackgroundSymbol}"
                                                 Width="1"
                                                 HorizontalAlignment="Center"
                                                 Foreground="{DynamicResource ThemeForegroundBrush}" />
@@ -107,7 +107,7 @@
                                                               CaretStyle="{DynamicResource ControlFocusCaretStyle}"
                                                               IsCaretShown="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Slider, Tree=Logical}, Path=IsFocused}">
                                             <console:SymbolsControl
-                                                Text="{StaticResource ThemeSliderVerticalThumbSymbol}"
+                                                Text="{DynamicResource ThemeSliderVerticalThumbSymbol}"
                                                 HorizontalAlignment="Center"
                                                 Foreground="{DynamicResource ThemeForegroundBrush}" />
                                         </console:CaretControl>

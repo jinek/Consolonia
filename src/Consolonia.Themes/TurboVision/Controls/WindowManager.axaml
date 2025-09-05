@@ -53,7 +53,7 @@
                                 <Border.BorderBrush>
                                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
                                     <brushes:LineBrush LineStyle="DoubleLine"
-                                                       Brush="{StaticResource ThemeBorderBrush}" />
+                                                       Brush="{DynamicResource ThemeBorderBrush}" />
                                 </Border.BorderBrush>
                                 <Panel>
                                     <DockPanel LastChildFill="True"
@@ -183,7 +183,7 @@
                     <Setter.Value>
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
                         <brushes:LineBrush LineStyle="DoubleLine"
-                                           Brush="{StaticResource ThemeActionBackgroundBrush}" />
+                                           Brush="{DynamicResource ThemeActionBackgroundBrush}" />
                     </Setter.Value>
                 </Setter>
             </Style>
@@ -196,7 +196,7 @@
                     <Setter.Value>
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
                         <brushes:LineBrush LineStyle="DoubleLine"
-                                           Brush="{StaticResource ThemeActionBackgroundBrush}" />
+                                           Brush="{DynamicResource ThemeActionBackgroundBrush}" />
                     </Setter.Value>
                 </Setter>
             </Style>

@@ -18,3 +18,6 @@ dotnet new consolonia.app --name {appName}
 
 # Consolonia UI
 See https://github.com/jinek/consolonia for more information about Consolonia UI.
+
+# Change list
+* Added default to dark mode

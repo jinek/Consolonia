@@ -26,12 +26,12 @@
                                               CaretStyle="BlinkingUnderline"
                                               IsCaretShown="{TemplateBinding IsFocused}">
                             <Panel>
-                                <console:SymbolsControl Text="{StaticResource ThemeCheckBoxNotSelectedSymbol}" />
+                                <console:SymbolsControl Text="{DynamicResource ThemeCheckBoxNotSelectedSymbol}" />
                                 <console:SymbolsControl Name="checkMark"
-                                                        Text="{StaticResource ThemeCheckBoxSelectedSymbol}"
+                                                        Text="{DynamicResource ThemeCheckBoxSelectedSymbol}"
                                                         IsVisible="False" />
                                 <console:SymbolsControl Name="indeterminateMark"
-                                                        Text="{StaticResource ThemeCheckBoxIndeterminateSymbol}"
+                                                        Text="{DynamicResource ThemeCheckBoxIndeterminateSymbol}"
                                                         IsVisible="False" />
                             </Panel>
                         </console:CaretControl>

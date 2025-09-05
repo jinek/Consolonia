@@ -42,7 +42,7 @@
                                   VerticalAlignment="Top"
                                   Background="{x:Null}">
                         <console:SymbolsControl Foreground="{TemplateBinding BorderBrush}"
-                                                Text="{StaticResource ThemeDownArrowSymbol}"
+                                                Text="{DynamicResource ThemeDownArrowSymbol}"
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center" />
                     </ToggleButton>
