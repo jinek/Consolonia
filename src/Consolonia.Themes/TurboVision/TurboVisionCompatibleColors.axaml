@@ -6,7 +6,6 @@
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Default">
 
-
             <!--Main content foreground. Text on background or alternative background-->
             <SolidColorBrush x:Key="ThemeForegroundBrush"
                              Color="{consolonia:EgaColor White}" />

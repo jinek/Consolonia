@@ -137,6 +137,7 @@ namespace Consolonia.Gallery.View
                 !Enum.TryParse(themeName, out ThemesList selectedTheme))
                 return;
 
+            // NOTE: this assumes first style object is the old theme!
             Application.Current.Styles[0] = selectedTheme switch
             {
                 ThemesList.Modern => new ModernTheme(),
