@@ -63,7 +63,8 @@ namespace Consolonia.Core.Infrastructure
         ConsoleWindowSetTopmostNotSupported = 62727,
         ConsoleWindowSetParentNotSupported = 62728,
         ConsoleWindowSetEnabledNotSupported = 62729,
-        ConsoleWindowSetSystemDecroationsNotSupported = 62730,
+// File: src/Consolonia.Core/Infrastructure/NotSupportedRequestCode.cs
+        ConsoleWindowSetSystemDecorationsNotSupported = 62730,
         ConsoleWindowSetIconNotSupported = 62731,
         ConsoleWindowShowTaskbarIconNotSupported = 62732,
         ConsoleWindowCanResizeNotSupported = 62733,
