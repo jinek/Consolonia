@@ -24,7 +24,7 @@
                 <ControlTemplate>
                     <console:SymbolsControl HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
-                                            Text="{StaticResource ThemeDownArrowSymbol}" />
+                                            Text="{DynamicResource ThemeDownArrowSymbol}" />
                 </ControlTemplate>
             </Setter>
         </Style>

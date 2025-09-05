@@ -5,7 +5,7 @@
     <!--https://www.mikrocontroller.net/attachment/483578/Turbo_Vision.gif-->
     <!--Considering 7 bit colors-->
     <ResourceDictionary.ThemeDictionaries>
-        <ResourceDictionary x:Key="Light">
+        <ResourceDictionary x:Key="Default">
 
             <!--Main content foreground. Text on background or alternative background-->
             <SolidColorBrush x:Key="ThemeForegroundBrush"
