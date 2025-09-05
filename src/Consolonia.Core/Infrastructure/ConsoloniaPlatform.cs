@@ -183,7 +183,7 @@ namespace Consolonia.Core.Infrastructure
                 case NotSupportedRequestCode.ConsoleWindowSetTopmostNotSupported:
                 case NotSupportedRequestCode.ConsoleWindowSetParentNotSupported:
                 case NotSupportedRequestCode.ConsoleWindowSetEnabledNotSupported:
-                case NotSupportedRequestCode.ConsoleWindowSetSystemDecroationsNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetSystemDecorationsNotSupported:
                 case NotSupportedRequestCode.ConsoleWindowSetIconNotSupported:
                 case NotSupportedRequestCode.ConsoleWindowShowTaskbarIconNotSupported:
                 case NotSupportedRequestCode.ConsoleWindowCanResizeNotSupported:

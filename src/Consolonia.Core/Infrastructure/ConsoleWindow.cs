@@ -199,7 +199,7 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetSystemDecorations(SystemDecorations enabled)
         {
-            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetSystemDecroationsNotSupported);
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.ConsoleWindowSetSystemDecorationsNotSupported);
         }
 
         public void SetIcon(IWindowIconImpl icon)
