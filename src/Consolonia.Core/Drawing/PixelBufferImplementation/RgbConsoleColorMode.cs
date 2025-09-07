@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Media;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
@@ -6,27 +7,33 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     {
         public Color Blend(Color color1, Color color2)
         {
-            // by chatGPT o1
-            // Convert alpha from [0..255] to [0..1]
-            float fgAlpha = color2.A / 255f;
-            float bgAlpha = color1.A / 255f;
+            // Early exit for common cases
+            if (color2.A == 0) return color1; // Fully transparent foreground
+            if (color2.A == 255) return color2; // Fully opaque foreground
+            if (color1.A == 0) return color2; // Transparent background
 
-            // Compute output alpha
-            float outAlpha = fgAlpha + bgAlpha * (1 - fgAlpha);
+            // Use integer arithmetic to avoid float operations
+            int fgAlpha = color2.A;
+            int bgAlpha = color1.A;
+            int invFgAlpha = 255 - fgAlpha;
 
-            // If there's no alpha in the result, return transparent
-            if (outAlpha <= 0f) return Color.FromArgb(0, 0, 0, 0);
+            // Compute output alpha using integer math
+            int outAlpha = fgAlpha + (bgAlpha * invFgAlpha) / 255;
 
-            // Calculate the composited color channels, also converting channels to [0..1]
-            float outR = (color2.R / 255f * fgAlpha + color1.R / 255f * bgAlpha * (1 - fgAlpha)) / outAlpha;
-            float outG = (color2.G / 255f * fgAlpha + color1.G / 255f * bgAlpha * (1 - fgAlpha)) / outAlpha;
-            float outB = (color2.B / 255f * fgAlpha + color1.B / 255f * bgAlpha * (1 - fgAlpha)) / outAlpha;
+            // Early exit for fully transparent result
+            if (outAlpha == 0) return Color.FromArgb(0, 0, 0, 0);
 
-            // Convert back to [0..255]
-            byte a = (byte)(outAlpha * 255f);
-            byte r = (byte)(outR * 255f);
-            byte g = (byte)(outG * 255f);
-            byte b = (byte)(outB * 255f);
+            // Calculate composited RGB channels using integer arithmetic
+            // Formula: (fg * fgAlpha + bg * bgAlpha * (1 - fgAlpha/255)) / outAlpha
+            int outR = (color2.R * fgAlpha + (color1.R * bgAlpha * invFgAlpha) / 255) / outAlpha;
+            int outG = (color2.G * fgAlpha + (color1.G * bgAlpha * invFgAlpha) / 255) / outAlpha;
+            int outB = (color2.B * fgAlpha + (color1.B * bgAlpha * invFgAlpha) / 255) / outAlpha;
+
+            // Clamp values to byte range (should not be necessary with correct math, but safety check)
+            byte a = (byte)outAlpha;
+            byte r = (byte)Math.Min(255, outR);
+            byte g = (byte)Math.Min(255, outG);
+            byte b = (byte)Math.Min(255, outB);
 
             return Color.FromArgb(a, r, g, b);
         }
