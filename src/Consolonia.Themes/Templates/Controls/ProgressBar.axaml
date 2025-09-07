@@ -15,7 +15,7 @@
                 <Grid>
                     <Border Background="{TemplateBinding Background}">
                         <Panel>
-                            <console:SymbolsControl Text="{StaticResource ThemeProgressBarBackgroundSymbol}"
+                            <console:SymbolsControl Text="{DynamicResource ThemeProgressBarBackgroundSymbol}"
                                                     Fill="True"
                                                     Foreground="{TemplateBinding BorderBrush}" />
                             <Border Name="PART_Indicator"

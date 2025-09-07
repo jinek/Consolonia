@@ -35,7 +35,7 @@
                             <console:SymbolsControl Grid.Column="0"
                                                     Name="check"
                                                     Foreground="{TemplateBinding Foreground}"
-                                                    Text="{StaticResource ThemeCheckedSymbol}"
+                                                    Text="{DynamicResource ThemeCheckedSymbol}"
                                                     IsVisible="False"
                                                     Margin="0,0,0,0"
                                                     VerticalAlignment="Center" />
@@ -51,7 +51,7 @@
                                        Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
                                        VerticalAlignment="Center" />
                             <console:SymbolsControl Name="rightArrow"
-                                                    Text="{StaticResource ThemeRightArrowSymbol}"
+                                                    Text="{DynamicResource ThemeRightArrowSymbol}"
                                                     Foreground="{DynamicResource ThemeForegroundBrush}"
                                                     Margin="0,0,0,0"
                                                     VerticalAlignment="Center"

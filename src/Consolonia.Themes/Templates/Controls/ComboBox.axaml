@@ -53,7 +53,7 @@
                         <console:CaretControl Padding="0,0,0,0"
                                               IsCaretShown="{TemplateBinding IsFocused}"
                                               VerticalAlignment="Top">
-                            <console:SymbolsControl Text="{StaticResource ThemeDownArrowSymbol}"
+                            <console:SymbolsControl Text="{DynamicResource ThemeDownArrowSymbol}"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center" />
                         </console:CaretControl>
