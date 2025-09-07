@@ -42,7 +42,7 @@ namespace Consolonia.Controls
             foreach (Rune rune in text.EnumerateRunes())
             {
                 var runeWidth = UnicodeCalculator.GetWidth(rune);
-                if (runeWidth > 0)
+                if (runeWidth >= 0)
                 {
 
                     if (supportsComplexEmoji &&
@@ -54,9 +54,9 @@ namespace Consolonia.Controls
                     if (runeWidth > 0)
                         lastWidth = (ushort)runeWidth;
                 }
-                else if (runeWidth < 0)
+                // Control chars return as width < 0
+                else
                 {
-                    // Control chars return as width = -1
                     if (rune.Value == 0x9 /* tab */)
                     {
                         // Avalonia uses hard coded 4 spaces for tabs (NOT column based tabstops), this may change in the future
