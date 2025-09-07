@@ -28,7 +28,6 @@
             <Button Name="exit" Click="OnExit">E_xit</Button>
         </StackPanel>
 
-        <!-- FontSize="0.7407407407407407" is magic value to fix a bug in AvaloniaEdit when using console fonts.-->
         <AvalonEdit:TextEditor Name="Editor" Grid.Row="2"
                                FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
                                ShowLineNumbers="True"
@@ -37,6 +36,7 @@
                                Background="Transparent">
             <AvalonEdit:TextEditor.Options>
                 <AvalonEdit:TextEditorOptions
+                    AcceptsTab="true"
                     AllowToggleOverstrikeMode = "true"
                     EnableTextDragDrop = "true"
                     EnableRectangularSelection = "False"

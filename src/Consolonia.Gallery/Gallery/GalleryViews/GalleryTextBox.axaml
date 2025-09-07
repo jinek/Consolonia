@@ -13,13 +13,13 @@
                     Margin="1,0">
             <!--<StackPanel.Styles>
             <Style Selector="TextBox">
-                <Setter Property="HorizontalAlignment"
-                        Value="Left" />
-                <Setter Property="Width"
-                        Value="35" />
+            <Setter Property="HorizontalAlignment"
+            Value="Left" />
+            <Setter Property="Width"
+            Value="35" />
             </Style>
-        </StackPanel.Styles>-->
-            <TextBox Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
+            </StackPanel.Styles>-->
+            <TextBox Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." AcceptsTab="True">
                 <TextBox.ContextFlyout>
                     <Flyout>
                         <TextBlock>Custom context flyout</TextBlock>
