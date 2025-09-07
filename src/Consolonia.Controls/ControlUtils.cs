@@ -23,6 +23,7 @@ namespace Consolonia.Controls
             return propertyFullName![..^8];
         }
 
+        // ReSharper disable once InconsistentNaming
         private static Lazy<IConsoleCapabilities> _capabilities = new Lazy<IConsoleCapabilities>(() => AvaloniaLocator.Current.GetService<IConsoleCapabilities>());
 
         /// <summary>

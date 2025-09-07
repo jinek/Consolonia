@@ -166,6 +166,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return new Pixel(newForeground, newBackground, newCaretStyle);
         }
 
+        // ReSharper disable once InconsistentNaming
         private static Lazy<IConsoleColorMode> _consoleColorMode = new Lazy<IConsoleColorMode>(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
 
         /// <summary>
