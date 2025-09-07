@@ -18,16 +18,16 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             int invFgAlpha = 255 - fgAlpha;
 
             // Compute output alpha using integer math
-            int outAlpha = fgAlpha + (bgAlpha * invFgAlpha) / 255;
+            int outAlpha = fgAlpha + bgAlpha * invFgAlpha / 255;
 
             // Early exit for fully transparent result
             if (outAlpha == 0) return Color.FromArgb(0, 0, 0, 0);
 
             // Calculate composited RGB channels using integer arithmetic
             // Formula: (fg * fgAlpha + bg * bgAlpha * (1 - fgAlpha/255)) / outAlpha
-            int outR = (color2.R * fgAlpha + (color1.R * bgAlpha * invFgAlpha) / 255) / outAlpha;
-            int outG = (color2.G * fgAlpha + (color1.G * bgAlpha * invFgAlpha) / 255) / outAlpha;
-            int outB = (color2.B * fgAlpha + (color1.B * bgAlpha * invFgAlpha) / 255) / outAlpha;
+            int outR = (color2.R * fgAlpha + color1.R * bgAlpha * invFgAlpha / 255) / outAlpha;
+            int outG = (color2.G * fgAlpha + color1.G * bgAlpha * invFgAlpha / 255) / outAlpha;
+            int outB = (color2.B * fgAlpha + color1.B * bgAlpha * invFgAlpha / 255) / outAlpha;
 
             // Clamp values to byte range (should not be necessary with correct math, but safety check)
             byte a = (byte)outAlpha;
