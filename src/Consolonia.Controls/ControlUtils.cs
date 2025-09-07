@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
@@ -11,6 +10,10 @@ namespace Consolonia.Controls
 {
     public static class ControlUtils
     {
+        // ReSharper disable once InconsistentNaming
+        private static readonly Lazy<IConsoleCapabilities> _capabilities =
+            new(() => AvaloniaLocator.Current.GetService<IConsoleCapabilities>());
+
         public static IDisposable SubscribeAction<TValue>(
             this IObservable<AvaloniaPropertyChangedEventArgs<TValue>> observable,
             Action<AvaloniaPropertyChangedEventArgs<TValue>> action)
@@ -23,9 +26,6 @@ namespace Consolonia.Controls
             return propertyFullName![..^8];
         }
 
-        // ReSharper disable once InconsistentNaming
-        private static Lazy<IConsoleCapabilities> _capabilities = new Lazy<IConsoleCapabilities>(() => AvaloniaLocator.Current.GetService<IConsoleCapabilities>());
-
         /// <summary>
         ///     Measure text for actual width
         /// </summary>
@@ -35,17 +35,16 @@ namespace Consolonia.Controls
         {
             ArgumentNullException.ThrowIfNull(text);
 
-            var console = _capabilities.Value;
+            IConsoleCapabilities console = _capabilities.Value;
             bool supportsComplexEmoji = console == null || console.SupportsComplexEmoji;
 
             ushort width = 0;
             ushort lastWidth = 0;
             foreach (Rune rune in text.EnumerateRunes())
             {
-                var runeWidth = UnicodeCalculator.GetWidth(rune);
+                int runeWidth = UnicodeCalculator.GetWidth(rune);
                 if (runeWidth >= 0)
                 {
-
                     if (supportsComplexEmoji &&
                         (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter))
                         width -= lastWidth;
@@ -66,6 +65,7 @@ namespace Consolonia.Controls
                     }
                 }
             }
+
             return width;
         }
     }

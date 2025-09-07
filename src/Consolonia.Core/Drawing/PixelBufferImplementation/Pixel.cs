@@ -167,7 +167,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         // ReSharper disable once InconsistentNaming
-        private static Lazy<IConsoleColorMode> _consoleColorMode = new Lazy<IConsoleColorMode>(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
+        private static readonly Lazy<IConsoleColorMode> _consoleColorMode =
+            new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
 
         /// <summary>
         ///     merge colors with alpha blending
