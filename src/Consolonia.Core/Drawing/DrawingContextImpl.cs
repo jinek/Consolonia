@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
+using Consolonia.Controls;
 using Consolonia.Controls.Brushes;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
@@ -773,21 +774,7 @@ namespace Consolonia.Core.Drawing
                 switch (glyph)
                 {
                     case "\t":
-                    {
-                        const int tabSize = 8;
-                        var consolePixel = new Pixel(new SimpleSymbol(' '), foregroundColor);
-                        for (int j = 0; j < tabSize; j++)
-                        {
-                            Point newCharacterPoint = characterPoint.WithX(characterPoint.X + j);
-                            CurrentClip.ExecuteWithClipping(newCharacterPoint, () =>
-                            {
-                                _pixelBuffer.Set((PixelBufferCoordinate)newCharacterPoint,
-                                    oldPixel => oldPixel.Blend(consolePixel));
-                            });
-                        }
-
-                        currentXPosition += tabSize - 1;
-                    }
+                        currentXPosition += glyph.MeasureText();
                         break;
                     case "\r":
                     case "\f":
@@ -969,13 +956,6 @@ namespace Consolonia.Core.Drawing
             return Color.FromArgb(skColor.Alpha, skColor.Red, skColor.Green, skColor.Blue);
         }
 
-        //private static SKColor CombineColors(params SKColor[] colors)
-        //{
-        //    return new SKColor((byte)colors.Average(c => c.Red),
-        //                       (byte)colors.Average(c => c.Green),
-        //                       (byte)colors.Average(c => c.Blue),
-        //                       (byte)colors.Average(c => c.Alpha));
-        //}
 
         private static SKColor CombineColors(params SKColor[] colors)
         {
