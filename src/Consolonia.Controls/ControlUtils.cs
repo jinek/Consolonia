@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
@@ -10,8 +11,7 @@ namespace Consolonia.Controls
 {
     public static class ControlUtils
     {
-        // ReSharper disable once InconsistentNaming
-        private static readonly Lazy<IConsoleCapabilities> _capabilities =
+        private static readonly Lazy<IConsoleCapabilities> Capabilities =
             new(() => AvaloniaLocator.Current.GetService<IConsoleCapabilities>());
 
         public static IDisposable SubscribeAction<TValue>(
@@ -35,7 +35,10 @@ namespace Consolonia.Controls
         {
             ArgumentNullException.ThrowIfNull(text);
 
-            IConsoleCapabilities console = _capabilities.Value;
+            if (text.All(ch => ch >= 32 && ch < 1000))
+                return (ushort)text.Length;
+
+            IConsoleCapabilities console = Capabilities.Value;
             bool supportsComplexEmoji = console == null || console.SupportsComplexEmoji;
 
             ushort width = 0;
