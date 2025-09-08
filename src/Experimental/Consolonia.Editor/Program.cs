@@ -20,7 +20,6 @@ namespace ConsoloniaEdit
                 .WithDeveloperTools(o =>
                 {
                     o.Gesture = new KeyGesture(Key.F1);
-                    // o.Runner = new MyRunner();
                 })
                 .LogToException();
         }
