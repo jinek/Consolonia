@@ -10,6 +10,10 @@ namespace Consolonia.Controls
 {
     public static class ControlUtils
     {
+        // ReSharper disable once InconsistentNaming
+        private static readonly Lazy<IConsoleCapabilities> _capabilities =
+            new(() => AvaloniaLocator.Current.GetService<IConsoleCapabilities>());
+
         public static IDisposable SubscribeAction<TValue>(
             this IObservable<AvaloniaPropertyChangedEventArgs<TValue>> observable,
             Action<AvaloniaPropertyChangedEventArgs<TValue>> action)
@@ -29,22 +33,37 @@ namespace Consolonia.Controls
         /// <returns></returns>
         public static ushort MeasureText(this string text)
         {
-            var console = AvaloniaLocator.Current.GetService<IConsoleCapabilities>();
+            ArgumentNullException.ThrowIfNull(text);
+
+            IConsoleCapabilities console = _capabilities.Value;
             bool supportsComplexEmoji = console == null || console.SupportsComplexEmoji;
 
             ushort width = 0;
             ushort lastWidth = 0;
             foreach (Rune rune in text.EnumerateRunes())
             {
-                ushort runeWidth = (ushort)UnicodeCalculator.GetWidth(rune);
-                if (supportsComplexEmoji &&
-                    (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter))
-                    width -= lastWidth;
-                else
-                    width += runeWidth;
+                int runeWidth = UnicodeCalculator.GetWidth(rune);
+                if (runeWidth >= 0)
+                {
+                    if (supportsComplexEmoji &&
+                        (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter))
+                        width -= lastWidth;
+                    else
+                        width += (ushort)runeWidth;
 
-                if (runeWidth > 0)
-                    lastWidth = runeWidth;
+                    if (runeWidth > 0)
+                        lastWidth = (ushort)runeWidth;
+                }
+                // Control chars return as width < 0
+                else
+                {
+                    if (rune.Value == 0x9 /* tab */)
+                    {
+                        // Avalonia uses hard coded 4 spaces for tabs (NOT column based tabstops), this may change in the future
+                        width += 4;
+                        lastWidth = 4;
+                    }
+                }
             }
 
             return width;

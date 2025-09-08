@@ -166,6 +166,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return new Pixel(newForeground, newBackground, newCaretStyle);
         }
 
+        // ReSharper disable once InconsistentNaming
+        private static readonly Lazy<IConsoleColorMode> _consoleColorMode =
+            new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
+
         /// <summary>
         ///     merge colors with alpha blending
         /// </summary>
@@ -174,8 +178,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <returns>source blended into target</returns>
         private static Color MergeColors(Color target, Color source)
         {
-            var consoleColorMode = AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>();
-            return consoleColorMode.Blend(target, source);
+            return _consoleColorMode.Value.Blend(target, source);
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)

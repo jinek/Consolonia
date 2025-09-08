@@ -15,7 +15,7 @@
                 <StackPanel Margin="1">
                     <Border Name="DragMeText"
                             BorderThickness="1"
-                            BorderBrush="{StaticResource ThemeForegroundBrush}"
+                            BorderBrush="{DynamicResource ThemeForegroundBrush}"
                             Classes="draggable">
                         <TextBlock Name="DragStateText"
                                    TextWrapping="Wrap">
@@ -24,7 +24,7 @@
                     </Border>
                     <Border Name="DragMeFiles"
                             BorderThickness="1"
-                            BorderBrush="{StaticResource ThemeForegroundBrush}"
+                            BorderBrush="{DynamicResource ThemeForegroundBrush}"
                             Classes="draggable">
                         <TextBlock Name="DragStateFiles"
                                    TextWrapping="Wrap">
@@ -33,7 +33,7 @@
                     </Border>
                     <Border Name="DragMeCustom"
                             BorderThickness="1"
-                            BorderBrush="{StaticResource ThemeForegroundBrush}"
+                            BorderBrush="{DynamicResource ThemeForegroundBrush}"
                             Classes="draggable">
                         <TextBlock Name="DragStateCustom"
                                    TextWrapping="Wrap">
@@ -45,10 +45,10 @@
                 <StackPanel Margin="1"
                             Orientation="Horizontal"
                             Spacing="1">
-                    <TextBlock Foreground="{StaticResource ThemeSelectionForegroundBrush}"
+                    <TextBlock Foreground="{DynamicResource ThemeSelectionForegroundBrush}"
                                Name="CopyTarget"
                                Padding="1"
-                               Background="{StaticResource ThemeSelectionBackgroundBrush}"
+                               Background="{DynamicResource ThemeSelectionBackgroundBrush}"
                                DragDrop.AllowDrop="True"
                                TextWrapping="Wrap">
                         Drop some text or files here (Copy)
@@ -56,8 +56,8 @@
                     <TextBlock Name="MoveTarget"
                                DragDrop.AllowDrop="True"
                                Padding="1"
-                               Background="{StaticResource ThemeSelectionBackgroundBrush}"
-                               Foreground="{StaticResource ThemeSelectionForegroundBrush}"
+                               Background="{DynamicResource ThemeSelectionBackgroundBrush}"
+                               Foreground="{DynamicResource ThemeSelectionForegroundBrush}"
                                TextWrapping="Wrap">
                         Drop some text or files here (Move)
                     </TextBlock>
