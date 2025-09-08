@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Input;
 using Consolonia;
 
 namespace ConsoloniaEdit
@@ -16,6 +17,11 @@ namespace ConsoloniaEdit
             return AppBuilder.Configure<App>()
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
+                .WithDeveloperTools(o =>
+                {
+                    o.Gesture = new KeyGesture(Key.F1);
+                    // o.Runner = new MyRunner();
+                })
                 .LogToException();
         }
     }

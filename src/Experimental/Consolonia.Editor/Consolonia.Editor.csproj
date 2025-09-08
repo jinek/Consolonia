@@ -16,6 +16,7 @@
         <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.4" />
         <PackageReference Include="AvaloniaEdit.TextMate" Version="11.3.0" />
         <PackageReference Include="ReactiveUI" Version="20.1.1" />
+        <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.0.4" />
     </ItemGroup>
 
     <ItemGroup>
