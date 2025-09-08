@@ -70,7 +70,10 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             CaretBlinkInterval = TimeSpan.FromSeconds(-1); // todo: add check to restrict changing
 
             var caretTickTimer = (DispatcherTimer)TickTimerField.GetValue(this);
-            // can be null with Avalonia 11.1.5
+            
+            CaretBlinkInterval = TimeSpan.FromSeconds(-1); // todo: add check to restrict changing
+
+            // TODO: consider that with avalonia 11.1.5 this is null;
             if (caretTickTimer != null)
             {
                 caretTickTimer!.Interval =
