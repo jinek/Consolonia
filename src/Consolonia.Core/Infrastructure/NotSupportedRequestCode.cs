@@ -55,6 +55,27 @@ namespace Consolonia.Core.Infrastructure
         TransformLineWithRotationNotSupported = 16,
         ExtractColorFromPenNotSupported = 6,
         DrawStringWithNonSolidColorBrush = 4,
-        BackgroundWasNotColoredWhileMapping = 62144
+        BackgroundWasNotColoredWhileMapping = 62144,
+        ConsoleWindowCreateTrayIconNotSupported = 62723,
+        ConsoleWindowCreateEmbeddableTopLevelNotSupported = 62724,
+        ConsoleWindowHideNotSupported = 62725,
+        ConsoleWindowActivateNotSupported = 62726,
+        ConsoleWindowSetTopmostNotSupported = 62727,
+        ConsoleWindowSetParentNotSupported = 62728,
+        ConsoleWindowSetEnabledNotSupported = 62729,
+        ConsoleWindowSetSystemDecorationsNotSupported = 62730,
+        ConsoleWindowSetIconNotSupported = 62731,
+        ConsoleWindowShowTaskbarIconNotSupported = 62732,
+        ConsoleWindowCanResizeNotSupported = 62733,
+        ConsoleWindowBeginMoveDragNotSupported = 62734,
+        ConsoleWindowBeginResizeDragNotSupported = 62735,
+        ConsoleWindowBeginResizeNotSupported = 62736,
+        ConsoleWindowMoveNotSupported = 62737,
+        ConsoleWindowSetMinMaxSizeNotSupported = 62738,
+        ConsoleWindowSetExtendClientAreaToDecorationsHintNotSupported = 62739,
+        ConsoleWindowSetExtendClientAreaChromeHintsNotSupported = 62740,
+        ConsoleWindowSetExtendClientAreaTitleBarHeightHintNotSupported = 62741,
+        ConsoleWindowSetCanMinimizeNotSupported = 62742,
+        ConsoleWindowSetCanMaximizeNotSupported = 62743
     }
 }

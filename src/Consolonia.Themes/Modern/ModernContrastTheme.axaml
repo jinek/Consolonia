@@ -1,13 +1,13 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="Consolonia.Themes.ModernTheme">
+        x:Class="Consolonia.Themes.ModernContrastTheme">
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="/Modern/ModernColors.axaml" />
+                <ResourceInclude Source="/Modern/ModernContrastColors.axaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <x:String x:Key="ThemeName">Modern</x:String>
+            <x:String x:Key="ThemeName">ModernContrast</x:String>
         </ResourceDictionary>
     </Styles.Resources>
 

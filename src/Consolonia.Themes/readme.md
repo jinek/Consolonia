@@ -9,6 +9,10 @@ Supports XAML, data bindings, animation, styling and the rest from Avalonia.
 This package contains the following Consolonia Themes:
 * **FluentTheme** - Fluent Design theme
 * **TurboVisionTheme** - TurboVision theme
+* **TurboVisionDarkTheme** - TurboVision theme with dark colors
+* **TurboVisionCompatibleTheme** - TurboVision theme identical to TurboVisionDark
+* **TurboVisionGrayTheme** - TurboVision theme identical to TurboVisionDark
+* **TurboVisionElegantTheme** - TurboVision theme identical to TurboVisionDark
 
 # Usage
 Define an application with a theme 

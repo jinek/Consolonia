@@ -19,7 +19,7 @@
         <Setter Property="MinHeight"
                 Value="1" />
         <Setter Property="PlaceholderForeground"
-                Value="{DynamicResource ThemeChooserBackgroundBrush}" />
+                Value="{DynamicResource ThemeHighlightForegroundBrush2}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
                 Value="Disabled" />
         <Setter Property="MaxDropDownHeight"
@@ -53,7 +53,7 @@
                         <console:CaretControl Padding="0,0,0,0"
                                               IsCaretShown="{TemplateBinding IsFocused}"
                                               VerticalAlignment="Top">
-                            <console:SymbolsControl Text="{StaticResource ThemeDownArrowSymbol}"
+                            <console:SymbolsControl Text="{DynamicResource ThemeDownArrowSymbol}"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center" />
                         </console:CaretControl>

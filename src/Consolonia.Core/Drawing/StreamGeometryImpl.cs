@@ -209,11 +209,12 @@ namespace Consolonia.Core.Drawing
                 if (IsSimpleRectangle(strokes, bounds))
                 {
                     // Create a rectangle that fills the interior (excluding the stroke boundary)
-                    var interiorRect = new Rect(
-                        bounds.X + 1,
-                        bounds.Y + 1,
-                        Math.Max(0, bounds.Width - 2),
-                        Math.Max(0, bounds.Height - 2));
+                    Rect interiorRect = bounds;
+                    //new Rect(
+                    //    bounds.X + 1,                                                                          
+                    //    bounds.Y + 1,
+                    //    Math.Max(0, bounds.Width - 2),
+                    //    Math.Max(0, bounds.Height - 2));
 
                     if (!interiorRect.IsEmpty())
                         fillRects.Add(interiorRect);
@@ -290,7 +291,7 @@ namespace Consolonia.Core.Drawing
                             double xEnd = intersections[i + 1];
 
                             // Create fill rectangle for this span, excluding the boundary
-                            double fillXStart = xStart + 1;
+                            double fillXStart = xStart;
                             double fillWidth = xEnd - fillXStart;
 
                             if (fillWidth > 0) fillRects.Add(new Rect(fillXStart, y, fillWidth, 1));

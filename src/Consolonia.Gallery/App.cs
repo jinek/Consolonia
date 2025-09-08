@@ -20,11 +20,6 @@ namespace Consolonia.Gallery
 
         public override void OnFrameworkInitializationCompleted()
         {
-            /*Styles.Add(new TurboVisionBlackTheme());*/
-            /*Styles.Add(new TurboVisionDarkTheme());*/
-            /*Styles.Add(new FluentTheme());*/
-
-
             if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode()
                 && !((ConsoloniaLifetime)ApplicationLifetime).Args.Any(argument => argument != null &&
                     argument.ToUpper().EndsWith(TurboVisionProgramParameterUpperCase)))

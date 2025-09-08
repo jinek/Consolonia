@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery"
         mc:Ignorable="d"
+        RequestedThemeVariant="Dark"
         x:Class="Consolonia.Gallery.View.ControlsListView">
 
     <DockPanel>
@@ -37,10 +38,35 @@
                           Header="_Modern"
                           Tag="Modern"
                           Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeModernContrastMenuItem"
+                          Header="Modern _Contrast"
+                          Tag="ModernContrast"
+                          Click="OnThemeMenuItemClick" />
                 <MenuItem x:Name="ThemeTurboVisionMenuItem"
                           Header="_TurboVision"
                           Tag="TurboVision"
                           Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionCompatibleMenuItem"
+                          Header="TurboVision_Compatible"
+                          Tag="TurboVisionCompatible"
+                          Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionGrayMenuItem"
+                          Header="TurboVision_Gray"
+                          Tag="TurboVisionGray"
+                          Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionElegantMenuItem"
+                          Header="TurboVision_Elegant"
+                          Tag="TurboVisionElegant"
+                          Click="OnThemeMenuItemClick" />
+                <Separator />
+                <MenuItem x:Name="ThemeLightMenuItem"
+                          Header="_Light Variant"
+                          Tag="Light"
+                          Click="OnThemeVariantLightMenuClick" />
+                <MenuItem x:Name="ThemeDarkMenuItem"
+                          Header="_Dark Variant"
+                          Tag="Dark"
+                          Click="OnThemeVariantDarkMenuClick" />
             </MenuItem>
             <MenuItem Header="_View"
                       IsTabStop="False">

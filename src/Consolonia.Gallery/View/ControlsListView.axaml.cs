@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
 using Consolonia.Themes;
@@ -16,7 +17,11 @@ namespace Consolonia.Gallery.View
     public enum ThemesList
     {
         Modern,
-        TurboVision
+        ModernContrast,
+        TurboVision,
+        TurboVisionCompatible,
+        TurboVisionGray,
+        TurboVisionElegant
     }
 
     public partial class ControlsListView : Window
@@ -114,6 +119,17 @@ namespace Consolonia.Gallery.View
             await dialog.ShowDialog();
         }
 
+        private void OnThemeVariantLightMenuClick(object sender, RoutedEventArgs e)
+        {
+            RequestedThemeVariant = ThemeVariant.Light;
+            UpdateThemeMenuItems();
+        }
+
+        private void OnThemeVariantDarkMenuClick(object sender, RoutedEventArgs e)
+        {
+            RequestedThemeVariant = ThemeVariant.Dark;
+            UpdateThemeMenuItems();
+        }
 
         private void OnThemeMenuItemClick(object sender, RoutedEventArgs e)
         {
@@ -121,10 +137,15 @@ namespace Consolonia.Gallery.View
                 !Enum.TryParse(themeName, out ThemesList selectedTheme))
                 return;
 
+            // NOTE: this assumes first style object is the old theme!
             Application.Current.Styles[0] = selectedTheme switch
             {
                 ThemesList.Modern => new ModernTheme(),
+                ThemesList.ModernContrast => new ModernContrastTheme(),
                 ThemesList.TurboVision => new TurboVisionTheme(),
+                ThemesList.TurboVisionCompatible => new TurboVisionCompatibleTheme(),
+                ThemesList.TurboVisionGray => new TurboVisionGrayTheme(),
+                ThemesList.TurboVisionElegant => new TurboVisionElegantTheme(),
                 _ => throw new InvalidDataException("Unknown theme name")
             };
 
@@ -141,7 +162,14 @@ namespace Consolonia.Gallery.View
         {
             string themeName = Application.Current.Styles[0].GetType().Name[..^5];
             ThemeModernMenuItem.IsChecked = themeName == nameof(ThemesList.Modern);
+            ThemeModernContrastMenuItem.IsChecked = themeName == nameof(ThemesList.ModernContrast);
             ThemeTurboVisionMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVision);
+            ThemeTurboVisionCompatibleMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionCompatible);
+            ThemeTurboVisionGrayMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionGray);
+            ThemeTurboVisionElegantMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionElegant);
+
+            ThemeDarkMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Dark;
+            ThemeLightMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Light;
         }
     }
 
@@ -152,7 +180,13 @@ namespace Consolonia.Gallery.View
         [NotifyPropertyChangedFor(nameof(IsModern))]
         private string _selectedTheme;
 
-        public bool IsModern => SelectedTheme == nameof(ThemesList.Modern);
-        public bool IsTurboVision => SelectedTheme == nameof(ThemesList.TurboVision);
+        public bool IsModern => SelectedTheme == nameof(ThemesList.Modern) ||
+                                SelectedTheme == nameof(ThemesList.ModernContrast);
+
+        public bool IsTurboVision =>
+            SelectedTheme == nameof(ThemesList.TurboVision) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionCompatible) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionGray) ||
+            SelectedTheme == nameof(ThemesList.TurboVisionElegant);
     }
 }

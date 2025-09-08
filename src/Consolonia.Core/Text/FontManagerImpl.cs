@@ -41,15 +41,21 @@ namespace Consolonia.Core.Text
             return true;
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public bool TryCreateGlyphTypeface(Stream stream, FontSimulations fontSimulations,
             [NotNullWhen(true)] out IGlyphTypeface glyphTypeface)
+#pragma warning restore CA1822 // Mark members as static
         {
-            throw new NotImplementedException();
+            glyphTypeface = new GlyphTypeface();
+            return true;
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public bool TryCreateGlyphTypeface(Stream stream, out IGlyphTypeface glyphTypeface)
+#pragma warning restore CA1822 // Mark members as static
         {
-            throw new NotImplementedException();
+            glyphTypeface = new GlyphTypeface();
+            return true;
         }
 
         public static string GetTheOnlyFontFamilyName()

@@ -66,8 +66,11 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
         public ConsoloniaTextPresenter()
         {
             // we need to disable blinking caret, our terminal caret blinks itself once shown
+
+            CaretBlinkInterval = TimeSpan.FromSeconds(-1); // todo: add check to restrict changing
+
             var caretTickTimer = (DispatcherTimer)TickTimerField.GetValue(this);
-            // TODO: consider that with avalonia 11.1.5 this is null;
+            // can be null with Avalonia 11.1.5
             if (caretTickTimer != null)
             {
                 caretTickTimer!.Interval =
