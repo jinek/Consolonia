@@ -56,7 +56,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// </summary>
         /// <param name="background"></param>
         public Pixel(PixelBackground background) :
-            this(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent),
+            this(new PixelForeground(new SimpleSymbol(" "), Colors.Transparent),
                 background)
         {
         }

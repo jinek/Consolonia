@@ -504,6 +504,10 @@ namespace Consolonia.Core.Drawing
 
         private void FillRectangleWithBrush(IBrush brush, IPen pen, Rect r)
         {
+            // no fill if brush is transparent
+            if (brush is ISolidColorBrush solidColorBrush && solidColorBrush.Color == Colors.Transparent)
+                return;
+
             // fill rectangle with brush
             Rect r2 = r.TransformToAABB(Transform);
 
