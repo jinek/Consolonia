@@ -504,6 +504,9 @@ namespace Consolonia.Core.Drawing
 
         private void FillRectangleWithBrush(IBrush brush, IPen pen, Rect r)
         {
+            if (brush is ISolidColorBrush { Color.A: 0 })
+                return;
+
             // fill rectangle with brush
             Rect r2 = r.TransformToAABB(Transform);
 
