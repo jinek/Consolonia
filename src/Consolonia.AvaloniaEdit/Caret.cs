@@ -45,18 +45,18 @@ namespace Consolonia.AvaloniaEdit
         public static bool GetUseConsole(TextEditor textEditor)
             => textEditor.GetValue(UseConsoleProperty);
 
-        private static void TextArea_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+        private static void TextArea_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
             // monitor OverstrikeMode property changes to update caret style to match
-            if (e.Property.Name == nameof(TextArea.OverstrikeMode))
+            if (e.Property == TextArea.OverstrikeModeProperty)
             {
-                var caretBrush = ((TextArea)sender!).Caret.CaretBrush as MoveConsoleCaretToPositionBrush;
-                if (caretBrush != null)
+                var textArea = (TextArea)sender;
+                if (textArea.Caret.CaretBrush is MoveConsoleCaretToPositionBrush caretBrush)
                 {
                     // NOTE: We use SteadyBlock and SteadyBar because AvaloniaEdit has blinking animation hardcoded in.
-                    caretBrush.CaretStyle = ((bool)e.NewValue) ?
-                            CaretStyle.SteadyBlock :
-                            CaretStyle.SteadyBar;
+                    caretBrush.CaretStyle = ((bool)e.NewValue)
+                        ? CaretStyle.SteadyBlock
+                        : CaretStyle.SteadyBar;
                 }
             }
         }
