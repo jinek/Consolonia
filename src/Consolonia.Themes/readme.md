@@ -1,7 +1,7 @@
 ![logo](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
 
 # Consolonia.Themes.TurboVision
-This package provides themes hen creating console apps using [Consolonia](https://github.com/jinek/consolonia).
+This package provides themes when creating console apps using [Consolonia](https://github.com/jinek/consolonia).
 
 ![themes](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Themes.gif)
 
