@@ -1,9 +1,5 @@
 using System;
-using System.Diagnostics;
-using System.Net;
 using Avalonia;
-using Avalonia.Input;
-using AvaloniaUI.DiagnosticsSupport;
 
 namespace Consolonia.Gallery
 {
