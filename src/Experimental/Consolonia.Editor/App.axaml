@@ -12,6 +12,7 @@
     <Application.Styles>
 
         <console:ModernTheme />
-        <StyleInclude Source="avares:/AvaloniaEdit.Consolonia.Themes.axaml" />
+        
+        <StyleInclude Source="avares://Consolonia.AvaloniaEdit/Theme.axaml" />
     </Application.Styles>
 </Application>

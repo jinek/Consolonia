@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Consolonia.AvaloniaEdit\Consolonia.AvaloniaEdit.csproj" />
       <ProjectReference Include="..\..\Consolonia\Consolonia.csproj" />
     </ItemGroup>
 

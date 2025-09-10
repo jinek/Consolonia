@@ -6,8 +6,6 @@ using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Folding;
 using AvaloniaEdit.TextMate;
-using Consolonia.Controls;
-using Consolonia.Controls.Brushes;
 using ConsoloniaEdit.Demo.Resources;
 using ConsoloniaEdit.Demo.ViewModels;
 using TextMateSharp.Grammars;
@@ -30,23 +28,13 @@ namespace ConsoloniaEdit.Demo
         public MainWindow()
         {
             InitializeComponent();
-
             // this.AttachDevTools();
 
             _textEditor = this.FindControl<TextEditor>("Editor")!;
             _textEditor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(_textEditor.Options);
             _textEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
-
-            // replace caret with console caret.
-            //var caretBrush = new MoveConsoleCaretToPositionBrush() { CaretStyle = CaretStyle.SteadyBar };
-            //_textEditor.TextArea.Caret.CaretBrush = caretBrush;
-            //_textEditor.TextArea.PropertyChanged += (sender, e) =>
-            //{
-            //    if (e.Property.Name == nameof(_textEditor.TextArea.OverstrikeMode))
-            //        caretBrush.CaretStyle = ((bool)e.NewValue) ? CaretStyle.SteadyBlock : CaretStyle.SteadyBar;
-            //};
-
             _textEditor.TextArea.RightClickMovesCaret = true;
+
             _registryOptions = new RegistryOptions(
                 (ThemeName)_currentTheme);
 

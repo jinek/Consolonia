@@ -1,5 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:console="https://github.com/jinek/consolonia"
+        xmlns:avaloniaedit="using:AvaloniaEdit"
         xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
         xmlns:editing="clr-namespace:AvaloniaEdit.Editing;assembly=AvaloniaEdit"
         xmlns:rendering="clr-namespace:AvaloniaEdit.Rendering;assembly=AvaloniaEdit">
@@ -43,6 +45,7 @@
     <!-- There is a bug in AvaloniaEdit which hard codes line height to 1.35 * FontSize. To get line height of 1 we set FontSize to 0.7407407407407407 of desired size-->
     <Style Selector="ae|TextEditor">
         <Setter Property="FontSize" Value="0.7407407407407407"/>
+        <Setter Property="(console:Caret.UseConsole)" Value="True"/>
     </Style>
 
 </Styles>
