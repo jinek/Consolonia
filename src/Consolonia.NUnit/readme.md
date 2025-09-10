@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
+![logo](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
 
 # Consolonia.NUnit
 This package provides testing support for testing consolonia controls using NUnit.

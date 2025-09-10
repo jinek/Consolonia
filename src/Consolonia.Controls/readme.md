@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
+![logo](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
 
 # Consolonia.Controls
 This package provides Consolonia speicfic controls for building console apps using [Consolonia](https://github.com/jinek/consolonia) applications.

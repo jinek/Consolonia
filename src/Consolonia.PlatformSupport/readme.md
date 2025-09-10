@@ -1,10 +1,10 @@
-![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
+![logo](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
 
 # Consolonia.PlatformSupport
 This package provides platform support for Windows, Linux and MacOS environments when building Console applications using [Consolonia](https://github.com/jinek/consolonia)
 and [Avalonia](https://avaloniaui.net/).
 
-![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Gallery.gif)
+![gallery](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Gallery.gif)
 
 
 ## Usage

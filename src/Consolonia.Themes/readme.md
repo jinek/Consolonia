@@ -1,9 +1,9 @@
-![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
+![logo](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
 
 # Consolonia.Themes.TurboVision
 This package provides themes hen creating console apps using [Consolonia](https://github.com/jinek/consolonia).
 
-![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Themes.gif)
+![themes](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Themes.gif)
 
 This package contains the following Consolonia Themes:
 * **ModernTheme** - Modern  theme

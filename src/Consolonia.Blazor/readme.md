@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
+![logo](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
 
 # Consolonia.Blazor
 This package provides the ability to use Blazor .razor files to create console apps using [Consolonia](https://github.com/jinek/consolonia).
