@@ -7,7 +7,6 @@
     <PropertyGroup>
         <VersionPrefix>11.3.4</VersionPrefix>
         <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
-        <Description>.NET TUI framework: Avalonia engine, terminal output, modern UX</Description>
         <Copyright>© 2021–2025 Evgeny Gorbovoy &amp; Tom Laird-McConnell</Copyright>
         <PackageIcon>Icon.png</PackageIcon>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
