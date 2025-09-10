@@ -1,7 +1,8 @@
 ![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
 
 # Consolonia.AvaloniaEdit
-This package contains theme resources for using **AvaloniaEdit** in [Consolonia](https://github.com/jinek/consolonia)applications.
+This package contains theme resources for using **AvaloniaEdit** in [Consolonia](https://github.com/jinek/consolonia) 
+applications.
 
 ![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/AvaloniaEdit.gif)
 
