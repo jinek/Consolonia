@@ -1,7 +1,7 @@
 ![logo](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
 
 # 🚀 Modern UI Power, Now in Your Console
-This package is meta package for building Console applications using [Consolonia](https://github.com/jinek/consolonia)
+This package is a meta package which includes everything you need to build Console applications using [Consolonia](https://github.com/jinek/consolonia)
 and [Avalonia](https://avaloniaui.net/).
 
 ![gallery](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Gallery.gif)
