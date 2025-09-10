@@ -1,31 +1,21 @@
-# Consolonia.Controls
-Consolonia is a TUI (Text User Interface) (GUI Framework) implementation for [Avalonia UI](https://github.com/AvaloniaUI)
+![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
 
-Supports XAML, data bindings, animation, styling and the rest from Avalonia.
+# Consolonia.AvaloniaEdit
+This package contains theme resources for using **AvaloniaEdit** in [Consolonia](https://github.com/jinek/consolonia)applications.
 
-# Showcase (click picture to see video)
-[![datagridpic](https://user-images.githubusercontent.com/10516222/141980173-4eb4057a-6996-45bf-83f6-931316c98d88.png)](https://youtu.be/ttgZmbruk3Y)
-
-This package contains the following Consolonia Themes:
-* **FluentTheme** - Fluent Design theme
-* **TurboVisionTheme** - TurboVision theme
+![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/AvaloniaEdit.gif)
 
 # Usage
-Define an application with a theme 
+To enable AvaloniaEdit in your application:
+1. Add **Avalonia.AavaloniaEdit** nuget package
+1. Add **Consolonia.AvaloniaEdit** nuget package
+1. Add ```avares://Consolonia.AvaloniaEdit/Theme.axaml``` to your application styles.
 
-## Define an application 
-Themes are styles which are applied to the application.
+```xaml
+    <Application.Styles>
+        <console:ModernTheme />
+        <StyleInclude Source="avares://Consolonia.AvaloniaEdit/Theme.axaml" />
+    </Application.Styles>
 
-HelloWorldApp.cs
-```csharp
-// use HelloWorldWindow as the MainWindow for the application
-public class HelloWorldApp : ConsoloniaApplication<HelloWorldWindow>
-{
-    public override void Initialize()
-    {
-        // set the theme
-        Styles.Add(new FluentTheme());
-    }
-}
 ```
 

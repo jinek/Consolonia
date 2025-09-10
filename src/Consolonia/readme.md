@@ -1,13 +1,10 @@
-# Consolonia
-This package is meta package for building Consolonia applications.
+![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
 
-## Background
-Consolonia is a TUI (Text User Interface) (GUI Framework) implementation for [Avalonia UI](https://github.com/AvaloniaUI)
+# 🚀 Modern UI Power, Now in Your Console
+This package is meta package for building Console applications using [Consolonia](https://github.com/jinek/consolonia)
+and [Avalonia](https://avaloniaui.net/).
 
-Supports XAML, data bindings, animation, styling and the rest from Avalonia.
-
-## Showcase (click picture to see video)
-[![datagridpic](https://user-images.githubusercontent.com/10516222/141980173-4eb4057a-6996-45bf-83f6-931316c98d88.png)](https://youtu.be/ttgZmbruk3Y)
+![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Gallery.gif)
 
 # Usage
 Define an application with a theme (See Consolonia.Themes.TurboVision for themes)

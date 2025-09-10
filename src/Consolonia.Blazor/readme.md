@@ -1,17 +1,14 @@
+![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
+
 # Consolonia.Blazor
-This package provides the ability to use Blazor .razor files to create Consolonia applications.
+This package provides the ability to use Blazor .razor files to create console apps using [Consolonia](https://github.com/jinek/consolonia).
 * Use [⚡ Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor) syntax for [Avalonia](https://avaloniaui.net/) apps
 * 😎 Simpler syntax than XAML
 * 🪄 IntelliSense support
 * Get free [🔥 Hot Reload](https://devblogs.microsoft.com/dotnet/introducing-net-hot-reload/) support on-top
 * See https://github.com/Epictek/Avalonia-Blazor-Bindings
 
-## Background
-Consolonia is a TUI (Text User Interface) (GUI Framework) implementation for [Avalonia UI](https://github.com/AvaloniaUI)
-
-## Showcase (click picture to see video)
-[![datagridpic](https://user-images.githubusercontent.com/10516222/141980173-4eb4057a-6996-45bf-83f6-931316c98d88.png)](https://youtu.be/ttgZmbruk3Y)
-
+![blazor](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Blazor.gif)
 
 ## Example Razor file
 Things to note:
@@ -22,7 +19,6 @@ Things to note:
 * injection of **IClassicDesktopStyleApplicationLifetime** so you can access Args and shutdown the app.
 * HOT RELOAD. simple save the file and your view gets rebuilt and rerendered!
  
-![blazor](https://github.com/user-attachments/assets/ae1ba484-b3a9-46c6-8c1b-99026e7f924c)
 
 ```razor
 @page "/"

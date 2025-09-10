@@ -1,35 +1,30 @@
+![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
+
 # Consolonia.Themes.TurboVision
-Consolonia is a TUI (Text User Interface) (GUI Framework) implementation for [Avalonia UI](https://github.com/AvaloniaUI)
+This package provides themes hen creating console apps using [Consolonia](https://github.com/jinek/consolonia).
 
-Supports XAML, data bindings, animation, styling and the rest from Avalonia.
-
-# Showcase (click picture to see video)
-[![datagridpic](https://user-images.githubusercontent.com/10516222/141980173-4eb4057a-6996-45bf-83f6-931316c98d88.png)](https://youtu.be/ttgZmbruk3Y)
+![](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Themes.gif)
 
 This package contains the following Consolonia Themes:
-* **FluentTheme** - Fluent Design theme
+* **ModernTheme** - Modern  theme
 * **TurboVisionTheme** - TurboVision theme
-* **TurboVisionDarkTheme** - TurboVision theme with dark colors
 * **TurboVisionCompatibleTheme** - TurboVision theme identical to TurboVisionDark
 * **TurboVisionGrayTheme** - TurboVision theme identical to TurboVisionDark
 * **TurboVisionElegantTheme** - TurboVision theme identical to TurboVisionDark
 
+
 # Usage
-Define an application with a theme 
+You add themes via application styles and RequestedThemeVariant=[Light|Dark|Default]
 
-## Define an application 
-Themes are styles which are applied to the application.
-
-HelloWorldApp.cs
-```csharp
-// use HelloWorldWindow as the MainWindow for the application
-public class HelloWorldApp : ConsoloniaApplication<HelloWorldWindow>
-{
-    public override void Initialize()
-    {
-        // set the theme
-        Styles.Add(new FluentTheme());
-    }
-}
+App.axaml
+```xaml
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:console="https://github.com/jinek/consolonia"
+             RequestedThemeVariant="Default">
+    <Application.Styles>
+        <console:ModernTheme />
+    </Application.Styles>
+</Application>
 ```
 
