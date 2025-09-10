@@ -1,17 +1,16 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
-using AvaloniaEdit.CodeCompletion;
-using ConsoloniaEdit.Demo.Resources;
+using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Folding;
 using AvaloniaEdit.TextMate;
-using TextMateSharp.Grammars;
+using Consolonia.Controls;
+using Consolonia.Controls.Brushes;
+using ConsoloniaEdit.Demo.Resources;
 using ConsoloniaEdit.Demo.ViewModels;
-using AvaloniaEdit;
-using Avalonia.Controls.ApplicationLifetimes;
+using TextMateSharp.Grammars;
 
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable UnusedMember.Local
@@ -35,11 +34,19 @@ namespace ConsoloniaEdit.Demo
             // this.AttachDevTools();
 
             _textEditor = this.FindControl<TextEditor>("Editor")!;
-
             _textEditor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(_textEditor.Options);
             _textEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
-            _textEditor.TextArea.RightClickMovesCaret = true;
 
+            // replace caret with console caret.
+            //var caretBrush = new MoveConsoleCaretToPositionBrush() { CaretStyle = CaretStyle.SteadyBar };
+            //_textEditor.TextArea.Caret.CaretBrush = caretBrush;
+            //_textEditor.TextArea.PropertyChanged += (sender, e) =>
+            //{
+            //    if (e.Property.Name == nameof(_textEditor.TextArea.OverstrikeMode))
+            //        caretBrush.CaretStyle = ((bool)e.NewValue) ? CaretStyle.SteadyBlock : CaretStyle.SteadyBar;
+            //};
+
+            _textEditor.TextArea.RightClickMovesCaret = true;
             _registryOptions = new RegistryOptions(
                 (ThemeName)_currentTheme);
 
@@ -166,9 +173,12 @@ namespace ConsoloniaEdit.Demo
 
         private void Caret_PositionChanged(object sender, EventArgs e)
         {
-            _statusTextBlock.Text = string.Format("Line {0} Column {1}",
-                _textEditor.TextArea.Caret.Line,
-                _textEditor.TextArea.Caret.Column);
+            if (_statusTextBlock != null)
+            {
+                _statusTextBlock.Text = string.Format("Line {0} Column {1}",
+                    _textEditor.TextArea.Caret.Line,
+                    _textEditor.TextArea.Caret.Column);
+            }
         }
 
         protected override void OnClosed(EventArgs e)
