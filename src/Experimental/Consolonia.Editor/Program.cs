@@ -20,10 +20,7 @@ namespace ConsoloniaEdit
             return AppBuilder.Configure<App>()
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
-                .WithDeveloperTools(o =>
-                {
-                    o.Gesture = new KeyGesture(Key.F1);
-                })
+                .WithDeveloperTools()
                 .LogToException();
         }
     }
