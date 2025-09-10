@@ -204,14 +204,10 @@ namespace Consolonia.Core.Drawing
 
             if (rect.IsRounded)
             {
-                rect = new RoundedRect(rect.Rect, 0.0f, 0.0f, 0.0f, 0.0f);
-            }
-
-            if (!rect.IsUniform)
-            {
                 ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle, this,
                     brush, pen, rect, boxShadows);
-                return;
+                // sqaure the rounded corners
+                rect = new RoundedRect(rect.Rect, 0.0f, 0.0f, 0.0f, 0.0f);
             }
 
             if (boxShadows.Count > 0)
