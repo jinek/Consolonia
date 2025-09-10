@@ -23,10 +23,7 @@ namespace Consolonia.Gallery
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
                 .ThrowOnErrors()
-                .WithDeveloperTools(o =>
-                {
-                    o.Gesture =  new KeyGesture(Key.F1);
-                })
+                .WithDeveloperTools()
                 .LogToException();
         }
     }
