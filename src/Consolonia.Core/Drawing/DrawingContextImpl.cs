@@ -270,7 +270,7 @@ namespace Consolonia.Core.Drawing
 
         public void DrawEllipse(IBrush brush, IPen pen, Rect rect)
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawEllipseNotSuported);
         }
 
         public void DrawGlyphRun(IBrush foreground, IGlyphRunImpl glyphRun)
@@ -319,7 +319,7 @@ namespace Consolonia.Core.Drawing
 
         public void PushClip(IPlatformRenderInterfaceRegion region)
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushClipNotSupported);
         }
 
         public void PopClip()
@@ -342,12 +342,12 @@ namespace Consolonia.Core.Drawing
 
         public void PushOpacityMask(IBrush mask, Rect bounds)
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushOpacityNotSupported);
         }
 
         public void PopOpacityMask()
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushOpacityNotSupported);
         }
 
         public void PushGeometryClip(IGeometryImpl clip)
@@ -384,17 +384,17 @@ namespace Consolonia.Core.Drawing
 
         public void DrawRegion(IBrush brush, IPen pen, IPlatformRenderInterfaceRegion region)
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawRegionNotSupported);
         }
 
         public void PushLayer(Rect bounds)
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushLayerNotSupported);
         }
 
         public void PopLayer()
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushLayerNotSupported);
         }
 
         private static RectangleLinePosition[] InferStrokePositions(StreamGeometryImpl streamGeometry)

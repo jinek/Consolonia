@@ -76,6 +76,12 @@ namespace Consolonia.Core.Infrastructure
         ConsoleWindowSetExtendClientAreaChromeHintsNotSupported = 62740,
         ConsoleWindowSetExtendClientAreaTitleBarHeightHintNotSupported = 62741,
         ConsoleWindowSetCanMinimizeNotSupported = 62742,
-        ConsoleWindowSetCanMaximizeNotSupported = 62743
+        ConsoleWindowSetCanMaximizeNotSupported = 62743,
+        DrawEllipseNotSuported = 62744,
+        PushClipNotSupported = 62745,
+        PushLayerNotSupported = 62746,
+        DrawRegionNotSupported = 62747,
+        CubicBezierToNotSpported = 62748,
+        QuadraticBezierToNotSupported = 62749
     }
 }
