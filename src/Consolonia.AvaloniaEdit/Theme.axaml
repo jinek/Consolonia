@@ -12,12 +12,14 @@
             <Thickness x:Key="CompletionToolTipBorderThickness">0</Thickness>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
-                    <StaticResource x:Key="CompletionToolTipBackground" ResourceKey="ThemeAlternativeBackgroundBrush" />
-                    <StaticResource x:Key="CompletionToolTipForeground" ResourceKey="ThemeForegroundBrush" />
-                    <StaticResource x:Key="CompletionToolTipBorderBrush" ResourceKey="ThemeBorderBrush" />
-                    <StaticResource x:Key="OverloadViewerBackground" ResourceKey="ThemeAlternativeBackgroundBrush" />
-                    <StaticResource x:Key="OverloadViewerForeground" ResourceKey="ThemeForegroundBrush" />
-                    <StaticResource x:Key="OverloadViewerBorderBrush" ResourceKey="ThemeBorderBrush" />
+                    <!-- ReSharper disable Xaml.DynamicResourceError -->
+                    <DynamicResource x:Key="CompletionToolTipBackground" ResourceKey="ThemeAlternativeBackgroundBrush" />
+                    <DynamicResource x:Key="CompletionToolTipForeground" ResourceKey="ThemeForegroundBrush" />
+                    <DynamicResource x:Key="CompletionToolTipBorderBrush" ResourceKey="ThemeBorderBrush" />
+                    <DynamicResource x:Key="OverloadViewerBackground" ResourceKey="ThemeAlternativeBackgroundBrush" />
+                    <DynamicResource x:Key="OverloadViewerForeground" ResourceKey="ThemeForegroundBrush" />
+                    <DynamicResource x:Key="OverloadViewerBorderBrush" ResourceKey="ThemeBorderBrush" />
+                    <!-- ReSharper enable Xaml.DynamicResourceError -->
                     <SolidColorBrush x:Key="SearchPanelBackgroundBrush" Color="{DynamicResource SystemChromeMediumColor}" />
                     <SolidColorBrush x:Key="SearchPanelBorderBrush" Color="{DynamicResource SystemBaseLowColor}" />
                     <SolidColorBrush x:Key="TextAreaSelectionBrush" Color="{DynamicResource SystemAccentColor}" />
