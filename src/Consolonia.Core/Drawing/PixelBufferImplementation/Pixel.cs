@@ -20,6 +20,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         "'{Foreground.Symbol.Text}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
     public readonly struct Pixel : IEquatable<Pixel>
     {
+        private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
+            new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
+
         public Pixel()
         {
             Foreground = new PixelForeground();
@@ -165,10 +168,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return new Pixel(newForeground, newBackground, newCaretStyle);
         }
 
-        // ReSharper disable once InconsistentNaming
-        private static readonly Lazy<IConsoleColorMode> _consoleColorMode =
-            new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
-
         /// <summary>
         ///     merge colors with alpha blending
         /// </summary>
@@ -177,7 +176,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <returns>source blended into target</returns>
         private static Color MergeColors(Color target, Color source)
         {
-            return _consoleColorMode.Value.Blend(target, source);
+            return ConsoleColorMode.Value.Blend(target, source);
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)

@@ -15,6 +15,10 @@ namespace Consolonia.Core.Infrastructure
     public class AnsiConsoleOutput : IConsoleOutput
     {
         private const string TestEmoji = "👨‍👩‍👧‍👦";
+
+        private static Lazy<IConsoleColorMode> ConsoleColorMode =
+            new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
+
         private PixelBufferCoordinate _headBufferPoint;
 
         private bool? _supportEmoji;
@@ -49,14 +53,11 @@ namespace Consolonia.Core.Infrastructure
             return _headBufferPoint;
         }
 
-        private static Lazy<IConsoleColorMode> _consoleColorMode =
-            new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
-
         public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
             //todo: performance of retrieval of the service, at least can be retrieved once
-            var consoleColorMode = _consoleColorMode;
+            var consoleColorMode = ConsoleColorMode;
 
             SetCaretPosition(bufferPoint);
 
