@@ -7,7 +7,6 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -160,7 +159,7 @@ namespace Consolonia.Core.Infrastructure
         {
             _consoleOutput.PrepareConsole();
         }
-        
+
         public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground,
             FontStyle? style, FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
