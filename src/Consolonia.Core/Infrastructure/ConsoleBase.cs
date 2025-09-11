@@ -27,6 +27,8 @@ namespace Consolonia.Core.Infrastructure
             if (consoleOutput is ConsoleBase)
                 throw new ArgumentException("ConsoleBase cannot be used as a console output", nameof(consoleOutput));
 
+            Console.TreatControlCAsInput = true;
+
             _consoleOutput = consoleOutput;
 
             Size = consoleOutput.Size;
@@ -156,10 +158,9 @@ namespace Consolonia.Core.Infrastructure
 
         public virtual void PrepareConsole()
         {
-            Console.TreatControlCAsInput = true;
             _consoleOutput.PrepareConsole();
         }
-
+        
         public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground,
             FontStyle? style, FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
@@ -169,7 +170,6 @@ namespace Consolonia.Core.Infrastructure
         public virtual void RestoreConsole()
         {
             _consoleOutput.RestoreConsole();
-            WriteText(Esc.DisableBracketedPasteMode);
         }
 
         public virtual void SetCaretPosition(PixelBufferCoordinate bufferPoint)
