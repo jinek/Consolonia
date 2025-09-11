@@ -39,7 +39,7 @@ namespace Consolonia.PreviewHost.Views
                 }
             });
 
-            if (files == null || !files.Any()) return;
+            if (!files.Any()) return;
             string projectFile = files[0].Path.AbsolutePath;
             Model.Project = new ProjectViewModel(projectFile);
         }
