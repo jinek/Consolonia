@@ -1,10 +1,10 @@
-![logo](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
+![logo](https://raw.githubusercontent.com/tomlm/ConsoloniaContent/main/Logo.png)
 
 # Consolonia.AvaloniaEdit
 This package contains theme resources for using **AvaloniaEdit** in [Consolonia](https://github.com/jinek/consolonia) 
 applications.
 
-![avalonia editor](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/AvaloniaEdit.gif)
+![avalonia editor](https://raw.githubusercontent.com/tomlm/ConsoloniaContent/main/AvaloniaEdit.gif)
 
 # Usage
 To enable AvaloniaEdit in your application:

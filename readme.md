@@ -1,6 +1,6 @@
-﻿![logo](https://github.com/user-attachments/assets/594b33e1-59b9-40bf-9d16-41e6d5ebcb9e)
+﻿![logo](https://raw.githubusercontent.com/tomlm/ConsoloniaContent/main/Logo.png)
 
-![quickTour](https://github.com/user-attachments/assets/cf40c5e9-9315-48ce-a91a-e56dafb83801)
+![gallery](https://raw.githubusercontent.com/tomlm/ConsoloniaContent/main/Gallery.gif)
 
 # 🚀 Modern UI Power, Now in Your Console
 

@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
+![logo](https://raw.githubusercontent.com/tomlm/ConsoloniaContent/main/Logo.png)
 
 # Consolonia.Blazor
 This package provides the ability to use Blazor .razor files to create console apps using [Consolonia](https://github.com/jinek/consolonia).
@@ -8,7 +8,7 @@ This package provides the ability to use Blazor .razor files to create console a
 * Get free [🔥 Hot Reload](https://devblogs.microsoft.com/dotnet/introducing-net-hot-reload/) support on-top
 * See https://github.com/Epictek/Avalonia-Blazor-Bindings
 
-![blazor](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Blazor.gif)
+![blazor](https://raw.githubusercontent.com/tomlm/ConsoloniaContent/main/Blazor.gif)
 
 ## Example Razor file
 Things to note:

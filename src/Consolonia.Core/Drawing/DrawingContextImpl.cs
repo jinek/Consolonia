@@ -242,10 +242,9 @@ namespace Consolonia.Core.Drawing
                             {
                                 Pixel pixel = _pixelBuffer[(PixelBufferCoordinate)head];
                                 if (pixel.CaretStyle != moveBrush.CaretStyle)
-                                {
+                                { 
                                     // only be dirty if something changed
-                                    _consoleWindowImpl.DirtyRegions.AddRect(
-                                        CurrentClip.Intersect(new Rect(head, new Size(1, 1))));
+                                    _consoleWindowImpl.DirtyRegions.AddRect(new Rect(head, new Size(1, 1)));
                                     _pixelBuffer[(PixelBufferCoordinate)head] =
                                         pixel.Blend(new Pixel(moveBrush.CaretStyle));
                                 }

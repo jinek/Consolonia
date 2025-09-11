@@ -1,10 +1,10 @@
-![logo](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Logo.png)
+![logo](https://raw.githubusercontent.com/tomlm/ConsoloniaContent/main/Logo.png)
 
 # 🚀 Modern UI Power, Now in Your Console
 This package is a meta package which includes everything you need to build Console applications using [Consolonia](https://github.com/jinek/consolonia)
 and [Avalonia](https://avaloniaui.net/).
 
-![gallery](https://raw.githubusercontent.com/jinek/consolonia/main/assets/images/Gallery.gif)
+![gallery](https://raw.githubusercontent.com/tomlm/ConsoloniaContent/main/Gallery.gif)
 
 # Usage
 Define an application with a theme (See Consolonia.Themes.TurboVision for themes)
