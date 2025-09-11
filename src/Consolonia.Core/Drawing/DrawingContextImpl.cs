@@ -269,7 +269,7 @@ namespace Consolonia.Core.Drawing
 
         public void DrawEllipse(IBrush brush, IPen pen, Rect rect)
         {
-            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawEllipseNotSuported);
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawEllipseNotSupported);
         }
 
         public void DrawGlyphRun(IBrush foreground, IGlyphRunImpl glyphRun)

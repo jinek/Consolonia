@@ -122,7 +122,7 @@ namespace Consolonia.Core.Drawing
             /// <inheritdoc />
             public void CubicBezierTo(Point point1, Point point2, Point point3, bool isStroked)
             {
-                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.CubicBezierToNotSpported);
+                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.CubicBezierToNotSupported);
             }
 
             /// <inheritdoc />
@@ -149,7 +149,7 @@ namespace Consolonia.Core.Drawing
             /// <inheritdoc />
             public void CubicBezierTo(Point point1, Point point2, Point point3)
             {
-                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.CubicBezierToNotSpported);
+                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.CubicBezierToNotSupported);
             }
 
             /// <inheritdoc />

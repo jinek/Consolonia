@@ -174,11 +174,11 @@ namespace Consolonia.Core.Infrastructure
                 case NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle:
                 case NotSupportedRequestCode.DrawingBoxShadowNotSupported:
                 case NotSupportedRequestCode.DrawGeometryNotSupported:
-                case NotSupportedRequestCode.DrawEllipseNotSuported:
+                case NotSupportedRequestCode.DrawEllipseNotSupported:
                 case NotSupportedRequestCode.PushClipNotSupported:
                 case NotSupportedRequestCode.PushLayerNotSupported:
                 case NotSupportedRequestCode.DrawRegionNotSupported:
-                case NotSupportedRequestCode.CubicBezierToNotSpported:
+                case NotSupportedRequestCode.CubicBezierToNotSupported:
                 case NotSupportedRequestCode.QuadraticBezierToNotSupported:
                     notSupportedRequest.SetHandled();
                     break;
