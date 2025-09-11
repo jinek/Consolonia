@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Text;
 using Avalonia;
 using Avalonia.Media;
@@ -16,7 +15,7 @@ namespace Consolonia.Core.Infrastructure
     {
         private const string TestEmoji = "👨‍👩‍👧‍👦";
 
-        private static Lazy<IConsoleColorMode> ConsoleColorMode =
+        private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
             new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
 
         private PixelBufferCoordinate _headBufferPoint;
@@ -57,11 +56,11 @@ namespace Consolonia.Core.Infrastructure
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
             //todo: performance of retrieval of the service, at least can be retrieved once
-            var consoleColorMode = ConsoleColorMode;
+            Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
             SetCaretPosition(bufferPoint);
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (textDecoration == TextDecorationLocation.Underline)
                 sb.Append(Esc.Underline);
 
@@ -77,7 +76,7 @@ namespace Consolonia.Core.Infrastructure
             sb.Append(Esc.Background(mappedBackground));
             sb.Append(str);
             sb.Append(Esc.Reset);
-            
+
             WriteText(sb.ToString());
 
             ushort textWidth = str.MeasureText();
