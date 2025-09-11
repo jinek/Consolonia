@@ -7,7 +7,6 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -26,6 +25,8 @@ namespace Consolonia.Core.Infrastructure
         {
             if (consoleOutput is ConsoleBase)
                 throw new ArgumentException("ConsoleBase cannot be used as a console output", nameof(consoleOutput));
+
+            Console.TreatControlCAsInput = true;
 
             _consoleOutput = consoleOutput;
 
@@ -156,7 +157,6 @@ namespace Consolonia.Core.Infrastructure
 
         public virtual void PrepareConsole()
         {
-            Console.TreatControlCAsInput = true;
             _consoleOutput.PrepareConsole();
         }
 
@@ -169,7 +169,6 @@ namespace Consolonia.Core.Infrastructure
         public virtual void RestoreConsole()
         {
             _consoleOutput.RestoreConsole();
-            WriteText(Esc.DisableBracketedPasteMode);
         }
 
         public virtual void SetCaretPosition(PixelBufferCoordinate bufferPoint)
