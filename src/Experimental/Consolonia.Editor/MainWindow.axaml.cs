@@ -161,12 +161,9 @@ namespace ConsoloniaEdit.Demo
 
         private void Caret_PositionChanged(object sender, EventArgs e)
         {
-            if (_statusTextBlock != null)
-            {
-                _statusTextBlock.Text = string.Format("Line {0} Column {1}",
-                    _textEditor.TextArea.Caret.Line,
-                    _textEditor.TextArea.Caret.Column);
-            }
+            _statusTextBlock.Text = string.Format("Line {0} Column {1}",
+                _textEditor.TextArea.Caret.Line,
+                _textEditor.TextArea.Caret.Column);
         }
 
         protected override void OnClosed(EventArgs e)
