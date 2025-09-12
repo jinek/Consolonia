@@ -45,7 +45,7 @@
             <!-- There is a bug in AvaloniaEdit which hard codes line height to 1.35 * FontSize. To get line height of 1 we set FontSize to 0.7407407407407407 of desired size-->
             <Setter Property="FontSize"
                     Value="0.7407407407407407" />
-            
+
             <!-- If AvaloniaEdit ever supports CaretBrush as an avalonia property we will do something like this:
             <Style Selector="^ /template/ editing|TextArea[OverstrikeMode=false]">
                 <Setter Property="CaretBrush">
@@ -72,7 +72,7 @@
                  Brush="Transparent" />
         </Setter>
     </Style>
-    
+
     <!--disable border around selections-->
     <Style Selector="editing|TextArea">
         <Setter Property="SelectionBorder">
@@ -80,6 +80,6 @@
                  Brush="Transparent" />
         </Setter>
         <Setter Property="SelectionCornerRadius"
-                Value="0"/>
+                Value="0" />
     </Style>
 </Styles>
