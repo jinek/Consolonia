@@ -1,15 +1,15 @@
+![logo](https://raw.githubusercontent.com/tomlm/ConsoloniaContent/main/Logo.png)
+
 # Consolonia.PlatformSupport
-This package provides Consolonia IConsole platform support for adapting to consoles on Windows, Linux and MacOS environments.
+This package provides platform support for Windows, Linux, and macOS when building console applications using 
+[Consolonia](https://github.com/jinek/consolonia) and [Avalonia](https://avaloniaui.net/).
 
-## Background
-Consolonia is a TUI (Text User Interface) (GUI Framework) implementation for [Avalonia UI](https://github.com/AvaloniaUI)
+![gallery](https://raw.githubusercontent.com/tomlm/ConsoloniaContent/main/Gallery.gif)
 
-Supports XAML, data bindings, animation, styling and the rest from Avalonia.
-
-## Showcase (click picture to see video)
-[![datagridpic](https://user-images.githubusercontent.com/10516222/141980173-4eb4057a-6996-45bf-83f6-931316c98d88.png)](https://youtu.be/ttgZmbruk3Y)
 
 ## Usage
+To use this package, you need to call the `UseConsolonia` and `UseAutoDetectedConsole` extension methods on the `AppBuilder` instance in your `Program.cs` file.
+
 ```csharp
 AppBuilder BuildAvaloniaApp()
 {

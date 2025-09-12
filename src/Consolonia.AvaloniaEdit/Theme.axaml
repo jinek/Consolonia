@@ -1,0 +1,85 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:console="https://github.com/jinek/consolonia"
+        xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+        xmlns:editing="clr-namespace:AvaloniaEdit.Editing;assembly=AvaloniaEdit"
+        xmlns:rendering="clr-namespace:AvaloniaEdit.Rendering;assembly=AvaloniaEdit">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <x:Double x:Key="SearchPanelFontSize">1.0</x:Double>
+            <FontFamily x:Key="SearchPanelFontFamily">Console</FontFamily>
+            <Thickness x:Key="CompletionToolTipBorderThickness">0</Thickness>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <!-- ReSharper disable Xaml.DynamicResourceError -->
+                    <DynamicResource x:Key="CompletionToolTipBackground"
+                                     ResourceKey="ThemeAlternativeBackgroundBrush" />
+                    <DynamicResource x:Key="CompletionToolTipForeground"
+                                     ResourceKey="ThemeForegroundBrush" />
+                    <DynamicResource x:Key="CompletionToolTipBorderBrush"
+                                     ResourceKey="ThemeBorderBrush" />
+                    <DynamicResource x:Key="OverloadViewerBackground"
+                                     ResourceKey="ThemeAlternativeBackgroundBrush" />
+                    <DynamicResource x:Key="OverloadViewerForeground"
+                                     ResourceKey="ThemeForegroundBrush" />
+                    <DynamicResource x:Key="OverloadViewerBorderBrush"
+                                     ResourceKey="ThemeBorderBrush" />
+                    <!-- ReSharper enable Xaml.DynamicResourceError -->
+                    <SolidColorBrush x:Key="SearchPanelBackgroundBrush"
+                                     Color="{DynamicResource SystemChromeMediumColor}" />
+                    <SolidColorBrush x:Key="SearchPanelBorderBrush"
+                                     Color="{DynamicResource SystemBaseLowColor}" />
+                    <SolidColorBrush x:Key="TextAreaSelectionBrush"
+                                     Color="{DynamicResource SystemAccentColor}" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://AvaloniaEdit/Themes/Base.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+        <ControlTheme x:Key="{x:Type ae:TextEditor}"
+                      TargetType="ae:TextEditor"
+                      BasedOn="{StaticResource {x:Type ae:TextEditor}}">
+            <!-- There is a bug in AvaloniaEdit which hard codes line height to 1.35 * FontSize. To get line height of 1 we set FontSize to 0.7407407407407407 of desired size-->
+            <Setter Property="FontSize"
+                    Value="0.7407407407407407" />
+
+            <!-- If AvaloniaEdit ever supports CaretBrush as an avalonia property we will do something like this:
+            <Style Selector="^ /template/ editing|TextArea[OverstrikeMode=false]">
+                <Setter Property="CaretBrush">
+                    <console:MoveConsoleCaretToPositionBrush CaretStyle="SteadyBar"/>
+                </Setter>
+            </Style>
+            <Style Selector="^ /template/ editing|TextArea[OverstrikeMode=true]">
+                <Setter Property="CaretBrush">
+                    <console:MoveConsoleCaretToPositionBrush CaretStyle="SteadyBlock"/>
+                </Setter>
+            </Style>
+            Instead we use a bit of sleight of hand by attaching a property in the theme that
+            internally goes and hooks into the caret of the TextArea and updates it.
+            -->
+            <Setter Property="console:Caret.UseConsole"
+                    Value="True" />
+        </ControlTheme>
+    </Styles.Resources>
+
+    <!--disable border around current line-->
+    <Style Selector="rendering|TextView">
+        <Setter Property="CurrentLineBorder">
+            <Pen Thickness="0"
+                 Brush="Transparent" />
+        </Setter>
+    </Style>
+
+    <!--disable border around selections-->
+    <Style Selector="editing|TextArea">
+        <Setter Property="SelectionBorder">
+            <Pen Thickness="0"
+                 Brush="Transparent" />
+        </Setter>
+        <Setter Property="SelectionCornerRadius"
+                Value="0" />
+    </Style>
+</Styles>

@@ -31,9 +31,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{A8CC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{7B64DD09-94E2-47DE-8490-189B9B406A5A}"
 	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\dismiss-approvals.yml = ..\.github\workflows\dismiss-approvals.yml
 		..\.github\workflows\editorconfig.yml = ..\.github\workflows\editorconfig.yml
 		..\.github\workflows\general_build.yml = ..\.github\workflows\general_build.yml
-		..\.github\workflows\dismiss-approvals.yml = ..\.github\workflows\dismiss-approvals.yml
 		..\.github\workflows\PublishIncrementalNuget.yml = ..\.github\workflows\PublishIncrementalNuget.yml
 		..\.github\workflows\PublishNuget.yml = ..\.github\workflows\PublishNuget.yml
 	EndProjectSection
@@ -75,6 +75,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Editor", "Experimental\Consolonia.Editor\Consolonia.Editor.csproj", "{2EA06671-2018-49BE-BCC6-F9DA0591AB25}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Controls", "Consolonia.Controls\Consolonia.Controls.csproj", "{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.AvaloniaEdit", "Consolonia.AvaloniaEdit\Consolonia.AvaloniaEdit.csproj", "{2123C1D3-E122-4967-B30B-7ED383005EB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -162,6 +164,10 @@ Global
 		{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CF285AE-BE00-41A2-A3F1-4EA9F19638FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2123C1D3-E122-4967-B30B-7ED383005EB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2123C1D3-E122-4967-B30B-7ED383005EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2123C1D3-E122-4967-B30B-7ED383005EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2123C1D3-E122-4967-B30B-7ED383005EB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

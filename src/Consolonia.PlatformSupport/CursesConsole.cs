@@ -205,25 +205,26 @@ namespace Consolonia.PlatformSupport
                 Curses.Event.AllEvents | Curses.Event.ReportMousePosition,
                 out Curses.Event _);
             Curses.mouseinterval(0); // if we don't do this mouse events are dropped
-            Console.WriteLine(Esc.EnableAllMouseEvents);
             Curses.timeout(NoInputTimeout);
-            //Console.WriteLine(Esc.EnableExtendedMouseTracking);
-            base.PrepareConsole();
+            WriteText(Esc.EnableAllMouseEvents);
             WriteText(Esc.EnableBracketedPasteMode);
+            WriteText(Esc.EnableExtendedMouseTracking);
+            base.PrepareConsole();
         }
 
         public override void RestoreConsole()
         {
             base.RestoreConsole();
 
+            WriteText(Esc.DisableAllMouseEvents);
+            WriteText(Esc.DisableExtendedMouseTracking);
+            WriteText(Esc.DisableBracketedPasteMode);
             Curses.mousemask(0, out Curses.Event _);
             Curses.nocbreak();
             _cursesWindow.keypad(false);
             Curses.echo();
             Curses.noraw();
             Curses.endwin();
-            Console.WriteLine(Esc.DisableAllMouseEvents);
-            //Console.WriteLine(Esc.DisableExtendedMouseTracking);
         }
 
         public override void PauseIO(Task task)

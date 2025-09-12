@@ -202,11 +202,12 @@ namespace Consolonia.Core.Drawing
 
             if (rect.Rect.IsEmpty()) return;
 
-            if (rect.IsRounded || !rect.IsUniform)
+            if (rect.IsRounded)
             {
                 ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle, this,
                     brush, pen, rect, boxShadows);
-                return;
+                // sqaure the rounded corners
+                rect = new RoundedRect(rect.Rect, 0.0f, 0.0f, 0.0f, 0.0f);
             }
 
             if (boxShadows.Count > 0)
@@ -239,10 +240,15 @@ namespace Consolonia.Core.Drawing
                         CurrentClip.ExecuteWithClipping(head,
                             () =>
                             {
-                                _pixelBuffer.Set((PixelBufferCoordinate)head,
-                                    pixel => pixel.Blend(new Pixel(moveBrush.CaretStyle)));
+                                Pixel pixel = _pixelBuffer[(PixelBufferCoordinate)head];
+                                if (pixel.CaretStyle != moveBrush.CaretStyle)
+                                {
+                                    // only be dirty if something changed
+                                    _consoleWindowImpl.DirtyRegions.AddRect(new Rect(head, new Size(1, 1)));
+                                    _pixelBuffer[(PixelBufferCoordinate)head] =
+                                        pixel.Blend(new Pixel(moveBrush.CaretStyle));
+                                }
                             });
-                        _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(new Rect(head, new Size(1, 1))));
                         return;
                     }
                 }
@@ -263,7 +269,7 @@ namespace Consolonia.Core.Drawing
 
         public void DrawEllipse(IBrush brush, IPen pen, Rect rect)
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawEllipseNotSupported);
         }
 
         public void DrawGlyphRun(IBrush foreground, IGlyphRunImpl glyphRun)
@@ -312,7 +318,13 @@ namespace Consolonia.Core.Drawing
 
         public void PushClip(IPlatformRenderInterfaceRegion region)
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushClipRegionNotSupported);
+
+            // we need to keep clipstack aligned even if this is an approximation.
+            PushClip(new Rect(region.Bounds.Left,
+                region.Bounds.Top,
+                region.Bounds.Right - region.Bounds.Left,
+                region.Bounds.Bottom - region.Bounds.Top));
         }
 
         public void PopClip()
@@ -329,23 +341,24 @@ namespace Consolonia.Core.Drawing
 
         public void PopOpacity()
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(
+                NotSupportedRequestCode.PushOpacityNotSupported, this);
         }
 
         public void PushOpacityMask(IBrush mask, Rect bounds)
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushOpacityNotSupported);
         }
 
         public void PopOpacityMask()
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushOpacityNotSupported);
         }
 
         public void PushGeometryClip(IGeometryImpl clip)
         {
-            if (clip is not Rectangle myRectangle) throw new NotImplementedException();
-            PushClip(myRectangle.Rect);
+            // this is an approximation, we just use the bounds
+            PushClip(clip.Bounds);
         }
 
         public void PopGeometryClip()
@@ -376,17 +389,17 @@ namespace Consolonia.Core.Drawing
 
         public void DrawRegion(IBrush brush, IPen pen, IPlatformRenderInterfaceRegion region)
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawRegionNotSupported);
         }
 
         public void PushLayer(Rect bounds)
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushLayerNotSupported);
         }
 
         public void PopLayer()
         {
-            throw new NotImplementedException();
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushLayerNotSupported);
         }
 
         private static RectangleLinePosition[] InferStrokePositions(StreamGeometryImpl streamGeometry)
@@ -504,6 +517,9 @@ namespace Consolonia.Core.Drawing
 
         private void FillRectangleWithBrush(IBrush brush, IPen pen, Rect r)
         {
+            if (brush is ISolidColorBrush { Color.A: 0 })
+                return;
+
             // fill rectangle with brush
             Rect r2 = r.TransformToAABB(Transform);
 
