@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
 using Newtonsoft.Json;
-using NLog.LayoutRenderers.Wrappers;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -13,9 +12,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     {
         public static readonly PixelForeground Default = new();
 
-        public static readonly PixelForeground Space = new PixelForeground(SimpleSymbol.Space, Colors.Transparent);
+        public static readonly PixelForeground Space = new(SimpleSymbol.Space, Colors.Transparent);
 
-        public static readonly PixelForeground Empty = new PixelForeground(SimpleSymbol.Empty, Colors.Transparent);
+        public static readonly PixelForeground Empty = new(SimpleSymbol.Empty, Colors.Transparent);
 
         public PixelForeground()
         {

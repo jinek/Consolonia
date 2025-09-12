@@ -99,8 +99,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         // pixel space is a pixel with a space symbol, but could have color blended into. it is used to advance the cursor
         // and set the background color
-        public static Pixel Space => new Pixel(new PixelForeground(SimpleSymbol.Space, Colors.Transparent), 
-                                               PixelBackground.Transparent );
+        public static Pixel Space => new(new PixelForeground(SimpleSymbol.Space, Colors.Transparent),
+            PixelBackground.Transparent);
 
         public PixelForeground Foreground { get; init; }
 

@@ -58,7 +58,7 @@ namespace Consolonia.NUnit
             foreach (Rune rune in str.EnumerateRunes())
             {
                 var coord = new PixelBufferCoordinate((ushort)(x + i), y);
-                PixelBuffer[coord] = 
+                PixelBuffer[coord] =
                     new Pixel(
                         new PixelForeground(new SimpleSymbol(rune), foreground, style: style, weight: weight,
                             textDecoration: textDecoration),

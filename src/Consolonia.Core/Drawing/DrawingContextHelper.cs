@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Consolonia.Core.InternalHelpers;
@@ -7,8 +6,6 @@ namespace Consolonia.Core.Drawing
 {
     internal static class DrawingContextHelper
     {
-
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsEmpty(this Rect rect)
         {

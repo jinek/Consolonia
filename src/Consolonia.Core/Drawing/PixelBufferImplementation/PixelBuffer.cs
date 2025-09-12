@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Media;
@@ -71,9 +70,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
 
 
-
-
-      
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private (ushort x, ushort y) ToXY(int i)
         {
