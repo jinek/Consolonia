@@ -6,39 +6,39 @@
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryImage">
 
     <Grid>
-            <ScrollViewer>
-                <WrapPanel ItemWidth="50">
-                    <Viewbox Stretch="Uniform">
-                        <Image Source="avares://Consolonia.Gallery/Resources/0.jpg" />
-                    </Viewbox>
-                    <Viewbox Stretch="Uniform">
-                        <Image Source="avares://Consolonia.Gallery/Resources/1.jpg" />
-                    </Viewbox>
-                    <Viewbox Stretch="Uniform">
-                        <Image Source="avares://Consolonia.Gallery/Resources/2.jpg" />
-                    </Viewbox>
-                    <Viewbox Stretch="Uniform">
-                        <Image Source="avares://Consolonia.Gallery/Resources/3.jpg" />
-                    </Viewbox>
-                    <Viewbox Stretch="Uniform">
-                        <Image Source="avares://Consolonia.Gallery/Resources/4.jpg" />
-                    </Viewbox>
-                    <Viewbox Stretch="Uniform">
-                        <Image Source="avares://Consolonia.Gallery/Resources/5.jpg" />
-                    </Viewbox>
-                    <Viewbox Stretch="Uniform">
-                        <Image Source="avares://Consolonia.Gallery/Resources/6.jpg" />
-                    </Viewbox>
-                    <Viewbox Stretch="Uniform">
-                        <Image Source="avares://Consolonia.Gallery/Resources/7.jpg" />
-                    </Viewbox>
-                    <Viewbox Stretch="Uniform">
-                        <Image Source="avares://Consolonia.Gallery/Resources/8.jpg" />
-                    </Viewbox>
-                    <Viewbox Stretch="Uniform">
-                        <Image Source="avares://Consolonia.Gallery/Resources/9.jpg" />
-                    </Viewbox>
-                </WrapPanel>
-            </ScrollViewer>
+        <ScrollViewer>
+            <WrapPanel ItemWidth="50">
+                <Viewbox Stretch="Uniform">
+                    <Image Source="avares://Consolonia.Gallery/Resources/0.jpg" />
+                </Viewbox>
+                <Viewbox Stretch="Uniform">
+                    <Image Source="avares://Consolonia.Gallery/Resources/1.jpg" />
+                </Viewbox>
+                <Viewbox Stretch="Uniform">
+                    <Image Source="avares://Consolonia.Gallery/Resources/2.jpg" />
+                </Viewbox>
+                <Viewbox Stretch="Uniform">
+                    <Image Source="avares://Consolonia.Gallery/Resources/3.jpg" />
+                </Viewbox>
+                <Viewbox Stretch="Uniform">
+                    <Image Source="avares://Consolonia.Gallery/Resources/4.jpg" />
+                </Viewbox>
+                <Viewbox Stretch="Uniform">
+                    <Image Source="avares://Consolonia.Gallery/Resources/5.jpg" />
+                </Viewbox>
+                <Viewbox Stretch="Uniform">
+                    <Image Source="avares://Consolonia.Gallery/Resources/6.jpg" />
+                </Viewbox>
+                <Viewbox Stretch="Uniform">
+                    <Image Source="avares://Consolonia.Gallery/Resources/7.jpg" />
+                </Viewbox>
+                <Viewbox Stretch="Uniform">
+                    <Image Source="avares://Consolonia.Gallery/Resources/8.jpg" />
+                </Viewbox>
+                <Viewbox Stretch="Uniform">
+                    <Image Source="avares://Consolonia.Gallery/Resources/9.jpg" />
+                </Viewbox>
+            </WrapPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>
