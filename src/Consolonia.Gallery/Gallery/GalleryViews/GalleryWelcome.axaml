@@ -4,8 +4,110 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryWelcome">
+    <StackPanel >
     <TextBlock Text="Welcome to Consolonia!"
                TextDecorations="Underline"
                FontWeight="Bold"
                HorizontalAlignment="Center" />
+    <Grid>
+        <StackPanel Margin="1,1,-1,0" >
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <TextBlock Text="Default Button"  TextAlignment="Center" Margin="0,0,0,1"/>
+                    <Button Content="Enabled" />
+                    <Button Content="Disabled" IsEnabled="False" Margin="0,1,0,0" />
+                </StackPanel>
+                <StackPanel Margin="2,0">
+                    <TextBlock Text="Toggle Button"  TextAlignment="Center" Margin="0,0,0,1"/>
+                    <ToggleButton Content="Enabled" />
+                    <ToggleButton Content="Checked" IsChecked="True" Margin="0,1,0,0" />
+                    <ToggleButton Content="Disabled" IsEnabled="False" Margin="0,1,0,0" />
+                    <ToggleButton Content="Checked" IsChecked="True" IsEnabled="False" Margin="0,1,0,0" />
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Toggle Switch"  TextAlignment="Center" Margin="0,0,0,1"/>
+                    <ToggleSwitch Content="Enabled" />
+                    <ToggleSwitch Content="Checked" IsChecked="True" Margin="0,1,0,0" />
+                    <ToggleSwitch Content="Disabled" IsEnabled="False" Margin="0,1,0,0" />
+                    <ToggleSwitch Content="Checked" IsChecked="True" IsEnabled="False" Margin="0,1,0,0" />
+                </StackPanel>
+                <StackPanel Margin="2,0">
+                    <TextBlock Text="CheckBox"  TextAlignment="Center" Margin="0,0,0,1"/>
+                    <CheckBox Content="Enabled" />
+                    <CheckBox Content="Checked" IsChecked="True" Margin="0,1,0,0" />
+                    <CheckBox Content="3-State" IsChecked="{x:Null}" IsThreeState="True" Margin="0,1,0,0" />
+                    <CheckBox Content="Disabled" IsEnabled="False" Margin="0,1,0,0" />
+                    <CheckBox Content="Checked" IsChecked="True" IsEnabled="False" Margin="0,1,0,0" />
+                    <CheckBox Content="3-State" IsChecked="{x:Null}" IsThreeState="True" IsEnabled="False" Margin="0,1,0,0" />
+                </StackPanel>
+                <StackPanel Margin="2,0">
+                    <TextBlock Text="RadioButton"  TextAlignment="Center" Margin="0,0,0,1"/>
+                    <StackPanel>
+                        <RadioButton Content="Enabled" />
+                        <RadioButton Content="Checked" IsChecked="True" Margin="0,1,0,0" />
+                    </StackPanel>
+                    <StackPanel>
+                        <RadioButton Content="Disabled" IsEnabled="False" Margin="0,1,0,0" />
+                        <RadioButton Content="Checked" IsChecked="True" IsEnabled="False" Margin="0,1,0,0" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                <StackPanel>
+                    <TextBlock Text="TextBox"  TextAlignment="Center" Margin="0,0,0,1"/>
+                    <TextBox Text="Enabled"/>
+                    <TextBox Watermark="Placeholder" Margin="0,1,0,0"/>
+                    <TextBox Text="Disabled" IsEnabled="False" Margin="0,1,0,0"/>
+                </StackPanel>
+                <StackPanel Margin="2,0">
+                    <TextBlock Text="PasswordBox"  TextAlignment="Center" Margin="0,0,0,1"/>
+                    <TextBox PasswordChar="*" Text="Enabled"/>
+                    <TextBox PasswordChar="*" Watermark="Placeholder" Margin="0,1,0,0"/>
+                    <TextBox PasswordChar="*" Text="Disabled" IsEnabled="False" Margin="0,1,0,0"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="Slider"  TextAlignment="Center" Margin="0,0,0,1"/>
+                    <!-- TextBox Control -->
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock>Simple Horizontal slider from 0-100</TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding Value, ElementName=Slider1, StringFormat=F0}"
+                                     Margin="1"
+                                     Width="4" />
+
+                            <Slider Name="Slider1"
+                                    Value="0"
+                                    Minimum="0"
+                                    Maximum="100"
+                                    Width="20" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Margin="2,0">
+                    <TextBlock Text="ListBox"  TextAlignment="Center" Margin="0,0,0,1"/>
+                    <ListBox BorderThickness="1">
+                        <ListBoxItem Content="Unselected"/>
+                        <ListBoxItem Content="Selected"/>
+                        <ListBoxItem Content="Disabled" IsEnabled="False"/>
+                    </ListBox>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="TreeView"  TextAlignment="Center" Margin="0,0,0,1"/>
+                    <TreeView BorderThickness="1">
+                        <TreeViewItem Header="Expanded" IsExpanded="True">
+                            <TreeViewItem Header="Child"/>
+                        </TreeViewItem>
+                        <TreeViewItem Header="Collapsed">
+                            <TreeViewItem Header="Child"/>
+                        </TreeViewItem>
+                        <TreeViewItem Header="Disabled" IsEnabled="False">
+                            <TreeViewItem Header="Child"/>
+                        </TreeViewItem>
+                    </TreeView>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+    </StackPanel>
 </UserControl>

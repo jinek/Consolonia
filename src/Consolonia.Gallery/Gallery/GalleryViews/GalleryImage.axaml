@@ -5,13 +5,7 @@
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryImage">
 
-    <Grid RowDefinitions="* 2*">
-        <Image Source="avares://Consolonia.Gallery/Resources/happy.png"
-               Margin="0 1 1 0" />
-
-        <Border BorderBrush="Gray"
-                BorderThickness="1"
-                Grid.Row="1">
+    <Grid>
             <ScrollViewer>
                 <WrapPanel ItemWidth="50">
                     <Viewbox Stretch="Uniform">
@@ -46,6 +40,5 @@
                     </Viewbox>
                 </WrapPanel>
             </ScrollViewer>
-        </Border>
     </Grid>
 </UserControl>
