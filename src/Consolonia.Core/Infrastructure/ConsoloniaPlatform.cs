@@ -175,7 +175,7 @@ namespace Consolonia.Core.Infrastructure
                 case NotSupportedRequestCode.DrawingBoxShadowNotSupported:
                 case NotSupportedRequestCode.DrawGeometryNotSupported:
                 case NotSupportedRequestCode.DrawEllipseNotSupported:
-                case NotSupportedRequestCode.PushClipNotSupported:
+                case NotSupportedRequestCode.PushClipRegionNotSupported:
                 case NotSupportedRequestCode.PushLayerNotSupported:
                 case NotSupportedRequestCode.DrawRegionNotSupported:
                 case NotSupportedRequestCode.CubicBezierToNotSupported:

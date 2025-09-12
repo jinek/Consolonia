@@ -318,7 +318,13 @@ namespace Consolonia.Core.Drawing
 
         public void PushClip(IPlatformRenderInterfaceRegion region)
         {
-            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushClipNotSupported);
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushClipRegionNotSupported);
+            
+            // we need to keep clipstack aligned even if this is an approximation.
+            PushClip(new Rect(region.Bounds.Left, 
+                region.Bounds.Top, 
+                region.Bounds.Right - region.Bounds.Left, 
+                region.Bounds.Bottom - region.Bounds.Top));
         }
 
         public void PopClip()
@@ -351,8 +357,8 @@ namespace Consolonia.Core.Drawing
 
         public void PushGeometryClip(IGeometryImpl clip)
         {
-            if (clip is not Rectangle myRectangle) throw new NotImplementedException();
-            PushClip(myRectangle.Rect);
+            // this is an approximation, we just use the bounds
+            PushClip(clip.Bounds);
         }
 
         public void PopGeometryClip()

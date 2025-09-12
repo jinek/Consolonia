@@ -78,7 +78,7 @@ namespace Consolonia.Core.Infrastructure
         ConsoleWindowSetCanMinimizeNotSupported = 62742,
         ConsoleWindowSetCanMaximizeNotSupported = 62743,
         DrawEllipseNotSupported = 62744,
-        PushClipNotSupported = 62745,
+        PushClipRegionNotSupported = 62745,
         PushLayerNotSupported = 62746,
         DrawRegionNotSupported = 62747,
         CubicBezierToNotSupported = 62748,
