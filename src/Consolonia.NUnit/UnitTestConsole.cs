@@ -57,12 +57,12 @@ namespace Consolonia.NUnit
             int i = 0;
             foreach (Rune rune in str.EnumerateRunes())
             {
-                PixelBuffer.Set(new PixelBufferCoordinate((ushort)(x + i), y), _ =>
-                    // ReSharper disable once AccessToModifiedClosure we are sure about inline execution
+                var coord = new PixelBufferCoordinate((ushort)(x + i), y);
+                PixelBuffer[coord] = 
                     new Pixel(
                         new PixelForeground(new SimpleSymbol(rune), foreground, style: style, weight: weight,
                             textDecoration: textDecoration),
-                        new PixelBackground(background)));
+                        new PixelBackground(background));
                 i++;
             }
         }

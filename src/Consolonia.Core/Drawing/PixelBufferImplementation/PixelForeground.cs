@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
 using Newtonsoft.Json;
+using NLog.LayoutRenderers.Wrappers;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -10,9 +11,15 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
     public readonly struct PixelForeground : IEquatable<PixelForeground>
     {
+        public static readonly PixelForeground Default = new();
+
+        public static readonly PixelForeground Space = new PixelForeground(SimpleSymbol.Space, Colors.Transparent);
+
+        public static readonly PixelForeground Empty = new PixelForeground(SimpleSymbol.Empty, Colors.Transparent);
+
         public PixelForeground()
         {
-            Symbol = new SimpleSymbol(" ");
+            Symbol = SimpleSymbol.Space;
             Color = Colors.Transparent;
             Weight = null;
             Style = null;

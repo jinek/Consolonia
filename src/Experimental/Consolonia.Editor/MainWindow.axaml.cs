@@ -86,11 +86,15 @@ namespace ConsoloniaEdit.Demo
             if (!ApplyBrushAction(e, "editor.selectionBackground",
                     brush => _textEditor.TextArea.SelectionBrush = brush))
             {
-                if (Application.Current!.TryGetResource("TextAreaSelectionBrush", out var resourceObject))
+                if (!ApplyBrushAction(e, "editor.selectionHighlightBackground",
+                        brush => _textEditor.TextArea.SelectionBrush = brush))
                 {
-                    if (resourceObject is IBrush brush)
+                    if (Application.Current!.TryGetResource("TextAreaSelectionBrush", out var resourceObject))
                     {
-                        _textEditor.TextArea.SelectionBrush = brush;
+                        if (resourceObject is IBrush brush)
+                        {
+                            _textEditor.TextArea.SelectionBrush = brush;
+                        }
                     }
                 }
             }

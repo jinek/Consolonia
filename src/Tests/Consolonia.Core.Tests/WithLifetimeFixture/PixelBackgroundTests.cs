@@ -11,7 +11,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void Constructor()
         {
-            var pixelBackground = new PixelBackground();
+            var pixelBackground = PixelBackground.Transparent;
             Assert.That(pixelBackground.Color, Is.EqualTo(Colors.Transparent));
         }
 
