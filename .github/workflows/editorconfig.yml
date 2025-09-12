@@ -99,6 +99,16 @@ jobs:
       - name: Install JetBrains ReSharper GlobalTools (dupfinder 2021.2.3)
         run: dotnet tool install -g JetBrains.ReSharper.GlobalTools --version 2021.2.3
 
-      - name: Run dupfinder (duplicate code check)
-        run: ~/.dotnet/tools/jb dupfinder Consolonia.sln
+      - name: Run dupfinder (duplicate code check, produce XML)
+        run: ~/.dotnet/tools/jb dupfinder Consolonia.sln --output=dupfinder-report.xml
+        working-directory: ./src
+
+      - name: Fail if duplicates found
+        run: |
+          if grep -Eq "<Duplicate( |>)" dupfinder-report.xml; then
+            echo "Duplicate code detected by dupfinder. See dupfinder-report.xml";
+            exit 1;
+          else
+            echo "No duplicate code detected by dupfinder.";
+          fi
         working-directory: ./src
