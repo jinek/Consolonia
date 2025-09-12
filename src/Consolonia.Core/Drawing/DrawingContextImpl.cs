@@ -319,11 +319,11 @@ namespace Consolonia.Core.Drawing
         public void PushClip(IPlatformRenderInterfaceRegion region)
         {
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.PushClipRegionNotSupported);
-            
+
             // we need to keep clipstack aligned even if this is an approximation.
-            PushClip(new Rect(region.Bounds.Left, 
-                region.Bounds.Top, 
-                region.Bounds.Right - region.Bounds.Left, 
+            PushClip(new Rect(region.Bounds.Left,
+                region.Bounds.Top,
+                region.Bounds.Right - region.Bounds.Left,
                 region.Bounds.Bottom - region.Bounds.Top));
         }
 
