@@ -898,7 +898,6 @@ namespace Consolonia.Core.Drawing
         /// DUPFINDER_ignore
         private static Color GetForegroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
         {
-            
             if (pixelColors.Length != 4)
                 throw new ArgumentException($"{nameof(pixelColors)} must have 4 elements.");
 
