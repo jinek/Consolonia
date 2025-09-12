@@ -47,6 +47,7 @@ jobs:
           jb cleanupcode Consolonia.sln --exclude="**Consolonia.GuiCS/**.*;**Consolonia.Templates/**.*;**Consolonia.Editor/**.*"
         working-directory: ./src
 
+
       - name: Inspect code
         uses: muno92/resharper_inspectcode@1.12.0
         with:
@@ -69,3 +70,35 @@ jobs:
         with:
           branch: ${{ steps.comment-branch.outputs.ref }}
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+  dupfinder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Get branch info # todo: is this needed?
+        id: comment-branch
+        uses: xt0rted/pull-request-comment-branch@v1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.comment-branch.outputs.ref }}
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore
+        working-directory: ./src
+
+      - name: Install JetBrains ReSharper GlobalTools (dupfinder 2021.2.3)
+        run: dotnet tool install -g JetBrains.ReSharper.GlobalTools --version 2021.2.3
+
+      - name: Run dupfinder (duplicate code check)
+        run: ~/.dotnet/tools/jb dupfinder Consolonia.sln
+        working-directory: ./src
