@@ -896,7 +896,7 @@ namespace Consolonia.Core.Drawing
         /// <param name="pixelColors">4 colors</param>
         /// <param name="quadPixel"></param>
         /// <returns>foreground color</returns>
-        /// <exception cref="NotImplementedException"></exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "DuplicateCode")]
         private static Color GetForegroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
         {
             if (pixelColors.Length != 4)
@@ -933,7 +933,7 @@ namespace Consolonia.Core.Drawing
         /// <param name="pixelColors"></param>
         /// <param name="quadPixel"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "DuplicateCode")]
         private static Color GetBackgroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
         {
             SKColor skColor = quadPixel switch

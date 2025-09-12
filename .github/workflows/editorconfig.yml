@@ -111,6 +111,14 @@ jobs:
           path: ./src/dupfinder-report.xml
           if-no-files-found: error
 
+      - name: Print dupfinder XML report to log
+        if: always()
+        run: |
+          echo "::group::dupfinder-report.xml"
+          cat dupfinder-report.xml
+          echo "::endgroup::"
+        working-directory: ./src
+
       - name: Fail if duplicates found
         run: |
           if grep -Eq "<Duplicate( |>)" dupfinder-report.xml; then
