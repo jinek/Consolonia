@@ -103,10 +103,18 @@ jobs:
         run: ~/.dotnet/tools/jb dupfinder Consolonia.sln --output=dupfinder-report.xml
         working-directory: ./src
 
+      - name: Upload dupfinder XML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dupfinder-report-${{ github.run_number }}
+          path: ./src/dupfinder-report.xml
+          if-no-files-found: error
+
       - name: Fail if duplicates found
         run: |
           if grep -Eq "<Duplicate( |>)" dupfinder-report.xml; then
-            echo "Duplicate code detected by dupfinder. See dupfinder-report.xml";
+            echo "Duplicate code detected by dupfinder. See the uploaded artifact: dupfinder-report-${{ github.run_number }}";
             exit 1;
           else
             echo "No duplicate code detected by dupfinder.";
