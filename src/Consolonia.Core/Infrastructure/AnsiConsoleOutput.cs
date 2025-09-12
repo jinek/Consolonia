@@ -14,6 +14,10 @@ namespace Consolonia.Core.Infrastructure
     public class AnsiConsoleOutput : IConsoleOutput
     {
         private const string TestEmoji = "👨‍👩‍👧‍👦";
+
+        private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
+            new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
+
         private PixelBufferCoordinate _headBufferPoint;
 
         private bool? _supportEmoji;
@@ -52,25 +56,28 @@ namespace Consolonia.Core.Infrastructure
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
             //todo: performance of retrieval of the service, at least can be retrieved once
-            var consoleColorMode = AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>();
+            Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
             SetCaretPosition(bufferPoint);
 
+            var sb = new StringBuilder();
             if (textDecoration == TextDecorationLocation.Underline)
-                WriteText(Esc.Underline);
+                sb.Append(Esc.Underline);
 
             if (textDecoration == TextDecorationLocation.Strikethrough)
-                WriteText(Esc.Strikethrough);
+                sb.Append(Esc.Strikethrough);
 
             if (style == FontStyle.Italic)
-                WriteText(Esc.Italic);
+                sb.Append(Esc.Italic);
 
             (object mappedBackground, object mappedForeground) =
-                consoleColorMode.MapColors(background, foreground, weight);
-            WriteText(Esc.Foreground(mappedForeground));
-            WriteText(Esc.Background(mappedBackground));
-            WriteText(str);
-            WriteText(Esc.Reset);
+                consoleColorMode.Value.MapColors(background, foreground, weight);
+            sb.Append(Esc.Foreground(mappedForeground));
+            sb.Append(Esc.Background(mappedBackground));
+            sb.Append(str);
+            sb.Append(Esc.Reset);
+
+            WriteText(sb.ToString());
 
             ushort textWidth = str.MeasureText();
             if (_headBufferPoint.X < Size.Width - textWidth)

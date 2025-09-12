@@ -2,6 +2,10 @@
 
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
+    <PropertyGroup>
+        <Description>This package defines themes for Consolonia applications</Description>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     </ItemGroup>

@@ -1,7 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
-
+    
+    <PropertyGroup>
+        <Description>This package provides support for writing NUnit unit tests for Consolonia.</Description>
+    </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="NUnit" Version="3.13.1" />
