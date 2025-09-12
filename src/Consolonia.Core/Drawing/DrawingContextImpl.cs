@@ -889,6 +889,7 @@ namespace Consolonia.Core.Drawing
             return character;
         }
 
+        // ReSharper disable DuplicateCode
 
         /// <summary>
         ///     Combine the colors for the white part of the quad pixel character.
@@ -896,7 +897,6 @@ namespace Consolonia.Core.Drawing
         /// <param name="pixelColors">4 colors</param>
         /// <param name="quadPixel"></param>
         /// <returns>foreground color</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "DuplicateCode")]
         private static Color GetForegroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
         {
             if (pixelColors.Length != 4)
@@ -933,7 +933,6 @@ namespace Consolonia.Core.Drawing
         /// <param name="pixelColors"></param>
         /// <param name="quadPixel"></param>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "DuplicateCode")]
         private static Color GetBackgroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
         {
             SKColor skColor = quadPixel switch
@@ -959,6 +958,7 @@ namespace Consolonia.Core.Drawing
             return Color.FromArgb(skColor.Alpha, skColor.Red, skColor.Green, skColor.Blue);
         }
 
+        // ReSharper restore DuplicateCode
 
         private static SKColor CombineColors(params SKColor[] colors)
         {
