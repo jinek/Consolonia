@@ -82,20 +82,15 @@ namespace ConsoloniaEdit.Demo
         {
             ApplyBrushAction(e, "editor.background", brush => _textEditor.Background = brush);
             ApplyBrushAction(e, "editor.foreground", brush => _textEditor.Foreground = brush);
-            var noBorder = new Pen(Brushes.Blue, thickness: 0);
 
             if (!ApplyBrushAction(e, "editor.selectionBackground",
                     brush => _textEditor.TextArea.SelectionBrush = brush))
             {
-                if (!ApplyBrushAction(e, "editor.selectionHighlightBackground",
-                        brush => _textEditor.TextArea.SelectionBrush = brush))
+                if (Application.Current!.TryGetResource("TextAreaSelectionBrush", out var resourceObject))
                 {
-                    if (Application.Current!.TryGetResource("TextAreaSelectionBrush", out var resourceObject))
+                    if (resourceObject is IBrush brush)
                     {
-                        if (resourceObject is IBrush brush)
-                        {
-                            _textEditor.TextArea.SelectionBrush = brush;
-                        }
+                        _textEditor.TextArea.SelectionBrush = brush;
                     }
                 }
             }
@@ -115,12 +110,7 @@ namespace ConsoloniaEdit.Demo
             {
                 _textEditor.LineNumbersForeground = _textEditor.Foreground;
             }
-
-            // make border around selection for current line and selection text
-            var transparentBorder = new Pen(Brushes.Transparent, thickness: 0);
-            _textEditor.TextArea.TextView.CurrentLineBorder = transparentBorder;
-            _textEditor.TextArea.SelectionBorder = transparentBorder;
-            _textEditor.TextArea.SelectionCornerRadius = 0;
+            _textEditor.TextArea.TextView.CurrentLineBorder = new Pen(Brushes.Transparent, thickness: 0);
         }
 
         private void ApplyThemeColorsToWindow(TextMate.Installation e)
