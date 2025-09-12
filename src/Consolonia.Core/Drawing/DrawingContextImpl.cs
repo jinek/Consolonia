@@ -889,17 +889,16 @@ namespace Consolonia.Core.Drawing
             return character;
         }
 
-        // ReSharper disable once DuplicateCode
         /// <summary>
         ///     Combine the colors for the white part of the quad pixel character.
         /// </summary>
         /// <param name="pixelColors">4 colors</param>
         /// <param name="quadPixel"></param>
         /// <returns>foreground color</returns>
+        /// DUPFINDER_ignore
         private static Color GetForegroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
         {
-            // DUPFINDER: ignore
-            // ReSharper disable once DuplicateCode
+            
             if (pixelColors.Length != 4)
                 throw new ArgumentException($"{nameof(pixelColors)} must have 4 elements.");
 
@@ -935,10 +934,9 @@ namespace Consolonia.Core.Drawing
         /// <param name="pixelColors"></param>
         /// <param name="quadPixel"></param>
         /// <returns></returns>
+        /// DUPFINDER: ignore
         private static Color GetBackgroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
         {
-            // DUPFINDER: ignore
-            // ReSharper disable once DuplicateCode
             SKColor skColor = quadPixel switch
             {
                 ' ' => CombineColors(pixelColors.ToArray()),
