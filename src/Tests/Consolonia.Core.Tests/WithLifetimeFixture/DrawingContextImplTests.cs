@@ -1,4 +1,5 @@
 // DUPFINDER_ignore
+
 using System;
 using System.Diagnostics;
 using Avalonia;

@@ -65,7 +65,7 @@ namespace Consolonia.Core.Tests
             }
 
             props = await file.GetBasicPropertiesAsync();
-            
+
             CheckTimingMatches();
 
             IStorageFolder parentFolder = await file.GetParentAsync();
