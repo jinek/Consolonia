@@ -28,19 +28,20 @@ namespace Consolonia.Core.Helpers
 
         public void StartReading()
         {
-            Task _ = Task.Run(() =>
+            Task _ = Task.Run(async () =>
             {
                 while (!_disposed)
                     try
                     {
                         T[] newData = readDataFunction();
                         if (!newData.Any())
-                            throw new InvalidOperationException("No data read from the source.");
+                            return;
 
                         Enqueue(newData);
                     }
                     catch (Exception exception)
                     {
+                        await Helper.WaitDispatcherInitialized();
                         Dispatcher.UIThread.Post(
                             () => throw new ConsoloniaException("Exception in input loop", exception),
                             DispatcherPriority.MaxValue);

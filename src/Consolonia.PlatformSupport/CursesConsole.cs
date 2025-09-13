@@ -121,7 +121,7 @@ namespace Consolonia.PlatformSupport
 
             Task _ = Task.Run(async () =>
             {
-                await WaitDispatcherInitialized();
+                await Helper.WaitDispatcherInitialized();
 
                 _inputBuffer.StartReading();
 
@@ -137,7 +137,7 @@ namespace Consolonia.PlatformSupport
                     }
                     catch (Exception exception)
                     {
-                        await Dispatcher.UIThread.InvokeAsync(
+                        Dispatcher.UIThread.Post(
                             () => throw new ConsoloniaException("Exception in input processing loop", exception),
                             DispatcherPriority.MaxValue);
                     }
