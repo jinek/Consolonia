@@ -889,7 +889,7 @@ namespace Consolonia.Core.Drawing
             return character;
         }
 
-        // Resharper disable once DUPFINDER_ignore
+        // Resharper disable DUPFINDER_ignore
         
         /// <summary>
         ///     Combine the colors for the white part of the quad pixel character.
@@ -925,16 +925,13 @@ namespace Consolonia.Core.Drawing
 
             return Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
         }
-
-
-        // ReSharper disable once DuplicateCode
+        
         /// <summary>
         ///     Combine the colors for the black part of the quad pixel character.
         /// </summary>
         /// <param name="pixelColors"></param>
         /// <param name="quadPixel"></param>
         /// <returns></returns>
-        /// DUPFINDER: ignore
         private static Color GetBackgroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
         {
             SKColor skColor = quadPixel switch
@@ -960,7 +957,7 @@ namespace Consolonia.Core.Drawing
             return Color.FromArgb(skColor.Alpha, skColor.Red, skColor.Green, skColor.Blue);
         }
 
-        //Resharper disable once DUPFINDER_ignore
+        //Resharper restore DUPFINDER_ignore
 
         private static SKColor CombineColors(params SKColor[] colors)
         {
