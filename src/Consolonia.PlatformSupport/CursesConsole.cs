@@ -124,7 +124,7 @@ namespace Consolonia.PlatformSupport
                 await WaitDispatcherInitialized();
 
                 _inputBuffer.StartReading();
-                
+
                 while (!Disposed)
                     try
                     {

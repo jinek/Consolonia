@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Logging;
 using Avalonia.Threading;
 using Consolonia.Core.Infrastructure;
 
@@ -32,13 +31,12 @@ namespace Consolonia.Core.Helpers
             Task _ = Task.Run(() =>
             {
                 while (!_disposed)
-                {
                     try
                     {
                         T[] newData = readDataFunction();
                         if (!newData.Any())
                             throw new InvalidOperationException("No data read from the source.");
-                        
+
                         Enqueue(newData);
                     }
                     catch (Exception exception)
@@ -47,7 +45,6 @@ namespace Consolonia.Core.Helpers
                             () => throw new ConsoloniaException("Exception in input loop", exception),
                             DispatcherPriority.MaxValue);
                     }
-                }
             });
         }
 
