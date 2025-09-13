@@ -101,7 +101,7 @@ jobs:
 
       - name: Run dupfinder (duplicate code check, produce XML)
         run: |
-          ~/.dotnet/tools/jb dupfinder Consolonia.sln --exclude-by-comment='DUPFINDER_ignore' --output=dupfinder-report.xml
+          ~/.dotnet/tools/jb dupfinder Consolonia.sln --exclude-code-regions='DUPFINDER_ignore' --output=dupfinder-report.xml
         working-directory: ./src
 
       - name: Upload dupfinder XML report
