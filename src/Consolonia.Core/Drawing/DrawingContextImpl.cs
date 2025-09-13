@@ -521,7 +521,7 @@ namespace Consolonia.Core.Drawing
             ushort width = (ushort)(r2.Width + (pen?.Thickness ?? 0));
             ushort height = (ushort)(r2.Height + (pen?.Thickness ?? 0));
             var sourceRect = new Rect(r2.Left, r2.Top, width, height);
-            var targetRect = CurrentClip.Intersect(sourceRect);
+            Rect targetRect = CurrentClip.Intersect(sourceRect);
 
             if (targetRect.IsEmpty())
                 return;
