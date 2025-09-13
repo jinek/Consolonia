@@ -2,6 +2,10 @@
 
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
+    <PropertyGroup>
+        <Description>This package provides console specific controls for Consolonia.</Description>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />

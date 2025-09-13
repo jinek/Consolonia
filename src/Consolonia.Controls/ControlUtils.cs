@@ -10,8 +10,7 @@ namespace Consolonia.Controls
 {
     public static class ControlUtils
     {
-        // ReSharper disable once InconsistentNaming
-        private static readonly Lazy<IConsoleCapabilities> _capabilities =
+        private static readonly Lazy<IConsoleCapabilities> ConsoleCapabilities =
             new(() => AvaloniaLocator.Current.GetService<IConsoleCapabilities>());
 
         public static IDisposable SubscribeAction<TValue>(
@@ -35,7 +34,7 @@ namespace Consolonia.Controls
         {
             ArgumentNullException.ThrowIfNull(text);
 
-            IConsoleCapabilities console = _capabilities.Value;
+            IConsoleCapabilities console = ConsoleCapabilities.Value;
             bool supportsComplexEmoji = console == null || console.SupportsComplexEmoji;
 
             ushort width = 0;

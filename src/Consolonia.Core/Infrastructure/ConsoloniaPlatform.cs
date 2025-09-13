@@ -174,6 +174,12 @@ namespace Consolonia.Core.Infrastructure
                 case NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle:
                 case NotSupportedRequestCode.DrawingBoxShadowNotSupported:
                 case NotSupportedRequestCode.DrawGeometryNotSupported:
+                case NotSupportedRequestCode.DrawEllipseNotSupported:
+                case NotSupportedRequestCode.PushClipRegionNotSupported:
+                case NotSupportedRequestCode.PushLayerNotSupported:
+                case NotSupportedRequestCode.DrawRegionNotSupported:
+                case NotSupportedRequestCode.CubicBezierToNotSupported:
+                case NotSupportedRequestCode.QuadraticBezierToNotSupported:
                     notSupportedRequest.SetHandled();
                     break;
                 // console window methods that are not implemented by design, because they are not applicable to console windows

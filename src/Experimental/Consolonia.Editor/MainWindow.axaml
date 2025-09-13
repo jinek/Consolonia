@@ -29,7 +29,6 @@
         </StackPanel>
 
         <AvalonEdit:TextEditor Name="Editor" Grid.Row="2"
-                               FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
                                ShowLineNumbers="True"
                                HorizontalScrollBarVisibility="Visible"
                                VerticalScrollBarVisibility="Visible"
