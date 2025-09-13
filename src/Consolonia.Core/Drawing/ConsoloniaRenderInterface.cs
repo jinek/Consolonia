@@ -119,7 +119,8 @@ namespace Consolonia.Core.Drawing
             return new BitmapImpl(stream);
         }
 
-        public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode)
+        public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
+            BitmapInterpolationMode interpolationMode)
         {
             using var skStream = new SKManagedStream(stream);
             SKBitmap originalBitmap = SKBitmap.Decode(skStream);
@@ -129,7 +130,8 @@ namespace Consolonia.Core.Drawing
             return new BitmapImpl(resizedBitmap);
         }
 
-        public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
+        public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
+            BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
         {
             using var skStream = new SKManagedStream(stream);
             SKBitmap originalBitmap = SKBitmap.Decode(skStream);
