@@ -10,7 +10,6 @@ using Avalonia.Reactive;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Consolonia.Controls;
-using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers
 {
@@ -31,7 +30,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
 
         static MenuExtensions()
         {
-            UtilityExtensions.SubscribeAction(FocusOnLoadProperty.Changed, args =>
+            FocusOnLoadProperty.Changed.SubscribeAction(args =>
             {
                 var visual = (Visual)args.Sender;
                 if (args.NewValue.Value)
