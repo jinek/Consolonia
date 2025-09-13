@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Threading;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Helpers.InputProcessing;
 using Consolonia.Core.Infrastructure;
