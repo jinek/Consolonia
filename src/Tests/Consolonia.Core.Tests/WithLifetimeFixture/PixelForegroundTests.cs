@@ -1,4 +1,5 @@
 // DUPFINDER_ignore
+
 using System.Linq;
 using System.Text;
 using Avalonia.Media;

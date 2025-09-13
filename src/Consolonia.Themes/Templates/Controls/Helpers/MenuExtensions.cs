@@ -10,7 +10,6 @@ using Avalonia.Reactive;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Consolonia.Controls;
-using Consolonia.Core.Helpers;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers
 {

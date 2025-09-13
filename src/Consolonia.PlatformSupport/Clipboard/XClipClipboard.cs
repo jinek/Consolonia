@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Input;
-using Avalonia.Input.Platform;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
