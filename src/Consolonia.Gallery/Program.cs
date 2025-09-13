@@ -1,4 +1,7 @@
 using System;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 
 namespace Consolonia.Gallery
@@ -9,6 +12,14 @@ namespace Consolonia.Gallery
         [STAThread]
         private static void Main(string[] args)
         {
+            TaskScheduler.UnobservedTaskException += (sender, eventArgs) =>
+            {
+                if (Debugger.IsAttached) Debugger.Break();
+
+                ThreadPool.QueueUserWorkItem(state =>
+                    throw new InvalidOperationException("An unobserved task exception occurred.", eventArgs.Exception));
+            };
+
             BuildAvaloniaApp()
                 .StartWithConsoleLifetime(args);
         }

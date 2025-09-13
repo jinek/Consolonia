@@ -79,7 +79,7 @@ namespace Consolonia.Core.Infrastructure
 
             StartSizeCheckTimerAsync();
             StartInputReading();
-            _inputBuffer.RunAsync();
+            _inputBuffer.StartReading();
         }
 
         private static char ToChar(ConsoleKeyInfo arg)
