@@ -522,16 +522,16 @@ namespace Consolonia.Core.Drawing
 
             ushort width = (ushort)(r2.Width + (pen?.Thickness ?? 0));
             ushort height = (ushort)(r2.Height + (pen?.Thickness ?? 0));
-
-            var targetRect = CurrentClip.Intersect(r2);
+            var sourceRect = new Rect(r2.Left, r2.Top, width, height);
+            var targetRect = CurrentClip.Intersect(sourceRect);
 
             if (targetRect.IsEmpty())
                 return;
 
-            for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++)
-                for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++)
+            for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++)
+                for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++)
                 {
-                    Color backgroundColor = brush.FromPosition(x - (ushort)r2.X, y - (ushort)r2.Y, width, height);
+                    Color backgroundColor = brush.FromPosition(x - (ushort)sourceRect.X, y - (ushort)sourceRect.Y, (ushort)sourceRect.Width, (ushort)sourceRect.Height);
 
                     var coord = new PixelBufferCoordinate(x, y);
                     switch (brush)
@@ -729,7 +729,6 @@ namespace Consolonia.Core.Drawing
             for (var i = start; i < end; i++)
             {
                 Point h = head;
-                // ReSharper disable once AccessToModifiedClosure todo: pass as a parameter
                 var coord = (PixelBufferCoordinate)h;
                 Pixel pixel = _pixelBuffer[coord];
                 _pixelBuffer[coord] =
