@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Avalonia.Input;
 using Consolonia.Core.Helpers;
@@ -79,7 +80,7 @@ namespace Consolonia.Core.Infrastructure
 
             StartSizeCheckTimerAsync();
             StartInputReading();
-            _inputBuffer.RunAsync();
+            _inputBuffer.StartReading();
         }
 
         private static char ToChar(ConsoleKeyInfo arg)
@@ -108,13 +109,15 @@ namespace Consolonia.Core.Infrastructure
         {
             ThreadPool.QueueUserWorkItem(async _ =>
             {
-                await WaitDispatcherInitialized();
+                await Helper.WaitDispatcherInitialized();
 
                 while (!Disposed)
                 {
                     PauseTask?.Wait();
 
                     ConsoleKeyInfo[] consoleKeyInfos = _inputBuffer.Dequeue();
+                    if (!consoleKeyInfos.Any())
+                        return;
 
                     await DispatchInputAsync(() => { _inputProcessor.ProcessChunk(consoleKeyInfos); });
                 }
