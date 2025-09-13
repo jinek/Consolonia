@@ -119,8 +119,7 @@ namespace Consolonia.Core.Drawing
             return new BitmapImpl(stream);
         }
 
-        public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
-            BitmapInterpolationMode interpolationMode)
+        public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode)
         {
             using var skStream = new SKManagedStream(stream);
             SKBitmap originalBitmap = SKBitmap.Decode(skStream);
@@ -130,8 +129,7 @@ namespace Consolonia.Core.Drawing
             return new BitmapImpl(resizedBitmap);
         }
 
-        public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
-            BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
+        public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
         {
             using var skStream = new SKManagedStream(stream);
             SKBitmap originalBitmap = SKBitmap.Decode(skStream);
@@ -156,22 +154,12 @@ namespace Consolonia.Core.Drawing
 
         public IBitmapImpl LoadBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode)
         {
-            using var skStream = new SKManagedStream(stream);
-            SKBitmap originalBitmap = SKBitmap.Decode(skStream);
-            int height = (int)(width * ((double)originalBitmap.Height / originalBitmap.Width));
-            SKBitmap resizedBitmap =
-                originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
-            return new BitmapImpl(resizedBitmap);
+            return LoadWriteableBitmapToWidth(stream, width, interpolationMode);
         }
 
         public IBitmapImpl LoadBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode)
         {
-            using var skStream = new SKManagedStream(stream);
-            SKBitmap originalBitmap = SKBitmap.Decode(skStream);
-            int width = (int)(height * ((double)originalBitmap.Width / originalBitmap.Height));
-            SKBitmap resizedBitmap =
-                originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
-            return new BitmapImpl(resizedBitmap);
+            return LoadWriteableBitmapToHeight(stream, height, interpolationMode);
         }
 
         public IBitmapImpl ResizeBitmap(IBitmapImpl bitmapImpl, PixelSize destinationSize,

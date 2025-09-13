@@ -1,3 +1,5 @@
+// DUPFINDER_ignore
+
 using System;
 using Consolonia.Controls.Brushes;
 using Newtonsoft.Json;
