@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Logging;
+using Avalonia.Threading;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Helpers
 {
@@ -25,24 +27,27 @@ namespace Consolonia.Core.Helpers
             //todo: low will not unblock reading or writing threads.
         }
 
-        public Task RunAsync()
+        public void StartReading()
         {
-            return Task.Run(() =>
+            Task _ = Task.Run(() =>
             {
                 while (!_disposed)
+                {
                     try
                     {
                         T[] newData = readDataFunction();
                         if (!newData.Any())
                             throw new InvalidOperationException("No data read from the source.");
-
+                        
                         Enqueue(newData);
                     }
                     catch (Exception exception)
                     {
-                        if (!LogOrThrow(exception))
-                            throw;
+                        Dispatcher.UIThread.Post(
+                            () => throw new ConsoloniaException("Exception in input loop", exception),
+                            DispatcherPriority.MaxValue);
                     }
+                }
             });
         }
 
@@ -79,21 +84,6 @@ namespace Consolonia.Core.Helpers
                     return result;
                 }
             }
-        }
-
-#pragma warning disable CA1000 //todo:
-        public static bool LogOrThrow(Exception exception)
-#pragma warning restore CA1000
-        {
-            ParametrizedLogger? logger = Logger.TryGet(LogEventLevel.Error, "Consolonia");
-            if (logger != null)
-            {
-                ((ParametrizedLogger)logger).Log("Consolonia", "Exception in Curses event loop: {Exception}",
-                    exception);
-                return true;
-            }
-
-            return false;
         }
     }
 }

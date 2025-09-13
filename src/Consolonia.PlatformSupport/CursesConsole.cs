@@ -122,10 +122,8 @@ namespace Consolonia.PlatformSupport
             {
                 await WaitDispatcherInitialized();
 
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                _inputBuffer.RunAsync(); //todo: why aren't we awaiting it?
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-
+                _inputBuffer.StartReading();
+                
                 while (!Disposed)
                     try
                     {
@@ -138,8 +136,9 @@ namespace Consolonia.PlatformSupport
                     }
                     catch (Exception exception)
                     {
-                        if (!FastBuffer<object>.LogOrThrow(exception))
-                            throw;
+                        await Dispatcher.UIThread.InvokeAsync(
+                            () => throw new ConsoloniaException("Exception in input processing loop", exception),
+                            DispatcherPriority.MaxValue);
                     }
             });
         }
