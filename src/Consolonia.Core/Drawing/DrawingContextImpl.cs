@@ -889,8 +889,8 @@ namespace Consolonia.Core.Drawing
             return character;
         }
 
-        // Resharper disable DUPFINDER_ignore
-        
+        #region DUPFINDER_ignore
+
         /// <summary>
         ///     Combine the colors for the white part of the quad pixel character.
         /// </summary>
@@ -925,7 +925,7 @@ namespace Consolonia.Core.Drawing
 
             return Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
         }
-        
+
         /// <summary>
         ///     Combine the colors for the black part of the quad pixel character.
         /// </summary>
@@ -957,7 +957,7 @@ namespace Consolonia.Core.Drawing
             return Color.FromArgb(skColor.Alpha, skColor.Red, skColor.Green, skColor.Blue);
         }
 
-        //Resharper restore DUPFINDER_ignore
+        #endregion
 
         private static SKColor CombineColors(params SKColor[] colors)
         {
