@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia.Input;
-using Avalonia.Input.Platform;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
@@ -12,7 +11,7 @@ namespace Consolonia.PlatformSupport.Clipboard
     ///     A clipboard implementation for Win32 using PINvoke
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public class Win32Clipboard : IClipboard
+    public class Win32Clipboard : IClipboardBase
     {
         public Task<string> GetTextAsync()
         {
@@ -116,15 +115,6 @@ namespace Consolonia.PlatformSupport.Clipboard
         {
             return Task.FromResult(new[] { "Text", "UnicodeText" });
         }
-
-        public async Task<object> GetDataAsync(string format)
-        {
-            if (string.Equals(format, "text", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(format, "unicodetext", StringComparison.OrdinalIgnoreCase))
-                return await GetTextAsync();
-            return null;
-        }
-
 
         public Task FlushAsync()
         {

@@ -8,7 +8,7 @@ namespace Consolonia.PlatformSupport.Clipboard
 {
     /// <summary>A clipboard implementation for Linux. This implementation uses the xclip command to access the clipboard.</summary>
     /// <remarks>If xclip is not installed, this implementation will not work.</remarks>
-    internal class XClipClipboard : IClipboard
+    internal class XClipClipboard : IClipboardBase
     {
         private readonly bool _isSupported;
         private readonly string _xclipPath = string.Empty;
@@ -38,14 +38,6 @@ namespace Consolonia.PlatformSupport.Clipboard
         public Task FlushAsync()
         {
             return Task.CompletedTask;
-        }
-
-        public async Task<object> GetDataAsync(string format)
-        {
-            if (string.Equals(format, "text", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(format, "unicodetext", StringComparison.OrdinalIgnoreCase))
-                return await GetTextAsync();
-            return null;
         }
 
         public Task<string[]> GetFormatsAsync()

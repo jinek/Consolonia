@@ -31,7 +31,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
 
         static MenuExtensions()
         {
-            UtilityExtensions.SubscribeAction(FocusOnLoadProperty.Changed, args =>
+            FocusOnLoadProperty.Changed.SubscribeAction(args =>
             {
                 var visual = (Visual)args.Sender;
                 if (args.NewValue.Value)

@@ -24,7 +24,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             if (!supportsMouse || supportsMouseMove)
                 return;
 
-            UtilityExtensions.SubscribeAction(SelectOnMouseLeftUpProperty.Changed, OnPropertyChanged);
+            SelectOnMouseLeftUpProperty.Changed.SubscribeAction(OnPropertyChanged);
         }
 
         private static void OnPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> args)

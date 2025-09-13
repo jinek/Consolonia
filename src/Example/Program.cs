@@ -1,3 +1,4 @@
+// DUPFINDER_ignore
 using Avalonia;
 using Consolonia;
 
