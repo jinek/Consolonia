@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Avalonia.Media;
 using Newtonsoft.Json;
 
@@ -9,16 +10,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [DebuggerDisplay("[{Color}]")]
     public readonly struct PixelBackground(Color color) : IEquatable<PixelBackground>
     {
+        public static readonly PixelBackground Transparent = new();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public PixelBackground() : this(Colors.Transparent)
         {
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public PixelBackground Shade()
         {
             return new PixelBackground(Color.Shade());
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public PixelBackground Brighten()
         {
             return new PixelBackground(Color.Brighten());

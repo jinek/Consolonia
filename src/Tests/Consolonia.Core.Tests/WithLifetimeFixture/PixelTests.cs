@@ -15,8 +15,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             var pixel = new Pixel(CaretStyle.BlinkingBar);
             Assert.That(pixel.IsCaret());
-            Assert.That(pixel.Foreground == new PixelForeground());
-            Assert.That(pixel.Background == new PixelBackground());
+            Assert.That(pixel.Foreground == PixelForeground.Default);
+            Assert.That(pixel.Background == PixelBackground.Transparent);
         }
 
         [Test]

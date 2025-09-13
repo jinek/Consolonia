@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Consolonia.Controls;
 using Newtonsoft.Json;
@@ -11,6 +12,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [JsonConverter(typeof(SymbolConverter))]
     public readonly struct SimpleSymbol : ISymbol, IEquatable<SimpleSymbol>
     {
+        public static readonly SimpleSymbol Empty = new();
+        public static readonly SimpleSymbol Space = new(" ");
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SimpleSymbol()
         {
             // we use String.Empty to represent an empty symbol
@@ -18,18 +23,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Width = 0;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SimpleSymbol(char character)
             : this(character.ToString())
         {
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SimpleSymbol(string glyph)
         {
             Text = glyph;
             Width = Text.MeasureText();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SimpleSymbol(Rune rune)
         {
             Text = rune.ToString();
