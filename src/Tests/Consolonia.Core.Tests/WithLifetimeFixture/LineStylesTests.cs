@@ -104,7 +104,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             Assert.That(lineStyles.Bottom, Is.EqualTo(LineStyle.Bold));
         }
 
-        [Test]
+        /* todo low: check this test, it's same as TestConstructorTriple
+         [Test]
         public void TestConstructorQuadNull()
         {
             var lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine, LineStyle.Edge);
@@ -112,7 +113,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             Assert.That(lineStyles.Top, Is.EqualTo(LineStyle.DoubleLine));
             Assert.That(lineStyles.Right, Is.EqualTo(LineStyle.Edge));
             Assert.That(lineStyles.Bottom, Is.EqualTo(LineStyle.Edge));
-        }
+        }*/
 
         [Test]
         public void TestConstructorQuadNullAll()
