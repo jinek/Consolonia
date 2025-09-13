@@ -889,76 +889,6 @@ namespace Consolonia.Core.Drawing
             return character;
         }
 
-        #region DUPFINDER_ignore
-
-        /// <summary>
-        ///     Combine the colors for the white part of the quad pixel character.
-        /// </summary>
-        /// <param name="pixelColors">4 colors</param>
-        /// <param name="quadPixel"></param>
-        /// <returns>foreground color</returns>
-        private static Color GetForegroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
-        {
-            if (pixelColors.Length != 4)
-                throw new ArgumentException($"{nameof(pixelColors)} must have 4 elements.");
-
-            SKColor skColor = quadPixel switch
-            {
-                ' ' => SKColors.Transparent,
-                '▘' => pixelColors[0],
-                '▝' => pixelColors[1],
-                '▖' => pixelColors[2],
-                '▗' => pixelColors[3],
-                '▚' => CombineColors(pixelColors[0], pixelColors[2]),
-                '▞' => CombineColors(pixelColors[1], pixelColors[3]),
-                '▌' => CombineColors(pixelColors[0], pixelColors[2]),
-                '▐' => CombineColors(pixelColors[1], pixelColors[3]),
-                '▄' => CombineColors(pixelColors[2], pixelColors[3]),
-                '▀' => CombineColors(pixelColors[0], pixelColors[1]),
-                '▛' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[2]),
-                '▜' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[3]),
-                '▙' => CombineColors(pixelColors[0], pixelColors[2], pixelColors[3]),
-                '▟' => CombineColors(pixelColors[1], pixelColors[2], pixelColors[3]),
-                '█' => CombineColors(pixelColors.ToArray()),
-                _ => throw new NotImplementedException()
-            };
-
-            return Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
-        }
-
-        /// <summary>
-        ///     Combine the colors for the black part of the quad pixel character.
-        /// </summary>
-        /// <param name="pixelColors"></param>
-        /// <param name="quadPixel"></param>
-        /// <returns></returns>
-        private static Color GetBackgroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
-        {
-            SKColor skColor = quadPixel switch
-            {
-                ' ' => CombineColors(pixelColors.ToArray()),
-                '▘' => CombineColors(pixelColors[1], pixelColors[2], pixelColors[3]),
-                '▝' => CombineColors(pixelColors[0], pixelColors[2], pixelColors[3]),
-                '▖' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[3]),
-                '▗' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[2]),
-                '▚' => CombineColors(pixelColors[1], pixelColors[2]),
-                '▞' => CombineColors(pixelColors[0], pixelColors[3]),
-                '▌' => CombineColors(pixelColors[1], pixelColors[3]),
-                '▐' => CombineColors(pixelColors[0], pixelColors[2]),
-                '▄' => CombineColors(pixelColors[0], pixelColors[1]),
-                '▀' => CombineColors(pixelColors[2], pixelColors[3]),
-                '▛' => pixelColors[3],
-                '▜' => pixelColors[2],
-                '▙' => pixelColors[1],
-                '▟' => pixelColors[0],
-                '█' => SKColors.Transparent,
-                _ => throw new NotImplementedException()
-            };
-            return Color.FromArgb(skColor.Alpha, skColor.Red, skColor.Green, skColor.Blue);
-        }
-
-        #endregion
-
         private static SKColor CombineColors(params SKColor[] colors)
         {
             float finalRed = 0;
@@ -1075,5 +1005,75 @@ namespace Consolonia.Core.Drawing
         {
             return 0.299 * color.Red + 0.587 * color.Green + 0.114 * color.Blue + color.Alpha;
         }
+
+        #region DUPFINDER_ignore
+
+        /// <summary>
+        ///     Combine the colors for the white part of the quad pixel character.
+        /// </summary>
+        /// <param name="pixelColors">4 colors</param>
+        /// <param name="quadPixel"></param>
+        /// <returns>foreground color</returns>
+        private static Color GetForegroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
+        {
+            if (pixelColors.Length != 4)
+                throw new ArgumentException($"{nameof(pixelColors)} must have 4 elements.");
+
+            SKColor skColor = quadPixel switch
+            {
+                ' ' => SKColors.Transparent,
+                '▘' => pixelColors[0],
+                '▝' => pixelColors[1],
+                '▖' => pixelColors[2],
+                '▗' => pixelColors[3],
+                '▚' => CombineColors(pixelColors[0], pixelColors[2]),
+                '▞' => CombineColors(pixelColors[1], pixelColors[3]),
+                '▌' => CombineColors(pixelColors[0], pixelColors[2]),
+                '▐' => CombineColors(pixelColors[1], pixelColors[3]),
+                '▄' => CombineColors(pixelColors[2], pixelColors[3]),
+                '▀' => CombineColors(pixelColors[0], pixelColors[1]),
+                '▛' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[2]),
+                '▜' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[3]),
+                '▙' => CombineColors(pixelColors[0], pixelColors[2], pixelColors[3]),
+                '▟' => CombineColors(pixelColors[1], pixelColors[2], pixelColors[3]),
+                '█' => CombineColors(pixelColors.ToArray()),
+                _ => throw new NotImplementedException()
+            };
+
+            return Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
+        }
+
+        /// <summary>
+        ///     Combine the colors for the black part of the quad pixel character.
+        /// </summary>
+        /// <param name="pixelColors"></param>
+        /// <param name="quadPixel"></param>
+        /// <returns></returns>
+        private static Color GetBackgroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
+        {
+            SKColor skColor = quadPixel switch
+            {
+                ' ' => CombineColors(pixelColors.ToArray()),
+                '▘' => CombineColors(pixelColors[1], pixelColors[2], pixelColors[3]),
+                '▝' => CombineColors(pixelColors[0], pixelColors[2], pixelColors[3]),
+                '▖' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[3]),
+                '▗' => CombineColors(pixelColors[0], pixelColors[1], pixelColors[2]),
+                '▚' => CombineColors(pixelColors[1], pixelColors[2]),
+                '▞' => CombineColors(pixelColors[0], pixelColors[3]),
+                '▌' => CombineColors(pixelColors[1], pixelColors[3]),
+                '▐' => CombineColors(pixelColors[0], pixelColors[2]),
+                '▄' => CombineColors(pixelColors[0], pixelColors[1]),
+                '▀' => CombineColors(pixelColors[2], pixelColors[3]),
+                '▛' => pixelColors[3],
+                '▜' => pixelColors[2],
+                '▙' => pixelColors[1],
+                '▟' => pixelColors[0],
+                '█' => SKColors.Transparent,
+                _ => throw new NotImplementedException()
+            };
+            return Color.FromArgb(skColor.Alpha, skColor.Red, skColor.Green, skColor.Blue);
+        }
+
+        #endregion
     }
 }
