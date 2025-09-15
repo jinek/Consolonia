@@ -519,8 +519,8 @@ namespace Consolonia.Core.Drawing
             // fill rectangle with brush
             Rect r2 = r.TransformToAABB(Transform);
 
-            ushort width = (ushort)(r2.Width + (pen?.Thickness ?? 0));
-            ushort height = (ushort)(r2.Height + (pen?.Thickness ?? 0));
+            ushort width = (ushort)(r2.Width);
+            ushort height = (ushort)(r2.Height); 
             var sourceRect = new Rect(r2.Left, r2.Top, width, height);
             Rect targetRect = CurrentClip.Intersect(sourceRect);
 
