@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
@@ -64,6 +65,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             get => _buffer[x, y];
             // ReSharper disable once MemberCanBePrivate.Global
             set => _buffer[x, y] = value;
+        }
+
+        [JsonIgnore]
+        public Pixel this[Point point]
+        {
+            get => this[(PixelBufferCoordinate)point];
+            set => this[(PixelBufferCoordinate)point] = value;
         }
 
         [JsonIgnore] public int Length => _buffer.Length;

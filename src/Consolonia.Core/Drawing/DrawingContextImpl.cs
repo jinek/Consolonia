@@ -105,30 +105,28 @@ namespace Consolonia.Core.Drawing
                 {
                     // NOTE: we divide by 2 because we are working with quad pixels,
                     // // the bitmap has twice the horizontal and twice the vertical of the target rect.
-                    int px = (int)targetRect.TopLeft.X + x / 2;
-                    int py = (int)targetRect.TopLeft.Y + y / 2;
+                    var px = (ushort)(targetRect.TopLeft.X + x / 2);
+                    var py = (ushort)(targetRect.TopLeft.Y + y / 2);
 
                     // get the quad pixel the bitmap
-                    SKColor[] quadColors =
-                    [
-                        bitmap.GetPixel(x, y), bitmap.GetPixel(x + 1, y),
-                    bitmap.GetPixel(x, y + 1), bitmap.GetPixel(x + 1, y + 1)
-                    ];
+                    var c00 = bitmap.GetPixel(x, y);
+                    var c10 = bitmap.GetPixel(x + 1, y);
+                    var c01 = bitmap.GetPixel(x, y + 1);
+                    var c11 = bitmap.GetPixel(x + 1, y + 1);
 
                     // map it to a single char to represent the 4 pixels
-                    char quadPixel = GetQuadPixelCharacter(quadColors);
+                    char quadPixel = GetQuadPixelCharacter(c00, c10, c01, c11);
 
                     // get the combined colors for the quad pixel
-                    Color foreground = GetForegroundColorForQuadPixel(quadColors, quadPixel);
-                    Color background = GetBackgroundColorForQuadPixel(quadColors, quadPixel);
+                    Color foreground = GetForegroundColorForQuadPixel(quadPixel, c00, c10, c01, c11);
+                    Color background = GetBackgroundColorForQuadPixel(quadPixel, c00, c10, c01, c11);
 
                     var imagePixel = new Pixel(
                         new PixelForeground(new SimpleSymbol(quadPixel), foreground),
                         new PixelBackground(background));
                     if (CurrentClip.ContainsExclusive(new Point(px, py)))
                     {
-                        var coord = new PixelBufferCoordinate((ushort)px, (ushort)py);
-                        _pixelBuffer[coord] = _pixelBuffer[coord].Blend(imagePixel);
+                        _pixelBuffer[px, py] = _pixelBuffer[px, py].Blend(imagePixel);
                     }
                 }
 
@@ -237,12 +235,12 @@ namespace Consolonia.Core.Drawing
                             Point head = r.TopLeft.Transform(Transform);
                             if (CurrentClip.ContainsExclusive(head))
                             {
-                                Pixel pixel = _pixelBuffer[(PixelBufferCoordinate)head];
+                                Pixel pixel = _pixelBuffer[head];
                                 if (pixel.CaretStyle != moveBrush.CaretStyle)
                                 {
                                     // only be dirty if something changed
                                     _consoleWindowImpl.DirtyRegions.AddRect(new Rect(head, new Size(1, 1)));
-                                    _pixelBuffer[(PixelBufferCoordinate)head] =
+                                    _pixelBuffer[head] =
                                         pixel.Blend(new Pixel(moveBrush.CaretStyle));
                                 }
                             }
@@ -465,8 +463,7 @@ namespace Consolonia.Core.Drawing
                 Point head = line.PStart.Transform(Transform);
                 if (CurrentClip.ContainsExclusive(head))
                 {
-                    var coord = (PixelBufferCoordinate)head;
-                    _pixelBuffer[coord] = _pixelBuffer[coord].Blend(new Pixel(moveBrush.CaretStyle));
+                    _pixelBuffer[head] = _pixelBuffer[head].Blend(new Pixel(moveBrush.CaretStyle));
                     _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(new Rect(head, new Size(1, 1))));
                 }
 
@@ -496,14 +493,13 @@ namespace Consolonia.Core.Drawing
 
             for (int x = (int)intersectRect.Left; x < intersectRect.Right; x++)
             {
-                var coord = (PixelBufferCoordinate)head;
-                Pixel oldPixel = _pixelBuffer[coord];
+                Pixel oldPixel = _pixelBuffer[head];
                 var newPixelForeground = new PixelForeground(oldPixel.Foreground.Symbol,
                     oldPixel.Foreground.Color,
                     oldPixel.Foreground.Weight,
                     oldPixel.Foreground.Style,
                     textDecoration);
-                _pixelBuffer[coord] = oldPixel.Blend(new Pixel(newPixelForeground));
+                _pixelBuffer[head] = oldPixel.Blend(new Pixel(newPixelForeground));
 
                 head = head.WithX(head.X + 1);
             }
@@ -534,21 +530,20 @@ namespace Consolonia.Core.Drawing
                 {
                     Color backgroundColor = brush.FromPosition(brushX, brushY, gradiantWidth, gradiantHeight);
 
-                    var coord = new PixelBufferCoordinate(x, y);
                     switch (brush)
                     {
                         case ShadeBrush:
-                            _pixelBuffer[coord] = _pixelBuffer[coord].Shade();
+                            _pixelBuffer[x,y] = _pixelBuffer[x, y].Shade();
                             break;
                         case BrightenBrush:
-                            _pixelBuffer[coord] = _pixelBuffer[coord].Brighten();
+                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Brighten();
                             break;
                         case InvertBrush:
-                            _pixelBuffer[coord] = _pixelBuffer[coord].Invert();
+                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Invert();
                             break;
                         default:
-                            _pixelBuffer[coord] =
-                                _pixelBuffer[coord].Blend(new Pixel(new PixelBackground(backgroundColor)));
+                            _pixelBuffer[x, y] =
+                                _pixelBuffer[x, y].Blend(new Pixel(new PixelBackground(backgroundColor)));
                             break;
                     }
                 }
@@ -732,9 +727,8 @@ namespace Consolonia.Core.Drawing
             head = line.Vertical ? head.WithY(start) : head.WithX(start);
             for (ushort i = start; i < end; i++)
             {
-                var coord = (PixelBufferCoordinate)head;
-                Pixel pixel = _pixelBuffer[coord];
-                _pixelBuffer[coord] =
+                Pixel pixel = _pixelBuffer[head];
+                _pixelBuffer[head] =
                     pixel.Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(pattern, lineStyle), color));
 
                 head = line.Vertical
@@ -760,8 +754,7 @@ namespace Consolonia.Core.Drawing
             head = isVertical ? head.WithY(start) : head.WithX(start);
             for (int i = start; i < end; i++)
             {
-                var coord = (PixelBufferCoordinate)head;
-                _pixelBuffer[coord] = _pixelBuffer[coord].Blend(new Pixel(symbol, color));
+                _pixelBuffer[head] = _pixelBuffer[head].Blend(new Pixel(symbol, color));
 
                 head = isVertical
                     ? head.WithY(head.Y + 1)
@@ -784,29 +777,24 @@ namespace Consolonia.Core.Drawing
 
             // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15); //todo: what to do if a rotation?
 
-            Point whereToDraw = origin.Transform(Transform);
-            int currentXPosition = 0;
-            int currentYPosition = 0;
+            Point position = origin.Transform(Transform);
 
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
             // the x and y are adjusted accordingly.
             foreach (string glyph in text.GetGlyphs(_consoleWindowImpl.Console.SupportsComplexEmoji))
             {
-                Point characterPoint =
-                    whereToDraw.Transform(Matrix.CreateTranslation(currentXPosition, currentYPosition));
                 Color foregroundColor = solidColorBrush.Color;
 
                 switch (glyph)
                 {
                     case "\t":
-                        currentXPosition += glyph.MeasureText();
+                        position.WithX(position.X + glyph.MeasureText());
                         break;
                     case "\r":
                     case "\f":
                     case "\n":
-                        currentXPosition = 0;
-                        currentYPosition++;
+                        position = new Point(0, position.Y+1);
                         break;
                     default:
                         {
@@ -816,19 +804,17 @@ namespace Consolonia.Core.Drawing
                             // char would break the boundary of the clip.
                             // var clippingPoint = new Point(characterPoint.X + symbol.Width - 1, characterPoint.Y);
                             var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
-                            if (CurrentClip.ContainsExclusive(characterPoint))
+                            if (CurrentClip.ContainsExclusive(position))
                             {
-                                var coord = (PixelBufferCoordinate)characterPoint;
-                                Pixel oldPixel = _pixelBuffer[coord];
+                                Pixel oldPixel = _pixelBuffer[position];
                                 if (oldPixel.Width == 0)
                                 {
                                     // if the oldPixel was empty, we need to set the previous pixel to space
-                                    double targetX = characterPoint.X - 1;
-                                    if (targetX >= 0)
+                                    var target = position.WithX(position.X - 1);
+                                    if (target.X >= 0)
                                     {
-                                        var coord2 = (PixelBufferCoordinate)new Point(targetX, characterPoint.Y);
-                                        Pixel oldPixel2 = _pixelBuffer[coord2];
-                                        _pixelBuffer[coord2] = new Pixel(PixelForeground.Space, oldPixel2.Background);
+                                        Pixel oldPixel2 = _pixelBuffer[target];
+                                        _pixelBuffer[target] = new Pixel(PixelForeground.Space, oldPixel2.Background);
                                     }
                                 }
                                 else if (oldPixel.Width > 1)
@@ -836,12 +822,11 @@ namespace Consolonia.Core.Drawing
                                     // if oldPixel was wide we need to reset overlapped symbols from empty to space
                                     for (ushort i = 1; i < oldPixel.Width; i++)
                                     {
-                                        double targetX = characterPoint.X + i;
-                                        if (targetX < _pixelBuffer.Size.Width)
+                                        var target = position.WithX(position.X +1);
+                                        if (target.X < _pixelBuffer.Size.Width)
                                         {
-                                            var coord2 = (PixelBufferCoordinate)new Point(targetX, characterPoint.Y);
-                                            Pixel oldPixel2 = _pixelBuffer[coord2];
-                                            _pixelBuffer[coord2] = new Pixel(PixelForeground.Space, oldPixel2.Background);
+                                            Pixel oldPixel2 = _pixelBuffer[target];
+                                            _pixelBuffer[target] = new Pixel(PixelForeground.Space, oldPixel2.Background);
                                         }
                                     }
                                 }
@@ -850,27 +835,26 @@ namespace Consolonia.Core.Drawing
                                 if (newPixel.Width > 1)
                                     for (int i = 1; i < symbol.Width; i++)
                                     {
-                                        double targetX = characterPoint.X + i;
-                                        if (targetX < _pixelBuffer.Size.Width)
+                                        var target = position.WithX(position.X +1);
+                                        if (target.X < _pixelBuffer.Size.Width)
                                         {
-                                            var coord2 = (PixelBufferCoordinate)new Point(targetX, characterPoint.Y);
-                                            Pixel oldPixel2 = _pixelBuffer[coord2];
-                                            _pixelBuffer[coord2] = new Pixel(PixelForeground.Empty, oldPixel2.Background);
+                                            Pixel oldPixel2 = _pixelBuffer[target];
+                                            _pixelBuffer[target] = new Pixel(PixelForeground.Empty, oldPixel2.Background);
                                         }
                                     }
 
-                                _pixelBuffer[coord] = oldPixel.Blend(newPixel);
+                                _pixelBuffer[position] = oldPixel.Blend(newPixel);
                             }
 
-                            currentXPosition += symbol.Width;
+                            position = position.WithX(position.X + symbol.Width);
                         }
                         break;
                 }
             }
 
             // Width/height are exclusive, so add 1 to include the last column/row
-            var rectToRefresh = new Rect((int)whereToDraw.X, (int)whereToDraw.Y, currentXPosition + 1,
-                currentYPosition + 1);
+            var rectToRefresh = new Rect((int)position.X, (int)position.Y, position.X + 1,
+                position.Y + 1);
             _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
 
@@ -911,11 +895,11 @@ namespace Consolonia.Core.Drawing
         /// <summary>
         ///     Combine the colors for the white part of the quad pixel character.
         /// </summary>
-        /// <param name="pixelColors">4 colors</param>
         /// <param name="quadPixel"></param>
+        /// <param name="pixelColors">4 colors</param>
         /// <returns>foreground color</returns>
         /// <exception cref="NotImplementedException"></exception>
-        private static Color GetForegroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
+        private static Color GetForegroundColorForQuadPixel(char quadPixel, params SKColor[] pixelColors)
         {
             if (pixelColors.Length != 4)
                 throw new ArgumentException($"{nameof(pixelColors)} must have 4 elements.");
@@ -948,11 +932,11 @@ namespace Consolonia.Core.Drawing
         /// <summary>
         ///     Combine the colors for the black part of the quad pixel character.
         /// </summary>
-        /// <param name="pixelColors"></param>
         /// <param name="quadPixel"></param>
+        /// <param name="pixelColors"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        private static Color GetBackgroundColorForQuadPixel(SKColor[] pixelColors, char quadPixel)
+        private static Color GetBackgroundColorForQuadPixel(char quadPixel, params SKColor[] pixelColors)
         {
             SKColor skColor = quadPixel switch
             {
