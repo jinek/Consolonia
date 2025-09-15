@@ -253,7 +253,7 @@ namespace Consolonia.Core.Drawing
                         }
                 }
 
-                FillRectangleWithBrush(brush, pen, r);
+                FillRectangleWithBrush(brush, r);
             }
 
             if (pen is null
@@ -477,7 +477,6 @@ namespace Consolonia.Core.Drawing
             DrawBoxLineInternal(pen, line, RectangleLinePosition.Unknown);
         }
 
-        // ReSharper disable UnusedParameter.Local (super weird, as pen IS used with pen.Thickness switch
         private void ApplyTextDecorationLineInternal(IPen pen, Line line)
         {
             line = TransformLineInternal(line);
@@ -511,9 +510,8 @@ namespace Consolonia.Core.Drawing
 
             _consoleWindowImpl.DirtyRegions.AddRect(intersectRect);
         }
-        // ReSharper enable UnusedParameter.Local
 
-        private void FillRectangleWithBrush(IBrush brush, IPen pen, Rect r)
+        private void FillRectangleWithBrush(IBrush brush, Rect r)
         {
             if (brush is ISolidColorBrush { Color.A: 0 })
                 return;
