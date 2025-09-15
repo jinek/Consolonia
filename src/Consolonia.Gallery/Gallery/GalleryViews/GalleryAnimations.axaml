@@ -13,13 +13,16 @@
                                IterationCount="Infinite"
                                PlaybackDirection="Alternate">
                         <KeyFrame Cue="0%">
-                            <Setter Property="Background" Value="Red" />
+                            <Setter Property="Background"
+                                    Value="Red" />
                         </KeyFrame>
                         <KeyFrame Cue="60%">
-                            <Setter Property="Background" Value="Blue" />
+                            <Setter Property="Background"
+                                    Value="Blue" />
                         </KeyFrame>
                         <KeyFrame Cue="100%">
-                            <Setter Property="Background" Value="Red" />
+                            <Setter Property="Background"
+                                    Value="Red" />
                         </KeyFrame>
                     </Animation>
                 </Style.Animations>

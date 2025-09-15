@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
@@ -87,15 +86,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         internal string Dump()
         {
-            StringBuilder sb = new StringBuilder();
-            for(int y=0; y < Height; y++)
+            var sb = new StringBuilder();
+            for (int y = 0; y < Height; y++)
             {
-                for(int x = 0; x < Width; x++)
-                {
-                    sb.Append(_buffer[x, y].Foreground.Symbol.Text);
-                }
+                for (int x = 0; x < Width; x++) sb.Append(_buffer[x, y].Foreground.Symbol.Text);
                 sb.AppendLine();
             }
+
             return sb.ToString();
         }
     }
