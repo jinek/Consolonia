@@ -642,14 +642,14 @@ namespace Consolonia.Core.Drawing
 
             int length = line.Length;
             if (startSymbol.Text != "\0")
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, startSymbol, color, 1);
+                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in startSymbol, color, 1);
             else
                 head += line.Vertical ? new Vector(0, 1) : new Vector(1, 0);
 
-            DrawLineSymbolAndMoveHead(ref head, line.Vertical, middleSymbol, color, length - 1);
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in middleSymbol, color, length - 1);
 
             if (endSymbol.Text != "\0")
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, endSymbol, color, 1);
+                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in endSymbol, color, 1);
         }
 
         /// <summary>
@@ -742,7 +742,7 @@ namespace Consolonia.Core.Drawing
             _consoleWindowImpl.DirtyRegions.AddRect(intersect);
         }
 
-        private void DrawLineSymbolAndMoveHead(ref Point head, bool isVertical, ISymbol symbol, Color color, int count)
+        private void DrawLineSymbolAndMoveHead(ref Point head, bool isVertical, in ISymbol symbol, Color color, int count)
         {
             Rect rectToRefresh = isVertical
                 ? new Rect((int)head.X, (int)head.Y, 1, count)
@@ -967,26 +967,26 @@ namespace Consolonia.Core.Drawing
 
         private static SKColor CombineColors(Span<SKColor> colors)
         {
-            float finalRed = 0;
-            float finalGreen = 0;
-            float finalBlue = 0;
-            float finalAlpha = 0;
+            float accumR = 0, accumG = 0, accumB = 0;
+            float accumAlpha = 0;
 
-            foreach (SKColor color in colors)
+            foreach (ref readonly SKColor color in colors)
             {
-                float alphaRatio = color.Alpha / 255.0f;
-                finalRed = (finalRed * finalAlpha + color.Red * alphaRatio) / (finalAlpha + alphaRatio);
-                finalGreen = (finalGreen * finalAlpha + color.Green * alphaRatio) / (finalAlpha + alphaRatio);
-                finalBlue = (finalBlue * finalAlpha + color.Blue * alphaRatio) / (finalAlpha + alphaRatio);
-                finalAlpha += alphaRatio * (1 - finalAlpha);
+                float a1 = color.Alpha / 255f;
+                float oneMinusA = 1f - accumAlpha;
+
+                accumR += color.Red * a1 * oneMinusA;
+                accumG += color.Green * a1 * oneMinusA;
+                accumB += color.Blue * a1 * oneMinusA;
+                accumAlpha += a1 * oneMinusA;
             }
 
-            byte red = (byte)Math.Clamp(finalRed, 0, 255);
-            byte green = (byte)Math.Clamp(finalGreen, 0, 255);
-            byte blue = (byte)Math.Clamp(finalBlue, 0, 255);
-            byte alpha = (byte)Math.Clamp(finalAlpha * 255, 0, 255);
+            byte r = (byte)Math.Clamp(accumR, 0, 255);
+            byte g = (byte)Math.Clamp(accumG, 0, 255);
+            byte b = (byte)Math.Clamp(accumB, 0, 255);
+            byte a = (byte)Math.Clamp(accumAlpha * 255f, 0, 255);
 
-            return new SKColor(red, green, blue, alpha);
+            return new SKColor(r, g, b, a);
         }
 
         /// <summary>
@@ -1102,12 +1102,12 @@ namespace Consolonia.Core.Drawing
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static double GetColorDistance(SKColor c1, SKColor c2)
         {
-            return Math.Sqrt(
-                Math.Pow(c1.Red - c2.Red, 2) +
-                Math.Pow(c1.Green - c2.Green, 2) +
-                Math.Pow(c1.Blue - c2.Blue, 2) +
-                Math.Pow(c1.Alpha - c2.Alpha, 2)
-            );
+            int dr = c1.Red - c2.Red;
+            int dg = c1.Green - c2.Green;
+            int db = c1.Blue - c2.Blue;
+            int da = c1.Alpha - c2.Alpha;
+
+            return Math.Sqrt(dr * dr + dg * dg + db * db + da * da);
         }
 
 
