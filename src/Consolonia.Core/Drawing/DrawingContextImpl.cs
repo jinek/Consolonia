@@ -820,7 +820,7 @@ namespace Consolonia.Core.Drawing
                                     // if oldPixel was wide we need to reset overlapped symbols from empty to space
                                     for (ushort i = 1; i < oldPixel.Width; i++)
                                     {
-                                        var target = position.WithX(position.X +1);
+                                        var target = position.WithX(position.X + i);
                                         if (target.X < _pixelBuffer.Size.Width)
                                         {
                                             _pixelBuffer[target] = new Pixel(PixelForeground.Space, _pixelBuffer[target].Background);
@@ -832,7 +832,7 @@ namespace Consolonia.Core.Drawing
                                 if (newPixel.Width > 1)
                                     for (int i = 1; i < symbol.Width; i++)
                                     {
-                                        var target = position.WithX(position.X +1);
+                                        var target = position.WithX(position.X + i);
                                         if (target.X < _pixelBuffer.Size.Width)
                                         {
                                             _pixelBuffer[target] = new Pixel(PixelForeground.Empty, _pixelBuffer[target].Background);
