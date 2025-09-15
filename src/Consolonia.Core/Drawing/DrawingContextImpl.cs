@@ -523,13 +523,16 @@ namespace Consolonia.Core.Drawing
             if (targetRect.IsEmpty())
                 return;
 
+            // Clamp to valid range to prevent out-of-bounds errors
+            ushort gradiantWidth = (ushort)Math.Max(1, Math.Ceiling(sourceRect.Width));
+            ushort gradiantHeight = (ushort)Math.Max(1, Math.Ceiling(sourceRect.Height));
             ushort brushY = (ushort)(targetRect.Top - sourceRect.Top);
             for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
             {
                 ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
                 for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++, brushX++)
                 {
-                    Color backgroundColor = brush.FromPosition(brushX, brushY, (ushort)Math.Ceiling(sourceRect.Width), (ushort)Math.Ceiling(sourceRect.Height));
+                    Color backgroundColor = brush.FromPosition(brushX, brushY, gradiantWidth, gradiantHeight);
 
                     var coord = new PixelBufferCoordinate(x, y);
                     switch (brush)
