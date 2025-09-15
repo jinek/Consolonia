@@ -529,7 +529,7 @@ namespace Consolonia.Core.Drawing
                 ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
                 for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++, brushX++)
                 {
-                    Color backgroundColor = brush.FromPosition(brushX, brushY, (ushort)sourceRect.Width, (ushort)sourceRect.Height);
+                    Color backgroundColor = brush.FromPosition(brushX, brushY, (ushort)Math.Ceiling(sourceRect.Width), (ushort)Math.Ceiling(sourceRect.Height));
 
                     var coord = new PixelBufferCoordinate(x, y);
                     switch (brush)
