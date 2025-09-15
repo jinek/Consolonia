@@ -1,7 +1,8 @@
 {
   "profiles": {
     "Consolonia.Gallery": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "AnimatedLines"
     },
     "WSL": {
       "commandName": "WSL2",

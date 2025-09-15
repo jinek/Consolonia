@@ -2,29 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="Example.Views.MainWindow"
         Title="Movie Catalog">
-    <Window.Styles>
-        <Styles>
-            <Style Selector="Window">
-                <Style.Animations>
-                    <Animation Duration="0:0:1"
-                               IterationCount="Infinite"
-                               PlaybackDirection="Alternate">
-                        <KeyFrame Cue="0%">
-                            <Setter Property="Background" Value="Red" />
-                        </KeyFrame>
-                        <KeyFrame Cue="60%">
-                            <Setter Property="Background" Value="Blue" />
-                        </KeyFrame>
-                        <KeyFrame Cue="100%">
-                            <Setter Property="Background" Value="Red" />
-                        </KeyFrame>
-                    </Animation>
-                </Style.Animations>
-            </Style>
-
-        </Styles>
-    </Window.Styles>
-    
     <StackPanel VerticalAlignment="Center"
              HorizontalAlignment="Center">
         <TextBlock Text="Welcome to Consolonia!" />

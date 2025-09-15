@@ -124,7 +124,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     FontStyle.Italic,
                     TextDecorationLocation.Underline),
                 new PixelBackground(Colors.Green));
-            Pixel newPixel = pixel.Shade();
+            Pixel newPixel = pixel;
+            newPixel.Shade();
             Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
             Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Red.Shade()));
             Assert.That(newPixel.Background.Color, Is.EqualTo(Colors.Green.Shade()));
@@ -142,7 +143,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     FontStyle.Italic,
                     TextDecorationLocation.Underline),
                 new PixelBackground(Colors.Green));
-            Pixel newPixel = pixel.Brighten();
+            Pixel newPixel = pixel;
+            newPixel.Brighten();
             Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
             Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Red.Brighten()));
             Assert.That(newPixel.Background.Color, Is.EqualTo(Colors.Green.Brighten()));
@@ -160,7 +162,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     FontStyle.Italic,
                     TextDecorationLocation.Underline),
                 new PixelBackground(Colors.Green));
-            Pixel newPixel = pixel.Invert();
+            Pixel newPixel = pixel;
+            newPixel.Invert();
             Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
             Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Green));
             Assert.That(newPixel.Background.Color, Is.EqualTo(Colors.Red));
@@ -176,7 +179,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var pixel = new Pixel(new PixelBackground(Colors.Green));
             var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
                 new PixelBackground(Colors.Transparent));
-            Pixel newPixel = pixel.Blend(pixel2);
+            Pixel newPixel = pixel;
+            newPixel.Blend(ref pixel2);
             Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
             Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(newPixel.Background.Color, Is.EqualTo(Colors.Green));
@@ -188,7 +192,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var pixel = new Pixel(new PixelBackground(Colors.Green));
             var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue));
-            Pixel newPixel = pixel.Blend(pixel2);
+            Pixel newPixel = pixel;
+            newPixel.Blend(ref pixel2);
             Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
             Assert.That(newPixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(newPixel.Background.Color, Is.EqualTo(Colors.Blue));
@@ -200,7 +205,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
                 new PixelBackground(Colors.White));
             var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F000000")));
-            Pixel newPixel = pixel.Blend(pixel2);
+            Pixel newPixel = pixel;
+            newPixel.Blend(ref pixel2);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
             // foreground should be darker than original
             Assert.True(newPixel.Foreground.Color.R < pixel.Foreground.Color.R &&
@@ -218,7 +224,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
                 new PixelBackground(Colors.Black));
             var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F000000")));
-            Pixel newPixel = pixel.Blend(pixel2);
+            Pixel newPixel = pixel;
+            newPixel.Blend(ref pixel2);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
             // foreground should be darker than original
             Assert.True(newPixel.Foreground.Color.R < pixel.Foreground.Color.R &&
@@ -236,7 +243,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
                 new PixelBackground(Colors.White));
             var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F000000")));
-            Pixel newPixel = pixel2.Blend(pixel);
+            Pixel newPixel = pixel2;
+            newPixel.Blend(ref pixel);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
         }
 
@@ -247,7 +255,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 new PixelBackground(Colors.White));
             var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol(char.MinValue), Colors.White),
                 new PixelBackground(Color.Parse("#7F000000")));
-            Pixel newPixel = pixel2.Blend(pixel);
+            Pixel newPixel = pixel2;
+            newPixel.Blend(ref pixel);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
         }
 

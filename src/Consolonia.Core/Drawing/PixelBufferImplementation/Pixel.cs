@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Media;
@@ -19,7 +20,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Symbol")]
     [DebuggerDisplay(
         "'{Foreground.Symbol.Text}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
-    public readonly struct Pixel : IEquatable<Pixel>
+    public struct Pixel : IEquatable<Pixel>
     {
         private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
             new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
@@ -102,11 +103,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public static Pixel Space => new(new PixelForeground(SimpleSymbol.Space, Colors.Transparent),
             PixelBackground.Transparent);
 
-        public PixelForeground Foreground { get; init; }
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        public PixelForeground Foreground;
 
-        public PixelBackground Background { get; init; }
+        public PixelBackground Background;
 
-        public CaretStyle CaretStyle { get; init; } = CaretStyle.BlinkingBar;
+        public CaretStyle CaretStyle = CaretStyle.BlinkingBar;
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         [JsonIgnore] public ushort Width => Foreground.Symbol.Width;
 
@@ -117,25 +120,23 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                    CaretStyle == other.CaretStyle;
         }
 
-        public Pixel Shade()
+        public void Shade()
         {
-            return new Pixel(Foreground.Shade(), Background.Shade(), CaretStyle);
+            Foreground.Shade();
+            Background.Shade();
         }
 
-        public Pixel Brighten()
+        public void Brighten()
         {
-            return new Pixel(Foreground.Brighten(), Background.Brighten(), CaretStyle);
+            Foreground.Brighten();
+            Background.Brighten();
         }
 
-        public Pixel Invert()
+        public void Invert()
         {
-            return new Pixel(new PixelForeground(Foreground.Symbol,
-                    Background.Color, // background color becomes the new foreground color
-                    Foreground.Weight,
-                    Foreground.Style,
-                    Foreground.TextDecoration),
-                new PixelBackground(Foreground.Color),
-                CaretStyle);
+            var foreGroundColor = Foreground.Color;
+            Foreground.Color = Background.Color;
+            Background.Color = foreGroundColor;
         }
 
         /// <summary>
@@ -144,7 +145,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <param name="pixelAbove"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public Pixel Blend(Pixel pixelAbove)
+        public void Blend(ref Pixel pixelAbove)
         {
             PixelForeground newForeground;
 
@@ -183,7 +184,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 newCaretStyle = pixelAbove.CaretStyle;
             }
 
-            return new Pixel(newForeground, newBackground, newCaretStyle);
+            this.Foreground = newForeground;
+            this.Background = newBackground;
+            this.CaretStyle = newCaretStyle;
         }
 
         /// <summary>

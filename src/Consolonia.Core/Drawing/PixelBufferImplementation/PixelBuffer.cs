@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Media;
@@ -10,7 +12,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [JsonConverter(typeof(PixelBufferConverter))]
     public class PixelBuffer
     {
-        private readonly Pixel[,] _buffer;
+        private readonly Pixel[] _buffer;
 
         public PixelBuffer(PixelBufferSize size)
             : this(size.Width, size.Height)
@@ -21,59 +23,100 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             Width = width;
             Height = height;
-            _buffer = new Pixel[width, height];
+            _buffer = new Pixel[width * height];
 
             // initialize the buffer with space so it draws any background color
             // blended into it.
-            for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-                _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
+            Span<Pixel> bufferSpan = _buffer.AsSpan();
+            var backgroundPixel = new Pixel(new PixelBackground(Colors.Black));
+            bufferSpan.Fill(backgroundPixel);
         }
 
         public ushort Width { get; }
         public ushort Height { get; }
 
-        // ReSharper disable once UnusedMember.Global
         [JsonIgnore]
-        public Pixel this[int i]
+        public ref Pixel this[int i]
         {
-            get
-            {
-                (ushort x, ushort y) = ToXY(i);
-                return this[(PixelBufferCoordinate)(x, y)];
-            }
-            set
-            {
-                (ushort x, ushort y) = ToXY(i);
-                this[(PixelBufferCoordinate)(x, y)] = value;
-            }
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ref _buffer[i];
         }
 
         [JsonIgnore]
-        public Pixel this[PixelBufferCoordinate point]
+        public ref Pixel this[PixelBufferCoordinate point]
         {
-            get => _buffer[point.X, point.Y];
-            // ReSharper disable once MemberCanBePrivate.Global
-            set => _buffer[point.X, point.Y] = value;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ref _buffer[ToIndex(point.X, point.Y)];
         }
 
         [JsonIgnore]
-        public Pixel this[ushort x, ushort y]
+        public ref Pixel this[Point point]
         {
-            get => _buffer[x, y];
-            // ReSharper disable once MemberCanBePrivate.Global
-            set => _buffer[x, y] = value;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ref _buffer[ToIndex((ushort)point.X, (ushort)point.Y)];
+        }
+
+        [JsonIgnore]
+        public ref Pixel this[ushort x, ushort y]
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ref _buffer[ToIndex(x, y)];
         }
 
         [JsonIgnore] public int Length => _buffer.Length;
 
         [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
 
+        /// <summary>
+        /// Gets a reference to the pixel at the specified coordinates for efficient in-place modification
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref Pixel GetPixel(ushort x, ushort y)
+        {
+            return ref _buffer[ToIndex(x, y)];
+        }
+
+        /// <summary>
+        /// Gets a reference to the pixel at the specified coordinate for efficient in-place modification
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref Pixel GetPixel(PixelBufferCoordinate point)
+        {
+            return ref _buffer[ToIndex(point.X, point.Y)];
+        }
+
+        /// <summary>
+        /// Gets a reference to the pixel at the specified linear index for efficient in-place modification
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref Pixel GetPixel(int index)
+        {
+            return ref _buffer[index];
+        }
+
+        /// <summary>
+        /// Gets a span over the entire buffer for efficient bulk operations
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Span<Pixel> AsSpan()
+        {
+            return _buffer.AsSpan();
+        }
+
+        /// <summary>
+        /// Gets a span over a specific row for efficient row-wise operations
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Span<Pixel> GetRowSpan(ushort y)
+        {
+            int start = ToIndex(0, y);
+            return _buffer.AsSpan(start, Width);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private (ushort x, ushort y) ToXY(int i)
+        private int ToIndex(ushort x, ushort y)
         {
-            return ((ushort x, ushort y))(i % Width, i / Width);
+            return y * Width + x;
         }
     }
 }

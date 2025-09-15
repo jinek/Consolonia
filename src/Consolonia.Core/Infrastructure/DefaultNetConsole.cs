@@ -54,8 +54,9 @@ namespace Consolonia.Core.Infrastructure
 
         public override bool SupportsMouseMove => false;
 
-        public DefaultNetConsole()
-            : base(new DefaultNetConsoleOutput())
+
+        public DefaultNetConsole(IConsoleOutput outputConsole = null)
+            : base(outputConsole ?? new DefaultNetConsoleOutput())
         {
             _inputBuffer = new FastBuffer<ConsoleKeyInfo>(ReadDataFunction);
             _inputProcessor = new InputProcessor<ConsoleKeyInfo>([

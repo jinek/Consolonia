@@ -8,7 +8,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Text")]
     [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
-    public readonly struct PixelForeground : IEquatable<PixelForeground>
+    public struct PixelForeground : IEquatable<PixelForeground>
     {
         public static readonly PixelForeground Default = new();
 
@@ -37,19 +37,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             TextDecoration = textDecoration;
         }
 
-        public ISymbol Symbol { get; init; }
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        public ISymbol Symbol;
 
         [JsonConverter(typeof(ColorConverter))]
-        public Color Color { get; init; }
+        public Color Color;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public FontWeight? Weight { get; init; }
+        public FontWeight? Weight;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public FontStyle? Style { get; init; }
+        public FontStyle? Style;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextDecorationLocation? TextDecoration { get; init; }
+        public TextDecorationLocation? TextDecoration;
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         public bool Equals(PixelForeground other)
         {
@@ -60,14 +62,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                    TextDecoration == other.TextDecoration;
         }
 
-        public PixelForeground Shade()
+        public void Shade()
         {
-            return new PixelForeground(Symbol, Color.Shade(), Weight, Style, TextDecoration);
+            Color = Color.Shade();
         }
 
-        public PixelForeground Brighten()
+        public void Brighten()
         {
-            return new PixelForeground(Symbol, Color.Brighten(), Weight, Style, TextDecoration);
+            Color = Color.Brighten();
         }
 
         public PixelForeground Blend(PixelForeground pixelAboveForeground)

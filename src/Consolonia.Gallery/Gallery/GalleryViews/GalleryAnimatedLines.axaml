@@ -5,12 +5,34 @@
              xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryAnimatedLines">
+    <UserControl.Styles>
+        <Styles>
+            <Style Selector="ScrollViewer">
+                <Style.Animations>
+                    <Animation Duration="0:0:1"
+                               IterationCount="Infinite"
+                               PlaybackDirection="Alternate">
+                        <KeyFrame Cue="0%">
+                            <Setter Property="Background" Value="Red" />
+                        </KeyFrame>
+                        <KeyFrame Cue="60%">
+                            <Setter Property="Background" Value="Blue" />
+                        </KeyFrame>
+                        <KeyFrame Cue="100%">
+                            <Setter Property="Background" Value="Red" />
+                        </KeyFrame>
+                    </Animation>
+                </Style.Animations>
+            </Style>
+        </Styles>
+    </UserControl.Styles>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Panel>
             <Panel Width="40"
                    Height="30">
                 <Border BorderBrush="Blue"
                         BorderThickness="1"
+                        Background="Purple"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Left">
                     <Border.Styles>
@@ -43,9 +65,11 @@
                             </Style.Animations>
                         </Style>
                     </Border.Styles>
+                    <Image Source="avares://Consolonia.Gallery/Resources/0.jpg" Stretch="Uniform" />
                 </Border>
 
                 <Border BorderThickness="1"
+                        Background="Orange"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right">
                     <Border.BorderBrush>
@@ -82,11 +106,13 @@
                             </Style.Animations>
                         </Style>
                     </Border.Styles>
+                    <Image Source="avares://Consolonia.Gallery/Resources/1.jpg" Stretch="Uniform" />
                 </Border>
 
 
                 <Border BorderThickness="1"
                         VerticalAlignment="Bottom"
+                        Background="Green"
                         HorizontalAlignment="Right">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="DoubleLine"
@@ -122,6 +148,7 @@
                             </Style.Animations>
                         </Style>
                     </Border.Styles>
+                    <Image Source="avares://Consolonia.Gallery/Resources/2.jpg" Stretch="Uniform" />
                 </Border>
             </Panel>
 
