@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Text;
 using Avalonia;
 using Avalonia.Media;
 using Newtonsoft.Json;
@@ -74,6 +75,20 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         private (ushort x, ushort y) ToXY(int i)
         {
             return ((ushort x, ushort y))(i % Width, i / Width);
+        }
+
+        internal string Dump()
+        {
+            StringBuilder sb = new StringBuilder();
+            for(int y=0; y < Height; y++)
+            {
+                for(int x = 0; x < Width; x++)
+                {
+                    sb.Append(_buffer[x, y].Foreground.Symbol.Text);
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
         }
     }
 }
