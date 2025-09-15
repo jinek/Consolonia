@@ -788,7 +788,7 @@ namespace Consolonia.Core.Drawing
                 switch (glyph)
                 {
                     case "\t":
-                        position.WithX(position.X + glyph.MeasureText());
+                        position = position.WithX(position.X + glyph.MeasureText());
                         break;
                     case "\r":
                     case "\f":
