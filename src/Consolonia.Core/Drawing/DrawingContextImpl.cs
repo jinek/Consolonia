@@ -104,14 +104,13 @@ namespace Consolonia.Core.Drawing
             // this is reused by each pixel as we process the bitmap
             Span<SKColor> quadPixelColors = stackalloc SKColor[4];
 
-            for (int y = 0; y < bitmap.Info.Height; y += 2)
-                for (int x = 0; x < bitmap.Info.Width; x += 2)
-                {
-                    // NOTE: we divide by 2 because we are working with quad pixels,
-                    // // the bitmap has twice the horizontal and twice the vertical of the target rect.
-                    var px = (ushort)(targetRect.TopLeft.X + x / 2);
-                    var py = (ushort)(targetRect.TopLeft.Y + y / 2);
+            var py = (ushort)targetRect.TopLeft.Y;
 
+            for (int y = 0; y < bitmap.Info.Height; y += 2, py++)
+            {
+                var px = (ushort)targetRect.TopLeft.X;
+                for (int x = 0; x < bitmap.Info.Width; x += 2, px++)
+                {
                     // get the quad pixel from the bitmap as a quad of 4 SKColor values
                     quadPixelColors[0] = bitmap.GetPixel(x, y);
                     quadPixelColors[1] = bitmap.GetPixel(x + 1, y);
@@ -133,6 +132,7 @@ namespace Consolonia.Core.Drawing
                         _pixelBuffer[px, py] = _pixelBuffer[px, py].Blend(imagePixel);
                     }
                 }
+            }
 
             var rectToRefresh = new Rect((int)targetRect.TopLeft.X, (int)targetRect.TopLeft.Y, (int)targetRect.Width,
                 (int)targetRect.Height);
