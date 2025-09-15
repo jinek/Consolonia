@@ -727,9 +727,8 @@ namespace Consolonia.Core.Drawing
             head = line.Vertical ? head.WithY(start) : head.WithX(start);
             for (ushort i = start; i < end; i++)
             {
-                Pixel pixel = _pixelBuffer[head];
                 _pixelBuffer[head] =
-                    pixel.Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(pattern, lineStyle), color));
+                    _pixelBuffer[head].Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(pattern, lineStyle), color));
 
                 head = line.Vertical
                     ? head.WithY(head.Y + 1)
@@ -813,8 +812,7 @@ namespace Consolonia.Core.Drawing
                                     var target = position.WithX(position.X - 1);
                                     if (target.X >= 0)
                                     {
-                                        Pixel oldPixel2 = _pixelBuffer[target];
-                                        _pixelBuffer[target] = new Pixel(PixelForeground.Space, oldPixel2.Background);
+                                        _pixelBuffer[target] = new Pixel(PixelForeground.Space, _pixelBuffer[target].Background);
                                     }
                                 }
                                 else if (oldPixel.Width > 1)
@@ -825,8 +823,7 @@ namespace Consolonia.Core.Drawing
                                         var target = position.WithX(position.X +1);
                                         if (target.X < _pixelBuffer.Size.Width)
                                         {
-                                            Pixel oldPixel2 = _pixelBuffer[target];
-                                            _pixelBuffer[target] = new Pixel(PixelForeground.Space, oldPixel2.Background);
+                                            _pixelBuffer[target] = new Pixel(PixelForeground.Space, _pixelBuffer[target].Background);
                                         }
                                     }
                                 }
@@ -838,8 +835,7 @@ namespace Consolonia.Core.Drawing
                                         var target = position.WithX(position.X +1);
                                         if (target.X < _pixelBuffer.Size.Width)
                                         {
-                                            Pixel oldPixel2 = _pixelBuffer[target];
-                                            _pixelBuffer[target] = new Pixel(PixelForeground.Empty, oldPixel2.Background);
+                                            _pixelBuffer[target] = new Pixel(PixelForeground.Empty, _pixelBuffer[target].Background);
                                         }
                                     }
 
