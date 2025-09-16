@@ -5,7 +5,7 @@
              xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryAnimations">
-    <UserControl.Styles>
+    <!--<UserControl.Styles>
         <Styles>
             <Style Selector="ScrollViewer">
                 <Style.Animations>
@@ -28,16 +28,16 @@
                 </Style.Animations>
             </Style>
         </Styles>
-    </UserControl.Styles>
+    </UserControl.Styles>-->
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Panel>
             <Panel Width="40"
                    Height="30">
                 <Border BorderBrush="Blue"
                         BorderThickness="1"
-                        Background="Purple"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Left">
+                    <!--<Panel Background="Purple"/>-->
                     <Border.Styles>
                         <Style Selector="Border">
                             <Style.Animations>
@@ -71,9 +71,9 @@
                 </Border>
 
                 <Border BorderThickness="1"
-                        Background="Orange"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right">
+                    <!--<Panel Background="Orange"/>-->
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="Bold"
                                            Brush="Blue" />
@@ -113,8 +113,8 @@
 
                 <Border BorderThickness="1"
                         VerticalAlignment="Bottom"
-                        Background="Green"
                         HorizontalAlignment="Right">
+                    <!--<Panel Background="Green"/>-->
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="DoubleLine"
                                            Brush="Blue" />
