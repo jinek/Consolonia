@@ -106,8 +106,8 @@ namespace Consolonia.Core.Drawing
             Span<SKColor> quadPixelColors = stackalloc SKColor[4];
 
             int py = (int)Math.Floor(targetRect.TopLeft.Y);
-            var pixels = bitmap.Pixels;
-            var pixelRow = 0;
+            SKColor[] pixels = bitmap.Pixels;
+            int pixelRow = 0;
             for (int y = 0; y < bitmap.Info.Height; y += 2, py++, pixelRow += 2 * bitmap.Width)
             {
                 int px = (int)Math.Floor(targetRect.TopLeft.X);
