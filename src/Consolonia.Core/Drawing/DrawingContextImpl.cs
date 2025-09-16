@@ -107,17 +107,18 @@ namespace Consolonia.Core.Drawing
             Span<SKColor> quadPixelColors = stackalloc SKColor[4];
 
             int py = (int)Math.Floor(targetRect.TopLeft.Y);
-
-            for (int y = 0; y < bitmap.Info.Height; y += 2, py++)
+            var pixels = bitmap.Pixels;
+            var pixelRow = 0;
+            for (int y = 0; y < bitmap.Info.Height; y += 2, py++, pixelRow += 2 * bitmap.Width)
             {
                 int px = (int)Math.Floor(targetRect.TopLeft.X);
                 for (int x = 0; x < bitmap.Info.Width; x += 2, px++)
                 {
                     // get the quad pixel from the bitmap as a quad of 4 SKColor values
-                    quadPixelColors[0] = bitmap.GetPixel(x, y);
-                    quadPixelColors[1] = bitmap.GetPixel(x + 1, y);
-                    quadPixelColors[2] = bitmap.GetPixel(x, y + 1);
-                    quadPixelColors[3] = bitmap.GetPixel(x + 1, y + 1);
+                    quadPixelColors[0] = pixels[pixelRow + x];
+                    quadPixelColors[1] = pixels[pixelRow + x + 1];
+                    quadPixelColors[2] = pixels[pixelRow + bitmap.Width + x];
+                    quadPixelColors[3] = pixels[pixelRow + bitmap.Width + x + 1];
 
                     // map it to a single char to represent the 4 pixels
                     char quadPixelChar = GetQuadPixelCharacter(quadPixelColors);
