@@ -98,17 +98,17 @@ namespace Consolonia.Core.Drawing
             // resize source to be target rect * 2 so we can map to quad pixels
             using var bitmap = new SKBitmap((int)targetRect.Width * 2, (int)targetRect.Height * 2);
             using var canvas = new SKCanvas(bitmap);
-            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, bitmap.Width, bitmap.Height),
-                new SKPaint { FilterQuality = SKFilterQuality.Medium });
+            using var skPaint = new SKPaint { FilterQuality = SKFilterQuality.Medium };
+            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, bitmap.Width, bitmap.Height), skPaint);
 
             // this is reused by each pixel as we process the bitmap
             Span<SKColor> quadPixelColors = stackalloc SKColor[4];
 
-            ushort py = (ushort)targetRect.TopLeft.Y;
+            int py = (int)Math.Floor(targetRect.TopLeft.Y);
 
             for (int y = 0; y < bitmap.Info.Height; y += 2, py++)
             {
-                ushort px = (ushort)targetRect.TopLeft.X;
+                int px = (int)Math.Floor(targetRect.TopLeft.X);
                 for (int x = 0; x < bitmap.Info.Width; x += 2, px++)
                 {
                     // get the quad pixel from the bitmap as a quad of 4 SKColor values
@@ -127,8 +127,10 @@ namespace Consolonia.Core.Drawing
                     var imagePixel = new Pixel(
                         new PixelForeground(new SimpleSymbol(quadPixelChar), foreground),
                         new PixelBackground(background));
-                    if (CurrentClip.ContainsExclusive(new Point(px, py)))
-                        _pixelBuffer[px, py] = _pixelBuffer[px, py].Blend(imagePixel);
+                    
+                    var point = new Point(px, py);
+                    if (CurrentClip.ContainsExclusive(point))
+                        _pixelBuffer[point] = _pixelBuffer[point].Blend(imagePixel);
                 }
             }
 
@@ -780,6 +782,7 @@ namespace Consolonia.Core.Drawing
             // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15); //todo: what to do if a rotation?
 
             Point position = origin.Transform(Transform);
+            var lineStartX = position.X;
 
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
@@ -796,7 +799,7 @@ namespace Consolonia.Core.Drawing
                     case "\r":
                     case "\f":
                     case "\n":
-                        position = new Point(0, position.Y + 1);
+                        position = new Point(lineStartX, position.Y + 1);
                         break;
                     default:
                     {
