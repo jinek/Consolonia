@@ -194,9 +194,12 @@ namespace Consolonia
                     // TODO: dispose managed state (managed objects)
                     _cts?.Dispose();
                     _cts = null;
-                    var consoleTopLevelImpl = (ConsoleWindowImpl)MainWindow.PlatformImpl;
-                    ArgumentNullException.ThrowIfNull(consoleTopLevelImpl, nameof(consoleTopLevelImpl));
-                    consoleTopLevelImpl.Dispose();
+                    if (MainWindow != null && MainWindow.PlatformImpl != null)
+                    {
+                        var consoleTopLevelImpl = (ConsoleWindowImpl)MainWindow.PlatformImpl;
+                        ArgumentNullException.ThrowIfNull(consoleTopLevelImpl, nameof(consoleTopLevelImpl));
+                        consoleTopLevelImpl.Dispose();
+                    }
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

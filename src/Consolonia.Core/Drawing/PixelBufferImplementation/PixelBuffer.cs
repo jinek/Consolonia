@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Text;
 using Avalonia;
 using Avalonia.Media;
 using Newtonsoft.Json;
@@ -65,6 +66,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             set => _buffer[x, y] = value;
         }
 
+        [JsonIgnore]
+        public Pixel this[Point point]
+        {
+            get => this[(PixelBufferCoordinate)point];
+            set => this[(PixelBufferCoordinate)point] = value;
+        }
+
         [JsonIgnore] public int Length => _buffer.Length;
 
         [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
@@ -74,6 +82,28 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         private (ushort x, ushort y) ToXY(int i)
         {
             return ((ushort x, ushort y))(i % Width, i / Width);
+        }
+
+        public string PrintBuffer()
+        {
+            var stringBuilder = new StringBuilder();
+
+            for (ushort j = 0; j < Height; j++)
+            {
+                for (ushort i = 0; i < Width; i++)
+                {
+                    if (i == Width - 1 && j == Height - 1)
+                        break;
+                    Pixel pixel = this[new PixelBufferCoordinate(i, j)];
+                    string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.Text;
+                    //todo: check why cursor is not drawing
+                    stringBuilder.Append(text);
+                }
+
+                stringBuilder.AppendLine();
+            }
+
+            return stringBuilder.ToString();
         }
     }
 }

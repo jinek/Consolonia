@@ -168,27 +168,6 @@ namespace Consolonia.NUnit
             await WaitRendered().ConfigureAwait(true);
         }
 
-        internal string PrintBuffer()
-        {
-            var stringBuilder = new StringBuilder();
-
-            for (ushort j = 0; j < PixelBuffer.Height; j++)
-            {
-                for (ushort i = 0; i < PixelBuffer.Width; i++)
-                {
-                    if (i == PixelBuffer.Width - 1 && j == PixelBuffer.Height - 1)
-                        break;
-                    Pixel pixel = PixelBuffer[new PixelBufferCoordinate(i, j)];
-                    string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.Text;
-                    //todo: check why cursor is not drawing
-                    stringBuilder.Append(text);
-                }
-
-                stringBuilder.AppendLine();
-            }
-
-            return stringBuilder.ToString();
-        }
 
         public void SetupLifetime(ConsoloniaLifetime lifetime)
         {

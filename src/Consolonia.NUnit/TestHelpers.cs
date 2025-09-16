@@ -36,7 +36,7 @@ namespace Consolonia.NUnit
 
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                printBuffer = unitTestConsole.PrintBuffer();
+                printBuffer = unitTestConsole.PixelBuffer.PrintBuffer();
 
                 var regex = new Regex(regexToSearch);
                 found = regex.IsMatch(printBuffer);
