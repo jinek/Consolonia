@@ -759,9 +759,10 @@ namespace Consolonia.Core.Drawing
             ushort end = isVertical ? (ushort)intersect.Bottom : (ushort)intersect.Right;
             // align head with the first intersected point
             head = isVertical ? head.WithY(start) : head.WithX(start);
+            var newPixel = new Pixel(symbol, color);
             for (int i = start; i < end; i++)
             {
-                _pixelBuffer[head] = _pixelBuffer[head].Blend(new Pixel(symbol, color));
+                _pixelBuffer[head] = _pixelBuffer[head].Blend(newPixel);
 
                 head = isVertical
                     ? head.WithY(head.Y + 1)
