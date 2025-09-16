@@ -743,7 +743,8 @@ namespace Consolonia.Core.Drawing
             _consoleWindowImpl.DirtyRegions.AddRect(intersect);
         }
 
-        private void DrawLineSymbolAndMoveHead(ref Point head, bool isVertical, in ISymbol symbol, Color color, int count)
+        private void DrawLineSymbolAndMoveHead(ref Point head, bool isVertical, in ISymbol symbol, Color color,
+            int count)
         {
             Rect rectToRefresh = isVertical
                 ? new Rect((int)head.X, (int)head.Y, 1, count)
