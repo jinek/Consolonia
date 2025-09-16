@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Threading;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Helpers
 {
@@ -24,19 +26,26 @@ namespace Consolonia.Core.Helpers
             //todo: low will not unblock reading or writing threads.
         }
 
-        public Task RunAsync()
+        public void StartReading()
         {
-            return Task.Run(() =>
+            Task _ = Task.Run(async () =>
             {
                 while (!_disposed)
-                {
-                    T[] newData = readDataFunction();
-                    if (!newData.Any())
-                        throw new InvalidOperationException("No data read from the source.");
+                    try
+                    {
+                        T[] newData = readDataFunction();
+                        if (!newData.Any())
+                            return;
 
-                    Enqueue(newData);
-                    //todo: low should continue the loop in case of exceptions?
-                }
+                        Enqueue(newData);
+                    }
+                    catch (Exception exception)
+                    {
+                        await Helper.WaitDispatcherInitialized();
+                        Dispatcher.UIThread.Post(
+                            () => throw new ConsoloniaException("Exception in input loop", exception),
+                            DispatcherPriority.MaxValue);
+                    }
             });
         }
 

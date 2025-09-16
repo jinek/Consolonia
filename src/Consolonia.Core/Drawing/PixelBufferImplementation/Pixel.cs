@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Media;
 using Consolonia.Controls;
@@ -20,16 +21,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         "'{Foreground.Symbol.Text}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
     public readonly struct Pixel : IEquatable<Pixel>
     {
+        private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
+            new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Pixel()
         {
-            Foreground = new PixelForeground();
-            Background = new PixelBackground();
+            Foreground = PixelForeground.Default;
+            Background = PixelBackground.Transparent;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Pixel(CaretStyle caretStyle)
         {
-            Foreground = new PixelForeground();
-            Background = new PixelBackground();
+            Foreground = PixelForeground.Default;
+            Background = PixelBackground.Transparent;
             CaretStyle = caretStyle;
         }
 
@@ -41,13 +47,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <param name="style"></param>
         /// <param name="weight"></param>
         /// <param name="textDecorations"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Pixel(ISymbol symbol,
             Color foregroundColor,
             FontStyle style = FontStyle.Normal,
             FontWeight weight = FontWeight.Normal,
             TextDecorationLocation? textDecorations = null) : this(
             new PixelForeground(symbol, foregroundColor, weight, style, textDecorations),
-            new PixelBackground())
+            PixelBackground.Transparent)
         {
         }
 
@@ -55,15 +62,28 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         ///     Make a pixel with only background color, but no foreground
         /// </summary>
         /// <param name="background"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Pixel(PixelBackground background) :
-            this(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent),
-                background)
+            this(PixelForeground.Default, background)
         {
         }
 
         /// <summary>
         ///     Make a pixel with foreground and background
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Pixel(PixelForeground foreground,
+            CaretStyle caretStyle = CaretStyle.None)
+        {
+            Foreground = foreground;
+            Background = PixelBackground.Transparent;
+            CaretStyle = caretStyle;
+        }
+
+        /// <summary>
+        ///     Make a pixel with foreground and background
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Pixel(PixelForeground foreground,
             PixelBackground background,
             CaretStyle caretStyle = CaretStyle.None)
@@ -79,8 +99,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         // pixel space is a pixel with a space symbol, but could have color blended into. it is used to advance the cursor
         // and set the background color
-        public static Pixel Space => new(new PixelForeground(new SimpleSymbol(' '), Colors.Transparent),
-            new PixelBackground(Colors.Transparent));
+        public static Pixel Space => new(new PixelForeground(SimpleSymbol.Space, Colors.Transparent),
+            PixelBackground.Transparent);
 
         public PixelForeground Foreground { get; init; }
 
@@ -151,7 +171,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
                     if (pixelAbove.Background.Color.A == 0xFF)
                         // non-transparent layer above
-                        newForeground = new PixelForeground();
+                        newForeground = PixelForeground.Default;
                     else
                         newForeground = new PixelForeground(Foreground.Symbol,
                             MergeColors(Foreground.Color, pixelAbove.Background.Color),
@@ -174,8 +194,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <returns>source blended into target</returns>
         private static Color MergeColors(Color target, Color source)
         {
-            var consoleColorMode = AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>();
-            return consoleColorMode.Blend(target, source);
+            return ConsoleColorMode.Value.Blend(target, source);
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)

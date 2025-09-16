@@ -13,7 +13,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void Constructor()
         {
-            var pixelForeground = new PixelForeground();
+            var pixelForeground = PixelForeground.Default;
             Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Transparent));
             Assert.That(pixelForeground.Symbol.Text, Is.EqualTo(" "));
             Assert.That(pixelForeground.Symbol.Width, Is.EqualTo(1));
@@ -193,7 +193,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void JsonSerializationDefault()
         {
-            var pixelForeground = new PixelForeground();
+            var pixelForeground = PixelForeground.Default;
             string json = JsonConvert.SerializeObject(pixelForeground);
             var pixelForeground2 = JsonConvert.DeserializeObject<PixelForeground>(json);
             Assert.That(pixelForeground.Equals(pixelForeground2));

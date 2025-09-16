@@ -25,26 +25,25 @@
             <ToggleButton Name="wordWrap" IsChecked="{Binding #Editor.WordWrap}" Content="Wrap"/>
             <ToggleButton Name="viewTabs" Content="View tabs" IsChecked="{Binding #Editor.Options.ShowTabs}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
             <ToggleButton Name="viewSpaces" Content="View spaces" IsChecked="{Binding #Editor.Options.ShowSpaces}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Button Name="exit" Click="OnExit">E_xit</Button>
         </StackPanel>
 
-        <!-- FontSize="0.7407407407407407" is magic value to fix a bug in AvaloniaEdit when using console fonts.-->
         <AvalonEdit:TextEditor Name="Editor" Grid.Row="2"
-                               FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
                                ShowLineNumbers="True"
-                               FontSize="0.7407407407407407"
                                HorizontalScrollBarVisibility="Visible"
                                VerticalScrollBarVisibility="Visible"
                                Background="Transparent">
             <AvalonEdit:TextEditor.Options>
-                <AvalonEdit:TextEditorOptions 
-                     AllowToggleOverstrikeMode = "true"
-                     EnableTextDragDrop = "true"
-                     EnableRectangularSelection = "False"
-                     ShowBoxForControlCharacters = "true"
-                     EnableVirtualSpace="False"
-                     HighlightCurrentLine = "true"/>
+                <AvalonEdit:TextEditorOptions
+                    AcceptsTab="true"
+                    AllowToggleOverstrikeMode = "true"
+                    EnableTextDragDrop = "true"
+                    EnableRectangularSelection = "False"
+                    ShowBoxForControlCharacters = "true"
+                    EnableVirtualSpace="False"
+                    HighlightCurrentLine = "true"/>
             </AvalonEdit:TextEditor.Options>
-            
+
             <!--Watermark="Start typing to bring your ideas to life...">-->
             <AvalonEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>

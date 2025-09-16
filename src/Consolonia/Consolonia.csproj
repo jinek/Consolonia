@@ -1,5 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+    <PropertyGroup>
+        <Description>This package is meta package for building Console applications using Consolonia.</Description>
+    </PropertyGroup>
+    
     <ItemGroup>
       <ProjectReference Include="..\Consolonia.Controls\Consolonia.Controls.csproj" />
       <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />

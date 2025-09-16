@@ -7,7 +7,7 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Text;
+using Consolonia.Core.Helpers;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -26,6 +26,8 @@ namespace Consolonia.Core.Infrastructure
         {
             if (consoleOutput is ConsoleBase)
                 throw new ArgumentException("ConsoleBase cannot be used as a console output", nameof(consoleOutput));
+
+            Console.TreatControlCAsInput = true;
 
             _consoleOutput = consoleOutput;
 
@@ -50,7 +52,7 @@ namespace Consolonia.Core.Infrastructure
         {
             Task.Run(async () =>
             {
-                await WaitDispatcherInitialized();
+                await Helper.WaitDispatcherInitialized();
 
                 while (!Disposed)
                 {
@@ -73,12 +75,6 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning restore CA1822
         {
             await Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Input);
-        }
-
-        protected static async Task WaitDispatcherInitialized()
-        {
-            //todo: low this method is not supposed to exist at all, but for simplicity we call Dispatcher right from our low level ConsoleBase, which brings necessarity to wait for it to be initialized
-            while (AvaloniaLocator.Current.GetService<IDispatcherImpl>() == null) await Task.Yield();
         }
 
         #region IConsoleInput
@@ -156,7 +152,6 @@ namespace Consolonia.Core.Infrastructure
 
         public virtual void PrepareConsole()
         {
-            Console.TreatControlCAsInput = true;
             _consoleOutput.PrepareConsole();
         }
 
@@ -169,7 +164,6 @@ namespace Consolonia.Core.Infrastructure
         public virtual void RestoreConsole()
         {
             _consoleOutput.RestoreConsole();
-            WriteText(Esc.DisableBracketedPasteMode);
         }
 
         public virtual void SetCaretPosition(PixelBufferCoordinate bufferPoint)

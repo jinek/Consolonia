@@ -4,7 +4,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d"
-             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryAnimatedLines">
+             x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryAnimations">
+    <!--<UserControl.Styles>
+        <Styles>
+            <Style Selector="ScrollViewer">
+                <Style.Animations>
+                    <Animation Duration="0:0:1"
+                               IterationCount="Infinite"
+                               PlaybackDirection="Alternate">
+                        <KeyFrame Cue="0%">
+                            <Setter Property="Background"
+                                    Value="Red" />
+                        </KeyFrame>
+                        <KeyFrame Cue="60%">
+                            <Setter Property="Background"
+                                    Value="Blue" />
+                        </KeyFrame>
+                        <KeyFrame Cue="100%">
+                            <Setter Property="Background"
+                                    Value="Red" />
+                        </KeyFrame>
+                    </Animation>
+                </Style.Animations>
+            </Style>
+        </Styles>
+    </UserControl.Styles>-->
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Panel>
             <Panel Width="40"
@@ -13,6 +37,7 @@
                         BorderThickness="1"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Left">
+                    <!--<Panel Background="Purple"/>-->
                     <Border.Styles>
                         <Style Selector="Border">
                             <Style.Animations>
@@ -48,6 +73,7 @@
                 <Border BorderThickness="1"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right">
+                    <!--<Panel Background="Orange"/>-->
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="Bold"
                                            Brush="Blue" />
@@ -88,6 +114,7 @@
                 <Border BorderThickness="1"
                         VerticalAlignment="Bottom"
                         HorizontalAlignment="Right">
+                    <!--<Panel Background="Green"/>-->
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="DoubleLine"
                                            Brush="Blue" />

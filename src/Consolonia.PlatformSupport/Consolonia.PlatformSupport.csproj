@@ -1,5 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+    <PropertyGroup>
+        <Description>This package provides platform support for adapting to consoles on Windows, Linux and MacOS environments when building Console applications using Consolonia</Description>
+    </PropertyGroup>
+
     <ItemGroup>
       <PackageReference Include="Medo.X11Clipboard" Version="1.0.0" />
       <PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.4" />
