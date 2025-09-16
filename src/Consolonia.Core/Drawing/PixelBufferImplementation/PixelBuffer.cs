@@ -27,8 +27,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             // initialize the buffer with space so it draws any background color
             // blended into it.
             for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-                _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
+                for (ushort x = 0; x < width; x++)
+                    _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
         }
 
         public ushort Width { get; }
@@ -84,16 +84,26 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return ((ushort x, ushort y))(i % Width, i / Width);
         }
 
-        internal string Dump()
+        public string PrintBuffer()
         {
-            var sb = new StringBuilder();
-            for (int y = 0; y < Height; y++)
+            var stringBuilder = new StringBuilder();
+
+            for (ushort j = 0; j < Height; j++)
             {
-                for (int x = 0; x < Width; x++) sb.Append(_buffer[x, y].Foreground.Symbol.Text);
-                sb.AppendLine();
+                for (ushort i = 0; i < Width; i++)
+                {
+                    if (i == Width - 1 && j == Height - 1)
+                        break;
+                    Pixel pixel = this[new PixelBufferCoordinate(i, j)];
+                    string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.Text;
+                    //todo: check why cursor is not drawing
+                    stringBuilder.Append(text);
+                }
+
+                stringBuilder.AppendLine();
             }
 
-            return sb.ToString();
+            return stringBuilder.ToString();
         }
     }
 }

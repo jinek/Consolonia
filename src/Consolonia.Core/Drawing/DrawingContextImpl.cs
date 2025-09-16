@@ -867,7 +867,6 @@ namespace Consolonia.Core.Drawing
         /// <param name="colors"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static char GetQuadPixelCharacter(Span<SKColor> colors)
         {
             char character = GetColorsPattern(colors) switch
@@ -903,7 +902,6 @@ namespace Consolonia.Core.Drawing
         /// <param name="pixelColors">4 colors</param>
         /// <returns>foreground color</returns>
         /// <exception cref="NotImplementedException"></exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Color GetForegroundColorForQuadPixel(char quadPixel, Span<SKColor> pixelColors)
         {
             if (pixelColors.Length != 4)
@@ -941,7 +939,6 @@ namespace Consolonia.Core.Drawing
         /// <param name="pixelColors"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Color GetBackgroundColorForQuadPixel(char quadPixel, Span<SKColor> pixelColors)
         {
             SKColor skColor = quadPixel switch
@@ -998,7 +995,6 @@ namespace Consolonia.Core.Drawing
         /// <param name="colors"></param>
         /// <returns>T or F for each color as a string</returns>
         /// <exception cref="ArgumentException"></exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static byte GetColorsPattern(Span<SKColor> colors)
         {
             if (colors.Length != 4) throw new ArgumentException("Array must contain exactly 4 colors.");
@@ -1077,7 +1073,6 @@ namespace Consolonia.Core.Drawing
                  (clusters[3] == higherCluster ? 0b0001 : 0));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int GetColorCluster(SKColor color, Span<SKColor> clusterCenters)
         {
             double minDistance = double.MaxValue;
@@ -1096,7 +1091,6 @@ namespace Consolonia.Core.Drawing
             return closestCluster;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static double GetColorDistance(SKColor c1, SKColor c2)
         {
             int dr = c1.Red - c2.Red;
@@ -1108,7 +1102,6 @@ namespace Consolonia.Core.Drawing
         }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static double GetColorBrightness(SKColor color)
         {
             return 0.299 * color.Red + 0.587 * color.Green + 0.114 * color.Blue + color.Alpha;
