@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Security;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Media;
@@ -130,7 +129,7 @@ namespace Consolonia.Core.Drawing
                     var imagePixel = new Pixel(
                         new PixelForeground(new SimpleSymbol(quadPixelChar), foreground),
                         new PixelBackground(background));
-                    
+
                     var point = new Point(px, py);
                     if (CurrentClip.ContainsExclusive(point))
                         _pixelBuffer[point] = _pixelBuffer[point].Blend(imagePixel);
@@ -786,7 +785,7 @@ namespace Consolonia.Core.Drawing
             // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15); //todo: what to do if a rotation?
 
             Point position = origin.Transform(Transform);
-            var lineStartX = position.X;
+            double lineStartX = position.X;
 
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
