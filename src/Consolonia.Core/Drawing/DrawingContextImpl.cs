@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Media;
@@ -98,7 +99,8 @@ namespace Consolonia.Core.Drawing
             // resize source to be target rect * 2 so we can map to quad pixels
             using var bitmap = new SKBitmap((int)targetRect.Width * 2, (int)targetRect.Height * 2);
             using var canvas = new SKCanvas(bitmap);
-            using var skPaint = new SKPaint { FilterQuality = SKFilterQuality.Medium };
+            using var skPaint = new SKPaint();
+            skPaint.FilterQuality = SKFilterQuality.Medium;
             canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, bitmap.Width, bitmap.Height), skPaint);
 
             // this is reused by each pixel as we process the bitmap
