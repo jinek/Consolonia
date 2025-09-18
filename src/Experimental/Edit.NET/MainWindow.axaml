@@ -10,54 +10,108 @@
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" Click="OnNewFile_OnClick" InputGesture="Ctrl+N"/>
-                <MenuItem Header="_Open..." InputGesture="Ctrl+O"/>
-                <MenuItem Header="_Save" InputGesture="Ctrl+S"/>
-                <MenuItem Header="Save _As..." InputGesture="Ctrl+Shift+S"/>
-                <Separator/>
-                <MenuItem Header="E_xit" Click="Exit_OnClick"/>
+                <MenuItem Header="_New"
+                          Click="OnNewFile_OnClick"
+                          InputGesture="Ctrl+N" />
+                <MenuItem Header="_Open..."
+                          Click="Open_OnClick"
+                          InputGesture="Ctrl+O" />
+                <MenuItem Header="_Save"
+                          Click="Save_OnClick"
+                          InputGesture="Ctrl+S" />
+                <MenuItem Header="Save _As..."
+                          Click="SaveAs_OnClick"
+                          InputGesture="Ctrl+Shift+S" />
+                <Separator />
+                <MenuItem Header="E_xit"
+                          Click="Exit_OnClick" />
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="_Undo" Command="{Binding UndoCommand}" InputGesture="Ctrl+Z"/>
-                <MenuItem Header="_Redo" Command="{Binding RedoCommand}" InputGesture="Ctrl+Y"/>
-                <Separator/>
-                <MenuItem Header="Cu_t" Click="Cut_OnClick" InputGesture="Ctrl+X"/>
-                <MenuItem Header="_Copy" Command="{Binding CopyCommand}" InputGesture="Ctrl+C"/>
-                <MenuItem Header="_Paste" Command="{Binding PasteCommand}" InputGesture="Ctrl+V"/>
-                <Separator/>
-                <MenuItem Header="Select _All" Command="{Binding SelectAllCommand}" InputGesture="Ctrl+A"/>
+                <MenuItem Header="_Undo"
+                          Command="{Binding UndoCommand}"
+                          InputGesture="Ctrl+Z" />
+                <MenuItem Header="_Redo"
+                          Command="{Binding RedoCommand}"
+                          InputGesture="Ctrl+Y" />
+                <Separator />
+                <MenuItem Header="Cu_t"
+                          Click="Cut_OnClick"
+                          InputGesture="Ctrl+X" />
+                <MenuItem Header="_Copy"
+                          Command="{Binding CopyCommand}"
+                          InputGesture="Ctrl+C" />
+                <MenuItem Header="_Paste"
+                          Command="{Binding PasteCommand}"
+                          InputGesture="Ctrl+V" />
+                <Separator />
+                <MenuItem Header="Select _All"
+                          Command="{Binding SelectAllCommand}"
+                          InputGesture="Ctrl+A" />
+            </MenuItem>
+            <MenuItem Header="_Syntax">
+                <MenuItem Header="Plain Text" Click="SyntaxPlain_OnClick"/>
+                <MenuItem Header="C#" Click="SyntaxCSharp_OnClick"/>
+                <MenuItem Header="XML" Click="SyntaxXml_OnClick"/>
+                <MenuItem Header="HTML" Click="SyntaxHtml_OnClick"/>
+                <MenuItem Header="JavaScript" Click="SyntaxJavaScript_OnClick"/>
             </MenuItem>
             <MenuItem Header="_Help">
-                <MenuItem Header="_About" Command="{Binding AboutCommand}"/>
+                <MenuItem Header="_About"
+                          Command="{Binding AboutCommand}" />
             </MenuItem>
         </Menu>
-        <Border x:Name="BottomPanel" Background="{DynamicResource ThemeBorderBrush}" DockPanel.Dock="Bottom">
-            <TextBlock>sometext at the bottom</TextBlock>
+        <Border x:Name="BottomPanel"
+                Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
+                DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal" Spacing="2" Margin="4,2">
+                <TextBlock Name="FileNameText" Text="[No Name]"/>
+                <TextBlock Text=" | "/>
+                <TextBlock Name="PositionText" Text="Ln 1, Col 1"/>
+                <TextBlock Text=" | "/>
+                <TextBlock Name="LengthText" Text="Len 0"/>
+                <TextBlock Text=" | "/>
+                <TextBlock Name="ModifiedText" Text="Saved"/>
+            </StackPanel>
         </Border>
         <avaloniaEdit:TextEditor Name="Editor"
-                               ShowLineNumbers="True"
-                               HorizontalScrollBarVisibility="Visible"
-                               VerticalScrollBarVisibility="Visible"
-                               Background="Transparent">
+                                 ShowLineNumbers="True"
+                                 HorizontalScrollBarVisibility="Visible"
+                                 VerticalScrollBarVisibility="Visible"
+                                 Background="Transparent">
             <avaloniaEdit:TextEditor.Options>
-                <avaloniaEdit:TextEditorOptions
-                    AcceptsTab="true"
-                    AllowToggleOverstrikeMode = "true"
-                    EnableTextDragDrop = "true"
-                    EnableRectangularSelection = "False"
-                    ShowBoxForControlCharacters = "true"
-                    EnableVirtualSpace="False"
-                    HighlightCurrentLine = "true"/>
+                <avaloniaEdit:TextEditorOptions AcceptsTab="true"
+                                                AllowToggleOverstrikeMode="true"
+                                                EnableTextDragDrop="true"
+                                                EnableRectangularSelection="False"
+                                                ShowBoxForControlCharacters="true"
+                                                EnableVirtualSpace="False"
+                                                HighlightCurrentLine="true" />
             </avaloniaEdit:TextEditor.Options>
 
-            
+
             <avaloniaEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>
-                    <MenuItem Header="Copy" InputGesture="ctrl+C" Command="{Binding CopyMouseCommmand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
-                    <MenuItem Header="Cut" InputGesture="ctrl+X" Command="{Binding CutMouseCommand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
-                    <MenuItem Header="Paste" InputGesture="ctrl+V" Command="{Binding PasteMouseCommmand}"  CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
-                    <MenuItem Header="-"/>
-                    <MenuItem Header="Select All" InputGesture="ctrl+A" Command="{Binding SelectAllMouseCommmand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
+                    <MenuItem Header="Copy"
+                              InputGesture="ctrl+C"
+                              Command="{Binding CopyMouseCommmand}"
+                              CommandParameter="{Binding #Editor.TextArea}">
+                    </MenuItem>
+                    <MenuItem Header="Cut"
+                              InputGesture="ctrl+X"
+                              Command="{Binding CutMouseCommand}"
+                              CommandParameter="{Binding #Editor.TextArea}">
+                    </MenuItem>
+                    <MenuItem Header="Paste"
+                              InputGesture="ctrl+V"
+                              Command="{Binding PasteMouseCommmand}"
+                              CommandParameter="{Binding #Editor.TextArea}">
+                    </MenuItem>
+                    <MenuItem Header="-" />
+                    <MenuItem Header="Select All"
+                              InputGesture="ctrl+A"
+                              Command="{Binding SelectAllMouseCommmand}"
+                              CommandParameter="{Binding #Editor.TextArea}">
+                    </MenuItem>
                 </MenuFlyout>
             </avaloniaEdit:TextEditor.ContextFlyout>
         </avaloniaEdit:TextEditor>

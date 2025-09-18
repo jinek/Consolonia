@@ -4,6 +4,6 @@
              x:Class="Edit.NET.App">
     <Application.Styles>
         <console:TurboVisionCompatibleTheme />
-        <StyleInclude Source="avares://Consolonia.AvaloniaEdit/Theme.axaml" />
+        <StyleInclude Source="avares://Consolonia.AvaloniaEdit/TurboVisionCompatibleTheme.axaml" />
     </Application.Styles>
 </Application>

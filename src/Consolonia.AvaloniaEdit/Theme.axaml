@@ -62,6 +62,8 @@
             -->
             <Setter Property="console:Caret.UseConsole"
                     Value="True" />
+            <Setter Property="LineNumbersForeground"
+                    Value="{DynamicResource ThemeNoDisturbBrush}" />
         </ControlTheme>
     </Styles.Resources>
 
