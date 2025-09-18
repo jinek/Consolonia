@@ -23,7 +23,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             Assert.That(symbol.Text, Is.EqualTo("─"));
             var symbolAbove = new Symbol(0b0000_1010);
             Assert.That(symbolAbove.Text, Is.EqualTo("│"));
-            var newSymbol = symbol.Blend(ref symbolAbove);
+            Symbol newSymbol = symbol.Blend(ref symbolAbove);
             Assert.That(newSymbol.Text, Is.EqualTo("┼"));
         }
 
@@ -55,7 +55,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             {
                 var symbol1 = new Symbol(code1);
                 var symbol2 = new Symbol(code2);
-                var blendedSymbol = symbol1.Blend(ref symbol2);
+                Symbol blendedSymbol = symbol1.Blend(ref symbol2);
                 if (symbol1.Text != symbol2.Text)
                     Debug.WriteLine($"{symbol1.Text} + {symbol2.Text} => {blendedSymbol.Text}");
                 Assert.That(blendedSymbol.Text, Is.Not.Null);
