@@ -73,7 +73,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void Equalityvar()
+        public void EqualitySymbol()
         {
             var symbol = new Symbol(0b0000_1111);
             var symbol2 = new Symbol(0b0000_1111);
