@@ -13,18 +13,18 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void Constructor()
         {
             var symbol = new Symbol(0b0000_1111);
-            Assert.That(symbol.Text, Is.EqualTo("┼"));
+            Assert.That(symbol.Character, Is.EqualTo('┼'));
         }
 
         [Test]
         public void Blend()
         {
             var symbol = new Symbol(0b0000_0101);
-            Assert.That(symbol.Text, Is.EqualTo("─"));
+            Assert.That(symbol.Character, Is.EqualTo('─'));
             var symbolAbove = new Symbol(0b0000_1010);
-            Assert.That(symbolAbove.Text, Is.EqualTo("│"));
+            Assert.That(symbolAbove.Character, Is.EqualTo('│'));
             Symbol newSymbol = symbol.Blend(ref symbolAbove);
-            Assert.That(newSymbol.Text, Is.EqualTo("┼"));
+            Assert.That(newSymbol.Character, Is.EqualTo('┼'));
         }
 
         [Test]
@@ -56,9 +56,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 var symbol1 = new Symbol(code1);
                 var symbol2 = new Symbol(code2);
                 Symbol blendedSymbol = symbol1.Blend(ref symbol2);
-                if (symbol1.Text != symbol2.Text)
-                    Debug.WriteLine($"{symbol1.Text} + {symbol2.Text} => {blendedSymbol.Text}");
-                Assert.That(blendedSymbol.Text, Is.Not.Null);
+                if (symbol1.Character != symbol2.Character)
+                        Debug.WriteLine($"{symbol1.Character} + {symbol2.Character} => {blendedSymbol.Character}");
             }
         }
 

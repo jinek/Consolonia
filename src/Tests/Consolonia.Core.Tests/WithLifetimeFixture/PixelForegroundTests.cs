@@ -15,7 +15,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             var pixelForeground = PixelForeground.Default;
             Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Transparent));
-            Assert.That(pixelForeground.Symbol.Text, Is.EqualTo(" "));
+            Assert.That(pixelForeground.Symbol.Character, Is.EqualTo(' '));
             Assert.That(pixelForeground.Symbol.Width, Is.EqualTo(1));
             Assert.IsNull(pixelForeground.Weight);
             Assert.IsNull(pixelForeground.Style);
@@ -28,7 +28,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var symbol = new Symbol('a');
             var pixelForeground = new PixelForeground(symbol, Colors.Red);
             Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Red));
-            Assert.That(pixelForeground.Symbol.Text, Is.EqualTo("a"));
+            Assert.That(pixelForeground.Symbol.Character, Is.EqualTo('a'));
             Assert.IsNull(pixelForeground.Weight);
             Assert.IsNull(pixelForeground.Style);
             Assert.IsNull(pixelForeground.TextDecoration);
@@ -40,7 +40,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var symbol = new Symbol('a');
             var pixelForeground = new PixelForeground(symbol, Colors.Red, FontWeight.Bold);
             Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Red));
-            Assert.That(pixelForeground.Symbol.Text, Is.EqualTo("a"));
+            Assert.That(pixelForeground.Symbol.Character, Is.EqualTo('a'));
             Assert.That(pixelForeground.Weight, Is.EqualTo(FontWeight.Bold));
             Assert.IsNull(pixelForeground.Style);
             Assert.IsNull(pixelForeground.TextDecoration);
@@ -52,7 +52,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var symbol = new Symbol('a');
             var pixelForeground = new PixelForeground(symbol, Colors.Red, style: FontStyle.Italic);
             Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Red));
-            Assert.That(pixelForeground.Symbol.Text, Is.EqualTo("a"));
+            Assert.That(pixelForeground.Symbol.Character, Is.EqualTo('a'));
             Assert.IsNull(pixelForeground.Weight);
             Assert.That(pixelForeground.Style, Is.EqualTo(FontStyle.Italic));
             Assert.IsNull(pixelForeground.TextDecoration);
@@ -65,7 +65,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             TextDecorationLocation? textDecoration = TextDecorationLocation.Underline;
             var pixelForeground = new PixelForeground(symbol, Colors.Red, textDecoration: textDecoration);
             Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Red));
-            Assert.That(pixelForeground.Symbol.Text, Is.EqualTo("a"));
+            Assert.That(pixelForeground.Symbol.Character, Is.EqualTo('a'));
             Assert.IsNull(pixelForeground.Weight);
             Assert.IsNull(pixelForeground.Style);
             Assert.That(pixelForeground.TextDecoration, Is.EqualTo(TextDecorationLocation.Underline));
@@ -78,7 +78,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var symbol = new Symbol(rune.ToString());
             var pixelForeground = new PixelForeground(symbol, Colors.Red);
             Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Red));
-            Assert.That(pixelForeground.Symbol.Text, Is.EqualTo("🎵"));
+            Assert.That(pixelForeground.Symbol.Character, Is.EqualTo(char.MinValue));
+            Assert.That(pixelForeground.Symbol.Complex, Is.EqualTo("🎵"));
             Assert.IsNull(pixelForeground.Weight);
             Assert.IsNull(pixelForeground.Style);
             Assert.IsNull(pixelForeground.TextDecoration);
@@ -122,7 +123,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var pixelForegroundAbove = new PixelForeground(symbolAbove, Colors.Blue);
             PixelForeground newPixelForeground = pixelForeground.Blend(pixelForegroundAbove);
             Assert.That(newPixelForeground.Color, Is.EqualTo(Colors.Blue));
-            Assert.That(newPixelForeground.Symbol.Text, Is.EqualTo("b"));
+            Assert.That(newPixelForeground.Symbol.Character, Is.EqualTo('b'));
         }
 
         [Test]
@@ -135,7 +136,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 TextDecorationLocation.Underline);
             PixelForeground newPixelForeground = pixelForeground.Blend(pixelForegroundAbove);
             Assert.That(newPixelForeground.Color, Is.EqualTo(Colors.Blue));
-            Assert.That(newPixelForeground.Symbol.Text, Is.EqualTo("b"));
+            Assert.That(newPixelForeground.Symbol.Character, Is.EqualTo('b'));
             Assert.That(newPixelForeground.Weight, Is.EqualTo(FontWeight.Bold));
             Assert.That(newPixelForeground.Style, Is.EqualTo(FontStyle.Italic));
             Assert.That(newPixelForeground.TextDecoration, Is.EqualTo(TextDecorationLocation.Underline));
@@ -150,7 +151,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var pixelForegroundAbove = new PixelForeground(symbolAbove, Colors.Blue);
             PixelForeground newPixelForeground = pixelForeground.Blend(pixelForegroundAbove);
             Assert.That(newPixelForeground.Color, Is.EqualTo(Colors.Blue));
-            Assert.That(newPixelForeground.Symbol.Text, Is.EqualTo("🎶"));
+            Assert.That(newPixelForeground.Symbol.Complex, Is.EqualTo("🎶"));
         }
 
         [Test]

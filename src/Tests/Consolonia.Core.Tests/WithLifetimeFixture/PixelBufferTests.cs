@@ -34,7 +34,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 {
                     case 0:
                     {
-                        Assert.That(buffer[x, y].Foreground.Symbol.Text == $"{x},{y}");
+                        Assert.That(buffer[x, y].Foreground.Symbol.Complex == $"{x},{y}");
                         Assert.That(buffer[x, y].Foreground.Color == Colors.Blue);
                     }
                         break;
@@ -44,7 +44,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     }
                         break;
                     case 2:
-                        Assert.That(buffer[x, y].Foreground.Symbol.Text == $"{x},{y}");
+                        Assert.That(buffer[x, y].Foreground.Symbol.Complex == $"{x},{y}");
                         Assert.That(buffer[x, y].Foreground.Color == Colors.White);
                         Assert.That(buffer[x, y].Foreground.Style == FontStyle.Italic);
                         Assert.That(buffer[x, y].Foreground.Weight == FontWeight.Bold);

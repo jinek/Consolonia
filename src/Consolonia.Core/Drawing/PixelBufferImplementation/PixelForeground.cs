@@ -74,7 +74,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             //todo: check default(char) is there
             Symbol symbolAbove = pixelAboveForeground.Symbol;
-            ArgumentNullException.ThrowIfNull(symbolAbove);
 
             if (pixelAboveForeground.Color == Colors.Transparent)
                 // if pixelAbove is transparent then the foreground below should be unchanged.

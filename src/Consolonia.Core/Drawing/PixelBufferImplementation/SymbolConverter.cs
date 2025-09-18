@@ -27,8 +27,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             if (value.IsBoxSymbol())
                 writer.WriteValue(value.Pattern);
+            else if (!String.IsNullOrEmpty(value.Complex))
+                writer.WriteValue(value.Complex);
             else
-                writer.WriteValue(value.Text);
+                 writer.WriteValue(value.Character.ToString());
         }
     }
 }

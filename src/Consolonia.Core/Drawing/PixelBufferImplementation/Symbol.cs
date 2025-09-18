@@ -5,16 +5,14 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Consolonia.Controls;
 using Newtonsoft.Json;
+using Wcwidth;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("'{Text} {Pattern,b}'")]
+    [DebuggerDisplay("'{GetText()} {Pattern,b}'")]
     [JsonConverter(typeof(SymbolConverter))]
     public readonly struct Symbol : IEquatable<Symbol>
     {
-        // this is a cache of all characters as symbols, pattern will always be zero.
-        private static readonly Symbol[] SymbolCache = new Symbol[char.MaxValue + 1];
-
         public static readonly Symbol Empty = new();
         public static readonly Symbol Space = new(' ');
 
@@ -22,7 +20,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public Symbol()
         {
             // we use String.Empty to represent an empty symbol
-            Text = string.Empty;
+            Character = Char.MinValue;
+            Complex = null;
             Width = 0;
             Pattern = 0;
         }
@@ -30,15 +29,18 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Symbol(char ch)
         {
-            // struct copy from cache
-            this = GetCharSymbolFromCache(ch);
+            Character = ch;
+            Complex = null;
+            Width = (byte)UnicodeCalculator.GetWidth(ch);
+            Pattern = 0;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Symbol(byte boxPattern)
         {
-            // struct copy from cache
-            this = GetCharSymbolFromCache(BoxPattern.GetBoxChar(boxPattern));
+            Character = BoxPattern.GetBoxChar(boxPattern);
+            Complex = null;
+            Width = 1;
             Pattern = boxPattern;
         }
 
@@ -47,16 +49,18 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             if (glyph.Length == 1)
             {
-                // this gives us a single instance of the string for the character even if it is being flood filled into pixelbuffer.
-
-                // struct copy from cache
-                this = GetCharSymbolFromCache(glyph[0]);
+                Character = glyph[0];
+                Complex = null;
+                Width = (byte)UnicodeCalculator.GetWidth(Character);
+                Pattern = 0;
             }
             else
             {
                 // this is a multi-char glyph, we don't cache it. 
-                Text = glyph;
-                Width = (byte)Text.MeasureText();
+                Character = Char.MinValue;
+                Pattern = 0;
+                Complex = glyph;
+                Width = (byte)Complex.MeasureText();
             }
         }
 
@@ -68,31 +72,38 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
 
-        // this private ctor is used to create new symbol for cache (other ctor call into the cache)
-        private Symbol(string text, byte width)
-        {
-            Text = text;
-            Width = width;
-            Pattern = 0;
-        }
-
         public bool Equals(Symbol other)
         {
-            return Text.Equals(other.Text, StringComparison.Ordinal) &&
+            return Character == other.Character &&
+                   String.Equals(Complex, other.Complex, StringComparison.Ordinal) &&
                    Width == other.Width &&
                    Pattern == other.Pattern;
         }
 
-        public string Text { get; }
+        public char Character { get; }
+
+        /// <summary>
+        /// If cell has complex text (more than one char) this contains the full text.
+        /// </summary>
+        public string Complex { get; }
 
         // box pattern for box merging.
         public byte Pattern { get; }
 
         [JsonIgnore] public byte Width { get; init; }
 
+        /// <summary>
+        /// Get the symbol as text
+        /// </summary>
+        /// <returns>symbol as string</returns>
+        /// NOTE: This is only for debug purposes, do not use in rendering code as it allocates a string for the character.
+        public string GetText()
+            => (Complex != null && Complex.Length > 1) ? Complex : Character.ToString();
+
         public bool NothingToDraw()
         {
-            return Text.Length == 0;
+            return Character == Char.MinValue && 
+                String.IsNullOrEmpty(Complex);
         }
 
         public Symbol Blend(ref Symbol symbolAbove)
@@ -116,14 +127,15 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public override bool Equals([NotNullWhen(true)] object obj)
         {
             return obj is Symbol other && 
-                    Text.Equals(other.Text, StringComparison.Ordinal) &&
-                    Width.Equals(other.Width) &&
+                    Character == other.Character &&
+                    String.Equals(Complex, other.Complex, StringComparison.Ordinal) &&
+                    Width == other.Width &&
                     Pattern == other.Pattern;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Text, Width, Pattern);
+            return HashCode.Combine(Character, Complex, Width, Pattern);
         }
 
         public static bool operator ==(Symbol left, Symbol right)
@@ -134,21 +146,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public static bool operator !=(Symbol left, Symbol right)
         {
             return !left.Equals(right);
-        }
-
-        private static Symbol GetCharSymbolFromCache(char ch)
-        {
-            var symbol = SymbolCache[ch];
-
-            // uninitialized symbol in cache has null text.
-            if (symbol.Text == null)
-            {
-                var text = ch.ToString();
-                symbol = new Symbol(text, (byte)text.MeasureText());
-                SymbolCache[ch] = symbol;
-            }
-            return symbol;
-
         }
     }
 }
