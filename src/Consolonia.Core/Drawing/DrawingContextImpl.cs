@@ -514,9 +514,16 @@ namespace Consolonia.Core.Drawing
 
         private void FillRectangleWithBrush(IBrush brush, Rect r)
         {
-            if (brush is ISolidColorBrush { Color.A: 0 })
-                return;
+            Pixel solidPixel = default;
+            var solidColorBrush = brush as ISolidColorBrush;
+            if (solidColorBrush != null)
+            {
+                Color solidColor = solidColorBrush.Color;
+                if (solidColor is { A: 0 }) return;
 
+                solidPixel = new Pixel(new PixelBackground(solidColor));
+            }
+            
             // fill rectangle with brush
             Rect sourceRect = r.TransformToAABB(Transform);
             Rect targetRect = CurrentClip.Intersect(sourceRect);
@@ -533,7 +540,7 @@ namespace Consolonia.Core.Drawing
                 ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
                 for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++, brushX++)
                 {
-                    Color backgroundColor = brush.FromPosition(brushX, brushY, gradiantWidth, gradiantHeight);
+                    
 
                     switch (brush)
                     {
@@ -547,8 +554,21 @@ namespace Consolonia.Core.Drawing
                             _pixelBuffer[x, y] = _pixelBuffer[x, y].Invert();
                             break;
                         default:
+                            Pixel pixelAbove;
+                            if (solidColorBrush == null)
+                            {
+                                Color backgroundColor =
+                                    brush.FromPosition(brushX, brushY, gradiantWidth, gradiantHeight);
+                                pixelAbove = new Pixel(new PixelBackground(backgroundColor));
+                            }
+                            else
+                            {
+                                pixelAbove = solidPixel;
+                            }
+                            
                             _pixelBuffer[x, y] =
-                                _pixelBuffer[x, y].Blend(new Pixel(new PixelBackground(backgroundColor)));
+                                _pixelBuffer[x, y].Blend(pixelAbove);
+
                             break;
                     }
                 }
