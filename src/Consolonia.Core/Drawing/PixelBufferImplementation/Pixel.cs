@@ -48,7 +48,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <param name="weight"></param>
         /// <param name="textDecorations"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Pixel(ISymbol symbol,
+        public Pixel(Symbol symbol,
             Color foregroundColor,
             FontStyle style = FontStyle.Normal,
             FontWeight weight = FontWeight.Normal,
@@ -99,7 +99,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         // pixel space is a pixel with a space symbol, but could have color blended into. it is used to advance the cursor
         // and set the background color
-        public static Pixel Space => new(new PixelForeground(SimpleSymbol.Space, Colors.Transparent),
+        public static Pixel Space => new(new PixelForeground(Symbol.Space, Colors.Transparent),
             PixelBackground.Transparent);
 
         public PixelForeground Foreground { get; init; }

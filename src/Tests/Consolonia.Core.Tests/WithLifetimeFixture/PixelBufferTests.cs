@@ -14,11 +14,11 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             for (ushort y = 0; y < buffer.Height; y++)
             for (ushort x = 0; x < buffer.Width; x++)
                 if (x % 3 == 0)
-                    buffer[x, y] = new Pixel(new SimpleSymbol($"{x},{y}"), Colors.Blue);
+                    buffer[x, y] = new Pixel(new Symbol($"{x},{y}"), Colors.Blue);
                 else if (x % 3 == 1)
                     buffer[x, y] = Pixel.Empty;
                 else
-                    buffer[x, y] = new Pixel(new SimpleSymbol($"{x},{y}"), Colors.White, FontStyle.Italic,
+                    buffer[x, y] = new Pixel(new Symbol($"{x},{y}"), Colors.White, FontStyle.Italic,
                         FontWeight.Bold, TextDecorationLocation.Underline);
 
             return buffer;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -8,15 +9,19 @@ using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("'{Text}'")]
+    [DebuggerDisplay("'{Text} {BoxMask,b}'")]
     [JsonConverter(typeof(SymbolConverter))]
-    public readonly struct SimpleSymbol : ISymbol, IEquatable<SimpleSymbol>
+    public readonly struct Symbol : IEquatable<Symbol>
     {
-        public static readonly SimpleSymbol Empty = new();
-        public static readonly SimpleSymbol Space = new(" ");
+        private const string BoldText = "█";
+        // this is a cache of all characters as strings, primarily for box-drawing characters
+        private static readonly Dictionary<char, string> SymbolCache = new Dictionary<char, string>();
+
+        public static readonly Symbol Empty = new();
+        public static readonly Symbol Space = new(" ");
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SimpleSymbol()
+        public Symbol()
         {
             // we use String.Empty to represent an empty symbol
             Text = string.Empty;
@@ -24,61 +29,126 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SimpleSymbol(char character)
-            : this(character.ToString())
+        public Symbol(char ch)
         {
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SimpleSymbol(string glyph)
-        {
-            Text = glyph;
-            Width = Text.MeasureText();
+            if (!SymbolCache.TryGetValue(ch, out var text))
+            {
+                text = ch.ToString();
+                SymbolCache[ch] = text;
+            }
+            this.Text = text;
+            this.Width = (byte)text.MeasureText();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SimpleSymbol(Rune rune)
+        public Symbol(byte upRightDownLeftPattern)
         {
-            Text = rune.ToString();
-            Width = Text.MeasureText();
+            Width = 1;
+            Pattern = upRightDownLeftPattern;
+            var boxChar = PixelBufferImplementation.BoxPattern.GetBoxChar(upRightDownLeftPattern);
+            if (boxChar == PixelBufferImplementation.BoxPattern.BoldChar)
+            {
+                // get well-known string instance
+                Text = BoldText;
+            }
+            else if(boxChar == PixelBufferImplementation.BoxPattern.EmptyChar)
+            {
+                Text = string.Empty;
+            }
+            else if (boxChar >= PixelBufferImplementation.BoxPattern.Min && boxChar <= PixelBufferImplementation.BoxPattern.Max)
+            {
+                // get cached string instance
+                if (!SymbolCache.TryGetValue(boxChar, out var text))
+                {
+                    text = boxChar.ToString();
+                    SymbolCache[boxChar] = text;
+                }
+                this.Text = text;
+            }
+            else
+                // uhoh
+                throw new ArgumentOutOfRangeException(nameof(upRightDownLeftPattern));
         }
 
-        public bool Equals(SimpleSymbol other)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Symbol(string glyph)
         {
-            return Text.Equals(other.Text, StringComparison.Ordinal);
+            if (glyph.Length == 1)
+            {
+                // if it's a single char we can use the cache.
+                if (!SymbolCache.TryGetValue(glyph[0], out var text))
+                {
+                    text = glyph;
+                    SymbolCache[glyph[0]] = text;
+                }
+                Text = text;
+            }
+            else
+            {
+                Text = glyph;
+            }
+
+            Width = (byte)Text.MeasureText();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Symbol(Rune rune)
+            : this(rune.ToString())
+        {
+        }
+        public bool Equals(Symbol other)
+        {
+            return Text.Equals(other.Text, StringComparison.Ordinal) &&
+                   Pattern == other.Pattern;
         }
 
         public string Text { get; }
 
-        [JsonIgnore] public ushort Width { get; init; }
+        // box pattern for box merging.
+        public byte Pattern { get; }
+
+        [JsonIgnore] public byte Width { get; init; }
 
         public bool NothingToDraw()
         {
             return string.IsNullOrEmpty(Text);
         }
 
-        public ISymbol Blend(ref ISymbol symbolAbove)
+        public Symbol Blend(ref Symbol symbolAbove)
         {
-            return symbolAbove.NothingToDraw() ? this : symbolAbove;
+            if (symbolAbove.NothingToDraw())
+                return this;
+
+            if (this.IsBoxSymbol() && symbolAbove.IsBoxSymbol())
+            {
+                return new Symbol(BoxPattern.Merge(Pattern, symbolAbove.Pattern));
+            }
+            return symbolAbove;
+        }
+
+        public bool IsBoxSymbol()
+        {
+            return this.Pattern > 0;
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)
         {
-            return obj is SimpleSymbol other && Equals(other);
+            return obj is Symbol other && this
+                .Text.Equals(other.Text, StringComparison.Ordinal) &&
+                this.Pattern == other.Pattern;
         }
 
         public override int GetHashCode()
         {
-            return Text.GetHashCode(StringComparison.Ordinal);
+            return HashCode.Combine(Text, Pattern);
         }
 
-        public static bool operator ==(SimpleSymbol left, SimpleSymbol right)
+        public static bool operator ==(Symbol left, Symbol right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(SimpleSymbol left, SimpleSymbol right)
+        public static bool operator !=(Symbol left, Symbol right)
         {
             return !left.Equals(right);
         }

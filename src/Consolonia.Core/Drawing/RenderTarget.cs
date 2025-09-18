@@ -145,7 +145,7 @@ namespace Consolonia.Core.Drawing
                         (byte)(255 - currentPixel.Background.Color.G),
                         (byte)(255 - currentPixel.Background.Color.B));
 
-                    pixel = new Pixel(new PixelForeground(new SimpleSymbol(_consoleCursor.Type), invertColor),
+                    pixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor),
                         new PixelBackground(currentPixel.Background.Color), pixel.CaretStyle);
                 }
 

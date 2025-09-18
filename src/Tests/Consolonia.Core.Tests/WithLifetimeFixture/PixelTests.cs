@@ -29,7 +29,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void ConstructorColorAndSymbol()
         {
-            var pixel = new Pixel(new SimpleSymbol("a"), Colors.Red);
+            var pixel = new Pixel(new Symbol("a"), Colors.Red);
             Assert.That(pixel.Foreground.Symbol.Text, Is.EqualTo("a"));
             Assert.That(pixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixel.Foreground.Style, Is.EqualTo(FontStyle.Normal));
@@ -39,9 +39,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void ConstructorDrawingBoxSymbol()
+        public void ConstructorSymbol()
         {
-            var pixel = new Pixel(new DrawingBoxSymbol(0b0000_1111), Colors.Red);
+            var pixel = new Pixel(new Symbol(0b0000_1111), Colors.Red);
             Assert.That(pixel.Foreground.Symbol.Text, Is.EqualTo("┼"));
             Assert.That(pixel.Foreground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixel.Foreground.Style, Is.EqualTo(FontStyle.Normal));
@@ -51,9 +51,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void ConstructorDrawingBoxSymbolAndColor()
+        public void ConstructorSymbolAndColor()
         {
-            var pixel = new Pixel(new PixelForeground(new DrawingBoxSymbol(0b0000_1111), Colors.Red),
+            var pixel = new Pixel(new PixelForeground(new Symbol(0b0000_1111), Colors.Red),
                 new PixelBackground(Colors.Blue));
             Assert.That(pixel.Foreground.Symbol.Text, Is.EqualTo("┼"));
             Assert.That(pixel.Foreground.Color, Is.EqualTo(Colors.Red));
@@ -66,9 +66,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void Equality()
         {
-            var pixel1 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+            var pixel1 = new Pixel(new PixelForeground(new Symbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue));
-            var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+            var pixel2 = new Pixel(new PixelForeground(new Symbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue));
             Assert.That(pixel1.Equals((object)pixel2));
             Assert.That(pixel1.Equals(pixel2));
@@ -78,17 +78,17 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void NotEqual()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+            var pixel = new Pixel(new PixelForeground(new Symbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue));
-            var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('b'), Colors.Red),
+            var pixel2 = new Pixel(new PixelForeground(new Symbol('b'), Colors.Red),
                 new PixelBackground(Colors.Blue));
             Assert.That(!pixel.Equals((object)pixel2));
             Assert.That(!pixel.Equals(pixel2));
             Assert.That(pixel != pixel2);
 
-            pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+            pixel = new Pixel(new PixelForeground(new Symbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue));
-            pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Blue),
+            pixel2 = new Pixel(new PixelForeground(new Symbol('a'), Colors.Blue),
                 new PixelBackground(Colors.Blue));
             Assert.That(!pixel.Equals((object)pixel2));
             Assert.That(!pixel.Equals(pixel2));
@@ -118,7 +118,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void PixelShade()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'),
+            var pixel = new Pixel(new PixelForeground(new Symbol('a'),
                     Colors.Red,
                     FontWeight.Bold,
                     FontStyle.Italic,
@@ -136,7 +136,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void PixelBrighten()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'),
+            var pixel = new Pixel(new PixelForeground(new Symbol('a'),
                     Colors.Red,
                     FontWeight.Bold,
                     FontStyle.Italic,
@@ -154,7 +154,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void PixelInvert()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'),
+            var pixel = new Pixel(new PixelForeground(new Symbol('a'),
                     Colors.Red,
                     FontWeight.Bold,
                     FontStyle.Italic,
@@ -174,7 +174,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void BlendTransparentBackground()
         {
             var pixel = new Pixel(new PixelBackground(Colors.Green));
-            var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+            var pixel2 = new Pixel(new PixelForeground(new Symbol('a'), Colors.Red),
                 new PixelBackground(Colors.Transparent));
             Pixel newPixel = pixel.Blend(pixel2);
             Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
@@ -186,7 +186,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void BlendColoredBackground()
         {
             var pixel = new Pixel(new PixelBackground(Colors.Green));
-            var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+            var pixel2 = new Pixel(new PixelForeground(new Symbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue));
             Pixel newPixel = pixel.Blend(pixel2);
             Assert.That(newPixel.Foreground.Symbol.Text, Is.EqualTo("a"));
@@ -197,7 +197,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BlendShadedBackground()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+            var pixel = new Pixel(new PixelForeground(new Symbol("x"), Colors.Gray),
                 new PixelBackground(Colors.White));
             var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F000000")));
             Pixel newPixel = pixel.Blend(pixel2);
@@ -215,7 +215,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BlendShadedBackground2()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+            var pixel = new Pixel(new PixelForeground(new Symbol("x"), Colors.Gray),
                 new PixelBackground(Colors.Black));
             var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F000000")));
             Pixel newPixel = pixel.Blend(pixel2);
@@ -233,7 +233,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void TextBelowSemiTransparentBackgroundIsStillVisible()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+            var pixel = new Pixel(new PixelForeground(new Symbol("x"), Colors.Gray),
                 new PixelBackground(Colors.White));
             var pixel2 = new Pixel(new PixelBackground(Color.Parse("#7F000000")));
             Pixel newPixel = pixel2.Blend(pixel);
@@ -243,9 +243,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void TextBelowNoneTransparentNullCharacterIsStillVisible()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol("x"), Colors.Gray),
+            var pixel = new Pixel(new PixelForeground(new Symbol("x"), Colors.Gray),
                 new PixelBackground(Colors.White));
-            var pixel2 = new Pixel(new PixelForeground(new SimpleSymbol(char.MinValue), Colors.White),
+            var pixel2 = new Pixel(new PixelForeground(new Symbol(char.MinValue), Colors.White),
                 new PixelBackground(Color.Parse("#7F000000")));
             Pixel newPixel = pixel2.Blend(pixel);
             Assert.True(newPixel.Foreground.Symbol.Text == "x");
@@ -255,9 +255,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void HashCode()
         {
             var set = new HashSet<Pixel>();
-            set.Add(new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+            set.Add(new Pixel(new PixelForeground(new Symbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue)));
-            set.Add(new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+            set.Add(new Pixel(new PixelForeground(new Symbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue)));
             Assert.That(set.Count, Is.EqualTo(1));
         }
@@ -265,7 +265,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void JsonSerialization()
         {
-            var pixel = new Pixel(new PixelForeground(new SimpleSymbol('a'), Colors.Red),
+            var pixel = new Pixel(new PixelForeground(new Symbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue));
             string json = JsonConvert.SerializeObject(pixel);
             var pixel2 = JsonConvert.DeserializeObject<Pixel>(json);

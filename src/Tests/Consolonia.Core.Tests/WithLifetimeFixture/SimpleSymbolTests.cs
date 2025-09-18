@@ -13,7 +13,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void ConstructorChar()
         {
-            ISymbol symbol = new SimpleSymbol('a');
+            Symbol symbol = new Symbol('a');
             Assert.That(symbol.Text, Is.EqualTo("a"));
             Assert.That(symbol.Width, Is.EqualTo(1));
         }
@@ -21,7 +21,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void ConstructorString()
         {
-            ISymbol symbol = new SimpleSymbol("a");
+            Symbol symbol = new Symbol("a");
             Assert.That(symbol.Text, Is.EqualTo("a"));
             Assert.That(symbol.Width, Is.EqualTo(1));
         }
@@ -29,7 +29,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void ConstructorRune()
         {
-            ISymbol symbol = new SimpleSymbol(new Rune('a'));
+            Symbol symbol = new Symbol(new Rune('a'));
             Assert.That(symbol.Text, Is.EqualTo("a"));
             Assert.That(symbol.Width, Is.EqualTo(1));
         }
@@ -38,7 +38,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void ConstructorRuneEmoji()
         {
             Rune rune = "👍".EnumerateRunes().First();
-            ISymbol symbol = new SimpleSymbol(rune);
+            Symbol symbol = new Symbol(rune);
             Assert.That(symbol.Text, Is.EqualTo("👍"));
             Assert.That(symbol.Width, Is.EqualTo(2));
         }
@@ -46,7 +46,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void ConstructorComplexEmoji()
         {
-            ISymbol symbol = new SimpleSymbol("👨‍👩‍👧‍👦");
+            Symbol symbol = new Symbol("👨‍👩‍👧‍👦");
             Assert.That(symbol.Text, Is.EqualTo("👨‍👩‍👧‍👦"));
             Assert.That(symbol.Width, Is.EqualTo(2));
         }
@@ -54,18 +54,18 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void Equality()
         {
-            var symbol = new SimpleSymbol("a");
-            var symbol2 = new SimpleSymbol("a");
+            var symbol = new Symbol("a");
+            var symbol2 = new Symbol("a");
             Assert.That(symbol.Equals((object)symbol2));
             Assert.That(symbol.Equals(symbol2));
             Assert.That(symbol == symbol2);
         }
 
         [Test]
-        public void EqualityISymbol()
+        public void EqualitySymbol()
         {
-            ISymbol symbol = new SimpleSymbol("a");
-            ISymbol symbol2 = new SimpleSymbol("a");
+            Symbol symbol = new Symbol("a");
+            Symbol symbol2 = new Symbol("a");
             Assert.That(symbol.Equals(symbol2));
             Assert.That(symbol.Equals(symbol2));
         }
@@ -73,18 +73,18 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void Inequality()
         {
-            var symbol = new SimpleSymbol("a");
-            var symbol2 = new SimpleSymbol("b");
+            var symbol = new Symbol("a");
+            var symbol2 = new Symbol("b");
             Assert.That(!symbol.Equals((object)symbol2));
             Assert.That(!symbol.Equals(symbol2));
             Assert.That(symbol != symbol2);
         }
 
         [Test]
-        public void InequalityISymbol()
+        public void InequalitySymbol()
         {
-            ISymbol symbol = new SimpleSymbol("a");
-            ISymbol symbol2 = new SimpleSymbol("b");
+            Symbol symbol = new Symbol("a");
+            Symbol symbol2 = new Symbol("b");
             Assert.That(!symbol.Equals(symbol2));
             Assert.That(!symbol.Equals(symbol2));
         }
@@ -92,31 +92,31 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void HashCode()
         {
-            var set = new HashSet<SimpleSymbol>();
-            set.Add(new SimpleSymbol("a"));
-            set.Add(new SimpleSymbol("a"));
+            var set = new HashSet<Symbol>();
+            set.Add(new Symbol("a"));
+            set.Add(new Symbol("a"));
             Assert.That(set.Count, Is.EqualTo(1));
 
-            var set2 = new HashSet<ISymbol>();
-            set2.Add(new SimpleSymbol("a"));
-            set2.Add(new SimpleSymbol("a"));
+            var set2 = new HashSet<Symbol>();
+            set2.Add(new Symbol("a"));
+            set2.Add(new Symbol("a"));
             Assert.That(set2.Count, Is.EqualTo(1));
         }
 
         [Test]
         public void IsWhiteSpace()
         {
-            Assert.That(new SimpleSymbol(string.Empty).NothingToDraw(), Is.True);
-            Assert.That(new SimpleSymbol(" ").NothingToDraw(), Is.False);
-            Assert.That(new SimpleSymbol("a").NothingToDraw(), Is.False);
+            Assert.That(new Symbol(string.Empty).NothingToDraw(), Is.True);
+            Assert.That(new Symbol(" ").NothingToDraw(), Is.False);
+            Assert.That(new Symbol("a").NothingToDraw(), Is.False);
         }
 
         [Test]
         public void Blend()
         {
-            ISymbol symbol = new SimpleSymbol("a");
-            ISymbol symbolAbove = new SimpleSymbol("b");
-            ISymbol newSymbol = symbol.Blend(ref symbolAbove);
+            Symbol symbol = new Symbol("a");
+            Symbol symbolAbove = new Symbol("b");
+            Symbol newSymbol = symbol.Blend(ref symbolAbove);
             Assert.That(newSymbol.Text, Is.EqualTo("b"));
             Assert.That(newSymbol.Width, Is.EqualTo(1));
         }
@@ -124,9 +124,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BlendWithWhiteSpace()
         {
-            ISymbol symbol = new SimpleSymbol(" ");
-            ISymbol symbolAbove = new SimpleSymbol("b");
-            ISymbol newSymbol = symbol.Blend(ref symbolAbove);
+            Symbol symbol = new Symbol(" ");
+            Symbol symbolAbove = new Symbol("b");
+            Symbol newSymbol = symbol.Blend(ref symbolAbove);
             Assert.That(newSymbol.Text, Is.EqualTo("b"));
             Assert.That(newSymbol.Width, Is.EqualTo(1));
         }
@@ -134,9 +134,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BlendWithEmpty()
         {
-            ISymbol symbol = new SimpleSymbol("a");
-            ISymbol symbolAbove = new SimpleSymbol(string.Empty);
-            ISymbol newSymbol = symbol.Blend(ref symbolAbove);
+            Symbol symbol = new Symbol("a");
+            Symbol symbolAbove = new Symbol(string.Empty);
+            Symbol newSymbol = symbol.Blend(ref symbolAbove);
             Assert.That(newSymbol.Text, Is.EqualTo("a"));
             Assert.That(newSymbol.Width, Is.EqualTo(1));
         }
@@ -144,9 +144,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BlendWithEmoji()
         {
-            ISymbol symbol = new SimpleSymbol("a");
-            ISymbol symbolAbove = new SimpleSymbol("👍");
-            ISymbol newSymbol = symbol.Blend(ref symbolAbove);
+            Symbol symbol = new Symbol("a");
+            Symbol symbolAbove = new Symbol("👍");
+            Symbol newSymbol = symbol.Blend(ref symbolAbove);
             Assert.That(newSymbol.Text, Is.EqualTo("👍"));
             Assert.That(newSymbol.Width, Is.EqualTo(2));
         }
@@ -154,9 +154,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void JsonSerialization()
         {
-            ISymbol symbol = new SimpleSymbol("a");
+            Symbol symbol = new Symbol("a");
             string json = JsonConvert.SerializeObject(symbol);
-            var deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            var deserializedSymbol = JsonConvert.DeserializeObject<Symbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));
         }
 
@@ -168,18 +168,18 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [TestCase("\"")]
         public void JsonSerializationCases(string text)
         {
-            ISymbol symbol = new SimpleSymbol(text);
+            Symbol symbol = new Symbol(text);
             string json = JsonConvert.SerializeObject(symbol);
-            var deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            var deserializedSymbol = JsonConvert.DeserializeObject<Symbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));
         }
 
         [Test]
         public void JsonSerializationDefault()
         {
-            ISymbol symbol = new SimpleSymbol();
+            Symbol symbol = new Symbol();
             string json = JsonConvert.SerializeObject(symbol);
-            var deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            var deserializedSymbol = JsonConvert.DeserializeObject<Symbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));
         }
     }

@@ -2,30 +2,31 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
+using Consolonia.Controls;
 using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Text")]
-    [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
+    [DebuggerDisplay("'{Symbol}' [{Color}]")]
     public readonly struct PixelForeground : IEquatable<PixelForeground>
     {
         public static readonly PixelForeground Default = new();
 
-        public static readonly PixelForeground Space = new(SimpleSymbol.Space, Colors.Transparent);
+        public static readonly PixelForeground Space = new(Symbol.Space, Colors.Transparent);
 
-        public static readonly PixelForeground Empty = new(SimpleSymbol.Empty, Colors.Transparent);
+        public static readonly PixelForeground Empty = new(Symbol.Empty, Colors.Transparent);
 
         public PixelForeground()
         {
-            Symbol = SimpleSymbol.Space;
+            Symbol = Symbol.Space;
             Color = Colors.Transparent;
             Weight = null;
             Style = null;
             TextDecoration = null;
         }
 
-        public PixelForeground(ISymbol symbol, Color color,
+        public PixelForeground(Symbol symbol, Color color,
             FontWeight? weight = null, FontStyle? style = null,
             TextDecorationLocation? textDecoration = null)
         {
@@ -37,7 +38,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             TextDecoration = textDecoration;
         }
 
-        public ISymbol Symbol { get; init; }
+        public Symbol Symbol { get; init; }
 
         [JsonConverter(typeof(ColorConverter))]
         public Color Color { get; init; }
@@ -73,7 +74,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public PixelForeground Blend(PixelForeground pixelAboveForeground)
         {
             //todo: check default(char) is there
-            ISymbol symbolAbove = pixelAboveForeground.Symbol;
+            Symbol symbolAbove = pixelAboveForeground.Symbol;
             ArgumentNullException.ThrowIfNull(symbolAbove);
 
             if (pixelAboveForeground.Color == Colors.Transparent)

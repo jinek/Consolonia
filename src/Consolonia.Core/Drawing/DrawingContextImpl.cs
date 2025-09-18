@@ -126,7 +126,7 @@ namespace Consolonia.Core.Drawing
                     Color background = GetBackgroundColorForQuadPixel(quadPixelChar, quadPixelColors);
 
                     var imagePixel = new Pixel(
-                        new PixelForeground(new SimpleSymbol(quadPixelChar), foreground),
+                        new PixelForeground(new Symbol(quadPixelChar), foreground),
                         new PixelBackground(background));
 
                     var point = new Point(px, py);
@@ -608,32 +608,32 @@ namespace Consolonia.Core.Drawing
         {
             if (line.Length == 0)
                 return;
-            ISymbol startSymbol;
-            ISymbol middleSymbol;
-            ISymbol endSymbol;
+            Symbol startSymbol;
+            Symbol middleSymbol;
+            Symbol endSymbol;
             int iStyle = lineStyle == LineStyle.Edge ? 0 : 1;
 
             switch (linePosition)
             {
                 case RectangleLinePosition.Left:
-                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopLeft]);
-                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Left]);
-                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomLeft]);
+                    startSymbol = new Symbol(EdgeCornerChars[iStyle][TopLeft]);
+                    middleSymbol = new Symbol(EdgeChars[iStyle][(int)RectangleLinePosition.Left]);
+                    endSymbol = new Symbol(EdgeCornerChars[iStyle][BottomLeft]);
                     break;
                 case RectangleLinePosition.Top:
-                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopLeft]);
-                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Top]);
-                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopRight]);
+                    startSymbol = new Symbol(EdgeCornerChars[iStyle][TopLeft]);
+                    middleSymbol = new Symbol(EdgeChars[iStyle][(int)RectangleLinePosition.Top]);
+                    endSymbol = new Symbol(EdgeCornerChars[iStyle][TopRight]);
                     break;
                 case RectangleLinePosition.Right:
-                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopRight]);
-                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Right]);
-                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomRight]);
+                    startSymbol = new Symbol(EdgeCornerChars[iStyle][TopRight]);
+                    middleSymbol = new Symbol(EdgeChars[iStyle][(int)RectangleLinePosition.Right]);
+                    endSymbol = new Symbol(EdgeCornerChars[iStyle][BottomRight]);
                     break;
                 case RectangleLinePosition.Bottom:
-                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomLeft]);
-                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Bottom]);
-                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomRight]);
+                    startSymbol = new Symbol(EdgeCornerChars[iStyle][BottomLeft]);
+                    middleSymbol = new Symbol(EdgeChars[iStyle][(int)RectangleLinePosition.Bottom]);
+                    endSymbol = new Symbol(EdgeCornerChars[iStyle][BottomRight]);
                     break;
                 default:
                     throw new NotImplementedException("This shouldn't happen");
@@ -733,7 +733,7 @@ namespace Consolonia.Core.Drawing
             for (ushort i = start; i < end; i++)
             {
                 _pixelBuffer[head] =
-                    _pixelBuffer[head].Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(pattern, lineStyle),
+                    _pixelBuffer[head].Blend(new Pixel(new Symbol(UpRightDownLeftFromPattern(pattern, lineStyle)),
                         color));
 
                 head = line.Vertical
@@ -744,7 +744,23 @@ namespace Consolonia.Core.Drawing
             _consoleWindowImpl.DirtyRegions.AddRect(intersect);
         }
 
-        private void DrawLineSymbolAndMoveHead(ref Point head, bool isVertical, in ISymbol symbol, Color color,
+        public static byte UpRightDownLeftFromPattern(byte pattern, LineStyle lineStyle)
+        {
+            switch (lineStyle)
+            {
+                case LineStyle.SingleLine:
+                    return pattern;
+                case LineStyle.DoubleLine:
+                    byte leftPart = (byte)(pattern << 4);
+                    return (byte)(leftPart | pattern);
+                case LineStyle.Bold:
+                    return (byte)BoxPattern.BoldMask;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(lineStyle), lineStyle, null);
+            }
+        }
+
+        private void DrawLineSymbolAndMoveHead(ref Point head, bool isVertical, in Symbol symbol, Color color,
             int count)
         {
             Rect rectToRefresh = isVertical
@@ -806,7 +822,7 @@ namespace Consolonia.Core.Drawing
                         break;
                     default:
                     {
-                        var symbol = new SimpleSymbol(glyph);
+                        var symbol = new Symbol(glyph);
                         // if we are attempting to draw a wide glyph we need to make sure that the clipping point
                         // is for the last physical char. Aka a double char should be clipped if it's second rendered 
                         // char would break the boundary of the clip.
