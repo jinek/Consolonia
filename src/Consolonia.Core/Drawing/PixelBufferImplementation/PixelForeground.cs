@@ -55,8 +55,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             return Symbol.Equals(other.Symbol) &&
                    Color.Equals(other.Color) &&
-                   Weight.Equals(other.Weight) &&
-                   Style.Equals(other.Style) &&
+                   Weight == other.Weight &&
+                   Style == other.Style &&
                    TextDecoration == other.TextDecoration;
         }
 
