@@ -103,10 +103,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             PixelBackground.Transparent);
 
 #pragma warning disable CA1051 // Do not declare visible instance fields
+        [JsonProperty]
         public readonly PixelForeground Foreground;
 
+        [JsonProperty]
         public readonly PixelBackground Background;
 
+        [JsonProperty]
         public readonly CaretStyle CaretStyle;
 #pragma warning restore CA1051 // Do not declare visible instance fields
 
