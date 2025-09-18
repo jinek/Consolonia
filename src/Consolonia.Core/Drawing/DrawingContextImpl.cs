@@ -733,7 +733,7 @@ namespace Consolonia.Core.Drawing
             for (ushort i = start; i < end; i++)
             {
                 _pixelBuffer[head] =
-                    _pixelBuffer[head].Blend(new Pixel(new Symbol(UpRightDownLeftFromPattern(pattern, lineStyle)),
+                    _pixelBuffer[head].Blend(new Pixel(new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle)),
                         color));
 
                 head = line.Vertical
@@ -744,17 +744,16 @@ namespace Consolonia.Core.Drawing
             _consoleWindowImpl.DirtyRegions.AddRect(intersect);
         }
 
-        public static byte UpRightDownLeftFromPattern(byte pattern, LineStyle lineStyle)
+        private static byte GetBoxPatternFromLineStyle(byte pattern, LineStyle lineStyle)
         {
             switch (lineStyle)
             {
                 case LineStyle.SingleLine:
                     return pattern;
                 case LineStyle.DoubleLine:
-                    byte leftPart = (byte)(pattern << 4);
-                    return (byte)(leftPart | pattern);
+                    return (byte)((pattern << 4) | pattern);
                 case LineStyle.Bold:
-                    return BoxPattern.BoldMask;
+                    return BoxPattern.BoldPattern;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(lineStyle), lineStyle, null);
             }

@@ -7,16 +7,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     /// </summary>
     public static class BoxPattern
     {
-        // all 0bXXXX_0000 are special values
-        public const char Min = (char)0x2500;
-        public const char Max = (char)0x257F;
+        public const char Min = '─'; //0x2500
+        public const char Max = '╵'; //0x257F
 
         // all 0bXXXX_0000 are special values
         public const char BoldChar = '█';
-        public const byte BoldMask = 0b0001_0000;
+        public const byte BoldPattern = 0b0001_0000;
         public const char EmptyChar = char.MinValue;
-        public const byte EmptyMask = 0b0;
-
+        public const byte EmptyPattern = 0b0;
 
         /// <summary>
         ///     https://en.wikipedia.org/wiki/Code_page_437
@@ -52,8 +50,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 {
                     return upRightDownLeft switch
                     {
-                        EmptyMask => char.MinValue,
-                        BoldMask => '█',
+                        EmptyPattern => char.MinValue,
+                        BoldPattern => '█',
                         0b0000_1001 => '┘',
                         0b1000_1001 => '╜',
                         0b0001_1001 => '╛',
@@ -92,15 +90,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
         }
 
-        public static byte Merge(byte boxMask, byte overlayMask)
+        /// <summary>
+        /// Merge 2 patterns together. Aka, Left + Top => TopLeft
+        /// </summary>
+        /// <param name="boxPattern"></param>
+        /// <param name="overlayPattern"></param>
+        /// <returns></returns>
+        public static byte Merge(byte boxPattern, byte overlayPattern)
         {
-            if (overlayMask == EmptyMask)
-                return boxMask;
+            if (overlayPattern == EmptyPattern)
+                return boxPattern;
 
-            if (overlayMask == BoldMask || boxMask == BoldMask)
-                return BoldMask;
+            if (overlayPattern == BoldPattern || boxPattern == BoldPattern)
+                return BoldPattern;
 
-            return (byte)(boxMask | overlayMask);
+            return (byte)(boxPattern | overlayPattern);
         }
 
         public static string GetMaskText(byte mask)
