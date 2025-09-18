@@ -80,17 +80,25 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                    Pattern == other.Pattern;
         }
 
-        public char Character { get; }
+
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        /// <summary>
+        /// The character for this symbol. If Complex is set this is Char.MinValue. 
+        /// </summary>
+        public readonly char Character;
 
         /// <summary>
-        /// If cell has complex text (more than one char) this contains the full text.
+        /// If cell has complex text (more than one char) this contains the full unicode sequence to draw this symbol.
         /// </summary>
-        public string Complex { get; }
+        public readonly string Complex;
 
         // box pattern for box merging.
-        public byte Pattern { get; }
+        public readonly byte Pattern;
 
-        [JsonIgnore] public byte Width { get; init; }
+        [JsonIgnore]
+        public readonly byte Width;
+#pragma warning restore CA1051 // Do not declare visible instance fields
+
 
         /// <summary>
         /// Get the symbol as text

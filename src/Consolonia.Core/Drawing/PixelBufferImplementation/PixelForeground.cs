@@ -2,12 +2,15 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
+using Consolonia.Core.Drawing.PixelForegroundImplementation;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Text")]
     [DebuggerDisplay("'{Symbol}' [{Color}]")]
+    // [JsonConverter(typeof(PixelForegroundConverter))]
     public readonly struct PixelForeground : IEquatable<PixelForeground>
     {
         public static readonly PixelForeground Default = new();
@@ -37,19 +40,25 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             TextDecoration = textDecoration;
         }
 
-        public Symbol Symbol { get; init; }
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        [JsonConverter(typeof(SymbolConverter))]
+        public readonly Symbol Symbol;
 
         [JsonConverter(typeof(ColorConverter))]
-        public Color Color { get; init; }
+        public readonly Color Color;
 
+        [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public FontWeight? Weight { get; init; }
+        public readonly FontWeight? Weight;
 
+        [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public FontStyle? Style { get; init; }
+        public readonly FontStyle? Style;
 
+        [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextDecorationLocation? TextDecoration { get; init; }
+        public readonly TextDecorationLocation? TextDecoration;
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         public bool Equals(PixelForeground other)
         {
