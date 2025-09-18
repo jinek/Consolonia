@@ -9,13 +9,13 @@ using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("'{Text} {BoxMask,b}'")]
+    [DebuggerDisplay("'{Text} {Pattern,b}'")]
     [JsonConverter(typeof(SymbolConverter))]
     public readonly struct Symbol : IEquatable<Symbol>
     {
         private const string BoldText = "█";
         // this is a cache of all characters as strings, primarily for box-drawing characters
-        private static readonly Dictionary<char, string> SymbolCache = new Dictionary<char, string>();
+        private static readonly string[] SymbolCache = new string[Char.MaxValue];
 
         public static readonly Symbol Empty = new();
         public static readonly Symbol Space = new(" ");
@@ -31,13 +31,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Symbol(char ch)
         {
-            if (!SymbolCache.TryGetValue(ch, out var text))
+            this.Text = SymbolCache[ch];
+            if (this.Text == null)
             {
-                text = ch.ToString();
-                SymbolCache[ch] = text;
+                this.Text = ch.ToString();
+                SymbolCache[ch] = this.Text;
             }
-            this.Text = text;
-            this.Width = (byte)text.MeasureText();
+            this.Width = (byte)Text.MeasureText();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -58,12 +58,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             else if (boxChar >= PixelBufferImplementation.BoxPattern.Min && boxChar <= PixelBufferImplementation.BoxPattern.Max)
             {
                 // get cached string instance
-                if (!SymbolCache.TryGetValue(boxChar, out var text))
+                this.Text = SymbolCache[boxChar];
+                if (this.Text == null)
                 {
-                    text = boxChar.ToString();
-                    SymbolCache[boxChar] = text;
+                    this.Text = boxChar.ToString();
+                    SymbolCache[boxChar] = this.Text;
                 }
-                this.Text = text;
             }
             else
                 // uhoh
@@ -75,13 +75,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             if (glyph.Length == 1)
             {
-                // if it's a single char we can use the cache.
-                if (!SymbolCache.TryGetValue(glyph[0], out var text))
+                this.Text = SymbolCache[glyph[0]];
+                if (this.Text == null)
                 {
-                    text = glyph;
-                    SymbolCache[glyph[0]] = text;
+                    this.Text = glyph[0].ToString();
+                    SymbolCache[glyph[0]] = this.Text;
                 }
-                Text = text;
             }
             else
             {
