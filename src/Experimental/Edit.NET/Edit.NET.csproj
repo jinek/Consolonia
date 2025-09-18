@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Consolonia.AvaloniaEdit\Consolonia.AvaloniaEdit.csproj" />
         <ProjectReference Include="..\..\Consolonia\Consolonia.csproj"/>
         <ProjectReference Include="..\Consolonia.Designer\Consolonia.Designer.csproj"/>
     </ItemGroup>

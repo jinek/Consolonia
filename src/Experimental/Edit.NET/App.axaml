@@ -1,9 +1,9 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:console="https://github.com/jinek/consolonia"
-             x:Class="Edit.NET.App"
-             RequestedThemeVariant="Default">
+             x:Class="Edit.NET.App">
     <Application.Styles>
         <console:TurboVisionCompatibleTheme />
+        <StyleInclude Source="avares://Consolonia.AvaloniaEdit/Theme.axaml" />
     </Application.Styles>
 </Application>

@@ -4,9 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:console="https://github.com/jinek/consolonia"
         xmlns:local="clr-namespace:Edit.NET"
+        xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
         x:Class="Edit.NET.MainWindow"
         Title="Edit.NET">
-    <DockPanel>
+    <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_New" Click="OnNewFile_OnClick" InputGesture="Ctrl+N"/>
@@ -33,11 +34,32 @@
         <Border x:Name="BottomPanel" Background="{DynamicResource ThemeBorderBrush}" DockPanel.Dock="Bottom">
             <TextBlock>sometext at the bottom</TextBlock>
         </Border>
-        <TextBox x:Name="Editor"
-                 AcceptsReturn="True"
-                 AcceptsTab="True"
-                 TextWrapping="NoWrap"
-                 Background="{x:Null}"
-                 Text="{Binding DocumentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <avaloniaEdit:TextEditor Name="Editor"
+                               ShowLineNumbers="True"
+                               HorizontalScrollBarVisibility="Visible"
+                               VerticalScrollBarVisibility="Visible"
+                               Background="Transparent">
+            <avaloniaEdit:TextEditor.Options>
+                <avaloniaEdit:TextEditorOptions
+                    AcceptsTab="true"
+                    AllowToggleOverstrikeMode = "true"
+                    EnableTextDragDrop = "true"
+                    EnableRectangularSelection = "False"
+                    ShowBoxForControlCharacters = "true"
+                    EnableVirtualSpace="False"
+                    HighlightCurrentLine = "true"/>
+            </avaloniaEdit:TextEditor.Options>
+
+            
+            <avaloniaEdit:TextEditor.ContextFlyout>
+                <MenuFlyout>
+                    <MenuItem Header="Copy" InputGesture="ctrl+C" Command="{Binding CopyMouseCommmand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
+                    <MenuItem Header="Cut" InputGesture="ctrl+X" Command="{Binding CutMouseCommand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
+                    <MenuItem Header="Paste" InputGesture="ctrl+V" Command="{Binding PasteMouseCommmand}"  CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
+                    <MenuItem Header="-"/>
+                    <MenuItem Header="Select All" InputGesture="ctrl+A" Command="{Binding SelectAllMouseCommmand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
+                </MenuFlyout>
+            </avaloniaEdit:TextEditor.ContextFlyout>
+        </avaloniaEdit:TextEditor>
     </DockPanel>
 </Window>
