@@ -1,7 +1,4 @@
 using System;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using Consolonia.Controls.Brushes;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -17,7 +14,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         // all 0bXXXX_0000 are special values
         public const char BoldChar = '█';
         public const byte BoldMask = 0b0001_0000;
-        public const char EmptyChar = Char.MinValue;
+        public const char EmptyChar = char.MinValue;
         public const byte EmptyMask = 0b0;
 
 
@@ -52,46 +49,46 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     return horizontal ? '╪' : '╫';
 
                 default:
+                {
+                    return upRightDownLeft switch
                     {
-                        return upRightDownLeft switch
-                        {
-                            EmptyMask => char.MinValue,
-                            BoldMask  => '█',
-                            0b0000_1001 => '┘',
-                            0b1000_1001 => '╜',
-                            0b0001_1001 => '╛',
-                            0b1001_1001 => '╝',
-                            0b0000_0011 => '┐',
-                            0b0010_0011 => '╖',
-                            0b0001_0011 => '╕',
-                            0b0011_0011 => '╗',
-                            0b0000_0110 => '┌',
-                            0b0100_0110 => '╒',
-                            0b0010_0110 => '╓',
-                            0b0110_0110 => '╔',
-                            0b0000_1100 => '└',
-                            0b0100_1100 => '╘',
-                            0b1000_1100 => '╙',
-                            0b1100_1100 => '╚',
-                            0b0000_1110 => '├',
-                            0b1000_1110 or 0b0010_1110 or 0b1010_1110 => '╟',
-                            0b0100_1110 => '╞',
-                            0b1100_1110 or 0b0110_1110 or 0b1110_1110 => '╠',
-                            0b0000_1011 => '┤',
-                            0b1000_1011 or 0b0010_1011 or 0b1010_1011 => '╢',
-                            0b0001_1011 => '╡',
-                            0b1001_1011 or 0b0011_1011 or 0b1011_1011 => '╣',
-                            0b0000_1101 => '┴',
-                            0b1000_1101 => '╨',
-                            0b0100_1101 or 0b0001_1101 or 0b0101_1101 => '╧',
-                            0b1100_1101 or 0b1001_1101 or 0b1101_1101 => '╩',
-                            0b0000_0111 => '┬',
-                            0b0010_0111 => '╥',
-                            0b0100_0111 or 0b0001_0111 or 0b0101_0111 => '╤',
-                            0b0110_0111 or 0b0011_0111 or 0b0111_0111 => '╦',
-                            _ => throw new InvalidOperationException(GetMaskText(upRightDownLeft))
-                        };
-                    }
+                        EmptyMask => char.MinValue,
+                        BoldMask => '█',
+                        0b0000_1001 => '┘',
+                        0b1000_1001 => '╜',
+                        0b0001_1001 => '╛',
+                        0b1001_1001 => '╝',
+                        0b0000_0011 => '┐',
+                        0b0010_0011 => '╖',
+                        0b0001_0011 => '╕',
+                        0b0011_0011 => '╗',
+                        0b0000_0110 => '┌',
+                        0b0100_0110 => '╒',
+                        0b0010_0110 => '╓',
+                        0b0110_0110 => '╔',
+                        0b0000_1100 => '└',
+                        0b0100_1100 => '╘',
+                        0b1000_1100 => '╙',
+                        0b1100_1100 => '╚',
+                        0b0000_1110 => '├',
+                        0b1000_1110 or 0b0010_1110 or 0b1010_1110 => '╟',
+                        0b0100_1110 => '╞',
+                        0b1100_1110 or 0b0110_1110 or 0b1110_1110 => '╠',
+                        0b0000_1011 => '┤',
+                        0b1000_1011 or 0b0010_1011 or 0b1010_1011 => '╢',
+                        0b0001_1011 => '╡',
+                        0b1001_1011 or 0b0011_1011 or 0b1011_1011 => '╣',
+                        0b0000_1101 => '┴',
+                        0b1000_1101 => '╨',
+                        0b0100_1101 or 0b0001_1101 or 0b0101_1101 => '╧',
+                        0b1100_1101 or 0b1001_1101 or 0b1101_1101 => '╩',
+                        0b0000_0111 => '┬',
+                        0b0010_0111 => '╥',
+                        0b0100_0111 or 0b0001_0111 or 0b0101_0111 => '╤',
+                        0b0110_0111 or 0b0011_0111 or 0b0111_0111 => '╦',
+                        _ => throw new InvalidOperationException(GetMaskText(upRightDownLeft))
+                    };
+                }
             }
         }
 
@@ -107,6 +104,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         public static string GetMaskText(byte mask)
-            => $"{Convert.ToString(mask >> 4, 2).PadLeft(4, '0')}_{Convert.ToString(mask & 0xF, 2).PadLeft(4, '0')}";
+        {
+            return
+                $"{Convert.ToString(mask >> 4, 2).PadLeft(4, '0')}_{Convert.ToString(mask & 0xF, 2).PadLeft(4, '0')}";
+        }
     }
 }

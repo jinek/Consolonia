@@ -1,6 +1,5 @@
 using System;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -11,7 +10,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             if (reader.Value != null)
             {
-                if (reader.ValueType == typeof(string)) 
+                if (reader.ValueType == typeof(string))
                     return new Symbol((string)reader.Value);
 
                 if (reader.ValueType == typeof(long))
@@ -20,6 +19,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     return new Symbol((byte)value);
                 }
             }
+
             return Symbol.Empty;
         }
 
@@ -27,7 +27,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             if (value.IsBoxSymbol())
                 writer.WriteValue(value.Pattern);
-            else 
+            else
                 writer.WriteValue(value.Text);
         }
     }

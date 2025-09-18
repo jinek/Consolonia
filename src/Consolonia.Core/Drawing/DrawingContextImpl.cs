@@ -754,7 +754,7 @@ namespace Consolonia.Core.Drawing
                     byte leftPart = (byte)(pattern << 4);
                     return (byte)(leftPart | pattern);
                 case LineStyle.Bold:
-                    return (byte)BoxPattern.BoldMask;
+                    return BoxPattern.BoldMask;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(lineStyle), lineStyle, null);
             }

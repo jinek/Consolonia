@@ -13,7 +13,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void ConstructorChar()
         {
-            Symbol symbol = new Symbol('a');
+            var symbol = new Symbol('a');
             Assert.That(symbol.Text, Is.EqualTo("a"));
             Assert.That(symbol.Width, Is.EqualTo(1));
         }
@@ -21,7 +21,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void ConstructorString()
         {
-            Symbol symbol = new Symbol("a");
+            var symbol = new Symbol("a");
             Assert.That(symbol.Text, Is.EqualTo("a"));
             Assert.That(symbol.Width, Is.EqualTo(1));
         }
@@ -29,7 +29,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void ConstructorRune()
         {
-            Symbol symbol = new Symbol(new Rune('a'));
+            var symbol = new Symbol(new Rune('a'));
             Assert.That(symbol.Text, Is.EqualTo("a"));
             Assert.That(symbol.Width, Is.EqualTo(1));
         }
@@ -38,7 +38,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void ConstructorRuneEmoji()
         {
             Rune rune = "👍".EnumerateRunes().First();
-            Symbol symbol = new Symbol(rune);
+            var symbol = new Symbol(rune);
             Assert.That(symbol.Text, Is.EqualTo("👍"));
             Assert.That(symbol.Width, Is.EqualTo(2));
         }
@@ -46,7 +46,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void ConstructorComplexEmoji()
         {
-            Symbol symbol = new Symbol("👨‍👩‍👧‍👦");
+            var symbol = new Symbol("👨‍👩‍👧‍👦");
             Assert.That(symbol.Text, Is.EqualTo("👨‍👩‍👧‍👦"));
             Assert.That(symbol.Width, Is.EqualTo(2));
         }
@@ -64,8 +64,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void EqualitySymbol()
         {
-            Symbol symbol = new Symbol("a");
-            Symbol symbol2 = new Symbol("a");
+            var symbol = new Symbol("a");
+            var symbol2 = new Symbol("a");
             Assert.That(symbol.Equals(symbol2));
             Assert.That(symbol.Equals(symbol2));
         }
@@ -83,8 +83,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void InequalitySymbol()
         {
-            Symbol symbol = new Symbol("a");
-            Symbol symbol2 = new Symbol("b");
+            var symbol = new Symbol("a");
+            var symbol2 = new Symbol("b");
             Assert.That(!symbol.Equals(symbol2));
             Assert.That(!symbol.Equals(symbol2));
         }
@@ -114,8 +114,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void Blend()
         {
-            Symbol symbol = new Symbol("a");
-            Symbol symbolAbove = new Symbol("b");
+            var symbol = new Symbol("a");
+            var symbolAbove = new Symbol("b");
             Symbol newSymbol = symbol.Blend(ref symbolAbove);
             Assert.That(newSymbol.Text, Is.EqualTo("b"));
             Assert.That(newSymbol.Width, Is.EqualTo(1));
@@ -124,8 +124,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BlendWithWhiteSpace()
         {
-            Symbol symbol = new Symbol(" ");
-            Symbol symbolAbove = new Symbol("b");
+            var symbol = new Symbol(" ");
+            var symbolAbove = new Symbol("b");
             Symbol newSymbol = symbol.Blend(ref symbolAbove);
             Assert.That(newSymbol.Text, Is.EqualTo("b"));
             Assert.That(newSymbol.Width, Is.EqualTo(1));
@@ -134,8 +134,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BlendWithEmpty()
         {
-            Symbol symbol = new Symbol("a");
-            Symbol symbolAbove = new Symbol(string.Empty);
+            var symbol = new Symbol("a");
+            var symbolAbove = new Symbol(string.Empty);
             Symbol newSymbol = symbol.Blend(ref symbolAbove);
             Assert.That(newSymbol.Text, Is.EqualTo("a"));
             Assert.That(newSymbol.Width, Is.EqualTo(1));
@@ -144,8 +144,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void BlendWithEmoji()
         {
-            Symbol symbol = new Symbol("a");
-            Symbol symbolAbove = new Symbol("👍");
+            var symbol = new Symbol("a");
+            var symbolAbove = new Symbol("👍");
             Symbol newSymbol = symbol.Blend(ref symbolAbove);
             Assert.That(newSymbol.Text, Is.EqualTo("👍"));
             Assert.That(newSymbol.Width, Is.EqualTo(2));
@@ -154,7 +154,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void JsonSerialization()
         {
-            Symbol symbol = new Symbol("a");
+            var symbol = new Symbol("a");
             string json = JsonConvert.SerializeObject(symbol);
             var deserializedSymbol = JsonConvert.DeserializeObject<Symbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));
@@ -168,7 +168,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [TestCase("\"")]
         public void JsonSerializationCases(string text)
         {
-            Symbol symbol = new Symbol(text);
+            var symbol = new Symbol(text);
             string json = JsonConvert.SerializeObject(symbol);
             var deserializedSymbol = JsonConvert.DeserializeObject<Symbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));
@@ -177,7 +177,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void JsonSerializationDefault()
         {
-            Symbol symbol = new Symbol();
+            var symbol = new Symbol();
             string json = JsonConvert.SerializeObject(symbol);
             var deserializedSymbol = JsonConvert.DeserializeObject<Symbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));

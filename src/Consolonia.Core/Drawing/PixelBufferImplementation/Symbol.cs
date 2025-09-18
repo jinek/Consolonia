@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -14,8 +13,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     public readonly struct Symbol : IEquatable<Symbol>
     {
         private const string BoldText = "█";
+
         // this is a cache of all characters as strings, primarily for box-drawing characters
-        private static readonly string[] SymbolCache = new string[Char.MaxValue];
+        private static readonly string[] SymbolCache = new string[char.MaxValue];
 
         public static readonly Symbol Empty = new();
         public static readonly Symbol Space = new(" ");
@@ -31,13 +31,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Symbol(char ch)
         {
-            this.Text = SymbolCache[ch];
-            if (this.Text == null)
+            Text = SymbolCache[ch];
+            if (Text == null)
             {
-                this.Text = ch.ToString();
-                SymbolCache[ch] = this.Text;
+                Text = ch.ToString();
+                SymbolCache[ch] = Text;
             }
-            this.Width = (byte)Text.MeasureText();
+
+            Width = (byte)Text.MeasureText();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -45,29 +46,31 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             Width = 1;
             Pattern = upRightDownLeftPattern;
-            var boxChar = PixelBufferImplementation.BoxPattern.GetBoxChar(upRightDownLeftPattern);
-            if (boxChar == PixelBufferImplementation.BoxPattern.BoldChar)
+            char boxChar = BoxPattern.GetBoxChar(upRightDownLeftPattern);
+            if (boxChar == BoxPattern.BoldChar)
             {
                 // get well-known string instance
                 Text = BoldText;
             }
-            else if(boxChar == PixelBufferImplementation.BoxPattern.EmptyChar)
+            else if (boxChar == BoxPattern.EmptyChar)
             {
                 Text = string.Empty;
             }
-            else if (boxChar >= PixelBufferImplementation.BoxPattern.Min && boxChar <= PixelBufferImplementation.BoxPattern.Max)
+            else if (boxChar >= BoxPattern.Min && boxChar <= BoxPattern.Max)
             {
                 // get cached string instance
-                this.Text = SymbolCache[boxChar];
-                if (this.Text == null)
+                Text = SymbolCache[boxChar];
+                if (Text == null)
                 {
-                    this.Text = boxChar.ToString();
-                    SymbolCache[boxChar] = this.Text;
+                    Text = boxChar.ToString();
+                    SymbolCache[boxChar] = Text;
                 }
             }
             else
                 // uhoh
+            {
                 throw new ArgumentOutOfRangeException(nameof(upRightDownLeftPattern));
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -75,11 +78,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             if (glyph.Length == 1)
             {
-                this.Text = SymbolCache[glyph[0]];
-                if (this.Text == null)
+                Text = SymbolCache[glyph[0]];
+                if (Text == null)
                 {
-                    this.Text = glyph[0].ToString();
-                    SymbolCache[glyph[0]] = this.Text;
+                    Text = glyph[0].ToString();
+                    SymbolCache[glyph[0]] = Text;
                 }
             }
             else
@@ -95,6 +98,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             : this(rune.ToString())
         {
         }
+
         public bool Equals(Symbol other)
         {
             return Text.Equals(other.Text, StringComparison.Ordinal) &&
@@ -118,23 +122,20 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             if (symbolAbove.NothingToDraw())
                 return this;
 
-            if (this.IsBoxSymbol() && symbolAbove.IsBoxSymbol())
-            {
+            if (IsBoxSymbol() && symbolAbove.IsBoxSymbol())
                 return new Symbol(BoxPattern.Merge(Pattern, symbolAbove.Pattern));
-            }
             return symbolAbove;
         }
 
         public bool IsBoxSymbol()
         {
-            return this.Pattern > 0 && ((this.Pattern & BoxPattern.BoldMask) != 0);
+            return this.Pattern > 0;
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)
         {
-            return obj is Symbol other && this
-                .Text.Equals(other.Text, StringComparison.Ordinal) &&
-                this.Pattern == other.Pattern;
+            return obj is Symbol other && Text.Equals(other.Text, StringComparison.Ordinal) &&
+                   Pattern == other.Pattern;
         }
 
         public override int GetHashCode()
