@@ -17,8 +17,8 @@ namespace Consolonia.Core.Drawing.PixelForegroundImplementation
 
             // read in symbol from object in way that respects its converter
             Symbol symbol = serializer.Deserialize<Symbol>(rdr);
-            string? weightStr = jObject[nameof(PixelForeground.Weight)]!.Value<string>()!;
-            string? styleStr = jObject[nameof(PixelForeground.Style)]!.Value<string>()!;
+            string weightStr = jObject[nameof(PixelForeground.Weight)]!.Value<string>()!;
+            string styleStr = jObject[nameof(PixelForeground.Style)]!.Value<string>()!;
 
             return new PixelForeground(
                 symbol: symbol,

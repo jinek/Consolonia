@@ -154,8 +154,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             Color aboveBgColor = pixelAbove.Background.Color;
             byte aboveBgA = aboveBgColor.A;
-            bool isNoForegroundOnTop = pixelAbove.Foreground.IsNothingToDraw();
 
+            bool isNoForegroundOnTop;
+            
             switch (aboveBgA)
             {
                 // Fast path: fully opaque overlay -> just return the overlay pixel
@@ -164,6 +165,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 // Fast path: fully transparent overlay with no foreground and no caret change -> nothing to do
                 case 0x0:
                 {
+                    isNoForegroundOnTop = pixelAbove.Foreground.IsNothingToDraw();
                     if (isNoForegroundOnTop && pixelAbove.CaretStyle == CaretStyle.None)
                         return this;
                     newForeground = isNoForegroundOnTop ? Foreground : Foreground.Blend(pixelAbove.Foreground);
@@ -172,6 +174,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     break;
                 default:
                     newCaretStyle = pixelAbove.CaretStyle;
+                    isNoForegroundOnTop = pixelAbove.Foreground.IsNothingToDraw();
                     if (isNoForegroundOnTop)
                     {
                         // merge the PixelForeground color with the pixelAbove background color
