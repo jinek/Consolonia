@@ -7,9 +7,9 @@ using Avalonia.Interactivity;
 namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     // ReSharper disable once UnusedType.Global
-    public partial class GalleryAnimatedLines : UserControl
+    public partial class GalleryAnimations : UserControl
     {
-        public GalleryAnimatedLines()
+        public GalleryAnimations()
         {
             InitializeComponent();
         }
