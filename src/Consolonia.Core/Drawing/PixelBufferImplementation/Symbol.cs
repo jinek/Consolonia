@@ -110,7 +110,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public bool IsBoxSymbol()
         {
-            return this.Pattern > 0;
+            return Pattern > 0;
         }
 
         public override bool Equals([NotNullWhen(true)] object obj)
