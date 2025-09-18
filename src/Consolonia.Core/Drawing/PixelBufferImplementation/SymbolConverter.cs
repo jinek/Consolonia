@@ -23,12 +23,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return Symbol.Empty;
         }
 
-        public override void WriteJson(JsonWriter writer, Symbol symbol, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, Symbol value, JsonSerializer serializer)
         {
-            if (symbol.IsBoxSymbol())
-                writer.WriteValue(symbol.Pattern);
+            if (value.IsBoxSymbol())
+                writer.WriteValue(value.Pattern);
             else 
-                writer.WriteValue(symbol.Text);
+                writer.WriteValue(value.Text);
         }
     }
 }
