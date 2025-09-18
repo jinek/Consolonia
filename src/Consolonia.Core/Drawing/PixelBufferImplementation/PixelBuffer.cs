@@ -33,8 +33,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
         }
 
-        public ushort Width { get; }
-        public ushort Height { get; }
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        public readonly ushort Width;
+        public readonly ushort Height;
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         // ReSharper disable once UnusedMember.Global
         [JsonIgnore]

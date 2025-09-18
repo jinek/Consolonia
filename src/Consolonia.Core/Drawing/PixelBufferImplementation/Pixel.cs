@@ -102,11 +102,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public static Pixel Space => new(new PixelForeground(Symbol.Space, Colors.Transparent),
             PixelBackground.Transparent);
 
-        public PixelForeground Foreground { get; init; }
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        public readonly PixelForeground Foreground;
 
-        public PixelBackground Background { get; init; }
+        public readonly PixelBackground Background;
 
-        public CaretStyle CaretStyle { get; init; } = CaretStyle.BlinkingBar;
+        public readonly CaretStyle CaretStyle;
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         [JsonIgnore] public ushort Width => Foreground.Symbol.Width;
 
