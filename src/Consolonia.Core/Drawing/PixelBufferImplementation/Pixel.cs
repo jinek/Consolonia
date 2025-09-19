@@ -48,7 +48,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <param name="weight"></param>
         /// <param name="textDecorations"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Pixel(ISymbol symbol,
+        public Pixel(Symbol symbol,
             Color foregroundColor,
             FontStyle style = FontStyle.Normal,
             FontWeight weight = FontWeight.Normal,
@@ -99,14 +99,16 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         // pixel space is a pixel with a space symbol, but could have color blended into. it is used to advance the cursor
         // and set the background color
-        public static Pixel Space => new(new PixelForeground(SimpleSymbol.Space, Colors.Transparent),
+        public static Pixel Space => new(new PixelForeground(Symbol.Space, Colors.Transparent),
             PixelBackground.Transparent);
 
-        public PixelForeground Foreground { get; init; }
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        [JsonProperty] public readonly PixelForeground Foreground;
 
-        public PixelBackground Background { get; init; }
+        [JsonProperty] public readonly PixelBackground Background;
 
-        public CaretStyle CaretStyle { get; init; } = CaretStyle.BlinkingBar;
+        [JsonProperty] public readonly CaretStyle CaretStyle;
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         [JsonIgnore] public ushort Width => Foreground.Symbol.Width;
 
@@ -144,44 +146,50 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <param name="pixelAbove"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Pixel Blend(Pixel pixelAbove)
         {
             PixelForeground newForeground;
-
-            var newBackground = new PixelBackground(MergeColors(Background.Color, pixelAbove.Background.Color));
-
             CaretStyle newCaretStyle;
 
-            //todo: logic of IsNothingToDraw overlaps with following if which overlaps Foreground.Blend - do we do double checks?
-            bool isNoForegroundOnTop = pixelAbove.Foreground.IsNothingToDraw();
-            if (pixelAbove.Background.Color.A == 0x0 /*todo: can be approximate, extract to extension method*/)
-            {
-                newForeground = isNoForegroundOnTop ? Foreground : Foreground.Blend(pixelAbove.Foreground);
-                newCaretStyle = CaretStyle.Blend(pixelAbove.CaretStyle);
-            }
-            else
-            {
-                if (!isNoForegroundOnTop)
-                {
-                    newForeground = pixelAbove.Foreground;
-                }
-                else
-                {
-                    // merge the PixelForeground color with the pixelAbove background color
+            Color aboveBgColor = pixelAbove.Background.Color;
+            byte aboveBgA = aboveBgColor.A;
 
-                    if (pixelAbove.Background.Color.A == 0xFF)
-                        // non-transparent layer above
-                        newForeground = PixelForeground.Default;
-                    else
+            bool isNoForegroundOnTop;
+
+            switch (aboveBgA)
+            {
+                // Fast path: fully opaque overlay -> just return the overlay pixel
+                case 0xFF:
+                    return pixelAbove;
+                // Fast path: fully transparent overlay with no foreground and no caret change -> nothing to do
+                case 0x0:
+                {
+                    isNoForegroundOnTop = pixelAbove.Foreground.IsNothingToDraw();
+                    if (isNoForegroundOnTop && pixelAbove.CaretStyle == CaretStyle.None)
+                        return this;
+                    newForeground = isNoForegroundOnTop ? Foreground : Foreground.Blend(pixelAbove.Foreground);
+                    newCaretStyle = CaretStyle.Blend(pixelAbove.CaretStyle);
+                }
+                    break;
+                default:
+                    newCaretStyle = pixelAbove.CaretStyle;
+                    isNoForegroundOnTop = pixelAbove.Foreground.IsNothingToDraw();
+                    if (isNoForegroundOnTop)
+                        // merge the PixelForeground color with the pixelAbove background color
                         newForeground = new PixelForeground(Foreground.Symbol,
-                            MergeColors(Foreground.Color, pixelAbove.Background.Color),
+                            MergeColors(Foreground.Color, aboveBgColor),
                             Foreground.Weight,
                             Foreground.Style,
                             Foreground.TextDecoration);
-                }
+                    else
+                        newForeground = pixelAbove.Foreground;
 
-                newCaretStyle = pixelAbove.CaretStyle;
+                    break;
             }
+
+            // Background is always blended
+            var newBackground = new PixelBackground(MergeColors(Background.Color, aboveBgColor));
 
             return new Pixel(newForeground, newBackground, newCaretStyle);
         }
@@ -192,8 +200,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <param name="target"></param>
         /// <param name="source"></param>
         /// <returns>source blended into target</returns>
-        private static Color MergeColors(Color target, Color source)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Color MergeColors(in Color target, in Color source)
         {
+            // Fast paths to avoid calling into the ConsoleColorMode when not needed
+            byte a = source.A;
+            if (a == 0x00) return target; // fully transparent source
+            if (a == 0xFF) return source; // fully opaque source
+
             return ConsoleColorMode.Value.Blend(target, source);
         }
 

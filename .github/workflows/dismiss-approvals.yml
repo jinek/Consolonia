@@ -7,6 +7,7 @@ on:
 
 permissions:
   pull-requests: write     # allows review dismissal
+  issues: write            # needed to delete prior hash comments on the PR
   contents: read
 
 concurrency:
@@ -48,7 +49,7 @@ jobs:
         run: |
           PR=${{ github.event.pull_request.number }}
           gh api repos/${{ github.repository }}/issues/$PR/comments \
-            -f body="<!-- pr-diff-hash: ${{ steps.diff.outputs.hash }} -->"
+            -f body="PR diff hash: ${{ steps.diff.outputs.hash }} <!-- pr-diff-hash: ${{ steps.diff.outputs.hash }} -->"
           echo "Baseline stored; approvals kept."
 
       - name: Dismiss approvals if PR diff changed
@@ -66,9 +67,17 @@ jobs:
                 -f message="PR diff changed – review stale"
             done
           
-          # Store new hash marker
+          # Remove any previous stored hash comments to avoid PR spam
+          gh api repos/${{ github.repository }}/issues/$PR/comments --paginate \
+            --jq '.[] | select((.user.type=="Bot" or .user.login=="github-actions[bot]") and (.body | test("<!-- pr-diff-hash: (none|[0-9a-f]{64}) -->"))) | .id' \
+            | while read -r CID; do
+                [[ -z "$CID" ]] && continue
+                gh api -X DELETE repos/${{ github.repository }}/issues/comments/$CID || true
+              done
+          
+          # Store new hash marker (single current copy)
           gh api repos/${{ github.repository }}/issues/$PR/comments \
-            -f body="<!-- pr-diff-hash: ${{ steps.diff.outputs.hash }} -->"
+            -f body="PR diff hash: ${{ steps.diff.outputs.hash }} <!-- pr-diff-hash: ${{ steps.diff.outputs.hash }} -->"
 
       - name: Note unchanged diff
         if: steps.diff.outputs.prev != '' && steps.diff.outputs.hash == steps.diff.outputs.prev
