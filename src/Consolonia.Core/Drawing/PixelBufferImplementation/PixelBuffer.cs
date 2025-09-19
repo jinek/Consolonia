@@ -70,15 +70,15 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             set => this[(PixelBufferCoordinate)point] = value;
         }
 
-        public Span<Pixel> GetRowSpan(ushort y)
-        {
-            return new Span<Pixel>(_buffer, y * Width, Width);
-        }
-
         [JsonIgnore] public int Length => _buffer.Length;
 
 
         [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
+
+        public Span<Pixel> GetRowSpan(ushort y)
+        {
+            return new Span<Pixel>(_buffer, y * Width, Width);
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

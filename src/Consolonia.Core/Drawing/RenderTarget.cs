@@ -96,7 +96,7 @@ namespace Consolonia.Core.Drawing
             var cache = new Pixel?[width * height];
 
             // initialize the cache with Pixel.Empty as it literally means nothing
-            for(int i=0; i<cache.Length; i++)
+            for (int i = 0; i < cache.Length; i++)
                 cache[i] = Pixel.Empty;
 
             return cache;
@@ -119,8 +119,8 @@ namespace Consolonia.Core.Drawing
             var flushingBuffer = new FlushingBuffer(_console);
             for (ushort y = 0; y < pixelBuffer.Height; y++)
             {
-                var row = pixelBuffer.GetRowSpan(y);
-                var cacheRow = _cache.AsSpan(y * pixelBuffer.Width, pixelBuffer.Width);
+                Span<Pixel> row = pixelBuffer.GetRowSpan(y);
+                Span<Pixel?> cacheRow = _cache.AsSpan(y * pixelBuffer.Width, pixelBuffer.Width);
                 for (ushort x = 0; x < pixelBuffer.Width; x++)
                 {
                     Pixel pixel = row[x];
@@ -133,11 +133,13 @@ namespace Consolonia.Core.Drawing
                         caretStyle = pixel.CaretStyle;
                     }
 
-                    if (!dirtyRegions.Contains(new Point(x, y), false)) /*checking caret duplication before to fail fast*/
+                    if (!dirtyRegions.Contains(new Point(x, y),
+                            false)) /*checking caret duplication before to fail fast*/
                         continue;
 
                     // injecting cursor
-                    if (!_consoleCursor.IsEmpty() && _consoleCursor.Coordinate.X == x && _consoleCursor.Coordinate.Y == y)
+                    if (!_consoleCursor.IsEmpty() && _consoleCursor.Coordinate.X == x &&
+                        _consoleCursor.Coordinate.Y == y)
                     {
                         Pixel currentPixel = pixel;
 
