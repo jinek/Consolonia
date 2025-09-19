@@ -70,8 +70,7 @@
                 <MenuItem  Header="JavaScript"  Click="SyntaxJavaScript_OnClick"/>
             </MenuItem>
             <MenuItem Header="_Help">
-                <MenuItem Header="_About"
-                          Command="{Binding AboutCommand}" />
+                <MenuItem Header="_About" Click="MenuItem_OnClick"/>
             </MenuItem>
         </Menu>
         <Border x:Name="BottomPanel"

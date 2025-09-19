@@ -3,10 +3,11 @@ using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Iciclecreek.Avalonia.WindowManager;
 
 namespace Edit.NET;
 
-public partial class AboutWindow : Window
+public partial class AboutWindow : ManagedWindow
 {
     public AboutWindow()
     {
@@ -16,16 +17,9 @@ public partial class AboutWindow : Window
 
     private void TrySetVersion()
     {
-        try
-        {
-            var asm = Assembly.GetExecutingAssembly();
-            var ver = asm.GetName().Version?.ToString() ?? "";
-            VersionText.Text = string.IsNullOrWhiteSpace(ver) ? "" : $"Version {ver}";
-        }
-        catch
-        {
-            // ignore
-        }
+        var asm = Assembly.GetExecutingAssembly();
+        string ver = asm.GetName().Version?.ToString() ?? "";
+        VersionText.Text = string.IsNullOrWhiteSpace(ver) ? "" : $"Version {ver}";
     }
 
     private void Ok_OnClick(object? sender, RoutedEventArgs e)

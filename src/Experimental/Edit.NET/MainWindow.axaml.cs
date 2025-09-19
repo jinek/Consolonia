@@ -301,5 +301,10 @@ namespace Edit.NET
             applyColorAction(colorBrush);
             return true;
         }
+
+        private void MenuItem_OnClick(object? sender, RoutedEventArgs e)
+        {
+            new AboutWindow().ShowDialog(this);
+        }
     }
 }
