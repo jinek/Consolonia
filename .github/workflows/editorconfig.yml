@@ -39,7 +39,7 @@ jobs:
         
       - name: install-resharper
         run: |
-          dotnet tool install -g JetBrains.ReSharper.GlobalTools
+          dotnet tool install --global JetBrains.ReSharper.GlobalTools --version 2025.2.1
         continue-on-error: true # todo: need to check whether has changes
 
       - name: resharper-cleanup
