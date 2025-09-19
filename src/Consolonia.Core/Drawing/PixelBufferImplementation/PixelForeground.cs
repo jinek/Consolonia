@@ -3,29 +3,30 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Text")]
-    [DebuggerDisplay("'{Symbol.Text}' [{Color}]")]
+    [DebuggerDisplay("'{Symbol}' [{Color}]")]
     public readonly struct PixelForeground : IEquatable<PixelForeground>
     {
         public static readonly PixelForeground Default = new();
 
-        public static readonly PixelForeground Space = new(SimpleSymbol.Space, Colors.Transparent);
+        public static readonly PixelForeground Space = new(Symbol.Space, Colors.Transparent);
 
-        public static readonly PixelForeground Empty = new(SimpleSymbol.Empty, Colors.Transparent);
+        public static readonly PixelForeground Empty = new(Symbol.Empty, Colors.Transparent);
 
         public PixelForeground()
         {
-            Symbol = SimpleSymbol.Space;
+            Symbol = Symbol.Space;
             Color = Colors.Transparent;
             Weight = null;
             Style = null;
             TextDecoration = null;
         }
 
-        public PixelForeground(ISymbol symbol, Color color,
+        public PixelForeground(Symbol symbol, Color color,
             FontWeight? weight = null, FontStyle? style = null,
             TextDecorationLocation? textDecoration = null)
         {
@@ -37,26 +38,28 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             TextDecoration = textDecoration;
         }
 
-        public ISymbol Symbol { get; init; }
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        [JsonProperty] public readonly Symbol Symbol;
 
-        [JsonConverter(typeof(ColorConverter))]
-        public Color Color { get; init; }
+        [JsonProperty] [JsonConverter(typeof(ColorConverter))]
+        public readonly Color Color;
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public FontWeight? Weight { get; init; }
+        [JsonConverter(typeof(StringEnumConverter))] [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public readonly FontWeight? Weight;
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public FontStyle? Style { get; init; }
+        [JsonConverter(typeof(StringEnumConverter))] [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public readonly FontStyle? Style;
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextDecorationLocation? TextDecoration { get; init; }
+        [JsonConverter(typeof(StringEnumConverter))] [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public readonly TextDecorationLocation? TextDecoration;
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         public bool Equals(PixelForeground other)
         {
             return Symbol.Equals(other.Symbol) &&
                    Color.Equals(other.Color) &&
-                   Weight.Equals(other.Weight) &&
-                   Style.Equals(other.Style) &&
+                   Weight == other.Weight &&
+                   Style == other.Style &&
                    TextDecoration == other.TextDecoration;
         }
 
@@ -73,8 +76,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public PixelForeground Blend(PixelForeground pixelAboveForeground)
         {
             //todo: check default(char) is there
-            ISymbol symbolAbove = pixelAboveForeground.Symbol;
-            ArgumentNullException.ThrowIfNull(symbolAbove);
+            Symbol symbolAbove = pixelAboveForeground.Symbol;
 
             if (pixelAboveForeground.Color == Colors.Transparent)
                 // if pixelAbove is transparent then the foreground below should be unchanged.

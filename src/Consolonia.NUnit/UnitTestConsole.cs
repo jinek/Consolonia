@@ -60,7 +60,7 @@ namespace Consolonia.NUnit
                 var coord = new PixelBufferCoordinate((ushort)(x + i), y);
                 PixelBuffer[coord] =
                     new Pixel(
-                        new PixelForeground(new SimpleSymbol(rune), foreground, style: style, weight: weight,
+                        new PixelForeground(new Symbol(rune), foreground, style: style, weight: weight,
                             textDecoration: textDecoration),
                         new PixelBackground(background));
                 i++;
