@@ -31,8 +31,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
 #pragma warning disable CA1051 // Do not declare visible instance fields
-        [JsonConverter(typeof(ColorConverter))]
-        [JsonProperty]
+        [JsonConverter(typeof(ColorConverter))] [JsonProperty]
         public readonly Color Color = color;
 #pragma warning restore CA1051 // Do not declare visible instance fields
 

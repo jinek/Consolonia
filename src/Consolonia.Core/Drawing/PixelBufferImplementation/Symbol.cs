@@ -20,7 +20,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public Symbol()
         {
             // we use String.Empty to represent an empty symbol
-            Character = Char.MinValue;
+            Character = char.MinValue;
             Complex = null;
             Width = 0;
             Pattern = 0;
@@ -57,7 +57,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             else
             {
                 // this is a multi-char glyph, we don't cache it. 
-                Character = Char.MinValue;
+                Character = char.MinValue;
                 Pattern = 0;
                 Complex = glyph;
                 Width = (byte)Complex.MeasureText();
@@ -75,7 +75,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public bool Equals(Symbol other)
         {
             return Character == other.Character &&
-                   String.Equals(Complex, other.Complex, StringComparison.Ordinal) &&
+                   string.Equals(Complex, other.Complex, StringComparison.Ordinal) &&
                    Width == other.Width &&
                    Pattern == other.Pattern;
         }
@@ -83,35 +83,36 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
 #pragma warning disable CA1051 // Do not declare visible instance fields
         /// <summary>
-        /// The character for this symbol. If Complex is set this is Char.MinValue. 
+        ///     The character for this symbol. If Complex is set this is Char.MinValue.
         /// </summary>
         public readonly char Character;
 
         /// <summary>
-        /// If cell has complex text (more than one char) this contains the full unicode sequence to draw this symbol.
+        ///     If cell has complex text (more than one char) this contains the full unicode sequence to draw this symbol.
         /// </summary>
         public readonly string Complex;
 
         // box pattern for box merging.
         public readonly byte Pattern;
 
-        [JsonIgnore]
-        public readonly byte Width;
+        [JsonIgnore] public readonly byte Width;
 #pragma warning restore CA1051 // Do not declare visible instance fields
 
 
         /// <summary>
-        /// Get the symbol as text
+        ///     Get the symbol as text
         /// </summary>
         /// <returns>symbol as string</returns>
         /// NOTE: This is only for debug purposes, do not use in rendering code as it allocates a string for the character.
         public string GetText()
-            => (Complex != null && Complex.Length > 1) ? Complex : Character.ToString();
+        {
+            return Complex != null && Complex.Length > 1 ? Complex : Character.ToString();
+        }
 
         public bool NothingToDraw()
         {
-            return Character == Char.MinValue && 
-                String.IsNullOrEmpty(Complex);
+            return Character == char.MinValue &&
+                   string.IsNullOrEmpty(Complex);
         }
 
         public Symbol Blend(ref Symbol symbolAbove)
@@ -134,11 +135,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public override bool Equals([NotNullWhen(true)] object obj)
         {
-            return obj is Symbol other && 
-                    Character == other.Character &&
-                    String.Equals(Complex, other.Complex, StringComparison.Ordinal) &&
-                    Width == other.Width &&
-                    Pattern == other.Pattern;
+            return obj is Symbol other &&
+                   Character == other.Character &&
+                   string.Equals(Complex, other.Complex, StringComparison.Ordinal) &&
+                   Width == other.Width &&
+                   Pattern == other.Pattern;
         }
 
         public override int GetHashCode()

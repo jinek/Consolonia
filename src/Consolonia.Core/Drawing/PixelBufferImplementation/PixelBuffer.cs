@@ -1,8 +1,6 @@
-using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Media;
 using Newtonsoft.Json;
 
@@ -32,11 +30,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             for (ushort x = 0; x < width; x++)
                 _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
         }
-
-#pragma warning disable CA1051 // Do not declare visible instance fields
-        public readonly ushort Width;
-        public readonly ushort Height;
-#pragma warning restore CA1051 // Do not declare visible instance fields
 
         // ReSharper disable once UnusedMember.Global
         [JsonIgnore]
@@ -110,5 +103,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             return stringBuilder.ToString();
         }
+
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        public readonly ushort Width;
+        public readonly ushort Height;
+#pragma warning restore CA1051 // Do not declare visible instance fields
     }
 }

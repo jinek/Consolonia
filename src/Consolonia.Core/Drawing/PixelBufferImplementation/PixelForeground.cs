@@ -39,23 +39,18 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
 #pragma warning disable CA1051 // Do not declare visible instance fields
-        [JsonProperty]
-        public readonly Symbol Symbol;
+        [JsonProperty] public readonly Symbol Symbol;
 
-        [JsonProperty]
-        [JsonConverter(typeof(ColorConverter))]
+        [JsonProperty] [JsonConverter(typeof(ColorConverter))]
         public readonly Color Color;
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(StringEnumConverter))] [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public readonly FontWeight? Weight;
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(StringEnumConverter))] [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public readonly FontStyle? Style;
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(StringEnumConverter))] [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public readonly TextDecorationLocation? TextDecoration;
 #pragma warning restore CA1051 // Do not declare visible instance fields
 

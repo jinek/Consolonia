@@ -57,7 +57,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 var symbol2 = new Symbol(code2);
                 Symbol blendedSymbol = symbol1.Blend(ref symbol2);
                 if (symbol1.Character != symbol2.Character)
-                        Debug.WriteLine($"{symbol1.Character} + {symbol2.Character} => {blendedSymbol.Character}");
+                    Debug.WriteLine($"{symbol1.Character} + {symbol2.Character} => {blendedSymbol.Character}");
             }
         }
 

@@ -73,7 +73,7 @@
                 <Border BorderThickness="1"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right">
-                       <Panel Background="Orange"/>
+                    <Panel Background="Orange" />
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="Bold"
                                            Brush="Blue" />

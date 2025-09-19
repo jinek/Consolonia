@@ -103,14 +103,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             PixelBackground.Transparent);
 
 #pragma warning disable CA1051 // Do not declare visible instance fields
-        [JsonProperty]
-        public readonly PixelForeground Foreground;
+        [JsonProperty] public readonly PixelForeground Foreground;
 
-        [JsonProperty]
-        public readonly PixelBackground Background;
+        [JsonProperty] public readonly PixelBackground Background;
 
-        [JsonProperty]
-        public readonly CaretStyle CaretStyle;
+        [JsonProperty] public readonly CaretStyle CaretStyle;
 #pragma warning restore CA1051 // Do not declare visible instance fields
 
         [JsonIgnore] public ushort Width => Foreground.Symbol.Width;
@@ -159,7 +156,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             byte aboveBgA = aboveBgColor.A;
 
             bool isNoForegroundOnTop;
-            
+
             switch (aboveBgA)
             {
                 // Fast path: fully opaque overlay -> just return the overlay pixel
@@ -179,18 +176,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     newCaretStyle = pixelAbove.CaretStyle;
                     isNoForegroundOnTop = pixelAbove.Foreground.IsNothingToDraw();
                     if (isNoForegroundOnTop)
-                    {
                         // merge the PixelForeground color with the pixelAbove background color
                         newForeground = new PixelForeground(Foreground.Symbol,
                             MergeColors(Foreground.Color, aboveBgColor),
                             Foreground.Weight,
                             Foreground.Style,
                             Foreground.TextDecoration);
-                    }
                     else
-                    {
                         newForeground = pixelAbove.Foreground;
-                    }
 
                     break;
             }
@@ -208,7 +201,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// <param name="source"></param>
         /// <returns>source blended into target</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Color MergeColors(in Color target,in Color source)
+        private static Color MergeColors(in Color target, in Color source)
         {
             // Fast paths to avoid calling into the ConsoleColorMode when not needed
             byte a = source.A;

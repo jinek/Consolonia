@@ -91,7 +91,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         /// <summary>
-        /// Merge 2 patterns together. Aka, Left + Top => TopLeft
+        ///     Merge 2 patterns together. Aka, Left + Top => TopLeft
         /// </summary>
         /// <param name="boxPattern"></param>
         /// <param name="overlayPattern"></param>
