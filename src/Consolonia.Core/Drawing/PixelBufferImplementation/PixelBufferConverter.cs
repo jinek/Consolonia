@@ -27,7 +27,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 ArgumentNullException.ThrowIfNull(rdr);
                 var pixel = serializer.Deserialize<Pixel>(rdr);
                 ArgumentNullException.ThrowIfNull(pixel);
-                pixelBuffer.Pixels[x, y] = pixel;
+                pixelBuffer[x, y] = pixel;
             }
 
             return pixelBuffer;
@@ -44,7 +44,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             writer.WriteStartArray();
             for (ushort y = 0; y < value.Height; y++)
             for (ushort x = 0; x < value.Width; x++)
-                serializer.Serialize(writer, value.Pixels[x, y]);
+                serializer.Serialize(writer, value[x, y]);
             writer.WriteEndArray();
             writer.WriteEndObject();
         }

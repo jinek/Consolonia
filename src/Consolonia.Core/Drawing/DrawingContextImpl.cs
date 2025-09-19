@@ -131,7 +131,7 @@ namespace Consolonia.Core.Drawing
 
                     var point = new Point(px, py);
                     if (CurrentClip.ContainsExclusive(point))
-                        _pixelBuffer.Pixels[(int)point.X, (int)point.Y] = _pixelBuffer.Pixels[(int)point.X, (int)point.Y].Blend(imagePixel);
+                        _pixelBuffer[point] = _pixelBuffer[point].Blend(imagePixel);
                 }
             }
 
@@ -240,12 +240,12 @@ namespace Consolonia.Core.Drawing
                             Point head = r.TopLeft.Transform(Transform);
                             if (CurrentClip.ContainsExclusive(head))
                             {
-                                Pixel pixel = _pixelBuffer.Pixels[(int)head.X, (int)head.Y];
+                                Pixel pixel = _pixelBuffer[head];
                                 if (pixel.CaretStyle != moveBrush.CaretStyle)
                                 {
                                     // only be dirty if something changed
                                     _consoleWindowImpl.DirtyRegions.AddRect(new Rect(head, new Size(1, 1)));
-                                    _pixelBuffer.Pixels[(int)head.X, (int)head.Y] =
+                                    _pixelBuffer[head] =
                                         pixel.Blend(new Pixel(moveBrush.CaretStyle));
                                 }
                             }
@@ -468,7 +468,7 @@ namespace Consolonia.Core.Drawing
                 Point head = line.PStart.Transform(Transform);
                 if (CurrentClip.ContainsExclusive(head))
                 {
-                    _pixelBuffer.Pixels[(int)head.X, (int)head.Y] = _pixelBuffer.Pixels[(int)head.X, (int)head.Y].Blend(new Pixel(moveBrush.CaretStyle));
+                    _pixelBuffer[head] = _pixelBuffer[head].Blend(new Pixel(moveBrush.CaretStyle));
                     _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(new Rect(head, new Size(1, 1))));
                 }
 
@@ -498,13 +498,13 @@ namespace Consolonia.Core.Drawing
 
             for (int x = (int)intersectRect.Left; x < intersectRect.Right; x++)
             {
-                Pixel oldPixel = _pixelBuffer.Pixels[(int)head.X, (int)head.Y];
+                Pixel oldPixel = _pixelBuffer[head];
                 var newPixelForeground = new PixelForeground(oldPixel.Foreground.Symbol,
                     oldPixel.Foreground.Color,
                     oldPixel.Foreground.Weight,
                     oldPixel.Foreground.Style,
                     textDecoration);
-                _pixelBuffer.Pixels[(int)head.X, (int)head.Y] = oldPixel.Blend(new Pixel(newPixelForeground));
+                _pixelBuffer[head] = oldPixel.Blend(new Pixel(newPixelForeground));
 
                 head = head.WithX(head.X + 1);
             }
@@ -543,7 +543,7 @@ namespace Consolonia.Core.Drawing
                     {
                         ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
                         for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++, brushX++)
-                            _pixelBuffer.Pixels[x, y] = _pixelBuffer.Pixels[x, y].Shade();
+                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Shade();
                     }
                     break;
                 case BrightenBrush:
@@ -551,7 +551,7 @@ namespace Consolonia.Core.Drawing
                     {
                         ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
                         for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++, brushX++)
-                            _pixelBuffer.Pixels[x, y] = _pixelBuffer.Pixels[x, y].Brighten();
+                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Brighten();
                     }
                     break;
                 case InvertBrush:
@@ -559,7 +559,7 @@ namespace Consolonia.Core.Drawing
                     {
                         ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
                         for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++, brushX++)
-                            _pixelBuffer.Pixels[x, y] = _pixelBuffer.Pixels[x, y].Invert();
+                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Invert();
                     }
                     break;
                 default:
@@ -581,8 +581,8 @@ namespace Consolonia.Core.Drawing
                                 pixelAbove = solidPixel;
                             }
 
-                            _pixelBuffer.Pixels[x, y] =
-                                _pixelBuffer.Pixels[x, y].Blend(pixelAbove);
+                            _pixelBuffer[x, y] =
+                                _pixelBuffer[x, y].Blend(pixelAbove);
                         }
                     }
                     break;
@@ -766,8 +766,8 @@ namespace Consolonia.Core.Drawing
             head = line.Vertical ? head.WithY(start) : head.WithX(start);
             for (ushort i = start; i < end; i++)
             {
-                _pixelBuffer.Pixels[(int)head.X, (int)head.Y] =
-                    _pixelBuffer.Pixels[(int)head.X, (int)head.Y].Blend(new Pixel(new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle)),
+                _pixelBuffer[head] =
+                    _pixelBuffer[head].Blend(new Pixel(new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle)),
                         color));
 
                 head = line.Vertical
@@ -810,7 +810,7 @@ namespace Consolonia.Core.Drawing
             var newPixel = new Pixel(symbol, color);
             for (int i = start; i < end; i++)
             {
-                _pixelBuffer.Pixels[(int)head.X, (int)head.Y] = _pixelBuffer.Pixels[(int)head.X, (int)head.Y].Blend(newPixel);
+                _pixelBuffer[head] = _pixelBuffer[head].Blend(newPixel);
 
                 head = isVertical
                     ? head.WithY(head.Y + 1)
@@ -863,14 +863,14 @@ namespace Consolonia.Core.Drawing
                             var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
                             if (CurrentClip.ContainsExclusive(position))
                             {
-                                Pixel oldPixel = _pixelBuffer.Pixels[(int)position.X, (int)position.Y];
+                                Pixel oldPixel = _pixelBuffer[position];
                                 if (oldPixel.Width == 0)
                                 {
                                     // if the oldPixel was empty, we need to set the previous pixel to space
                                     Point target = position.WithX(position.X - 1);
                                     if (target.X >= 0)
-                                        _pixelBuffer.Pixels[(int)target.X, (int)target.Y] = new Pixel(PixelForeground.Space,
-                                            _pixelBuffer.Pixels[(int)target.X, (int)target.Y].Background);
+                                        _pixelBuffer[target] = new Pixel(PixelForeground.Space,
+                                            _pixelBuffer[target].Background);
                                 }
                                 else if (oldPixel.Width > 1)
                                 {
@@ -879,8 +879,8 @@ namespace Consolonia.Core.Drawing
                                     {
                                         Point target = position.WithX(position.X + i);
                                         if (target.X < _pixelBuffer.Size.Width)
-                                            _pixelBuffer.Pixels[(int)target.X, (int)target.Y] = new Pixel(PixelForeground.Space,
-                                                _pixelBuffer.Pixels[(int)target.X, (int)target.Y].Background);
+                                            _pixelBuffer[target] = new Pixel(PixelForeground.Space,
+                                                _pixelBuffer[target].Background);
                                     }
                                 }
 
@@ -890,11 +890,11 @@ namespace Consolonia.Core.Drawing
                                     {
                                         Point target = position.WithX(position.X + i);
                                         if (target.X < _pixelBuffer.Size.Width)
-                                            _pixelBuffer.Pixels[(int)target.X, (int)target.Y] = new Pixel(PixelForeground.Empty,
-                                                _pixelBuffer.Pixels[(int)target.X, (int)target.Y].Background);
+                                            _pixelBuffer[target] = new Pixel(PixelForeground.Empty,
+                                                _pixelBuffer[target].Background);
                                     }
 
-                                _pixelBuffer.Pixels[(int)position.X, (int)position.Y] = oldPixel.Blend(newPixel);
+                                _pixelBuffer[position] = oldPixel.Blend(newPixel);
                             }
 
                             position = position.WithX(position.X + symbol.Width);
