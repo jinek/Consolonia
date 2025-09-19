@@ -1,4 +1,5 @@
-using System;
+using System.Runtime.CompilerServices;
+using System.Text;
 using Avalonia;
 using Avalonia.Media;
 using Newtonsoft.Json;
@@ -29,9 +30,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             for (ushort x = 0; x < width; x++)
                 _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
         }
-
-        public ushort Width { get; }
-        public ushort Height { get; }
 
         // ReSharper disable once UnusedMember.Global
         [JsonIgnore]
@@ -65,45 +63,50 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             set => _buffer[x, y] = value;
         }
 
+        [JsonIgnore]
+        public Pixel this[Point point]
+        {
+            get => this[(PixelBufferCoordinate)point];
+            set => this[(PixelBufferCoordinate)point] = value;
+        }
+
         [JsonIgnore] public int Length => _buffer.Length;
 
         [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
 
 
-        public void Set(PixelBufferCoordinate point, Func<Pixel, Pixel> changeAction)
-        {
-            Set<object>(point, (pixel, _) => changeAction(pixel), null);
-        }
-
-        public void Set<TUserObject>(PixelBufferCoordinate point, Func<Pixel, TUserObject, Pixel> changeAction,
-            TUserObject userObject)
-        {
-            this[point] = changeAction(this[point], userObject);
-        }
-
-        public void Foreach(Func<PixelBufferCoordinate, Pixel, Pixel> replaceAction)
-        {
-            ForeachReadonly((point, oldPixel) =>
-            {
-                Pixel newPixel = replaceAction(point, oldPixel);
-                this[point] = newPixel;
-            });
-        }
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        public void ForeachReadonly(Action<PixelBufferCoordinate, Pixel> action)
-        {
-            for (ushort j = 0; j < Height; j++)
-            for (ushort i = 0; i < Width; i++)
-            {
-                Pixel pixel = this[(PixelBufferCoordinate)(i, j)];
-                action(new PixelBufferCoordinate(i, j), pixel);
-            }
-        }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private (ushort x, ushort y) ToXY(int i)
         {
             return ((ushort x, ushort y))(i % Width, i / Width);
         }
+
+        public string PrintBuffer()
+        {
+            var stringBuilder = new StringBuilder();
+
+            for (ushort j = 0; j < Height; j++)
+            {
+                for (ushort i = 0; i < Width; i++)
+                {
+                    if (i == Width - 1 && j == Height - 1)
+                        break;
+                    Pixel pixel = this[new PixelBufferCoordinate(i, j)];
+                    string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.GetText();
+
+                    //todo: check why cursor is not drawing
+                    stringBuilder.Append(text);
+                }
+
+                stringBuilder.AppendLine();
+            }
+
+            return stringBuilder.ToString();
+        }
+
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        public readonly ushort Width;
+        public readonly ushort Height;
+#pragma warning restore CA1051 // Do not declare visible instance fields
     }
 }

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Threading;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Helpers.InputProcessing;
 using Consolonia.Core.Infrastructure;
@@ -120,23 +121,29 @@ namespace Consolonia.PlatformSupport
 
             Task _ = Task.Run(async () =>
             {
-                await WaitDispatcherInitialized();
+                await Helper.WaitDispatcherInitialized();
 
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                _inputBuffer.RunAsync();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                _inputBuffer.StartReading();
 
                 while (!Disposed)
-                {
-                    (int, int)[] inputs = _inputBuffer.Dequeue();
-                    await DispatchInputAsync(() =>
+                    try
                     {
-                        _keyModifiers = new KeyModifiers();
-                        _inputProcessor.ProcessChunk(inputs);
-                    });
-                }
+                        (int, int)[] inputs = _inputBuffer.Dequeue();
+                        await DispatchInputAsync(() =>
+                        {
+                            _keyModifiers = new KeyModifiers();
+                            _inputProcessor.ProcessChunk(inputs);
+                        });
+                    }
+                    catch (Exception exception)
+                    {
+                        Dispatcher.UIThread.Post(
+                            () => throw new ConsoloniaException("Exception in input processing loop", exception),
+                            DispatcherPriority.MaxValue);
+                    }
             });
         }
+
 
         private readonly List<(int code, int wch)> _rowInputBuffer = new(1000); //todo: low magic number
 
@@ -182,7 +189,7 @@ namespace Consolonia.PlatformSupport
 
                     break;
                 }
-            } while (true);
+            } while (!Disposed);
 
             return [.. _rowInputBuffer];
         }
@@ -198,25 +205,26 @@ namespace Consolonia.PlatformSupport
                 Curses.Event.AllEvents | Curses.Event.ReportMousePosition,
                 out Curses.Event _);
             Curses.mouseinterval(0); // if we don't do this mouse events are dropped
-            Console.WriteLine(Esc.EnableAllMouseEvents);
             Curses.timeout(NoInputTimeout);
-            //Console.WriteLine(Esc.EnableExtendedMouseTracking);
-            base.PrepareConsole();
+            WriteText(Esc.EnableAllMouseEvents);
             WriteText(Esc.EnableBracketedPasteMode);
+            WriteText(Esc.EnableExtendedMouseTracking);
+            base.PrepareConsole();
         }
 
         public override void RestoreConsole()
         {
             base.RestoreConsole();
 
+            WriteText(Esc.DisableAllMouseEvents);
+            WriteText(Esc.DisableExtendedMouseTracking);
+            WriteText(Esc.DisableBracketedPasteMode);
             Curses.mousemask(0, out Curses.Event _);
             Curses.nocbreak();
             _cursesWindow.keypad(false);
             Curses.echo();
             Curses.noraw();
             Curses.endwin();
-            Console.WriteLine(Esc.DisableAllMouseEvents);
-            //Console.WriteLine(Esc.DisableExtendedMouseTracking);
         }
 
         public override void PauseIO(Task task)

@@ -1,5 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+    <PropertyGroup>
+        <Description>This package provides the ability to use Blazor .razor files to create console apps using Consolonia.</Description>
+    </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Consolonia\Consolonia.csproj" />

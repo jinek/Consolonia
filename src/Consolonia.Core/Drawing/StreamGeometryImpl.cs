@@ -5,6 +5,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
@@ -121,13 +122,13 @@ namespace Consolonia.Core.Drawing
             /// <inheritdoc />
             public void CubicBezierTo(Point point1, Point point2, Point point3, bool isStroked)
             {
-                throw new NotSupportedException();
+                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.CubicBezierToNotSupported);
             }
 
             /// <inheritdoc />
             public void QuadraticBezierTo(Point point1, Point point2, bool isStroked)
             {
-                throw new NotSupportedException();
+                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.QuadraticBezierToNotSupported);
             }
 
             /// <inheritdoc />
@@ -148,13 +149,13 @@ namespace Consolonia.Core.Drawing
             /// <inheritdoc />
             public void CubicBezierTo(Point point1, Point point2, Point point3)
             {
-                throw new NotSupportedException();
+                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.CubicBezierToNotSupported);
             }
 
             /// <inheritdoc />
             public void QuadraticBezierTo(Point point1, Point point2)
             {
-                throw new NotSupportedException();
+                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.QuadraticBezierToNotSupported);
             }
 
             /// <inheritdoc />
@@ -291,7 +292,7 @@ namespace Consolonia.Core.Drawing
                             double xEnd = intersections[i + 1];
 
                             // Create fill rectangle for this span, excluding the boundary
-                            double fillXStart = xStart + 1;
+                            double fillXStart = xStart;
                             double fillWidth = xEnd - fillXStart;
 
                             if (fillWidth > 0) fillRects.Add(new Rect(fillXStart, y, fillWidth, 1));

@@ -20,7 +20,7 @@ namespace Consolonia.Core.Infrastructure
     public class ConsoloniaPlatform : IWindowingPlatform
     {
         internal static ConsoloniaPlatformSettings Settings =>
-            AvaloniaLocator.Current.GetService<ConsoloniaPlatformSettings>();
+            AvaloniaLocator.Current.GetService<IPlatformSettings>() as ConsoloniaPlatformSettings;
 
         public IWindowImpl CreateWindow()
         {
@@ -174,6 +174,36 @@ namespace Consolonia.Core.Infrastructure
                 case NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle:
                 case NotSupportedRequestCode.DrawingBoxShadowNotSupported:
                 case NotSupportedRequestCode.DrawGeometryNotSupported:
+                case NotSupportedRequestCode.DrawEllipseNotSupported:
+                case NotSupportedRequestCode.PushClipRegionNotSupported:
+                case NotSupportedRequestCode.PushLayerNotSupported:
+                case NotSupportedRequestCode.DrawRegionNotSupported:
+                case NotSupportedRequestCode.CubicBezierToNotSupported:
+                case NotSupportedRequestCode.QuadraticBezierToNotSupported:
+                    notSupportedRequest.SetHandled();
+                    break;
+                // console window methods that are not implemented by design, because they are not applicable to console windows
+                case NotSupportedRequestCode.ConsoleWindowCreateTrayIconNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowCreateEmbeddableTopLevelNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowHideNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowActivateNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetTopmostNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetParentNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetEnabledNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetSystemDecorationsNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetIconNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowShowTaskbarIconNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowCanResizeNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowBeginMoveDragNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowBeginResizeDragNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowBeginResizeNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowMoveNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetMinMaxSizeNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetExtendClientAreaToDecorationsHintNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetExtendClientAreaChromeHintsNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetExtendClientAreaTitleBarHeightHintNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetCanMinimizeNotSupported:
+                case NotSupportedRequestCode.ConsoleWindowSetCanMaximizeNotSupported:
                     notSupportedRequest.SetHandled();
                     break;
             }
