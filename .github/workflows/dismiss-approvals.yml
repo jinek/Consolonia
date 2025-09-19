@@ -49,7 +49,7 @@ jobs:
         run: |
           PR=${{ github.event.pull_request.number }}
           gh api repos/${{ github.repository }}/issues/$PR/comments \
-            -f body="<!-- pr-diff-hash: ${{ steps.diff.outputs.hash }} -->"
+            -f body="PR diff hash: ${{ steps.diff.outputs.hash }} <!-- pr-diff-hash: ${{ steps.diff.outputs.hash }} -->"
           echo "Baseline stored; approvals kept."
 
       - name: Dismiss approvals if PR diff changed
@@ -77,7 +77,7 @@ jobs:
           
           # Store new hash marker (single current copy)
           gh api repos/${{ github.repository }}/issues/$PR/comments \
-            -f body="<!-- pr-diff-hash: ${{ steps.diff.outputs.hash }} -->"
+            -f body="PR diff hash: ${{ steps.diff.outputs.hash }} <!-- pr-diff-hash: ${{ steps.diff.outputs.hash }} -->"
 
       - name: Note unchanged diff
         if: steps.diff.outputs.prev != '' && steps.diff.outputs.hash == steps.diff.outputs.prev
