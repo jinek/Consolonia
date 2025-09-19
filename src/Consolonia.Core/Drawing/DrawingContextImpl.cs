@@ -541,24 +541,21 @@ namespace Consolonia.Core.Drawing
                 case ShadeBrush:
                     for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
-                        for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++, brushX++)
+                        for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++)
                             _pixelBuffer[x, y] = _pixelBuffer[x, y].Shade();
                     }
                     break;
                 case BrightenBrush:
                     for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
-                        for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++, brushX++)
+                        for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++)
                             _pixelBuffer[x, y] = _pixelBuffer[x, y].Brighten();
                     }
                     break;
                 case InvertBrush:
                     for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
-                        for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++, brushX++)
+                        for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++)
                             _pixelBuffer[x, y] = _pixelBuffer[x, y].Invert();
                     }
                     break;
@@ -581,8 +578,7 @@ namespace Consolonia.Core.Drawing
                                 pixelAbove = solidPixel;
                             }
 
-                            _pixelBuffer[x, y] =
-                                _pixelBuffer[x, y].Blend(pixelAbove);
+                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Blend(pixelAbove);
                         }
                     }
                     break;
