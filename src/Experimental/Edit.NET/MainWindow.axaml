@@ -50,11 +50,24 @@
                           InputGesture="Ctrl+A" />
             </MenuItem>
             <MenuItem Header="_Syntax">
-                <MenuItem Header="Plain Text" Click="SyntaxPlain_OnClick"/>
-                <MenuItem Header="C#" Click="SyntaxCSharp_OnClick"/>
-                <MenuItem Header="XML" Click="SyntaxXml_OnClick"/>
-                <MenuItem Header="HTML" Click="SyntaxHtml_OnClick"/>
-                <MenuItem Header="JavaScript" Click="SyntaxJavaScript_OnClick"/>
+                <MenuItem.Styles>
+                    <Style Selector="MenuItem">
+                        <Setter Property="Icon">
+                            <Setter.Value>
+                                <Template>
+                                    <CheckBox BorderThickness="0"
+                                              IsHitTestVisible="False"
+                                              IsChecked="{Binding $parent[MenuItem].IsChecked}" />
+                                </Template>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </MenuItem.Styles>
+                <MenuItem  Header="Plain Text" Click="SyntaxPlain_OnClick"/>
+                <MenuItem  Header="C#" IsChecked="True" Click="SyntaxCSharp_OnClick"/>
+                <MenuItem  Header="XML"  Click="SyntaxXml_OnClick"/>
+                <MenuItem  Header="HTML"  Click="SyntaxHtml_OnClick"/>
+                <MenuItem  Header="JavaScript"  Click="SyntaxJavaScript_OnClick"/>
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About"
@@ -64,14 +77,16 @@
         <Border x:Name="BottomPanel"
                 Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
                 DockPanel.Dock="Bottom">
-            <UniformGrid Columns="4" ColumnSpacing="1">
-                <TextBlock Name="FileNameText" Text="[No Name]"/>
-                
+            <UniformGrid Columns="4" ColumnSpacing="1" Margin="1,0">
+                <UniformGrid.Styles>
+                    <Style Selector="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                    </Style>
+                </UniformGrid.Styles>
+                <TextBlock Name="FileNameText" Text="[No Name]" HorizontalAlignment="Left"/>
                 <TextBlock Name="PositionText" Text="Ln 1, Col 1"/>
-                
                 <TextBlock Name="LengthText" Text="Len 0"/>
-                
-                <TextBlock Name="ModifiedText" Text="Saved"/>
+                <TextBlock Name="ModifiedText" Text="Saved" HorizontalAlignment="Right"/>
             </UniformGrid>
         </Border>
         <avaloniaEdit:TextEditor Name="Editor"

@@ -10,6 +10,7 @@ using Avalonia.Media;
 using AvaloniaEdit;
 using AvaloniaEdit.TextMate;
 using TextMateSharp.Grammars;
+using System.Linq;
 
 namespace Edit.NET
 {
@@ -193,29 +194,43 @@ namespace Edit.NET
             await dlg.ShowDialog(this);
         }
 
-        private void SyntaxPlain_OnClick(object? sender, RoutedEventArgs e)
+        private void SyntaxPlain_OnClick(object sender, RoutedEventArgs e)
         {
             _textMateInstallation?.SetGrammar(null);
+            SetChecked(sender);
         }
 
-        private void SyntaxCSharp_OnClick(object? sender, RoutedEventArgs e)
+        private void SyntaxCSharp_OnClick(object sender, RoutedEventArgs e)
         {
             SetSyntaxByExtension(".cs");
+            SetChecked(sender);
         }
 
-        private void SyntaxXml_OnClick(object? sender, RoutedEventArgs e)
+        private void SetChecked(object sender)
+        {
+            var menuItem1 = (MenuItem)sender;
+            menuItem1.IsChecked = true;
+
+            foreach (MenuItem item in ((MenuItem)menuItem1.Parent!).Items.Cast<MenuItem>()
+                     .Where(item => item != menuItem1)) item.IsChecked = false;
+        }
+
+        private void SyntaxXml_OnClick(object sender, RoutedEventArgs e)
         {
             SetSyntaxByExtension(".xml");
+            SetChecked(sender);
         }
 
-        private void SyntaxHtml_OnClick(object? sender, RoutedEventArgs e)
+        private void SyntaxHtml_OnClick(object sender, RoutedEventArgs e)
         {
             SetSyntaxByExtension(".html");
+            SetChecked(sender);
         }
 
-        private void SyntaxJavaScript_OnClick(object? sender, RoutedEventArgs e)
+        private void SyntaxJavaScript_OnClick(object sender, RoutedEventArgs e)
         {
             SetSyntaxByExtension(".js");
+            SetChecked(sender);
         }
 
         private void SetSyntaxByExtension(string ext)
