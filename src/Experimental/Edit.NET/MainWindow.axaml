@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Edit.NET"
         xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
         x:Class="Edit.NET.MainWindow"
-        Title="Edit.NET">
+        Title="Edit.NET"
+        Background="#2D2D2D">
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -63,15 +64,15 @@
         <Border x:Name="BottomPanel"
                 Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
                 DockPanel.Dock="Bottom">
-            <StackPanel Orientation="Horizontal" Spacing="2" Margin="4,2">
+            <UniformGrid Columns="4" ColumnSpacing="1">
                 <TextBlock Name="FileNameText" Text="[No Name]"/>
-                <TextBlock Text=" | "/>
+                
                 <TextBlock Name="PositionText" Text="Ln 1, Col 1"/>
-                <TextBlock Text=" | "/>
+                
                 <TextBlock Name="LengthText" Text="Len 0"/>
-                <TextBlock Text=" | "/>
+                
                 <TextBlock Name="ModifiedText" Text="Saved"/>
-            </StackPanel>
+            </UniformGrid>
         </Border>
         <avaloniaEdit:TextEditor Name="Editor"
                                  ShowLineNumbers="True"

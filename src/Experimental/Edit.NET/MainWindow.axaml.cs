@@ -6,6 +6,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Media;
+using AvaloniaEdit;
+using AvaloniaEdit.TextMate;
+using TextMateSharp.Grammars;
 
 namespace Edit.NET
 {
@@ -14,6 +18,8 @@ namespace Edit.NET
         private Avalonia.Platform.Storage.IStorageFile? _currentFile;
         private string? _currentFileName;
         private bool _isModified;
+        private RegistryOptions? _registryOptions;
+        private TextMate.Installation? _textMateInstallation;
 
         public MainWindow()
         {
@@ -22,6 +28,16 @@ namespace Edit.NET
             Editor.TextChanged += (_, __) => { _isModified = true; UpdateStatus(); };
             Editor.AttachedToVisualTree += (_, __) => UpdateStatus();
             Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
+
+            // Install TextMate syntax highlighting similar to Consolonia.Editor
+            _registryOptions = new RegistryOptions(ThemeName.HighContrastDark);
+            _textMateInstallation = Editor.InstallTextMate(_registryOptions);
+            _textMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
+
+            // Default to C# highlighting
+            var csharp = _registryOptions.GetLanguageByExtension(".cs");
+            var scope = _registryOptions.GetScopeByLanguageId(csharp.Id);
+            _textMateInstallation.SetGrammar(scope);
         }
 
         private void UpdateStatus()
@@ -179,27 +195,96 @@ namespace Edit.NET
 
         private void SyntaxPlain_OnClick(object? sender, RoutedEventArgs e)
         {
-            // No-op for now; plain text (no syntax highlighting)
+            _textMateInstallation?.SetGrammar(null);
         }
 
         private void SyntaxCSharp_OnClick(object? sender, RoutedEventArgs e)
         {
-            // Placeholder: Syntax highlighting not implemented in this sample
+            SetSyntaxByExtension(".cs");
         }
 
         private void SyntaxXml_OnClick(object? sender, RoutedEventArgs e)
         {
-            // Placeholder
+            SetSyntaxByExtension(".xml");
         }
 
         private void SyntaxHtml_OnClick(object? sender, RoutedEventArgs e)
         {
-            // Placeholder
+            SetSyntaxByExtension(".html");
         }
 
         private void SyntaxJavaScript_OnClick(object? sender, RoutedEventArgs e)
         {
-            // Placeholder
+            SetSyntaxByExtension(".js");
+        }
+
+        private void SetSyntaxByExtension(string ext)
+        {
+            if (_registryOptions == null || _textMateInstallation == null)
+                return;
+            var lang = _registryOptions.GetLanguageByExtension(ext);
+            if (lang == null)
+            {
+                _textMateInstallation.SetGrammar(null);
+                return;
+            }
+            var scope = _registryOptions.GetScopeByLanguageId(lang.Id);
+            _textMateInstallation.SetGrammar(scope);
+        }
+
+        private void TextMateInstallationOnAppliedTheme(object? sender, TextMate.Installation e)
+        {
+            ApplyThemeColorsToEditor(e);
+            ApplyThemeColorsToWindow(e);
+        }
+
+        private void ApplyThemeColorsToEditor(TextMate.Installation e)
+        {
+            ApplyBrushAction(e, "editor.background", brush => Editor.Background = brush);
+            ApplyBrushAction(e, "editor.foreground", brush => Editor.Foreground = brush);
+
+            // Selection brush
+            if (!ApplyBrushAction(e, "editor.selectionBackground", brush => Editor.TextArea.SelectionBrush = brush))
+            {
+                ApplyBrushAction(e, "editor.selectionHighlightBackground", brush => Editor.TextArea.SelectionBrush = brush);
+            }
+
+            // Current line highlight
+            if (!ApplyBrushAction(e, "editor.lineHighlightBackground", brush => Editor.TextArea.TextView.CurrentLineBackground = brush))
+            {
+                Editor.TextArea.TextView.SetDefaultHighlightLineColors();
+            }
+
+            // Line numbers
+            if (!ApplyBrushAction(e, "editorLineNumber.foreground", brush => Editor.LineNumbersForeground = brush))
+            {
+                Editor.LineNumbersForeground = Editor.Foreground;
+            }
+        }
+
+        private void ApplyThemeColorsToWindow(TextMate.Installation e)
+        {
+            // Status bar/background panel
+            if (this.FindControl<Border>("BottomPanel") is { } bottom)
+            {
+                ApplyBrushAction(e, "statusBar.background", brush => bottom.Background = brush);
+            }
+
+            // Apply editor theme colors to the window for better contrast
+            ApplyBrushAction(e, "editor.background", brush => Background = brush);
+            ApplyBrushAction(e, "editor.foreground", brush => Foreground = brush);
+        }
+
+        private bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
+        {
+            if (!e.TryGetThemeColor(colorKeyNameFromJson, out var colorString))
+                return false;
+            if (!Color.TryParse(colorString, out var color))
+                return false;
+
+            var colorBrush = new SolidColorBrush(color);
+            applyColorAction(colorBrush);
+            return true;
         }
     }
 }
