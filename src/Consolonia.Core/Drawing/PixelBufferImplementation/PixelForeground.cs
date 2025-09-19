@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Media;
-using Consolonia.Core.Drawing.PixelForegroundImplementation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -10,7 +9,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Text")]
     [DebuggerDisplay("'{Symbol}' [{Color}]")]
-    // [JsonConverter(typeof(PixelForegroundConverter))]
     public readonly struct PixelForeground : IEquatable<PixelForeground>
     {
         public static readonly PixelForeground Default = new();
@@ -41,9 +39,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
 #pragma warning disable CA1051 // Do not declare visible instance fields
-        [JsonConverter(typeof(SymbolConverter))]
+        [JsonProperty]
         public readonly Symbol Symbol;
 
+        [JsonProperty]
         [JsonConverter(typeof(ColorConverter))]
         public readonly Color Color;
 

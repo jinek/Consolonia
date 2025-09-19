@@ -14,11 +14,11 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             for (ushort y = 0; y < buffer.Height; y++)
             for (ushort x = 0; x < buffer.Width; x++)
                 if (x % 3 == 0)
-                    buffer[x, y] = new Pixel(new Symbol($"{x},{y}"), Colors.Blue);
+                    buffer.Pixels[x, y] = new Pixel(new Symbol($"{x},{y}"), Colors.Blue);
                 else if (x % 3 == 1)
-                    buffer[x, y] = Pixel.Empty;
+                    buffer.Pixels[x, y] = Pixel.Empty;
                 else
-                    buffer[x, y] = new Pixel(new Symbol($"{x},{y}"), Colors.White, FontStyle.Italic,
+                    buffer.Pixels[x, y] = new Pixel(new Symbol($"{x},{y}"), Colors.White, FontStyle.Italic,
                         FontWeight.Bold, TextDecorationLocation.Underline);
 
             return buffer;
@@ -34,21 +34,21 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 {
                     case 0:
                     {
-                        Assert.That(buffer[x, y].Foreground.Symbol.Complex == $"{x},{y}");
-                        Assert.That(buffer[x, y].Foreground.Color == Colors.Blue);
+                        Assert.That(buffer.Pixels[x, y].Foreground.Symbol.Complex == $"{x},{y}");
+                        Assert.That(buffer.Pixels[x, y].Foreground.Color == Colors.Blue);
                     }
                         break;
                     case 1:
                     {
-                        Assert.That(buffer[x, y] == Pixel.Empty);
+                        Assert.That(buffer.Pixels[x, y] == Pixel.Empty);
                     }
                         break;
                     case 2:
-                        Assert.That(buffer[x, y].Foreground.Symbol.Complex == $"{x},{y}");
-                        Assert.That(buffer[x, y].Foreground.Color == Colors.White);
-                        Assert.That(buffer[x, y].Foreground.Style == FontStyle.Italic);
-                        Assert.That(buffer[x, y].Foreground.Weight == FontWeight.Bold);
-                        Assert.That(buffer[x, y].Foreground.TextDecoration == TextDecorationLocation.Underline);
+                        Assert.That(buffer.Pixels[x, y].Foreground.Symbol.Complex == $"{x},{y}");
+                        Assert.That(buffer.Pixels[x, y].Foreground.Color == Colors.White);
+                        Assert.That(buffer.Pixels[x, y].Foreground.Style == FontStyle.Italic);
+                        Assert.That(buffer.Pixels[x, y].Foreground.Weight == FontWeight.Bold);
+                        Assert.That(buffer.Pixels[x, y].Foreground.TextDecoration == TextDecorationLocation.Underline);
                         break;
                 }
         }
@@ -59,7 +59,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             Assert.That(buffer1.Height == buffer2.Height);
             for (ushort y = 0; y < buffer1.Height; y++)
             for (ushort x = 0; x < buffer1.Width; x++)
-                Assert.AreEqual(buffer1[x, y], buffer2[x, y]);
+                Assert.AreEqual(buffer1.Pixels[x, y], buffer2.Pixels[x, y]);
         }
 
 
