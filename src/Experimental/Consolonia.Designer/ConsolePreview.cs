@@ -404,7 +404,7 @@ namespace Consolonia.Designer
                 }
                 else
                 {
-                    _textBuilder.Append(pixel.Foreground.Symbol.Text);
+                    _textBuilder.Append(pixel.Foreground.Symbol.Complex);
                     _textRunCharWidth += pixel.Foreground.Symbol.Width;
 
                     if (pixel.Foreground.Symbol.Width > 1)

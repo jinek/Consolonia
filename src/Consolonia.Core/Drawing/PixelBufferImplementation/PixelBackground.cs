@@ -30,8 +30,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return new PixelBackground(Color.Brighten());
         }
 
-        [JsonConverter(typeof(ColorConverter))]
-        public Color Color { get; init; } = color;
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        [JsonConverter(typeof(ColorConverter))] [JsonProperty]
+        public readonly Color Color = color;
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         public bool Equals(PixelBackground other)
         {

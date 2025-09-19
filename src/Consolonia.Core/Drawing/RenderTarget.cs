@@ -118,7 +118,6 @@ namespace Consolonia.Core.Drawing
             CaretStyle? caretStyle = null;
 
             var flushingBuffer = new FlushingBuffer(_console);
-
             for (ushort y = 0; y < pixelBuffer.Height; y++)
             for (ushort x = 0; x < pixelBuffer.Width; x++)
             {
@@ -145,7 +144,7 @@ namespace Consolonia.Core.Drawing
                         (byte)(255 - currentPixel.Background.Color.G),
                         (byte)(255 - currentPixel.Background.Color.B));
 
-                    pixel = new Pixel(new PixelForeground(new SimpleSymbol(_consoleCursor.Type), invertColor),
+                    pixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor),
                         new PixelBackground(currentPixel.Background.Color), pixel.CaretStyle);
                 }
 
@@ -235,7 +234,12 @@ namespace Consolonia.Core.Drawing
                 // want to output as they are already invisible and represented
                 // by the complex glyph coming before it (aka double-wide chars)
                 if (pixel.Foreground.Symbol.Width > 0)
-                    _stringBuilder.Append(pixel.Foreground.Symbol.Text);
+                {
+                    if (!string.IsNullOrEmpty(pixel.Foreground.Symbol.Complex))
+                        _stringBuilder.Append(pixel.Foreground.Symbol.Complex);
+                    else
+                        _stringBuilder.Append(pixel.Foreground.Symbol.Character);
+                }
 
                 _currentBufferPoint = _currentBufferPoint.WithXpp();
             }
