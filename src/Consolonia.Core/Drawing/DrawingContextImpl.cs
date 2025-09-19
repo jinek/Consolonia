@@ -541,7 +541,7 @@ namespace Consolonia.Core.Drawing
                 case ShadeBrush:
                     for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        var row = _pixelBuffer.GetRowSpan(y);
+                        Span<Pixel> row = _pixelBuffer.GetRowSpan(y);
                         for (ushort x = (ushort)targetRect.Left; x < (int)targetRect.Right; x++)
                             row[x] = row[x].Shade();
                     }
@@ -550,7 +550,7 @@ namespace Consolonia.Core.Drawing
                 case BrightenBrush:
                     for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        var row = _pixelBuffer.GetRowSpan(y);
+                        Span<Pixel> row = _pixelBuffer.GetRowSpan(y);
                         for (ushort x = (ushort)targetRect.Left; x < (int)targetRect.Right; x++)
                             row[x] = row[x].Brighten();
                     }
@@ -559,7 +559,7 @@ namespace Consolonia.Core.Drawing
                 case InvertBrush:
                     for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        var row = _pixelBuffer.GetRowSpan(y);
+                        Span<Pixel> row = _pixelBuffer.GetRowSpan(y);
                         for (ushort x = (ushort)targetRect.Left; x < (int)targetRect.Right; x++)
                             row[x] = row[x].Invert();
                     }
@@ -568,7 +568,7 @@ namespace Consolonia.Core.Drawing
                 default:
                     for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        var row = _pixelBuffer.GetRowSpan(y);
+                        Span<Pixel> row = _pixelBuffer.GetRowSpan(y);
                         ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
                         for (ushort x = (ushort)targetRect.Left; x < (int)targetRect.Right; x++, brushX++)
                         {
