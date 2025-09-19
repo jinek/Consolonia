@@ -10,17 +10,11 @@ using Avalonia.Data.Converters;
 
 namespace Consolonia.Gallery.Gallery
 {
-    internal class GalleryItem
+    internal class GalleryItem(string name, Type type)
     {
-        public GalleryItem(string name, Type type)
-        {
-            Type = type;
-            Name = name;
-        }
+        public Type Type { get; } = type;
 
-        public Type Type { get; }
-
-        public string Name { get; }
+        public string Name { get; } = name;
 
         public static IEnumerable<GalleryItem> Enumerated
         {
