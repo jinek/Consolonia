@@ -119,16 +119,16 @@ namespace Consolonia.Core.Drawing
             CaretStyle? caretStyle = null;
 
             var flushingBuffer = new FlushingBuffer(_console);
-            for (int y = 0; y < pixelBuffer.Height; y++)
-                for (int x = 0; x < pixelBuffer.Width; x++)
+            for (ushort y = 0; y < pixelBuffer.Height; y++)
+                for (ushort x = 0; x < pixelBuffer.Width; x++)
                 {
-                    Pixel pixel = pixelBuffer.Pixels[x, y];
+                    Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
 
                     if (pixel.IsCaret())
                     {
                         if (caretPosition != null)
                             throw new InvalidOperationException("Caret is already shown");
-                        caretPosition = new PixelBufferCoordinate((ushort)x, (ushort)y);
+                        caretPosition = new PixelBufferCoordinate(x, y);
                         caretStyle = pixel.CaretStyle;
                     }
 
@@ -155,7 +155,7 @@ namespace Consolonia.Core.Drawing
 
                     _cache[x, y] = pixel;
 
-                    flushingBuffer.WritePixel(new PixelBufferCoordinate((ushort)x, (ushort)y), pixel);
+                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
                 }
 
             flushingBuffer.Flush();

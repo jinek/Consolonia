@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Consolonia.Controls;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Wcwidth;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
@@ -109,10 +108,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public string GetText()
             => (Complex != null && Complex.Length > 1) ? Complex : Character.ToString();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool NothingToDraw()
         {
-            return Character == Char.MinValue && (Complex == null || Complex.Length == 0);
+            return Character == Char.MinValue && 
+                String.IsNullOrEmpty(Complex);
         }
 
         public Symbol Blend(ref Symbol symbolAbove)
@@ -128,7 +127,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return symbolAbove;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsBoxSymbol()
         {
             return Pattern > 0;
