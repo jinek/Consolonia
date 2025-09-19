@@ -34,5 +34,45 @@ namespace Edit.NET
         {
             Editor.Cut();
         }
+
+        private void Open_OnClick(object? sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void Save_OnClick(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SaveAs_OnClick(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SyntaxPlain_OnClick(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SyntaxCSharp_OnClick(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SyntaxXml_OnClick(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SyntaxHtml_OnClick(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SyntaxJavaScript_OnClick(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
