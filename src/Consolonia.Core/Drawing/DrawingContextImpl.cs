@@ -676,14 +676,14 @@ namespace Consolonia.Core.Drawing
             Point head = line.PStart;
 
             int length = line.Length;
-            if (startSymbol.Complex != "\0")
+            if (!startSymbol.NothingToDraw())
                 DrawLineSymbolAndMoveHead(ref head, line.Vertical, in startSymbol, color, 1);
             else
                 head += line.Vertical ? new Vector(0, 1) : new Vector(1, 0);
 
             DrawLineSymbolAndMoveHead(ref head, line.Vertical, in middleSymbol, color, length - 1);
 
-            if (endSymbol.Complex != "\0")
+            if (!endSymbol.NothingToDraw())
                 DrawLineSymbolAndMoveHead(ref head, line.Vertical, in endSymbol, color, 1);
         }
 
