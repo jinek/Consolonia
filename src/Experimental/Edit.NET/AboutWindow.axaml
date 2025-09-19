@@ -1,0 +1,19 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Edit.NET.AboutWindow"
+        Title="About Edit.NET"
+        Width="50"
+        Height="15"
+        CanResize="False">
+  <Border Padding="1" BorderThickness="1">
+    <StackPanel Spacing="1">
+      <TextBlock Text="Edit.NET" FontWeight="Bold" HorizontalAlignment="Center"/>
+      <TextBlock x:Name="VersionText" Text="Version" HorizontalAlignment="Center"/>
+      <Separator/>
+      <TextBlock TextWrapping="Wrap" Text="A simple text editor built with Avalonia and Consolonia."/>
+      <TextBlock Classes="link" Text="https://github.com/jinek/consolonia"/>
+      <Separator/>
+      <Button HorizontalAlignment="Center" Width="10" Content="OK" IsDefault="True" Click="Ok_OnClick"/>
+    </StackPanel>
+  </Border>
+</Window>
