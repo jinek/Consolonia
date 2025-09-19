@@ -541,33 +541,33 @@ namespace Consolonia.Core.Drawing
                 case ShadeBrush:
                     for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        var row = _pixelBuffer.GetRowSpan(y).Slice((int)targetRect.Left, (int)targetRect.Width);
-                        for (ushort x = (ushort)0; x < (int)targetRect.Width; x++)
+                        var row = _pixelBuffer.GetRowSpan(y);
+                        for (ushort x = (ushort)targetRect.Left; x < (int)targetRect.Right; x++)
                             row[x] = row[x].Shade();
                     }
                     break;
                 case BrightenBrush:
                     for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        var row = _pixelBuffer.GetRowSpan(y).Slice((int)targetRect.Left, (int)targetRect.Width);
-                        for (ushort x = (ushort)0; x < (int)targetRect.Width; x++)
+                        var row = _pixelBuffer.GetRowSpan(y);
+                        for (ushort x = (ushort)targetRect.Left; x < (int)targetRect.Right; x++)
                             row[x] = row[x].Brighten();
                     }
                     break;
                 case InvertBrush:
                     for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        var row = _pixelBuffer.GetRowSpan(y).Slice((int)targetRect.Left, (int)targetRect.Width);
-                        for (ushort x = (ushort)0; x < (int)targetRect.Width; x++)
+                        var row = _pixelBuffer.GetRowSpan(y);
+                        for (ushort x = (ushort)targetRect.Left; x < (int)targetRect.Right; x++)
                             row[x] = row[x].Invert();
                     }
                     break;
                 default:
                     for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        var row = _pixelBuffer.GetRowSpan(y).Slice((int)targetRect.Left, (int)targetRect.Width);
+                        var row = _pixelBuffer.GetRowSpan(y);
                         ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
-                        for (ushort x = (ushort)0; x < (int)targetRect.Width; x++, brushX++)
+                        for (ushort x = (ushort)targetRect.Left; x < (int)targetRect.Right; x++, brushX++)
                         {
                             Pixel pixelAbove;
                             if (solidColorBrush == null)
