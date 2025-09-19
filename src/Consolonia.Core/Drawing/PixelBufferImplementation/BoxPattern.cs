@@ -1,61 +1,25 @@
 using System;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
-using Consolonia.Controls.Brushes;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     /// <summary>
     ///     https://en.wikipedia.org/wiki/Box-drawing_character
     /// </summary>
-    [DebuggerDisplay("DrawingBox {Text}")]
-    [JsonConverter(typeof(SymbolConverter))]
-    public readonly struct DrawingBoxSymbol : ISymbol, IEquatable<DrawingBoxSymbol>
+    public static class BoxPattern
     {
+        public const char Min = '─'; //0x2500
+        public const char Max = '╵'; //0x257F
+
         // all 0bXXXX_0000 are special values
-        private const byte BoldSymbol = 0b0001_0000;
-        private const byte EmptySymbol = 0b0;
-
-        public DrawingBoxSymbol(byte upRightDownLeft)
-        {
-            UpRightDownLeft = upRightDownLeft;
-            Text = GetBoxSymbol(UpRightDownLeft).ToString();
-        }
-
-        public byte UpRightDownLeft { get; init; }
-
-        public bool Equals(DrawingBoxSymbol other)
-        {
-            return UpRightDownLeft == other!.UpRightDownLeft;
-        }
-
-        [JsonIgnore] public string Text { get; init; }
-
-        [JsonIgnore] public ushort Width => 1;
-
-        public bool NothingToDraw()
-        {
-            return UpRightDownLeft == EmptySymbol;
-        }
-
-        public ISymbol Blend(ref ISymbol symbolAbove)
-        {
-            if (symbolAbove.NothingToDraw()) return this;
-
-            if (symbolAbove is not DrawingBoxSymbol drawingBoxSymbol)
-                return symbolAbove;
-
-            if (drawingBoxSymbol.UpRightDownLeft == BoldSymbol || UpRightDownLeft == BoldSymbol)
-                return new DrawingBoxSymbol(BoldSymbol);
-
-            return new DrawingBoxSymbol((byte)(UpRightDownLeft | drawingBoxSymbol.UpRightDownLeft));
-        }
+        public const char BoldChar = '█';
+        public const byte BoldPattern = 0b0001_0000;
+        public const char EmptyChar = char.MinValue;
+        public const byte EmptyPattern = 0b0;
 
         /// <summary>
         ///     https://en.wikipedia.org/wiki/Code_page_437
         /// </summary>
-        private static char GetBoxSymbol(byte upRightDownLeft)
+        public static char GetBoxChar(byte upRightDownLeft)
         {
             //DOS line draw characters are not ordered in any programmatic manner, and calculating a particular character shape needs to use a look-up table. from https://en.wikipedia.org/wiki/Box-drawing_character
 
@@ -86,8 +50,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 {
                     return upRightDownLeft switch
                     {
-                        EmptySymbol => char.MinValue,
-                        BoldSymbol => '█',
+                        EmptyPattern => char.MinValue,
+                        BoldPattern => '█',
                         0b0000_1001 => '┘',
                         0b1000_1001 => '╜',
                         0b0001_1001 => '╛',
@@ -120,47 +84,33 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                         0b0010_0111 => '╥',
                         0b0100_0111 or 0b0001_0111 or 0b0101_0111 => '╤',
                         0b0110_0111 or 0b0011_0111 or 0b0111_0111 => '╦',
-                        _ => throw new InvalidOperationException()
+                        _ => throw new InvalidOperationException(GetMaskText(upRightDownLeft))
                     };
                 }
             }
         }
 
-        public static DrawingBoxSymbol UpRightDownLeftFromPattern(byte pattern, LineStyle lineStyle)
+        /// <summary>
+        ///     Merge 2 patterns together. Aka, Left + Top => TopLeft
+        /// </summary>
+        /// <param name="boxPattern"></param>
+        /// <param name="overlayPattern"></param>
+        /// <returns></returns>
+        public static byte Merge(byte boxPattern, byte overlayPattern)
         {
-            if (pattern == EmptySymbol) return new DrawingBoxSymbol(EmptySymbol);
-            switch (lineStyle)
-            {
-                case LineStyle.SingleLine:
-                    return new DrawingBoxSymbol(pattern);
-                case LineStyle.Bold:
-                    return new DrawingBoxSymbol(BoldSymbol);
-                case LineStyle.DoubleLine:
-                    byte leftPart = (byte)(pattern << 4);
-                    return new DrawingBoxSymbol((byte)(leftPart | pattern));
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(lineStyle), lineStyle, null);
-            }
+            if (overlayPattern == EmptyPattern)
+                return boxPattern;
+
+            if (overlayPattern == BoldPattern || boxPattern == BoldPattern)
+                return BoldPattern;
+
+            return (byte)(boxPattern | overlayPattern);
         }
 
-        public override bool Equals([NotNullWhen(true)] object obj)
+        public static string GetMaskText(byte mask)
         {
-            return obj is DrawingBoxSymbol other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return UpRightDownLeft.GetHashCode();
-        }
-
-        public static bool operator ==(DrawingBoxSymbol left, DrawingBoxSymbol right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(DrawingBoxSymbol left, DrawingBoxSymbol right)
-        {
-            return !left!.Equals(right);
+            return
+                $"{Convert.ToString(mask >> 4, 2).PadLeft(4, '0')}_{Convert.ToString(mask & 0xF, 2).PadLeft(4, '0')}";
         }
     }
 }

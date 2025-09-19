@@ -31,7 +31,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             {
                 Pixel pixel = buffer[x, y];
                 Assert.IsTrue(pixel.Width == 1);
-                Assert.IsTrue(pixel.Foreground.Symbol.Text == " ");
+                Assert.IsTrue(pixel.Foreground.Symbol.Character == ' ');
                 Assert.IsTrue(pixel.Foreground.Color == Colors.Transparent);
                 Assert.IsTrue(pixel.Background.Color == Colors.Black);
             }
@@ -47,7 +47,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             for (ushort x = 1; x < 6; x++)
             {
                 Assert.IsTrue(buffer[x, 2].Width == 1);
-                Assert.IsTrue(buffer[x, 2].Foreground.Symbol.Text == x.ToString());
+                Assert.IsTrue(buffer[x, 2].Foreground.Symbol.Character == x.ToString()[0]);
             }
         }
 
@@ -63,13 +63,13 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 if (x == 5)
                 {
                     Assert.IsTrue(buffer[x, 1].Width == 1);
-                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Text == "X");
+                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Character == 'X');
                     Assert.IsTrue(buffer[x, 1].Foreground.Color == Colors.Blue);
                 }
                 else
                 {
                     Assert.IsTrue(buffer[x, 1].Width == 1);
-                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Text == x.ToString());
+                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Character == x.ToString()[0]);
                 }
         }
 
@@ -88,18 +88,20 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 if (x == 5)
                 {
                     Assert.IsTrue(pixel.Width == 2);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Text == "🏳️‍🌈");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == char.MinValue);
+                    Assert.IsTrue(pixel.Foreground.Symbol.Complex == "🏳️‍🌈");
                     Assert.IsTrue(pixel.Foreground.Color == Colors.Blue);
                 }
                 else if (x == 6)
                 {
                     Assert.IsTrue(pixel.Width == 0);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Text.Length == 0);
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == char.MinValue);
+                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
                 }
                 else
                 {
                     Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Text == x.ToString());
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == x.ToString()[0]);
                 }
             }
         }
@@ -120,18 +122,18 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 if (x == 5)
                 {
                     Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Text == "X");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == 'X');
                     Assert.IsTrue(pixel.Foreground.Color == Colors.Red);
                 }
                 else if (x == 6)
                 {
                     Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == ' ');
                 }
                 else
                 {
                     Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Text == x.ToString());
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == x.ToString()[0]);
                 }
             }
         }
@@ -152,19 +154,22 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 if (x == 5)
                 {
                     Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == ' ');
+                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
                     Assert.IsTrue(pixel.Foreground.Color == Colors.Transparent);
                 }
                 else if (x == 6)
                 {
                     Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Text == "X");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == 'X');
+                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
                     Assert.IsTrue(pixel.Foreground.Color == Colors.Red);
                 }
                 else
                 {
                     Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Text == x.ToString());
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == x.ToString()[0]);
+                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
                 }
             }
         }
@@ -222,12 +227,14 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             for (ushort x = 0; x <= 6; x++)
                 if (x == 0 || x == 6)
                 {
-                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Character == ' ');
+                    Assert.IsNull(buffer[x, 1].Foreground.Symbol.Complex);
                     Assert.IsTrue(buffer[x, 1].Foreground.Color == Colors.Transparent);
                 }
                 else
                 {
-                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Text == "─");
+                    Assert.IsTrue(buffer[x, 1].Foreground.Symbol.Character == '─');
+                    Assert.IsNull(buffer[x, 1].Foreground.Symbol.Complex);
                     Assert.IsTrue(buffer[x, 1].Foreground.Color == Colors.White);
                 }
         }
@@ -244,12 +251,14 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             for (ushort y = 0; y <= 6; y++)
                 if (y == 0 || y == 6)
                 {
-                    Assert.IsTrue(buffer[1, y].Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(buffer[1, y].Foreground.Symbol.Character == ' ');
+                    Assert.IsNull(buffer[1, y].Foreground.Symbol.Complex);
                     Assert.IsTrue(buffer[1, y].Foreground.Color == Colors.Transparent);
                 }
                 else
                 {
-                    Assert.IsTrue(buffer[1, y].Foreground.Symbol.Text == "│");
+                    Assert.IsTrue(buffer[1, y].Foreground.Symbol.Character == '│');
+                    Assert.IsNull(buffer[1, y].Foreground.Symbol.Complex);
                     Assert.IsTrue(buffer[1, y].Foreground.Color == Colors.White);
                 }
         }
@@ -269,40 +278,40 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 dc.DrawLine(new Pen(Brushes.White), new Point(x, 0), new Point(x, 4));
 
             // line 1
-            Assert.IsTrue(buffer[1, 1].Foreground.Symbol.Text == "┌");
-            Assert.IsTrue(buffer[2, 1].Foreground.Symbol.Text == "─");
-            Assert.IsTrue(buffer[3, 1].Foreground.Symbol.Text == "┬");
-            Assert.IsTrue(buffer[4, 1].Foreground.Symbol.Text == "─");
-            Assert.IsTrue(buffer[5, 1].Foreground.Symbol.Text == "┐");
+            Assert.IsTrue(buffer[1, 1].Foreground.Symbol.Character == '┌');
+            Assert.IsTrue(buffer[2, 1].Foreground.Symbol.Character == '─');
+            Assert.IsTrue(buffer[3, 1].Foreground.Symbol.Character == '┬');
+            Assert.IsTrue(buffer[4, 1].Foreground.Symbol.Character == '─');
+            Assert.IsTrue(buffer[5, 1].Foreground.Symbol.Character == '┐');
 
             // line 2 
-            Assert.IsTrue(buffer[1, 2].Foreground.Symbol.Text == "│");
-            Assert.IsTrue(buffer[2, 2].Foreground.Symbol.Text == " ");
-            Assert.IsTrue(buffer[3, 2].Foreground.Symbol.Text == "│");
-            Assert.IsTrue(buffer[4, 2].Foreground.Symbol.Text == " ");
-            Assert.IsTrue(buffer[5, 2].Foreground.Symbol.Text == "│");
+            Assert.IsTrue(buffer[1, 2].Foreground.Symbol.Character == '│');
+            Assert.IsTrue(buffer[2, 2].Foreground.Symbol.Character == ' ');
+            Assert.IsTrue(buffer[3, 2].Foreground.Symbol.Character == '│');
+            Assert.IsTrue(buffer[4, 2].Foreground.Symbol.Character == ' ');
+            Assert.IsTrue(buffer[5, 2].Foreground.Symbol.Character == '│');
 
             // line 3
-            Assert.IsTrue(buffer[1, 3].Foreground.Symbol.Text == "├");
-            Assert.IsTrue(buffer[2, 3].Foreground.Symbol.Text == "─");
-            Assert.IsTrue(buffer[3, 3].Foreground.Symbol.Text == "┼");
-            Assert.IsTrue(buffer[4, 3].Foreground.Symbol.Text == "─");
-            Assert.IsTrue(buffer[5, 3].Foreground.Symbol.Text == "┤");
+            Assert.IsTrue(buffer[1, 3].Foreground.Symbol.Character == '├');
+            Assert.IsTrue(buffer[2, 3].Foreground.Symbol.Character == '─');
+            Assert.IsTrue(buffer[3, 3].Foreground.Symbol.Character == '┼');
+            Assert.IsTrue(buffer[4, 3].Foreground.Symbol.Character == '─');
+            Assert.IsTrue(buffer[5, 3].Foreground.Symbol.Character == '┤');
 
 
             // line 4
-            Assert.IsTrue(buffer[1, 4].Foreground.Symbol.Text == "│");
-            Assert.IsTrue(buffer[2, 4].Foreground.Symbol.Text == " ");
-            Assert.IsTrue(buffer[3, 4].Foreground.Symbol.Text == "│");
-            Assert.IsTrue(buffer[4, 4].Foreground.Symbol.Text == " ");
-            Assert.IsTrue(buffer[5, 4].Foreground.Symbol.Text == "│");
+            Assert.IsTrue(buffer[1, 4].Foreground.Symbol.Character == '│');
+            Assert.IsTrue(buffer[2, 4].Foreground.Symbol.Character == ' ');
+            Assert.IsTrue(buffer[3, 4].Foreground.Symbol.Character == '│');
+            Assert.IsTrue(buffer[4, 4].Foreground.Symbol.Character == ' ');
+            Assert.IsTrue(buffer[5, 4].Foreground.Symbol.Character == '│');
 
             // line 5
-            Assert.IsTrue(buffer[1, 5].Foreground.Symbol.Text == "└");
-            Assert.IsTrue(buffer[2, 5].Foreground.Symbol.Text == "─");
-            Assert.IsTrue(buffer[3, 5].Foreground.Symbol.Text == "┴");
-            Assert.IsTrue(buffer[4, 5].Foreground.Symbol.Text == "─");
-            Assert.IsTrue(buffer[5, 5].Foreground.Symbol.Text == "┘");
+            Assert.IsTrue(buffer[1, 5].Foreground.Symbol.Character == '└');
+            Assert.IsTrue(buffer[2, 5].Foreground.Symbol.Character == '─');
+            Assert.IsTrue(buffer[3, 5].Foreground.Symbol.Character == '┴');
+            Assert.IsTrue(buffer[4, 5].Foreground.Symbol.Character == '─');
+            Assert.IsTrue(buffer[5, 5].Foreground.Symbol.Character == '┘');
         }
 
         [Test]
@@ -329,64 +338,64 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             for (ushort x = 0; x <= right; x++)
                 if (x == 0 || x == right)
                 {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
                 }
                 else if (y == 0 || y == bottom)
                 {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
                 }
                 else
                 {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
                 }
         }
 
-        private static readonly string[] SingleBoxChars =
+        private static readonly char[] SingleBoxChars =
         {
-            "┌", "─", "┐",
-            "│", "│",
-            "└", "─", "┘"
+            '┌', '─', '┐',
+            '│', '│',
+            '└', '─', '┘'
         };
 
-        private static readonly string[] DoubleBoxChars =
+        private static readonly char[] DoubleBoxChars =
         {
-            "╔", "═", "╗",
-            "║", "║",
-            "╚", "═", "╝"
+            '╔', '═', '╗',
+            '║', '║',
+            '╚', '═', '╝'
         };
 
-        private static readonly string[] EdgeBoxChars =
+        private static readonly char[] EdgeBoxChars =
         {
-            " ", "▁", " ",
-            "▕", "▏",
-            " ", "▔", " "
+            ' ', '▁', ' ',
+            '▕', '▏',
+            ' ', '▔', ' '
         };
 
-        private static readonly string[] EdgeWideBoxChars =
+        private static readonly char[] EdgeWideBoxChars =
         {
-            "▗", "▄", "▖",
-            "▐", "▌",
-            "▝", "▀", "▘"
+            '▗', '▄', '▖',
+            '▐', '▌',
+            '▝', '▀', '▘'
         };
 
-        private static readonly string[] BoldBoxChars =
+        private static readonly char[] BoldBoxChars =
         {
-            "█", "█", "█",
-            "█", "█",
-            "█", "█", "█"
+            '█', '█', '█',
+            '█', '█',
+            '█', '█', '█'
         };
 
-        private static readonly string[] EmptyBoxChars =
+        private static readonly char[] EmptyBoxChars =
         {
-            " ", " ", " ",
-            " ", " ",
-            " ", " ", " "
+            ' ', ' ', ' ',
+            ' ', ' ',
+            ' ', ' ', ' '
         };
 
         private enum LinePositions
@@ -416,7 +425,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         };
 
         [TestCaseSource(nameof(BoxVariations))]
-        public void DrawRectangleWithPen(IPen pen, string[] boxChars)
+        public void DrawRectangleWithPen(IPen pen, char[] boxChars)
         {
             var consoleTopLevelImpl = new ConsoleWindowImpl();
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
@@ -433,15 +442,15 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     y < (ushort)newRect.Top || y > (ushort)newRect.Bottom)
                 {
                     // outside of box
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
                 }
                 else if (x == (ushort)newRect.Left && y == (ushort)newRect.Top)
                 {
                     // upper left corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == boxChars[(int)LinePositions.UpperLeft]);
-                    if (boxChars[(int)LinePositions.UpperLeft] == " ")
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.UpperLeft]);
+                    if (boxChars[(int)LinePositions.UpperLeft] == ' ')
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
@@ -450,8 +459,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 else if (x == (ushort)newRect.Right && y == (ushort)newRect.Top)
                 {
                     // upper right corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == boxChars[(int)LinePositions.UpperRight]);
-                    if (boxChars[(int)LinePositions.UpperRight] == " ")
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.UpperRight]);
+                    if (boxChars[(int)LinePositions.UpperRight] == ' ')
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
@@ -460,8 +469,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 else if (x == (ushort)newRect.Right && y == (ushort)newRect.Bottom)
                 {
                     // lower right corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == boxChars[(int)LinePositions.LowerRight]);
-                    if (boxChars[(int)LinePositions.LowerRight] == " ")
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.LowerRight]);
+                    if (boxChars[(int)LinePositions.LowerRight] == ' ')
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
@@ -470,8 +479,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 else if (x == (ushort)newRect.Left && y == (ushort)newRect.Bottom)
                 {
                     // lower left corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == boxChars[(int)LinePositions.LowerLeft]);
-                    if (boxChars[(int)LinePositions.LowerLeft] == " ")
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.LowerLeft]);
+                    if (boxChars[(int)LinePositions.LowerLeft] == ' ')
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
@@ -480,8 +489,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 else if (x == (ushort)newRect.Left && y > (ushort)newRect.Top && y < (ushort)newRect.Bottom)
                 {
                     // left side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == boxChars[(int)LinePositions.Left]);
-                    if (boxChars[(int)LinePositions.Left] == " ")
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Left]);
+                    if (boxChars[(int)LinePositions.Left] == ' ')
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
@@ -490,8 +499,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 else if (y == (ushort)newRect.Top && x >= (ushort)newRect.Left + 1 && x < (ushort)newRect.Right - 1)
                 {
                     //top side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == boxChars[(int)LinePositions.Top]);
-                    if (boxChars[(int)LinePositions.Top] == " ")
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Top]);
+                    if (boxChars[(int)LinePositions.Top] == ' ')
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
@@ -500,8 +509,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 else if (x == (ushort)newRect.Right && y >= (ushort)newRect.Top && y < (ushort)newRect.Bottom)
                 {
                     // right side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == boxChars[(int)LinePositions.Right]);
-                    if (boxChars[(int)LinePositions.Right] == " ")
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Right]);
+                    if (boxChars[(int)LinePositions.Right] == ' ')
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
@@ -510,8 +519,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 else if (y == (ushort)newRect.Bottom && x >= (ushort)newRect.Left && x < (ushort)newRect.Right)
                 {
                     // bottom side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == boxChars[(int)LinePositions.Bottom]);
-                    if (boxChars[(int)LinePositions.Bottom] == " ")
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Bottom]);
+                    if (boxChars[(int)LinePositions.Bottom] == ' ')
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
@@ -521,7 +530,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                          y > (ushort)newRect.Top && y < (ushort)newRect.Bottom)
                 {
                     // inside
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Text == " ");
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
                     Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
                 }

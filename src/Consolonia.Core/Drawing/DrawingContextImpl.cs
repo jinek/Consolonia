@@ -129,7 +129,7 @@ namespace Consolonia.Core.Drawing
                     Color background = GetBackgroundColorForQuadPixel(quadPixelChar, quadPixelColors);
 
                     var imagePixel = new Pixel(
-                        new PixelForeground(new SimpleSymbol(quadPixelChar), foreground),
+                        new PixelForeground(new Symbol(quadPixelChar), foreground),
                         new PixelBackground(background));
 
                     var point = new Point(px, py);
@@ -517,8 +517,15 @@ namespace Consolonia.Core.Drawing
 
         private void FillRectangleWithBrush(IBrush brush, Rect r)
         {
-            if (brush is ISolidColorBrush { Color.A: 0 })
-                return;
+            Pixel solidPixel = default;
+            var solidColorBrush = brush as ISolidColorBrush;
+            if (solidColorBrush != null)
+            {
+                Color solidColor = solidColorBrush.Color;
+                if (solidColor is { A: 0 }) return;
+
+                solidPixel = new Pixel(new PixelBackground(solidColor));
+            }
 
             // fill rectangle with brush
             Rect sourceRect = r.TransformToAABB(Transform);
@@ -531,30 +538,47 @@ namespace Consolonia.Core.Drawing
             ushort gradiantWidth = (ushort)Math.Max(1, Math.Ceiling(sourceRect.Width));
             ushort gradiantHeight = (ushort)Math.Max(1, Math.Ceiling(sourceRect.Height));
             ushort brushY = (ushort)(targetRect.Top - sourceRect.Top);
-            for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
-            {
-                ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
-                for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++, brushX++)
-                {
-                    Color backgroundColor = brush.FromPosition(brushX, brushY, gradiantWidth, gradiantHeight);
 
-                    switch (brush)
+            switch (brush)
+            {
+                case ShadeBrush:
+                    for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
+                    for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++)
+                        _pixelBuffer[x, y] = _pixelBuffer[x, y].Shade();
+                    break;
+                case BrightenBrush:
+                    for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
+                    for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++)
+                        _pixelBuffer[x, y] = _pixelBuffer[x, y].Brighten();
+                    break;
+                case InvertBrush:
+                    for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
+                    for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++)
+                        _pixelBuffer[x, y] = _pixelBuffer[x, y].Invert();
+                    break;
+                default:
+                    for (ushort y = (ushort)targetRect.Top; y < targetRect.Bottom; y++, brushY++)
                     {
-                        case ShadeBrush:
-                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Shade();
-                            break;
-                        case BrightenBrush:
-                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Brighten();
-                            break;
-                        case InvertBrush:
-                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Invert();
-                            break;
-                        default:
-                            _pixelBuffer[x, y] =
-                                _pixelBuffer[x, y].Blend(new Pixel(new PixelBackground(backgroundColor)));
-                            break;
+                        ushort brushX = (ushort)(targetRect.Left - sourceRect.Left);
+                        for (ushort x = (ushort)targetRect.Left; x < targetRect.Right; x++, brushX++)
+                        {
+                            Pixel pixelAbove;
+                            if (solidColorBrush == null)
+                            {
+                                Color backgroundColor =
+                                    brush.FromPosition(brushX, brushY, gradiantWidth, gradiantHeight);
+                                pixelAbove = new Pixel(new PixelBackground(backgroundColor));
+                            }
+                            else
+                            {
+                                pixelAbove = solidPixel;
+                            }
+
+                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Blend(pixelAbove);
+                        }
                     }
-                }
+
+                    break;
             }
 
             _consoleWindowImpl.DirtyRegions.AddRect(targetRect);
@@ -611,32 +635,32 @@ namespace Consolonia.Core.Drawing
         {
             if (line.Length == 0)
                 return;
-            ISymbol startSymbol;
-            ISymbol middleSymbol;
-            ISymbol endSymbol;
+            Symbol startSymbol;
+            Symbol middleSymbol;
+            Symbol endSymbol;
             int iStyle = lineStyle == LineStyle.Edge ? 0 : 1;
 
             switch (linePosition)
             {
                 case RectangleLinePosition.Left:
-                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopLeft]);
-                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Left]);
-                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomLeft]);
+                    startSymbol = new Symbol(EdgeCornerChars[iStyle][TopLeft]);
+                    middleSymbol = new Symbol(EdgeChars[iStyle][(int)RectangleLinePosition.Left]);
+                    endSymbol = new Symbol(EdgeCornerChars[iStyle][BottomLeft]);
                     break;
                 case RectangleLinePosition.Top:
-                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopLeft]);
-                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Top]);
-                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopRight]);
+                    startSymbol = new Symbol(EdgeCornerChars[iStyle][TopLeft]);
+                    middleSymbol = new Symbol(EdgeChars[iStyle][(int)RectangleLinePosition.Top]);
+                    endSymbol = new Symbol(EdgeCornerChars[iStyle][TopRight]);
                     break;
                 case RectangleLinePosition.Right:
-                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][TopRight]);
-                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Right]);
-                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomRight]);
+                    startSymbol = new Symbol(EdgeCornerChars[iStyle][TopRight]);
+                    middleSymbol = new Symbol(EdgeChars[iStyle][(int)RectangleLinePosition.Right]);
+                    endSymbol = new Symbol(EdgeCornerChars[iStyle][BottomRight]);
                     break;
                 case RectangleLinePosition.Bottom:
-                    startSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomLeft]);
-                    middleSymbol = new SimpleSymbol(EdgeChars[iStyle][(int)RectangleLinePosition.Bottom]);
-                    endSymbol = new SimpleSymbol(EdgeCornerChars[iStyle][BottomRight]);
+                    startSymbol = new Symbol(EdgeCornerChars[iStyle][BottomLeft]);
+                    middleSymbol = new Symbol(EdgeChars[iStyle][(int)RectangleLinePosition.Bottom]);
+                    endSymbol = new Symbol(EdgeCornerChars[iStyle][BottomRight]);
                     break;
                 default:
                     throw new NotImplementedException("This shouldn't happen");
@@ -645,14 +669,14 @@ namespace Consolonia.Core.Drawing
             Point head = line.PStart;
 
             int length = line.Length;
-            if (startSymbol.Text != "\0")
+            if (!startSymbol.NothingToDraw())
                 DrawLineSymbolAndMoveHead(ref head, line.Vertical, in startSymbol, color, 1);
             else
                 head += line.Vertical ? new Vector(0, 1) : new Vector(1, 0);
 
             DrawLineSymbolAndMoveHead(ref head, line.Vertical, in middleSymbol, color, length - 1);
 
-            if (endSymbol.Text != "\0")
+            if (!endSymbol.NothingToDraw())
                 DrawLineSymbolAndMoveHead(ref head, line.Vertical, in endSymbol, color, 1);
         }
 
@@ -736,7 +760,7 @@ namespace Consolonia.Core.Drawing
             for (ushort i = start; i < end; i++)
             {
                 _pixelBuffer[head] =
-                    _pixelBuffer[head].Blend(new Pixel(DrawingBoxSymbol.UpRightDownLeftFromPattern(pattern, lineStyle),
+                    _pixelBuffer[head].Blend(new Pixel(new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle)),
                         color));
 
                 head = line.Vertical
@@ -747,7 +771,22 @@ namespace Consolonia.Core.Drawing
             _consoleWindowImpl.DirtyRegions.AddRect(intersect);
         }
 
-        private void DrawLineSymbolAndMoveHead(ref Point head, bool isVertical, in ISymbol symbol, Color color,
+        private static byte GetBoxPatternFromLineStyle(byte pattern, LineStyle lineStyle)
+        {
+            switch (lineStyle)
+            {
+                case LineStyle.SingleLine:
+                    return pattern;
+                case LineStyle.DoubleLine:
+                    return (byte)((pattern << 4) | pattern);
+                case LineStyle.Bold:
+                    return BoxPattern.BoldPattern;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(lineStyle), lineStyle, null);
+            }
+        }
+
+        private void DrawLineSymbolAndMoveHead(ref Point head, bool isVertical, in Symbol symbol, Color color,
             int count)
         {
             Rect rectToRefresh = isVertical
@@ -809,7 +848,7 @@ namespace Consolonia.Core.Drawing
                         break;
                     default:
                     {
-                        var symbol = new SimpleSymbol(glyph);
+                        var symbol = new Symbol(glyph);
                         // if we are attempting to draw a wide glyph we need to make sure that the clipping point
                         // is for the last physical char. Aka a double char should be clipped if it's second rendered 
                         // char would break the boundary of the clip.

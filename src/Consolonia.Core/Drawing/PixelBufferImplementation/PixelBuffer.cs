@@ -31,9 +31,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
         }
 
-        public ushort Width { get; }
-        public ushort Height { get; }
-
         // ReSharper disable once UnusedMember.Global
         [JsonIgnore]
         public Pixel this[int i]
@@ -95,7 +92,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     if (i == Width - 1 && j == Height - 1)
                         break;
                     Pixel pixel = this[new PixelBufferCoordinate(i, j)];
-                    string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.Text;
+                    string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.GetText();
+
                     //todo: check why cursor is not drawing
                     stringBuilder.Append(text);
                 }
@@ -105,5 +103,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             return stringBuilder.ToString();
         }
+
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        public readonly ushort Width;
+        public readonly ushort Height;
+#pragma warning restore CA1051 // Do not declare visible instance fields
     }
 }

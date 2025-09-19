@@ -7,24 +7,24 @@ using NUnit.Framework;
 namespace Consolonia.Core.Tests.WithLifetimeFixture
 {
     [TestFixture]
-    public class DrawingBoxSymbolTests
+    public class SymbolTests
     {
         [Test]
         public void Constructor()
         {
-            ISymbol symbol = new DrawingBoxSymbol(0b0000_1111);
-            Assert.That(symbol.Text, Is.EqualTo("┼"));
+            var symbol = new Symbol(0b0000_1111);
+            Assert.That(symbol.Character, Is.EqualTo('┼'));
         }
 
         [Test]
         public void Blend()
         {
-            ISymbol symbol = new DrawingBoxSymbol(0b0000_0101);
-            Assert.That(symbol.Text, Is.EqualTo("─"));
-            ISymbol symbolAbove = new DrawingBoxSymbol(0b0000_1010);
-            Assert.That(symbolAbove.Text, Is.EqualTo("│"));
-            ISymbol newSymbol = symbol.Blend(ref symbolAbove);
-            Assert.That(newSymbol.Text, Is.EqualTo("┼"));
+            var symbol = new Symbol(0b0000_0101);
+            Assert.That(symbol.Character, Is.EqualTo('─'));
+            var symbolAbove = new Symbol(0b0000_1010);
+            Assert.That(symbolAbove.Character, Is.EqualTo('│'));
+            Symbol newSymbol = symbol.Blend(ref symbolAbove);
+            Assert.That(newSymbol.Character, Is.EqualTo('┼'));
         }
 
         [Test]
@@ -53,30 +53,29 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             foreach ((byte code1, string _) in symbols)
             foreach ((byte code2, string _) in symbols)
             {
-                ISymbol symbol1 = new DrawingBoxSymbol(code1);
-                ISymbol symbol2 = new DrawingBoxSymbol(code2);
-                ISymbol blendedSymbol = symbol1.Blend(ref symbol2);
-                if (symbol1.Text != symbol2.Text)
-                    Debug.WriteLine($"{symbol1.Text} + {symbol2.Text} => {blendedSymbol.Text}");
-                Assert.That(blendedSymbol.Text, Is.Not.Null);
+                var symbol1 = new Symbol(code1);
+                var symbol2 = new Symbol(code2);
+                Symbol blendedSymbol = symbol1.Blend(ref symbol2);
+                if (symbol1.Character != symbol2.Character)
+                    Debug.WriteLine($"{symbol1.Character} + {symbol2.Character} => {blendedSymbol.Character}");
             }
         }
 
         [Test]
         public void Equality()
         {
-            var symbol = new DrawingBoxSymbol(0b0000_1111);
-            var symbol2 = new DrawingBoxSymbol(0b0000_1111);
+            var symbol = new Symbol(0b0000_1111);
+            var symbol2 = new Symbol(0b0000_1111);
             Assert.That(symbol.Equals((object)symbol2));
             Assert.That(symbol.Equals(symbol2));
             Assert.That(symbol == symbol2);
         }
 
         [Test]
-        public void EqualityISymbol()
+        public void EqualitySymbol()
         {
-            ISymbol symbol = new DrawingBoxSymbol(0b0000_1111);
-            ISymbol symbol2 = new DrawingBoxSymbol(0b0000_1111);
+            var symbol = new Symbol(0b0000_1111);
+            var symbol2 = new Symbol(0b0000_1111);
             Assert.That(symbol.Equals(symbol2));
             Assert.That(symbol.Equals(symbol2));
         }
@@ -84,18 +83,18 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void Inequality()
         {
-            var symbol = new DrawingBoxSymbol(0b0000_1111);
-            var symbol2 = new DrawingBoxSymbol(0b0000_0000);
+            var symbol = new Symbol(0b0000_1111);
+            var symbol2 = new Symbol(0b0001_0001);
             Assert.That(!symbol.Equals((object)symbol2));
             Assert.That(!symbol.Equals(symbol2));
             Assert.That(symbol != symbol2);
         }
 
         [Test]
-        public void InequalityISymbol()
+        public void InequalitySymbol()
         {
-            ISymbol symbol = new DrawingBoxSymbol(0b0000_1111);
-            ISymbol symbol2 = new DrawingBoxSymbol(0b0000_0000);
+            var symbol = new Symbol(0b0000_1111);
+            var symbol2 = new Symbol(0b0000_1010);
             Assert.That(!symbol.Equals(symbol2));
             Assert.That(!symbol.Equals(symbol2));
         }
@@ -103,23 +102,23 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [Test]
         public void Hash()
         {
-            var set = new HashSet<DrawingBoxSymbol>();
-            set.Add(new DrawingBoxSymbol(0b0000_1111));
-            set.Add(new DrawingBoxSymbol(0b0000_1111));
+            var set = new HashSet<Symbol>();
+            set.Add(new Symbol(0b0000_1111));
+            set.Add(new Symbol(0b0000_1111));
             Assert.That(set.Count, Is.EqualTo(1));
 
-            var set2 = new HashSet<ISymbol>();
-            set2.Add(new DrawingBoxSymbol(0b0000_1111));
-            set2.Add(new DrawingBoxSymbol(0b0000_1111));
+            var set2 = new HashSet<Symbol>();
+            set2.Add(new Symbol(0b0000_1111));
+            set2.Add(new Symbol(0b0000_1111));
             Assert.That(set2.Count, Is.EqualTo(1));
         }
 
         [Test]
         public void JsonSerialization()
         {
-            var symbol = new DrawingBoxSymbol(0b0000_1111);
+            var symbol = new Symbol(0b0000_1111);
             string json = JsonConvert.SerializeObject(symbol);
-            var deserializedSymbol = JsonConvert.DeserializeObject<ISymbol>(json);
+            var deserializedSymbol = JsonConvert.DeserializeObject<Symbol>(json);
             Assert.That(symbol.Equals(deserializedSymbol));
         }
     }
