@@ -11,9 +11,12 @@ using AvaloniaEdit;
 using AvaloniaEdit.TextMate;
 using TextMateSharp.Grammars;
 using System.Linq;
+using Avalonia.Styling;
+using Consolonia.Themes;
 
 namespace Edit.NET
 {
+
     public partial class MainWindow : Window
     {
         private Avalonia.Platform.Storage.IStorageFile? _currentFile;
@@ -39,6 +42,8 @@ namespace Edit.NET
             var csharp = _registryOptions.GetLanguageByExtension(".cs");
             var scope = _registryOptions.GetScopeByLanguageId(csharp.Id);
             _textMateInstallation.SetGrammar(scope);
+
+            Loaded += OnLoaded;
         }
 
         private void UpdateStatus()
@@ -213,6 +218,58 @@ namespace Edit.NET
 
             foreach (MenuItem item in ((MenuItem)menuItem1.Parent!).Items.Cast<MenuItem>()
                      .Where(item => item != menuItem1)) item.IsChecked = false;
+        }
+
+        private void OnThemeVariantLightMenuClick(object sender, RoutedEventArgs e)
+        {
+            RequestedThemeVariant = ThemeVariant.Light;
+            UpdateThemeMenuItems();
+        }
+
+        private void OnThemeVariantDarkMenuClick(object sender, RoutedEventArgs e)
+        {
+            RequestedThemeVariant = ThemeVariant.Dark;
+            UpdateThemeMenuItems();
+        }
+
+        private void OnThemeMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is not MenuItem { Tag: string themeName } ||
+                !Enum.TryParse(themeName, out ThemesList selectedTheme))
+                return;
+
+            // NOTE: this assumes first style object is the old theme!
+            Application.Current.Styles[0] = selectedTheme switch
+            {
+                ThemesList.Modern => new ModernTheme(),
+                ThemesList.ModernContrast => new ModernContrastTheme(),
+                ThemesList.TurboVision => new TurboVisionTheme(),
+                ThemesList.TurboVisionCompatible => new TurboVisionCompatibleTheme(),
+                ThemesList.TurboVisionGray => new TurboVisionGrayTheme(),
+                ThemesList.TurboVisionElegant => new TurboVisionElegantTheme(),
+                _ => throw new InvalidDataException("Unknown theme name")
+            };
+
+            UpdateThemeMenuItems();
+        }
+
+        private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
+        {
+            UpdateThemeMenuItems();
+        }
+
+        private void UpdateThemeMenuItems()
+        {
+            string themeName = Application.Current.Styles[0].GetType().Name[..^5];
+            ThemeModernMenuItem.IsChecked = themeName == nameof(ThemesList.Modern);
+            ThemeModernContrastMenuItem.IsChecked = themeName == nameof(ThemesList.ModernContrast);
+            ThemeTurboVisionMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVision);
+            ThemeTurboVisionCompatibleMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionCompatible);
+            ThemeTurboVisionGrayMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionGray);
+            ThemeTurboVisionElegantMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionElegant);
+
+            ThemeDarkMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Dark;
+            ThemeLightMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Light;
         }
 
         private void SyntaxXml_OnClick(object sender, RoutedEventArgs e)

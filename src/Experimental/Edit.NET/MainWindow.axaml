@@ -7,6 +7,7 @@
         xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
         x:Class="Edit.NET.MainWindow"
         Title="Edit.NET"
+        RequestedThemeVariant="Default"
         Background="#2D2D2D">
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
@@ -68,6 +69,62 @@
                 <MenuItem  Header="XML"  Click="SyntaxXml_OnClick"/>
                 <MenuItem  Header="HTML"  Click="SyntaxHtml_OnClick"/>
                 <MenuItem  Header="JavaScript"  Click="SyntaxJavaScript_OnClick"/>
+            </MenuItem>
+            <MenuItem Header="_Theme">
+                <MenuItem.Styles>
+                    <Style Selector="MenuItem.IsCheckable">
+                        <Setter Property="Icon">
+                            <Setter.Value>
+                                <Template>
+                                    <CheckBox BorderThickness="0"
+                                              IsHitTestVisible="False"
+                                              IsChecked="{Binding $parent[MenuItem].IsChecked}" />
+                                </Template>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </MenuItem.Styles>
+                <MenuItem x:Name="ThemeModernMenuItem"
+                          Header="_Modern"
+                          Tag="Modern"
+                          Classes.IsCheckable="true"
+                          Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeModernContrastMenuItem"
+                          Header="Modern _Contrast"
+                          Tag="ModernContrast"
+                          Classes.IsCheckable="true"
+                          Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionMenuItem"
+                          Header="_TurboVision"
+                          Tag="TurboVision"
+                          Classes.IsCheckable="true"
+                          Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionCompatibleMenuItem"
+                          Header="TurboVision_Compatible"
+                          Tag="TurboVisionCompatible"
+                          Classes.IsCheckable="true"
+                          Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionGrayMenuItem"
+                          Header="TurboVision_Gray"
+                          Tag="TurboVisionGray"
+                          Classes.IsCheckable="true"
+                          Click="OnThemeMenuItemClick" />
+                <MenuItem x:Name="ThemeTurboVisionElegantMenuItem"
+                          Header="TurboVision_Elegant"
+                          Tag="TurboVisionElegant"
+                          Classes.IsCheckable="true"
+                          Click="OnThemeMenuItemClick" />
+                <Separator />
+                <MenuItem x:Name="ThemeLightMenuItem"
+                          Header="_Light Variant"
+                          Tag="Light"
+                          Classes.IsCheckable="true"
+                          Click="OnThemeVariantLightMenuClick" />
+                <MenuItem x:Name="ThemeDarkMenuItem"
+                          Header="_Dark Variant"
+                          Tag="Dark"
+                          Classes.IsCheckable="true"
+                          Click="OnThemeVariantDarkMenuClick" />
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About" Click="MenuItem_OnClick"/>
