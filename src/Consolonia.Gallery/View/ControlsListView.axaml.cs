@@ -6,8 +6,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
 using Consolonia.Themes;
@@ -24,7 +26,7 @@ namespace Consolonia.Gallery.View
         TurboVisionElegant
     }
 
-    public partial class ControlsListView : Window
+    public partial class ControlsListView : UserControl
     {
         private static readonly HttpClient Client = new();
         private readonly IEnumerable<GalleryItem> _items;
@@ -121,14 +123,14 @@ namespace Consolonia.Gallery.View
 
         private void OnThemeVariantLightMenuClick(object sender, RoutedEventArgs e)
         {
-            RequestedThemeVariant = ThemeVariant.Light;
-            UpdateThemeMenuItems();
+            var lifetime = Application.Current!.ApplicationLifetime as ConsoloniaLifetime;
+            lifetime.MainWindow.RequestedThemeVariant = ThemeVariant.Light;
         }
 
         private void OnThemeVariantDarkMenuClick(object sender, RoutedEventArgs e)
         {
-            RequestedThemeVariant = ThemeVariant.Dark;
-            UpdateThemeMenuItems();
+            var lifetime = Application.Current!.ApplicationLifetime as ConsoloniaLifetime;
+            lifetime.MainWindow.RequestedThemeVariant = ThemeVariant.Light;
         }
 
         private void OnThemeMenuItemClick(object sender, RoutedEventArgs e)
@@ -149,28 +151,16 @@ namespace Consolonia.Gallery.View
                 _ => throw new InvalidDataException("Unknown theme name")
             };
 
-            UpdateThemeMenuItems();
-            GalleryGrid.Focus();
+            if (App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            {
+                desktopLifetime.MainWindow.Content = new ControlsListView() { DataContext = this.DataContext };
+            }
         }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            UpdateThemeMenuItems();
         }
 
-        private void UpdateThemeMenuItems()
-        {
-            string themeName = Application.Current.Styles[0].GetType().Name[..^5];
-            ThemeModernMenuItem.IsChecked = themeName == nameof(ThemesList.Modern);
-            ThemeModernContrastMenuItem.IsChecked = themeName == nameof(ThemesList.ModernContrast);
-            ThemeTurboVisionMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVision);
-            ThemeTurboVisionCompatibleMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionCompatible);
-            ThemeTurboVisionGrayMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionGray);
-            ThemeTurboVisionElegantMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionElegant);
-
-            ThemeDarkMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Dark;
-            ThemeLightMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Light;
-        }
     }
 
     public partial class ControlsListViewModel : ObservableObject
@@ -179,6 +169,20 @@ namespace Consolonia.Gallery.View
         [NotifyPropertyChangedFor(nameof(IsTurboVision))]
         [NotifyPropertyChangedFor(nameof(IsModern))]
         private string _selectedTheme;
+
+        public ThemeVariant RequestedThemeVariant
+        {
+            get => Application.Current!.RequestedThemeVariant;
+            set
+            {
+                Application.Current!.RequestedThemeVariant = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLight => RequestedThemeVariant == ThemeVariant.Light;
+
+        public bool IsDark => RequestedThemeVariant == ThemeVariant.Dark;
 
         public bool IsModern => SelectedTheme == nameof(ThemesList.Modern) ||
                                 SelectedTheme == nameof(ThemesList.ModernContrast);
