@@ -121,7 +121,7 @@
                         <Setter Property="HorizontalAlignment" Value="Center"/>
                     </Style>
                 </UniformGrid.Styles>
-                <TextBlock Name="FileNameText" Text="[No Name]" HorizontalAlignment="Left"/>
+                <TextBlock Name="FileNameText" Text="{Binding FileName}" HorizontalAlignment="Left"/>
                 <TextBlock Name="PositionText" Text="Ln 1, Col 1"/>
                 <TextBlock Name="LengthText" Text="Len 0"/>
                 <TextBlock Name="ModifiedText" Text="Saved" HorizontalAlignment="Right"/>

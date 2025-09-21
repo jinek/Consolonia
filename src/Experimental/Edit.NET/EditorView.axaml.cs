@@ -13,24 +13,27 @@ using TextMateSharp.Grammars;
 using System.Linq;
 using Avalonia.Styling;
 using Consolonia.Themes;
+using Consolonia.Controls;
+using Avalonia.Threading;
 
 namespace Edit.NET
 {
 
     public partial class EditorView : UserControl
     {
-        private Avalonia.Platform.Storage.IStorageFile? _currentFile;
-        private string? _currentFileName;
-        private bool _isModified;
         private RegistryOptions? _registryOptions;
         private TextMate.Installation? _textMateInstallation;
 
         public EditorView()
         {
             InitializeComponent();
+
             // Wire up editor events for status updates
-            Editor.TextChanged += (_, __) => { _isModified = true; UpdateStatus(); };
-            Editor.AttachedToVisualTree += (_, __) => UpdateStatus();
+            Editor.AttachedToVisualTree += (_, __) =>
+            {
+                Editor.TextChanged += (_, __) => { ViewModel.Modified = true; UpdateStatus(); };
+                UpdateStatus();
+            };
             Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
 
             // Install TextMate syntax highlighting similar to Consolonia.Editor
@@ -39,17 +42,19 @@ namespace Edit.NET
             _textMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
 
             // Default to C# highlighting
-            var csharp = _registryOptions.GetLanguageByExtension(".cs");
-            var scope = _registryOptions.GetScopeByLanguageId(csharp.Id);
-            _textMateInstallation.SetGrammar(scope);
+            ApplySyntax(EditorSyntax.CSharp);
 
             Loaded += OnLoaded;
         }
 
+        public EditorViewModel ViewModel
+        {
+            get => (EditorViewModel)DataContext!;
+            set => DataContext = value;
+        }
+
         private void UpdateStatus()
         {
-            // File name
-            FileNameText.Text = string.IsNullOrEmpty(_currentFileName) ? "[No Name]" : _currentFileName;
             // Position
             var line = Editor.TextArea.Caret.Line;
             var column = Editor.TextArea.Caret.Column;
@@ -58,12 +63,12 @@ namespace Edit.NET
             var length = Editor.Document?.TextLength ?? (Editor.Text?.Length ?? 0);
             LengthText.Text = $"Len {length}";
             // Modified flag
-            ModifiedText.Text = _isModified ? "Modified" : "Saved";
+            ModifiedText.Text = ViewModel.Modified ? "Modified" : "Saved";
         }
 
         private void ResetModified()
         {
-            _isModified = false;
+            ViewModel.Modified = false;
             UpdateStatus();
         }
 
@@ -76,9 +81,9 @@ namespace Edit.NET
         private void OnNewFile_OnClick(object? sender, RoutedEventArgs e)
         {
             Editor.Text = string.Empty;
-            _currentFile = null;
-            _currentFileName = null;
-            ResetModified();
+            ViewModel.NewFile();
+            
+            ApplySyntax(ViewModel.Syntax);
         }
 
         private void Exit_OnClick(object? sender, RoutedEventArgs e)
@@ -106,113 +111,66 @@ namespace Edit.NET
                 var file = files[0];
                 try
                 {
-                    await using var stream = await file.OpenReadAsync();
-                    using var reader = new StreamReader(stream);
-                    var text = await reader.ReadToEndAsync();
-                    Editor.Text = text;
-                    _currentFile = file;
-                    _currentFileName = file.Name;
-                    ResetModified();
+                    await ViewModel.OpenFile(Path.GetFullPath(file.Path.AbsolutePath));
+                    Editor.Text = ViewModel.Text;
                 }
                 catch (IOException ex)
                 {
-                    await ShowMessageAsync("Open Error", ex.Message);
+                    await MessageBox.ShowDialog("Open Error", ex.Message);
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    await ShowMessageAsync("Open Error", ex.Message);
+                    await MessageBox.ShowDialog("Open Error", ex.Message);
                 }
             }
         }
 
+
         private async void Save_OnClick(object? sender, RoutedEventArgs e)
         {
-            if (_currentFile == null)
+            ViewModel.Text = Editor.Text;
+            if (String.IsNullOrEmpty(ViewModel.FilePath))
             {
-                await SaveAsInternalAsync();
+                await SaveAs();
+                return;
             }
-            else
-            {
-                await SaveToFileAsync(_currentFile);
-            }
+            await ViewModel.Save();
         }
 
         private async void SaveAs_OnClick(object? sender, RoutedEventArgs e)
         {
-            await SaveAsInternalAsync();
+            ViewModel.Text = Editor.Text;
+            await SaveAs();
         }
 
-        private async Task SaveAsInternalAsync()
+        private async Task SaveAs()
         {
+            ViewModel.Text = Editor.Text;
             var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
             var mainWindow = lifetime.MainWindow;
             var file = await mainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save As",
-                SuggestedFileName = _currentFileName ?? "Untitled.txt"
+                SuggestedFileName = ViewModel.FileName ?? "Untitled.txt"
             });
             if (file != null)
             {
-                await SaveToFileAsync(file);
+                ViewModel.FilePath = Path.GetFullPath(file.Path.AbsolutePath);
+                await ViewModel.Save();
             }
-        }
-
-        private async Task SaveToFileAsync(IStorageFile file)
-        {
-            try
-            {
-                await using var stream = await file.OpenWriteAsync();
-                stream.SetLength(0);
-                await using var writer = new StreamWriter(stream);
-                await writer.WriteAsync(Editor.Text ?? string.Empty);
-                _currentFile = file;
-                _currentFileName = file.Name;
-                ResetModified();
-            }
-            catch (IOException ex)
-            {
-                await ShowMessageAsync("Save Error", ex.Message);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                await ShowMessageAsync("Save Error", ex.Message);
-            }
-        }
-
-        private async Task ShowMessageAsync(string title, string message)
-        {
-            var dlg = new Window
-            {
-                Title = title,
-                Width = 400,
-                Height = 200,
-                Content = new StackPanel
-                {
-                    Margin = new Thickness(12),
-                    Children =
-                    {
-                        new TextBlock { Text = message, TextWrapping = Avalonia.Media.TextWrapping.Wrap },
-                        new Button { Content = "OK", HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right, Margin = new Thickness(0,12,0,0) }
-                    }
-                }
-            };
-            if (dlg.Content is StackPanel sp && sp.Children.Count > 1 && sp.Children[1] is Button btn)
-            {
-                btn.Click += (_, __) => dlg.Close();
-            }
-            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            await dlg.ShowDialog(lifetime.MainWindow);
         }
 
         private void SyntaxPlain_OnClick(object sender, RoutedEventArgs e)
         {
-            _textMateInstallation?.SetGrammar(null);
+            ViewModel.Syntax = EditorSyntax.PlainText;
+            ApplySyntax(ViewModel.Syntax);
             SetChecked(sender);
         }
 
         private void SyntaxCSharp_OnClick(object sender, RoutedEventArgs e)
         {
-            SetSyntaxByExtension(".cs");
+            ViewModel.Syntax = EditorSyntax.CSharp;
+            ApplySyntax(ViewModel.Syntax);
             SetChecked(sender);
         }
 
@@ -227,7 +185,7 @@ namespace Edit.NET
 
         private void OnThemeVariantLightMenuClick(object sender, RoutedEventArgs e)
         {
-            var lifetime =  Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
             var mainWindow = lifetime.MainWindow;
             mainWindow.RequestedThemeVariant = ThemeVariant.Light;
             UpdateThemeMenuItems();
@@ -247,6 +205,13 @@ namespace Edit.NET
                 !Enum.TryParse(themeName, out ThemesList selectedTheme))
                 return;
 
+            var viewModel = (EditorViewModel)DataContext!;
+            if (viewModel.Modified)
+            {
+                MessageBox.ShowDialog(themeName, "You have unsaved changes. You need to save your file before you change themes.");
+                return;
+            }
+
             // NOTE: this assumes first style object is the old theme!
             Application.Current.Styles[0] = selectedTheme switch
             {
@@ -259,9 +224,10 @@ namespace Edit.NET
                 _ => throw new InvalidDataException("Unknown theme name")
             };
 
-            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime; 
+            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
             var mainWindow = lifetime.MainWindow;
-            mainWindow.Content = new EditorView();
+            var newView = new EditorView() { DataContext = viewModel };
+            mainWindow.Content = newView;
         }
 
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
@@ -285,19 +251,22 @@ namespace Edit.NET
 
         private void SyntaxXml_OnClick(object sender, RoutedEventArgs e)
         {
-            SetSyntaxByExtension(".xml");
+            ViewModel.Syntax = EditorSyntax.Xml;
+            ApplySyntax(ViewModel.Syntax);
             SetChecked(sender);
         }
 
         private void SyntaxHtml_OnClick(object sender, RoutedEventArgs e)
         {
-            SetSyntaxByExtension(".html");
+            ViewModel.Syntax = EditorSyntax.Html;
+            ApplySyntax(ViewModel.Syntax);
             SetChecked(sender);
         }
 
         private void SyntaxJavaScript_OnClick(object sender, RoutedEventArgs e)
         {
-            SetSyntaxByExtension(".js");
+            ViewModel.Syntax = EditorSyntax.JavaScript;
+            ApplySyntax(ViewModel.Syntax);
             SetChecked(sender);
         }
 
@@ -313,6 +282,37 @@ namespace Edit.NET
             }
             var scope = _registryOptions.GetScopeByLanguageId(lang.Id);
             _textMateInstallation.SetGrammar(scope);
+        }
+
+        private void ApplySyntax(EditorSyntax syntax)
+        {
+            if (_registryOptions == null || _textMateInstallation == null)
+                return;
+
+            switch (syntax)
+            {
+                case EditorSyntax.PlainText:
+                    _textMateInstallation.SetGrammar(null);
+                    break;
+                case EditorSyntax.CSharp:
+                    SetSyntaxByExtension(".cs");
+                    break;
+                case EditorSyntax.Xml:
+                    SetSyntaxByExtension(".xml");
+                    break;
+                case EditorSyntax.Html:
+                    SetSyntaxByExtension(".html");
+                    break;
+                case EditorSyntax.JavaScript:
+                    SetSyntaxByExtension(".js");
+                    break;
+                case EditorSyntax.Json:
+                    SetSyntaxByExtension(".json");
+                    break;
+                default:
+                    _textMateInstallation.SetGrammar(null);
+                    break;
+            }
         }
 
         private void TextMateInstallationOnAppliedTheme(object? sender, TextMate.Installation e)
