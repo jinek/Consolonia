@@ -29,12 +29,19 @@ namespace Consolonia.AvaloniaEdit
                 {
                     // replace caret with console caret.
                     textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
-                        { CaretStyle = CaretStyle.SteadyBar };
+                    { CaretStyle = CaretStyle.SteadyBar };
                     textEditor.TextArea.PropertyChanged += TextArea_PropertyChanged;
 
-                    // built in LineNumberMargin miscalculates the top of the line, 
+                    // The built in LineNumberMargin miscalculates the top of the line, 
                     // we substitute ours with one which works correctly.
-                    textEditor.TextArea.LeftMargins[0] = new ConsoleLineNumberMargin();
+                    for (int i = 0; i < textEditor.TextArea.LeftMargins.Count; i++)
+                    {
+                        if (textEditor.TextArea.LeftMargins[i] is LineNumberMargin)
+                        {
+                            textEditor.TextArea.LeftMargins[i] = new ConsoleLineNumberMargin();
+                            break;
+                        }
+                    }
                 }
                 else
                 {
