@@ -26,12 +26,16 @@ namespace Edit.NET
 
         public EditorView()
         {
+            this.DataContext = new EditorViewModel();
+
             InitializeComponent();
 
+            ViewModel.Editor = Editor;
             // Wire up editor events for status updates
-            Editor.AttachedToVisualTree += (_, __) =>
+            Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
+            Editor.TextChanged += (_, __) =>
             {
-                Editor.TextChanged += (_, __) => { ViewModel.Modified = true; UpdateStatus(); };
+                ViewModel.Modified = true;
                 UpdateStatus();
             };
             Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
@@ -62,103 +66,8 @@ namespace Edit.NET
             // Length
             var length = Editor.Document?.TextLength ?? (Editor.Text?.Length ?? 0);
             LengthText.Text = $"Len {length}";
-            // Modified flag
-            ModifiedText.Text = ViewModel.Modified ? "Modified" : "Saved";
         }
 
-        private void ResetModified()
-        {
-            ViewModel.Modified = false;
-            UpdateStatus();
-        }
-
-        private void OnExit(object sender, RoutedEventArgs e)
-        {
-            var lifetime = Application.Current!.ApplicationLifetime as IControlledApplicationLifetime;
-            lifetime!.Shutdown();
-        }
-
-        private void OnNewFile_OnClick(object? sender, RoutedEventArgs e)
-        {
-            Editor.Text = string.Empty;
-            ViewModel.NewFile();
-            
-            ApplySyntax(ViewModel.Syntax);
-        }
-
-        private void Exit_OnClick(object? sender, RoutedEventArgs e)
-        {
-            var lifetime = (IControlledApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            lifetime.Shutdown();
-        }
-
-        private void Cut_OnClick(object? sender, RoutedEventArgs e)
-        {
-            Editor.Cut();
-        }
-
-        private async void Open_OnClick(object? sender, RoutedEventArgs e)
-        {
-            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            var mainWindow = lifetime.MainWindow;
-            var files = await mainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
-            {
-                AllowMultiple = false,
-                Title = "Open File"
-            });
-            if (files != null && files.Count > 0)
-            {
-                var file = files[0];
-                try
-                {
-                    await ViewModel.OpenFile(Path.GetFullPath(file.Path.AbsolutePath));
-                    Editor.Text = ViewModel.Text;
-                }
-                catch (IOException ex)
-                {
-                    await MessageBox.ShowDialog("Open Error", ex.Message);
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    await MessageBox.ShowDialog("Open Error", ex.Message);
-                }
-            }
-        }
-
-
-        private async void Save_OnClick(object? sender, RoutedEventArgs e)
-        {
-            ViewModel.Text = Editor.Text;
-            if (String.IsNullOrEmpty(ViewModel.FilePath))
-            {
-                await SaveAs();
-                return;
-            }
-            await ViewModel.Save();
-        }
-
-        private async void SaveAs_OnClick(object? sender, RoutedEventArgs e)
-        {
-            ViewModel.Text = Editor.Text;
-            await SaveAs();
-        }
-
-        private async Task SaveAs()
-        {
-            ViewModel.Text = Editor.Text;
-            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            var mainWindow = lifetime.MainWindow;
-            var file = await mainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
-            {
-                Title = "Save As",
-                SuggestedFileName = ViewModel.FileName ?? "Untitled.txt"
-            });
-            if (file != null)
-            {
-                ViewModel.FilePath = Path.GetFullPath(file.Path.AbsolutePath);
-                await ViewModel.Save();
-            }
-        }
 
         private void SyntaxPlain_OnClick(object sender, RoutedEventArgs e)
         {

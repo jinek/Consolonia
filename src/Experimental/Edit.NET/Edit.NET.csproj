@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -11,7 +11,6 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Consolonia.AvaloniaEdit\Consolonia.AvaloniaEdit.csproj" />
         <ProjectReference Include="..\..\Consolonia\Consolonia.csproj" />
-        <ProjectReference Include="..\Consolonia.Designer\Consolonia.Designer.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -19,6 +18,7 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
         <PackageReference Include="AvaloniaEdit.TextMate" Version="11.3.0" />
         <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.0.4" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     </ItemGroup>
 
     <ItemGroup>

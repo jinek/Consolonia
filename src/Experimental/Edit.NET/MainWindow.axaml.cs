@@ -21,7 +21,6 @@ namespace Edit.NET
     {
         public MainWindow()
         {
-            this.DataContext = new EditorViewModel();
             InitializeComponent();
         }
     }

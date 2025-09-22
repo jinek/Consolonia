@@ -11,20 +11,23 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_New"
-                          Click="OnNewFile_OnClick"
+                          Command="{Binding NewCommand}"
                           InputGesture="Ctrl+N" />
                 <MenuItem Header="_Open..."
-                          Click="Open_OnClick"
+                          Command="{Binding OpenCommand}"
+                          CommandParameter="{Binding #Editor}"
                           InputGesture="Ctrl+O" />
                 <MenuItem Header="_Save"
-                          Click="Save_OnClick"
+                          Command="{Binding SaveCommand}"
+                          CommandParameter="{Binding #Editor}"
                           InputGesture="Ctrl+S" />
                 <MenuItem Header="Save _As..."
-                          Click="SaveAs_OnClick"
+                          Command="{Binding SaveAsCommand}"
+                          CommandParameter="{Binding #Editor}"
                           InputGesture="Ctrl+Shift+S" />
                 <Separator />
                 <MenuItem Header="E_xit"
-                          Click="Exit_OnClick" />
+                          Command="{Binding ExitCommand}" />
             </MenuItem>
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Undo"
@@ -35,7 +38,7 @@
                           InputGesture="Ctrl+Y" />
                 <Separator />
                 <MenuItem Header="Cu_t"
-                          Click="Cut_OnClick"
+                          Command="{Binding CutCommand}"
                           InputGesture="Ctrl+X" />
                 <MenuItem Header="_Copy"
                           Command="{Binding CopyCommand}"
@@ -124,7 +127,7 @@
                 <TextBlock Name="FileNameText" Text="{Binding FileName}" HorizontalAlignment="Left"/>
                 <TextBlock Name="PositionText" Text="Ln 1, Col 1"/>
                 <TextBlock Name="LengthText" Text="Len 0"/>
-                <TextBlock Name="ModifiedText" Text="Saved" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Modified, Converter={x:Static local:Converters.ModifiedConverter}}" HorizontalAlignment="Right"/>
             </UniformGrid>
         </Border>
         <avaloniaEdit:TextEditor Name="Editor"
