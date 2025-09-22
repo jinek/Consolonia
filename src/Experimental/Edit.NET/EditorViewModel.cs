@@ -129,6 +129,32 @@ namespace Edit.NET
             await SaveFileAsync();
         }
 
+        [RelayCommand(CanExecute = nameof(CanCut))]
+        public void Cut() => Editor.Cut();
+        public bool CanCut() => Editor.CanCut;
+
+
+        [RelayCommand(CanExecute = nameof(CanCopy))]
+        public void Copy() => Editor.Copy();
+        public bool CanCopy() => Editor.CanCopy;
+
+
+        [RelayCommand(CanExecute = nameof(CanPaste))]
+        public void Paste() => Editor.Paste();
+        public bool CanPaste() => Editor.CanPaste;
+
+        [RelayCommand(CanExecute = nameof(CanUndo))]
+        public void Undo() => Editor.Undo();
+        public bool CanUndo() => Editor.CanUndo;
+
+        [RelayCommand(CanExecute = nameof(CanRedo))]
+        public void Redo() => Editor.Redo();
+        public bool CanRedo() => Editor.CanRedo;
+
+        [RelayCommand]
+        public void SelectAll() => Editor.SelectAll();
+
+
         [RelayCommand]
         public async Task New()
         {
@@ -182,7 +208,7 @@ namespace Edit.NET
             }
         }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute =nameof(CanSave))]
         private async Task Save()
         {
             if (string.IsNullOrEmpty(FilePath))
@@ -195,6 +221,7 @@ namespace Edit.NET
             }
             await SaveFileAsync();
         }
+        public bool CanSave() => Modified;
 
         [RelayCommand]
         private async Task SaveAs()

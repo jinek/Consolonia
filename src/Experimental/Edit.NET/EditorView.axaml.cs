@@ -10,6 +10,7 @@ using System.Linq;
 using Avalonia.Styling;
 using Consolonia.Themes;
 using Consolonia.Controls;
+using AvaloniaEdit;
 
 namespace Edit.NET
 {
@@ -20,7 +21,7 @@ namespace Edit.NET
         public EditorView()
         {
             this.DataContext = new EditorViewModel();
-
+            
             InitializeComponent();
 
             ViewModel.Editor = Editor;
