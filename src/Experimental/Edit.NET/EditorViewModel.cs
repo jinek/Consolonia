@@ -54,18 +54,18 @@ namespace Edit.NET
         public string? Extension => Path.GetExtension(FilePath);
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsSyntaxCSharp))]
-        [NotifyPropertyChangedFor(nameof(IsSyntaxMarkdown))]
         [NotifyPropertyChangedFor(nameof(IsSyntaxPlainText))]
+        [NotifyPropertyChangedFor(nameof(IsSyntaxMarkdown))]
+        [NotifyPropertyChangedFor(nameof(IsSyntaxCSharp))]
         [NotifyPropertyChangedFor(nameof(IsSyntaxXml))]
         [NotifyPropertyChangedFor(nameof(IsSyntaxHtml))]
         [NotifyPropertyChangedFor(nameof(IsSyntaxJavascript))]
         [NotifyPropertyChangedFor(nameof(IsSyntaxJson))]
-        private EditorSyntax _syntax = EditorSyntax.PlainText;
+        private EditorSyntax _syntax;
 
-        public bool IsSyntaxCSharp => Syntax == EditorSyntax.CSharp;
-        public bool IsSyntaxMarkdown => Syntax == EditorSyntax.Markdown;
         public bool IsSyntaxPlainText => Syntax == EditorSyntax.PlainText;
+        public bool IsSyntaxMarkdown => Syntax == EditorSyntax.Markdown;
+        public bool IsSyntaxCSharp => Syntax == EditorSyntax.CSharp;
         public bool IsSyntaxXml => Syntax == EditorSyntax.Xml;
         public bool IsSyntaxHtml => Syntax == EditorSyntax.Html;
         public bool IsSyntaxJavascript => Syntax == EditorSyntax.JavaScript;

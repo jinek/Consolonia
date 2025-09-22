@@ -108,6 +108,8 @@ namespace Edit.NET
             var mainWindow = lifetime.MainWindow;
             var newView = new EditorView() { DataContext = viewModel };
             mainWindow.Content = newView;
+            
+            ViewModel.New();
         }
 
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)

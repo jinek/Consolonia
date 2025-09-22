@@ -58,7 +58,7 @@
                     </Style>
                 </MenuItem.Styles>
                 <MenuItem  Header="Plain Text"
-                           IsChecked="{Binding IsSyntaxPlain}"
+                           IsChecked="{Binding IsSyntaxPlainText}"
                            Classes.IsCheckable="true"
                            Click="SyntaxPlain_OnClick"/>
                 <MenuItem  Header="Markdown"
