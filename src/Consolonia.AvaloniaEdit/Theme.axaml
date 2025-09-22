@@ -65,6 +65,7 @@
             <Setter Property="LineNumbersForeground"
                     Value="{DynamicResource ThemeNoDisturbBrush}" />
         </ControlTheme>
+
     </Styles.Resources>
 
     <!--disable border around current line-->

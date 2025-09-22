@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using AvaloniaEdit;
 using AvaloniaEdit.Editing;
@@ -30,6 +31,10 @@ namespace Consolonia.AvaloniaEdit
                     textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
                         { CaretStyle = CaretStyle.SteadyBar };
                     textEditor.TextArea.PropertyChanged += TextArea_PropertyChanged;
+
+                    // built in LineNumberMargin miscalculates the top of the line, 
+                    // we substitute ours with one which works correctly.
+                    textEditor.TextArea.LeftMargins[0] = new ConsoleLineNumberMargin();
                 }
                 else
                 {
