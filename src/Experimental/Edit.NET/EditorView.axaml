@@ -54,49 +54,78 @@
             <MenuItem Header="_Syntax">
                 <MenuItem.Styles>
                     <Style Selector="MenuItem[IsChecked=true]">
-                        <Setter Property="Icon" Value="{StaticResource Icon_Check}"/>
+                        <Setter Property="Icon" Value="{StaticResource Icon_Check}" />
                     </Style>
                 </MenuItem.Styles>
-                <MenuItem  Header="Plain Text" Click="SyntaxPlain_OnClick"/>
-                <MenuItem  Header="C#" IsChecked="True" Click="SyntaxCSharp_OnClick"/>
-                <MenuItem  Header="XML"  Click="SyntaxXml_OnClick"/>
-                <MenuItem  Header="HTML"  Click="SyntaxHtml_OnClick"/>
-                <MenuItem  Header="JavaScript"  Click="SyntaxJavaScript_OnClick"/>
+                <MenuItem  Header="Plain Text"
+                           IsChecked="{Binding IsSyntaxPlain}"
+                           Classes.IsCheckable="true"
+                           Click="SyntaxPlain_OnClick"/>
+                <MenuItem  Header="Markdown"
+                           IsChecked="{Binding IsSyntaxMarkdown}"
+                           Classes.IsCheckable="true"
+                           Click="SyntaxMarkdown_OnClick"/>
+                <MenuItem  Header="C#"
+                           IsChecked="{Binding IsSyntaxCSharp}"
+                           Classes.IsCheckable="true"
+                           Click="SyntaxCSharp_OnClick"/>
+                <MenuItem  Header="XML"
+                           IsChecked="{Binding IsSyntaxXml}"
+                           Classes.IsCheckable="true"
+                           Click="SyntaxXml_OnClick"/>
+                <MenuItem  Header="HTML"  
+                           IsChecked="{Binding IsSyntaxHtml}"
+                           Classes.IsCheckable="true"
+                           Click="SyntaxHtml_OnClick"/>
+                <MenuItem  Header="JavaScript"  
+                           IsChecked="{Binding IsSyntaxJavascript}"
+                           Classes.IsCheckable="true"                           
+                           Click="SyntaxJavaScript_OnClick"/>
+                <MenuItem  Header="Json"
+                           IsChecked="{Binding IsSyntaxJson}"
+                           Classes.IsCheckable="true"
+                           Click="SyntaxJson_OnClick"/>
             </MenuItem>
             <MenuItem Header="_Theme">
                 <MenuItem.Styles>
                     <Style Selector="MenuItem[IsChecked=true]">
-                        <Setter Property="Icon" Value="{StaticResource Icon_Check}"/>
+                        <Setter Property="Icon" Value="{StaticResource Icon_Check}" />
                     </Style>
                 </MenuItem.Styles>
                 <MenuItem x:Name="ThemeModernMenuItem"
                           Header="_Modern"
                           Tag="Modern"
+                          IsChecked="{Binding IsThemeModern}"
                           Classes.IsCheckable="true"
                           Click="OnThemeMenuItemClick" />
                 <MenuItem x:Name="ThemeModernContrastMenuItem"
                           Header="Modern _Contrast"
                           Tag="ModernContrast"
+                          IsChecked="{Binding IsThemeModernContrast}"
                           Classes.IsCheckable="true"
                           Click="OnThemeMenuItemClick" />
                 <MenuItem x:Name="ThemeTurboVisionMenuItem"
                           Header="_TurboVision"
                           Tag="TurboVision"
+                          IsChecked="{Binding IsThemeTurboVision}"
                           Classes.IsCheckable="true"
                           Click="OnThemeMenuItemClick" />
                 <MenuItem x:Name="ThemeTurboVisionCompatibleMenuItem"
                           Header="TurboVision_Compatible"
                           Tag="TurboVisionCompatible"
+                          IsChecked="{Binding IsThemeTurboVisionCompatible}"
                           Classes.IsCheckable="true"
                           Click="OnThemeMenuItemClick" />
                 <MenuItem x:Name="ThemeTurboVisionGrayMenuItem"
                           Header="TurboVision_Gray"
                           Tag="TurboVisionGray"
+                          IsChecked="{Binding IsThemeTurboVisionGray}"
                           Classes.IsCheckable="true"
                           Click="OnThemeMenuItemClick" />
                 <MenuItem x:Name="ThemeTurboVisionElegantMenuItem"
                           Header="TurboVision_Elegant"
                           Tag="TurboVisionElegant"
+                          IsChecked="{Binding IsThemeTurboVisionElegant}"
                           Classes.IsCheckable="true"
                           Click="OnThemeMenuItemClick" />
                 <Separator />

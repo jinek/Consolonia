@@ -1,28 +1,21 @@
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
-using Avalonia.Platform.Storage;
 using Avalonia.Media;
-using AvaloniaEdit;
 using AvaloniaEdit.TextMate;
-using TextMateSharp.Grammars;
 using System.Linq;
 using Avalonia.Styling;
 using Consolonia.Themes;
 using Consolonia.Controls;
-using Avalonia.Threading;
 
 namespace Edit.NET
 {
 
     public partial class EditorView : UserControl
     {
-        private RegistryOptions? _registryOptions;
-        private TextMate.Installation? _textMateInstallation;
 
         public EditorView()
         {
@@ -31,6 +24,8 @@ namespace Edit.NET
             InitializeComponent();
 
             ViewModel.Editor = Editor;
+            ViewModel.TextMateInstallation = new TextMate.Installation(ViewModel.Editor, ViewModel.RegistryOptions);
+
             // Wire up editor events for status updates
             Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
             Editor.TextChanged += (_, __) =>
@@ -41,12 +36,10 @@ namespace Edit.NET
             Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
 
             // Install TextMate syntax highlighting similar to Consolonia.Editor
-            _registryOptions = new RegistryOptions(ThemeName.HighContrastDark);
-            _textMateInstallation = Editor.InstallTextMate(_registryOptions);
-            _textMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
+            ViewModel.TextMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
 
             // Default to C# highlighting
-            ApplySyntax(EditorSyntax.CSharp);
+            ViewModel.Syntax = EditorSyntax.PlainText;
 
             Loaded += OnLoaded;
         }
@@ -69,28 +62,6 @@ namespace Edit.NET
         }
 
 
-        private void SyntaxPlain_OnClick(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Syntax = EditorSyntax.PlainText;
-            ApplySyntax(ViewModel.Syntax);
-            SetChecked(sender);
-        }
-
-        private void SyntaxCSharp_OnClick(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Syntax = EditorSyntax.CSharp;
-            ApplySyntax(ViewModel.Syntax);
-            SetChecked(sender);
-        }
-
-        private void SetChecked(object sender)
-        {
-            var menuItem1 = (MenuItem)sender;
-            menuItem1.IsChecked = true;
-
-            foreach (MenuItem item in ((MenuItem)menuItem1.Parent!).Items.Cast<MenuItem>()
-                     .Where(item => item != menuItem1)) item.IsChecked = false;
-        }
 
         private void OnThemeVariantLightMenuClick(object sender, RoutedEventArgs e)
         {
@@ -132,7 +103,7 @@ namespace Edit.NET
                 ThemesList.TurboVisionElegant => new TurboVisionElegantTheme(),
                 _ => throw new InvalidDataException("Unknown theme name")
             };
-
+            ViewModel.CurrentTheme = selectedTheme.ToString();
             var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
             var mainWindow = lifetime.MainWindow;
             var newView = new EditorView() { DataContext = viewModel };
@@ -146,83 +117,32 @@ namespace Edit.NET
 
         private void UpdateThemeMenuItems()
         {
-            string themeName = Application.Current.Styles[0].GetType().Name[..^5];
-            ThemeModernMenuItem.IsChecked = themeName == nameof(ThemesList.Modern);
-            ThemeModernContrastMenuItem.IsChecked = themeName == nameof(ThemesList.ModernContrast);
-            ThemeTurboVisionMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVision);
-            ThemeTurboVisionCompatibleMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionCompatible);
-            ThemeTurboVisionGrayMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionGray);
-            ThemeTurboVisionElegantMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionElegant);
+            ViewModel.CurrentTheme = Application.Current.Styles[0].GetType().Name[..^5];
 
             ThemeDarkMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Dark;
             ThemeLightMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Light;
         }
 
+        private void SyntaxMarkdown_OnClick(object sender, RoutedEventArgs e)
+            => ViewModel.Syntax = EditorSyntax.Markdown;
+
+        private void SyntaxPlain_OnClick(object sender, RoutedEventArgs e)
+            => ViewModel.Syntax = EditorSyntax.PlainText;
+
+        private void SyntaxCSharp_OnClick(object sender, RoutedEventArgs e)
+            => ViewModel.Syntax = EditorSyntax.CSharp;
+
         private void SyntaxXml_OnClick(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Syntax = EditorSyntax.Xml;
-            ApplySyntax(ViewModel.Syntax);
-            SetChecked(sender);
-        }
+            => ViewModel.Syntax = EditorSyntax.Xml;
 
         private void SyntaxHtml_OnClick(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Syntax = EditorSyntax.Html;
-            ApplySyntax(ViewModel.Syntax);
-            SetChecked(sender);
-        }
+            => ViewModel.Syntax = EditorSyntax.Html;
 
         private void SyntaxJavaScript_OnClick(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Syntax = EditorSyntax.JavaScript;
-            ApplySyntax(ViewModel.Syntax);
-            SetChecked(sender);
-        }
+            => ViewModel.Syntax = EditorSyntax.JavaScript;
 
-        private void SetSyntaxByExtension(string ext)
-        {
-            if (_registryOptions == null || _textMateInstallation == null)
-                return;
-            var lang = _registryOptions.GetLanguageByExtension(ext);
-            if (lang == null)
-            {
-                _textMateInstallation.SetGrammar(null);
-                return;
-            }
-            var scope = _registryOptions.GetScopeByLanguageId(lang.Id);
-            _textMateInstallation.SetGrammar(scope);
-        }
-
-        private void ApplySyntax(EditorSyntax syntax)
-        {
-            if (_registryOptions == null || _textMateInstallation == null)
-                return;
-
-            switch (syntax)
-            {
-                case EditorSyntax.PlainText:
-                    _textMateInstallation.SetGrammar(null);
-                    break;
-                case EditorSyntax.CSharp:
-                    SetSyntaxByExtension(".cs");
-                    break;
-                case EditorSyntax.Xml:
-                    SetSyntaxByExtension(".xml");
-                    break;
-                case EditorSyntax.Html:
-                    SetSyntaxByExtension(".html");
-                    break;
-                case EditorSyntax.JavaScript:
-                    SetSyntaxByExtension(".js");
-                    break;
-                case EditorSyntax.Json:
-                    SetSyntaxByExtension(".json");
-                    break;
-                default:
-                    _textMateInstallation.SetGrammar(null);
-                    break;
-            }
-        }
+        private void SyntaxJson_OnClick(object sender, RoutedEventArgs e)
+            => ViewModel.Syntax = EditorSyntax.Json;
 
         private void TextMateInstallationOnAppliedTheme(object? sender, TextMate.Installation e)
         {
