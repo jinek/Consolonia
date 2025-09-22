@@ -1,7 +1,7 @@
 using Avalonia;
 using Consolonia;
 
-namespace Edit.NET
+namespace Sandbox
 {
     public static class Program
     {

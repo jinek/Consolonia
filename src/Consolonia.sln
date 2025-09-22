@@ -78,6 +78,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edit.NET", "Experimental\Ed
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.AvaloniaEdit", "Consolonia.AvaloniaEdit\Consolonia.AvaloniaEdit.csproj", "{2123C1D3-E122-4967-B30B-7ED383005EB7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Tools\Sandbox\Sandbox.csproj", "{F3CD4B47-B4EF-43C2-9A71-143289ABAAE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -168,6 +170,10 @@ Global
 		{2123C1D3-E122-4967-B30B-7ED383005EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2123C1D3-E122-4967-B30B-7ED383005EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2123C1D3-E122-4967-B30B-7ED383005EB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3CD4B47-B4EF-43C2-9A71-143289ABAAE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3CD4B47-B4EF-43C2-9A71-143289ABAAE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3CD4B47-B4EF-43C2-9A71-143289ABAAE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3CD4B47-B4EF-43C2-9A71-143289ABAAE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -184,6 +190,7 @@ Global
 		{AA52382A-EC46-4002-95C8-C5E338E6C01A} = {910B2845-1287-4F4A-9464-1988071907AF}
 		{2EA06671-2018-49BE-BCC6-F9DA0591AB25} = {1BA54DAA-D124-4939-9FF3-EE7139D856F6}
 		{93F62F07-94FD-40A7-B4E7-FB80E9BEA5E1} = {1BA54DAA-D124-4939-9FF3-EE7139D856F6}
+		{F3CD4B47-B4EF-43C2-9A71-143289ABAAE8} = {1BA54DAA-D124-4939-9FF3-EE7139D856F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {47D28717-CF68-421D-B547-585C16AE6DE7}

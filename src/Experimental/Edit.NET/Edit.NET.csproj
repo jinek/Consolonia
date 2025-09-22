@@ -18,6 +18,7 @@
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
         <PackageReference Include="AvaloniaEdit.TextMate" Version="11.3.0" />
+        <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.0.4" />
     </ItemGroup>
 
     <ItemGroup>
