@@ -750,18 +750,16 @@ namespace Consolonia.Core.Drawing
             if (intersect.IsEmpty())
                 return;
 
-            var start = line.Vertical ? intersect.Top : intersect.Left;
-            var end = line.Vertical ? intersect.Bottom : intersect.Right;
+            double start = line.Vertical ? intersect.Top : intersect.Left;
+            double end = line.Vertical ? intersect.Bottom : intersect.Right;
             // align head with the first intersected point
             head = line.Vertical ? head.WithY(start) : head.WithX(start);
-            for (var i = start; i < end; i++)
+            for (double i = start; i < end; i++)
             {
                 if (CurrentClip.ContainsExclusive(head))
-                {
                     _pixelBuffer[head] =
-                    _pixelBuffer[head].Blend(new Pixel(new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle)),
-                        color));
-                }
+                        _pixelBuffer[head].Blend(new Pixel(new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle)),
+                            color));
 
                 head = line.Vertical
                     ? head.WithY(head.Y + 1)
