@@ -744,21 +744,22 @@ namespace Consolonia.Core.Drawing
             int count)
         {
             Rect rectToRefresh = line.Vertical
-                ? new Rect((int)head.X, (int)head.Y, 1, count)
-                : new Rect((int)head.X, (int)head.Y, count, 1);
+                ? new Rect(head.X, head.Y, 1, count)
+                : new Rect(head.X, head.Y, count, 1);
             Rect intersect = CurrentClip.Intersect(rectToRefresh);
             if (intersect.IsEmpty())
                 return;
 
-            ushort start = line.Vertical ? (ushort)intersect.Top : (ushort)intersect.Left;
-            ushort end = line.Vertical ? (ushort)intersect.Bottom : (ushort)intersect.Right;
+            double start = line.Vertical ? intersect.Top : intersect.Left;
+            double end = line.Vertical ? intersect.Bottom : intersect.Right;
             // align head with the first intersected point
             head = line.Vertical ? head.WithY(start) : head.WithX(start);
-            for (ushort i = start; i < end; i++)
+            for (double i = start; i < end; i++)
             {
-                _pixelBuffer[head] =
-                    _pixelBuffer[head].Blend(new Pixel(new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle)),
-                        color));
+                if (CurrentClip.ContainsExclusive(head))
+                    _pixelBuffer[head] =
+                        _pixelBuffer[head].Blend(new Pixel(new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle)),
+                            color));
 
                 head = line.Vertical
                     ? head.WithY(head.Y + 1)
