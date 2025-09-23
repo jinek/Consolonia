@@ -116,6 +116,7 @@ namespace Edit.NET
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
             UpdateThemeMenuItems();
+            Editor.TextArea.Focus();
         }
 
         private void UpdateThemeMenuItems()
