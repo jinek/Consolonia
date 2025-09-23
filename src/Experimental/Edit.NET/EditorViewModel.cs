@@ -169,6 +169,7 @@ namespace Edit.NET
             Editor.Text = string.Empty;
             Syntax = GetSyntaxFromExtension(Path.GetExtension(FilePath));
             Modified = false;
+            Editor.TextArea.Focus();
         }
 
         [RelayCommand]
@@ -206,6 +207,7 @@ namespace Edit.NET
                     await MessageBox.ShowDialog("Open Error", ex.Message);
                 }
             }
+            Editor.TextArea.Focus();
         }
 
         [RelayCommand(CanExecute =nameof(CanSave))]
@@ -240,6 +242,7 @@ namespace Edit.NET
                 FilePath = Path.GetFullPath(file.Path.AbsolutePath);
                 await SaveFileAsync();
             }
+            Editor.TextArea.Focus();
         }
 
         [RelayCommand]

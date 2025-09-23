@@ -12,7 +12,21 @@
             <Setter Property="Icon" Value="{StaticResource Icon_Check}" />
         </Style>
     </UserControl.Styles>
-    
+
+    <!-- Explicit key bindings so shortcuts work in the console/ManagedWindow host -->
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Ctrl+N" Command="{Binding NewCommand}" />
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenCommand}" CommandParameter="{Binding #Editor}" />
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}" CommandParameter="{Binding #Editor}" />
+        <KeyBinding Gesture="Ctrl+Shift+S" Command="{Binding SaveAsCommand}" CommandParameter="{Binding #Editor}" />
+        <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}" />
+        <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoCommand}" />
+        <KeyBinding Gesture="Ctrl+X" Command="{Binding CutCommand}" />
+        <KeyBinding Gesture="Ctrl+C" Command="{Binding CopyCommand}" />
+        <KeyBinding Gesture="Ctrl+V" Command="{Binding PasteCommand}" />
+        <KeyBinding Gesture="Ctrl+A" Command="{Binding SelectAllCommand}" />
+    </UserControl.KeyBindings>
+
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
