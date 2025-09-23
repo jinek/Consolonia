@@ -7,7 +7,7 @@ using Avalonia.Data.Converters;
 
 namespace Edit.NET
 {
-    public static class Converters
+    public static class EditConverters
     {
         public static readonly IValueConverter ModifiedConverter = new FuncValueConverter<bool, string>(modified => modified ? "Modified" : "Saved");
     }

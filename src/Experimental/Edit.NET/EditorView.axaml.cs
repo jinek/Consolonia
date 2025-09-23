@@ -21,7 +21,7 @@ namespace Edit.NET
         public EditorView()
         {
             this.DataContext = new EditorViewModel();
-            
+
             InitializeComponent();
 
             ViewModel.Editor = Editor;
@@ -51,6 +51,12 @@ namespace Edit.NET
             set => DataContext = value;
         }
 
+        public static IClassicDesktopStyleApplicationLifetime Lifetime
+            => (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
+
+        public static Window MainWindow
+            => Lifetime!.MainWindow!;
+
         private void UpdateStatus()
         {
             // Position
@@ -66,21 +72,17 @@ namespace Edit.NET
 
         private void OnThemeVariantLightMenuClick(object sender, RoutedEventArgs e)
         {
-            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            var mainWindow = lifetime.MainWindow;
-            mainWindow.RequestedThemeVariant = ThemeVariant.Light;
+            MainWindow.RequestedThemeVariant = ThemeVariant.Light;
             UpdateThemeMenuItems();
         }
 
         private void OnThemeVariantDarkMenuClick(object sender, RoutedEventArgs e)
         {
-            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            var mainWindow = lifetime.MainWindow;
-            mainWindow.RequestedThemeVariant = ThemeVariant.Dark;
+            MainWindow.RequestedThemeVariant = ThemeVariant.Dark;
             UpdateThemeMenuItems();
         }
 
-        private void OnThemeMenuItemClick(object sender, RoutedEventArgs e)
+        private async void OnThemeMenuItemClick(object sender, RoutedEventArgs e)
         {
             if (sender is not MenuItem { Tag: string themeName } ||
                 !Enum.TryParse(themeName, out ThemesList selectedTheme))
@@ -89,12 +91,12 @@ namespace Edit.NET
             var viewModel = (EditorViewModel)DataContext!;
             if (viewModel.Modified)
             {
-                MessageBox.ShowDialog(themeName, "You have unsaved changes. You need to save your file before you change themes.");
+                await MessageBox.ShowDialog(themeName, "You have unsaved changes. You need to save your file before you change themes.");
                 return;
             }
 
             // NOTE: this assumes first style object is the old theme!
-            Application.Current.Styles[0] = selectedTheme switch
+            Application.Current!.Styles[0] = selectedTheme switch
             {
                 ThemesList.Modern => new ModernTheme(),
                 ThemesList.ModernContrast => new ModernContrastTheme(),
@@ -105,12 +107,11 @@ namespace Edit.NET
                 _ => throw new InvalidDataException("Unknown theme name")
             };
             ViewModel.CurrentTheme = selectedTheme.ToString();
-            var lifetime = Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            var mainWindow = lifetime.MainWindow;
-            var newView = new EditorView() { DataContext = viewModel };
-            mainWindow.Content = newView;
             
-            ViewModel.New();
+            var newView = new EditorView() { DataContext = viewModel };
+            MainWindow.Content = newView;
+
+            await ViewModel.New();
         }
 
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
@@ -121,7 +122,7 @@ namespace Edit.NET
 
         private void UpdateThemeMenuItems()
         {
-            ViewModel.CurrentTheme = Application.Current.Styles[0].GetType().Name[..^5];
+            ViewModel.CurrentTheme = Application.Current!.Styles[0].GetType().Name[..^5];
 
             ThemeDarkMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Dark;
             ThemeLightMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Light;
@@ -191,7 +192,7 @@ namespace Edit.NET
             ApplyBrushAction(e, "editor.foreground", brush => Foreground = brush);
         }
 
-        private bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
+        private static bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
         {
             if (!e.TryGetThemeColor(colorKeyNameFromJson, out var colorString))
                 return false;

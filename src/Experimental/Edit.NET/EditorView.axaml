@@ -151,7 +151,7 @@
                 <TextBlock Name="FileNameText" Text="{Binding FileName}" HorizontalAlignment="Left"/>
                 <TextBlock Name="PositionText" Text="Ln 1, Col 1"/>
                 <TextBlock Name="LengthText" Text="Len 0"/>
-                <TextBlock Text="{Binding Modified, Converter={x:Static local:Converters.ModifiedConverter}}" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Modified, Converter={x:Static local:EditConverters.ModifiedConverter}}" HorizontalAlignment="Right"/>
             </UniformGrid>
         </Border>
         <avaloniaEdit:TextEditor Name="Editor"

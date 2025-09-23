@@ -29,8 +29,11 @@ namespace Edit.NET
 
     public partial class EditorViewModel : ObservableObject
     {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. 
         public EditorViewModel()
         {
+            this._currentFolder = Environment.CurrentDirectory;
+            this._currentTheme = "Light";
             FilePath = Path.Combine(CurrentFolder, "Untitled.txt");
             RegistryOptions = new RegistryOptions(ThemeName.LightPlus);
             // call ApplySyntax when Syntax changes
@@ -40,6 +43,12 @@ namespace Edit.NET
         public TextEditor Editor { get; set; }
         public RegistryOptions? RegistryOptions { get; set; }
         public TextMate.Installation? TextMateInstallation { get; set; }
+
+        public static IClassicDesktopStyleApplicationLifetime Lifetime
+            => (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
+
+        public static Window MainWindow
+            => Lifetime!.MainWindow!;
 
         [NotifyPropertyChangedFor(nameof(FileName))]
         [NotifyPropertyChangedFor(nameof(FileNameOnly))]
@@ -107,6 +116,13 @@ namespace Edit.NET
 
         public async Task SaveFileAsync()
         {
+
+            if (String.IsNullOrEmpty(FilePath))
+            {
+                await MessageBox.ShowDialog("Save Error", "File path is not set.");
+                return;
+            }
+
             try
             {
                 await File.WriteAllTextAsync(FilePath, Editor.Text);
@@ -182,13 +198,10 @@ namespace Edit.NET
                     return;
             }
 
-            if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
-                return;
-            var mainWindow = desktop.MainWindow;
-            var files = await mainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            var files = await MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 AllowMultiple = false,
-                SuggestedStartLocation = await mainWindow.StorageProvider.TryGetFolderFromPathAsync(CurrentFolder),
+                SuggestedStartLocation = await MainWindow.StorageProvider.TryGetFolderFromPathAsync(CurrentFolder),
                 Title = "Open File"
             });
             if (files != null && files.Count > 0)
@@ -228,13 +241,10 @@ namespace Edit.NET
         [RelayCommand]
         private async Task SaveAs()
         {
-            if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
-                return;
-            var mainWindow = desktop.MainWindow;
-            var file = await mainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            var file = await MainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save As",
-                SuggestedStartLocation = await mainWindow.StorageProvider.TryGetFolderFromPathAsync(CurrentFolder),
+                SuggestedStartLocation = await MainWindow.StorageProvider.TryGetFolderFromPathAsync(CurrentFolder),
                 SuggestedFileName = FileName ?? "Untitled.txt"
             });
             if (file != null)
@@ -246,12 +256,9 @@ namespace Edit.NET
         }
 
         [RelayCommand]
-        public void Exit()
+        public static void Exit()
         {
-            if (Application.Current?.ApplicationLifetime is IControlledApplicationLifetime lifetime)
-            {
-                lifetime.Shutdown();
-            }
+            Lifetime.Shutdown();
         }
 
         public static EditorSyntax GetSyntaxFromExtension(string? extension)
@@ -259,30 +266,17 @@ namespace Edit.NET
             if (string.IsNullOrWhiteSpace(extension))
                 return EditorSyntax.PlainText;
 
-            switch (extension.ToLowerInvariant())
+            return extension.ToUpperInvariant() switch
             {
-                case ".md":
-                    return EditorSyntax.Markdown;
-                case ".txt":
-                    return EditorSyntax.PlainText;
-                case ".cs":
-                    return EditorSyntax.CSharp;
-                case ".xml":
-                case ".xaml":
-                case ".axaml":
-                    return EditorSyntax.Xml;
-                case ".html":
-                case ".htm":
-                    return EditorSyntax.Html;
-                case ".js":
-                case ".mjs":
-                case ".cjs":
-                    return EditorSyntax.JavaScript;
-                case ".Json":
-                    return EditorSyntax.Json;
-                default:
-                    return EditorSyntax.PlainText;
-            }
+                ".MD" => EditorSyntax.Markdown,
+                ".TXT" => EditorSyntax.PlainText,
+                ".CS" => EditorSyntax.CSharp,
+                ".XML" or ".XAML" or ".AXAML" => EditorSyntax.Xml,
+                ".HTML" or ".HTM" => EditorSyntax.Html,
+                ".JS" or ".MJS" or ".CJS" => EditorSyntax.JavaScript,
+                ".JSON" => EditorSyntax.Json,
+                _ => EditorSyntax.PlainText,
+            };
         }
 
         private void SetSyntaxByExtension(string ext)
