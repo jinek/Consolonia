@@ -163,19 +163,20 @@ namespace Consolonia.Core.Drawing
                     break;
                 case StreamGeometryImpl streamGeometry:
                     {
-                        if (brush == null)
-                            return;
-                        if (brush.Opacity == 0)
-                            return;
-
-                        // if we have fills to do.
-                        if (streamGeometry.Fills.Count > 0)
+                        // if we have fills to do and a brush with opacity
+                        if (brush != null && 
+                            brush.Opacity > 0 && 
+                            streamGeometry.Fills.Count > 0)
+                        {
                             foreach (Rectangle fill in streamGeometry.Fills)
                                 DrawRectangle(brush, pen, new RoundedRect(fill.Rect));
+                        }
 
-                        // if we have strokes to draw
-                        if (pen != null && 
-                            pen.Thickness > 0 && 
+                        // if we have strokes to draw, and a valid pen 
+                        if (pen != null &&
+                            pen.Thickness > 0 &&
+                            pen.Brush != null &&
+                            pen.Brush.Opacity > 0 &&
                             streamGeometry.Strokes.Count > 0)
                         {
                             RectangleLinePosition[] strokePositions = InferStrokePositions(streamGeometry);
