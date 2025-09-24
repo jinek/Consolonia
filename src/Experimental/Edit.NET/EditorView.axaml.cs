@@ -93,13 +93,6 @@ namespace Edit.NET
                 !Enum.TryParse(themeName, out ThemesList selectedTheme))
                 return;
 
-            //var viewModel = (EditorViewModel)DataContext!;
-            //if (viewModel.Modified)
-            //{
-            //    await MessageBox.ShowDialog(themeName, "You have unsaved changes. You need to save your file before you change themes.");
-            //    return;
-            //}
-
             // NOTE: this assumes first style object is the old theme!
             Application.Current!.Styles[0] = selectedTheme switch
             {
@@ -112,7 +105,6 @@ namespace Edit.NET
                 _ => throw new InvalidDataException("Unknown theme name")
             };
 
-            //            ViewModel.CurrentTheme = selectedTheme.ToString();
             var text = Editor.Text;
             var newView = new EditorView();
             newView.Editor.Text = Editor.Text;
