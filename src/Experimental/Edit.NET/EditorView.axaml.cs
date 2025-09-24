@@ -20,28 +20,6 @@ namespace Edit.NET
         {
 
             InitializeComponent();
-
-            this.DataContext = new EditorViewModel()
-            {
-                Editor = this.Editor
-            };
-            Editor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Editor.Options);
-            Editor.TextArea.RightClickMovesCaret = true;
-
-            // Wire up editor events for status updates
-            Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
-            Editor.TextChanged += (_, __) =>
-            {
-                ViewModel.Modified = true;
-                UpdateStatus();
-            };
-            Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
-
-            ViewModel.TextMateInstallation = Editor.InstallTextMate(ViewModel.RegistryOptions);
-            // Install TextMate syntax highlighting similar to Consolonia.Editor
-            ViewModel.TextMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
-            ApplyThemeColorsToEditor(ViewModel.TextMateInstallation);
-
             Loaded += OnLoaded;
         }
 
@@ -118,6 +96,26 @@ namespace Edit.NET
 
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
+            this.DataContext = new EditorViewModel()
+            {
+                Editor = this.Editor
+            };
+            Editor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Editor.Options);
+            Editor.TextArea.RightClickMovesCaret = true;
+            
+            // Wire up editor events for status updates
+            Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
+            Editor.TextChanged += (_, __) =>
+            {
+                ViewModel.Modified = true;
+                UpdateStatus();
+            };
+            Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
+
+            ViewModel.TextMateInstallation = Editor.InstallTextMate(ViewModel.RegistryOptions);
+            // Install TextMate syntax highlighting similar to Consolonia.Editor
+            ViewModel.TextMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
+            ApplyThemeColorsToEditor(ViewModel.TextMateInstallation);
 
             // Default to plaintext
             ViewModel.Syntax = EditorSyntax.PlainText;
