@@ -9,6 +9,7 @@ using Avalonia.Styling;
 using AvaloniaEdit.TextMate;
 using Consolonia.Controls;
 using Consolonia.Themes;
+using Newtonsoft.Json.Linq;
 
 namespace Edit.NET
 {
@@ -19,6 +20,28 @@ namespace Edit.NET
         {
 
             InitializeComponent();
+
+            this.DataContext = new EditorViewModel()
+            {
+                Editor = this.Editor
+            };
+            Editor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Editor.Options);
+            Editor.TextArea.RightClickMovesCaret = true;
+
+            // Wire up editor events for status updates
+            Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
+            Editor.TextChanged += (_, __) =>
+            {
+                ViewModel.Modified = true;
+                UpdateStatus();
+            };
+            Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
+
+            ViewModel.TextMateInstallation = Editor.InstallTextMate(ViewModel.RegistryOptions);
+            // Install TextMate syntax highlighting similar to Consolonia.Editor
+            ViewModel.TextMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
+            ApplyThemeColorsToEditor(ViewModel.TextMateInstallation);
+
             Loaded += OnLoaded;
         }
 
@@ -50,12 +73,14 @@ namespace Edit.NET
         private void OnThemeVariantLightMenuClick(object sender, RoutedEventArgs e)
         {
             MainWindow.RequestedThemeVariant = ThemeVariant.Light;
+            ViewModel.TextMateInstallation.SetTheme(ViewModel.RegistryOptions.LoadTheme(TextMateSharp.Grammars.ThemeName.VisualStudioLight));
             UpdateThemeMenuItems();
         }
 
         private void OnThemeVariantDarkMenuClick(object sender, RoutedEventArgs e)
         {
             MainWindow.RequestedThemeVariant = ThemeVariant.Dark;
+            ViewModel.TextMateInstallation.SetTheme(ViewModel.RegistryOptions.LoadTheme(TextMateSharp.Grammars.ThemeName.VisualStudioDark));
             UpdateThemeMenuItems();
         }
 
@@ -93,26 +118,6 @@ namespace Edit.NET
 
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
-            this.DataContext = new EditorViewModel()
-            {
-                Editor = this.Editor
-            };
-            Editor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Editor.Options);
-            Editor.TextArea.RightClickMovesCaret = true;
-            
-            // Wire up editor events for status updates
-            Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
-            Editor.TextChanged += (_, __) =>
-            {
-                ViewModel.Modified = true;
-                UpdateStatus();
-            };
-            Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
-
-            ViewModel.TextMateInstallation = Editor.InstallTextMate(ViewModel.RegistryOptions);
-            // Install TextMate syntax highlighting similar to Consolonia.Editor
-            ViewModel.TextMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
-            ApplyThemeColorsToEditor(ViewModel.TextMateInstallation);
 
             // Default to plaintext
             ViewModel.Syntax = EditorSyntax.PlainText;
