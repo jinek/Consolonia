@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using AvaloniaEdit;
 using AvaloniaEdit.Editing;
@@ -27,9 +28,20 @@ namespace Consolonia.AvaloniaEdit
                 if (value)
                 {
                     // replace caret with console caret.
-                    textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
-                        { CaretStyle = CaretStyle.SteadyBar };
+                    //textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
+                    //{ CaretStyle = CaretStyle.SteadyBar };
                     textEditor.TextArea.PropertyChanged += TextArea_PropertyChanged;
+
+                    // The built in LineNumberMargin miscalculates the top of the line, 
+                    // we substitute ours with one which works correctly.
+                    for (int i = 0; i < textEditor.TextArea.LeftMargins.Count; i++)
+                    {
+                        if (textEditor.TextArea.LeftMargins[i] is LineNumberMargin)
+                        {
+                            textEditor.TextArea.LeftMargins[i] = new ConsoleLineNumberMargin();
+                            break;
+                        }
+                    }
                 }
                 else
                 {
@@ -56,11 +68,11 @@ namespace Consolonia.AvaloniaEdit
             if (e.Property == TextArea.OverstrikeModeProperty)
             {
                 var textArea = (TextArea)sender;
-                if (textArea.Caret.CaretBrush is MoveConsoleCaretToPositionBrush caretBrush)
-                    // NOTE: We use SteadyBlock and SteadyBar because AvaloniaEdit has blinking animation hardcoded in.
-                    caretBrush.CaretStyle = (bool)e.NewValue
-                        ? CaretStyle.SteadyBlock
-                        : CaretStyle.SteadyBar;
+                //if (textArea.Caret.CaretBrush is MoveConsoleCaretToPositionBrush caretBrush)
+                //    // NOTE: We use SteadyBlock and SteadyBar because AvaloniaEdit has blinking animation hardcoded in.
+                //    caretBrush.CaretStyle = (bool)e.NewValue
+                //        ? CaretStyle.SteadyBlock
+                //        : CaretStyle.SteadyBar;
             }
         }
     }

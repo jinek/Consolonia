@@ -1,7 +1,9 @@
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Gallery.View;
 using Consolonia.NUnit;
@@ -24,10 +26,11 @@ namespace Consolonia.Gallery.Tests.Base
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                var controlsListView =
-                    (ControlsListView)
+                var mainWindow =
+                    (MainWindow)
                     ((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!
                     .MainWindow!;
+                var controlsListView = mainWindow.FindDescendantOfType<ControlsListView>();
                 controlsListView!.ChangeTo(Args);
             });
 

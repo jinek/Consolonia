@@ -1,7 +1,7 @@
 using Avalonia;
 using Consolonia;
 
-namespace Example
+namespace Edit.NET
 {
     public static class Program
     {
@@ -16,6 +16,7 @@ namespace Example
             return AppBuilder.Configure<App>()
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
+                .WithDeveloperTools()
                 .LogToException();
         }
     }

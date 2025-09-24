@@ -13,7 +13,7 @@
             <ComboBox Height="1" Name="syntaxModeCombo" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
 
             <TextBlock Text="Theme:" />
-            <ComboBox VerticalAlignment="Stretch" VerticalContentAlignment="Center"
+            <ComboBox VerticalAlignment="Stretch" VerticalContentAlignment="Center" MaxHeight="10"
                       ItemsSource="{Binding AllThemes}" SelectedItem="{Binding SelectedTheme}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

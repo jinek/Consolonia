@@ -30,6 +30,7 @@
                                               Height="1"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
+                                              Foreground="{TemplateBinding Foreground}"
                                               Content="{TemplateBinding Icon}" />
 
                             <console:SymbolsControl Grid.Column="0"
