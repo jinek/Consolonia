@@ -6,11 +6,9 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using AvaloniaEdit.TextMate;
-using System.Linq;
 using Avalonia.Styling;
 using Consolonia.Themes;
 using Consolonia.Controls;
-using AvaloniaEdit;
 
 namespace Edit.NET
 {
@@ -26,7 +24,7 @@ namespace Edit.NET
 
             ViewModel.Editor = Editor;
             ViewModel.TextMateInstallation = new TextMate.Installation(ViewModel.Editor, ViewModel.RegistryOptions);
-
+            
             // Wire up editor events for status updates
             Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
             Editor.TextChanged += (_, __) =>
