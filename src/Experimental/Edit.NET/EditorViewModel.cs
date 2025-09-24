@@ -35,7 +35,7 @@ namespace Edit.NET
             this._currentFolder = Environment.CurrentDirectory;
             this._currentTheme = "Light";
             FilePath = Path.Combine(CurrentFolder, "Untitled.txt");
-            RegistryOptions = new RegistryOptions(ThemeName.LightPlus);
+            RegistryOptions = new RegistryOptions(ThemeName.VisualStudioDark);
             // call ApplySyntax when Syntax changes
             this.WhenAnyValue(x => x.Syntax).Subscribe(ApplySyntax);
         }
@@ -70,7 +70,7 @@ namespace Edit.NET
         [NotifyPropertyChangedFor(nameof(IsSyntaxHtml))]
         [NotifyPropertyChangedFor(nameof(IsSyntaxJavascript))]
         [NotifyPropertyChangedFor(nameof(IsSyntaxJson))]
-        private EditorSyntax _syntax;
+        private EditorSyntax _syntax = EditorSyntax.Unknown;
 
         public bool IsSyntaxPlainText => Syntax == EditorSyntax.PlainText;
         public bool IsSyntaxMarkdown => Syntax == EditorSyntax.Markdown;

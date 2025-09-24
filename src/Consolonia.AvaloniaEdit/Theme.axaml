@@ -37,8 +37,6 @@
         <ControlTheme x:Key="{x:Type ae:TextEditor}"
                       TargetType="ae:TextEditor"
                       BasedOn="{StaticResource {x:Type ae:TextEditor}}">
-            <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
-            <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}"/>
             
             <!-- There is a bug in AvaloniaEdit which hard codes line height to 1.35 * FontSize. To get line height of 1 we set FontSize to 0.7407407407407407 of desired size-->
             <Setter Property="FontSize"

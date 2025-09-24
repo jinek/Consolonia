@@ -5,41 +5,20 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using AvaloniaEdit.TextMate;
 using Avalonia.Styling;
-using Consolonia.Themes;
+using AvaloniaEdit.TextMate;
 using Consolonia.Controls;
+using Consolonia.Themes;
 
 namespace Edit.NET
 {
 
     public partial class EditorView : UserControl
     {
-
         public EditorView()
         {
-            this.DataContext = new EditorViewModel();
 
             InitializeComponent();
-
-            ViewModel.Editor = Editor;
-            ViewModel.TextMateInstallation = new TextMate.Installation(ViewModel.Editor, ViewModel.RegistryOptions);
-            
-            // Wire up editor events for status updates
-            Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
-            Editor.TextChanged += (_, __) =>
-            {
-                ViewModel.Modified = true;
-                UpdateStatus();
-            };
-            Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
-
-            // Install TextMate syntax highlighting similar to Consolonia.Editor
-            ViewModel.TextMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
-
-            // Default to C# highlighting
-            ViewModel.Syntax = EditorSyntax.PlainText;
-
             Loaded += OnLoaded;
         }
 
@@ -114,6 +93,30 @@ namespace Edit.NET
 
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
+            this.DataContext = new EditorViewModel()
+            {
+                Editor = this.Editor
+            };
+            Editor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Editor.Options);
+            Editor.TextArea.RightClickMovesCaret = true;
+            
+            // Wire up editor events for status updates
+            Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
+            Editor.TextChanged += (_, __) =>
+            {
+                ViewModel.Modified = true;
+                UpdateStatus();
+            };
+            Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
+
+            ViewModel.TextMateInstallation = Editor.InstallTextMate(ViewModel.RegistryOptions);
+            // Install TextMate syntax highlighting similar to Consolonia.Editor
+            ViewModel.TextMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
+            ApplyThemeColorsToEditor(ViewModel.TextMateInstallation);
+
+            // Default to plaintext
+            ViewModel.Syntax = EditorSyntax.PlainText;
+
             UpdateThemeMenuItems();
             Editor.TextArea.Focus();
         }
@@ -156,7 +159,7 @@ namespace Edit.NET
         private void ApplyThemeColorsToEditor(TextMate.Installation e)
         {
             ApplyBrushAction(e, "editor.background", brush => Editor.Background = brush);
-            ApplyBrushAction(e, "editor.foreground", brush => Editor.Foreground = brush);
+            ApplyBrushAction(e, "editor.foreground", brush => Editor.TextArea.Foreground = brush);
 
             // Selection brush
             if (!ApplyBrushAction(e, "editor.selectionBackground", brush => Editor.TextArea.SelectionBrush = brush))
@@ -167,27 +170,27 @@ namespace Edit.NET
             // Current line highlight
             if (!ApplyBrushAction(e, "editor.lineHighlightBackground", brush => Editor.TextArea.TextView.CurrentLineBackground = brush))
             {
-                Editor.TextArea.TextView.SetDefaultHighlightLineColors();
+                // Editor.TextArea.TextView.SetDefaultHighlightLineColors();
             }
 
             // Line numbers
             if (!ApplyBrushAction(e, "editorLineNumber.foreground", brush => Editor.LineNumbersForeground = brush))
             {
-                Editor.LineNumbersForeground = Editor.Foreground;
+                Editor.LineNumbersForeground = Editor.TextArea.Foreground;
             }
         }
 
         private void ApplyThemeColorsToWindow(TextMate.Installation e)
         {
             // Status bar/background panel
-            if (this.FindControl<Border>("BottomPanel") is { } bottom)
-            {
-                ApplyBrushAction(e, "statusBar.background", brush => bottom.Background = brush);
-            }
+            //if (this.FindControl<Border>("BottomPanel") is { } bottom)
+            //{
+            //    ApplyBrushAction(e, "statusBar.background", brush => bottom.Background = brush);
+            //}
 
             // Apply editor theme colors to the window for better contrast
-            ApplyBrushAction(e, "editor.background", brush => Background = brush);
-            ApplyBrushAction(e, "editor.foreground", brush => Foreground = brush);
+            //ApplyBrushAction(e, "editor.background", brush => Background = brush);
+            //ApplyBrushAction(e, "editor.foreground", brush => Foreground = brush);
         }
 
         private static bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
