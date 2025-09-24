@@ -22,7 +22,7 @@ namespace ConsoloniaEdit.Demo
         private ComboBox _syntaxModeCombo;
         private TextBlock _statusTextBlock;
         private RegistryOptions _registryOptions;
-        private int _currentTheme = (int)ThemeName.DarkPlus;
+        private int _currentTheme = (int)ThemeName.VisualStudioDark;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         public MainWindow()
@@ -81,7 +81,7 @@ namespace ConsoloniaEdit.Demo
         void ApplyThemeColorsToEditor(TextMate.Installation e)
         {
             ApplyBrushAction(e, "editor.background", brush => _textEditor.Background = brush);
-            ApplyBrushAction(e, "editor.foreground", brush => _textEditor.Foreground = brush);
+            ApplyBrushAction(e, "editor.foreground", brush => _textEditor.TextArea.Foreground = brush);
 
             if (!ApplyBrushAction(e, "editor.selectionBackground",
                     brush => _textEditor.TextArea.SelectionBrush = brush))
@@ -112,7 +112,7 @@ namespace ConsoloniaEdit.Demo
             if (!ApplyBrushAction(e, "editorLineNumber.foreground",
                     brush => _textEditor.LineNumbersForeground = brush))
             {
-                _textEditor.LineNumbersForeground = _textEditor.Foreground;
+                _textEditor.LineNumbersForeground = _textEditor.TextArea.Foreground;
             }
             _textEditor.TextArea.TextView.CurrentLineBorder = new Pen(Brushes.Transparent, thickness: 0);
         }
