@@ -35,7 +35,6 @@ namespace Edit.NET
             this._currentFolder = Environment.CurrentDirectory;
             this._currentTheme = "Light";
             FilePath = Path.Combine(CurrentFolder, "Untitled.txt");
-            RegistryOptions = new RegistryOptions(ThemeName.VisualStudioDark);
             // call ApplySyntax when Syntax changes
             this.WhenAnyValue(x => x.Syntax).Subscribe(ApplySyntax);
         }
@@ -293,7 +292,7 @@ namespace Edit.NET
             TextMateInstallation.SetGrammar(scope);
         }
 
-        private void ApplySyntax(EditorSyntax syntax)
+        public void ApplySyntax(EditorSyntax syntax)
         {
             if (RegistryOptions == null || TextMateInstallation == null)
                 return;

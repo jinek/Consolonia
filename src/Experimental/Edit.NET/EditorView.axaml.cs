@@ -7,9 +7,8 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Styling;
 using AvaloniaEdit.TextMate;
-using Consolonia.Controls;
 using Consolonia.Themes;
-using Newtonsoft.Json.Linq;
+using TextMateSharp.Grammars;
 
 namespace Edit.NET
 {
@@ -18,8 +17,34 @@ namespace Edit.NET
     {
         public EditorView()
         {
-
             InitializeComponent();
+            Editor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Editor.Options);
+            Editor.TextArea.RightClickMovesCaret = true;
+
+            // Wire up editor events for status updates
+            Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
+            Editor.TextChanged += (_, __) =>
+            {
+                ViewModel.Modified = true;
+                UpdateStatus();
+            };
+            Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
+
+            var registryOptions = new RegistryOptions(ThemeName.VisualStudioDark);
+            var textMateInstallation = Editor.InstallTextMate(registryOptions);
+            // Install TextMate syntax highlighting similar to Consolonia.Editor
+            textMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
+            ApplyThemeColorsToEditor(textMateInstallation);
+
+            // Default to plaintext
+            this.DataContext = new EditorViewModel()
+            {
+                Editor = this.Editor,
+                TextMateInstallation = textMateInstallation,
+                RegistryOptions = registryOptions,
+                Syntax = EditorSyntax.PlainText
+            };
+
             Loaded += OnLoaded;
         }
 
@@ -68,12 +93,12 @@ namespace Edit.NET
                 !Enum.TryParse(themeName, out ThemesList selectedTheme))
                 return;
 
-            var viewModel = (EditorViewModel)DataContext!;
-            if (viewModel.Modified)
-            {
-                await MessageBox.ShowDialog(themeName, "You have unsaved changes. You need to save your file before you change themes.");
-                return;
-            }
+            //var viewModel = (EditorViewModel)DataContext!;
+            //if (viewModel.Modified)
+            //{
+            //    await MessageBox.ShowDialog(themeName, "You have unsaved changes. You need to save your file before you change themes.");
+            //    return;
+            //}
 
             // NOTE: this assumes first style object is the old theme!
             Application.Current!.Styles[0] = selectedTheme switch
@@ -86,40 +111,27 @@ namespace Edit.NET
                 ThemesList.TurboVisionElegant => new TurboVisionElegantTheme(),
                 _ => throw new InvalidDataException("Unknown theme name")
             };
-            ViewModel.CurrentTheme = selectedTheme.ToString();
-            
-            var newView = new EditorView() { DataContext = viewModel };
+
+            //            ViewModel.CurrentTheme = selectedTheme.ToString();
+            var text = Editor.Text;
+            var newView = new EditorView();
+            newView.Editor.Text = Editor.Text;
+            newView.ViewModel.Syntax = ViewModel.Syntax;
+            newView.ViewModel.FilePath = ViewModel.FilePath;
+            newView.ViewModel.Modified = ViewModel.Modified;
+            newView.ViewModel.CurrentFolder = ViewModel.CurrentFolder;
             MainWindow.Content = newView;
 
-            await ViewModel.New();
+            newView.ViewModel.TextMateInstallation.SetTheme(newView.ViewModel.RegistryOptions.LoadTheme(MainWindow.RequestedThemeVariant == ThemeVariant.Light
+                    ? ThemeName.VisualStudioLight
+                    : ThemeName.VisualStudioDark));
+
+            newView.UpdateThemeMenuItems();
+            newView.Editor.TextArea.Focus();
         }
 
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
-            this.DataContext = new EditorViewModel()
-            {
-                Editor = this.Editor
-            };
-            Editor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Editor.Options);
-            Editor.TextArea.RightClickMovesCaret = true;
-            
-            // Wire up editor events for status updates
-            Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
-            Editor.TextChanged += (_, __) =>
-            {
-                ViewModel.Modified = true;
-                UpdateStatus();
-            };
-            Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
-
-            ViewModel.TextMateInstallation = Editor.InstallTextMate(ViewModel.RegistryOptions);
-            // Install TextMate syntax highlighting similar to Consolonia.Editor
-            ViewModel.TextMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
-            ApplyThemeColorsToEditor(ViewModel.TextMateInstallation);
-
-            // Default to plaintext
-            ViewModel.Syntax = EditorSyntax.PlainText;
-
             UpdateThemeMenuItems();
             Editor.TextArea.Focus();
         }
