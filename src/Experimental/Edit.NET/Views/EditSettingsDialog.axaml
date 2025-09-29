@@ -4,7 +4,7 @@
                              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                              xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager"
                              mc:Ignorable="d"
-                             x:Class="Edit.NET.EditSettingsDialog"
+                             x:Class="Edit.NET.Views.EditSettingsDialog"
                              Title="Preferences"
                              SizeToContent="WidthAndHeight"
                              WindowStartupLocation="CenterOwner"

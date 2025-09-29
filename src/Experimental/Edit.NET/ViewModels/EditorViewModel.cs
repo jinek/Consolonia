@@ -13,7 +13,7 @@ using Consolonia.Controls;
 using ReactiveUI;
 using TextMateSharp.Grammars;
 
-namespace Edit.NET
+namespace Edit.NET.ViewModels
 {
     public enum EditorSyntax
     {

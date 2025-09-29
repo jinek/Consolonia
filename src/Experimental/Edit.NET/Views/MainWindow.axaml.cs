@@ -14,7 +14,7 @@ using System.Linq;
 using Avalonia.Styling;
 using Consolonia.Themes;
 
-namespace Edit.NET
+namespace Edit.NET.Views
 {
 
     public partial class MainWindow : Window

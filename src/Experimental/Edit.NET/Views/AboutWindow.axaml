@@ -1,7 +1,7 @@
 <windowManager:ManagedWindow xmlns="https://github.com/avaloniaui"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager"
-               x:Class="Edit.NET.AboutWindow"
+               x:Class="Edit.NET.Views.AboutWindow"
                Title="About Edit.NET"
                CanResize="False"
                WindowStartupLocation="CenterOwner">

@@ -5,7 +5,7 @@
         xmlns:console="https://github.com/jinek/consolonia"
         xmlns:local="clr-namespace:Edit.NET"
         xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
-        x:Class="Edit.NET.EditorView"
+        x:Class="Edit.NET.Views.EditorView"
         Background="#2D2D2D">
     <UserControl.Styles>
         <Style Selector="MenuItem[IsChecked=true]">

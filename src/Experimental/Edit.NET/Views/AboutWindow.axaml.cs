@@ -5,7 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Iciclecreek.Avalonia.WindowManager;
 
-namespace Edit.NET;
+namespace Edit.NET.Views;
 
 public partial class AboutWindow : ManagedWindow
 {

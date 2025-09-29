@@ -6,6 +6,7 @@
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>Consolonia.Gallery</ToolCommandName>
         <IsPackable>true</IsPackable>
+        <RootNamespace>EditNET</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,17 +1,15 @@
 using System;
-using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Styling;
 using AvaloniaEdit.TextMate;
-using Consolonia.Themes;
 using Edit.NET.DataModels;
+using Edit.NET.ViewModels;
 using TextMateSharp.Grammars;
 
-namespace Edit.NET
+namespace Edit.NET.Views
 {
 
     public partial class EditorView : UserControl

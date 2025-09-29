@@ -4,7 +4,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 using Consolonia.Themes;
-using Edit.NET.DataModels;
+using Edit.NET.ViewModels;
+using Edit.NET.Views;
 using TextMateSharp.Grammars;
 
 namespace Edit.NET;

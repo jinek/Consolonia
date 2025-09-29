@@ -4,8 +4,9 @@ using System.Text.Json;
 using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Controls;
+using Edit.NET.DataModels;
 
-namespace Edit.NET.DataModels
+namespace Edit.NET.ViewModels
 {
     public partial class AppViewModel : ObservableObject
     {

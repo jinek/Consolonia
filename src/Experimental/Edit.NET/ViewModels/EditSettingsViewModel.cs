@@ -1,9 +1,8 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Avalonia.Styling;
 using Edit.NET.DataModels;
 
-namespace Edit.NET
+namespace Edit.NET.ViewModels
 {
     public partial class EditSettingsViewModel : ObservableObject
     {
