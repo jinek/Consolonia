@@ -1,0 +1,20 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Edit.NET.ViewModels"
+        x:Class="Edit.NET.Views.NewFileDialog"
+        x:DataType="vm:NewFileViewModel"
+        Title="New File"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner"
+        Padding="1">
+    <StackPanel Orientation="Vertical" Spacing ="1">
+        <TextBox x:Name="FileName" HorizontalAlignment="Stretch" 
+                 Watermark="File Name" 
+                 Text="{Binding FileName, Mode=TwoWay}"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="1">
+            <Button Name="OkButton" Content="_OK" IsDefault="True" Click="OnOK"/>
+            <Button Name="CancelButton" Content="_Cancel" IsCancel="True" Click="OnCancel"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

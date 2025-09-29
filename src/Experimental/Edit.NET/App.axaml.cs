@@ -86,7 +86,6 @@ public partial class App : Application
         // the newView has it's own ViewModel created in the constructor bound to it's own editor,
         // so we copy over the relevant information.
         newView.Editor.Text = EditorView.Editor.Text;
-        newView.ViewModel.Syntax = EditorView.ViewModel.Syntax;
         newView.ViewModel.FilePath = EditorView.ViewModel.FilePath;
         newView.ViewModel.Modified = EditorView.ViewModel.Modified;
         newView.ViewModel.CurrentFolder = EditorView.ViewModel.CurrentFolder;

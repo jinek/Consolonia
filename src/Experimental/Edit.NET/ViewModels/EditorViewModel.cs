@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Runtime.InteropServices.Marshalling;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -10,33 +11,22 @@ using AvaloniaEdit.TextMate;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Consolonia.Controls;
+using Edit.NET.Views;
 using ReactiveUI;
 using TextMateSharp.Grammars;
 
 namespace Edit.NET.ViewModels
 {
-    public enum EditorSyntax
-    {
-        PlainText,
-        Markdown,
-        CSharp,
-        Xml,
-        Html,
-        JavaScript,
-        Json,
-        Unknown
-    }
-
     public partial class EditorViewModel : ObservableObject
     {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. 
         public EditorViewModel()
         {
             this._currentFolder = Environment.CurrentDirectory;
-            this._currentTheme = "Light";
             FilePath = Path.Combine(CurrentFolder, "Untitled.txt");
-            // call ApplySyntax when Syntax changes
-            this.WhenAnyValue(x => x.Syntax).Subscribe(ApplySyntax);
+            // call ApplyLanguage when Language changes
+            this.WhenAnyValue(x => x.FilePath).Subscribe(OnFilePath);
+            this.WhenAnyValue(x => x.Syntax).Subscribe(OnSyntax);
         }
 
         public TextEditor Editor { get; set; }
@@ -62,23 +52,7 @@ namespace Edit.NET.ViewModels
         public string? Extension => Path.GetExtension(FilePath);
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsSyntaxPlainText))]
-        [NotifyPropertyChangedFor(nameof(IsSyntaxMarkdown))]
-        [NotifyPropertyChangedFor(nameof(IsSyntaxCSharp))]
-        [NotifyPropertyChangedFor(nameof(IsSyntaxXml))]
-        [NotifyPropertyChangedFor(nameof(IsSyntaxHtml))]
-        [NotifyPropertyChangedFor(nameof(IsSyntaxJavascript))]
-        [NotifyPropertyChangedFor(nameof(IsSyntaxJson))]
-        private EditorSyntax _syntax = EditorSyntax.Unknown;
-
-        public bool IsSyntaxPlainText => Syntax == EditorSyntax.PlainText;
-        public bool IsSyntaxMarkdown => Syntax == EditorSyntax.Markdown;
-        public bool IsSyntaxCSharp => Syntax == EditorSyntax.CSharp;
-        public bool IsSyntaxXml => Syntax == EditorSyntax.Xml;
-        public bool IsSyntaxHtml => Syntax == EditorSyntax.Html;
-        public bool IsSyntaxJavascript => Syntax == EditorSyntax.JavaScript;
-        public bool IsSyntaxJson => Syntax == EditorSyntax.Json;
-
+        private Language? _syntax;
 
         [ObservableProperty]
         private bool _modified;
@@ -86,28 +60,10 @@ namespace Edit.NET.ViewModels
         [ObservableProperty]
         private string _currentFolder = Environment.CurrentDirectory;
 
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsThemeModern))]
-        [NotifyPropertyChangedFor(nameof(IsThemeModernContrast))]
-        [NotifyPropertyChangedFor(nameof(IsThemeTurboVision))]
-        [NotifyPropertyChangedFor(nameof(IsThemeTurboVisionCompatible))]
-        [NotifyPropertyChangedFor(nameof(IsThemeTurboVisionGray))]
-        [NotifyPropertyChangedFor(nameof(IsThemeTurboVisionElegant))]
-        private string _currentTheme;
-
-        public bool IsThemeModern => CurrentTheme == "Modern";
-        public bool IsThemeModernContrast => CurrentTheme == "ModernContrast";
-        public bool IsThemeTurboVision => CurrentTheme == "TurboVision";
-        public bool IsThemeTurboVisionCompatible => CurrentTheme == "TurboVisionCompatible";
-        public bool IsThemeTurboVisionGray => CurrentTheme == "TurboVisionGray";
-        public bool IsThemeTurboVisionElegant => CurrentTheme == "TurboVisionElegant";
-        public bool IsThemeLight => CurrentTheme == "Light";
-        public bool IsThemeDark => CurrentTheme == "Dark";
-
         public async Task OpenFile(string? path)
         {
             FilePath = path;
-            Syntax = GetSyntaxFromExtension(Extension);
+            Syntax = RegistryOptions.GetLanguageByExtension(Path.GetExtension(path));
             Editor.Text = File.Exists(path) ? await File.ReadAllTextAsync(path) : string.Empty;
             Modified = false;
             CurrentFolder = Path.GetDirectoryName(path) ?? Environment.CurrentDirectory;
@@ -180,9 +136,11 @@ namespace Edit.NET.ViewModels
                     return;
             }
 
-            FilePath = Path.Combine(CurrentFolder, $"Untitled.txt");
+            var fileName = await new NewFileDialog().ShowDialog<string?>(MainWindow);
+            if (fileName == null)
+                fileName = "Untitled.txt";
+            FilePath = Path.Combine(CurrentFolder, fileName);
             Editor.Text = string.Empty;
-            Syntax = GetSyntaxFromExtension(Path.GetExtension(FilePath));
             Modified = false;
             Editor.TextArea.Focus();
         }
@@ -222,7 +180,7 @@ namespace Edit.NET.ViewModels
             Editor.TextArea.Focus();
         }
 
-        [RelayCommand(CanExecute =nameof(CanSave))]
+        [RelayCommand(CanExecute = nameof(CanSave))]
         private async Task Save()
         {
             if (string.IsNullOrEmpty(FilePath))
@@ -260,71 +218,20 @@ namespace Edit.NET.ViewModels
             Lifetime.Shutdown();
         }
 
-        public static EditorSyntax GetSyntaxFromExtension(string? extension)
+        private void OnFilePath(string path)
         {
-            if (string.IsNullOrWhiteSpace(extension))
-                return EditorSyntax.PlainText;
-
-            return extension.ToUpperInvariant() switch
-            {
-                ".MD" => EditorSyntax.Markdown,
-                ".TXT" => EditorSyntax.PlainText,
-                ".CS" => EditorSyntax.CSharp,
-                ".XML" or ".XAML" or ".AXAML" => EditorSyntax.Xml,
-                ".HTML" or ".HTM" => EditorSyntax.Html,
-                ".JS" or ".MJS" or ".CJS" => EditorSyntax.JavaScript,
-                ".JSON" => EditorSyntax.Json,
-                _ => EditorSyntax.PlainText,
-            };
+            Syntax = RegistryOptions?.GetLanguageByExtension(Path.GetExtension(path));
         }
 
-        private void SetSyntaxByExtension(string ext)
+        private void OnSyntax(Language language)
         {
-            if (RegistryOptions == null || TextMateInstallation == null)
-                return;
-            var lang = RegistryOptions.GetLanguageByExtension(ext);
-            if (lang == null)
+            if (language == null)
             {
-                TextMateInstallation.SetGrammar(null);
+                TextMateInstallation?.SetGrammar(null);
                 return;
             }
-            var scope = RegistryOptions.GetScopeByLanguageId(lang.Id);
+            var scope = RegistryOptions.GetScopeByLanguageId(language.Id);
             TextMateInstallation.SetGrammar(scope);
         }
-
-        public void ApplySyntax(EditorSyntax syntax)
-        {
-            if (RegistryOptions == null || TextMateInstallation == null)
-                return;
-
-            switch (syntax)
-            {
-                case EditorSyntax.PlainText:
-                    SetSyntaxByExtension(".txt");
-                    break;
-                case EditorSyntax.Markdown:
-                    SetSyntaxByExtension(".md");
-                    break;
-                case EditorSyntax.CSharp:
-                    SetSyntaxByExtension(".cs");
-                    break;
-                case EditorSyntax.Xml:
-                    SetSyntaxByExtension(".xml");
-                    break;
-                case EditorSyntax.Html:
-                    SetSyntaxByExtension(".html");
-                    break;
-                case EditorSyntax.JavaScript:
-                    SetSyntaxByExtension(".js");
-                    break;
-                case EditorSyntax.Json:
-                    SetSyntaxByExtension(".Json");
-                    break;
-                default:
-                    TextMateInstallation.SetGrammar(null);
-                    break;
-            }
-        }
-
     }
 }

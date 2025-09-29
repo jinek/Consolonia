@@ -41,7 +41,7 @@ namespace Edit.NET.Views
                 Editor = this.Editor,
                 TextMateInstallation = textMateInstallation,
                 RegistryOptions = registryOptions,
-                Syntax = EditorSyntax.PlainText
+                Syntax = registryOptions.GetLanguageByExtension(".txt")
             };
 
             Loaded += OnLoaded;
@@ -72,52 +72,12 @@ namespace Edit.NET.Views
 
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
-            UpdateThemeMenuItems();
             Editor.TextArea.Focus();
         }
-
-        private void UpdateThemeMenuItems()
-        {
-            try
-            {
-                if (Application.Current != null && Application.Current.Styles.Count > 0)
-                    ViewModel.CurrentTheme = Application.Current.Styles[0].GetType().Name[..^5];
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                // ignore
-            }
-            catch (NullReferenceException)
-            {
-                // ignore
-            }
-        }
-
-        private void SyntaxMarkdown_OnClick(object sender, RoutedEventArgs e)
-            => ViewModel.Syntax = EditorSyntax.Markdown;
-
-        private void SyntaxPlain_OnClick(object sender, RoutedEventArgs e)
-            => ViewModel.Syntax = EditorSyntax.PlainText;
-
-        private void SyntaxCSharp_OnClick(object sender, RoutedEventArgs e)
-            => ViewModel.Syntax = EditorSyntax.CSharp;
-
-        private void SyntaxXml_OnClick(object sender, RoutedEventArgs e)
-            => ViewModel.Syntax = EditorSyntax.Xml;
-
-        private void SyntaxHtml_OnClick(object sender, RoutedEventArgs e)
-            => ViewModel.Syntax = EditorSyntax.Html;
-
-        private void SyntaxJavaScript_OnClick(object sender, RoutedEventArgs e)
-            => ViewModel.Syntax = EditorSyntax.JavaScript;
-
-        private void SyntaxJson_OnClick(object sender, RoutedEventArgs e)
-            => ViewModel.Syntax = EditorSyntax.Json;
 
         private void TextMateInstallationOnAppliedTheme(object? sender, TextMate.Installation e)
         {
             ApplyThemeColorsToEditor(e);
-            ApplyThemeColorsToWindow(e);
         }
 
         private void ApplyThemeColorsToEditor(TextMate.Installation e)
@@ -142,19 +102,6 @@ namespace Edit.NET.Views
             {
                 Editor.LineNumbersForeground = Editor.TextArea.Foreground;
             }
-        }
-
-        private void ApplyThemeColorsToWindow(TextMate.Installation e)
-        {
-            // Status bar/background panel
-            //if (this.FindControl<Border>("BottomPanel") is { } bottom)
-            //{
-            //    ApplyBrushAction(e, "statusBar.background", brush => bottom.Background = brush);
-            //}
-
-            // Apply editor theme colors to the window for better contrast
-            //ApplyBrushAction(e, "editor.background", brush => Background = brush);
-            //ApplyBrushAction(e, "editor.foreground", brush => Foreground = brush);
         }
 
         private static bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
@@ -182,7 +129,6 @@ namespace Edit.NET.Views
             {
                 ((App)Application.Current).ViewModel.SetSettings(newSettings);
                 ((App)Application.Current).ViewModel.SaveSettings();
-                UpdateThemeMenuItems();
             }
         }
     }

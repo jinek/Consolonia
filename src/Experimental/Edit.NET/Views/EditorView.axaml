@@ -73,30 +73,6 @@
                 <Separator />
                 <MenuItem Header="Settings..." Click="OnShowSettings" />
             </MenuItem>
-            <MenuItem Header="_Syntax">
-                <MenuItem  Header="Plain Text"
-                           IsChecked="{Binding IsSyntaxPlainText}"
-                           Click="SyntaxPlain_OnClick"/>
-                <MenuItem  Header="Markdown"
-                           IsChecked="{Binding IsSyntaxMarkdown}"
-                           Click="SyntaxMarkdown_OnClick"/>
-                <MenuItem  Header="C#"
-                           IsChecked="{Binding IsSyntaxCSharp}"
-                           Click="SyntaxCSharp_OnClick"/>
-                <MenuItem  Header="XML"
-                           IsChecked="{Binding IsSyntaxXml}"
-                           Click="SyntaxXml_OnClick"/>
-                <MenuItem  Header="HTML"  
-                           IsChecked="{Binding IsSyntaxHtml}"
-                           Click="SyntaxHtml_OnClick"/>
-                <MenuItem  Header="JavaScript"  
-                           IsChecked="{Binding IsSyntaxJavascript}"
-                           Click="SyntaxJavaScript_OnClick"/>
-                <MenuItem  Header="Json"
-                           IsChecked="{Binding IsSyntaxJson}"
-                           Click="SyntaxJson_OnClick"/>
-            </MenuItem>
-            
             <MenuItem Header="_Help">
                 <MenuItem Header="_About" Click="MenuItem_OnClick"/>
             </MenuItem>

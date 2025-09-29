@@ -1,10 +1,11 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Edit.NET.DataModels;
 
 namespace Edit.NET.ViewModels
 {
-    public partial class EditSettingsViewModel : ObservableObject
+    public partial class EditSettingsViewModel : ObservableValidator
     {
         public ObservableCollection<string> AvailableThemes { get; } = new()
         {
@@ -32,6 +33,10 @@ namespace Edit.NET.ViewModels
         [ObservableProperty] private bool _lightVariant;
         [ObservableProperty] private bool _showTabs;
         [ObservableProperty] private bool _showSpaces;
-        [ObservableProperty] private string _defaultExtension;
+
+
+        [RegularExpression(@"^(?i)\.[a-z0-9]+$", ErrorMessage = "Invalid extension")]
+        [ObservableProperty] 
+        private string _defaultExtension = ".txt";
     }
 }

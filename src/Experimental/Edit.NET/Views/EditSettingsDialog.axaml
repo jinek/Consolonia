@@ -10,7 +10,7 @@
                              WindowStartupLocation="CenterOwner"
                              WindowState="Normal">
     <StackPanel>
-        <TabControl Margin="0"  TabStripPlacement="Left" Width="40" Height="15">
+        <TabControl Margin="0"  TabStripPlacement="Left" Width="40" MinHeight="15">
             <TabItem Header="Theme">
                 <StackPanel Orientation="Vertical" Spacing="1" Margin="1">
                     <StackPanel Orientation="Horizontal">

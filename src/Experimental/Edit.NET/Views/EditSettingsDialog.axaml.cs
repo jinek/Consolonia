@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Interactivity;
 using Edit.NET.DataModels;
 using Edit.NET.ViewModels;
@@ -11,15 +12,15 @@ namespace Edit.NET.Views
         {
             InitializeComponent();
 
-
             DataContext = new EditSettingsViewModel(settings);
         }
 
-        
+
         public EditSettingsViewModel ViewModel => (EditSettingsViewModel)DataContext!;
 
         private void OnOk(object sender, RoutedEventArgs e)
         {
+
             var settings = new Settings
             {
                 ConsoloniaTheme = ViewModel.Theme,
