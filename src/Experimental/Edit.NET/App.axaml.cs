@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -15,7 +16,6 @@ public partial class App : Application
 
     public override void Initialize()
     {
-
         AvaloniaXamlLoader.Load(this);
 
         // Load settings
@@ -26,12 +26,17 @@ public partial class App : Application
 
     public EditorView EditorView => (EditorView)this.MainWindow.Content!;
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
             LoadUITheme(ViewModel.UITheme);
             desktopLifetime.MainWindow = new MainWindow();
+            if (desktopLifetime.Args != null && desktopLifetime.Args.Length > 0)
+            {
+                // Open the file passed as argument
+                await EditorView.ViewModel.OpenFile(desktopLifetime.Args[0]);
+            }
             ChangeThemeVariant();
         }
 
@@ -48,7 +53,7 @@ public partial class App : Application
         }
         else if (e.PropertyName == nameof(ViewModel.UIThemeVariant))
         {
-             ChangeThemeVariant();
+            ChangeThemeVariant();
         }
     }
 
