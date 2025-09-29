@@ -105,13 +105,18 @@ namespace Edit.NET
                 _ => throw new InvalidDataException("Unknown theme name")
             };
 
-            var text = Editor.Text;
+            // Recreate the editor view to ensure proper theme application
             var newView = new EditorView();
+            
+            // the newView has it's own ViewModel created in the constructor bound to it's own editor,
+            // so we copy over the relevant information.
             newView.Editor.Text = Editor.Text;
             newView.ViewModel.Syntax = ViewModel.Syntax;
             newView.ViewModel.FilePath = ViewModel.FilePath;
             newView.ViewModel.Modified = ViewModel.Modified;
             newView.ViewModel.CurrentFolder = ViewModel.CurrentFolder;
+            
+            // replace the old view with the new view
             MainWindow.Content = newView;
 
             newView.ViewModel.TextMateInstallation.SetTheme(newView.ViewModel.RegistryOptions.LoadTheme(MainWindow.RequestedThemeVariant == ThemeVariant.Light
