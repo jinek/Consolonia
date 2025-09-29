@@ -1,9 +1,13 @@
-using Avalonia.Styling;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace Edit.NET.DataModels
 {
+    [JsonSerializable(typeof(Settings))]
+    [JsonSourceGenerationOptions(WriteIndented = true, GenerationMode = JsonSourceGenerationMode.Default)]
+    internal partial class SettingsJsonContext : JsonSerializerContext
+    {
+    }
+
     public class Settings
     {
         public string ConsoloniaTheme { get; set; } = "TurboVisionElegant";

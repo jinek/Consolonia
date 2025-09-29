@@ -7,6 +7,9 @@
         <ToolCommandName>Edit.NET</ToolCommandName>
         <IsPackable>true</IsPackable>
         <RootNamespace>EditNET</RootNamespace>
+        <SelfContained>true</SelfContained>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <PublishTrimmed>false</PublishTrimmed>
     </PropertyGroup>
 
     <ItemGroup>
@@ -26,9 +29,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="EditorView.axaml.cs">
-        <DependentUpon>EditorView.axaml</DependentUpon>
-      </Compile>
+        <Compile Update="EditorView.axaml.cs">
+            <DependentUpon>EditorView.axaml</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>

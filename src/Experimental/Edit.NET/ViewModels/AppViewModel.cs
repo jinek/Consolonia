@@ -67,7 +67,7 @@ namespace Edit.NET.ViewModels
                 if (File.Exists(SettingsFilePath))
                 {
                     string json = File.ReadAllText(SettingsFilePath);
-                    var settings = JsonSerializer.Deserialize<Settings>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    var settings = JsonSerializer.Deserialize(json, SettingsJsonContext.Default.Settings);
                     appViewModel.SetSettings(settings ?? new Settings());
                 }
             }
@@ -89,7 +89,8 @@ namespace Edit.NET.ViewModels
             {
                 string dir = Path.GetDirectoryName(SettingsFilePath)!;
                 if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-                string json = JsonSerializer.Serialize(GetSettings(), new JsonSerializerOptions { WriteIndented = true });
+                var settings = GetSettings();
+                string json = JsonSerializer.Serialize(settings, SettingsJsonContext.Default.Settings);
                 File.WriteAllText(SettingsFilePath, json);
             }
             catch (IOException err)
