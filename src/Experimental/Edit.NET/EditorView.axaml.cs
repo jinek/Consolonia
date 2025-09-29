@@ -8,6 +8,7 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using AvaloniaEdit.TextMate;
 using Consolonia.Themes;
+using Edit.NET.DataModels;
 using TextMateSharp.Grammars;
 
 namespace Edit.NET
@@ -71,62 +72,6 @@ namespace Edit.NET
             LengthText.Text = $"Len {length}";
         }
 
-
-
-        private void OnThemeVariantLightMenuClick(object sender, RoutedEventArgs e)
-        {
-            MainWindow.RequestedThemeVariant = ThemeVariant.Light;
-            ViewModel.TextMateInstallation.SetTheme(ViewModel.RegistryOptions.LoadTheme(TextMateSharp.Grammars.ThemeName.VisualStudioLight));
-            UpdateThemeMenuItems();
-        }
-
-        private void OnThemeVariantDarkMenuClick(object sender, RoutedEventArgs e)
-        {
-            MainWindow.RequestedThemeVariant = ThemeVariant.Dark;
-            ViewModel.TextMateInstallation.SetTheme(ViewModel.RegistryOptions.LoadTheme(TextMateSharp.Grammars.ThemeName.VisualStudioDark));
-            UpdateThemeMenuItems();
-        }
-
-        private async void OnThemeMenuItemClick(object sender, RoutedEventArgs e)
-        {
-            if (sender is not MenuItem { Tag: string themeName } ||
-                !Enum.TryParse(themeName, out ThemesList selectedTheme))
-                return;
-
-            // NOTE: this assumes first style object is the old theme!
-            Application.Current!.Styles[0] = selectedTheme switch
-            {
-                ThemesList.Modern => new ModernTheme(),
-                ThemesList.ModernContrast => new ModernContrastTheme(),
-                ThemesList.TurboVision => new TurboVisionTheme(),
-                ThemesList.TurboVisionCompatible => new TurboVisionCompatibleTheme(),
-                ThemesList.TurboVisionGray => new TurboVisionGrayTheme(),
-                ThemesList.TurboVisionElegant => new TurboVisionElegantTheme(),
-                _ => throw new InvalidDataException("Unknown theme name")
-            };
-
-            // Recreate the editor view to ensure proper theme application
-            var newView = new EditorView();
-            
-            // the newView has it's own ViewModel created in the constructor bound to it's own editor,
-            // so we copy over the relevant information.
-            newView.Editor.Text = Editor.Text;
-            newView.ViewModel.Syntax = ViewModel.Syntax;
-            newView.ViewModel.FilePath = ViewModel.FilePath;
-            newView.ViewModel.Modified = ViewModel.Modified;
-            newView.ViewModel.CurrentFolder = ViewModel.CurrentFolder;
-            
-            // replace the old view with the new view
-            MainWindow.Content = newView;
-
-            newView.ViewModel.TextMateInstallation.SetTheme(newView.ViewModel.RegistryOptions.LoadTheme(MainWindow.RequestedThemeVariant == ThemeVariant.Light
-                    ? ThemeName.VisualStudioLight
-                    : ThemeName.VisualStudioDark));
-
-            newView.UpdateThemeMenuItems();
-            newView.Editor.TextArea.Focus();
-        }
-
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
             UpdateThemeMenuItems();
@@ -135,10 +80,19 @@ namespace Edit.NET
 
         private void UpdateThemeMenuItems()
         {
-            ViewModel.CurrentTheme = Application.Current!.Styles[0].GetType().Name[..^5];
-
-            ThemeDarkMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Dark;
-            ThemeLightMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Light;
+            try
+            {
+                if (Application.Current != null && Application.Current.Styles.Count > 0)
+                    ViewModel.CurrentTheme = Application.Current.Styles[0].GetType().Name[..^5];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // ignore
+            }
+            catch (NullReferenceException)
+            {
+                // ignore
+            }
         }
 
         private void SyntaxMarkdown_OnClick(object sender, RoutedEventArgs e)
@@ -220,6 +174,18 @@ namespace Edit.NET
         private void MenuItem_OnClick(object? sender, RoutedEventArgs e)
         {
             new AboutWindow().ShowDialog(this);
+        }
+
+        private async void OnShowSettings(object? sender, RoutedEventArgs e)
+        {
+            var dlg = new EditSettingsDialog(((App)Application.Current).ViewModel.GetSettings());
+            var newSettings = await dlg.ShowDialog<Settings>(this);
+            if (newSettings != null)
+            {
+                ((App)Application.Current).ViewModel.SetSettings(newSettings);
+                ((App)Application.Current).ViewModel.SaveSettings();
+                UpdateThemeMenuItems();
+            }
         }
     }
 }

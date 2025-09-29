@@ -70,6 +70,8 @@
                 <MenuItem Header="Select _All"
                           Command="{Binding SelectAllCommand}"
                           InputGesture="Ctrl+A" />
+                <Separator />
+                <MenuItem Header="Settings..." Click="OnShowSettings" />
             </MenuItem>
             <MenuItem Header="_Syntax">
                 <MenuItem  Header="Plain Text"
@@ -94,47 +96,7 @@
                            IsChecked="{Binding IsSyntaxJson}"
                            Click="SyntaxJson_OnClick"/>
             </MenuItem>
-            <MenuItem Header="_Theme">
-                <MenuItem x:Name="ThemeModernMenuItem"
-                          Header="_Modern"
-                          Tag="Modern"
-                          IsChecked="{Binding IsThemeModern}"
-                          Click="OnThemeMenuItemClick" />
-                <MenuItem x:Name="ThemeModernContrastMenuItem"
-                          Header="Modern _Contrast"
-                          Tag="ModernContrast"
-                          IsChecked="{Binding IsThemeModernContrast}"
-                          Click="OnThemeMenuItemClick" />
-                <MenuItem x:Name="ThemeTurboVisionMenuItem"
-                          Header="_TurboVision"
-                          Tag="TurboVision"
-                          IsChecked="{Binding IsThemeTurboVision}"
-                          Click="OnThemeMenuItemClick" />
-                <MenuItem x:Name="ThemeTurboVisionCompatibleMenuItem"
-                          Header="TurboVision_Compatible"
-                          Tag="TurboVisionCompatible"
-                          IsChecked="{Binding IsThemeTurboVisionCompatible}"
-                          Click="OnThemeMenuItemClick" />
-                <MenuItem x:Name="ThemeTurboVisionGrayMenuItem"
-                          Header="TurboVision_Gray"
-                          Tag="TurboVisionGray"
-                          IsChecked="{Binding IsThemeTurboVisionGray}"
-                          Click="OnThemeMenuItemClick" />
-                <MenuItem x:Name="ThemeTurboVisionElegantMenuItem"
-                          Header="TurboVision_Elegant"
-                          Tag="TurboVisionElegant"
-                          IsChecked="{Binding IsThemeTurboVisionElegant}"
-                          Click="OnThemeMenuItemClick" />
-                <Separator />
-                <MenuItem x:Name="ThemeLightMenuItem"
-                          Header="_Light Variant"
-                          Tag="Light"
-                          Click="OnThemeVariantLightMenuClick" />
-                <MenuItem x:Name="ThemeDarkMenuItem"
-                          Header="_Dark Variant"
-                          Tag="Dark"
-                          Click="OnThemeVariantDarkMenuClick" />
-            </MenuItem>
+            
             <MenuItem Header="_Help">
                 <MenuItem Header="_About" Click="MenuItem_OnClick"/>
             </MenuItem>

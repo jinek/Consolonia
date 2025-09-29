@@ -1,0 +1,46 @@
+<windowManager:ManagedWindow xmlns="https://github.com/avaloniaui"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                             xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager"
+                             mc:Ignorable="d"
+                             x:Class="Edit.NET.EditSettingsDialog"
+                             Title="Preferences"
+                             SizeToContent="WidthAndHeight"
+                             WindowStartupLocation="CenterOwner"
+                             WindowState="Normal">
+    <StackPanel>
+        <TabControl Margin="0"  TabStripPlacement="Left" Width="40" Height="15">
+            <TabItem Header="Theme">
+                <StackPanel Orientation="Vertical" Spacing="1" Margin="1">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Theme" />
+                        <ComboBox Name="ThemeCombo" SelectedItem="{Binding Theme}" ItemsSource="{Binding AvailableThemes}"/>
+                    </StackPanel>
+
+                    <ToggleSwitch IsChecked="{Binding LightVariant}">
+                        <ToggleSwitch.OnContent>Light</ToggleSwitch.OnContent>
+                        <ToggleSwitch.OffContent>Dark</ToggleSwitch.OffContent>
+                    </ToggleSwitch>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Editor">
+                <StackPanel Orientation="Vertical" Spacing="1" Margin="1">
+                    <CheckBox Content="Show Tabs" IsChecked="{Binding ShowTabs}"/>
+                    <CheckBox Content="Show Spaces" IsChecked="{Binding ShowSpaces}"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="New Document">
+                <StackPanel Orientation="Vertical" Spacing="1" Margin="1">
+                    <TextBlock Text="Default Extension"/>
+                    <TextBox Text="{Binding DefaultExtension}"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" Name="OkButton" Click="OnOk" Margin="1" />
+            <Button Content="Cancel" Name="CancelButton" Click="OnCancel" Margin="1" />
+        </StackPanel>
+    </StackPanel>
+</windowManager:ManagedWindow>

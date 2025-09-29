@@ -3,7 +3,7 @@
              xmlns:console="https://github.com/jinek/consolonia"
              x:Class="Edit.NET.App">
     <Application.Styles>
-        <console:TurboVisionCompatibleTheme />
+        <console:ModernTheme/>
         <StyleInclude Source="avares://Consolonia.AvaloniaEdit/Theme.axaml" />
     </Application.Styles>
 </Application>

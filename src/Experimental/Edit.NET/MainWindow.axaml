@@ -7,7 +7,6 @@
         xmlns:local="clr-namespace:Edit.NET"
         x:Class="Edit.NET.MainWindow"
         Title="Edit.NET"
-        RequestedThemeVariant="Dark"
         Background="#2D2D2D">
     <local:EditorView />
 </Window>

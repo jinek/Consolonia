@@ -1,6 +1,6 @@
 namespace Edit.NET
 {
-    public enum ThemesList
+    public enum ConsoloniaTheme
     {
         Modern,
         ModernContrast,
