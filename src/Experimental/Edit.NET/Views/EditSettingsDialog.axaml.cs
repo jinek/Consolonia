@@ -20,16 +20,7 @@ namespace Edit.NET.Views
 
         private void OnOk(object sender, RoutedEventArgs e)
         {
-
-            var settings = new Settings
-            {
-                ConsoloniaTheme = ViewModel.Theme,
-                LightVariant = ViewModel.LightVariant,
-                ShowTabs = ViewModel.ShowTabs,
-                ShowSpaces = ViewModel.ShowSpaces,
-                DefaultExtension = ViewModel.DefaultExtension
-            };
-            Close(settings);
+            Close(ViewModel.GetSettings());
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)

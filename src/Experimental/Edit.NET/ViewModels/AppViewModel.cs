@@ -5,6 +5,7 @@ using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Controls;
 using Edit.NET.DataModels;
+using TextMateSharp.Grammars;
 
 namespace Edit.NET.ViewModels
 {
@@ -32,6 +33,9 @@ namespace Edit.NET.ViewModels
         [ObservableProperty]
         private string _defaultExtension = ".txt";
 
+        [ObservableProperty]
+        private ThemeName _syntaxTheme = ThemeName.VisualStudioDark;
+
         public Settings GetSettings()
         {
             return new Settings()
@@ -40,6 +44,7 @@ namespace Edit.NET.ViewModels
                 LightVariant = this.UIThemeVariant == ThemeVariant.Light,
                 ShowTabs = this.ShowTabs,
                 ShowSpaces = this.ShowSpaces,
+                SyntaxTheme = this.SyntaxTheme.ToString(),
                 DefaultExtension = this.DefaultExtension
             };
         }
@@ -51,6 +56,7 @@ namespace Edit.NET.ViewModels
             this.ShowTabs = settings.ShowTabs;
             this.ShowSpaces = settings.ShowSpaces;
             this.DefaultExtension = settings.DefaultExtension;
+            this.SyntaxTheme = Enum.Parse<ThemeName>(settings.SyntaxTheme ?? ThemeName.VisualStudioDark.ToString());
         }
 
         public static AppViewModel LoadSettings()
@@ -83,15 +89,7 @@ namespace Edit.NET.ViewModels
             {
                 string dir = Path.GetDirectoryName(SettingsFilePath)!;
                 if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-                var settings = new Settings()
-                {
-                    ConsoloniaTheme = this.UITheme.ToString(),
-                    LightVariant = this.UIThemeVariant == ThemeVariant.Light,
-                    ShowTabs = this.ShowTabs,
-                    ShowSpaces = this.ShowSpaces,
-                    DefaultExtension = this.DefaultExtension
-                };
-                string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+                string json = JsonSerializer.Serialize(GetSettings(), new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(SettingsFilePath, json);
             }
             catch (IOException err)

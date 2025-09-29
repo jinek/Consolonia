@@ -37,7 +37,7 @@ public partial class App : Application
                 // Open the file passed as argument
                 await EditorView.ViewModel.OpenFile(desktopLifetime.Args[0]);
             }
-            ChangeThemeVariant();
+            MainWindow.RequestedThemeVariant = ViewModel.UIThemeVariant;
         }
 
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
@@ -53,18 +53,44 @@ public partial class App : Application
         }
         else if (e.PropertyName == nameof(ViewModel.UIThemeVariant))
         {
-            ChangeThemeVariant();
+            MainWindow.RequestedThemeVariant = ViewModel.UIThemeVariant;
+        }
+        else if (e.PropertyName == nameof(ViewModel.SyntaxTheme))
+        {
+            var theme = EditorView.ViewModel.RegistryOptions.LoadTheme(ViewModel.SyntaxTheme);
+            EditorView.ViewModel.TextMateInstallation.SetTheme(theme);
         }
     }
 
-    private void ChangeThemeVariant()
-    {
-        MainWindow.RequestedThemeVariant = ViewModel.UIThemeVariant;
-        EditorView.ViewModel.TextMateInstallation.SetTheme(EditorView.ViewModel.RegistryOptions.LoadTheme(MainWindow.RequestedThemeVariant == ThemeVariant.Light
-            ? ThemeName.VisualStudioLight
-            : ThemeName.VisualStudioDark));
-        EditorView.Editor.TextArea.Focus();
-    }
+
+    //public ThemeName GetSyntaxTheme()
+    //{
+    //    if (MainWindow.RequestedThemeVariant == ThemeVariant.Light)
+    //        return GetSyntaxThemeLight();
+    //    if (MainWindow.RequestedThemeVariant == ThemeVariant.Dark)
+    //        return GetSyntaxThemeDark();
+    //    return ViewModel.SyntaxTheme;
+    //}
+
+    //private ThemeName GetSyntaxThemeLight()
+    //{
+    //    if (ViewModel.SyntaxTheme.ToString().EndsWith("Light"))
+    //        return ViewModel.SyntaxTheme;
+    //    else if (ViewModel.SyntaxTheme.ToString().EndsWith("Dark") && Enum.TryParse<ThemeName>(ViewModel.SyntaxTheme.ToString().Replace("Dark", "Light"), out var theme))
+    //        return theme;
+    //    else
+    //        return ViewModel.SyntaxTheme;
+    //}
+
+    //private ThemeName GetSyntaxThemeDark()
+    //{
+    //    if (ViewModel.SyntaxTheme.ToString().EndsWith("Dark"))
+    //        return ViewModel.SyntaxTheme;
+    //    else if (ViewModel.SyntaxTheme.ToString().EndsWith("Light") && Enum.TryParse<ThemeName>(ViewModel.SyntaxTheme.ToString().Replace("Light", "Dark"), out var theme))
+    //        return theme;
+    //    else
+    //        return ViewModel.SyntaxTheme;
+    //}
 
     private static void LoadUITheme(ConsoloniaTheme theme)
     {
@@ -98,9 +124,7 @@ public partial class App : Application
         // replace the old view with the new view
         MainWindow.Content = newView;
 
-        newView.ViewModel.TextMateInstallation.SetTheme(newView.ViewModel.RegistryOptions.LoadTheme(MainWindow.RequestedThemeVariant == ThemeVariant.Light
-                ? ThemeName.VisualStudioLight
-                : ThemeName.VisualStudioDark));
+        newView.ViewModel.TextMateInstallation.SetTheme(newView.ViewModel.RegistryOptions.LoadTheme(ViewModel.SyntaxTheme));
 
         newView.Editor.TextArea.Focus();
     }

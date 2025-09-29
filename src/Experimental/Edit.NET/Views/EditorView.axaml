@@ -71,7 +71,7 @@
                           Command="{Binding SelectAllCommand}"
                           InputGesture="Ctrl+A" />
                 <Separator />
-                <MenuItem Header="Settings..." Click="OnShowSettings" />
+                <MenuItem Header="_Settings..." Click="OnShowSettings" />
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About" Click="MenuItem_OnClick"/>

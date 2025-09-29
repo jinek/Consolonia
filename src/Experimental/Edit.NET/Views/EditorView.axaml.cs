@@ -35,6 +35,9 @@ namespace Edit.NET.Views
             textMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
             ApplyThemeColorsToEditor(textMateInstallation);
 
+            this.Editor.Options.ShowSpaces = ((App)Application.Current).ViewModel.ShowSpaces;
+            this.Editor.Options.ShowTabs = ((App)Application.Current).ViewModel.ShowTabs;
+
             // Default to plaintext
             this.DataContext = new EditorViewModel()
             {
@@ -129,6 +132,9 @@ namespace Edit.NET.Views
             {
                 ((App)Application.Current).ViewModel.SetSettings(newSettings);
                 ((App)Application.Current).ViewModel.SaveSettings();
+                this.Editor.Options.ShowSpaces = newSettings.ShowSpaces;
+                this.Editor.Options.ShowTabs = newSettings.ShowTabs;
+                this.Editor.TextArea.Focus();
             }
         }
     }
