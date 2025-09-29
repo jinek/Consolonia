@@ -26,6 +26,8 @@ public partial class App : Application
 
     public EditorView EditorView => (EditorView)this.MainWindow.Content!;
 
+    public static AppViewModel ViewModel => (AppViewModel)App.Current!.DataContext!;
+
     public override async void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
@@ -57,8 +59,8 @@ public partial class App : Application
         }
         else if (e.PropertyName == nameof(ViewModel.SyntaxTheme))
         {
-            var theme = EditorView.ViewModel.RegistryOptions.LoadTheme(ViewModel.SyntaxTheme);
-            EditorView.ViewModel.TextMateInstallation.SetTheme(theme);
+            var theme = EditorView.ViewModel!.RegistryOptions!.LoadTheme(ViewModel.SyntaxTheme);
+            EditorView.ViewModel.TextMateInstallation!.SetTheme(theme);
         }
     }
 
@@ -124,14 +126,9 @@ public partial class App : Application
         // replace the old view with the new view
         MainWindow.Content = newView;
 
-        newView.ViewModel.TextMateInstallation.SetTheme(newView.ViewModel.RegistryOptions.LoadTheme(ViewModel.SyntaxTheme));
+        newView.ViewModel.TextMateInstallation!.SetTheme(newView.ViewModel.RegistryOptions!.LoadTheme(ViewModel.SyntaxTheme));
 
         newView.Editor.TextArea.Focus();
     }
 
-    public AppViewModel ViewModel
-    {
-        get => (AppViewModel)this.DataContext!;
-        set => this.DataContext = value;
-    }
 }

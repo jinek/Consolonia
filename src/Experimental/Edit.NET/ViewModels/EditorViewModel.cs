@@ -62,7 +62,7 @@ namespace Edit.NET.ViewModels
         public async Task OpenFile(string? path)
         {
             FilePath = path;
-            Syntax = RegistryOptions.GetLanguageByExtension(Path.GetExtension(path));
+            Syntax = RegistryOptions!.GetLanguageByExtension(Path.GetExtension(path));
             Editor.Text = File.Exists(path) ? await File.ReadAllTextAsync(path) : string.Empty;
             Modified = false;
             CurrentFolder = Path.GetDirectoryName(path) ?? Environment.CurrentDirectory;
@@ -217,20 +217,21 @@ namespace Edit.NET.ViewModels
             Lifetime.Shutdown();
         }
 
-        private void OnFilePath(string path)
+        private void OnFilePath(string? path)
         {
+            ArgumentNullException.ThrowIfNull(path);
             Syntax = RegistryOptions?.GetLanguageByExtension(Path.GetExtension(path));
         }
 
-        private void OnSyntax(Language language)
+        private void OnSyntax(Language? language)
         {
             if (language == null)
             {
                 TextMateInstallation?.SetGrammar(null);
                 return;
             }
-            var scope = RegistryOptions.GetScopeByLanguageId(language.Id);
-            TextMateInstallation.SetGrammar(scope);
+            var scope = RegistryOptions!.GetScopeByLanguageId(language.Id);
+            TextMateInstallation!.SetGrammar(scope);
         }
     }
 }

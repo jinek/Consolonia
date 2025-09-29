@@ -8,11 +8,11 @@ namespace Edit.NET.DataModels
     {
         public string ConsoloniaTheme { get; set; } = "TurboVisionElegant";
 
-        public bool LightVariant { get; set; } = false;
+        public bool LightVariant { get; set; }
 
-        public bool ShowTabs { get; set; } = true;
+        public bool ShowTabs { get; set; } 
 
-        public bool ShowSpaces { get; set; } = true;
+        public bool ShowSpaces { get; set; } 
 
         public string DefaultExtension { get; set; } = ".txt";
 

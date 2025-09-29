@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Edit.NET.DataModels;
 using TextMateSharp.Grammars;
@@ -35,7 +33,7 @@ namespace Edit.NET.ViewModels
             DefaultExtension = settings.DefaultExtension;
         }
 
-        public Settings GetSettings()
+        public Settings ToSettings()
         {
             return new Settings
             {
@@ -47,8 +45,6 @@ namespace Edit.NET.ViewModels
                 SyntaxTheme = this.SelectedSyntaxTheme
             };
         }
-
-        public AppViewModel AppViewModel = (AppViewModel)App.Current.DataContext;
 
         [ObservableProperty] private string _theme;
         [ObservableProperty] private bool _lightVariant;

@@ -1,11 +1,6 @@
-using System;
-using System.IO;
-using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Edit.NET.ViewModels;
 using Iciclecreek.Avalonia.WindowManager;
-using TextMateSharp.Grammars;
 
 namespace Edit.NET.Views
 {
@@ -15,13 +10,11 @@ namespace Edit.NET.Views
         {
             DataContext = new NewFileViewModel()
             {
-                FileName = $"Untitled{AppViewModel.DefaultExtension}"
+                FileName = $"Untitled{App.ViewModel.DefaultExtension}"
             };
             
             InitializeComponent();
         }
-
-        public AppViewModel AppViewModel = (AppViewModel)App.Current.DataContext;
 
         private NewFileViewModel ViewModel => (NewFileViewModel)DataContext!;
 

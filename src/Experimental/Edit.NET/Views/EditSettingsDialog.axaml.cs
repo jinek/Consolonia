@@ -20,7 +20,7 @@ namespace Edit.NET.Views
 
         private void OnOk(object sender, RoutedEventArgs e)
         {
-            Close(ViewModel.GetSettings());
+            Close(ViewModel.ToSettings());
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
