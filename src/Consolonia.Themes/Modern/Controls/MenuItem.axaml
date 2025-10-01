@@ -10,6 +10,11 @@
                 <Setter Property="CaretStyle"
                         Value="None" />
             </Style>
+            <Style Selector="^[IsChecked=true]">
+                <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+                <Setter Property="Icon"
+                        Value="{StaticResource Icon_Check}" />
+            </Style>
         </ControlTheme>
     </Styles.Resources>
 </Styles>

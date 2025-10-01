@@ -510,7 +510,10 @@ namespace Consolonia.PlatformSupport
             {
                 case ConsoleKey.NoName:
                     return;
-                case 0:
+                case 0
+                    when
+                    Enum.IsDefined(
+                        key) /*because we want string representation only when defined, we don't want numeric value*/:
                 {
                     bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
                     break;
