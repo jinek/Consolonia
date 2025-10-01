@@ -5,9 +5,6 @@
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>Consolonia.Gallery</ToolCommandName>
         <IsPackable>true</IsPackable>
-        <SelfContained>true</SelfContained>
-        <PublishReadyToRun>true</PublishReadyToRun>
-        <PublishTrimmed>false</PublishTrimmed>
     </PropertyGroup>
 
     <ItemGroup>
