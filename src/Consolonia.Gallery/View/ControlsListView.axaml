@@ -22,7 +22,15 @@
                       IsTabStop="False">
                 <MenuItem.Styles>
                     <Style Selector="MenuItem[IsChecked=true]">
-                        <Setter Property="Icon" Value="{StaticResource Icon_Check}"/>
+                        <Setter Property="Icon">
+                            <Setter.Value>
+                                <Template>
+                                    <CheckBox BorderThickness="0"
+                                              IsHitTestVisible="False"
+                                              IsChecked="{Binding $parent[MenuItem].IsChecked}" />
+                                </Template>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </MenuItem.Styles>
                 <MenuItem IsChecked="{Binding IsModern}"
