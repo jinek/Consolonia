@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -22,7 +23,7 @@ namespace Consolonia.Gallery
         {
             if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode()
                 && !((ConsoloniaLifetime)ApplicationLifetime).Args.Any(argument => argument != null &&
-                    argument.ToUpper().EndsWith(TurboVisionProgramParameterUpperCase)))
+                    argument.EndsWith(TurboVisionProgramParameter, StringComparison.OrdinalIgnoreCase)))
                 Styles.Add(new ModernTheme());
             else
                 Styles.Add(new TurboVisionTheme());
