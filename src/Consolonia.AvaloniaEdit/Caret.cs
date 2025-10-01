@@ -1,10 +1,7 @@
-using System;
 using Avalonia;
 using Avalonia.Media;
 using AvaloniaEdit;
 using AvaloniaEdit.Editing;
-using Consolonia.Controls;
-using Consolonia.Controls.Brushes;
 
 namespace Consolonia.AvaloniaEdit
 {
@@ -40,13 +37,11 @@ namespace Consolonia.AvaloniaEdit
                     // The built in LineNumberMargin miscalculates the top of the line, 
                     // we substitute ours with one which works correctly.
                     for (int i = 0; i < textEditor.TextArea.LeftMargins.Count; i++)
-                    {
                         if (textEditor.TextArea.LeftMargins[i] is LineNumberMargin)
                         {
                             textEditor.TextArea.LeftMargins[i] = new ConsoleLineNumberMargin();
                             break;
                         }
-                    }
                 }
                 else
                 {

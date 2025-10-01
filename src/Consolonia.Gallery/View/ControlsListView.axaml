@@ -1,10 +1,10 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery"
-        mc:Ignorable="d"
-        x:Class="Consolonia.Gallery.View.ControlsListView">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery"
+             mc:Ignorable="d"
+             x:Class="Consolonia.Gallery.View.ControlsListView">
 
     <DockPanel>
         <DockPanel.Resources>
@@ -20,19 +20,6 @@
             </MenuItem>
             <MenuItem Header="_Theme"
                       IsTabStop="False">
-                <MenuItem.Styles>
-                    <Style Selector="MenuItem[IsChecked=true]">
-                        <Setter Property="Icon">
-                            <Setter.Value>
-                                <Template>
-                                    <CheckBox BorderThickness="0"
-                                              IsHitTestVisible="False"
-                                              IsChecked="{Binding $parent[MenuItem].IsChecked}" />
-                                </Template>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </MenuItem.Styles>
                 <MenuItem IsChecked="{Binding IsModern}"
                           Header="_Modern"
                           Tag="Modern"
