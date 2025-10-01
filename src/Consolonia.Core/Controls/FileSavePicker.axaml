@@ -55,7 +55,7 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="1,0"
-                    Spacing="">
+                    Spacing="1">
             <Button x:Name="SaveButton"
                     Content="Save"
                     IsDefault="True"
