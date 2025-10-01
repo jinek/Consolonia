@@ -115,15 +115,7 @@
                     Value="{DynamicResource ThemeNoDisturbBrush}" />
         </Style>
         <Style Selector="^[IsChecked=true]">
-            <Setter Property="Icon">
-                <Setter.Value>
-                    <Template>
-                        <CheckBox BorderThickness="0"
-                                  IsHitTestVisible="False"
-                                  IsChecked="{Binding $parent[MenuItem].IsChecked}" />
-                    </Template>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="Icon" Value="♦︎"/>
         </Style>
     </ControlTheme>
 </ResourceDictionary>
