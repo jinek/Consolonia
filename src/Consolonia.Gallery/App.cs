@@ -10,7 +10,7 @@ namespace Consolonia.Gallery
 {
     internal class App : Application
     {
-        internal const string TurboVisionProgramParameterUpperCase = "-TURBOVISION";
+        internal const string TurboVisionProgramParameter = "-turbovision";
 
         static App()
         {
