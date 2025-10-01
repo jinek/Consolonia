@@ -92,9 +92,16 @@
                                               Grid.Row="0"
                                               Width="3"
                                               Background="Transparent"
-                                              Theme="{StaticResource SimpleTreeViewItemToggleButtonTheme}"
                                               IsVisible="{Binding !TextEditor.IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"
                                               IsChecked="{Binding IsReplaceMode, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ToggleButton.Theme>
+                                        <ControlTheme TargetType="ToggleButton">
+                                            <Setter Property="Content" Value="▶"/>
+                                            <Style Selector="^:checked">
+                                                <Setter Property="Content" Value="▼"/>
+                                            </Style>
+                                        </ControlTheme>
+                                    </ToggleButton.Theme>
                                     <ToolTip.Tip>
                                         <TextBlock Text="{x:Static ae:SR.SearchToggleReplace}" />
                                     </ToolTip.Tip>
@@ -147,7 +154,7 @@
                                         <ToolTip.Tip>
                                             <TextBlock Text="{x:Static ae:SR.SearchFindPreviousText}" />
                                         </ToolTip.Tip>
-                                        <TextBlock Text="{StaticResource Icon_ArrowUp}"
+                                        <TextBlock Text="↑"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Foreground="{Binding $parent[Button].Foreground}" />
@@ -158,7 +165,7 @@
                                         <ToolTip.Tip>
                                             <TextBlock Text="{x:Static ae:SR.SearchFindNextText}" />
                                         </ToolTip.Tip>
-                                        <TextBlock Text="{StaticResource Icon_ArrowDown}"
+                                        <TextBlock Text="↓"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Foreground="{Binding $parent[Button].Foreground}" />
@@ -167,7 +174,7 @@
                                             VerticalAlignment="Stretch"
                                             Command="{x:Static search:SearchCommands.CloseSearchPanel}"
                                             Focusable="True">
-                                        <TextBlock Text="{StaticResource Icon_Close}"
+                                        <TextBlock Text="🗙"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Foreground="{Binding $parent[Button].Foreground}" />
