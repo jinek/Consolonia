@@ -12,23 +12,24 @@ namespace Consolonia.AvaloniaEdit
         public override void Render(DrawingContext drawingContext)
         {
             //        base.Render(drawingContext);
-            var textView = TextView;
-            var renderSize = Bounds.Size;
+            TextView textView = TextView;
+            Size renderSize = Bounds.Size;
 
             if (textView is { VisualLinesValid: true })
             {
-                var foreground = GetValue(TextBlock.ForegroundProperty);
-                foreach (var line in textView.VisualLines)
+                IBrush foreground = GetValue(TextBlock.ForegroundProperty);
+                foreach (VisualLine line in textView.VisualLines)
                 {
-                    var lineNumber = line.FirstDocumentLine.LineNumber;
-                    var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop);
+                    int lineNumber = line.FirstDocumentLine.LineNumber;
+                    double y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop);
 
                     var text = new FormattedText(lineNumber.ToString(CultureInfo.CurrentCulture),
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         Typeface.Default, 1, foreground);
 
-                    drawingContext.DrawText(text, new Point(renderSize.Width - text.Width, y - textView.VerticalOffset));
+                    drawingContext.DrawText(text,
+                        new Point(renderSize.Width - text.Width, y - textView.VerticalOffset));
                 }
             }
         }
