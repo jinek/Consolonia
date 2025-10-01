@@ -1,10 +1,9 @@
-<Window xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery"
         mc:Ignorable="d"
-        RequestedThemeVariant="Dark"
         x:Class="Consolonia.Gallery.View.ControlsListView">
 
     <DockPanel>
@@ -22,48 +21,40 @@
             <MenuItem Header="_Theme"
                       IsTabStop="False">
                 <MenuItem.Styles>
-                    <Style Selector="MenuItem">
-                        <Setter Property="Icon">
-                            <Setter.Value>
-                                <Template>
-                                    <CheckBox BorderThickness="0"
-                                              IsHitTestVisible="False"
-                                              IsChecked="{Binding $parent[MenuItem].IsChecked}" />
-                                </Template>
-                            </Setter.Value>
-                        </Setter>
+                    <Style Selector="MenuItem[IsChecked=true]">
+                        <Setter Property="Icon" Value="{StaticResource Icon_Check}"/>
                     </Style>
                 </MenuItem.Styles>
-                <MenuItem x:Name="ThemeModernMenuItem"
+                <MenuItem IsChecked="{Binding IsModern}"
                           Header="_Modern"
                           Tag="Modern"
                           Click="OnThemeMenuItemClick" />
-                <MenuItem x:Name="ThemeModernContrastMenuItem"
+                <MenuItem IsChecked="{Binding IsModernContrast}"
                           Header="Modern _Contrast"
                           Tag="ModernContrast"
                           Click="OnThemeMenuItemClick" />
-                <MenuItem x:Name="ThemeTurboVisionMenuItem"
+                <MenuItem IsChecked="{Binding IsTurboVision}"
                           Header="_TurboVision"
                           Tag="TurboVision"
                           Click="OnThemeMenuItemClick" />
-                <MenuItem x:Name="ThemeTurboVisionCompatibleMenuItem"
+                <MenuItem IsChecked="{Binding IsTurboVisionCompatible}"
                           Header="TurboVision_Compatible"
                           Tag="TurboVisionCompatible"
                           Click="OnThemeMenuItemClick" />
-                <MenuItem x:Name="ThemeTurboVisionGrayMenuItem"
+                <MenuItem IsChecked="{Binding IsTurboVisionGray}"
                           Header="TurboVision_Gray"
                           Tag="TurboVisionGray"
                           Click="OnThemeMenuItemClick" />
-                <MenuItem x:Name="ThemeTurboVisionElegantMenuItem"
+                <MenuItem IsChecked="{Binding IsTurboVisionElegant}"
                           Header="TurboVision_Elegant"
                           Tag="TurboVisionElegant"
                           Click="OnThemeMenuItemClick" />
                 <Separator />
-                <MenuItem x:Name="ThemeLightMenuItem"
+                <MenuItem IsChecked="{Binding IsLight}"
                           Header="_Light Variant"
                           Tag="Light"
                           Click="OnThemeVariantLightMenuClick" />
-                <MenuItem x:Name="ThemeDarkMenuItem"
+                <MenuItem IsChecked="{Binding IsDark}"
                           Header="_Dark Variant"
                           Tag="Dark"
                           Click="OnThemeVariantDarkMenuClick" />
@@ -92,4 +83,4 @@
             BorderThickness="1"
             BorderBrush="{DynamicResource ThemeBorderBrush}" />
     </DockPanel>
-</Window>
+</UserControl>

@@ -54,9 +54,11 @@
         <StackPanel Grid.Row="3"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
-                    Margin="1">
+                    Margin="1,0"
+                    Spacing="">
             <Button x:Name="SaveButton"
                     Content="Save"
+                    IsDefault="True"
                     Click="OnOK"
                     IsEnabled="{Binding SavePath, Converter={x:Static ObjectConverters.IsNotNull}}" />
             <Button x:Name="CancelButton"
