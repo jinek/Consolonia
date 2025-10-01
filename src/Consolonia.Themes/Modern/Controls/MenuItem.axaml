@@ -12,7 +12,8 @@
             </Style>
             <Style Selector="^[IsChecked=true]">
                 <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
-                <Setter Property="Icon" Value="{StaticResource Icon_Check}"/>
+                <Setter Property="Icon"
+                        Value="{StaticResource Icon_Check}" />
             </Style>
         </ControlTheme>
     </Styles.Resources>
