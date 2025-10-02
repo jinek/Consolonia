@@ -23,7 +23,7 @@
                       RowDefinitions="*,Auto"
                       ColumnDefinitions="*,Auto">
                     <Panel Background="{TemplateBinding Background}">
-                        <ScrollContentPresenter Name="PART_ContentPresenter"
+                        <console:ConsoleScrollContentPresenter Name="PART_ContentPresenter"
                                                 Padding="{TemplateBinding Padding}"
                                                 HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
                                                 VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
@@ -37,7 +37,7 @@
                                     CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
                                     IsScrollInertiaEnabled="{Binding (ScrollViewer.IsScrollInertiaEnabled), ElementName=PART_ContentPresenter}" />
                             </ScrollContentPresenter.GestureRecognizers>
-                        </ScrollContentPresenter>
+                        </console:ConsoleScrollContentPresenter>
                     </Panel>
                     <ScrollBar Name="PART_HorizontalScrollBar"
                                Orientation="Horizontal"
@@ -112,7 +112,7 @@
                             <TextBlock Text="v"
                                        Foreground="{TemplateBinding Foreground}" />
                         </RepeatButton>
-                        <ScrollContentPresenter Name="PART_ContentPresenter"
+                        <console:ConsoleScrollContentPresenter Name="PART_ContentPresenter"
                                                 Padding="{TemplateBinding Padding}"
                                                 HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
                                                 VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"

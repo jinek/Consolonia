@@ -88,7 +88,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             if (sender is ListBox lb)
             {
                 var vm = lb.SelectedItem as EventViewModel;
-                await MessageBox.ShowDialog(this, vm.Details, vm.Name);
+                await MessageBox.ShowDialog(this, vm.Name, vm.Details);
             }
         }
 
