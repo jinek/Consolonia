@@ -1,10 +1,10 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery"
-        mc:Ignorable="d"
-        x:Class="Consolonia.Gallery.View.ControlsListView">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:gallery="clr-namespace:Consolonia.Gallery.Gallery"
+             mc:Ignorable="d"
+             x:Class="Consolonia.Gallery.View.ControlsListView">
 
     <DockPanel>
         <DockPanel.Resources>
@@ -20,32 +20,27 @@
             </MenuItem>
             <MenuItem Header="_Theme"
                       IsTabStop="False">
-                <MenuItem.Styles>
-                    <Style Selector="MenuItem[IsChecked=true]">
-                        <Setter Property="Icon" Value="{StaticResource Icon_Check}"/>
-                    </Style>
-                </MenuItem.Styles>
-                <MenuItem 
+                <MenuItem IsChecked="{Binding IsModern}"
                           Header="_Modern"
                           Tag="Modern"
                           Click="OnThemeMenuItemClick" />
-                <MenuItem 
+                <MenuItem IsChecked="{Binding IsModernContrast}"
                           Header="Modern _Contrast"
                           Tag="ModernContrast"
                           Click="OnThemeMenuItemClick" />
-                <MenuItem 
+                <MenuItem IsChecked="{Binding IsTurboVision}"
                           Header="_TurboVision"
                           Tag="TurboVision"
                           Click="OnThemeMenuItemClick" />
-                <MenuItem 
+                <MenuItem IsChecked="{Binding IsTurboVisionCompatible}"
                           Header="TurboVision_Compatible"
                           Tag="TurboVisionCompatible"
                           Click="OnThemeMenuItemClick" />
-                <MenuItem 
+                <MenuItem IsChecked="{Binding IsTurboVisionGray}"
                           Header="TurboVision_Gray"
                           Tag="TurboVisionGray"
                           Click="OnThemeMenuItemClick" />
-                <MenuItem 
+                <MenuItem IsChecked="{Binding IsTurboVisionElegant}"
                           Header="TurboVision_Elegant"
                           Tag="TurboVisionElegant"
                           Click="OnThemeMenuItemClick" />

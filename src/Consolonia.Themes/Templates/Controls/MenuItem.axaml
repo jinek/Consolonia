@@ -114,5 +114,9 @@
             <Setter Property="Foreground"
                     Value="{DynamicResource ThemeNoDisturbBrush}" />
         </Style>
+        <Style Selector="^[IsChecked=true]">
+            <Setter Property="Icon"
+                    Value="x" />
+        </Style>
     </ControlTheme>
 </ResourceDictionary>

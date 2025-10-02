@@ -37,7 +37,7 @@
         <ControlTheme x:Key="{x:Type ae:TextEditor}"
                       TargetType="ae:TextEditor"
                       BasedOn="{StaticResource {x:Type ae:TextEditor}}">
-            
+
             <!-- There is a bug in AvaloniaEdit which hard codes line height to 1.35 * FontSize. To get line height of 1 we set FontSize to 0.7407407407407407 of desired size-->
             <Setter Property="FontSize"
                     Value="0.7407407407407407" />
@@ -66,24 +66,30 @@
                       TargetType="editing:TextArea"
                       BasedOn="{StaticResource {x:Type editing:TextArea}}">
             <Setter Property="SelectionBorder">
-                <Pen Brush="{x:Null}" Thickness="0" />
+                <Pen Brush="{x:Null}"
+                     Thickness="0" />
             </Setter>
             <Setter Property="SelectionCornerRadius"
                     Value="0" />
         </ControlTheme>
 
-        <ControlTheme x:Key="{x:Type search:SearchPanel}" TargetType="search:SearchPanel">
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="{DynamicResource ThemeAlternativeBackgroundBrush}"/>
-            <Setter Property="Focusable" Value="True" />
+        <ControlTheme x:Key="{x:Type search:SearchPanel}"
+                      TargetType="search:SearchPanel">
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Background"
+                    Value="{DynamicResource ThemeAlternativeBackgroundBrush}" />
+            <Setter Property="Focusable"
+                    Value="True" />
             <Setter Property="Template">
                 <ControlTemplate>
-                    <Border Name="PART_Border" BorderThickness="0">
-                        <console:BorderPanel
-                                Background="{TemplateBinding Background}"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top">
+                    <Border Name="PART_Border"
+                            BorderThickness="0">
+                        <console:BorderPanel Background="{TemplateBinding Background}"
+                                             HorizontalAlignment="Right"
+                                             VerticalAlignment="Top">
                             <Grid Margin="{TemplateBinding Margin}"
                                   ColumnDefinitions="Auto Auto"
                                   RowDefinitions="Auto,Auto,Auto">
@@ -92,9 +98,18 @@
                                               Grid.Row="0"
                                               Width="3"
                                               Background="Transparent"
-                                              Theme="{StaticResource SimpleTreeViewItemToggleButtonTheme}"
                                               IsVisible="{Binding !TextEditor.IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"
                                               IsChecked="{Binding IsReplaceMode, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ToggleButton.Theme>
+                                        <ControlTheme TargetType="ToggleButton">
+                                            <Setter Property="Content"
+                                                    Value="▶" />
+                                            <Style Selector="^:checked">
+                                                <Setter Property="Content"
+                                                        Value="▼" />
+                                            </Style>
+                                        </ControlTheme>
+                                    </ToggleButton.Theme>
                                     <ToolTip.Tip>
                                         <TextBlock Text="{x:Static ae:SR.SearchToggleReplace}" />
                                     </ToolTip.Tip>
@@ -107,8 +122,7 @@
                                              Name="PART_searchTextBox"
                                              MaxHeight="1"
                                              Watermark="{x:Static ae:SR.SearchLabel}"
-                                             Text="{Binding SearchPattern, RelativeSource={RelativeSource TemplatedParent}}">
-                                    </TextBox>
+                                             Text="{Binding SearchPattern, RelativeSource={RelativeSource TemplatedParent}}" />
                                     <Grid Grid.Column="2"
                                           ColumnSpacing="0"
                                           ColumnDefinitions="Auto Auto Auto Auto Auto">
@@ -119,7 +133,7 @@
                                             <TextBlock Text="Aa"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Center"
-                                                       Foreground="{Binding $parent[ToggleButton].Foreground}"/>
+                                                       Foreground="{Binding $parent[ToggleButton].Foreground}" />
                                         </ToggleButton>
                                         <ToggleButton Grid.Column="1"
                                                       IsChecked="{Binding $parent[search:SearchPanel].WholeWords, Mode=TwoWay}"
@@ -128,7 +142,7 @@
                                             <TextBlock Text="Word"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Center"
-                                                       Foreground="{Binding $parent[ToggleButton].Foreground}"/>
+                                                       Foreground="{Binding $parent[ToggleButton].Foreground}" />
                                         </ToggleButton>
                                         <ToggleButton Grid.Column="2"
                                                       IsChecked="{Binding $parent[search:SearchPanel].UseRegex, Mode=TwoWay}"
@@ -137,7 +151,7 @@
                                             <TextBlock Text="(.*)"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Center"
-                                                       Foreground="{Binding $parent[ToggleButton].Foreground}"/>
+                                                       Foreground="{Binding $parent[ToggleButton].Foreground}" />
                                         </ToggleButton>
                                     </Grid>
 
@@ -147,7 +161,7 @@
                                         <ToolTip.Tip>
                                             <TextBlock Text="{x:Static ae:SR.SearchFindPreviousText}" />
                                         </ToolTip.Tip>
-                                        <TextBlock Text="{StaticResource Icon_ArrowUp}"
+                                        <TextBlock Text="↑"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Foreground="{Binding $parent[Button].Foreground}" />
@@ -158,7 +172,7 @@
                                         <ToolTip.Tip>
                                             <TextBlock Text="{x:Static ae:SR.SearchFindNextText}" />
                                         </ToolTip.Tip>
-                                        <TextBlock Text="{StaticResource Icon_ArrowDown}"
+                                        <TextBlock Text="↓"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Foreground="{Binding $parent[Button].Foreground}" />
@@ -167,7 +181,7 @@
                                             VerticalAlignment="Stretch"
                                             Command="{x:Static search:SearchCommands.CloseSearchPanel}"
                                             Focusable="True">
-                                        <TextBlock Text="{StaticResource Icon_Close}"
+                                        <TextBlock Text="🗙"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Foreground="{Binding $parent[Button].Foreground}" />
@@ -205,7 +219,7 @@
                                             Grid.Row="2"
                                             Grid.Column="0"
                                             Grid.ColumnSpan="2">
-                                    <TextBlock Name="PART_MessageContent"/>
+                                    <TextBlock Name="PART_MessageContent" />
                                 </StackPanel>
                             </Grid>
                         </console:BorderPanel>

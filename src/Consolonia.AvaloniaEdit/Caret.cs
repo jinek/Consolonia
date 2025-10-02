@@ -1,9 +1,8 @@
 using System;
 using Avalonia;
+using Avalonia.Media;
 using AvaloniaEdit;
 using AvaloniaEdit.Editing;
-using Consolonia.Controls;
-using Consolonia.Controls.Brushes;
 
 namespace Consolonia.AvaloniaEdit
 {
@@ -22,31 +21,33 @@ namespace Consolonia.AvaloniaEdit
 
         static Caret()
         {
+            IBrush oldBrush = null;
             UseConsoleProperty.Changed.AddClassHandler<TextEditor>((textEditor, e) =>
             {
                 bool value = (bool)e.NewValue;
                 if (value)
                 {
                     // replace caret with console caret.
-                    //textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
-                    //{ CaretStyle = CaretStyle.SteadyBar };
+                    oldBrush = textEditor.TextArea.Caret.CaretBrush;
+#if USE_CONSOLE_CARET
+                    textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
+                    { CaretStyle = CaretStyle.SteadyBar };
+#endif
                     textEditor.TextArea.PropertyChanged += TextArea_PropertyChanged;
 
                     // The built in LineNumberMargin miscalculates the top of the line, 
                     // we substitute ours with one which works correctly.
                     for (int i = 0; i < textEditor.TextArea.LeftMargins.Count; i++)
-                    {
                         if (textEditor.TextArea.LeftMargins[i] is LineNumberMargin)
                         {
                             textEditor.TextArea.LeftMargins[i] = new ConsoleLineNumberMargin();
                             break;
                         }
-                    }
                 }
                 else
                 {
                     // restore default caret
-                    textEditor.TextArea.Caret.CaretBrush = null;
+                    textEditor.TextArea.Caret.CaretBrush = oldBrush;
                     textEditor.TextArea.PropertyChanged -= TextArea_PropertyChanged;
                 }
             });
@@ -67,12 +68,14 @@ namespace Consolonia.AvaloniaEdit
             // monitor OverstrikeMode property changes to update caret style to match
             if (e.Property == TextArea.OverstrikeModeProperty)
             {
+#if USE_CONSOLE_CARET
                 var textArea = (TextArea)sender;
                 //if (textArea.Caret.CaretBrush is MoveConsoleCaretToPositionBrush caretBrush)
                 //    // NOTE: We use SteadyBlock and SteadyBar because AvaloniaEdit has blinking animation hardcoded in.
                 //    caretBrush.CaretStyle = (bool)e.NewValue
                 //        ? CaretStyle.SteadyBlock
                 //        : CaretStyle.SteadyBar;
+#endif
             }
         }
     }

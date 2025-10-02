@@ -162,39 +162,37 @@ namespace Consolonia.Core.Drawing
                     DrawLineInternal(pen, myLine);
                     break;
                 case StreamGeometryImpl streamGeometry:
-                    {
-                        // if we have fills to do and a brush with opacity
-                        if (brush != null && 
-                            brush.Opacity > 0 && 
-                            streamGeometry.Fills.Count > 0)
-                        {
-                            foreach (Rectangle fill in streamGeometry.Fills)
-                                DrawRectangle(brush, pen, new RoundedRect(fill.Rect));
-                        }
+                {
+                    // if we have fills to do and a brush with opacity
+                    if (brush != null &&
+                        brush.Opacity > 0 &&
+                        streamGeometry.Fills.Count > 0)
+                        foreach (Rectangle fill in streamGeometry.Fills)
+                            DrawRectangle(brush, pen, new RoundedRect(fill.Rect));
 
-                        // if we have strokes to draw, and a valid pen 
-                        if (pen != null &&
-                            pen.Thickness > 0 &&
-                            pen.Brush != null &&
-                            pen.Brush.Opacity > 0 &&
-                            streamGeometry.Strokes.Count > 0)
+                    // if we have strokes to draw, and a valid pen 
+                    if (pen != null &&
+                        pen.Thickness > 0 &&
+                        pen.Brush != null &&
+                        pen.Brush.Opacity > 0 &&
+                        streamGeometry.Strokes.Count > 0)
+                    {
+                        RectangleLinePosition[] strokePositions = InferStrokePositions(streamGeometry);
+                        for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
                         {
-                            RectangleLinePosition[] strokePositions = InferStrokePositions(streamGeometry);
-                            for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
-                            {
-                                Line stroke = streamGeometry.Strokes[iStroke];
-                                RectangleLinePosition strokePosition = strokePositions[iStroke];
-                                if (strokePosition == RectangleLinePosition.Left)
-                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Left);
-                                else if (strokePosition == RectangleLinePosition.Right)
-                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Right);
-                                else if (strokePosition == RectangleLinePosition.Top)
-                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Top);
-                                else if (strokePosition == RectangleLinePosition.Bottom)
-                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Bottom);
-                            }
+                            Line stroke = streamGeometry.Strokes[iStroke];
+                            RectangleLinePosition strokePosition = strokePositions[iStroke];
+                            if (strokePosition == RectangleLinePosition.Left)
+                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Left);
+                            else if (strokePosition == RectangleLinePosition.Right)
+                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Right);
+                            else if (strokePosition == RectangleLinePosition.Top)
+                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Top);
+                            else if (strokePosition == RectangleLinePosition.Bottom)
+                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Bottom);
                         }
                     }
+                }
                     break;
                 default:
                     ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawGeometryNotSupported, this, brush,
