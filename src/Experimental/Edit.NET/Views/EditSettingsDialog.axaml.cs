@@ -1,4 +1,3 @@
-using Avalonia;
 using Avalonia.Interactivity;
 using Edit.NET.DataModels;
 using Edit.NET.ViewModels;
@@ -8,6 +7,10 @@ namespace Edit.NET.Views
 {
     public partial class EditSettingsDialog : ManagedWindow
     {
+        public EditSettingsDialog()
+        {
+        }
+
         public EditSettingsDialog(Settings settings)
         {
             InitializeComponent();
@@ -16,7 +19,7 @@ namespace Edit.NET.Views
         }
 
 
-        public EditSettingsViewModel ViewModel => (EditSettingsViewModel)DataContext!;
+        private EditSettingsViewModel ViewModel => (EditSettingsViewModel)DataContext!;
 
         private void OnOk(object sender, RoutedEventArgs e)
         {

@@ -183,20 +183,6 @@ namespace Consolonia.Gallery.View
             {
                 Application.Current!.RequestedThemeVariant = value;
                 OnPropertyChanged();
-            }
-        }
-
-        public bool IsLight => RequestedThemeVariant == ThemeVariant.Light;
-
-        public bool IsDark => RequestedThemeVariant == ThemeVariant.Dark;
-
-        public ThemeVariant RequestedThemeVariant
-        {
-            get => Application.Current!.RequestedThemeVariant;
-            set
-            {
-                Application.Current!.RequestedThemeVariant = value;
-                OnPropertyChanged();
                 OnPropertyChanged(nameof(IsLight));
                 OnPropertyChanged(nameof(IsDark));
             }
