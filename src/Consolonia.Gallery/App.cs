@@ -19,11 +19,11 @@ namespace Consolonia.Gallery
 
         public override void OnFrameworkInitializationCompleted()
         {
-            if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode()
-                && !((ConsoloniaLifetime)ApplicationLifetime).Args.Any(argument => argument != null &&
-                    argument.ToUpper().EndsWith(TurboVisionProgramParameterUpperCase)))
-                Styles.Add(new ModernTheme());
-            else
+            //if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode()
+            //    && !((ConsoloniaLifetime)ApplicationLifetime).Args.Any(argument => argument != null &&
+            //        argument.ToUpper().EndsWith(TurboVisionProgramParameterUpperCase)))
+            //    Styles.Add(new ModernTheme());
+            //else
                 Styles.Add(new TurboVisionTheme());
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
