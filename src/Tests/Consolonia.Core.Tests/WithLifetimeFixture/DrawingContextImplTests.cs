@@ -555,6 +555,99 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             dc.DrawGlyphRun(brush, glyphRunImpl);
         }
 
+        private static readonly object[] PenVariations =
+        {
+            new object[]
+            {
+                new Rect(-.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+                """
+                ─┐                                                                              
+                 │                                                                              
+                ─┘
+                """
+            },
+            new object[]
+            {
+                new Rect(-.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.DoubleLine }),
+                """
+                ═╗                                                                              
+                 ║                                                                              
+                ═╝
+                """
+            },
+            new object[]
+            {
+                new Rect(-.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+                """
+                ▁                                                                               
+                 ▏                                                                              
+                ▔                              
+                """
+            },
+            new object[]
+            {
+                new Rect(-.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.EdgeWide }),
+                """
+                ▄▖                                                                              
+                 ▌                                                                              
+                ▀▘                                                                              
+                """
+            },
+            new object[]
+            {
+                new Rect(0, -.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+                """
+                │ │                                                                             
+                └─┘                                                                             
+                """
+            },
+            new object[]
+            {
+                new Rect(0, -.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.DoubleLine }),
+                """
+                ║ ║                                                                             
+                ╚═╝                                                                             
+                """
+            },
+            new object[]
+            {
+                new Rect(0, -.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+                """
+                ▕ ▏                                                                             
+                 ▔                                                                              
+                """
+            },
+            new object[]
+            {
+                new Rect(0, -.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.EdgeWide }),
+                """
+                ▐ ▌                                                                             
+                ▝▀▘                                                                             
+                """
+            }
+        };
+
+
+        [TestCaseSource(nameof(PenVariations))]
+        public void DrawBoxCharsOverEdge(Rect rect, IPen pen, string expected)
+        {
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
+            dc.DrawRectangle(Brushes.Blue, pen, rect);
+
+            string text = buffer.PrintBuffer();
+            Assert.AreEqual(expected.Trim(), text.Trim());
+        }
+
         internal static PixelBufferCoordinate SetOrigin(DrawingContextImpl dc, ushort x, ushort y)
         {
             dc.Transform = new Matrix(1, 0, 0, 1, x, y);
