@@ -22,7 +22,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             // base.OnPointerWheelChanged(e);
             if (Extent.Height > Viewport.Height || Extent.Width > Viewport.Width)
             {
-                var scrollable = Child as ILogicalScrollable;
+                // var scrollable = Child as ILogicalScrollable;
                 // var isLogical = scrollable?.IsLogicalScrollEnabled == true;
 
                 var x = Offset.X;
