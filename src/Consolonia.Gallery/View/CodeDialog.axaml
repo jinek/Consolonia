@@ -11,17 +11,16 @@
                              WindowStartupLocation="CenterOwner"
                              WindowState="Maximized"
                              x:Class="Consolonia.Gallery.View.CodeDialog">
-        <AvalonEdit:TextEditor Name="Editor" 
-                               IsReadOnly="true"
-                               ShowLineNumbers="True"
-                               HorizontalScrollBarVisibility="Visible"
-                               VerticalScrollBarVisibility="Visible">
-            <AvalonEdit:TextEditor.Options>
-                <AvalonEdit:TextEditorOptions
-                    EnableEmailHyperlinks="false"
-                    EnableHyperlinks="false"
-                    HighlightCurrentLine = "true"/>
-            </AvalonEdit:TextEditor.Options>
+    <AvalonEdit:TextEditor Name="Editor"
+                           IsReadOnly="true"
+                           ShowLineNumbers="True"
+                           HorizontalScrollBarVisibility="Visible"
+                           VerticalScrollBarVisibility="Visible">
+        <AvalonEdit:TextEditor.Options>
+            <AvalonEdit:TextEditorOptions EnableEmailHyperlinks="false"
+                                          EnableHyperlinks="false"
+                                          HighlightCurrentLine="true" />
+        </AvalonEdit:TextEditor.Options>
 
             <AvalonEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>
