@@ -751,11 +751,11 @@ namespace Consolonia.Core.Drawing
                 ? new Rect(head.X, head.Y, 1, count)
                 : new Rect(head.X, head.Y, count, 1);
 
-            var start = line.Vertical ? rectToRefresh.Top : rectToRefresh.Left;
-            var end = line.Vertical ? rectToRefresh.Bottom : rectToRefresh.Right;
+            double start = line.Vertical ? rectToRefresh.Top : rectToRefresh.Left;
+            double end = line.Vertical ? rectToRefresh.Bottom : rectToRefresh.Right;
             // align head with the first intersected point
             head = line.Vertical ? head.WithY(start) : head.WithX(start);
-            for (var i = start; i < end; i++)
+            for (double i = start; i < end; i++)
             {
                 if (CurrentClip.ContainsExclusive(head))
                     _pixelBuffer[head] =
@@ -766,6 +766,7 @@ namespace Consolonia.Core.Drawing
                     ? head.WithY(head.Y + 1)
                     : head.WithX(head.X + 1);
             }
+
             _consoleWindowImpl.DirtyRegions.AddRect(rectToRefresh);
         }
 
@@ -791,12 +792,12 @@ namespace Consolonia.Core.Drawing
                 ? new Rect(head.X, head.Y, 1, count)
                 : new Rect(head.X, head.Y, count, 1);
 
-            var start = isVertical ? rectToRefresh.Top : rectToRefresh.Left;
-            var end = isVertical ? rectToRefresh.Bottom : rectToRefresh.Right;
+            double start = isVertical ? rectToRefresh.Top : rectToRefresh.Left;
+            double end = isVertical ? rectToRefresh.Bottom : rectToRefresh.Right;
             // align head with the first intersected point
             head = isVertical ? head.WithY(start) : head.WithX(start);
             var newPixel = new Pixel(symbol, color);
-            for (var i = start; i < end; i++)
+            for (double i = start; i < end; i++)
             {
                 if (CurrentClip.ContainsExclusive(head))
                     _pixelBuffer[head] = _pixelBuffer[head].Blend(newPixel);
