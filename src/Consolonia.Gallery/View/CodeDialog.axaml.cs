@@ -25,8 +25,8 @@ namespace Consolonia.Gallery.View
         {
             InitializeComponent();
 
-            this.Title = file;
-            this.DataContext = new CodeDialogViewModel();
+            Title = file;
+            DataContext = new CodeDialogViewModel();
 
             _textEditor = this.FindControl<TextEditor>("Editor")!;
             _textEditor.Document = new TextDocument(text);
@@ -79,14 +79,18 @@ namespace Consolonia.Gallery.View
         }
     }
 
-    public partial class CodeDialogViewModel :ObservableObject
+    public partial class CodeDialogViewModel : ObservableObject
     {
         [RelayCommand]
         public void CopyMouse(TextArea textArea)
-            => ApplicationCommands.Copy.Execute(null, textArea);
+        {
+            ApplicationCommands.Copy.Execute(null, textArea);
+        }
 
         [RelayCommand]
         public void SelectAllMouse(TextArea textArea)
-           => ApplicationCommands.SelectAll.Execute(null, textArea);
+        {
+            ApplicationCommands.SelectAll.Execute(null, textArea);
+        }
     }
 }

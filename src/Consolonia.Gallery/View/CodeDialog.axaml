@@ -22,10 +22,13 @@
                                           HighlightCurrentLine="true" />
         </AvalonEdit:TextEditor.Options>
 
-            <AvalonEdit:TextEditor.ContextFlyout>
-                <MenuFlyout>
-                    <MenuItem Header="Copy" InputGesture="ctrl+C" Command="{Binding CopyMouseCommand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
-                </MenuFlyout>
-            </AvalonEdit:TextEditor.ContextFlyout>
-        </AvalonEdit:TextEditor>
+        <AvalonEdit:TextEditor.ContextFlyout>
+            <MenuFlyout>
+                <MenuItem Header="Copy"
+                          InputGesture="ctrl+C"
+                          Command="{Binding CopyMouseCommand}"
+                          CommandParameter="{Binding #Editor.TextArea}" />
+            </MenuFlyout>
+        </AvalonEdit:TextEditor.ContextFlyout>
+    </AvalonEdit:TextEditor>
 </windowManager:ManagedWindow>
