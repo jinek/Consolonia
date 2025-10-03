@@ -266,9 +266,5 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             while (RawMouseEvents.Count > MaxEvents)
                 RawMouseEvents.RemoveAt(0);
         }
-
-        public EventsViewModel()
-        {
-        }
     }
 }
