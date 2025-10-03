@@ -111,17 +111,12 @@ namespace Consolonia.Gallery.View
             await ShowCode(xamlFile);
         }
 
-        private static async Task ShowCode(string xamlFile)
+        private static async Task ShowCode(string fileName)
         {
-            string xaml = await Client.GetStringAsync(new Uri(
-                $"https://raw.githubusercontent.com/jinek/Consolonia/refs/heads/main/src/Consolonia.Gallery/Gallery/GalleryViews/{xamlFile}"));
+            string code = await Client.GetStringAsync(new Uri(
+                $"https://raw.githubusercontent.com/jinek/Consolonia/refs/heads/main/src/Consolonia.Gallery/Gallery/GalleryViews/{fileName}"));
 
-            var dialog = new XamlDialogWindow
-            {
-                Title = xamlFile,
-                // ReSharper disable once MethodHasAsyncOverload
-                DataContext = xaml
-            };
+            var dialog = new CodeDialog(fileName, code);
             await dialog.ShowDialog();
         }
 
