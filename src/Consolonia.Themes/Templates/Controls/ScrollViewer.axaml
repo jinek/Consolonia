@@ -23,21 +23,21 @@
                       RowDefinitions="*,Auto"
                       ColumnDefinitions="*,Auto">
                     <Panel Background="{TemplateBinding Background}">
-                        <ScrollContentPresenter Name="PART_ContentPresenter"
-                                                Padding="{TemplateBinding Padding}"
-                                                HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
-                                                VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
-                                                HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
-                                                VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
-                                                Background="Transparent"
-                                                ScrollViewer.IsScrollInertiaEnabled="True">
+                        <console:ConsoleScrollContentPresenter Name="PART_ContentPresenter"
+                                                               Padding="{TemplateBinding Padding}"
+                                                               HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                                               VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                                               HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                                               VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+                                                               Background="Transparent"
+                                                               ScrollViewer.IsScrollInertiaEnabled="True">
                             <ScrollContentPresenter.GestureRecognizers>
                                 <ScrollGestureRecognizer
                                     CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
                                     CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
                                     IsScrollInertiaEnabled="{Binding (ScrollViewer.IsScrollInertiaEnabled), ElementName=PART_ContentPresenter}" />
                             </ScrollContentPresenter.GestureRecognizers>
-                        </ScrollContentPresenter>
+                        </console:ConsoleScrollContentPresenter>
                     </Panel>
                     <ScrollBar Name="PART_HorizontalScrollBar"
                                Orientation="Horizontal"
@@ -112,13 +112,13 @@
                             <TextBlock Text="v"
                                        Foreground="{TemplateBinding Foreground}" />
                         </RepeatButton>
-                        <ScrollContentPresenter Name="PART_ContentPresenter"
-                                                Padding="{TemplateBinding Padding}"
-                                                HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
-                                                VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
-                                                HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
-                                                VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
-                                                ScrollViewer.IsScrollInertiaEnabled="False" />
+                        <console:ConsoleScrollContentPresenter Name="PART_ContentPresenter"
+                                                               Padding="{TemplateBinding Padding}"
+                                                               HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                                               VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                                               HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                                               VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+                                                               ScrollViewer.IsScrollInertiaEnabled="False" />
                     </DockPanel>
                 </ControlTemplate>
             </Setter>

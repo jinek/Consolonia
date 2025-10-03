@@ -12,11 +12,11 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
+            await UITest.AssertHasNoText("Item 27");
+
             await UITest.KeyInput(Key.Tab);
-            await UITest.KeyInput(Key.Tab, RawInputModifiers.Shift);
-            await UITest.KeyInput(Key.Tab, RawInputModifiers.Shift);
             await UITest.KeyInput(Key.PageDown);
-            await UITest.AssertHasText("Item 45");
+            await UITest.AssertHasText("Item 27");
         }
     }
 }
