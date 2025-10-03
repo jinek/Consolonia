@@ -750,15 +750,12 @@ namespace Consolonia.Core.Drawing
             Rect rectToRefresh = line.Vertical
                 ? new Rect(head.X, head.Y, 1, count)
                 : new Rect(head.X, head.Y, count, 1);
-            Rect intersect = CurrentClip.Intersect(rectToRefresh);
-            if (intersect.IsEmpty())
-                return;
 
-            double start = line.Vertical ? intersect.Top : intersect.Left;
-            double end = line.Vertical ? intersect.Bottom : intersect.Right;
+            var start = line.Vertical ? rectToRefresh.Top : rectToRefresh.Left;
+            var end = line.Vertical ? rectToRefresh.Bottom : rectToRefresh.Right;
             // align head with the first intersected point
             head = line.Vertical ? head.WithY(start) : head.WithX(start);
-            for (double i = start; i < end; i++)
+            for (var i = start; i < end; i++)
             {
                 if (CurrentClip.ContainsExclusive(head))
                     _pixelBuffer[head] =
@@ -769,8 +766,7 @@ namespace Consolonia.Core.Drawing
                     ? head.WithY(head.Y + 1)
                     : head.WithX(head.X + 1);
             }
-
-            _consoleWindowImpl.DirtyRegions.AddRect(intersect);
+            _consoleWindowImpl.DirtyRegions.AddRect(rectToRefresh);
         }
 
         private static byte GetBoxPatternFromLineStyle(byte pattern, LineStyle lineStyle)
@@ -792,27 +788,25 @@ namespace Consolonia.Core.Drawing
             int count)
         {
             Rect rectToRefresh = isVertical
-                ? new Rect((int)head.X, (int)head.Y, 1, count)
-                : new Rect((int)head.X, (int)head.Y, count, 1);
-            Rect intersect = CurrentClip.Intersect(rectToRefresh);
-            if (intersect.IsEmpty())
-                return;
+                ? new Rect(head.X, head.Y, 1, count)
+                : new Rect(head.X, head.Y, count, 1);
 
-            ushort start = isVertical ? (ushort)intersect.Top : (ushort)intersect.Left;
-            ushort end = isVertical ? (ushort)intersect.Bottom : (ushort)intersect.Right;
+            var start = isVertical ? rectToRefresh.Top : rectToRefresh.Left;
+            var end = isVertical ? rectToRefresh.Bottom : rectToRefresh.Right;
             // align head with the first intersected point
             head = isVertical ? head.WithY(start) : head.WithX(start);
             var newPixel = new Pixel(symbol, color);
-            for (int i = start; i < end; i++)
+            for (var i = start; i < end; i++)
             {
-                _pixelBuffer[head] = _pixelBuffer[head].Blend(newPixel);
+                if (CurrentClip.ContainsExclusive(head))
+                    _pixelBuffer[head] = _pixelBuffer[head].Blend(newPixel);
 
                 head = isVertical
                     ? head.WithY(head.Y + 1)
                     : head.WithX(head.X + 1);
             }
 
-            _consoleWindowImpl.DirtyRegions.AddRect(intersect);
+            _consoleWindowImpl.DirtyRegions.AddRect(rectToRefresh);
         }
 
         private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
