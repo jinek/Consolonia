@@ -6,7 +6,10 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
+using AvaloniaEdit.Editing;
 using AvaloniaEdit.TextMate;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Iciclecreek.Avalonia.WindowManager;
 using TextMateSharp.Grammars;
 
@@ -23,6 +26,7 @@ namespace Consolonia.Gallery.View
             InitializeComponent();
 
             this.Title = file;
+            this.DataContext = new CodeDialogViewModel();
 
             _textEditor = this.FindControl<TextEditor>("Editor")!;
             _textEditor.Document = new TextDocument(text);
@@ -84,6 +88,16 @@ namespace Consolonia.Gallery.View
             applyColorAction(colorBrush);
             return true;
         }
+    }
 
+    public partial class CodeDialogViewModel :ObservableObject
+    {
+        [RelayCommand]
+        public void CopyMouse(TextArea textArea)
+            => ApplicationCommands.Copy.Execute(null, textArea);
+
+        [RelayCommand]
+        public void SelectAllMouse(TextArea textArea)
+           => ApplicationCommands.SelectAll.Execute(null, textArea);
     }
 }

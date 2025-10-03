@@ -25,9 +25,7 @@
 
             <AvalonEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>
-                    <MenuItem Header="Copy" InputGesture="ctrl+C" Command="{Binding CopyMouseCommmand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
-                    <MenuItem Header="-"/>
-                    <MenuItem Header="Select All" InputGesture="ctrl+A" Command="{Binding SelectAllMouseCommmand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
+                    <MenuItem Header="Copy" InputGesture="ctrl+C" Command="{Binding CopyMouseCommand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
                 </MenuFlyout>
             </AvalonEdit:TextEditor.ContextFlyout>
         </AvalonEdit:TextEditor>
