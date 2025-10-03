@@ -2,8 +2,8 @@ using System;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.Presenters;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Utilities;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers
@@ -12,10 +12,10 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
     // Wheel mouse values are hard coded.
     public class ConsoleScrollContentPresenter : ScrollContentPresenter
     {
-
         // Cache MethodInfo for private base method to avoid repeated reflection lookup.
         private static readonly MethodInfo SnapOffsetMethod =
-            typeof(ScrollContentPresenter).GetMethod("SnapOffset", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
+            typeof(ScrollContentPresenter).GetMethod("SnapOffset",
+                BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
 
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
@@ -25,22 +25,18 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
                 // var scrollable = Child as ILogicalScrollable;
                 // var isLogical = scrollable?.IsLogicalScrollEnabled == true;
 
-                var x = Offset.X;
-                var y = Offset.Y;
-                var delta = e.Delta;
+                double x = Offset.X;
+                double y = Offset.Y;
+                Vector delta = e.Delta;
 
                 // KeyModifiers.Shift should scroll in horizontal direction. This does not work on every platform. 
                 // If Shift-Key is pressed and X is close to 0 we swap the Vector.
                 // NOTE: Changed to also include CTRL
-                if ((e.KeyModifiers == KeyModifiers.Control || e.KeyModifiers == KeyModifiers.Shift) && 
+                if ((e.KeyModifiers == KeyModifiers.Control || e.KeyModifiers == KeyModifiers.Shift) &&
                     MathUtilities.IsZero(delta.X))
-                {
                     delta = new Vector(delta.Y, delta.X);
-                }
                 else
-                {
                     delta = AdjustDeltaForFlowDirection(delta, FlowDirection);
-                }
 
                 if (Extent.Height > Viewport.Height)
                 {
@@ -68,14 +64,11 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
                 e.Handled = !IsScrollChainingEnabled || offsetChanged;
             }
         }
-        private static Vector AdjustDeltaForFlowDirection(Vector delta, Avalonia.Media.FlowDirection flowDirection)
+
+        private static Vector AdjustDeltaForFlowDirection(Vector delta, FlowDirection flowDirection)
         {
-            if (flowDirection == Avalonia.Media.FlowDirection.RightToLeft)
-            {
-                return delta.WithX(-delta.X);
-            }
+            if (flowDirection == FlowDirection.RightToLeft) return delta.WithX(-delta.X);
             return delta;
         }
-
     }
 }
