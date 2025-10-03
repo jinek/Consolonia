@@ -1,0 +1,34 @@
+<windowManager:ManagedWindow xmlns="https://github.com/avaloniaui"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                             xmlns:AvalonEdit="https://github.com/avaloniaui/avaloniaedit"
+                             xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager"
+                             mc:Ignorable="d"
+                             Icon="🔬"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             WindowStartupLocation="CenterOwner"
+                             WindowState="Maximized"
+                             x:Class="Consolonia.Gallery.View.CodeDialog">
+        <AvalonEdit:TextEditor Name="Editor" 
+                               IsReadOnly="true"
+                               ShowLineNumbers="True"
+                               HorizontalScrollBarVisibility="Visible"
+                               VerticalScrollBarVisibility="Visible">
+            <AvalonEdit:TextEditor.Options>
+                <AvalonEdit:TextEditorOptions
+                    EnableEmailHyperlinks="false"
+                    EnableHyperlinks="false"
+                    HighlightCurrentLine = "true"/>
+            </AvalonEdit:TextEditor.Options>
+
+            <AvalonEdit:TextEditor.ContextFlyout>
+                <MenuFlyout>
+                    <MenuItem Header="Copy" InputGesture="ctrl+C" Command="{Binding CopyMouseCommmand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
+                    <MenuItem Header="-"/>
+                    <MenuItem Header="Select All" InputGesture="ctrl+A" Command="{Binding SelectAllMouseCommmand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
+                </MenuFlyout>
+            </AvalonEdit:TextEditor.ContextFlyout>
+        </AvalonEdit:TextEditor>
+</windowManager:ManagedWindow>

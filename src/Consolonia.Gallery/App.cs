@@ -1,8 +1,10 @@
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml.Styling;
 using Consolonia.Themes;
 
 namespace Consolonia.Gallery
@@ -25,6 +27,8 @@ namespace Consolonia.Gallery
                 Styles.Add(new ModernTheme());
             else
                 Styles.Add(new TurboVisionTheme());
+
+            Styles.Add(new StyleInclude(new Uri($"avares://Consolonia.AvaloniaEdit")) { Source = new Uri("Theme.axaml", UriKind.Relative) });
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 desktop.MainWindow = new MainWindow(); // designer runs as classic desktop

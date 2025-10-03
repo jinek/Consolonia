@@ -137,9 +137,9 @@
             <Setter Property="Ticks"
                     Value="{TemplateBinding Ticks}" />
         </Style>
-        <Style Selector="^:disabled /template/ Grid#grid">
+        <!--<Style Selector="^:disabled /template/ Grid#grid">
             <Setter Property="Opacity"
-                    Value="{DynamicResource ThemeNoDisturbBrush}" />
-        </Style>
+                    Value="0.8" />
+        </Style>-->
     </ControlTheme>
 </ResourceDictionary>

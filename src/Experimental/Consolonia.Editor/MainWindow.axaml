@@ -1,9 +1,8 @@
 <Window xmlns="https://github.com/avaloniaui"
-        xmlns:AvalonEdit="using:AvaloniaEdit"
+        xmlns:AvalonEdit="https://github.com/avaloniaui/avaloniaedit"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:ConsoloniaEdit.Demo.ViewModels"
         xmlns:console="https://github.com/jinek/consolonia"
-        xmlns:editing="using:AvaloniaEdit.Editing"
         Title="ConsoloniaEdit Demo"
         x:Class="ConsoloniaEdit.Demo.MainWindow"
         x:DataType="vm:MainWindowViewModel">
