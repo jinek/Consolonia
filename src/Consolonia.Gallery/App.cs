@@ -28,7 +28,8 @@ namespace Consolonia.Gallery
             else
                 Styles.Add(new TurboVisionTheme());
 
-            Styles.Add(new StyleInclude(new Uri($"avares://Consolonia.AvaloniaEdit")) { Source = new Uri("Theme.axaml", UriKind.Relative) });
+            Styles.Add(new StyleInclude(new Uri("avares://Consolonia.AvaloniaEdit"))
+                { Source = new Uri("Theme.axaml", UriKind.Relative) });
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 desktop.MainWindow = new MainWindow(); // designer runs as classic desktop

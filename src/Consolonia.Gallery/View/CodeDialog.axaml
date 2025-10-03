@@ -11,24 +11,29 @@
                              WindowStartupLocation="CenterOwner"
                              WindowState="Maximized"
                              x:Class="Consolonia.Gallery.View.CodeDialog">
-        <AvalonEdit:TextEditor Name="Editor" 
-                               IsReadOnly="true"
-                               ShowLineNumbers="True"
-                               HorizontalScrollBarVisibility="Visible"
-                               VerticalScrollBarVisibility="Visible">
-            <AvalonEdit:TextEditor.Options>
-                <AvalonEdit:TextEditorOptions
-                    EnableEmailHyperlinks="false"
-                    EnableHyperlinks="false"
-                    HighlightCurrentLine = "true"/>
-            </AvalonEdit:TextEditor.Options>
+    <AvalonEdit:TextEditor Name="Editor"
+                           IsReadOnly="true"
+                           ShowLineNumbers="True"
+                           HorizontalScrollBarVisibility="Visible"
+                           VerticalScrollBarVisibility="Visible">
+        <AvalonEdit:TextEditor.Options>
+            <AvalonEdit:TextEditorOptions EnableEmailHyperlinks="false"
+                                          EnableHyperlinks="false"
+                                          HighlightCurrentLine="true" />
+        </AvalonEdit:TextEditor.Options>
 
-            <AvalonEdit:TextEditor.ContextFlyout>
-                <MenuFlyout>
-                    <MenuItem Header="Copy" InputGesture="ctrl+C" Command="{Binding CopyMouseCommmand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
-                    <MenuItem Header="-"/>
-                    <MenuItem Header="Select All" InputGesture="ctrl+A" Command="{Binding SelectAllMouseCommmand}" CommandParameter="{Binding #Editor.TextArea}"></MenuItem>
-                </MenuFlyout>
-            </AvalonEdit:TextEditor.ContextFlyout>
-        </AvalonEdit:TextEditor>
+        <AvalonEdit:TextEditor.ContextFlyout>
+            <MenuFlyout>
+                <MenuItem Header="Copy"
+                          InputGesture="ctrl+C"
+                          Command="{Binding CopyMouseCommmand}"
+                          CommandParameter="{Binding #Editor.TextArea}" />
+                <MenuItem Header="-" />
+                <MenuItem Header="Select All"
+                          InputGesture="ctrl+A"
+                          Command="{Binding SelectAllMouseCommmand}"
+                          CommandParameter="{Binding #Editor.TextArea}" />
+            </MenuFlyout>
+        </AvalonEdit:TextEditor.ContextFlyout>
+    </AvalonEdit:TextEditor>
 </windowManager:ManagedWindow>

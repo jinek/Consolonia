@@ -14,21 +14,21 @@ namespace Consolonia.Gallery.View
 {
     public partial class CodeDialog : ManagedWindow
     {
-        private TextEditor _textEditor;
-        private RegistryOptions _registryOptions;
-        private TextMate.Installation _textMateInstallation;
+        private readonly RegistryOptions _registryOptions;
+        private readonly TextEditor _textEditor;
+        private readonly TextMate.Installation _textMateInstallation;
 
         public CodeDialog(string file, string text)
         {
             InitializeComponent();
 
-            this.Title = file;
+            Title = file;
 
             _textEditor = this.FindControl<TextEditor>("Editor")!;
             _textEditor.Document = new TextDocument(text);
-            ThemeName theme = Application.Current.RequestedThemeVariant == ThemeVariant.Dark ? 
-                ThemeName.VisualStudioDark : 
-                ThemeName.VisualStudioLight;
+            ThemeName theme = Application.Current.RequestedThemeVariant == ThemeVariant.Dark
+                ? ThemeName.VisualStudioDark
+                : ThemeName.VisualStudioLight;
             _registryOptions = new RegistryOptions(theme);
             _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
             Language language = _registryOptions.GetLanguageByExtension(Path.GetExtension(file));
@@ -44,37 +44,27 @@ namespace Consolonia.Gallery.View
 
             if (!ApplyBrushAction(e, "editor.selectionBackground",
                     brush => _textEditor.TextArea.SelectionBrush = brush))
-            {
                 if (!ApplyBrushAction(e, "editor.selectionHighlightBackground",
                         brush => _textEditor.TextArea.SelectionBrush = brush))
-                {
-                    if (Application.Current!.TryGetResource("TextAreaSelectionBrush", out var resourceObject))
-                    {
+                    if (Application.Current!.TryGetResource("TextAreaSelectionBrush", out object resourceObject))
                         if (resourceObject is IBrush brush)
-                        {
                             _textEditor.TextArea.SelectionBrush = brush;
-                        }
-                    }
-                }
-            }
 
             if (!ApplyBrushAction(e, "editor.lineHighlightBackground",
-                    brush =>_textEditor.TextArea.TextView.CurrentLineBackground = brush))
-            {
+                    brush => _textEditor.TextArea.TextView.CurrentLineBackground = brush))
                 _textEditor.TextArea.TextView.SetDefaultHighlightLineColors();
-            }
 
             //Todo: looks like the margin doesn't have a active line highlight, would be a nice addition
             if (!ApplyBrushAction(e, "editorLineNumber.foreground",
                     brush => _textEditor.LineNumbersForeground = brush))
-            {
                 _textEditor.LineNumbersForeground = _textEditor.TextArea.Foreground;
-            }
-            _textEditor.TextArea.TextView.CurrentLineBorder = new Pen(Brushes.Transparent, thickness: 0);
+            _textEditor.TextArea.TextView.CurrentLineBorder = new Pen(Brushes.Transparent, 0);
         }
-        bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
+
+        private bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson,
+            Action<IBrush> applyColorAction)
         {
-            if (!e.TryGetThemeColor(colorKeyNameFromJson, out var colorString))
+            if (!e.TryGetThemeColor(colorKeyNameFromJson, out string colorString))
                 return false;
 
             if (!Color.TryParse(colorString, out Color color))
@@ -84,6 +74,5 @@ namespace Consolonia.Gallery.View
             applyColorAction(colorBrush);
             return true;
         }
-
     }
 }
