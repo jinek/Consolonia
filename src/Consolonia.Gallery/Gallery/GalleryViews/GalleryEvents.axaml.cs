@@ -28,14 +28,14 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private void OnRawMouse(RawPointerEventType type, Point point, Vector? nullable, RawInputModifiers modifiers)
         {
             var eventViewModel = new RawMouseEventViewModel(type, point, nullable, modifiers);
-            ViewModel.RawMouseEvents.Add(eventViewModel);
+            ViewModel.AddRawMouseEvent(eventViewModel);
             ViewModel.SelectedRawMouseEvent = eventViewModel;
         }
 
         private void OnRawKey(Key arg1, char arg2, RawInputModifiers arg3, bool arg4, ulong arg5, bool arg6)
         {
             var eventViewModel = new RawKeyboardEventViewModel(arg1, arg2, arg3, arg4, arg5, arg6);
-            ViewModel.RawKeyboardEvents.Add(eventViewModel);
+            ViewModel.AddRawKeyboardEvent(eventViewModel);
             ViewModel.SelectedRawKeyboardEvent = eventViewModel;
         }
 
@@ -43,42 +43,42 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             var eventViewModel = new KeyEventViewModel(e);
-            ViewModel.KeyboardEvents.Add(eventViewModel);
+            ViewModel.AddKeyboardEvent(eventViewModel);
             ViewModel.SelectedKeyboardEvent = eventViewModel;
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
             var eventViewModel = new KeyEventViewModel(e);
-            ViewModel.KeyboardEvents.Add(eventViewModel);
+            ViewModel.AddKeyboardEvent(eventViewModel);
             ViewModel.SelectedKeyboardEvent = eventViewModel;
         }
 
         private void OnPointerMoved(object sender, PointerEventArgs e)
         {
             var eventViewModel = new PointerEventViewModel(e, e.GetCurrentPoint(this));
-            ViewModel.PointerEvents.Add(eventViewModel);
+            ViewModel.AddPointerEvent(eventViewModel);
             ViewModel.SelectedPointerEvent = eventViewModel;
         }
 
         private void OnPointerPressed(object sender, PointerPressedEventArgs e)
         {
             var eventViewModel = new PointerEventViewModel(e, e.GetCurrentPoint(this));
-            ViewModel.PointerEvents.Add(eventViewModel);
+            ViewModel.AddPointerEvent(eventViewModel);
             ViewModel.SelectedPointerEvent = eventViewModel;
         }
 
         private void OnPointerReleased(object sender, PointerReleasedEventArgs e)
         {
             var eventViewModel = new PointerEventViewModel(e, e.GetCurrentPoint(this));
-            ViewModel.PointerEvents.Add(eventViewModel);
+            ViewModel.AddPointerEvent(eventViewModel);
             ViewModel.SelectedPointerEvent = eventViewModel;
         }
 
         private void OnPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
             var eventViewModel = new PointerEventViewModel(e, e.GetCurrentPoint(this));
-            ViewModel.PointerEvents.Add(eventViewModel);
+            ViewModel.AddPointerEvent(eventViewModel);
             ViewModel.SelectedPointerEvent = eventViewModel;
         }
 
@@ -221,6 +221,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
     public partial class EventsViewModel : ObservableObject
     {
+        private const int MaxEvents = 1000;
+
         [ObservableProperty] private ObservableCollection<EventViewModel> _keyboardEvents = new();
 
         [ObservableProperty] private ObservableCollection<EventViewModel> _pointerEvents = new();
@@ -237,28 +239,36 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
         [ObservableProperty] private EventViewModel _selectedRawMouseEvent;
 
+        public void AddKeyboardEvent(EventViewModel ev)
+        {
+            KeyboardEvents.Add(ev);
+            while (KeyboardEvents.Count > MaxEvents)
+                KeyboardEvents.RemoveAt(0);
+        }
+
+        public void AddPointerEvent(EventViewModel ev)
+        {
+            PointerEvents.Add(ev);
+            while (PointerEvents.Count > MaxEvents)
+                PointerEvents.RemoveAt(0);
+        }
+
+        public void AddRawKeyboardEvent(RawKeyboardEventViewModel ev)
+        {
+            RawKeyboardEvents.Add(ev);
+            while (RawKeyboardEvents.Count > MaxEvents)
+                RawKeyboardEvents.RemoveAt(0);
+        }
+
+        public void AddRawMouseEvent(RawMouseEventViewModel ev)
+        {
+            RawMouseEvents.Add(ev);
+            while (RawMouseEvents.Count > MaxEvents)
+                RawMouseEvents.RemoveAt(0);
+        }
+
         public EventsViewModel()
         {
-            _keyboardEvents.CollectionChanged += (sender, args) =>
-            {
-                while (_keyboardEvents.Count > 1000)
-                    _keyboardEvents.RemoveAt(0);
-            };
-            _pointerEvents.CollectionChanged += (sender, args) =>
-            {
-                while (_pointerEvents.Count > 1000)
-                    _pointerEvents.RemoveAt(0);
-            };
-            _rawMouseEvents.CollectionChanged += (sender, args) =>
-            {
-                while (_rawMouseEvents.Count > 1000)
-                    _rawMouseEvents.RemoveAt(0);
-            };
-            _rawKeyboardEvents.CollectionChanged += (sender, args) =>
-            {
-                while (_rawKeyboardEvents.Count > 1000)
-                    _rawKeyboardEvents.RemoveAt(0);
-            };
         }
     }
 }
