@@ -14,7 +14,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
     {
 
         // Cache MethodInfo for private base method to avoid repeated reflection lookup.
-        private static readonly MethodInfo s_snapOffsetMethod =
+        private static readonly MethodInfo SnapOffsetMethod =
             typeof(ScrollContentPresenter).GetMethod("SnapOffset", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
 
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
@@ -23,7 +23,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             if (Extent.Height > Viewport.Height || Extent.Width > Viewport.Width)
             {
                 var scrollable = Child as ILogicalScrollable;
-                var isLogical = scrollable?.IsLogicalScrollEnabled == true;
+                // var isLogical = scrollable?.IsLogicalScrollEnabled == true;
 
                 var x = Offset.X;
                 var y = Offset.Y;
@@ -60,7 +60,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
                     x = Math.Min(x, Extent.Width - Viewport.Width);
                 }
 
-                var newOffset = (Vector)s_snapOffsetMethod.Invoke(this, new object[] { new Vector(x, y), delta, true })!;
+                var newOffset = (Vector)SnapOffsetMethod.Invoke(this, new object[] { new Vector(x, y), delta, true })!;
 
                 bool offsetChanged = newOffset != Offset;
                 SetCurrentValue(OffsetProperty, newOffset);

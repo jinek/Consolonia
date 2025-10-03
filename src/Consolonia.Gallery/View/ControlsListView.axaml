@@ -67,7 +67,7 @@
                   DockPanel.Dock="Left"
                   SelectedIndex="0"
                   Focusable="true"
-                  Width="23"
+                  Width="24"
                   SelectionMode="Single">
             <ListBox.ItemTemplate>
                 <DataTemplate>
