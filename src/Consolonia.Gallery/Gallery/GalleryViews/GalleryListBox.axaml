@@ -6,13 +6,13 @@
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryListBox">
     <DockPanel>
         <DockPanel.Styles>
-            <Style Selector="ListBox ListBoxItem:nth-child3">
-                <Setter Property="Foreground"
-                        Value="Red" />
+            <Style Selector="ListBox ListBoxItem:nth-child(5n+3)">
+                <Setter Property="Foreground" Value="Red" />
+                <Setter Property="FontWeight" Value="Bold" />
             </Style>
-            <Style Selector="ListBox ListBoxItem:nth-last-child4">
-                <Setter Property="Foreground"
-                        Value="Blue" />
+            <Style Selector="ListBox ListBoxItem:nth-last-child(5n+4)">
+                <Setter Property="Foreground" Value="Blue" />
+                <Setter Property="FontWeight" Value="Bold" />
             </Style>
         </DockPanel.Styles>
         <StackPanel DockPanel.Dock="Top"
@@ -42,6 +42,7 @@
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom"
                     Orientation="Horizontal"
+                    Spacing="1"
                     Margin="1">
             <Button TabIndex="6"
                     Command="{Binding AddItemCommand}">
