@@ -23,19 +23,41 @@
         </StackPanel>
         <StackPanel DockPanel.Dock="Right"
                     Margin="1">
-            <CheckBox TabIndex="2" IsChecked="{Binding Multiple}">Multiple</CheckBox>
-            <CheckBox TabIndex="3" IsChecked="{Binding Toggle}">Toggle</CheckBox>
-            <CheckBox TabIndex="4" IsChecked="{Binding AlwaysSelected}">AlwaysSelected</CheckBox>
-            <CheckBox TabIndex="5" IsChecked="{Binding AutoScrollToSelectedItem}">AutoScrollToSelectedItem</CheckBox>
+            <CheckBox TabIndex="2"
+                      IsChecked="{Binding Multiple}">
+                Multiple
+            </CheckBox>
+            <CheckBox TabIndex="3"
+                      IsChecked="{Binding Toggle}">
+                Toggle
+            </CheckBox>
+            <CheckBox TabIndex="4"
+                      IsChecked="{Binding AlwaysSelected}">
+                AlwaysSelected
+            </CheckBox>
+            <CheckBox TabIndex="5"
+                      IsChecked="{Binding AutoScrollToSelectedItem}">
+                AutoScrollToSelectedItem
+            </CheckBox>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom"
                     Orientation="Horizontal"
                     Margin="1">
-            <Button TabIndex="6" Command="{Binding AddItemCommand}">Add</Button>
-            <Button TabIndex="7" Command="{Binding RemoveItemCommand}">Remove</Button>
-            <Button TabIndex="8" Command="{Binding SelectRandomItemCommand}">Select Random Item</Button>
+            <Button TabIndex="6"
+                    Command="{Binding AddItemCommand}">
+                Add
+            </Button>
+            <Button TabIndex="7"
+                    Command="{Binding RemoveItemCommand}">
+                Remove
+            </Button>
+            <Button TabIndex="8"
+                    Command="{Binding SelectRandomItemCommand}">
+                Select Random Item
+            </Button>
         </StackPanel>
-        <ListBox TabIndex="0" ItemsSource="{Binding Items}"
+        <ListBox TabIndex="0"
+                 ItemsSource="{Binding Items}"
                  Selection="{Binding Selection}"
                  AutoScrollToSelectedItem="{Binding AutoScrollToSelectedItem}"
                  SelectionMode="{Binding SelectionMode^}" />

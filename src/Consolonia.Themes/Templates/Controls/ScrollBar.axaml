@@ -3,7 +3,7 @@
                     xmlns:console="https://github.com/jinek/consolonia">
     <console:SizeToWidthConverter x:Key="SizeToWidthConverter" />
     <console:SizeToHeightConverter x:Key="SizeToHeightConverter" />
-    
+
     <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="{x:Type ScrollBar}"
                   TargetType="ScrollBar">
@@ -175,7 +175,7 @@
             <Setter Property="SmallChange"
                     Value="1" />
             <Setter Property="LargeChange"
-                    Value="{Binding Viewport, RelativeSource={RelativeSource AncestorType=ScrollViewer},Converter={StaticResource SizeToHeightConverter}}"/>
+                    Value="{Binding Viewport, RelativeSource={RelativeSource AncestorType=ScrollViewer},Converter={StaticResource SizeToHeightConverter}}" />
         </Style>
         <Style Selector="^:horizontal">
             <Setter Property="Height"
@@ -183,7 +183,7 @@
             <Setter Property="SmallChange"
                     Value="1" />
             <Setter Property="LargeChange"
-                    Value="{Binding Viewport, RelativeSource={RelativeSource AncestorType=ScrollViewer}, Converter={StaticResource SizeToWidthConverter}}"/>
+                    Value="{Binding Viewport, RelativeSource={RelativeSource AncestorType=ScrollViewer}, Converter={StaticResource SizeToWidthConverter}}" />
         </Style>
         <!--<Style Selector="^ /template/ RepeatButton.repeat">
     <Setter Property="Padding" Value="2" />

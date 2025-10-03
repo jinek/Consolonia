@@ -64,11 +64,11 @@
         </Menu>
 
         <ListBox x:Name="GalleryGrid"
-                  DockPanel.Dock="Left"
-                  SelectedIndex="0"
-                  Focusable="true"
-                  Width="24"
-                  SelectionMode="Single">
+                 DockPanel.Dock="Left"
+                 SelectedIndex="0"
+                 Focusable="true"
+                 Width="24"
+                 SelectionMode="Single">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" />
