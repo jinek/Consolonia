@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackAsTool>true</PackAsTool>
+        <Description>This is a preview application for visualizating xaml files in consolonia</Description>
         <ToolCommandName>Consolonia.PreviewHost</ToolCommandName>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
