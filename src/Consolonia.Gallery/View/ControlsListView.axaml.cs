@@ -38,7 +38,7 @@ namespace Consolonia.Gallery.View
             DataContext = new ControlsListViewModel();
 
             ViewModel.SelectedTheme = Application.Current.Styles[0].GetType().ToString().Split('.').Last()
-                .Replace("Theme", string.Empty);
+                .Replace("Theme", string.Empty, StringComparison.OrdinalIgnoreCase);
 
             GalleryGrid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
 
