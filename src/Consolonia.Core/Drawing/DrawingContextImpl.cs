@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
@@ -184,13 +183,13 @@ namespace Consolonia.Core.Drawing
                                 Line stroke = streamGeometry.Strokes[iStroke];
                                 RectangleLinePosition strokePosition = strokePositions[iStroke];
                                 if (strokePosition == RectangleLinePosition.Left)
-                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Left);
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Left);
                                 else if (strokePosition == RectangleLinePosition.Right)
-                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Right);
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Right);
                                 else if (strokePosition == RectangleLinePosition.Top)
-                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Top);
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Top);
                                 else if (strokePosition == RectangleLinePosition.Bottom)
-                                    DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Bottom);
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Bottom);
                             }
                         }
                     }
@@ -266,10 +265,10 @@ namespace Consolonia.Core.Drawing
                 or { Thickness: 0 }
                 or { Brush: null }
                 or { Brush: LineBrush { Brush: null } }) return;
-            DrawBoxLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width), RectangleLinePosition.Top);
-            DrawBoxLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width), RectangleLinePosition.Bottom);
-            DrawBoxLineInternal(pen, new Line(r.TopLeft, true, (int)r.Height), RectangleLinePosition.Left);
-            DrawBoxLineInternal(pen, new Line(r.TopRight, true, (int)r.Height), RectangleLinePosition.Right);
+            DrawLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width), RectangleLinePosition.Top);
+            DrawLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width), RectangleLinePosition.Bottom);
+            DrawLineInternal(pen, new Line(r.TopLeft, true, (int)r.Height), RectangleLinePosition.Left);
+            DrawLineInternal(pen, new Line(r.TopRight, true, (int)r.Height), RectangleLinePosition.Right);
         }
 
 
@@ -480,7 +479,7 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            DrawBoxLineInternal(pen, line, RectangleLinePosition.Unknown);
+            DrawLineInternal(pen, line, RectangleLinePosition.Unknown);
         }
 
         private void ApplyTextDecorationLineInternal(IPen pen, Line line)
@@ -592,13 +591,11 @@ namespace Consolonia.Core.Drawing
         /// <param name="pen">pen</param>
         /// <param name="line">line</param>
         /// <param name="linePosition">The relative rectangle line position</param>
-        private void DrawBoxLineInternal(IPen pen, Line line, RectangleLinePosition linePosition)
+        private void DrawLineInternal(IPen pen, Line line, RectangleLinePosition linePosition)
         {
             if (pen.Thickness == 0) return;
 
             line = TransformLineInternal(line);
-
-            Point head = line.PStart;
 
             Color? extractColorCheckPlatformSupported =
                 ExtractColorOrNullWithPlatformCheck(pen, out LineStyles lineStyles);
@@ -622,18 +619,25 @@ namespace Consolonia.Core.Drawing
             }
             else
             {
-                byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
-                var symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, 1); //beginning
-
-                pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
-                symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, line.Length - 1); //line
-
-                pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
-                symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, 1); //ending
+                DrawBoxLine(line, color, lineStyle);
             }
+        }
+
+        private void DrawBoxLine(Line line, Color color, LineStyle lineStyle)
+        {
+            Point head = line.PStart;
+
+            byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
+            var symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, 1); //beginning
+
+            pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
+            symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, line.Length - 1); //line
+
+            pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
+            symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, 1); //ending
         }
 
         private void DrawEdgeLine(Line line, RectangleLinePosition linePosition, LineStyle lineStyle, Color color)

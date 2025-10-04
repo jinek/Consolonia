@@ -555,7 +555,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             dc.DrawGlyphRun(brush, glyphRunImpl);
         }
 
-        private static readonly object[] PenVariations =
+        private static readonly object[] OverlapBoxVariations =
         {
             new object[]
             {
@@ -565,6 +565,16 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 ─┐                                                                              
                  │                                                                              
                 ─┘
+                """
+            },
+
+            new object[]
+            {
+                new Rect(0.5, 0.5, 1, 1),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+                """
+                ┌┐                                                                              
+                └┘
                 """
             },
             new object[]
@@ -672,14 +682,62 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         };
 
 
-        [TestCaseSource(nameof(PenVariations))]
-        public void DrawBoxCharsOverEdge(Rect rect, IPen pen, string expected)
+        [TestCaseSource(nameof(OverlapBoxVariations))]
+        public void DrawBoxOverEdge(Rect rect, IPen pen, string expected)
         {
             var consoleTopLevelImpl = new ConsoleWindowImpl();
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
             dc.DrawRectangle(Brushes.Blue, pen, rect);
 
+            var text = buffer.PrintBuffer();
+            Assert.AreEqual(expected.Trim(), text.Trim());
+        }
+
+        private static readonly object[] LineVariations =
+        {
+            new object[]
+            {
+                new Point(0.5, 0.5),
+                new Point(1.5, 0.5),
+                """
+                ──                                                                              
+                """
+            },
+            new object[]
+            {
+                new Point(-0.5, 0.5),
+                new Point(0.5, 0.5),
+                """
+                ─                
+                """
+            },
+            new object[]
+            {
+                new Point(0.5, 0.5),
+                new Point(0.5, 1.5),
+                """
+                │                                                                               
+                │  
+                """
+            },
+            new object[]
+            {
+                new Point(0.5, -0.5),
+                new Point(0.5, 0.5),
+                """
+                │                                                                               
+                """
+            },
+        };
+
+        [TestCaseSource(nameof(LineVariations))]
+        public void DrawLines(Point start, Point end, string expected)
+        {
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
+            dc.DrawLine(new Pen(Brushes.Black), start, end);
             var text = buffer.PrintBuffer();
             Assert.AreEqual(expected.Trim(), text.Trim());
         }
