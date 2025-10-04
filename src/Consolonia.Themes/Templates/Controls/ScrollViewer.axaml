@@ -127,5 +127,18 @@
             <Setter Property="Foreground"
                     Value="{DynamicResource ThemeForegroundBrush}" />
         </Style>
+        <Style Selector="^ /template/ ScrollBar#PART_VerticalScrollBar">
+            <Setter Property="SmallChange"
+                    Value="1" />
+            <Setter Property="LargeChange"
+                    Value="{Binding Viewport, RelativeSource={RelativeSource AncestorType=ScrollViewer},Converter={StaticResource SizeToHeightConverter}}" />
+        </Style>
+        <Style Selector="^ /template/ ScrollBar#PART_HorizontalScrollBar">
+            <Setter Property="SmallChange"
+                    Value="1" />
+            <Setter Property="LargeChange"
+                    Value="{Binding Viewport, RelativeSource={RelativeSource AncestorType=ScrollViewer}, Converter={StaticResource SizeToWidthConverter}}" />
+        </Style>
+
     </ControlTheme>
 </ResourceDictionary>

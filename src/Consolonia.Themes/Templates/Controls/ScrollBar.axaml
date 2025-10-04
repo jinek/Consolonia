@@ -172,18 +172,10 @@
         <Style Selector="^:vertical">
             <Setter Property="Width"
                     Value="1" />
-            <Setter Property="SmallChange"
-                    Value="1" />
-            <Setter Property="LargeChange"
-                    Value="{Binding Viewport, RelativeSource={RelativeSource AncestorType=ScrollViewer},Converter={StaticResource SizeToHeightConverter}}" />
         </Style>
         <Style Selector="^:horizontal">
             <Setter Property="Height"
                     Value="1" />
-            <Setter Property="SmallChange"
-                    Value="1" />
-            <Setter Property="LargeChange"
-                    Value="{Binding Viewport, RelativeSource={RelativeSource AncestorType=ScrollViewer}, Converter={StaticResource SizeToWidthConverter}}" />
         </Style>
         <!--<Style Selector="^ /template/ RepeatButton.repeat">
     <Setter Property="Padding" Value="2" />
