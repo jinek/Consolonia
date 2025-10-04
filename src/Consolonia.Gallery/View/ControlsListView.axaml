@@ -66,6 +66,7 @@
         <ListBox x:Name="GalleryGrid"
                  DockPanel.Dock="Left"
                  SelectedIndex="0"
+                 Focusable="True"
                  SelectionMode="Single">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
