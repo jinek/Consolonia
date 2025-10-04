@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
@@ -622,13 +623,16 @@ namespace Consolonia.Core.Drawing
             else
             {
                 byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //beginning
+                var symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
+                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, 1); //beginning
 
                 pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length - 1); //line
+                symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
+                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, line.Length - 1); //line
 
                 pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //ending 
+                symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
+                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, 1); //ending
             }
         }
 
@@ -735,38 +739,7 @@ namespace Consolonia.Core.Drawing
             return ((ISolidColorBrush)brush).Color;
         }
 
-        /// <summary>
-        ///     Draw pixels for a line with line style and a pattern
-        /// </summary>
-        /// <param name="head">the current caret position</param>
-        /// <param name="line">line to render</param>
-        /// <param name="lineStyle">line style</param>
-        /// <param name="pattern">pattern of character to use</param>
-        /// <param name="color">color for char</param>
-        /// <param name="count">number of chars</param>
-        private void DrawBoxPixelAndMoveHead(ref Point head, Line line, LineStyle lineStyle, byte pattern, Color color,
-            int count)
-        {
-            Rect rectToRefresh = line.Vertical
-                ? new Rect(head.X, head.Y, 1, count)
-                : new Rect(head.X, head.Y, count, 1);
 
-            var start = line.Vertical ? rectToRefresh.Top : rectToRefresh.Left;
-            var end = line.Vertical ? rectToRefresh.Bottom : rectToRefresh.Right;
-            for (var i = start; i < end; i++)
-            {
-                if (CurrentClip.ContainsExclusive(head))
-                    _pixelBuffer[head] =
-                        _pixelBuffer[head].Blend(new Pixel(new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle)),
-                            color));
-
-                head = line.Vertical
-                    ? head.WithY(head.Y + 1)
-                    : head.WithX(head.X + 1);
-            }
-
-            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
-        }
 
         private static byte GetBoxPatternFromLineStyle(byte pattern, LineStyle lineStyle)
         {
