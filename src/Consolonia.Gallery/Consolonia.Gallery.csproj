@@ -1,11 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
-
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <PackAsTool>true</PackAsTool>
+        <Description>This is demo applciation for consolonia controls.</Description>
         <ToolCommandName>Consolonia.Gallery</ToolCommandName>
         <IsPackable>true</IsPackable>
+        <!-- Disable trimming -->
+        <PublishTrimmed>false</PublishTrimmed>
+        <Trim>false</Trim>
+        <RuntimeIdentifiers>win-x64;linux-x64;osx-x64;win-arm64;linux-arm64;osx-arm64;</RuntimeIdentifiers>
     </PropertyGroup>
 
     <ItemGroup>
