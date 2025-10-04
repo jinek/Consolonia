@@ -728,7 +728,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 """
                 │                                                                               
                 """
-            },
+            }
         };
 
         [TestCaseSource(nameof(LineVariations))]
@@ -738,7 +738,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
             dc.DrawLine(new Pen(Brushes.Black), start, end);
-            var text = buffer.PrintBuffer();
+            string text = buffer.PrintBuffer();
             Assert.AreEqual(expected.Trim(), text.Trim());
         }
 
