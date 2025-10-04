@@ -24,7 +24,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             if (Extent.Height > Viewport.Height || Extent.Width > Viewport.Width)
             {
                 var scrollable = Child as ILogicalScrollable;
-                var isLogical = scrollable?.IsLogicalScrollEnabled == true;
+                bool isLogical = scrollable?.IsLogicalScrollEnabled == true;
                 // Bug in AvaloniaEdit which hardcodes scroll size to large pixel value.
                 if (scrollable?.GetType().FullName == "AvaloniaEdit.Editing.TextArea")
                     isLogical = false;
