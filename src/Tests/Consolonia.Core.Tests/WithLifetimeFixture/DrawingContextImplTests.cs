@@ -569,6 +569,16 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             },
             new object[]
             {
+                new Rect(-1.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+                """
+                ┐                                                                               
+                │                                                                               
+                ┘
+                """
+            },
+            new object[]
+            {
                 new Rect(-.5, 0, 2, 2),
                 new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.DoubleLine }),
                 """
@@ -585,6 +595,16 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 ▁                                                                               
                  ▏                                                                              
                 ▔                              
+                """
+            },
+            new object[]
+            {
+                new Rect(-1.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+                """
+                                                                                                
+                ▏                                                                               
+                                               
                 """
             },
             new object[]
@@ -608,6 +628,14 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             },
             new object[]
             {
+                new Rect(0, -1.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+                """
+                └─┘                                                                             
+                """
+            },
+            new object[]
+            {
                 new Rect(0, -.5, 2, 2),
                 new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.DoubleLine }),
                 """
@@ -621,6 +649,14 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
                 """
                 ▕ ▏                                                                             
+                 ▔                                                                              
+                """
+            },
+            new object[]
+            {
+                new Rect(0, -1.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+                """
                  ▔                                                                              
                 """
             },

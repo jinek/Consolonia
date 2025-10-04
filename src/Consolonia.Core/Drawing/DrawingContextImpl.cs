@@ -750,12 +750,9 @@ namespace Consolonia.Core.Drawing
             Rect rectToRefresh = line.Vertical
                 ? new Rect(head.X, head.Y, 1, count)
                 : new Rect(head.X, head.Y, count, 1);
-            Rect intersect = CurrentClip.Intersect(rectToRefresh);
-            if (intersect.IsEmpty())
-                return;
 
-            var start = line.Vertical ? intersect.Top : intersect.Left;
-            var end = line.Vertical ? intersect.Bottom : intersect.Right;
+            var start = line.Vertical ? rectToRefresh.Top : rectToRefresh.Left;
+            var end = line.Vertical ? rectToRefresh.Bottom : rectToRefresh.Right;
             for (var i = start; i < end; i++)
             {
                 if (CurrentClip.ContainsExclusive(head))
@@ -765,10 +762,10 @@ namespace Consolonia.Core.Drawing
 
                 head = line.Vertical
                     ? head.WithY(head.Y + 1)
-                        : head.WithX(head.X + 1);
+                    : head.WithX(head.X + 1);
             }
 
-            _consoleWindowImpl.DirtyRegions.AddRect(intersect);
+            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
 
         private static byte GetBoxPatternFromLineStyle(byte pattern, LineStyle lineStyle)
@@ -792,12 +789,9 @@ namespace Consolonia.Core.Drawing
             Rect rectToRefresh = isVertical
                 ? new Rect((int)head.X, (int)head.Y, 1, count)
                 : new Rect((int)head.X, (int)head.Y, count, 1);
-            Rect intersect = CurrentClip.Intersect(rectToRefresh);
-            if (intersect.IsEmpty())
-                return;
 
-            var start = isVertical ? intersect.Top : intersect.Left;
-            var end = isVertical ? intersect.Bottom : intersect.Right;
+            var start = isVertical ? rectToRefresh.Top : rectToRefresh.Left;
+            var end = isVertical ? rectToRefresh.Bottom : rectToRefresh.Right;
             var newPixel = new Pixel(symbol, color);
             for (var i = start; i < end; i++)
             {
@@ -809,7 +803,7 @@ namespace Consolonia.Core.Drawing
                     : head.WithX(head.X + 1);
             }
 
-            _consoleWindowImpl.DirtyRegions.AddRect(intersect);
+            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
 
         private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
