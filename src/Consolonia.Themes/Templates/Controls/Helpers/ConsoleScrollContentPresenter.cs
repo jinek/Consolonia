@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Utilities;
@@ -22,8 +23,11 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
             // base.OnPointerWheelChanged(e);
             if (Extent.Height > Viewport.Height || Extent.Width > Viewport.Width)
             {
-                // var scrollable = Child as ILogicalScrollable;
-                // var isLogical = scrollable?.IsLogicalScrollEnabled == true;
+                var scrollable = Child as ILogicalScrollable;
+                var isLogical = scrollable?.IsLogicalScrollEnabled == true;
+                // Bug in AvaloniaEdit which hardcodes scroll size to large pixel value.
+                if (scrollable?.GetType().FullName == "AvaloniaEdit.Editing.TextArea")
+                    isLogical = false;
 
                 double x = Offset.X;
                 double y = Offset.Y;
@@ -41,7 +45,7 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
                 if (Extent.Height > Viewport.Height)
                 {
                     // double height = isLogical ? scrollable!.ScrollSize.Height : 50;
-                    double height = 3;
+                    double height = isLogical ? scrollable!.ScrollSize.Height : 3;
                     y += -delta.Y * height;
                     y = Math.Max(y, 0);
                     y = Math.Min(y, Extent.Height - Viewport.Height);
@@ -49,8 +53,8 @@ namespace Consolonia.Themes.Templates.Controls.Helpers
 
                 if (Extent.Width > Viewport.Width)
                 {
-                    //double width = isLogical ? scrollable!.ScrollSize.Width : 50;
-                    double width = 3;
+                    // double width = isLogical ? scrollable!.ScrollSize.Width : 50;
+                    double width = isLogical ? scrollable!.ScrollSize.Width : 3;
                     x += -delta.X * width;
                     x = Math.Max(x, 0);
                     x = Math.Min(x, Extent.Width - Viewport.Width);
