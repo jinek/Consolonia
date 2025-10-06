@@ -113,26 +113,28 @@ namespace Consolonia.Core.Drawing
                 int px = (int)Math.Floor(targetRect.TopLeft.X);
                 for (int x = 0; x < bitmap.Info.Width; x += 2, px++)
                 {
-                    // get the quad pixel from the bitmap as a quad of 4 SKColor values
-                    quadPixelColors[0] = pixels[pixelRow + x];
-                    quadPixelColors[1] = pixels[pixelRow + x + 1];
-                    quadPixelColors[2] = pixels[pixelRow + bitmap.Width + x];
-                    quadPixelColors[3] = pixels[pixelRow + bitmap.Width + x + 1];
-
-                    // map it to a single char to represent the 4 pixels
-                    char quadPixelChar = GetQuadPixelCharacter(quadPixelColors);
-
-                    // get the combined colors for the quad pixel
-                    Color foreground = GetForegroundColorForQuadPixel(quadPixelChar, quadPixelColors);
-                    Color background = GetBackgroundColorForQuadPixel(quadPixelChar, quadPixelColors);
-
-                    var imagePixel = new Pixel(
-                        new PixelForeground(new Symbol(quadPixelChar), foreground),
-                        new PixelBackground(background));
-
                     var point = new Point(px, py);
                     if (CurrentClip.ContainsExclusive(point))
+                    {
+                        // get the quad pixel from the bitmap as a quad of 4 SKColor values
+                        quadPixelColors[0] = pixels[pixelRow + x];
+                        quadPixelColors[1] = pixels[pixelRow + x + 1];
+                        quadPixelColors[2] = pixels[pixelRow + bitmap.Width + x];
+                        quadPixelColors[3] = pixels[pixelRow + bitmap.Width + x + 1];
+
+                        // map it to a single char to represent the 4 pixels
+                        char quadPixelChar = GetQuadPixelCharacter(quadPixelColors);
+
+                        // get the combined colors for the quad pixel
+                        Color foreground = GetForegroundColorForQuadPixel(quadPixelChar, quadPixelColors);
+                        Color background = GetBackgroundColorForQuadPixel(quadPixelChar, quadPixelColors);
+
+                        var imagePixel = new Pixel(
+                            new PixelForeground(new Symbol(quadPixelChar), foreground),
+                            new PixelBackground(background));
+
                         _pixelBuffer[point] = _pixelBuffer[point].Blend(imagePixel);
+                    }
                 }
             }
 
@@ -791,9 +793,9 @@ namespace Consolonia.Core.Drawing
             ushort lineEnd = isVertical ? (ushort)intersectLine.Bottom : (ushort)intersectLine.Right;
             // adjust to the start of the intersected line
             if (isVertical)
-                y = lineStart; 
+                y = lineStart;
             else
-                x = lineStart; 
+                x = lineStart;
 
             var newPixel = new Pixel(symbol, color);
             for (ushort i = lineStart; i < lineEnd; i++)
