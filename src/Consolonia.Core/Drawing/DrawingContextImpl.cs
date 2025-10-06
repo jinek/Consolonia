@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
@@ -621,19 +622,23 @@ namespace Consolonia.Core.Drawing
 
         private void DrawBoxLine(Line line, Color color, LineStyle lineStyle)
         {
-            Point head = line.PStart;
+            // NOTE: We floor x,y because this algo is going from avalonia 0.5 => 1.5 = length of 1
+            // to console coords. Drawing a line from 0.5 of length 1 should fill cell[0] and cell[1] (start of line char, end of line char)
+            // Drawing a line from -.5 of length one should draw should fill cell[-1] (clipped) and cell[0] (end of line char)
+            var x = (int)Math.Floor(line.PStart.X);
+            var y = (int)Math.Floor(line.PStart.Y);
 
             byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
             var symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
-            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, 1); //beginning
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in symbol, color, 1); //beginning
 
             pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
             symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
-            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, line.Length - 1); //line
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in symbol, color, line.Length - 1); //line
 
             pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
             symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
-            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, 1); //ending
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in symbol, color, 1); //ending
         }
 
         private void DrawEdgeLine(Line line, RectangleLinePosition linePosition, LineStyle lineStyle, Color color)
@@ -671,18 +676,17 @@ namespace Consolonia.Core.Drawing
                     throw new NotImplementedException("This shouldn't happen");
             }
 
-            Point head = line.PStart;
+            // NOTE: We floor x,y because this algo is going from avalonia fractional coordinates to pixel buffer coordinates.
+            // Drawing a line from 0.5 of length 1 should fill cell[0] and cell[1] (start of line char, end of line char)
+            // Drawing a line from -.5 of length one should draw should fill cell[-1] (clipped) and cell[0] (end of line char)
+            // Direct casting to int of negative numbers truncates TOWARDS zero, so -0.5 becomes 0, we need -1
+            var x = (int)Math.Floor(line.PStart.X);
+            var y = (int)Math.Floor(line.PStart.Y);
 
             int length = line.Length;
-            if (!startSymbol.NothingToDraw())
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in startSymbol, color, 1);
-            else
-                head += line.Vertical ? new Vector(0, 1) : new Vector(1, 0);
-
-            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in middleSymbol, color, length - 1);
-
-            if (!endSymbol.NothingToDraw())
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in endSymbol, color, 1);
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in startSymbol, color, 1);
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in middleSymbol, color, length - 1);
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in endSymbol, color, 1);
         }
 
         /// <summary>
@@ -761,47 +765,51 @@ namespace Consolonia.Core.Drawing
         /// <remarks>
         /// This moves the head position by count in the appropriate direction.
         /// </remarks>
-        /// <param name="head">starting point</param>
+        /// <param name="x">x starting point IN PIXEL COORDINATES THAT CAN BE NEGATIVE</param>
+        /// <param name="y">y starting point IN PIXEL COORDINATES THAT CAN BE NEGATIVE</param>
         /// <param name="isVertical">is vertical or horizontal head advancement</param>
         /// <param name="symbol">symbol to draw with</param>
         /// <param name="color">color to use</param>
         /// <param name="count">number of symbols to draw</param>
-        private void DrawLineSymbolAndMoveHead(ref Point head, bool isVertical, in Symbol symbol, Color color,
+        private void DrawLineSymbolAndMoveHead(ref int x, ref int y, bool isVertical, in Symbol symbol, Color color,
             int count)
         {
-            Rect rectToRefresh = isVertical
-                ? new Rect(head.X, head.Y, 1, count)
-                : new Rect(head.X, head.Y, count, 1);
-            var intersectRect = CurrentClip.Intersect(rectToRefresh);
-            if (intersectRect.IsEmpty())
+            Rect lineBounds = isVertical
+                ? new Rect(x, y, 1, count)
+                : new Rect(x, y, count, 1);
+            var intersectLine = CurrentClip.Intersect(lineBounds);
+            if (intersectLine.IsEmpty())
             {
-                head = isVertical
-                    ? head.WithY(head.Y + count)
-                    : head.WithX(head.X + count);
+                if (isVertical)
+                    y += count;
+                else
+                    x += count;
                 return;
             }
 
-            ushort start = isVertical ? (ushort)intersectRect.Top : (ushort)intersectRect.Left;
-            ushort end = isVertical ? (ushort)intersectRect.Bottom : (ushort)intersectRect.Right;
-            if (intersectRect.Top > rectToRefresh.Top || intersectRect.Left > rectToRefresh.Left)
+            ushort lineStart = isVertical ? (ushort)intersectLine.Top : (ushort)intersectLine.Left;
+            ushort lineEnd = isVertical ? (ushort)intersectLine.Bottom : (ushort)intersectLine.Right;
+            if ((isVertical && intersectLine.Top > lineBounds.Top) ||
+                (!isVertical && intersectLine.Left > lineBounds.Left))
             {
-                // we need to move head to the start of the intersection
-                head = (isVertical) ?
-                    head.WithY(head.Y + (intersectRect.Top - Math.Floor(head.Y))) :
-                    head.WithX(head.X + (intersectRect.Left - Math.Floor(head.X)));
+                if (isVertical)
+                    y += (int)(intersectLine.Top - y);
+                else
+                    x += (int)(intersectLine.Left - x);
             }
+
             var newPixel = new Pixel(symbol, color);
-            for (ushort i = start; i < end; i++)
+            for (ushort i = lineStart; i < lineEnd; i++)
             {
-                if (CurrentClip.ContainsExclusive(head))
-                    _pixelBuffer[head] = _pixelBuffer[head].Blend(newPixel);
+                _pixelBuffer[(ushort)x, (ushort)y] = _pixelBuffer[(ushort)x, (ushort)y].Blend(newPixel);
 
-                head = isVertical
-                    ? head.WithY(head.Y + 1)
-                    : head.WithX(head.X + 1);
+                if (isVertical)
+                    y++;
+                else
+                    x++;
             }
 
-            _consoleWindowImpl.DirtyRegions.AddRect(intersectRect);
+            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(lineBounds));
         }
 
         private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
