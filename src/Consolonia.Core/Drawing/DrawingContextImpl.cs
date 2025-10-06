@@ -791,9 +791,9 @@ namespace Consolonia.Core.Drawing
             ushort lineEnd = isVertical ? (ushort)intersectLine.Bottom : (ushort)intersectLine.Right;
             // adjust to the start of the intersected line
             if (isVertical)
-                y = (int)lineStart; 
+                y = lineStart; 
             else
-                x = (int)lineStart; 
+                x = lineStart; 
 
             var newPixel = new Pixel(symbol, color);
             for (ushort i = lineStart; i < lineEnd; i++)
