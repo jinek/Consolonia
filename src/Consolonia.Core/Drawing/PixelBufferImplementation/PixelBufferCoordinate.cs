@@ -25,6 +25,20 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static explicit operator PixelBufferCoordinate(Point point)
         {
+#if DEBUG
+            if (point.X < 0 || point.Y < 0 || point.X > ushort.MaxValue || point.Y > ushort.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(point));
+#endif
+            // ReSharper disable once ArrangeObjectCreationWhenTypeNotEvident
+            return new((ushort)Math.Floor(point.X), (ushort)Math.Floor(point.Y));
+        }
+
+        public static explicit operator PixelBufferCoordinate(PixelPoint point)
+        {
+#if DEBUG
+            if (point.X < 0 || point.Y < 0 || point.X > ushort.MaxValue || point.Y > ushort.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(point));
+#endif
             // ReSharper disable once ArrangeObjectCreationWhenTypeNotEvident
             return new((ushort)point.X, (ushort)point.Y);
         }
@@ -41,6 +55,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         public static PixelBufferCoordinate ToPixelBufferCoordinate(Point point)
+        {
+            return (PixelBufferCoordinate)point;
+        }
+
+        public static PixelBufferCoordinate ToPixelBufferCoordinate(PixelPoint point)
         {
             return (PixelBufferCoordinate)point;
         }

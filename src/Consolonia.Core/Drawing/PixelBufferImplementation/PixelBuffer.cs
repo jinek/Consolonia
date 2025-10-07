@@ -70,6 +70,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             set => this[(PixelBufferCoordinate)point] = value;
         }
 
+        [JsonIgnore]
+        public Pixel this[PixelPoint point]
+        {
+            get => this[(PixelBufferCoordinate)point];
+            set => this[(PixelBufferCoordinate)point] = value;
+        }
+
         [JsonIgnore] public int Length => _buffer.Length;
 
         [JsonIgnore] public Rect Size => new(0, 0, Width, Height);

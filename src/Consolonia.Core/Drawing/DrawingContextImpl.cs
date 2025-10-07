@@ -627,20 +627,19 @@ namespace Consolonia.Core.Drawing
             // NOTE: We floor x,y because this algo is going from avalonia 0.5 => 1.5 = length of 1
             // to console coords. Drawing a line from 0.5 of length 1 should fill cell[0] and cell[1] (start of line char, end of line char)
             // Drawing a line from -.5 of length one should draw should fill cell[-1] (clipped) and cell[0] (end of line char)
-            var x = (int)Math.Floor(line.PStart.X);
-            var y = (int)Math.Floor(line.PStart.Y);
+            var head = new PixelPoint((int)Math.Floor(line.PStart.X),  (int)Math.Floor(line.PStart.Y));
 
             byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
             var symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
-            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in symbol, color, 1); //beginning
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, 1); //beginning
 
             pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
             symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
-            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in symbol, color, line.Length - 1); //line
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, line.Length - 1); //line
 
             pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
             symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
-            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in symbol, color, 1); //ending
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in symbol, color, 1); //ending
         }
 
         private void DrawEdgeLine(Line line, RectangleLinePosition linePosition, LineStyle lineStyle, Color color)
@@ -682,13 +681,12 @@ namespace Consolonia.Core.Drawing
             // Drawing a line from 0.5 of length 1 should fill cell[0] and cell[1] (start of line char, end of line char)
             // Drawing a line from -.5 of length one should draw should fill cell[-1] (clipped) and cell[0] (end of line char)
             // Direct casting to int of negative numbers truncates TOWARDS zero, so -0.5 becomes 0, we need -1
-            var x = (int)Math.Floor(line.PStart.X);
-            var y = (int)Math.Floor(line.PStart.Y);
+            var head = new PixelPoint((int)Math.Floor(line.PStart.X), (int)Math.Floor(line.PStart.Y));
 
             int length = line.Length;
-            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in startSymbol, color, 1);
-            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in middleSymbol, color, length - 1);
-            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in endSymbol, color, 1);
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in startSymbol, color, 1);
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in middleSymbol, color, length - 1);
+            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in endSymbol, color, 1);
         }
 
         /// <summary>
@@ -767,48 +765,47 @@ namespace Consolonia.Core.Drawing
         /// <remarks>
         /// This moves the head position by count in the appropriate direction.
         /// </remarks>
-        /// <param name="x">x starting point IN PIXEL COORDINATES THAT CAN BE NEGATIVE</param>
-        /// <param name="y">y starting point IN PIXEL COORDINATES THAT CAN BE NEGATIVE</param>
+        /// <param name="head">starting point IN PIXELPOINT COORDINATES THAT CAN BE NEGATIVE</param>
         /// <param name="isVertical">is vertical or horizontal head advancement</param>
         /// <param name="symbol">symbol to draw with</param>
         /// <param name="color">color to use</param>
         /// <param name="count">number of symbols to draw</param>
-        private void DrawLineSymbolAndMoveHead(ref int x, ref int y, bool isVertical, in Symbol symbol, Color color,
+        private void DrawLineSymbolAndMoveHead(ref PixelPoint head, bool isVertical, in Symbol symbol, Color color,
             int count)
         {
             Rect lineBounds = isVertical
-                ? new Rect(x, y, 1, count)
-                : new Rect(x, y, count, 1);
+                ? new Rect(head.X, head.Y, 1, count)
+                : new Rect(head.X, head.Y, count, 1);
             var intersectLine = CurrentClip.Intersect(lineBounds);
             if (intersectLine.IsEmpty())
             {
                 if (isVertical)
-                    y += count;
+                    head = head.WithY(head.Y + count);
                 else
-                    x += count;
+                    head = head.WithX(head.X + count);
                 return;
             }
 
-            ushort lineStart = isVertical ? (ushort)intersectLine.Top : (ushort)intersectLine.Left;
+            ushort lineStart = isVertical ? (ushort)intersectLine.Y : (ushort)intersectLine.X;
             ushort lineEnd = isVertical ? (ushort)intersectLine.Bottom : (ushort)intersectLine.Right;
             // adjust to the start of the intersected line
             if (isVertical)
-                y = lineStart;
+                head = head.WithY(lineStart);
             else
-                x = lineStart;
+                head = head.WithX(lineStart);
 
             var newPixel = new Pixel(symbol, color);
             for (ushort i = lineStart; i < lineEnd; i++)
             {
-                _pixelBuffer[(ushort)x, (ushort)y] = _pixelBuffer[(ushort)x, (ushort)y].Blend(newPixel);
+                _pixelBuffer[head] = _pixelBuffer[head].Blend(newPixel);
 
                 if (isVertical)
-                    y++;
+                    head = head.WithY(head.Y + 1);
                 else
-                    x++;
+                    head = head.WithX(head.X + 1);
             }
 
-            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(lineBounds));
+            _consoleWindowImpl.DirtyRegions.AddRect(intersectLine);
         }
 
         private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
