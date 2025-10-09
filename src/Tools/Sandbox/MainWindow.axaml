@@ -3,30 +3,9 @@
         xmlns:console="https://github.com/jinek/consolonia"
         x:Class="Sandbox.MainWindow"
         Title="Sandbox">
-    <Window.Resources>
-        <console:LineBrush x:Key="EdgeBlack" LineStyle="Edge" Brush="Black"/>
-        <console:LineBrush x:Key="EdgeWideBlack" LineStyle="EdgeWide" Brush="Black"/>
-    </Window.Resources>
-    <StackPanel Orientation="Vertical" Spacing="1" Margin="2">
-        <StackPanel Orientation="Horizontal" Spacing="2">
-            <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="0" StrokeThickness="1" Stroke="Black" />
-            <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="1" StrokeThickness="1" Stroke="{StaticResource EdgeBlack}"/>
-            <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="2" StrokeThickness="1" Stroke="{StaticResource EdgeWideBlack}"/>
-        </StackPanel>
-
-        <StackPanel Orientation="Horizontal" Spacing="2">
-            <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" Grid.Row="0">
-                <Rectangle Fill="Pink" Width="2" Height="2" />
-            </Border>
-
-            <Border BorderThickness="1" BorderBrush="{StaticResource EdgeBlack}" Grid.Column="1" Grid.Row="1">
-                <Rectangle Fill="Pink" Width="2" Height="2" />
-            </Border>
-
-            <Border BorderThickness="1" BorderBrush="{StaticResource EdgeWideBlack}" Grid.Column="1" Grid.Row="2">
-                <Rectangle Fill="Pink" Width="2" Height="2" />
-            </Border>
-        </StackPanel>
+    <StackPanel>
+        <Button Content="E_xit"
+                Click="OnExit"
+                HorizontalAlignment="Left" />
     </StackPanel>
-
 </Window>

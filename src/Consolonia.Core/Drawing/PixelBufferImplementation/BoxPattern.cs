@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
@@ -107,20 +110,35 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             return (byte)(boxPattern | overlayPattern);
         }
 
+        /// <summary>
+        /// This will output human readable strings for box pattern 
+        /// </summary>
+        /// <remarks>This is only called by debugger visualizer</remarks>
+        /// <param name="mask">mask for '╟'</param>
+        /// <returns>"DU,DD,SR" meaning Double Up, Double Down, Single Right</returns>
         public static string GetMaskText(byte mask)
         {
-            return
-                $"{GetSubMaskText((byte)(mask >> 4))}|{GetSubMaskText((byte)mask)}";
+            if (mask == EmptyPattern)
+                return String.Empty;
+            var segments = GetSubMaskSegments("D", (byte)(mask >> 4))
+                .Concat(GetSubMaskSegments("S", (byte)(mask & 0b0000_1111)));
+            return String.Join(',', segments);
         }
 
-        private static string GetSubMaskText(byte mask)
+        private static IEnumerable<string> GetSubMaskSegments(string prefix, byte mask)
         {
-            var top = (mask & 0b1000) == 0b1000 ? 'T' : '_';
-            var right = (mask & 0b0100) == 0b0100 ? 'R' : '_';
-            var down = (mask & 0b0010) == 0b0010 ? 'D' : '_';
-            var left = (mask & 0b0001) == 0b0001 ? 'L' : '_';
+            List<string> segments = new List<string>();
 
-            return $"{top}{right}{down}{left}";
+            if ((mask & 0b1000) == 0b1000)
+                segments.Add($"{prefix}U");
+            if ((mask & 0b0100) == 0b0100)
+                segments.Add($"{prefix}R");
+            if ((mask & 0b0010) == 0b0010)
+                segments.Add($"{prefix}D");
+            if ((mask & 0b0001) == 0b0001)
+                segments.Add($"{prefix}L");
+
+            return segments;
         }
     }
 }

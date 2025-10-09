@@ -9,7 +9,7 @@ using Wcwidth;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("'{GetText()} {BoxPattern.GetMaskText(Pattern)}'")]
+    [DebuggerDisplay("{GetText()}")]
     [JsonConverter(typeof(SymbolConverter))]
     public readonly struct Symbol : IEquatable<Symbol>
     {
@@ -106,7 +106,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// NOTE: This is only for debug purposes, do not use in rendering code as it allocates a string for the character.
         public string GetText()
         {
-            return Complex != null && Complex.Length > 1 ? Complex : Character.ToString();
+            var sym = Complex != null && Complex.Length > 1 ? Complex : Character.ToString();
+            return $"'{sym}' Pattern:{BoxPattern.GetMaskText(Pattern)}";
         }
 
         public bool NothingToDraw()

@@ -441,6 +441,34 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         // * Edge chars are drawn outside of the rectangle
         // * Line chars are drawn inside of the rectangle
         // * Rectangle width/height is adjusted by 1 in both dimensions when there is a pen.
+        /* Example markup for these test cases.
+        <Window.Resources>
+            <console:LineBrush x:Key="EdgeBlack" LineStyle="Edge" Brush="Black"/>
+            <console:LineBrush x:Key="EdgeWideBlack" LineStyle="EdgeWide" Brush="Black"/>
+        </Window.Resources>
+
+            <StackPanel Orientation="Vertical" Spacing="1" Margin="2">
+                <StackPanel Orientation="Horizontal" Spacing="2">
+                    <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="0" StrokeThickness="1" Stroke="Black" />
+                    <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="1" StrokeThickness="1" Stroke="{StaticResource EdgeBlack}"/>
+                    <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="2" StrokeThickness="1" Stroke="{StaticResource EdgeWideBlack}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="2">
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" Grid.Row="0">
+                        <Rectangle Fill="Pink" Width="2" Height="2" />
+                    </Border>
+
+                    <Border BorderThickness="1" BorderBrush="{StaticResource EdgeBlack}" Grid.Column="1" Grid.Row="1">
+                        <Rectangle Fill="Pink" Width="2" Height="2" />
+                    </Border>
+
+                    <Border BorderThickness="1" BorderBrush="{StaticResource EdgeWideBlack}" Grid.Column="1" Grid.Row="2">
+                        <Rectangle Fill="Pink" Width="2" Height="2" />
+                    </Border>
+            </StackPanel>
+        </StackPanel>
+        */
         [TestCaseSource(nameof(BoxVariations))]
         public void DrawGeometryRectangleWithPen(IPen pen, char[] boxChars)
         {
@@ -449,7 +477,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
             SetOrigin(dc, 1, 1);
             // NOTE: Avalonia <Rectangle> ends up sending us a rectangle which is 1 smaller on width and height, this is testing that code path.
-            var rect = (pen != null) ? 
+            var rect = (pen != null) ?
                 new Rect(.5, .5, 1, 1) : // pen has smaller rect
                 new Rect(.5, .5, 2, 2);  // no pen has original rect
             dc.DrawGeometry(Brushes.Blue, pen, new Rectangle(rect));
@@ -458,7 +486,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             // move to origin location
             rect = (pen != null) ?
                 // pen needs to expand the width and height of where we think the rectangle is
-                new Rect(rect.Left + 1, rect.Top + 1, rect.Width + 1, rect.Height + 1):
+                new Rect(rect.Left + 1, rect.Top + 1, rect.Width + 1, rect.Height + 1) :
                 // no pen just needs to move to the origin location
                 new Rect(rect.Left + 1, rect.Top + 1, rect.Width, rect.Height);
             if (isOuterBox)
@@ -485,7 +513,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                             Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: $"[{x},{y}] Upper left corner expected transparent for empty char");
                         else
                             Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red, message: $"[{x},{y}] Upper left corner expected foreground of red for non empty char");
-                        
+
                         if (isOuterBox)
                             Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black, message: $"[{x},{y}] Upper left corner of outer box expected black background");
                         else
@@ -616,129 +644,129 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
         private static readonly object[] OverlapBoxVariations =
         {
-            new object[]
-            {
-                new Rect(-.5, 0, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
-                """
-                ─┐                                                                              
-                 │                                                                              
-                ─┘
-                """
-            },
+    new object[]
+    {
+        new Rect(-.5, 0, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+        """
+        ─┐                                                                              
+         │                                                                              
+        ─┘
+        """
+    },
 
-            new object[]
-            {
-                new Rect(0.5, 0.5, 1, 1),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
-                """
-                ┌┐                                                                              
-                └┘
-                """
-            },
-            new object[]
-            {
-                new Rect(-1.5, 0, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
-                """
-                ┐                                                                               
-                │                                                                               
-                ┘
-                """
-            },
-            new object[]
-            {
-                new Rect(-.5, 0, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.DoubleLine }),
-                """
-                ═╗                                                                              
-                 ║                                                                              
-                ═╝
-                """
-            },
-            new object[]
-            {
-                new Rect(-.5, 0, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
-                """
-                ▁                                                                               
-                 ▏                                                                              
-                ▔                              
-                """
-            },
-            new object[]
-            {
-                new Rect(-1.5, 0, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
-                """
-                                                                                                
-                ▏                                                                               
-                                               
-                """
-            },
-            new object[]
-            {
-                new Rect(-.5, 0, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.EdgeWide }),
-                """
-                ▄▖                                                                              
-                 ▌                                                                              
-                ▀▘                                                                              
-                """
-            },
-            new object[]
-            {
-                new Rect(0, -.5, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
-                """
-                │ │                                                                             
-                └─┘                                                                             
-                """
-            },
-            new object[]
-            {
-                new Rect(0, -1.5, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
-                """
-                └─┘                                                                             
-                """
-            },
-            new object[]
-            {
-                new Rect(0, -.5, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.DoubleLine }),
-                """
-                ║ ║                                                                             
-                ╚═╝                                                                             
-                """
-            },
-            new object[]
-            {
-                new Rect(0, -.5, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
-                """
-                ▕ ▏                                                                             
-                 ▔                                                                              
-                """
-            },
-            new object[]
-            {
-                new Rect(0, -1.5, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
-                """
-                 ▔                                                                              
-                """
-            },
-            new object[]
-            {
-                new Rect(0, -.5, 2, 2),
-                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.EdgeWide }),
-                """
-                ▐ ▌                                                                             
-                ▝▀▘                                                                             
-                """
-            }
-        };
+    new object[]
+    {
+        new Rect(0.5, 0.5, 1, 1),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+        """
+        ┌┐                                                                              
+        └┘
+        """
+    },
+    new object[]
+    {
+        new Rect(-1.5, 0, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+        """
+        ┐                                                                               
+        │                                                                               
+        ┘
+        """
+    },
+    new object[]
+    {
+        new Rect(-.5, 0, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.DoubleLine }),
+        """
+        ═╗                                                                              
+         ║                                                                              
+        ═╝
+        """
+    },
+    new object[]
+    {
+        new Rect(-.5, 0, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+        """
+        ▁                                                                               
+         ▏                                                                              
+        ▔                              
+        """
+    },
+    new object[]
+    {
+        new Rect(-1.5, 0, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+        """
+
+        ▏                                                                               
+
+        """
+    },
+    new object[]
+    {
+        new Rect(-.5, 0, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.EdgeWide }),
+        """
+        ▄▖                                                                              
+         ▌                                                                              
+        ▀▘                                                                              
+        """
+    },
+    new object[]
+    {
+        new Rect(0, -.5, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+        """
+        │ │                                                                             
+        └─┘                                                                             
+        """
+    },
+    new object[]
+    {
+        new Rect(0, -1.5, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+        """
+        └─┘                                                                             
+        """
+    },
+    new object[]
+    {
+        new Rect(0, -.5, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.DoubleLine }),
+        """
+        ║ ║                                                                             
+        ╚═╝                                                                             
+        """
+    },
+    new object[]
+    {
+        new Rect(0, -.5, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+        """
+        ▕ ▏                                                                             
+         ▔                                                                              
+        """
+    },
+    new object[]
+    {
+        new Rect(0, -1.5, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+        """
+         ▔                                                                              
+        """
+    },
+    new object[]
+    {
+        new Rect(0, -.5, 2, 2),
+        new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.EdgeWide }),
+        """
+        ▐ ▌                                                                             
+        ▝▀▘                                                                             
+        """
+    }
+};
 
 
         [TestCaseSource(nameof(OverlapBoxVariations))]
@@ -755,40 +783,40 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
         private static readonly object[] LineVariations =
         {
-            new object[]
-            {
-                new Point(0.5, 0.5),
-                new Point(1.5, 0.5),
-                """
-                ──                                                                              
-                """
-            },
-            new object[]
-            {
-                new Point(-0.5, 0.5),
-                new Point(0.5, 0.5),
-                """
-                ─                
-                """
-            },
-            new object[]
-            {
-                new Point(0.5, 0.5),
-                new Point(0.5, 1.5),
-                """
-                │                                                                               
-                │  
-                """
-            },
-            new object[]
-            {
-                new Point(0.5, -0.5),
-                new Point(0.5, 0.5),
-                """
-                │                                                                               
-                """
-            }
-        };
+    new object[]
+    {
+        new Point(0.5, 0.5),
+        new Point(1.5, 0.5),
+        """
+        ──                                                                              
+        """
+    },
+    new object[]
+    {
+        new Point(-0.5, 0.5),
+        new Point(0.5, 0.5),
+        """
+        ─                
+        """
+    },
+    new object[]
+    {
+        new Point(0.5, 0.5),
+        new Point(0.5, 1.5),
+        """
+        │                                                                               
+        │  
+        """
+    },
+    new object[]
+    {
+        new Point(0.5, -0.5),
+        new Point(0.5, 0.5),
+        """
+        │                                                                               
+        """
+    }
+};
 
         [TestCaseSource(nameof(LineVariations))]
         public void DrawLines(Point start, Point end, string expected)
