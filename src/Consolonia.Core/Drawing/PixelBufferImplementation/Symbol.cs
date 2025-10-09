@@ -107,7 +107,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public string GetText()
         {
             var sym = Complex != null && Complex.Length > 1 ? Complex : Character.ToString();
-            return $"'{sym}' Pattern:{BoxPattern.GetMaskText(Pattern)}";
+            return $"'{sym}' Box[{BoxPattern.GetMaskText(Pattern)}]";
         }
 
         public bool NothingToDraw()
