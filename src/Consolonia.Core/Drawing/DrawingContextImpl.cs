@@ -158,7 +158,12 @@ namespace Consolonia.Core.Drawing
             {
                 case Rectangle myRectangle:
                     var rect = myRectangle.Rect;
-                    if (pen != null)
+                    if (pen == null)
+                    {
+                        // no border pen means we can just draw the rect. 
+                        DrawRectangle(brush, null, new RoundedRect(rect));
+                    }
+                    else
                     {
                         // This is one of those places where Avalonia/Consolonia don't align well due to character nature of consolonia.
                         //
@@ -167,27 +172,18 @@ namespace Consolonia.Core.Drawing
                         // * if it's an edge brush, we need to draw the edge outside of the fill rectangle,
                         // * if it's a solid brush, we need to draw the fill inside the fill rectangle so that the background
                         //   of the fill shows through.
+                        DrawRectangle(brush, null, new RoundedRect(new Rect(rect.Position, new Size(rect.Size.Width + 1, rect.Size.Height + 1))));
+
                         if (pen.Brush is LineBrush lineBrush && lineBrush.HasEdgeLineStyle())
                         {
-                            // we need to fill the rect with the brush
-                            DrawRectangle(brush, null, new RoundedRect(rect));
                             // now we draw the pen OUTSIDE of the rectangle as the edge border
-                            DrawRectangle(null, pen, new RoundedRect(new Rect(rect.Position.X - 1, rect.Position.Y - 1, rect.Width + 1, rect.Height + 1)));
+                            DrawRectangle(null, pen, new RoundedRect(rect.Inflate(1)));
                         }
                         else
                         {
-                            // When there is a rectangle with a pen Avalonia sends us rectangle which is 1 pixel smaller than the thickness of the pen.
-                            // with the pen drawn centered on the rectangles edge (aka .5). The issue is that we can't draw half pixels.
-                            // It's more complicated than that, as our border pen actually has a background, so we need to fill the full rectangle
-                            // including the area the pen will cover for this to render correctly the background color behind the pen.
-                            DrawRectangle(brush, null, new RoundedRect(new Rect(rect.Position, new Size(rect.Size.Width + 1, rect.Size.Height + 1))));
+                            // we simply draw the pen on the rectangle (aka inside of the border)
                             DrawRectangle(null, pen, new RoundedRect(rect));
                         }
-                    }
-                    else
-                    {
-                        // no border pen means we can just draw the rect. 
-                        DrawRectangle(brush, null, new RoundedRect(rect));
                     }
                     break;
                 case Line myLine:
@@ -313,25 +309,12 @@ namespace Consolonia.Core.Drawing
                 or { Thickness: 0 }
                 or { Brush: null }
                 or { Brush: LineBrush { Brush: null } }) return;
-
-            var topLeft = rect.Rect.TopLeft;
-            var bottomLeft = rect.Rect.BottomLeft;
-            var topRight = rect.Rect.TopRight;
-            var width = (int)rect.Rect.Width;
-            var height = (int)rect.Rect.Height;
-            if (double.IsInteger(rect.Rect.TopLeft.X) && double.IsInteger(rect.Rect.TopLeft.Y))
-            {
-                height--;
-                width--;
-                topLeft = new Point(topLeft.X + .5, topLeft.Y + .5);
-                topRight = new Point(topLeft.X + width, topLeft.Y);
-                bottomLeft = new Point(topLeft.X, topLeft.Y + height);
-            }
-            // when drawing lines we want to draw them in the center of the pixel
-            DrawLineInternal(brush, pen, new Line(topLeft, /*vertical: */ false, width), RectangleLinePosition.Top);
-            DrawLineInternal(brush, pen, new Line(bottomLeft, /*vertical: */ false, width), RectangleLinePosition.Bottom);
-            DrawLineInternal(brush, pen, new Line(topLeft, /*vertical: */ true, height), RectangleLinePosition.Left);
-            DrawLineInternal(brush, pen, new Line(topRight, /*vertical: */ true, height), RectangleLinePosition.Right);
+           
+            // NOTE: Line takes in untransformed Point, not PixelPoint and will be transformed inside DrawLineInternal
+            DrawLineInternal(brush, pen, new Line(rect.Rect.TopLeft, /*vertical: */ false, (int)rect.Rect.Width), RectangleLinePosition.Top);
+            DrawLineInternal(brush, pen, new Line(rect.Rect.BottomLeft, /*vertical: */ false, (int)rect.Rect.Width), RectangleLinePosition.Bottom);
+            DrawLineInternal(brush, pen, new Line(rect.Rect.TopLeft, /*vertical: */ true, (int)rect.Rect.Height), RectangleLinePosition.Left);
+            DrawLineInternal(brush, pen, new Line(rect.Rect.TopRight, /*vertical: */ true, (int)rect.Rect.Height), RectangleLinePosition.Right);
         }
 
 
