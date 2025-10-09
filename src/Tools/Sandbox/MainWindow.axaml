@@ -1,10 +1,35 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:console="https://github.com/jinek/consolonia"
         x:Class="Sandbox.MainWindow"
         Title="Sandbox">
-    <StackPanel>
-        <Button Content="E_xit"
-                Click="OnExit"
-                HorizontalAlignment="Left" />
-    </StackPanel>
+    <Panel>
+    <Canvas>
+        <Rectangle Fill="Red" Width="2" Height="2" Canvas.Left="1" Canvas.Top="1" Stroke="Black" StrokeThickness="1"/>
+        
+        <Rectangle Fill="Pink" Width="2" Height="2" Canvas.Left="1" Canvas.Top="5" StrokeThickness="1">
+            <Rectangle.Stroke>
+                <console:LineBrush LineStyle="Edge" Brush="Black"/>
+            </Rectangle.Stroke>
+        </Rectangle>
+
+        <Rectangle Fill="Pink" Width="2" Height="2" Canvas.Left="1" Canvas.Top="10" StrokeThickness="1">
+            <Rectangle.Stroke>
+                <console:LineBrush LineStyle="EdgeWide" Brush="Black"/>
+            </Rectangle.Stroke>
+        </Rectangle>
+
+        <Border BorderBrush="Black" BorderThickness="1" Canvas.Top="5" Canvas.Left="10" >
+            <Rectangle Fill="AliceBlue" Width="2" Height="2" />
+        </Border>
+
+        <Border BorderThickness="1" Canvas.Top="10" Canvas.Left="10">
+            <Border.BorderBrush>
+                <console:LineBrush LineStyle="Edge" Brush="Black"/>
+            </Border.BorderBrush>
+
+            <Rectangle Fill="AliceBlue" Width="2" Height="2" />
+        </Border>
+    </Canvas>
+    </Panel>
 </Window>

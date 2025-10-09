@@ -9,7 +9,7 @@ using Wcwidth;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
-    [DebuggerDisplay("'{GetText()} {Pattern,b}'")]
+    [DebuggerDisplay("'{GetText()} {BoxPattern.GetMaskText(Pattern)}'")]
     [JsonConverter(typeof(SymbolConverter))]
     public readonly struct Symbol : IEquatable<Symbol>
     {

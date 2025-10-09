@@ -79,7 +79,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         [JsonIgnore] public int Length => _buffer.Length;
 
-        [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
+        [JsonIgnore] public PixelRect Size => new(0, 0, Width, Height);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -25,14 +25,14 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
 
             for (ushort y = 0; y < buffer.Height; y++)
-            for (ushort x = 0; x < buffer.Width; x++)
-            {
-                Pixel pixel = buffer[x, y];
-                Assert.IsTrue(pixel.Width == 1);
-                Assert.IsTrue(pixel.Foreground.Symbol.Character == ' ');
-                Assert.IsTrue(pixel.Foreground.Color == Colors.Transparent);
-                Assert.IsTrue(pixel.Background.Color == Colors.Black);
-            }
+                for (ushort x = 0; x < buffer.Width; x++)
+                {
+                    Pixel pixel = buffer[x, y];
+                    Assert.IsTrue(pixel.Width == 1);
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == ' ');
+                    Assert.IsTrue(pixel.Foreground.Color == Colors.Transparent);
+                    Assert.IsTrue(pixel.Background.Color == Colors.Black);
+                }
         }
 
         [Test]
@@ -319,39 +319,51 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
             SetOrigin(dc, 1, 1);
-            ushort left = 0;
-            ushort top = 0;
+            // NOTE: Rect in avalonia has interesting semantics
+            // Left and Top are INCLUSIVE
+            // Right and Bottom are EXCLUSIVE.
+            // So width=3 and height=3 means pixels at 0,1,2 even though Right = 4 and Bottom = 4
+            // Bottom and Right cells should NOT be drawn into.
             int width = 3;
             int height = 3;
-            int right = width;
-            int bottom = height;
-            dc.DrawRectangle(Brushes.Blue, null, new Rect(left, top, width, height));
+            int left = 1;
+            int top = 1;
+            int right = left + width;
+            int bottom = top + height;
+            dc.DrawRectangle(Brushes.Blue, null, new Rect(0, 0, width, height));
 
-            top++;
-            left++;
-            bottom++;
-            right++;
-            Debug.WriteLine($"{top} {left} {bottom} {right}");
             for (ushort y = 0; y <= bottom; y++)
-            for (ushort x = 0; x <= right; x++)
-                if (x == 0 || x == right)
-                {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
-                }
-                else if (y == 0 || y == bottom)
-                {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
-                }
-                else
-                {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
+                for (ushort x = 0; x <= right; x++)
+                    if (x == 0)
+                    {
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ', message: "Expected empty char outside left border");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Expected transparent foreground color outside left border");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black, message: "Expected black background color outside left border");
+                    }
+                    else if (y == 0)
+                    {
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ', message: "Expected empty char outside top border");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Expected transparent foreground color outside top border");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black, message: "Expected black background color outside top border");
+                    }
+                    else if (x >= right)
+                    {
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ', message: "Expected empty char outside right border");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Expected transparent foreground  color outside right border");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black, message: "Expected black background color outside right border");
+                    }
+                    else if (y >= bottom)
+                    {
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ', message: "Expected empty char outside bottom border");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Expected transparent foreground color outside bottom border");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black, message: "Expected black background color outside bottom border");
+                    }
+                    else
+                    {
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ', message: " Expected empty char inside rectangle");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Expected transparent foreground color inside rectangle");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue, message: "Expected blue background color inside rectangle");
+                    }
         }
 
         private static readonly char[] SingleBoxChars =
@@ -429,109 +441,117 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
             SetOrigin(dc, 1, 1);
-            var rect = new Rect(.5, .5, 3, 3);
+            var rect = new Rect(0, 0, 3, 3);
             dc.DrawRectangle(Brushes.Blue, pen, rect);
 
             // move to origin location
-            var newRect = new Rect(rect.Left + 1, rect.Top + 1, rect.Width, rect.Height);
-            for (ushort y = 0; y <= newRect.Bottom + 1; y++)
-            for (ushort x = 0; x <= newRect.Right + 1; x++)
-                if (x < (ushort)newRect.Left || x > (ushort)newRect.Right ||
-                    y < (ushort)newRect.Top || y > (ushort)newRect.Bottom)
-                {
-                    // outside of box
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
-                }
-                else if (x == (ushort)newRect.Left && y == (ushort)newRect.Top)
-                {
-                    // upper left corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.UpperLeft]);
-                    if (boxChars[(int)LinePositions.UpperLeft] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == (ushort)newRect.Right && y == (ushort)newRect.Top)
-                {
-                    // upper right corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.UpperRight]);
-                    if (boxChars[(int)LinePositions.UpperRight] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == (ushort)newRect.Right && y == (ushort)newRect.Bottom)
-                {
-                    // lower right corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.LowerRight]);
-                    if (boxChars[(int)LinePositions.LowerRight] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == (ushort)newRect.Left && y == (ushort)newRect.Bottom)
-                {
-                    // lower left corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.LowerLeft]);
-                    if (boxChars[(int)LinePositions.LowerLeft] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == (ushort)newRect.Left && y > (ushort)newRect.Top && y < (ushort)newRect.Bottom)
-                {
-                    // left side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Left]);
-                    if (boxChars[(int)LinePositions.Left] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (y == (ushort)newRect.Top && x >= (ushort)newRect.Left + 1 && x < (ushort)newRect.Right - 1)
-                {
-                    //top side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Top]);
-                    if (boxChars[(int)LinePositions.Top] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x == (ushort)newRect.Right && y >= (ushort)newRect.Top && y < (ushort)newRect.Bottom)
-                {
-                    // right side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Right]);
-                    if (boxChars[(int)LinePositions.Right] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (y == (ushort)newRect.Bottom && x >= (ushort)newRect.Left && x < (ushort)newRect.Right)
-                {
-                    // bottom side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Bottom]);
-                    if (boxChars[(int)LinePositions.Bottom] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
-                else if (x > (ushort)newRect.Left && x < (ushort)newRect.Right &&
-                         y > (ushort)newRect.Top && y < (ushort)newRect.Bottom)
-                {
-                    // inside
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
-                }
+            var newRect = new Rect(rect.Left + 1, rect.Top + 1, rect.Width, rect.Height).ToPixelRect();
+
+            // NOTE: Rect in avalonia has interesting semantics
+            // Left and Top are INCLUSIVE
+            // Right and Bottom are EXCLUSIVE.
+            // So width=3 and height=3 means pixels at 0,1,2 even though Right = 4 and Bottom = 4
+            // Bottom and Right cells should NOT be drawn into.
+            var bottomRow = newRect.Bottom - 1;
+            var rightCol = newRect.Right - 1;
+            for (ushort y = 0; y <= newRect.Bottom; y++)
+                for (ushort x = 0; x <= newRect.Right; x++)
+                    if (x < newRect.X || x >= newRect.Right ||
+                        y < newRect.Y || y >= newRect.Bottom)
+                    {
+                        // outside of box
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ', message: "Outside of box expected empty char");
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "outside of box expected transparent Foreground");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black, message: "Outside of box expected black background");
+                    }
+                    else if (x == newRect.X && y == newRect.Y)
+                    {
+                        // upper left corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.UpperLeft]);
+                        if (boxChars[(int)LinePositions.UpperLeft] == ' ')
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Upper left corner expected transparent for empty char");
+                        else
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red, message: "Upper left corner expected foreground of red for non empty char");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue, message: "Upper left corner expected blue background");
+                    }
+                    else if (x == rightCol && y == newRect.Y)
+                    {
+                        // upper right corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.UpperRight]);
+                        if (boxChars[(int)LinePositions.UpperRight] == ' ')
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Upper right corner expected transparent for empty char");
+                        else
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red, message: "Upper right corner expected foreground of red for non empty char");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue, message: "Upper right corner expected blue background");
+                    }
+                    else if (x == rightCol && y == bottomRow)
+                    {
+                        // lower right corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.LowerRight]);
+                        if (boxChars[(int)LinePositions.LowerRight] == ' ')
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Lower right corner expected transparent for empty char");
+                        else
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red, message: "Lower right corner expected foreground of red for non empty char");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue, message: "Lower right corner expected blue background");
+                    }
+                    else if (x == newRect.X && y == bottomRow)
+                    {
+                        // lower left corner
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.LowerLeft]);
+                        if (boxChars[(int)LinePositions.LowerLeft] == ' ')
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Lower left corner expected transparent for empty char");
+                        else
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red, message: "Lower left corner expected foreground of red for non empty char");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue, message: "Lower left corner expected blue background");
+                    }
+                    else if (x == newRect.X && y >= newRect.Y && y < newRect.Bottom)
+                    {
+                        // left side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Left]);
+                        if (boxChars[(int)LinePositions.Left] == ' ')
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Left side expected transparent for empty char");
+                        else
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red, message: "Left side expected foreground of red for non empty char");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue, message: "Left side expected blue background");
+                    }
+                    else if (y == newRect.Y && x >= newRect.X && x < newRect.Right)
+                    {
+                        //top side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Top]);
+                        if (boxChars[(int)LinePositions.Top] == ' ')
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Top side expected transparent for empty char");
+                        else
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red, message: "Top side expected foreground of red for non empty char");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue, message: "Top side expected blue background");
+                    }
+                    else if (x == rightCol && y >= newRect.Y && y < newRect.Bottom)
+                    {
+                        // right side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Right]);
+                        if (boxChars[(int)LinePositions.Right] == ' ')
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Right side expected transparent for empty char");
+                        else
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red, message: "Right side expected foreground of red for non empty char");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue, message: "Right side expected blue background");
+                    }
+                    else if (y == bottomRow && x >= newRect.X && x < newRect.Right)
+                    {
+                        // bottom side
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Bottom]);
+                        if (boxChars[(int)LinePositions.Bottom] == ' ')
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Bottom side expected transparent for empty char");
+                        else
+                            Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red, message: "Bottom side expected foreground of red for non empty char");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue, message: "Bottom side expected blue background");
+                    }
+                    else if (x > newRect.X && x < rightCol &&
+                             y > newRect.Y && y < bottomRow)
+                    {
+                        // inside
+                        Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent, message: "Inside expected transparent for empty char");
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue, message: "Inside expected blue background");
+                    }
         }
 
         internal static void DrawText(DrawingContextImpl dc, ushort x, ushort y, string text, IBrush brush)

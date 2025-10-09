@@ -131,7 +131,7 @@ namespace Consolonia.Core.Drawing
                     caretStyle = pixel.CaretStyle;
                 }
 
-                if (!dirtyRegions.Contains(new Point(x, y), false)) /*checking caret duplication before to fail fast*/
+                if (!dirtyRegions.Contains(new PixelPoint(x, y), false)) /*checking caret duplication before to fail fast*/
                     continue;
 
                 // injecting cursor
@@ -180,9 +180,9 @@ namespace Consolonia.Core.Drawing
             _consoleCursor = consoleCursor;
 
             //todo: low excessive refresh, emptiness can be checked
-            _consoleTopLevelImpl.DirtyRegions.AddRect(new Rect(oldConsoleCursor.Coordinate.X,
+            _consoleTopLevelImpl.DirtyRegions.AddRect(new PixelRect(oldConsoleCursor.Coordinate.X,
                 oldConsoleCursor.Coordinate.Y, 1, 1));
-            _consoleTopLevelImpl.DirtyRegions.AddRect(new Rect(consoleCursor.Coordinate.X,
+            _consoleTopLevelImpl.DirtyRegions.AddRect(new PixelRect(consoleCursor.Coordinate.X,
                 consoleCursor.Coordinate.Y, 1, 1));
 
             RenderToDevice();
