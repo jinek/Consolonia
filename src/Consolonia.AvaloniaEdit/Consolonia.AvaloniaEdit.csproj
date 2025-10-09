@@ -5,7 +5,7 @@
     <PropertyGroup>
         <Description>This package contains theme resources for using AvaloniaEdit in Consolonia applications.</Description>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
@@ -13,6 +13,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Consolonia.Controls\Consolonia.Controls.csproj" />
+      <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
     </ItemGroup>
+
 
 </Project>

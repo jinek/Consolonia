@@ -112,26 +112,28 @@ namespace Consolonia.Core.Drawing
                 int px = (int)Math.Floor(targetRect.TopLeft.X);
                 for (int x = 0; x < bitmap.Info.Width; x += 2, px++)
                 {
-                    // get the quad pixel from the bitmap as a quad of 4 SKColor values
-                    quadPixelColors[0] = pixels[pixelRow + x];
-                    quadPixelColors[1] = pixels[pixelRow + x + 1];
-                    quadPixelColors[2] = pixels[pixelRow + bitmap.Width + x];
-                    quadPixelColors[3] = pixels[pixelRow + bitmap.Width + x + 1];
-
-                    // map it to a single char to represent the 4 pixels
-                    char quadPixelChar = GetQuadPixelCharacter(quadPixelColors);
-
-                    // get the combined colors for the quad pixel
-                    Color foreground = GetForegroundColorForQuadPixel(quadPixelChar, quadPixelColors);
-                    Color background = GetBackgroundColorForQuadPixel(quadPixelChar, quadPixelColors);
-
-                    var imagePixel = new Pixel(
-                        new PixelForeground(new Symbol(quadPixelChar), foreground),
-                        new PixelBackground(background));
-
                     var point = new Point(px, py);
                     if (CurrentClip.ContainsExclusive(point))
+                    {
+                        // get the quad pixel from the bitmap as a quad of 4 SKColor values
+                        quadPixelColors[0] = pixels[pixelRow + x];
+                        quadPixelColors[1] = pixels[pixelRow + x + 1];
+                        quadPixelColors[2] = pixels[pixelRow + bitmap.Width + x];
+                        quadPixelColors[3] = pixels[pixelRow + bitmap.Width + x + 1];
+
+                        // map it to a single char to represent the 4 pixels
+                        char quadPixelChar = GetQuadPixelCharacter(quadPixelColors);
+
+                        // get the combined colors for the quad pixel
+                        Color foreground = GetForegroundColorForQuadPixel(quadPixelChar, quadPixelColors);
+                        Color background = GetBackgroundColorForQuadPixel(quadPixelChar, quadPixelColors);
+
+                        var imagePixel = new Pixel(
+                            new PixelForeground(new Symbol(quadPixelChar), foreground),
+                            new PixelBackground(background));
+
                         _pixelBuffer[point] = _pixelBuffer[point].Blend(imagePixel);
+                    }
                 }
             }
 
@@ -163,29 +165,33 @@ namespace Consolonia.Core.Drawing
                     break;
                 case StreamGeometryImpl streamGeometry:
                 {
-                    // if we have fills to do.
-                    if (streamGeometry.Fills.Count > 0)
+                    // if we have fills to do and a brush with opacity
+                    if (brush != null &&
+                        brush.Opacity > 0 &&
+                        streamGeometry.Fills.Count > 0)
                         foreach (Rectangle fill in streamGeometry.Fills)
                             DrawRectangle(brush, pen, new RoundedRect(fill.Rect));
 
-                    // if we have strokes to draw
-                    if (streamGeometry.Strokes.Count > 0)
+                    // if we have strokes to draw, and a valid pen 
+                    if (pen != null &&
+                        pen.Thickness > 0 &&
+                        pen.Brush != null &&
+                        pen.Brush.Opacity > 0 &&
+                        streamGeometry.Strokes.Count > 0)
                     {
-                        pen ??= new Pen(brush);
-
                         RectangleLinePosition[] strokePositions = InferStrokePositions(streamGeometry);
                         for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
                         {
                             Line stroke = streamGeometry.Strokes[iStroke];
                             RectangleLinePosition strokePosition = strokePositions[iStroke];
                             if (strokePosition == RectangleLinePosition.Left)
-                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Left);
+                                DrawLineInternal(pen, stroke, RectangleLinePosition.Left);
                             else if (strokePosition == RectangleLinePosition.Right)
-                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Right);
+                                DrawLineInternal(pen, stroke, RectangleLinePosition.Right);
                             else if (strokePosition == RectangleLinePosition.Top)
-                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Top);
+                                DrawLineInternal(pen, stroke, RectangleLinePosition.Top);
                             else if (strokePosition == RectangleLinePosition.Bottom)
-                                DrawBoxLineInternal(pen, stroke, RectangleLinePosition.Bottom);
+                                DrawLineInternal(pen, stroke, RectangleLinePosition.Bottom);
                         }
                     }
                 }
@@ -261,10 +267,10 @@ namespace Consolonia.Core.Drawing
                 or { Thickness: 0 }
                 or { Brush: null }
                 or { Brush: LineBrush { Brush: null } }) return;
-            DrawBoxLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width), RectangleLinePosition.Top);
-            DrawBoxLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width), RectangleLinePosition.Bottom);
-            DrawBoxLineInternal(pen, new Line(r.TopLeft, true, (int)r.Height), RectangleLinePosition.Left);
-            DrawBoxLineInternal(pen, new Line(r.TopRight, true, (int)r.Height), RectangleLinePosition.Right);
+            DrawLineInternal(pen, new Line(r.TopLeft, false, (int)r.Width), RectangleLinePosition.Top);
+            DrawLineInternal(pen, new Line(r.BottomLeft, false, (int)r.Width), RectangleLinePosition.Bottom);
+            DrawLineInternal(pen, new Line(r.TopLeft, true, (int)r.Height), RectangleLinePosition.Left);
+            DrawLineInternal(pen, new Line(r.TopRight, true, (int)r.Height), RectangleLinePosition.Right);
         }
 
 
@@ -475,7 +481,7 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            DrawBoxLineInternal(pen, line, RectangleLinePosition.Unknown);
+            DrawLineInternal(pen, line, RectangleLinePosition.Unknown);
         }
 
         private void ApplyTextDecorationLineInternal(IPen pen, Line line)
@@ -587,13 +593,11 @@ namespace Consolonia.Core.Drawing
         /// <param name="pen">pen</param>
         /// <param name="line">line</param>
         /// <param name="linePosition">The relative rectangle line position</param>
-        private void DrawBoxLineInternal(IPen pen, Line line, RectangleLinePosition linePosition)
+        private void DrawLineInternal(IPen pen, Line line, RectangleLinePosition linePosition)
         {
             if (pen.Thickness == 0) return;
 
             line = TransformLineInternal(line);
-
-            Point head = line.PStart;
 
             Color? extractColorCheckPlatformSupported =
                 ExtractColorOrNullWithPlatformCheck(pen, out LineStyles lineStyles);
@@ -612,20 +616,30 @@ namespace Consolonia.Core.Drawing
             };
 
             if (lineStyle is LineStyle.Edge or LineStyle.EdgeWide)
-            {
                 DrawEdgeLine(line, linePosition, lineStyle, color);
-            }
             else
-            {
-                byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //beginning
+                DrawBoxLine(line, color, lineStyle);
+        }
 
-                pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, line.Length - 1); //line
+        private void DrawBoxLine(Line line, Color color, LineStyle lineStyle)
+        {
+            // NOTE: We floor x,y because this algo is going from avalonia 0.5 => 1.5 = length of 1
+            // to console coords. Drawing a line from 0.5 of length 1 should fill cell[0] and cell[1] (start of line char, end of line char)
+            // Drawing a line from -.5 of length one should draw should fill cell[-1] (clipped) and cell[0] (end of line char)
+            int x = (int)Math.Floor(line.PStart.X);
+            int y = (int)Math.Floor(line.PStart.Y);
 
-                pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
-                DrawBoxPixelAndMoveHead(ref head, line, lineStyle, pattern, color, 1); //ending 
-            }
+            byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
+            var symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in symbol, color, 1); //beginning
+
+            pattern = line.Vertical ? VerticalLinePattern : HorizontalLinePattern;
+            symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in symbol, color, line.Length - 1); //line
+
+            pattern = line.Vertical ? VerticalEndPattern : HorizontalEndPattern;
+            symbol = new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle));
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in symbol, color, 1); //ending
         }
 
         private void DrawEdgeLine(Line line, RectangleLinePosition linePosition, LineStyle lineStyle, Color color)
@@ -663,18 +677,17 @@ namespace Consolonia.Core.Drawing
                     throw new NotImplementedException("This shouldn't happen");
             }
 
-            Point head = line.PStart;
+            // NOTE: We floor x,y because this algo is going from avalonia fractional coordinates to pixel buffer coordinates.
+            // Drawing a line from 0.5 of length 1 should fill cell[0] and cell[1] (start of line char, end of line char)
+            // Drawing a line from -.5 of length one should draw should fill cell[-1] (clipped) and cell[0] (end of line char)
+            // Direct casting to int of negative numbers truncates TOWARDS zero, so -0.5 becomes 0, we need -1
+            int x = (int)Math.Floor(line.PStart.X);
+            int y = (int)Math.Floor(line.PStart.Y);
 
             int length = line.Length;
-            if (!startSymbol.NothingToDraw())
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in startSymbol, color, 1);
-            else
-                head += line.Vertical ? new Vector(0, 1) : new Vector(1, 0);
-
-            DrawLineSymbolAndMoveHead(ref head, line.Vertical, in middleSymbol, color, length - 1);
-
-            if (!endSymbol.NothingToDraw())
-                DrawLineSymbolAndMoveHead(ref head, line.Vertical, in endSymbol, color, 1);
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in startSymbol, color, 1);
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in middleSymbol, color, length - 1);
+            DrawLineSymbolAndMoveHead(ref x, ref y, line.Vertical, in endSymbol, color, 1);
         }
 
         /// <summary>
@@ -731,42 +744,6 @@ namespace Consolonia.Core.Drawing
             return ((ISolidColorBrush)brush).Color;
         }
 
-        /// <summary>
-        ///     Draw pixels for a line with line style and a pattern
-        /// </summary>
-        /// <param name="head">the current caret position</param>
-        /// <param name="line">line to render</param>
-        /// <param name="lineStyle">line style</param>
-        /// <param name="pattern">pattern of character to use</param>
-        /// <param name="color">color for char</param>
-        /// <param name="count">number of chars</param>
-        private void DrawBoxPixelAndMoveHead(ref Point head, Line line, LineStyle lineStyle, byte pattern, Color color,
-            int count)
-        {
-            Rect rectToRefresh = line.Vertical
-                ? new Rect((int)head.X, (int)head.Y, 1, count)
-                : new Rect((int)head.X, (int)head.Y, count, 1);
-            Rect intersect = CurrentClip.Intersect(rectToRefresh);
-            if (intersect.IsEmpty())
-                return;
-
-            ushort start = line.Vertical ? (ushort)intersect.Top : (ushort)intersect.Left;
-            ushort end = line.Vertical ? (ushort)intersect.Bottom : (ushort)intersect.Right;
-            // align head with the first intersected point
-            head = line.Vertical ? head.WithY(start) : head.WithX(start);
-            for (ushort i = start; i < end; i++)
-            {
-                _pixelBuffer[head] =
-                    _pixelBuffer[head].Blend(new Pixel(new Symbol(GetBoxPatternFromLineStyle(pattern, lineStyle)),
-                        color));
-
-                head = line.Vertical
-                    ? head.WithY(head.Y + 1)
-                    : head.WithX(head.X + 1);
-            }
-
-            _consoleWindowImpl.DirtyRegions.AddRect(intersect);
-        }
 
         private static byte GetBoxPatternFromLineStyle(byte pattern, LineStyle lineStyle)
         {
@@ -783,31 +760,54 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawLineSymbolAndMoveHead(ref Point head, bool isVertical, in Symbol symbol, Color color,
+        /// <summary>
+        ///     Draw a line symbol and move the head position.
+        /// </summary>
+        /// <remarks>
+        ///     This moves the head position by count in the appropriate direction.
+        /// </remarks>
+        /// <param name="x">x starting point IN PIXEL COORDINATES THAT CAN BE NEGATIVE</param>
+        /// <param name="y">y starting point IN PIXEL COORDINATES THAT CAN BE NEGATIVE</param>
+        /// <param name="isVertical">is vertical or horizontal head advancement</param>
+        /// <param name="symbol">symbol to draw with</param>
+        /// <param name="color">color to use</param>
+        /// <param name="count">number of symbols to draw</param>
+        private void DrawLineSymbolAndMoveHead(ref int x, ref int y, bool isVertical, in Symbol symbol, Color color,
             int count)
         {
-            Rect rectToRefresh = isVertical
-                ? new Rect((int)head.X, (int)head.Y, 1, count)
-                : new Rect((int)head.X, (int)head.Y, count, 1);
-            Rect intersect = CurrentClip.Intersect(rectToRefresh);
-            if (intersect.IsEmpty())
-                return;
-
-            ushort start = isVertical ? (ushort)intersect.Top : (ushort)intersect.Left;
-            ushort end = isVertical ? (ushort)intersect.Bottom : (ushort)intersect.Right;
-            // align head with the first intersected point
-            head = isVertical ? head.WithY(start) : head.WithX(start);
-            var newPixel = new Pixel(symbol, color);
-            for (int i = start; i < end; i++)
+            Rect lineBounds = isVertical
+                ? new Rect(x, y, 1, count)
+                : new Rect(x, y, count, 1);
+            Rect intersectLine = CurrentClip.Intersect(lineBounds);
+            if (intersectLine.IsEmpty())
             {
-                _pixelBuffer[head] = _pixelBuffer[head].Blend(newPixel);
-
-                head = isVertical
-                    ? head.WithY(head.Y + 1)
-                    : head.WithX(head.X + 1);
+                if (isVertical)
+                    y += count;
+                else
+                    x += count;
+                return;
             }
 
-            _consoleWindowImpl.DirtyRegions.AddRect(intersect);
+            ushort lineStart = isVertical ? (ushort)intersectLine.Top : (ushort)intersectLine.Left;
+            ushort lineEnd = isVertical ? (ushort)intersectLine.Bottom : (ushort)intersectLine.Right;
+            // adjust to the start of the intersected line
+            if (isVertical)
+                y = lineStart;
+            else
+                x = lineStart;
+
+            var newPixel = new Pixel(symbol, color);
+            for (ushort i = lineStart; i < lineEnd; i++)
+            {
+                _pixelBuffer[(ushort)x, (ushort)y] = _pixelBuffer[(ushort)x, (ushort)y].Blend(newPixel);
+
+                if (isVertical)
+                    y++;
+                else
+                    x++;
+            }
+
+            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(lineBounds));
         }
 
         private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())

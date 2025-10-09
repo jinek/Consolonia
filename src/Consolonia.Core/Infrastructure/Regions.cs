@@ -38,6 +38,7 @@ namespace Consolonia.Core.Infrastructure
 
             public void AddRect(Rect rect)
             {
+                // TODO We need to make sure our rectangles are normalized to integer boundaries
                 if (rect.IsEmpty())
                     return;
 
