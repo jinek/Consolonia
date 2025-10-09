@@ -664,6 +664,9 @@ namespace Consolonia.Core.Drawing
 
         private void DrawBoxLine(Line line, LineStyle lineStyle, Color color)
         {
+            if (line.Length == 0)
+                return;
+
             var head = line.PStart.ToPixelPoint();
 
             byte pattern = line.Vertical ? VerticalStartPattern : HorizontalStartPattern;
