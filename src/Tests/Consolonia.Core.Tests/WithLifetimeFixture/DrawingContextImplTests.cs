@@ -555,6 +555,193 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             dc.DrawGlyphRun(brush, glyphRunImpl);
         }
 
+        private static readonly object[] OverlapBoxVariations =
+        {
+            new object[]
+            {
+                new Rect(-.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+                """
+                ─┐                                                                              
+                 │                                                                              
+                ─┘
+                """
+            },
+
+            new object[]
+            {
+                new Rect(0.5, 0.5, 1, 1),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+                """
+                ┌┐                                                                              
+                └┘
+                """
+            },
+            new object[]
+            {
+                new Rect(-1.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+                """
+                ┐                                                                               
+                │                                                                               
+                ┘
+                """
+            },
+            new object[]
+            {
+                new Rect(-.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.DoubleLine }),
+                """
+                ═╗                                                                              
+                 ║                                                                              
+                ═╝
+                """
+            },
+            new object[]
+            {
+                new Rect(-.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+                """
+                ▁                                                                               
+                 ▏                                                                              
+                ▔                              
+                """
+            },
+            new object[]
+            {
+                new Rect(-1.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+                """
+                                                                                                
+                ▏                                                                               
+                                               
+                """
+            },
+            new object[]
+            {
+                new Rect(-.5, 0, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.EdgeWide }),
+                """
+                ▄▖                                                                              
+                 ▌                                                                              
+                ▀▘                                                                              
+                """
+            },
+            new object[]
+            {
+                new Rect(0, -.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+                """
+                │ │                                                                             
+                └─┘                                                                             
+                """
+            },
+            new object[]
+            {
+                new Rect(0, -1.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.SingleLine }),
+                """
+                └─┘                                                                             
+                """
+            },
+            new object[]
+            {
+                new Rect(0, -.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.DoubleLine }),
+                """
+                ║ ║                                                                             
+                ╚═╝                                                                             
+                """
+            },
+            new object[]
+            {
+                new Rect(0, -.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+                """
+                ▕ ▏                                                                             
+                 ▔                                                                              
+                """
+            },
+            new object[]
+            {
+                new Rect(0, -1.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
+                """
+                 ▔                                                                              
+                """
+            },
+            new object[]
+            {
+                new Rect(0, -.5, 2, 2),
+                new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.EdgeWide }),
+                """
+                ▐ ▌                                                                             
+                ▝▀▘                                                                             
+                """
+            }
+        };
+
+
+        [TestCaseSource(nameof(OverlapBoxVariations))]
+        public void DrawBoxOverEdge(Rect rect, IPen pen, string expected)
+        {
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
+            dc.DrawRectangle(Brushes.Blue, pen, rect);
+
+            string text = buffer.PrintBuffer();
+            Assert.AreEqual(expected.Trim(), text.Trim());
+        }
+
+        private static readonly object[] LineVariations =
+        {
+            new object[]
+            {
+                new Point(0.5, 0.5),
+                new Point(1.5, 0.5),
+                """
+                ──                                                                              
+                """
+            },
+            new object[]
+            {
+                new Point(-0.5, 0.5),
+                new Point(0.5, 0.5),
+                """
+                ─                
+                """
+            },
+            new object[]
+            {
+                new Point(0.5, 0.5),
+                new Point(0.5, 1.5),
+                """
+                │                                                                               
+                │  
+                """
+            },
+            new object[]
+            {
+                new Point(0.5, -0.5),
+                new Point(0.5, 0.5),
+                """
+                │                                                                               
+                """
+            }
+        };
+
+        [TestCaseSource(nameof(LineVariations))]
+        public void DrawLines(Point start, Point end, string expected)
+        {
+            var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
+            dc.DrawLine(new Pen(Brushes.Black), start, end);
+            string text = buffer.PrintBuffer();
+            Assert.AreEqual(expected.Trim(), text.Trim());
+        }
+
         internal static PixelBufferCoordinate SetOrigin(DrawingContextImpl dc, ushort x, ushort y)
         {
             dc.Transform = new Matrix(1, 0, 0, 1, x, y);
