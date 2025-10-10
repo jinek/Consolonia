@@ -149,7 +149,7 @@ namespace Consolonia.Core.Drawing
 
         public void DrawLine(IPen pen, Point p1, Point p2)
         {
-            DrawLineInternal(Brushes.Transparent, pen, Line.CreateMyLine(p1, p2));
+            DrawLineInternal(pen, Line.CreateMyLine(p1, p2));
         }
 
         public void DrawGeometry(IBrush brush, IPen pen, IGeometryImpl geometry)
@@ -187,7 +187,7 @@ namespace Consolonia.Core.Drawing
                     }
                     break;
                 case Line myLine:
-                    DrawLineInternal(brush, pen, myLine);
+                    DrawLineInternal(pen, myLine);
                     break;
                 case StreamGeometryImpl streamGeometry:
                     {
@@ -497,7 +497,7 @@ namespace Consolonia.Core.Drawing
         /// </summary>
         /// <param name="pen">pen</param>
         /// <param name="line">line</param>
-        private void DrawLineInternal(IBrush brush, IPen pen, Line line)
+        private void DrawLineInternal(IPen pen, Line line)
         {
             if (pen.Thickness.IsNearlyEqual(0)) return;
 
