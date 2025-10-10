@@ -64,13 +64,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         [JsonIgnore]
-        public Pixel this[Point point]
-        {
-            get => this[(PixelBufferCoordinate)point];
-            set => this[(PixelBufferCoordinate)point] = value;
-        }
-
-        [JsonIgnore]
         public Pixel this[PixelPoint point]
         {
             get => this[(PixelBufferCoordinate)point];
