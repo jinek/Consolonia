@@ -26,16 +26,16 @@ namespace Consolonia.Core.Drawing
         public static PixelRect ToPixelRect(this Rect rect)
         {
             return new PixelRect((int)Math.Floor(rect.X),
-                                 (int)Math.Floor(rect.Y),
-                                 (int)Math.Round(rect.Width),
-                                 (int)Math.Round(rect.Height));
+                (int)Math.Floor(rect.Y),
+                (int)Math.Round(rect.Width),
+                (int)Math.Round(rect.Height));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PixelPoint ToPixelPoint(this Point point)
         {
             return new PixelPoint((int)Math.Floor(point.X),
-                                 (int)Math.Floor(point.Y));
+                (int)Math.Floor(point.Y));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
