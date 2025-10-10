@@ -131,7 +131,8 @@ namespace Consolonia.Core.Drawing
                     caretStyle = pixel.CaretStyle;
                 }
 
-                if (!dirtyRegions.Contains(new PixelPoint(x, y), false)) /*checking caret duplication before to fail fast*/
+                if (!dirtyRegions.Contains(new PixelPoint(x, y),
+                        false)) /*checking caret duplication before to fail fast*/
                     continue;
 
                 // injecting cursor
