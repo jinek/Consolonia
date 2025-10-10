@@ -63,15 +63,23 @@
             </MenuItem>
         </Menu>
 
-        <DataGrid x:Name="GalleryGrid"
-                  DockPanel.Dock="Left"
-                  SelectedIndex="0"
-                  SelectionMode="Single">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name"
-                                    Binding="{Binding Name}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <ListBox x:Name="GalleryGrid"
+                 DockPanel.Dock="Left"
+                 SelectedIndex="0"
+                 Focusable="True"
+                 SelectionMode="Single">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <Border
             Child="{Binding ElementName=GalleryGrid,Path=SelectedItem, Converter={StaticResource GalleryItemConverter}}"
