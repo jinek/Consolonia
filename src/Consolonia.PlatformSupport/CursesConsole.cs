@@ -547,7 +547,7 @@ namespace Consolonia.PlatformSupport
         {
             // System.Diagnostics.Debug.WriteLine($"{JsonConvert.SerializeObject(ev)} {(Curses.Event)ev.ButtonState}");
 
-            const double velocity = 1 / 12D;
+            const double velocity = 1;
 
             RawInputModifiers rawInputModifiers = MouseModifiersFlagTranslator.Translate(ev.ButtonState);
 
