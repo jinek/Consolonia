@@ -2,6 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
                     xmlns:console="https://github.com/jinek/consolonia">
+    <console:SizeToWidthConverter x:Key="SizeToWidthConverter" />
+    <console:SizeToHeightConverter x:Key="SizeToHeightConverter" />
+
     <ControlTheme x:Key="{x:Type ScrollViewer}"
                   TargetType="ScrollViewer">
         <Setter Property="(console:ScrollViewerExtensions.ScrollOnArrows)"
@@ -23,21 +26,21 @@
                       RowDefinitions="*,Auto"
                       ColumnDefinitions="*,Auto">
                     <Panel Background="{TemplateBinding Background}">
-                        <ScrollContentPresenter Name="PART_ContentPresenter"
-                                                Padding="{TemplateBinding Padding}"
-                                                HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
-                                                VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
-                                                HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
-                                                VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
-                                                Background="Transparent"
-                                                ScrollViewer.IsScrollInertiaEnabled="True">
+                        <console:ConsoleScrollContentPresenter Name="PART_ContentPresenter"
+                                                               Padding="{TemplateBinding Padding}"
+                                                               HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                                               VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                                               HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                                               VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+                                                               Background="Transparent"
+                                                               ScrollViewer.IsScrollInertiaEnabled="True">
                             <ScrollContentPresenter.GestureRecognizers>
                                 <ScrollGestureRecognizer
                                     CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
                                     CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
                                     IsScrollInertiaEnabled="{Binding (ScrollViewer.IsScrollInertiaEnabled), ElementName=PART_ContentPresenter}" />
                             </ScrollContentPresenter.GestureRecognizers>
-                        </ScrollContentPresenter>
+                        </console:ConsoleScrollContentPresenter>
                     </Panel>
                     <ScrollBar Name="PART_HorizontalScrollBar"
                                Orientation="Horizontal"
@@ -112,13 +115,13 @@
                             <TextBlock Text="v"
                                        Foreground="{TemplateBinding Foreground}" />
                         </RepeatButton>
-                        <ScrollContentPresenter Name="PART_ContentPresenter"
-                                                Padding="{TemplateBinding Padding}"
-                                                HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
-                                                VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
-                                                HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
-                                                VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
-                                                ScrollViewer.IsScrollInertiaEnabled="False" />
+                        <console:ConsoleScrollContentPresenter Name="PART_ContentPresenter"
+                                                               Padding="{TemplateBinding Padding}"
+                                                               HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                                               VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                                               HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                                               VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+                                                               ScrollViewer.IsScrollInertiaEnabled="False" />
                     </DockPanel>
                 </ControlTemplate>
             </Setter>
@@ -127,5 +130,18 @@
             <Setter Property="Foreground"
                     Value="{DynamicResource ThemeForegroundBrush}" />
         </Style>
+        <Style Selector="^ /template/ ScrollBar#PART_VerticalScrollBar">
+            <Setter Property="SmallChange"
+                    Value="1" />
+            <Setter Property="LargeChange"
+                    Value="{Binding Viewport, RelativeSource={RelativeSource AncestorType=ScrollViewer},Converter={StaticResource SizeToHeightConverter}}" />
+        </Style>
+        <Style Selector="^ /template/ ScrollBar#PART_HorizontalScrollBar">
+            <Setter Property="SmallChange"
+                    Value="1" />
+            <Setter Property="LargeChange"
+                    Value="{Binding Viewport, RelativeSource={RelativeSource AncestorType=ScrollViewer}, Converter={StaticResource SizeToWidthConverter}}" />
+        </Style>
+
     </ControlTheme>
 </ResourceDictionary>
