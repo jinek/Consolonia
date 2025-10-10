@@ -1,0 +1,237 @@
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Platform.Storage;
+using AvaloniaEdit;
+using AvaloniaEdit.TextMate;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Consolonia.Controls;
+using Edit.NET.Views;
+using ReactiveUI;
+using TextMateSharp.Grammars;
+
+namespace Edit.NET.ViewModels
+{
+    public partial class EditorViewModel : ObservableObject
+    {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. 
+        public EditorViewModel()
+        {
+            this._currentFolder = Environment.CurrentDirectory;
+            FilePath = Path.Combine(CurrentFolder, "Untitled.txt");
+            // call ApplyLanguage when Language changes
+            this.WhenAnyValue(x => x.FilePath).Subscribe(OnFilePath);
+            this.WhenAnyValue(x => x.Syntax).Subscribe(OnSyntax);
+        }
+
+        public TextEditor Editor { get; set; }
+        public RegistryOptions? RegistryOptions { get; set; }
+        public TextMate.Installation? TextMateInstallation { get; set; }
+
+        public static IClassicDesktopStyleApplicationLifetime Lifetime
+            => (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
+
+        public static Window MainWindow
+            => Lifetime!.MainWindow!;
+
+        [NotifyPropertyChangedFor(nameof(FileName))]
+        [NotifyPropertyChangedFor(nameof(FileNameOnly))]
+        [NotifyPropertyChangedFor(nameof(Extension))]
+        [ObservableProperty]
+        private string? _filePath;
+
+        public string? FileName => Path.GetFileName(FilePath);
+
+        public string? FileNameOnly => Path.GetFileNameWithoutExtension(FilePath);
+
+        public string? Extension => Path.GetExtension(FilePath);
+
+        [ObservableProperty]
+        private Language? _syntax;
+
+        [ObservableProperty]
+        private bool _modified;
+
+        [ObservableProperty]
+        private string _currentFolder = Environment.CurrentDirectory;
+
+        public async Task OpenFile(string? path)
+        {
+            FilePath = path;
+            Syntax = RegistryOptions!.GetLanguageByExtension(Path.GetExtension(path));
+            Editor.Text = File.Exists(path) ? await File.ReadAllTextAsync(path) : string.Empty;
+            Modified = false;
+            CurrentFolder = Path.GetDirectoryName(path) ?? Environment.CurrentDirectory;
+        }
+
+        public async Task SaveFileAsync()
+        {
+
+            if (String.IsNullOrEmpty(FilePath))
+            {
+                await MessageBox.ShowDialog("Save Error", "File path is not set.");
+                return;
+            }
+
+            try
+            {
+                await File.WriteAllTextAsync(FilePath, Editor.Text);
+                Modified = false;
+                CurrentFolder = Path.GetDirectoryName(FilePath) ?? Environment.CurrentDirectory;
+            }
+            catch (IOException ex)
+            {
+                await MessageBox.ShowDialog("Save Error", ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                await MessageBox.ShowDialog("Save Error", ex.Message);
+            }
+        }
+
+        public async Task SaveAsToPathAsync(string fullPath)
+        {
+            FilePath = fullPath;
+            await SaveFileAsync();
+        }
+
+        [RelayCommand(CanExecute = nameof(CanCut))]
+        public void Cut() => Editor.Cut();
+        public bool CanCut() => Editor.CanCut;
+
+
+        [RelayCommand(CanExecute = nameof(CanCopy))]
+        public void Copy() => Editor.Copy();
+        public bool CanCopy() => Editor.CanCopy;
+
+
+        [RelayCommand(CanExecute = nameof(CanPaste))]
+        public void Paste() => Editor.Paste();
+        public bool CanPaste() => Editor.CanPaste;
+
+        [RelayCommand(CanExecute = nameof(CanUndo))]
+        public void Undo() => Editor.Undo();
+        public bool CanUndo() => Editor.CanUndo;
+
+        [RelayCommand(CanExecute = nameof(CanRedo))]
+        public void Redo() => Editor.Redo();
+        public bool CanRedo() => Editor.CanRedo;
+
+        [RelayCommand]
+        public void SelectAll() => Editor.SelectAll();
+
+
+        [RelayCommand]
+        public async Task New()
+        {
+            if (Modified)
+            {
+                var result = await MessageBox.ShowDialog("Unsaved Changes", "You have unsaved changes. Do you want to discard them?", MessageBoxStyle.YesNoCancel);
+                if (result == MessageBoxResult.Cancel || result == MessageBoxResult.No)
+                    return;
+            }
+
+            var fileName = await new NewFileDialog().ShowDialog<string?>(MainWindow);
+            if (fileName == null)
+                fileName = "Untitled.txt";
+            FilePath = Path.Combine(CurrentFolder, fileName);
+            Editor.Text = string.Empty;
+            Modified = false;
+            Editor.TextArea.Focus();
+        }
+
+        [RelayCommand]
+        public async Task Open()
+        {
+            if (Modified)
+            {
+                var result = await MessageBox.ShowDialog("Unsaved Changes", "You have unsaved changes. Do you want to discard them?", MessageBoxStyle.YesNoCancel);
+                if (result == MessageBoxResult.Cancel || result == MessageBoxResult.No)
+                    return;
+            }
+
+            var files = await MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                AllowMultiple = false,
+                SuggestedStartLocation = await MainWindow.StorageProvider.TryGetFolderFromPathAsync(CurrentFolder),
+                Title = "Open File"
+            });
+            if (files != null && files.Count > 0)
+            {
+                var file = files[0];
+                try
+                {
+                    await OpenFile(Path.GetFullPath(file.Path.AbsolutePath));
+                }
+                catch (IOException ex)
+                {
+                    await MessageBox.ShowDialog("Open Error", ex.Message);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    await MessageBox.ShowDialog("Open Error", ex.Message);
+                }
+            }
+            Editor.TextArea.Focus();
+        }
+
+        [RelayCommand(CanExecute = nameof(CanSave))]
+        private async Task Save()
+        {
+            if (string.IsNullOrEmpty(FilePath))
+            {
+                if (SaveAsCommand is IAsyncRelayCommand asyncCmd)
+                    await asyncCmd.ExecuteAsync(null);
+                else
+                    SaveAsCommand?.Execute(null);
+                return;
+            }
+            await SaveFileAsync();
+        }
+        public bool CanSave() => Modified;
+
+        [RelayCommand]
+        private async Task SaveAs()
+        {
+            var file = await MainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            {
+                Title = "Save As",
+                SuggestedStartLocation = await MainWindow.StorageProvider.TryGetFolderFromPathAsync(CurrentFolder),
+                SuggestedFileName = FileName ?? "Untitled.txt"
+            });
+            if (file != null)
+            {
+                FilePath = Path.GetFullPath(file.Path.AbsolutePath);
+                await SaveFileAsync();
+            }
+            Editor.TextArea.Focus();
+        }
+
+        [RelayCommand]
+        public static void Exit()
+        {
+            Lifetime.Shutdown();
+        }
+
+        private void OnFilePath(string? path)
+        {
+            ArgumentNullException.ThrowIfNull(path);
+            Syntax = RegistryOptions?.GetLanguageByExtension(Path.GetExtension(path));
+        }
+
+        private void OnSyntax(Language? language)
+        {
+            if (language == null)
+            {
+                TextMateInstallation?.SetGrammar(null);
+                return;
+            }
+            var scope = RegistryOptions!.GetScopeByLanguageId(language.Id);
+            TextMateInstallation!.SetGrammar(scope);
+        }
+    }
+}
