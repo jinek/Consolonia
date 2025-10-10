@@ -25,6 +25,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         public static explicit operator PixelBufferCoordinate(PixelPoint point)
         {
+            //todo: replace this check by math overflow at project level.
             if (point.X < 0 || point.Y < 0 || point.X > ushort.MaxValue || point.Y > ushort.MaxValue)
                 throw new ArgumentOutOfRangeException(nameof(point));
             // ReSharper disable once ArrangeObjectCreationWhenTypeNotEvident
