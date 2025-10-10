@@ -6,13 +6,17 @@
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryListBox">
     <DockPanel>
         <DockPanel.Styles>
-            <Style Selector="ListBox ListBoxItem:nth-child3">
+            <Style Selector="ListBox ListBoxItem:nth-child(5n+3)">
                 <Setter Property="Foreground"
                         Value="Red" />
+                <Setter Property="FontWeight"
+                        Value="Bold" />
             </Style>
-            <Style Selector="ListBox ListBoxItem:nth-last-child4">
+            <Style Selector="ListBox ListBoxItem:nth-last-child(5n+4)">
                 <Setter Property="Foreground"
                         Value="Blue" />
+                <Setter Property="FontWeight"
+                        Value="Bold" />
             </Style>
         </DockPanel.Styles>
         <StackPanel DockPanel.Dock="Top"
@@ -23,19 +27,42 @@
         </StackPanel>
         <StackPanel DockPanel.Dock="Right"
                     Margin="1">
-            <CheckBox IsChecked="{Binding Multiple}">Multiple</CheckBox>
-            <CheckBox IsChecked="{Binding Toggle}">Toggle</CheckBox>
-            <CheckBox IsChecked="{Binding AlwaysSelected}">AlwaysSelected</CheckBox>
-            <CheckBox IsChecked="{Binding AutoScrollToSelectedItem}">AutoScrollToSelectedItem</CheckBox>
+            <CheckBox TabIndex="2"
+                      IsChecked="{Binding Multiple}">
+                Multiple
+            </CheckBox>
+            <CheckBox TabIndex="3"
+                      IsChecked="{Binding Toggle}">
+                Toggle
+            </CheckBox>
+            <CheckBox TabIndex="4"
+                      IsChecked="{Binding AlwaysSelected}">
+                AlwaysSelected
+            </CheckBox>
+            <CheckBox TabIndex="5"
+                      IsChecked="{Binding AutoScrollToSelectedItem}">
+                AutoScrollToSelectedItem
+            </CheckBox>
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom"
                     Orientation="Horizontal"
+                    Spacing="1"
                     Margin="1">
-            <Button Command="{Binding AddItemCommand}">Add</Button>
-            <Button Command="{Binding RemoveItemCommand}">Remove</Button>
-            <Button Command="{Binding SelectRandomItemCommand}">Select Random Item</Button>
+            <Button TabIndex="6"
+                    Command="{Binding AddItemCommand}">
+                Add
+            </Button>
+            <Button TabIndex="7"
+                    Command="{Binding RemoveItemCommand}">
+                Remove
+            </Button>
+            <Button TabIndex="8"
+                    Command="{Binding SelectRandomItemCommand}">
+                Select Random Item
+            </Button>
         </StackPanel>
-        <ListBox ItemsSource="{Binding Items}"
+        <ListBox TabIndex="0"
+                 ItemsSource="{Binding Items}"
                  Selection="{Binding Selection}"
                  AutoScrollToSelectedItem="{Binding AutoScrollToSelectedItem}"
                  SelectionMode="{Binding SelectionMode^}" />
