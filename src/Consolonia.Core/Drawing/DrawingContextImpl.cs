@@ -211,13 +211,13 @@ namespace Consolonia.Core.Drawing
                                 Line stroke = streamGeometry.Strokes[iStroke];
                                 RectangleLinePosition strokePosition = strokePositions[iStroke];
                                 if (strokePosition == RectangleLinePosition.Left)
-                                    DrawLineInternal(brush, pen, stroke, RectangleLinePosition.Left);
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Left);
                                 else if (strokePosition == RectangleLinePosition.Right)
-                                    DrawLineInternal(brush, pen, stroke, RectangleLinePosition.Right);
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Right);
                                 else if (strokePosition == RectangleLinePosition.Top)
-                                    DrawLineInternal(brush, pen, stroke, RectangleLinePosition.Top);
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Top);
                                 else if (strokePosition == RectangleLinePosition.Bottom)
-                                    DrawLineInternal(brush, pen, stroke, RectangleLinePosition.Bottom);
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Bottom);
                             }
                         }
                     }
@@ -311,10 +311,10 @@ namespace Consolonia.Core.Drawing
                 or { Brush: LineBrush { Brush: null } }) return;
            
             // NOTE: Line takes in untransformed Point, not PixelPoint and will be transformed inside DrawLineInternal
-            DrawLineInternal(brush, pen, new Line(rect.Rect.TopLeft, /*vertical: */ false, (int)rect.Rect.Width), RectangleLinePosition.Top);
-            DrawLineInternal(brush, pen, new Line(rect.Rect.BottomLeft, /*vertical: */ false, (int)rect.Rect.Width), RectangleLinePosition.Bottom);
-            DrawLineInternal(brush, pen, new Line(rect.Rect.TopLeft, /*vertical: */ true, (int)rect.Rect.Height), RectangleLinePosition.Left);
-            DrawLineInternal(brush, pen, new Line(rect.Rect.TopRight, /*vertical: */ true, (int)rect.Rect.Height), RectangleLinePosition.Right);
+            DrawLineInternal(pen, new Line(rect.Rect.TopLeft, /*vertical: */ false, (int)rect.Rect.Width), RectangleLinePosition.Top);
+            DrawLineInternal(pen, new Line(rect.Rect.BottomLeft, /*vertical: */ false, (int)rect.Rect.Width), RectangleLinePosition.Bottom);
+            DrawLineInternal(pen, new Line(rect.Rect.TopLeft, /*vertical: */ true, (int)rect.Rect.Height), RectangleLinePosition.Left);
+            DrawLineInternal(pen, new Line(rect.Rect.TopRight, /*vertical: */ true, (int)rect.Rect.Height), RectangleLinePosition.Right);
         }
 
 
@@ -525,7 +525,7 @@ namespace Consolonia.Core.Drawing
                 return;
             }
 
-            DrawLineInternal(brush, pen, line, RectangleLinePosition.Unknown);
+            DrawLineInternal(pen, line, RectangleLinePosition.Unknown);
         }
 
         private void ApplyTextDecorationLineInternal(IPen pen, Line line)
@@ -636,7 +636,7 @@ namespace Consolonia.Core.Drawing
         /// <param name="pen">pen</param>
         /// <param name="line">line</param>
         /// <param name="linePosition">The relative rectangle line position</param>
-        private void DrawLineInternal(IBrush brush, IPen pen, Line line, RectangleLinePosition linePosition)
+        private void DrawLineInternal(IPen pen, Line line, RectangleLinePosition linePosition)
         {
             if (pen.Thickness == 0) return;
 
