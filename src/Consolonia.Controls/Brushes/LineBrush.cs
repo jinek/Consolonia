@@ -34,5 +34,13 @@ namespace Consolonia.Controls.Brushes
         public double Opacity => 1;
         public ITransform Transform => null;
         public RelativePoint TransformOrigin => RelativePoint.TopLeft;
+
+        public bool HasEdgeLineStyle()
+        {
+            return LineStyle.Left == Brushes.LineStyle.Edge || LineStyle.Left == Brushes.LineStyle.EdgeWide ||
+                   LineStyle.Top == Brushes.LineStyle.Edge || LineStyle.Top == Brushes.LineStyle.EdgeWide ||
+                   LineStyle.Right == Brushes.LineStyle.Edge || LineStyle.Right == Brushes.LineStyle.EdgeWide ||
+                   LineStyle.Bottom == Brushes.LineStyle.Edge || LineStyle.Bottom == Brushes.LineStyle.EdgeWide;
+        }
     }
 }

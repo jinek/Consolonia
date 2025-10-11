@@ -64,7 +64,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         [JsonIgnore]
-        public Pixel this[Point point]
+        public Pixel this[PixelPoint point]
         {
             get => this[(PixelBufferCoordinate)point];
             set => this[(PixelBufferCoordinate)point] = value;
@@ -72,7 +72,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         [JsonIgnore] public int Length => _buffer.Length;
 
-        [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
+        [JsonIgnore] public PixelRect Size => new(0, 0, Width, Height);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

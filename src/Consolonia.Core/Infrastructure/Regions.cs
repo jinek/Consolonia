@@ -10,9 +10,9 @@ namespace Consolonia.Core.Infrastructure
     /// </summary>
     internal class Snapshot
     {
-        private readonly IReadOnlyList<Rect> _rectangles;
+        private readonly IReadOnlyList<PixelRect> _rectangles;
 
-        private Snapshot(IReadOnlyList<Rect> rectangles)
+        private Snapshot(IReadOnlyList<PixelRect> rectangles)
         {
             _rectangles = rectangles;
         }
@@ -23,7 +23,7 @@ namespace Consolonia.Core.Infrastructure
         /// <param name="point">The point to check.</param>
         /// <param name="inclusive">If true, uses inclusive containment; if false, uses exclusive containment.</param>
         /// <returns>True if the point is contained, false otherwise.</returns>
-        public bool Contains(Point point, bool inclusive)
+        public bool Contains(PixelPoint point, bool inclusive)
         {
             return _rectangles.Any(rect => inclusive ? rect.Contains(point) : rect.ContainsExclusive(point));
         }
@@ -34,11 +34,10 @@ namespace Consolonia.Core.Infrastructure
         /// </summary>
         public class Regions
         {
-            private readonly List<Rect> _rectangles = [];
+            private readonly List<PixelRect> _rectangles = [];
 
-            public void AddRect(Rect rect)
+            public void AddRect(PixelRect rect)
             {
-                // TODO We need to make sure our rectangles are normalized to integer boundaries
                 if (rect.IsEmpty())
                     return;
 
@@ -47,7 +46,7 @@ namespace Consolonia.Core.Infrastructure
                     //todo: sometimes two rectangles can be replaced by one bigger rectangle if W or H matches
                     for (int i = 0; i < _rectangles.Count; i++)
                     {
-                        Rect existingRect = _rectangles[i];
+                        PixelRect existingRect = _rectangles[i];
                         if (existingRect.Contains(rect)) return;
 
                         if (rect.Contains(existingRect))
