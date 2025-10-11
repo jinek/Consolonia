@@ -6,7 +6,7 @@ using Avalonia.Input;
 
 namespace Consolonia.Core.Infrastructure
 {
-    public class AsyncDataTransfer : IAsyncDataTransfer
+    public sealed class AsyncDataTransfer : IAsyncDataTransfer
     {
         private readonly List<IAsyncDataTransferItem> _items;
 
@@ -26,7 +26,7 @@ namespace Consolonia.Core.Infrastructure
     }
 
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class AsyncDataTransferItem : IAsyncDataTransferItem, IDataObject
+    public sealed class AsyncDataTransferItem : IAsyncDataTransferItem, IDataObject
 #pragma warning restore CS0618 // Type or member is obsolete
     {
         private readonly List<DataFormat> _formats;

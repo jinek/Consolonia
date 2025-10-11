@@ -42,9 +42,7 @@ namespace Consolonia.Core.Infrastructure
         public Task<string[]> GetFormatsAsync()
         {
             // legacy support
-            return Task.FromResult(_dataTransferAsync.Items.FirstOrDefault()?
-                                        .Formats.Select(f => f.Identifier)
-                                        .ToArray());
+            return Task.FromResult(_dataTransferAsync.Items.SelectMany(item => item.Formats.Select(f => f.Identifier)).ToArray());
         }
 
         public async Task<string> GetTextAsync()
