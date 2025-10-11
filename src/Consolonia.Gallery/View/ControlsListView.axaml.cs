@@ -39,7 +39,7 @@ namespace Consolonia.Gallery.View
             DataContext = new ControlsListViewModel();
 
             ViewModel.SelectedTheme = Application.Current.Styles[0].GetType().ToString().Split('.').Last()
-                .Replace("Theme", string.Empty);
+                .Replace("Theme", string.Empty, StringComparison.OrdinalIgnoreCase);
 
             GalleryGrid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
 
@@ -58,7 +58,7 @@ namespace Consolonia.Gallery.View
         private void TrySetupSelected()
         {
             string[] commandLineArgs = _commandLineArgs.Where(s => s != null)
-                .Where(s => !s.ToUpper().EndsWith(App.TurboVisionProgramParameterUpperCase)).ToArray();
+                .Where(s => !s.EndsWith(App.TurboVisionProgramParameter, StringComparison.OrdinalIgnoreCase)).ToArray();
             if (commandLineArgs.Length == 0)
             {
                 GalleryGrid.SelectedIndex = 0;
