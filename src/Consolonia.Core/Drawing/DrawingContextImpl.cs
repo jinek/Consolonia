@@ -242,19 +242,22 @@ namespace Consolonia.Core.Drawing
             {
                 // This is one of those places where Avalonia/Consolonia don't align well due to character nature of consolonia.
                 //
-                // in this case the Rectangle geometry passes us a rect that is 1 pixel smaller than the pen thickness, so the fill
-                // doesn't go under the pen. This is great for normal brushes, but not so great for line brushes.
-                // * if it's an edge brush, we need to draw the edge outside of the fill rectangle,
-                // * if it's a solid brush, we need to draw the fill inside the fill rectangle so that the background
-                //   of the fill shows through.
-                DrawRectangleInternal(brush, null, new Rect(rect.Position, new Size(rect.Size.Width + 1, rect.Size.Height + 1)));
-
+                // in this case the Rectangle geometry passes us a rect that is 1 pixel smaller than the pen thickness
+                // based on the brush we need to adjust
+                // * single/doubleline brushes we need to expand the fill to be 1 pixel larger on each side
+                // * Edge brushes we need to shrink the fill to be 1 pixel smaller on each side
                 if (pen.Brush is LineBrush lineBrush && lineBrush.HasEdgeLineStyle())
-                    // now we draw the pen OUTSIDE of the rectangle as the edge border
-                    DrawRectangleInternal(null, pen, rect.Inflate(1), boxShadows);
+                {
+                    DrawRectangleInternal(brush, null, new Rect(rect.Position.X + 1, rect.Position.Y + 1, rect.Width - 1, rect.Height - 1));
+                    DrawRectangleInternal(null, pen, rect, boxShadows);
+                }
                 else
+                {
+                    DrawRectangleInternal(brush, null, new Rect(rect.Position, new Size(rect.Size.Width + 1, rect.Size.Height + 1)));
+
                     // we simply draw the pen on the rectangle (aka inside of the border)
                     DrawRectangleInternal(null, pen, rect, boxShadows);
+                }
             }
         }
 
