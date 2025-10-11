@@ -229,16 +229,7 @@ namespace Consolonia.Core.Drawing
             }
 
             var rect = roundedRect.Rect;
-            if (pen == null)
-            {
-                // no border pen means we can just draw the rect. 
-                DrawRectangleInternal(brush, null, rect, boxShadows);
-            }
-            else if (brush == null)
-            {
-                DrawRectangleInternal(null, pen, rect, boxShadows);
-            }
-            else // we have pen and brush
+            if (pen != null && brush != null)
             {
                 // This is one of those places where Avalonia/Consolonia don't align well due to character nature of consolonia.
                 //
@@ -248,16 +239,20 @@ namespace Consolonia.Core.Drawing
                 // * Edge brushes we need to shrink the fill to be 1 pixel smaller on each side
                 if (pen.Brush is LineBrush lineBrush && lineBrush.HasEdgeLineStyle())
                 {
+                    // shrink fill so that edge pen can be drawn around it.
                     DrawRectangleInternal(brush, null, new Rect(rect.Position.X + 1, rect.Position.Y + 1, rect.Width - 1, rect.Height - 1));
-                    DrawRectangleInternal(null, pen, rect, boxShadows);
                 }
                 else
                 {
+                    // increase fill so that it includes the border pen.
                     DrawRectangleInternal(brush, null, new Rect(rect.Position, new Size(rect.Size.Width + 1, rect.Size.Height + 1)));
-
-                    // we simply draw the pen on the rectangle (aka inside of the border)
-                    DrawRectangleInternal(null, pen, rect, boxShadows);
                 }
+                DrawRectangleInternal(null, pen, rect, boxShadows);
+            }
+            else
+            {
+                // just draw the brush or pen 
+                DrawRectangleInternal(brush, pen, rect, boxShadows);
             }
         }
 
