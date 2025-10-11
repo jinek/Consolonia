@@ -4,12 +4,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:console="https://github.com/jinek/consolonia"
         xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
-        xmlns:local="clr-namespace:Sandbox"
-        x:Class="Sandbox.MainWindow"
-        Title="Sandbox">
-    <StackPanel>
-        <Button Content="E_xit"
-                Click="OnExit"
-                HorizontalAlignment="Left" />
-    </StackPanel>
+        xmlns:local="clr-namespace:Edit.NET.Views"
+        x:Class="Edit.NET.Views.MainWindow"
+        Title="Edit.NET"
+        Background="#2D2D2D">
+    <local:EditorView />
 </Window>

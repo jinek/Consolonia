@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Media;
 using AvaloniaEdit;
@@ -69,11 +70,11 @@ namespace Consolonia.AvaloniaEdit
             {
 #if USE_CONSOLE_CARET
                 var textArea = (TextArea)sender;
-                if (textArea.Caret.CaretBrush is MoveConsoleCaretToPositionBrush caretBrush)
-                    // NOTE: We use SteadyBlock and SteadyBar because AvaloniaEdit has blinking animation hardcoded in.
-                    caretBrush.CaretStyle = (bool)e.NewValue
-                        ? CaretStyle.SteadyBlock
-                        : CaretStyle.SteadyBar;
+                //if (textArea.Caret.CaretBrush is MoveConsoleCaretToPositionBrush caretBrush)
+                //    // NOTE: We use SteadyBlock and SteadyBar because AvaloniaEdit has blinking animation hardcoded in.
+                //    caretBrush.CaretStyle = (bool)e.NewValue
+                //        ? CaretStyle.SteadyBlock
+                //        : CaretStyle.SteadyBar;
 #endif
             }
         }
