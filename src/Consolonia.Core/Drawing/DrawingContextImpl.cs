@@ -1,3 +1,6 @@
+//DUPFINDER_ignore
+//todo: this file is under refactoring. Restore the duplication finder
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
