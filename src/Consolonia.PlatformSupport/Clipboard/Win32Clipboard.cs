@@ -1,10 +1,12 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
@@ -107,13 +109,6 @@ namespace Consolonia.PlatformSupport.Clipboard
             }
         }
 
-#pragma warning disable CS0618 // Type or member is obsolete
-        public Task SetDataObjectAsync(IDataObject data)
-        {
-            throw new NotImplementedException();
-        }
-#pragma warning restore CS0618 // Type or member is obsolete
-
         public Task<string[]> GetFormatsAsync()
         {
             return Task.FromResult(new[] { "Text", "UnicodeText" });
@@ -133,12 +128,42 @@ namespace Consolonia.PlatformSupport.Clipboard
             return Task.CompletedTask;
         }
 
+        public async Task SetDataAsync(IAsyncDataTransfer dataTransfer)
+        {
+            var item = dataTransfer.Items.FirstOrDefault(i => i.Formats.Contains(DataFormat.Text));
+            if (item != null)
+            {
+                var text = await item.TryGetTextAsync();
+                await SetTextAsync(text ?? string.Empty);
+            }
+        }
+
+        public async Task<IAsyncDataTransfer> TryGetDataAsync()
+        {
+            var text = await GetTextAsync();
+            return new AsyncDataTransfer(new AsyncDataTransferItem(text ?? String.Empty, DataFormat.Text));
+        }
+
+        public async Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
+        {
+            var text = await GetTextAsync();
+            return new AsyncDataTransfer(new AsyncDataTransferItem(text ?? String.Empty, DataFormat.Text));
+        }
+
+#pragma warning disable CS0618 // Type or member is obsolete
+        public Task SetDataObjectAsync(IDataObject data)
+        {
+            throw new NotImplementedException();
+        }
+#pragma warning restore CS0618 // Type or member is obsolete
+
 #pragma warning disable CS0618 // Type or member is obsolete
         public Task<IDataObject> TryGetInProcessDataObjectAsync()
         {
             throw new NotImplementedException();
         }
 #pragma warning restore CS0618 // Type or member is obsolete
+
 
 #pragma warning disable CA5392 // Use DefaultDllImportSearchPaths attribute for P/Invokes
 
@@ -179,20 +204,6 @@ namespace Consolonia.PlatformSupport.Clipboard
         [DllImport("kernel32.dll")]
         private static extern IntPtr GlobalFree(IntPtr hMem);
 
-        public Task SetDataAsync(IAsyncDataTransfer dataTransfer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IAsyncDataTransfer> TryGetDataAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
-        {
-            throw new NotImplementedException();
-        }
 #pragma warning restore CA5392 // Use DefaultDllImportSearchPaths attribute for P/Invokes
     }
 }

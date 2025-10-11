@@ -16,13 +16,13 @@ namespace Consolonia.Core.Tests
         {
             IClipboard clipboard = new InprocessClipboard();
 
-            string text = await clipboard.GetTextAsync();
+            string text = await clipboard.TryGetTextAsync();
 
             await clipboard.SetTextAsync("Hello, World!");
-            string hello = await clipboard.GetTextAsync();
+            string hello = await clipboard.TryGetTextAsync();
             Assert.AreEqual("Hello, World!", hello);
             await clipboard.ClearAsync();
-            Assert.AreEqual(string.Empty, await clipboard.GetTextAsync());
+            Assert.IsNull(await clipboard.TryGetTextAsync());
 
             // restore clipboard
             await clipboard.SetTextAsync(text);
@@ -40,13 +40,13 @@ namespace Consolonia.Core.Tests
                 _ => new InprocessClipboard()
             };
 
-            string text = await clipboard.GetTextAsync();
+            string text = await clipboard.TryGetTextAsync();
 
             await clipboard.SetTextAsync("Hello, World!");
-            string hello = await clipboard.GetTextAsync();
+            string hello = await clipboard.TryGetTextAsync();
             Assert.AreEqual("Hello, World!", hello);
             await clipboard.ClearAsync();
-            Assert.AreEqual(string.Empty, await clipboard.GetTextAsync());
+            Assert.AreEqual(string.Empty, await clipboard.TryGetTextAsync());
 
             // restore clipboard
             await clipboard.SetTextAsync(text);

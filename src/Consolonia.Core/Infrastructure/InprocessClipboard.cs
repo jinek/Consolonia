@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
@@ -9,16 +10,13 @@ namespace Consolonia.Core.Infrastructure
     /// </summary>
     public class InprocessClipboard : IClipboard
     {
-#pragma warning disable CS0618 // Type or member is obsolete
-        private IDataObject _dataObject;
-#pragma warning restore CS0618 // Type or member is obsolete
-        private string _text = string.Empty;
+        private IAsyncDataTransfer _dataTransferAsync;
 
 #pragma warning disable CA1822 // Mark members as static
-        public async Task ClearAsync()
+        public Task ClearAsync()
         {
-            await Task.CompletedTask;
-            _text = string.Empty;
+            _dataTransferAsync = null;
+            return Task.CompletedTask;
         }
 
         public Task FlushAsync()
@@ -26,57 +24,72 @@ namespace Consolonia.Core.Infrastructure
             return Task.CompletedTask;
         }
 
-        public Task<object> GetDataAsync(string format)
+        public async Task<object> GetDataAsync(string format)
         {
-            return Task.FromResult(_dataObject?.Get(format));
+            // legacy support
+            var item = _dataTransferAsync?.Items?.Count > 0 ? _dataTransferAsync.Items[0] : null;
+            if (item == null)
+                return null;
+
+            var fm = item.Formats.FirstOrDefault(f => f.Identifier == format);
+            if (fm != null)
+            {
+                return await item.TryGetRawAsync(fm);
+            }
+            return null;
         }
 
         public Task<string[]> GetFormatsAsync()
         {
-            return Task.FromResult(new[] { "text", "unicodetext" });
+            // legacy support
+            return Task.FromResult(_dataTransferAsync.Items.FirstOrDefault()?
+                                        .Formats.Select(f => f.Identifier)
+                                        .ToArray());
         }
 
-        public Task<string> GetTextAsync()
+        public async Task<string> GetTextAsync()
         {
-            return Task.FromResult(_text);
+            // legacy support
+            var item = _dataTransferAsync?.Items?.Count > 0 ? _dataTransferAsync.Items[0] : null;
+            if (item == null)
+                return null;
+
+            return (string)await item.TryGetRawAsync(DataFormat.Text);
+        }
+
+        public Task SetTextAsync(string text)
+        {
+            return SetDataAsync(new AsyncDataTransfer(new AsyncDataTransferItem(text, DataFormat.Text)));
         }
 
         public Task SetDataAsync(IAsyncDataTransfer dataTransfer)
         {
-            throw new System.NotImplementedException();
+            _dataTransferAsync = dataTransfer;
+            return Task.CompletedTask;
         }
 
 #pragma warning disable CS0618 // Type or member is obsolete
         public Task SetDataObjectAsync(IDataObject data)
         {
-            _text = null;
-            _dataObject = data;
-            return Task.CompletedTask;
+            return SetDataAsync(new AsyncDataTransfer(new AsyncDataTransferItem(data.GetText(), DataFormat.Text)));
         }
 #pragma warning restore CS0618 // Type or member is obsolete
 
-        public Task SetTextAsync(string text)
-        {
-            _text = text;
-            _dataObject = null;
-            return Task.CompletedTask;
-        }
-
         public Task<IAsyncDataTransfer> TryGetDataAsync()
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(_dataTransferAsync);
         }
 
         public Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(_dataTransferAsync);
         }
 
 #pragma warning disable CS0618 // Type or member is obsolete
         public Task<IDataObject> TryGetInProcessDataObjectAsync()
-#pragma warning restore CS0618 // Type or member is obsolete
         {
-            return Task.FromResult(_dataObject);
+            return Task.FromResult(_dataTransferAsync as IDataObject);
         }
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 }

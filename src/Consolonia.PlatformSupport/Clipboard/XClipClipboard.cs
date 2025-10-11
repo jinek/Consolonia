@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
@@ -75,18 +77,6 @@ namespace Consolonia.PlatformSupport.Clipboard
             }
         }
 
-        public Task SetDataAsync(IAsyncDataTransfer dataTransfer)
-        {
-            throw new NotImplementedException();
-        }
-
-#pragma warning disable CS0618 // Type or member is obsolete
-        public Task SetDataObjectAsync(IDataObject data)
-        {
-            throw new NotImplementedException();
-        }
-#pragma warning restore CS0618 // Type or member is obsolete
-
         public Task SetTextAsync(string text)
         {
             if (!_isSupported) throw new NotSupportedException("xclip is not installed.");
@@ -99,20 +89,39 @@ namespace Consolonia.PlatformSupport.Clipboard
             return Task.CompletedTask;
         }
 
-        public Task<IAsyncDataTransfer> TryGetDataAsync()
+        public async Task SetDataAsync(IAsyncDataTransfer dataTransfer)
         {
-            throw new NotImplementedException();
+            var item = dataTransfer.Items.FirstOrDefault(i => i.Formats.Contains(DataFormat.Text));
+            if (item != null)
+            {
+                var text = await item.TryGetTextAsync();
+                await SetTextAsync(text ?? string.Empty);
+            }
         }
 
-        public Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
+        public async Task<IAsyncDataTransfer> TryGetDataAsync()
+        {
+            var text = await GetTextAsync();
+            return new AsyncDataTransfer(new AsyncDataTransferItem(text ?? String.Empty, DataFormat.Text));
+        }
+
+        public async Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
+        {
+            var text = await GetTextAsync();
+            return new AsyncDataTransfer(new AsyncDataTransferItem(text ?? String.Empty, DataFormat.Text));
+        }
+
+#pragma warning disable CS0618 // Type or member is obsolete
+        public Task SetDataObjectAsync(IDataObject data)
         {
             throw new NotImplementedException();
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
 #pragma warning disable CS0618 // Type or member is obsolete
         public Task<IDataObject> TryGetInProcessDataObjectAsync()
         {
-            return Task.FromResult<IDataObject>(null);
+            throw new NotImplementedException();
         }
 #pragma warning restore CS0618 // Type or member is obsolete
     }
