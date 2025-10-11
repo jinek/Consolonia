@@ -457,35 +457,55 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         // * Line chars are drawn inside of the rectangle
         // * Rectangle width/height is adjusted by 1 in both dimensions when there is a pen.
         /* Example markup for these test cases.
-        <Window.Resources>
-            <console:LineBrush x:Key="EdgeBlack" LineStyle="Edge" Brush="Black"/>
-            <console:LineBrush x:Key="EdgeWideBlack" LineStyle="EdgeWide" Brush="Black"/>
-        </Window.Resources>
+    <Window.Resources>
+        <console:LineBrush x:Key="EdgeBlack" LineStyle="Edge" Brush="Black"/>
+        <console:LineBrush x:Key="EdgeWideBlack" LineStyle="EdgeWide" Brush="Black"/>
+    </Window.Resources>
 
-            <StackPanel Orientation="Vertical" Spacing="1" Margin="2">
-                <StackPanel Orientation="Horizontal" Spacing="2">
-                    <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="0" StrokeThickness="1" Stroke="Black" />
-                    <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="1" StrokeThickness="1" Stroke="{StaticResource EdgeBlack}"/>
-                    <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="2" StrokeThickness="1" Stroke="{StaticResource EdgeWideBlack}"/>
-                </StackPanel>
+    <StackPanel Orientation="Vertical" Spacing="2" Margin="2">
+        <!-- just rectangles -->
+        <StackPanel Orientation="Horizontal" Spacing="2">
+            <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="0" StrokeThickness="1" Stroke="Black" />
+            <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="1" StrokeThickness="1" Stroke="{StaticResource EdgeBlack}"/>
+            <Rectangle Fill="Pink" Width="2" Height="2" Grid.Column="0" Grid.Row="2" StrokeThickness="1" Stroke="{StaticResource EdgeWideBlack}"/>
+        </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Spacing="2">
-                    <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" Grid.Row="0">
-                        <Rectangle Fill="Pink" Width="2" Height="2" />
-                    </Border>
+        <!-- just border wih no background -->
+        <StackPanel Orientation="Horizontal" Spacing="2">
+            <Border BorderBrush="Black"
+                    BorderThickness="1">
+                <Rectangle Fill="Pink" Width="2" Height="2" />
+            </Border>
 
-                    <Border BorderThickness="1" BorderBrush="{StaticResource EdgeBlack}" Grid.Column="1" Grid.Row="1">
-                        <Rectangle Fill="Pink" Width="2" Height="2" />
-                    </Border>
+            <Border BorderThickness="1"
+                    BorderBrush="{StaticResource EdgeBlack}" >
+                <Rectangle Fill="Pink" Width="2" Height="2" />
+            </Border>
 
-                    <Border BorderThickness="1" BorderBrush="{StaticResource EdgeWideBlack}" Grid.Column="1" Grid.Row="2">
-                        <Rectangle Fill="Pink" Width="2" Height="2" />
-                    </Border>
-            </StackPanel>
+            <Border BorderThickness="1"
+                    BorderBrush="{StaticResource EdgeWideBlack}" >
+                <Rectangle Fill="Pink" Width="2" Height="2" />
+            </Border>
+        </StackPanel>
+
+        <!-- border background -->
+        <StackPanel Orientation="Horizontal" Spacing="2">
+            <Border BorderBrush="Black"
+                    BorderThickness="1"
+                    Background="Pink"
+                    Width="2" Height="2"/>
+            <Border BorderBrush="{StaticResource EdgeBlack}"
+                    BorderThickness="1"
+                    Background="Pink"
+                    Width="2" Height="2"/>
+            <Border BorderBrush="{StaticResource EdgeWideBlack}"
+                    BorderThickness="1"
+                    Background="Pink"
+                    Width="2" Height="2"/>
         </StackPanel>
         */
         [TestCaseSource(nameof(BoxVariations))]
-        public void DrawGeometryRectangleWithPen(IPen pen, char[] boxChars)
+        public void DrawRectangleWithPen(IPen pen, char[] boxChars)
         {
             var consoleTopLevelImpl = new ConsoleWindowImpl();
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
@@ -496,7 +516,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 ? new Rect(.5, .5, 1, 1)
                 : // pen has smaller rect
                 new Rect(.5, .5, 2, 2); // no pen has original rect
-            dc.DrawGeometry(Brushes.Blue, pen, new Rectangle(rect));
+            dc.DrawRectangle(Brushes.Blue, pen, new RoundedRect(rect));
             bool isOuterBox = pen?.Brush is LineBrush lineBrush && lineBrush.HasEdgeLineStyle();
 
             // move to origin location
@@ -838,7 +858,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var consoleTopLevelImpl = new ConsoleWindowImpl();
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
-            dc.DrawRectangle(Brushes.Blue, pen, rect);
+            dc.DrawRectangle(null, pen, rect);
 
             string text = buffer.PrintBuffer();
             Assert.AreEqual(expected.Trim(), text.Trim());
