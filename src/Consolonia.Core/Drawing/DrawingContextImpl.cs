@@ -226,7 +226,7 @@ namespace Consolonia.Core.Drawing
                 ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle, this,
                     brush, pen, roundedRect, boxShadows);
 
-            var rect = roundedRect.Rect;
+            Rect rect = roundedRect.Rect;
             if (pen != null && brush != null)
             {
                 // This is one of those places where Avalonia/Consolonia don't align well due to character nature of consolonia.
@@ -236,15 +236,13 @@ namespace Consolonia.Core.Drawing
                 // * single/doubleline brushes we need to expand the fill to be 1 pixel larger on each side
                 // * Edge brushes we need to shrink the fill to be 1 pixel smaller on each side
                 if (pen.Brush is LineBrush lineBrush && lineBrush.HasEdgeLineStyle())
-                {
                     // shrink fill so that edge pen can be drawn around it.
-                    DrawRectangleInternal(brush, null, new Rect(rect.Position.X + 1, rect.Position.Y + 1, rect.Width - 1, rect.Height - 1));
-                }
+                    DrawRectangleInternal(brush, null,
+                        new Rect(rect.Position.X + 1, rect.Position.Y + 1, rect.Width - 1, rect.Height - 1));
                 else
-                {
                     // increase fill so that it includes the border pen.
-                    DrawRectangleInternal(brush, null, new Rect(rect.Position, new Size(rect.Size.Width + 1, rect.Size.Height + 1)));
-                }
+                    DrawRectangleInternal(brush, null,
+                        new Rect(rect.Position, new Size(rect.Size.Width + 1, rect.Size.Height + 1)));
                 DrawRectangleInternal(null, pen, rect, boxShadows);
             }
             else
