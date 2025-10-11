@@ -75,6 +75,11 @@ namespace Consolonia.PlatformSupport.Clipboard
             }
         }
 
+        public Task SetDataAsync(IAsyncDataTransfer dataTransfer)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task SetDataObjectAsync(IDataObject data)
         {
             throw new NotImplementedException();
@@ -90,6 +95,16 @@ namespace Consolonia.PlatformSupport.Clipboard
             if (exitCode != 0) throw new NotSupportedException($"\"{_xclipPath} {xclipargs} < {text}\" failed");
 
             return Task.CompletedTask;
+        }
+
+        public Task<IAsyncDataTransfer> TryGetDataAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
+        {
+            throw new NotImplementedException();
         }
 
         public Task<IDataObject> TryGetInProcessDataObjectAsync()

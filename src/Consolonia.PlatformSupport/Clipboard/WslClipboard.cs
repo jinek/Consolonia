@@ -77,6 +77,11 @@ namespace Consolonia.PlatformSupport.Clipboard
             return Task.FromResult(string.Empty);
         }
 
+        public Task SetDataAsync(IAsyncDataTransfer dataTransfer)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task SetDataObjectAsync(IDataObject data)
         {
             throw new NotImplementedException();
@@ -96,6 +101,16 @@ namespace Consolonia.PlatformSupport.Clipboard
             }
 
             return Task.CompletedTask;
+        }
+
+        public Task<IAsyncDataTransfer> TryGetDataAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
+        {
+            throw new NotImplementedException();
         }
 
         public Task<IDataObject> TryGetInProcessDataObjectAsync()

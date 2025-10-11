@@ -128,5 +128,20 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         [DllImport("/System/Library/Frameworks/AppKit.framework/AppKit", CharSet = CharSet.Unicode)]
         private static extern nint sel_registerName(string selectorName);
+
+        public Task SetDataAsync(IAsyncDataTransfer dataTransfer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IAsyncDataTransfer> TryGetDataAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

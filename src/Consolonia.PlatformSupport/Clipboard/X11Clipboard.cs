@@ -40,6 +40,11 @@ namespace Consolonia.PlatformSupport.Clipboard
             return Task.FromResult(text);
         }
 
+        public Task SetDataAsync(IAsyncDataTransfer dataTransfer)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task SetDataObjectAsync(IDataObject data)
         {
             throw new NotImplementedException();
@@ -49,6 +54,16 @@ namespace Consolonia.PlatformSupport.Clipboard
         {
             Medo.X11.X11Clipboard.Clipboard.SetText(text ?? string.Empty);
             return Task.CompletedTask;
+        }
+
+        public Task<IAsyncDataTransfer> TryGetDataAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
+        {
+            throw new NotImplementedException();
         }
 
         public Task<IDataObject> TryGetInProcessDataObjectAsync()

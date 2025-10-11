@@ -174,6 +174,21 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         [DllImport("kernel32.dll")]
         private static extern IntPtr GlobalFree(IntPtr hMem);
+
+        public Task SetDataAsync(IAsyncDataTransfer dataTransfer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IAsyncDataTransfer> TryGetDataAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
+        {
+            throw new NotImplementedException();
+        }
 #pragma warning restore CA5392 // Use DefaultDllImportSearchPaths attribute for P/Invokes
     }
 }

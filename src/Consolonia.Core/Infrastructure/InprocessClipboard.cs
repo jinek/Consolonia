@@ -39,6 +39,11 @@ namespace Consolonia.Core.Infrastructure
             return Task.FromResult(_text);
         }
 
+        public Task SetDataAsync(IAsyncDataTransfer dataTransfer)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Task SetDataObjectAsync(IDataObject data)
         {
             _text = null;
@@ -51,6 +56,16 @@ namespace Consolonia.Core.Infrastructure
             _text = text;
             _dataObject = null;
             return Task.CompletedTask;
+        }
+
+        public Task<IAsyncDataTransfer> TryGetDataAsync()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
+        {
+            throw new System.NotImplementedException();
         }
 
         public Task<IDataObject> TryGetInProcessDataObjectAsync()
