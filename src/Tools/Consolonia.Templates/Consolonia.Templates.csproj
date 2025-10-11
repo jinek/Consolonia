@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
     <PropertyGroup>
         <NoPackageAnalysis>true</NoPackageAnalysis>
     </PropertyGroup>
     
     <PropertyGroup>
-        <Title>Consolonia Templates</Title>
+        <Title>Consolonia App Template</Title>
         <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
         <PackageType>Template</PackageType>
         <PackageId>Consolonia.Templates</PackageId>
