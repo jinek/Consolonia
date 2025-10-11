@@ -107,10 +107,12 @@ namespace Consolonia.PlatformSupport.Clipboard
             }
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public Task SetDataObjectAsync(IDataObject data)
         {
             throw new NotImplementedException();
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         public Task<string[]> GetFormatsAsync()
         {
@@ -131,10 +133,12 @@ namespace Consolonia.PlatformSupport.Clipboard
             return Task.CompletedTask;
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public Task<IDataObject> TryGetInProcessDataObjectAsync()
         {
             throw new NotImplementedException();
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
 #pragma warning disable CA5392 // Use DefaultDllImportSearchPaths attribute for P/Invokes
 

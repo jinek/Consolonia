@@ -75,10 +75,12 @@ namespace Consolonia.PlatformSupport.Clipboard
             return SetTextAsync(string.Empty);
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public Task SetDataObjectAsync(IDataObject data)
         {
             throw new NotImplementedException();
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         public Task<string[]> GetFormatsAsync()
         {
@@ -95,10 +97,12 @@ namespace Consolonia.PlatformSupport.Clipboard
             return Task.CompletedTask;
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public Task<IDataObject> TryGetInProcessDataObjectAsync()
         {
             return Task.FromResult<IDataObject>(null);
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         private static bool CheckSupport()
         {

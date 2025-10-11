@@ -82,10 +82,12 @@ namespace Consolonia.PlatformSupport.Clipboard
             throw new NotImplementedException();
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public Task SetDataObjectAsync(IDataObject data)
         {
             throw new NotImplementedException();
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         public Task SetTextAsync(string text)
         {
@@ -113,9 +115,11 @@ namespace Consolonia.PlatformSupport.Clipboard
             throw new NotImplementedException();
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public Task<IDataObject> TryGetInProcessDataObjectAsync()
         {
             throw new NotImplementedException();
         }
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 }

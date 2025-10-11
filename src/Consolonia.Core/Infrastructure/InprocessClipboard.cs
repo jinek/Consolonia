@@ -9,7 +9,9 @@ namespace Consolonia.Core.Infrastructure
     /// </summary>
     public class InprocessClipboard : IClipboard
     {
+#pragma warning disable CS0618 // Type or member is obsolete
         private IDataObject _dataObject;
+#pragma warning restore CS0618 // Type or member is obsolete
         private string _text = string.Empty;
 
 #pragma warning disable CA1822 // Mark members as static
@@ -44,12 +46,14 @@ namespace Consolonia.Core.Infrastructure
             throw new System.NotImplementedException();
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public Task SetDataObjectAsync(IDataObject data)
         {
             _text = null;
             _dataObject = data;
             return Task.CompletedTask;
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         public Task SetTextAsync(string text)
         {
@@ -68,7 +72,9 @@ namespace Consolonia.Core.Infrastructure
             throw new System.NotImplementedException();
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public Task<IDataObject> TryGetInProcessDataObjectAsync()
+#pragma warning restore CS0618 // Type or member is obsolete
         {
             return Task.FromResult(_dataObject);
         }
