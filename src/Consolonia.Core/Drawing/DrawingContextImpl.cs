@@ -215,7 +215,7 @@ namespace Consolonia.Core.Drawing
         /// </remarks>
         /// <param name="brush"></param>
         /// <param name="pen"></param>
-        /// <param name="rect"></param>
+        /// <param name="roundedRect"></param>
         /// <param name="boxShadows"></param>
         /// <exception cref="NotImplementedException"></exception>
         public void DrawRectangle(IBrush brush, IPen pen, RoundedRect roundedRect, BoxShadows boxShadows = new())
