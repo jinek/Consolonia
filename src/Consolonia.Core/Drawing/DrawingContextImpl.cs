@@ -887,9 +887,9 @@ namespace Consolonia.Core.Drawing
                             // is for the last physical char. Aka a double char should be clipped if it's second rendered 
                             // char would break the boundary of the clip.
                             // var clippingPoint = new Point(characterPoint.X + symbol.Width - 1, characterPoint.Y);
-                            var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
                             if (CurrentClip.ContainsExclusive(position))
                             {
+                                var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
                                 _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
                             }
 
@@ -901,8 +901,8 @@ namespace Consolonia.Core.Drawing
 
             // mark the dirty region, start to end, position is after the last drawn char so
             // already aligned on x; y we need to add 1 to give the rect height.
-            var rectToRefresh = new PixelRect(startPosition, 
-                                        new PixelSize(position.X - startPosition.X, 
+            var rectToRefresh = new PixelRect(startPosition,
+                                        new PixelSize(position.X - startPosition.X,
                                                       position.Y - startPosition.Y + 1));
             _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
