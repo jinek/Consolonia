@@ -60,39 +60,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             get => _buffer[x, y];
             // ReSharper disable once MemberCanBePrivate.Global
-            set
-            {
-                Pixel oldPixel = _buffer[x, y];
-                _buffer[x, y] = value;
+            set => _buffer[x, y] = value;
 
-                // UNICODE WIDE CHAR HANDLING
-                // if new pixel is modifying a previously wide char we need to do something about .
-                // if the old pixel was empty, it means we are writing into empty space of a wide char
-                if (oldPixel.Width == 0)
-                {
-                    // if the oldPixel was empty, it means we are writing into empty space of a wide char
-                    // we need to set the previous pixel to space
-                    if (x > 0)
-                        _buffer[x - 1, y] = new Pixel(PixelForeground.Space, _buffer[x, y].Background);
-                }
-                else if (oldPixel.Width > 1)
-                {
-                    // if oldPixel was wide we need to reset overlapped symbols from empty to space
-                    for (var  i = x + 1; i < x + oldPixel.Width; i++)
-                    {
-                        if (i < this.Width)
-                            _buffer[i, y] = new Pixel(PixelForeground.Space, _buffer[i, y].Background);
-                    }
-                }
-
-                // if the new pixel was a wide character, we need to set the overlapped pixels to empty pixels.
-                if (value.Width > 1)
-                    for (var i = x + 1; i < x + value.Width; i++)
-                    {
-                        if (i < Width)
-                            _buffer[i, y] = Pixel.Empty;
-                    }
-            }
         }
 
         [JsonIgnore]

@@ -886,8 +886,9 @@ namespace Consolonia.Core.Drawing
                             // if we are attempting to draw a wide glyph we need to make sure that the clipping point
                             // is for the last physical char. Aka a double char should be clipped if it's second rendered 
                             // char would break the boundary of the clip.
-                            // var clippingPoint = new Point(characterPoint.X + symbol.Width - 1, characterPoint.Y);
-                            if (CurrentClip.ContainsExclusive(position))
+                            if (CurrentClip.ContainsExclusive(position) && 
+                                (symbol.Width == 1 || 
+                                (symbol.Width > 1 && CurrentClip.ContainsExclusive(new PixelPoint(position.X + symbol.Width - 1, position.Y)))))
                             {
                                 var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
                                 _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
