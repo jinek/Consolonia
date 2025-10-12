@@ -24,6 +24,7 @@ namespace Consolonia.Core.Drawing
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
         private ConsoleCursor _consoleCursor;
+        private PixelRect _lastCursorRect;
 
         internal RenderTarget(ConsoleWindowImpl consoleTopLevelImpl)
         {
@@ -97,8 +98,8 @@ namespace Consolonia.Core.Drawing
 
             // initialize the cache with Pixel.Empty as it literally means nothing
             for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-                cache[x, y] = Pixel.Empty;
+                for (ushort x = 0; x < width; x++)
+                    cache[x, y] = Pixel.Empty;
 
             return cache;
         }
@@ -106,9 +107,6 @@ namespace Consolonia.Core.Drawing
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void RenderToDevice()
         {
-            //todo: somewhere in this chain introduce _dirtyRects and render only those regions, BEB6BF21-2724-4E1B-B097-5563EE4C27D9
-            //todo: then refactor cursor drawing assuming this BEB6BF21-2724-4E1B-B097-5563EE4C27D9
-
             PixelBuffer pixelBuffer = _consoleTopLevelImpl.PixelBuffer;
             Snapshot dirtyRegions = _consoleTopLevelImpl.DirtyRegions.GetSnapshotAndClear();
 
@@ -119,43 +117,62 @@ namespace Consolonia.Core.Drawing
 
             var flushingBuffer = new FlushingBuffer(_console);
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-            for (ushort x = 0; x < pixelBuffer.Width; x++)
+                for (ushort x = 0; x < pixelBuffer.Width; x++)
+                {
+                    var point = new PixelPoint(x, y);
+                    Pixel pixel = pixelBuffer[point];
+
+                    if (pixel.IsCaret())
+                    {
+                        if (caretPosition != null)
+                            throw new InvalidOperationException("Caret is already shown");
+                        caretPosition = new PixelBufferCoordinate(x, y);
+                        caretStyle = pixel.CaretStyle;
+                    }
+
+                    // if it's not a dirty region, no need to paint it.
+                    if (!dirtyRegions.Contains(point, false) &&
+                        !_lastCursorRect.ContainsExclusive(point))
+                        continue;
+
+                    // if it's not changed, no reason to paint it.
+                    //todo: indexOutOfRange during resize
+                    if (_cache[x, y] == pixel)
+                        continue;
+
+                    // cache the new value
+                    _cache[x, y] = pixel;
+                    
+                    // we need to clear the rest of double-wide char as empty,
+                    // it may not be in the bounds of dirty regions, but we need to remember
+                    // it's empty.
+                    for (int x2 = 1; x2 < pixel.Width; x2++)
+                        _cache[x + x2, y] = Pixel.Empty;
+
+                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+                }
+
+            // injecting cursor as last operation so it is always on top, it's not necessarily in a dirty region
+            if (!_consoleCursor.IsEmpty())
             {
-                Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
+                Pixel currentPixel = pixelBuffer[_consoleCursor.Coordinate];
 
-                if (pixel.IsCaret())
-                {
-                    if (caretPosition != null)
-                        throw new InvalidOperationException("Caret is already shown");
-                    caretPosition = new PixelBufferCoordinate(x, y);
-                    caretStyle = pixel.CaretStyle;
-                }
+                // Calculate the inverse color
+                Color invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
+                    (byte)(255 - currentPixel.Background.Color.G),
+                    (byte)(255 - currentPixel.Background.Color.B));
 
-                if (!dirtyRegions.Contains(new PixelPoint(x, y),
-                        false)) /*checking caret duplication before to fail fast*/
-                    continue;
+                var pixel = currentPixel.Blend(new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor)));
 
-                // injecting cursor
-                if (!_consoleCursor.IsEmpty() && _consoleCursor.Coordinate.X == x && _consoleCursor.Coordinate.Y == y)
-                {
-                    Pixel currentPixel = pixel;
+                flushingBuffer.WritePixel(_consoleCursor.Coordinate, pixel);
 
-                    // Calculate the inverse color
-                    Color invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
-                        (byte)(255 - currentPixel.Background.Color.G),
-                        (byte)(255 - currentPixel.Background.Color.B));
+                // we need to clear cache so it will be drawn again on a normal pass,
+                // otherwise cache will think it is already drawn when cursor moves away
+                for (int x = 0; x < pixel.Width; x++)
+                    _cache[_consoleCursor.Coordinate.X + x, _consoleCursor.Coordinate.Y] = Pixel.Empty; 
 
-                    pixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor),
-                        new PixelBackground(currentPixel.Background.Color), pixel.CaretStyle);
-                }
-
-                //todo: indexOutOfRange during resize
-                if (_cache[x, y] == pixel)
-                    continue;
-
-                _cache[x, y] = pixel;
-
-                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+                // remember the last rect so that it gets redrawn next time, as the new cursor position doesn't guarantee the old one will be in dirty regions
+                _lastCursorRect = new PixelRect(_consoleCursor.Coordinate.X, _consoleCursor.Coordinate.Y, pixel.Width, 1);
             }
 
             flushingBuffer.Flush();
