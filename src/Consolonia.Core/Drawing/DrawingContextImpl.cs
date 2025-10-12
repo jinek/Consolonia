@@ -904,7 +904,10 @@ namespace Consolonia.Core.Drawing
             var rectToRefresh = new PixelRect(startPosition,
                                         new PixelSize(position.X - startPosition.X,
                                                       position.Y - startPosition.Y + 1));
-            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
+            var intersectRect = CurrentClip.Intersect(rectToRefresh);
+            // we need to expand the dirtyRect on left and right to cover possibility of widechar interaction beyond the clip.
+            intersectRect = new PixelRect(intersectRect.X - 1, intersectRect.Y, intersectRect.Width + 2, intersectRect.Height);
+            _consoleWindowImpl.DirtyRegions.AddRect(intersectRect);
         }
 
         /// <summary>

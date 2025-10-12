@@ -72,29 +72,25 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 {
                     // if the oldPixel was empty, it means we are writing into empty space of a wide char
                     // we need to set the previous pixel to space
-                    x--;
-                    if (x >= 0)
-                        _buffer[x, y] = _buffer[x, y].Blend(Pixel.Space);
+                    if (x > 0)
+                        _buffer[x - 1, y] = new Pixel(PixelForeground.Space, _buffer[x, y].Background);
                 }
                 else if (oldPixel.Width > 1)
                 {
                     // if oldPixel was wide we need to reset overlapped symbols from empty to space
-                    for (ushort i = 1; i < oldPixel.Width; i++)
+                    for (var  i = x + 1; i < x + oldPixel.Width; i++)
                     {
-                        x++;
-                        if (x < this.Width)
-                            _buffer[x, y] = _buffer[x, y].Blend(Pixel.Space);
+                        if (i < this.Width)
+                            _buffer[i, y] = new Pixel(PixelForeground.Space, _buffer[i, y].Background);
                     }
                 }
 
                 // if the new pixel was a wide character, we need to set the overlapped pixels to empty pixels.
                 if (value.Width > 1)
-                    for (int i = 1; i < value.Width; i++)
+                    for (var i = x + 1; i < x + value.Width; i++)
                     {
-                        x++;
-                        if (x < Width)
-                            _buffer[x, y] = new Pixel(PixelForeground.Empty,
-                                _buffer[x, y].Background);
+                        if (i < Width)
+                            _buffer[i, y] = Pixel.Empty;
                     }
             }
         }
