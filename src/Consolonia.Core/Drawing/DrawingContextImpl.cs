@@ -890,38 +890,7 @@ namespace Consolonia.Core.Drawing
                             var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
                             if (CurrentClip.ContainsExclusive(position))
                             {
-                                Pixel oldPixel = _pixelBuffer[position];
-                                if (oldPixel.Width == 0)
-                                {
-                                    // if the oldPixel was empty, we need to set the previous pixel to space
-                                    PixelPoint target = position.WithX(position.X - 1);
-                                    if (target.X >= 0)
-                                        _pixelBuffer[target] = new Pixel(PixelForeground.Space,
-                                            _pixelBuffer[target].Background);
-                                }
-                                else if (oldPixel.Width > 1)
-                                {
-                                    // if oldPixel was wide we need to reset overlapped symbols from empty to space
-                                    for (ushort i = 1; i < oldPixel.Width; i++)
-                                    {
-                                        PixelPoint target = position.WithX(position.X + i);
-                                        if (target.X < _pixelBuffer.Size.Width)
-                                            _pixelBuffer[target] = new Pixel(PixelForeground.Space,
-                                                _pixelBuffer[target].Background);
-                                    }
-                                }
-
-                                // if the pixel was a wide character, we need to set the overlapped pixels to empty pixels.
-                                if (newPixel.Width > 1)
-                                    for (int i = 1; i < symbol.Width; i++)
-                                    {
-                                        PixelPoint target = position.WithX(position.X + i);
-                                        if (target.X < _pixelBuffer.Size.Width)
-                                            _pixelBuffer[target] = new Pixel(PixelForeground.Empty,
-                                                _pixelBuffer[target].Background);
-                                    }
-
-                                _pixelBuffer[position] = oldPixel.Blend(newPixel);
+                                _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
                             }
 
                             position = position.WithX(position.X + symbol.Width);

@@ -27,8 +27,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             // initialize the buffer with space so it draws any background color
             // blended into it.
             for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-                _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
+                for (ushort x = 0; x < width; x++)
+                    _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
         }
 
         // ReSharper disable once UnusedMember.Global
@@ -38,12 +38,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             get
             {
                 (ushort x, ushort y) = ToXY(i);
-                return this[(PixelBufferCoordinate)(x, y)];
+                return this[x, y];
             }
             set
             {
                 (ushort x, ushort y) = ToXY(i);
-                this[(PixelBufferCoordinate)(x, y)] = value;
+                this[x, y] = value;
             }
         }
 
@@ -52,7 +52,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             get => _buffer[point.X, point.Y];
             // ReSharper disable once MemberCanBePrivate.Global
-            set => _buffer[point.X, point.Y] = value;
+            set => this[point.X, point.Y] = value;
         }
 
         [JsonIgnore]
@@ -60,7 +60,43 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             get => _buffer[x, y];
             // ReSharper disable once MemberCanBePrivate.Global
-            set => _buffer[x, y] = value;
+            set
+            {
+                Pixel oldPixel = _buffer[x, y];
+                _buffer[x, y] = value;
+
+                // UNICODE WIDE CHAR HANDLING
+                // if new pixel is modifying a previously wide char we need to do something about .
+                // if the old pixel was empty, it means we are writing into empty space of a wide char
+                if (oldPixel.Width == 0)
+                {
+                    // if the oldPixel was empty, it means we are writing into empty space of a wide char
+                    // we need to set the previous pixel to space
+                    x--;
+                    if (x >= 0)
+                        _buffer[x, y] = _buffer[x, y].Blend(Pixel.Space);
+                }
+                else if (oldPixel.Width > 1)
+                {
+                    // if oldPixel was wide we need to reset overlapped symbols from empty to space
+                    for (ushort i = 1; i < oldPixel.Width; i++)
+                    {
+                        x++;
+                        if (x < this.Width)
+                            _buffer[x, y] = _buffer[x, y].Blend(Pixel.Space);
+                    }
+                }
+
+                // if the new pixel was a wide character, we need to set the overlapped pixels to empty pixels.
+                if (value.Width > 1)
+                    for (int i = 1; i < value.Width; i++)
+                    {
+                        x++;
+                        if (x < Width)
+                            _buffer[x, y] = new Pixel(PixelForeground.Empty,
+                                _buffer[x, y].Background);
+                    }
+            }
         }
 
         [JsonIgnore]
