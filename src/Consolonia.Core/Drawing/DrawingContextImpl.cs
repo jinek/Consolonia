@@ -930,8 +930,11 @@ namespace Consolonia.Core.Drawing
                 }
             }
 
-            // Width/height are exclusive, so add 1 to include the last column/row
-            var rectToRefresh = new PixelRect(startPosition, new PixelSize(position.X-startPosition.X + 1, position.Y - startPosition.Y + 1));
+            // mark the dirty region, start to end, position is after the last drawn char so
+            // already aligned on x; y we need to add 1 to give the rect height.
+            var rectToRefresh = new PixelRect(startPosition, 
+                                        new PixelSize(position.X - startPosition.X, 
+                                                      position.Y - startPosition.Y + 1));
             _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
         }
 
