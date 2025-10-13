@@ -28,7 +28,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             // blended into it.
             for (ushort y = 0; y < height; y++)
                 for (ushort x = 0; x < width; x++)
-                    _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
+                    _buffer[x, y] = Pixel.Space;
         }
 
         // ReSharper disable once UnusedMember.Global
