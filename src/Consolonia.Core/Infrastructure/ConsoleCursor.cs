@@ -1,5 +1,4 @@
 using System;
-using Avalonia.Media.TextFormatting.Unicode;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 

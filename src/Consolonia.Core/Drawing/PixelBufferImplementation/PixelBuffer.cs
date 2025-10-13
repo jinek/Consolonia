@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
-using Avalonia.Media;
 using Newtonsoft.Json;
 
 // ReSharper disable UnusedMember.Global
@@ -27,8 +26,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             // initialize the buffer with space so it draws any background color
             // blended into it.
             for (ushort y = 0; y < height; y++)
-                for (ushort x = 0; x < width; x++)
-                    _buffer[x, y] = Pixel.Space;
+            for (ushort x = 0; x < width; x++)
+                _buffer[x, y] = Pixel.Space;
         }
 
         // ReSharper disable once UnusedMember.Global
@@ -61,7 +60,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             get => _buffer[x, y];
             // ReSharper disable once MemberCanBePrivate.Global
             set => _buffer[x, y] = value;
-
         }
 
         [JsonIgnore]

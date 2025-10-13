@@ -97,8 +97,8 @@ namespace Consolonia.Core.Drawing
 
             // initialize the cache with Pixel.Empty as it literally means nothing
             for (ushort y = 0; y < height; y++)
-                for (ushort x = 0; x < width; x++)
-                    cache[x, y] = Pixel.Empty;
+            for (ushort x = 0; x < width; x++)
+                cache[x, y] = Pixel.Empty;
 
             return cache;
         }
@@ -116,48 +116,48 @@ namespace Consolonia.Core.Drawing
 
             var flushingBuffer = new FlushingBuffer(_console);
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-                for (ushort x = 0; x < pixelBuffer.Width;)
+            for (ushort x = 0; x < pixelBuffer.Width;)
+            {
+                var point = new PixelPoint(x, y);
+                Pixel pixel = pixelBuffer[point];
+
+                if (pixel.IsCaret())
                 {
-                    var point = new PixelPoint(x, y);
-                    Pixel pixel = pixelBuffer[point];
-
-                    if (pixel.IsCaret())
-                    {
-                        if (caretPosition != null)
-                            throw new InvalidOperationException("Caret is already shown");
-                        caretPosition = new PixelBufferCoordinate(x, y);
-                        caretStyle = pixel.CaretStyle;
-                    }
-
-                    // if it's not a dirty region, no need to paint it.
-                    if (!dirtyRegions.Contains(point, false))
-                    {
-                        x += pixel.Width;
-                        continue;
-                    }
-
-                    // if it's not changed, no reason to paint it.
-                    //todo: indexOutOfRange during resize
-                    if (_cache[x, y] == pixel)
-                    {
-                        x += pixel.Width;
-                        continue;
-                    }
-
-                    // cache the new value
-                    _cache[x, y] = pixel;
-
-
-                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
-
-                    // for wide chars, fill skipped cells in the cache with empty pixels
-                    var end = Math.Min(pixelBuffer.Width, x + pixel.Width);
-                    for (int x2 = x; x2 < end; x2++)
-                        _cache[x2, y] = Pixel.Empty;
-
-                    // advance for width of the char.
-                    x += pixel.Width;
+                    if (caretPosition != null)
+                        throw new InvalidOperationException("Caret is already shown");
+                    caretPosition = new PixelBufferCoordinate(x, y);
+                    caretStyle = pixel.CaretStyle;
                 }
+
+                // if it's not a dirty region, no need to paint it.
+                if (!dirtyRegions.Contains(point, false))
+                {
+                    x += pixel.Width;
+                    continue;
+                }
+
+                // if it's not changed, no reason to paint it.
+                //todo: indexOutOfRange during resize
+                if (_cache[x, y] == pixel)
+                {
+                    x += pixel.Width;
+                    continue;
+                }
+
+                // cache the new value
+                _cache[x, y] = pixel;
+
+
+                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+
+                // for wide chars, fill skipped cells in the cache with empty pixels
+                int end = Math.Min(pixelBuffer.Width, x + pixel.Width);
+                for (int x2 = x; x2 < end; x2++)
+                    _cache[x2, y] = Pixel.Empty;
+
+                // advance for width of the char.
+                x += pixel.Width;
+            }
 
             // injecting cursor as last operation so it is always on top, it's not necessarily in a dirty region
             if (!_consoleCursor.IsEmpty())
@@ -169,13 +169,16 @@ namespace Consolonia.Core.Drawing
                     (byte)(255 - currentPixel.Background.Color.G),
                     (byte)(255 - currentPixel.Background.Color.B));
 
-                var pixel = currentPixel.Blend(new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor)));
+                Pixel pixel =
+                    currentPixel.Blend(new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor)));
 
                 flushingBuffer.WritePixel(_consoleCursor.Coordinate, pixel);
 
                 // we want to reset the cache for the cursor affected pixels 
                 // because there can be widechars on either side, we invalidated cache by 2 on both left and right
-                for (int x = Math.Max(0, _consoleCursor.Coordinate.X - 2); x < Math.Min(pixelBuffer.Width, _consoleCursor.Coordinate.X + pixel.Width + 2); x++)
+                for (int x = Math.Max(0, _consoleCursor.Coordinate.X - 2);
+                     x < Math.Min(pixelBuffer.Width, _consoleCursor.Coordinate.X + pixel.Width + 2);
+                     x++)
                     _cache[x, _consoleCursor.Coordinate.Y] = Pixel.Empty;
             }
 

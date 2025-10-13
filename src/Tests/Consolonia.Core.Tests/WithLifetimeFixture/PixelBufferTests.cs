@@ -13,12 +13,12 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             var buffer = new PixelBuffer(4, 5);
             for (ushort y = 0; y < buffer.Height; y++)
-                for (ushort x = 0; x < buffer.Width; x++)
-                    if (x % 3 == 0)
-                        buffer[x, y] = new Pixel(new Symbol("👍"), Colors.Blue);
-                    else if (x % 3 == 2)
-                        buffer[x, y] = new Pixel(new Symbol($"{x}"), Colors.White, FontStyle.Italic,
-                            FontWeight.Bold, TextDecorationLocation.Underline);
+            for (ushort x = 0; x < buffer.Width; x++)
+                if (x % 3 == 0)
+                    buffer[x, y] = new Pixel(new Symbol("👍"), Colors.Blue);
+                else if (x % 3 == 2)
+                    buffer[x, y] = new Pixel(new Symbol($"{x}"), Colors.White, FontStyle.Italic,
+                        FontWeight.Bold, TextDecorationLocation.Underline);
 
             return buffer;
         }
@@ -28,24 +28,24 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             Assert.That(buffer.Width == 4);
             Assert.That(buffer.Height == 5);
             for (ushort y = 0; y < buffer.Height; y++)
-                for (ushort x = 0; x < buffer.Width; x++)
-                    switch (x % 3)
-                    {
-                        case 0:
-                            Assert.That(buffer[x, y].Foreground.Symbol.Complex == "👍");
-                            Assert.That(buffer[x, y].Foreground.Color == Colors.Blue);
-                            break;
-                        case 1:
-                            Assert.That(buffer[x, y] == Pixel.Space);
-                            break;
-                        case 2:
-                            Assert.That(buffer[x, y].Foreground.Symbol.Character == $"{x}"[0]);
-                            Assert.That(buffer[x, y].Foreground.Color == Colors.White);
-                            Assert.That(buffer[x, y].Foreground.Style == FontStyle.Italic);
-                            Assert.That(buffer[x, y].Foreground.Weight == FontWeight.Bold);
-                            Assert.That(buffer[x, y].Foreground.TextDecoration == TextDecorationLocation.Underline);
-                            break;
-                    }
+            for (ushort x = 0; x < buffer.Width; x++)
+                switch (x % 3)
+                {
+                    case 0:
+                        Assert.That(buffer[x, y].Foreground.Symbol.Complex == "👍");
+                        Assert.That(buffer[x, y].Foreground.Color == Colors.Blue);
+                        break;
+                    case 1:
+                        Assert.That(buffer[x, y] == Pixel.Space);
+                        break;
+                    case 2:
+                        Assert.That(buffer[x, y].Foreground.Symbol.Character == $"{x}"[0]);
+                        Assert.That(buffer[x, y].Foreground.Color == Colors.White);
+                        Assert.That(buffer[x, y].Foreground.Style == FontStyle.Italic);
+                        Assert.That(buffer[x, y].Foreground.Weight == FontWeight.Bold);
+                        Assert.That(buffer[x, y].Foreground.TextDecoration == TextDecorationLocation.Underline);
+                        break;
+                }
         }
 
         private static void AssertBufferEqual(PixelBuffer buffer1, PixelBuffer buffer2)
@@ -53,8 +53,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             Assert.That(buffer1.Width == buffer2.Width);
             Assert.That(buffer1.Height == buffer2.Height);
             for (ushort y = 0; y < buffer1.Height; y++)
-                for (ushort x = 0; x < buffer1.Width; x++)
-                    Assert.AreEqual(buffer1[x, y], buffer2[x, y]);
+            for (ushort x = 0; x < buffer1.Width; x++)
+                Assert.AreEqual(buffer1[x, y], buffer2[x, y]);
         }
 
 
@@ -72,8 +72,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             // Verify all pixels are initialized to Space
             for (ushort y = 0; y < buffer.Height; y++)
-                for (ushort x = 0; x < buffer.Width; x++)
-                    Assert.That(buffer[x, y], Is.EqualTo(Pixel.Space));
+            for (ushort x = 0; x < buffer.Width; x++)
+                Assert.That(buffer[x, y], Is.EqualTo(Pixel.Space));
         }
 
         [Test]
