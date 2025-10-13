@@ -136,48 +136,47 @@ namespace Consolonia.Core.Drawing
                     continue;
                 }
 
-                    // if there is a cursor and it's in the range that will be painted by this pixel.
-                    if (_consoleCursor.Coordinate.Y == y &&
-                        (_consoleCursor.Coordinate.X >= x && _consoleCursor.Coordinate.X < x + pixel.Width) &&
-                        !_consoleCursor.IsEmpty())
-                    {
-                        // Calculate the inverse color
-                        Color invertColor = Color.FromRgb((byte)(255 - pixel.Background.Color.R),
-                            (byte)(255 - pixel.Background.Color.G),
-                            (byte)(255 - pixel.Background.Color.B));
+                // if there is a cursor and it's in the range that will be painted by this pixel.
+                if (_consoleCursor.Coordinate.Y == y &&
+                    _consoleCursor.Coordinate.X >= x && _consoleCursor.Coordinate.X < x + pixel.Width &&
+                    !_consoleCursor.IsEmpty())
+                {
+                    // Calculate the inverse color
+                    Color invertColor = Color.FromRgb((byte)(255 - pixel.Background.Color.R),
+                        (byte)(255 - pixel.Background.Color.G),
+                        (byte)(255 - pixel.Background.Color.B));
 
-                        // clear cache for pixel we aren't drawing because of the cursor overlapping with it.
-                        int end2 = Math.Min(pixelBuffer.Width, x + pixel.Width);
-                        for (int x2 = x; x2 < end2; x2++)
-                            _cache[x2, y] = Pixel.Empty;
+                    // clear cache for pixel we aren't drawing because of the cursor overlapping with it.
+                    int end2 = Math.Min(pixelBuffer.Width, x + pixel.Width);
+                    for (int x2 = x; x2 < end2; x2++)
+                        _cache[x2, y] = Pixel.Empty;
 
-                        // create our cursor pixel by blending the colors
-                        pixel = pixel.Blend(new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor)));
+                    // create our cursor pixel by blending the colors
+                    pixel = pixel.Blend(new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor)));
 
-                        // x is now the location of th cursor.
-                        x = _consoleCursor.Coordinate.X;
-                        
-                        // write it out
-                        flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+                    // x is now the location of th cursor.
+                    x = _consoleCursor.Coordinate.X;
 
-                        // for cursor we never want to cache the result of it, so that a future dirty rect will render the real content.
-                        end2 = Math.Min(pixelBuffer.Width, x + pixel.Width);
-                        for (; x < end2; x++)
-                            _cache[x, y] = Pixel.Empty;
-                        continue;
-                    }
-                    // if it's not changed, no reason to paint it.
-                    else if (_cache[x, y] == pixel)
-                    {
-                        x += pixel.Width;
-                        continue;
-                    }
-                    else
-                    {
-                        //todo: indexOutOfRange during resize
-                        // cache the new value
-                        _cache[x, y] = pixel;
-                    }
+                    // write it out
+                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+
+                    // for cursor we never want to cache the result of it, so that a future dirty rect will render the real content.
+                    end2 = Math.Min(pixelBuffer.Width, x + pixel.Width);
+                    for (; x < end2; x++)
+                        _cache[x, y] = Pixel.Empty;
+                    continue;
+                }
+                // if it's not changed, no reason to paint it.
+
+                if (_cache[x, y] == pixel)
+                {
+                    x += pixel.Width;
+                    continue;
+                }
+
+                //todo: indexOutOfRange during resize
+                // cache the new value
+                _cache[x, y] = pixel;
 
                 flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
 
