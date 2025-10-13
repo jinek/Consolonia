@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Newtonsoft.Json;
@@ -68,7 +69,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void ConstructorInitializesWithSpace()
         {
             var buffer = new PixelBuffer(4, 3);
-            
+
             // Verify all pixels are initialized to Space
             for (ushort y = 0; y < buffer.Height; y++)
                 for (ushort x = 0; x < buffer.Width; x++)
@@ -151,9 +152,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             var buffer = new PixelBuffer(4, 3);
             var coord = new PixelBufferCoordinate(2, 1);
-            
+
             buffer[coord] = new Pixel(new Symbol('X'), Colors.Green);
-            
+
             Assert.That(buffer[coord].Foreground.Symbol.Character, Is.EqualTo('X'));
             Assert.That(buffer[coord].Foreground.Color, Is.EqualTo(Colors.Green));
         }
@@ -162,10 +163,10 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void TestIndexerWithLinearIndex()
         {
             var buffer = new PixelBuffer(4, 3);
-            
+
             // Index 5 = x:1, y:1 (row 1, column 1)
             buffer[5] = new Pixel(new Symbol('Z'), Colors.Magenta);
-            
+
             Assert.That(buffer[1, 1].Foreground.Symbol.Character, Is.EqualTo('Z'));
             Assert.That(buffer[1, 1].Foreground.Color, Is.EqualTo(Colors.Magenta));
         }
@@ -174,7 +175,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void TestBufferBounds()
         {
             var buffer = new PixelBuffer(10, 20);
-            
+
             Assert.That(buffer.Width, Is.EqualTo(10));
             Assert.That(buffer.Height, Is.EqualTo(20));
             Assert.That(buffer.Length, Is.EqualTo(200));
@@ -200,13 +201,13 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void TestSetPixelWithBackground()
         {
             var buffer = new PixelBuffer(4, 1);
-            
+
             var pixel = new Pixel(
                 new PixelForeground(new Symbol('A'), Colors.White),
                 new PixelBackground(Colors.Blue));
-            
+
             buffer[0, 0] = pixel;
-            
+
             Assert.That(buffer[0, 0].Foreground.Symbol.Character, Is.EqualTo('A'));
             Assert.That(buffer[0, 0].Foreground.Color, Is.EqualTo(Colors.White));
             Assert.That(buffer[0, 0].Background.Color, Is.EqualTo(Colors.Blue));
@@ -222,11 +223,11 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             buffer[0, 1] = new Pixel(new Symbol('D'), Colors.White);
             buffer[1, 1] = new Pixel(new Symbol('E'), Colors.White);
             // Last position (2,1) should not be printed
-            
+
             string output = buffer.PrintBuffer();
-            
-            Assert.That(output.Contains("ABC"));
-            Assert.That(output.Contains("DE"));
+
+            Assert.That(output.Contains("ABC", StringComparison.Ordinal));
+            Assert.That(output.Contains("DE", StringComparison.Ordinal));
         }
     }
 }
