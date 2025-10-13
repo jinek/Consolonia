@@ -136,17 +136,48 @@ namespace Consolonia.Core.Drawing
                         continue;
                     }
 
+                    // if there is a cursor and it's in the range that will be painted by this pixel.
+                    if (_consoleCursor.Coordinate.Y == y &&
+                        (_consoleCursor.Coordinate.X >= x && _consoleCursor.Coordinate.X < x + pixel.Width) &&
+                        !_consoleCursor.IsEmpty())
+                    {
+                        // Calculate the inverse color
+                        Color invertColor = Color.FromRgb((byte)(255 - pixel.Background.Color.R),
+                            (byte)(255 - pixel.Background.Color.G),
+                            (byte)(255 - pixel.Background.Color.B));
+
+                        // clear cache for pixel we aren't drawing because of the cursor overlapping with it.
+                        int end2 = Math.Min(pixelBuffer.Width, x + pixel.Width);
+                        for (int x2 = x; x2 < end2; x2++)
+                            _cache[x2, y] = Pixel.Empty;
+
+                        // create our cursor pixel by blending the colors
+                        pixel = pixel.Blend(new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor)));
+
+                        // x is now the location of th cursor.
+                        x = _consoleCursor.Coordinate.X;
+                        
+                        // write it out
+                        flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+
+                        // for cursor we never want to cache the result of it, so that a future dirty rect will render the real content.
+                        end2 = Math.Min(pixelBuffer.Width, x + pixel.Width);
+                        for (; x < end2; x++)
+                            _cache[x, y] = Pixel.Empty;
+                        continue;
+                    }
                     // if it's not changed, no reason to paint it.
-                    //todo: indexOutOfRange during resize
-                    if (_cache[x, y] == pixel)
+                    else if (_cache[x, y] == pixel)
                     {
                         x += pixel.Width;
                         continue;
                     }
-
-                    // cache the new value
-                    _cache[x, y] = pixel;
-
+                    else
+                    {
+                        //todo: indexOutOfRange during resize
+                        // cache the new value
+                        _cache[x, y] = pixel;
+                    }
 
                     flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
 
@@ -158,29 +189,6 @@ namespace Consolonia.Core.Drawing
                     // advance for width of the char.
                     x += pixel.Width;
                 }
-
-            // injecting cursor as last operation so it is always on top, it's not necessarily in a dirty region
-            if (!_consoleCursor.IsEmpty())
-            {
-                Pixel currentPixel = pixelBuffer[_consoleCursor.Coordinate];
-
-                // Calculate the inverse color
-                Color invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
-                    (byte)(255 - currentPixel.Background.Color.G),
-                    (byte)(255 - currentPixel.Background.Color.B));
-
-                Pixel pixel =
-                    currentPixel.Blend(new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor)));
-
-                flushingBuffer.WritePixel(_consoleCursor.Coordinate, pixel);
-
-                // we want to reset the cache for the cursor affected pixels 
-                // because there can be widechars on either side, we invalidated cache by 2 on both left and right
-                for (int x = Math.Max(0, _consoleCursor.Coordinate.X - 2);
-                     x < Math.Min(pixelBuffer.Width, _consoleCursor.Coordinate.X + pixel.Width + 2);
-                     x++)
-                    _cache[x, _consoleCursor.Coordinate.Y] = Pixel.Empty;
-            }
 
             flushingBuffer.Flush();
 
@@ -207,10 +215,10 @@ namespace Consolonia.Core.Drawing
             //todo: low excessive refresh, emptiness can be checked
 
             // Dirty rects expanded to handle potential wide char overlap
-            var oldCursorRect = new PixelRect(oldConsoleCursor.Coordinate.X - 2,
-                oldConsoleCursor.Coordinate.Y, oldConsoleCursor.Width + 4, 1);
-            var newCursorRect = new PixelRect(consoleCursor.Coordinate.X - 2,
-                consoleCursor.Coordinate.Y, consoleCursor.Width + 4, 1);
+            var oldCursorRect = new PixelRect(oldConsoleCursor.Coordinate.X - 1,
+                oldConsoleCursor.Coordinate.Y, oldConsoleCursor.Width + 2, 1);
+            var newCursorRect = new PixelRect(consoleCursor.Coordinate.X - 1,
+                consoleCursor.Coordinate.Y, consoleCursor.Width + 2, 1);
             _consoleTopLevelImpl.DirtyRegions.AddRect(oldCursorRect);
             _consoleTopLevelImpl.DirtyRegions.AddRect(newCursorRect);
 
