@@ -143,8 +143,11 @@ namespace Consolonia.Core.Drawing
                     {
                         // cursor takes precedence over the overlapped pixel, we render the cursor pixel instead 
 
+                        // clear cache for this pixel
+                        while (x < _consoleCursor.Coordinate.X)
+                            _cache[x++, y] = Pixel.Empty;
+
                         // x is now the location of the cursor (because it can be pointing midway in a wide pixel)
-                        x = _consoleCursor.Coordinate.X;
 
                         // get current pixel for consoleCursor location
                         pixel = pixelBuffer[x, y];
