@@ -124,7 +124,7 @@ namespace Consolonia.Core.Drawing
                     {
                         if (caretPosition != null)
                             throw new InvalidOperationException("Caret is already shown");
-                        caretPosition = (PixelBufferCoordinate)point;
+                        caretPosition = new PixelBufferCoordinate(x,y);
                         caretStyle = pixel.CaretStyle;
                     }
 
@@ -146,16 +146,13 @@ namespace Consolonia.Core.Drawing
                         // x is now the location of the cursor (because it can be pointing midway in a wide pixel)
                         x = _consoleCursor.Coordinate.X;
 
-                        // get pixel for consoleCursor location
+                        // get current pixel for consoleCursor location
                         pixel = pixelBuffer[x, y];
 
-                        // Calculate the inverse color
-                        Color invertColor = Color.FromRgb((byte)(255 - pixel.Background.Color.R),
-                            (byte)(255 - pixel.Background.Color.G),
-                            (byte)(255 - pixel.Background.Color.B));
-
-                        // create our cursor pixel by blending the colors
-                        pixel = pixel.Blend(new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor)));
+                        // create our cursor pixel, using current pixel to compute inverted foreground color
+                        var cursorPixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type),
+                                                                        GetInvertColor(pixel.Background.Color)));
+                        pixel = pixel.Blend(cursorPixel);
                     }
                     // if it's not changed from last paint, no reason to paint it.
                     else if (_cache[x, y] == pixel)
@@ -165,10 +162,10 @@ namespace Consolonia.Core.Drawing
                         continue;
                     }
 
+                    //todo: indexOutOfRange during resize
+
                     // paint the pixel
                     flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
-
-                    //todo: indexOutOfRange during resize
 
                     // determine end point for wide pixels
                     int end = Math.Min(pixelBuffer.Width, x + pixel.Width);
@@ -193,6 +190,14 @@ namespace Consolonia.Core.Drawing
             {
                 _console.HideCaret(); //todo: Caret was hidden at the beginning of this method, why to hide it again?
             }
+
+        }
+
+        private static Color GetInvertColor(Color color)
+        {
+            return Color.FromRgb((byte)(255 - color.R),
+                                 (byte)(255 - color.G),
+                                 (byte)(255 - color.B));
         }
 
         private void OnCursorChanged(ConsoleCursor consoleCursor)
