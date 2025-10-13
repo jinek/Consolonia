@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -25,7 +24,6 @@ namespace Consolonia.Core.Drawing
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
         private ConsoleCursor _consoleCursor;
-        private PixelRect _lastCursorDirtyRect;
 
         internal RenderTarget(ConsoleWindowImpl consoleTopLevelImpl)
         {
@@ -118,7 +116,7 @@ namespace Consolonia.Core.Drawing
 
             var flushingBuffer = new FlushingBuffer(_console);
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-                for (ushort x = 0; x < pixelBuffer.Width; )
+                for (ushort x = 0; x < pixelBuffer.Width;)
                 {
                     var point = new PixelPoint(x, y);
                     Pixel pixel = pixelBuffer[point];
@@ -132,16 +130,15 @@ namespace Consolonia.Core.Drawing
                     }
 
                     // if it's not a dirty region, no need to paint it.
-                    if (!dirtyRegions.Contains(point, false) &&
-                        !_lastCursorDirtyRect.ContainsExclusive(point))
+                    if (!dirtyRegions.Contains(point, false))
                     {
                         x += pixel.Width;
                         continue;
                     }
 
-                    // if it's not the last cursor position and it's not changed, no reason to paint it.
+                    // if it's not changed, no reason to paint it.
                     //todo: indexOutOfRange during resize
-                    if (!_lastCursorDirtyRect.ContainsExclusive(point) && (_cache[x, y] == pixel))
+                    if (_cache[x, y] == pixel)
                     {
                         x += pixel.Width;
                         continue;
@@ -150,12 +147,15 @@ namespace Consolonia.Core.Drawing
                     // cache the new value
                     _cache[x, y] = pixel;
 
-                    // we need to invalidate wide char cache so that we know to render when wide char is replaced with normal char.
-                    for (int x2 = 1; x2 < pixel.Width; x2++)
-                        _cache[x + x2, y] = Pixel.Empty;
 
                     flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
 
+                    // for wide chars, fill skipped cells in the cache with empty pixels
+                    var end = Math.Min(pixelBuffer.Width, x + pixel.Width);
+                    for (int x2 = x; x2 < end; x2++)
+                        _cache[x2, y] = Pixel.Empty;
+
+                    // advance for width of the char.
                     x += pixel.Width;
                 }
 
@@ -173,14 +173,10 @@ namespace Consolonia.Core.Drawing
 
                 flushingBuffer.WritePixel(_consoleCursor.Coordinate, pixel);
 
-                // we need to clear cache so it will be drawn again on a normal pass,
-                // otherwise cache will think it is already drawn when cursor moves away
-                for (int x = 0; x < pixel.Width; x++)
-                    _cache[_consoleCursor.Coordinate.X + x, _consoleCursor.Coordinate.Y] = Pixel.Empty; 
-
-                // remember the last rect so that it gets redrawn next time, as the new cursor position doesn't guarantee the old one will be in dirty regions
-                _lastCursorDirtyRect = new PixelRect(_consoleCursor.Coordinate.X - 2, _consoleCursor.Coordinate.Y, pixel.Width + 2, 1);
-                Debug.WriteLine($"{_lastCursorDirtyRect.X},{_lastCursorDirtyRect.Y},{_lastCursorDirtyRect.Width},{_lastCursorDirtyRect.Height}");
+                // we want to reset the cache for the cursor affected pixels 
+                // because there can be widechars on either side, we invalidated cache by 2 on both left and right
+                for (int x = Math.Max(0, _consoleCursor.Coordinate.X - 2); x < Math.Min(pixelBuffer.Width, _consoleCursor.Coordinate.X + pixel.Width + 2); x++)
+                    _cache[x, _consoleCursor.Coordinate.Y] = Pixel.Empty;
             }
 
             flushingBuffer.Flush();
@@ -206,10 +202,14 @@ namespace Consolonia.Core.Drawing
             _consoleCursor = consoleCursor;
 
             //todo: low excessive refresh, emptiness can be checked
-            _consoleTopLevelImpl.DirtyRegions.AddRect(new PixelRect(oldConsoleCursor.Coordinate.X,
-                oldConsoleCursor.Coordinate.Y, 1, 1));
-            _consoleTopLevelImpl.DirtyRegions.AddRect(new PixelRect(consoleCursor.Coordinate.X,
-                consoleCursor.Coordinate.Y, 1, 1));
+
+            // Dirty rects expanded to handle potential wide char overlap
+            var oldCursorRect = new PixelRect(oldConsoleCursor.Coordinate.X - 2,
+                oldConsoleCursor.Coordinate.Y, oldConsoleCursor.Width + 4, 1);
+            var newCursorRect = new PixelRect(consoleCursor.Coordinate.X - 2,
+                consoleCursor.Coordinate.Y, consoleCursor.Width + 4, 1);
+            _consoleTopLevelImpl.DirtyRegions.AddRect(oldCursorRect);
+            _consoleTopLevelImpl.DirtyRegions.AddRect(newCursorRect);
 
             RenderToDevice();
         }
