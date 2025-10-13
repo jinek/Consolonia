@@ -97,8 +97,8 @@ namespace Consolonia.Core.Drawing
 
             // initialize the cache with Pixel.Empty as it literally means nothing
             for (ushort y = 0; y < height; y++)
-                for (ushort x = 0; x < width; x++)
-                    cache[x, y] = Pixel.Empty;
+            for (ushort x = 0; x < width; x++)
+                cache[x, y] = Pixel.Empty;
 
             return cache;
         }
@@ -116,25 +116,25 @@ namespace Consolonia.Core.Drawing
 
             var flushingBuffer = new FlushingBuffer(_console);
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-                for (ushort x = 0; x < pixelBuffer.Width;)
+            for (ushort x = 0; x < pixelBuffer.Width;)
+            {
+                var point = new PixelPoint(x, y);
+                Pixel pixel = pixelBuffer[point];
+
+                if (pixel.IsCaret())
                 {
-                    var point = new PixelPoint(x, y);
-                    Pixel pixel = pixelBuffer[point];
+                    if (caretPosition != null)
+                        throw new InvalidOperationException("Caret is already shown");
+                    caretPosition = new PixelBufferCoordinate(x, y);
+                    caretStyle = pixel.CaretStyle;
+                }
 
-                    if (pixel.IsCaret())
-                    {
-                        if (caretPosition != null)
-                            throw new InvalidOperationException("Caret is already shown");
-                        caretPosition = new PixelBufferCoordinate(x, y);
-                        caretStyle = pixel.CaretStyle;
-                    }
-
-                    // if it's not a dirty region, no need to paint it.
-                    if (!dirtyRegions.Contains(point, false))
-                    {
-                        x += pixel.Width;
-                        continue;
-                    }
+                // if it's not a dirty region, no need to paint it.
+                if (!dirtyRegions.Contains(point, false))
+                {
+                    x += pixel.Width;
+                    continue;
+                }
 
                     // if there is a cursor and it's in the range that will be painted by this pixel.
                     if (_consoleCursor.Coordinate.Y == y &&
@@ -179,16 +179,16 @@ namespace Consolonia.Core.Drawing
                         _cache[x, y] = pixel;
                     }
 
-                    flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
 
-                    // for wide chars, fill skipped cells in the cache with empty pixels
-                    int end = Math.Min(pixelBuffer.Width, x + pixel.Width);
-                    for (int x2 = x + 1; x2 < end; x2++)
-                        _cache[x2, y] = Pixel.Empty;
+                // for wide chars, fill skipped cells in the cache with empty pixels
+                int end = Math.Min(pixelBuffer.Width, x + pixel.Width);
+                for (int x2 = x + 1; x2 < end; x2++)
+                    _cache[x2, y] = Pixel.Empty;
 
-                    // advance for width of the char.
-                    x += pixel.Width;
-                }
+                // advance for width of the char.
+                x += pixel.Width;
+            }
 
             flushingBuffer.Flush();
 
