@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using Consolonia.Core.Helpers;
+using Consolonia.Controls;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers
 {

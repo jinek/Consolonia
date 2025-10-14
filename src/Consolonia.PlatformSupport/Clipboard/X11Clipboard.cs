@@ -1,14 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Input;
-using Avalonia.Input.Platform;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
     /// <summary>
     ///     A clipboard implementation for X11;
     /// </summary>
-    internal class X11Clipboard : IClipboard
+    internal class X11Clipboard : IClipboardBase
     {
         public Task ClearAsync()
         {
@@ -19,14 +18,6 @@ namespace Consolonia.PlatformSupport.Clipboard
         public Task FlushAsync()
         {
             return Task.CompletedTask;
-        }
-
-        public async Task<object> GetDataAsync(string format)
-        {
-            if (string.Equals(format, "text", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(format, "unicodetext", StringComparison.OrdinalIgnoreCase))
-                return await GetTextAsync();
-            return null;
         }
 
         public Task<string[]> GetFormatsAsync()

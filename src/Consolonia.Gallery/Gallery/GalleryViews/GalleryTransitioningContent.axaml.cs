@@ -230,66 +230,41 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             if (from != null)
             {
-                var animation = new Animation
-                {
-                    Children =
-                    {
-                        new KeyFrame
-                        {
-                            Setters = { new Setter { Property = scaleProperty, Value = 1d } },
-                            Cue = new Cue(0d)
-                        },
-                        new KeyFrame
-                        {
-                            Setters =
-                            {
-                                new Setter
-                                {
-                                    Property = scaleProperty,
-                                    Value = 0d
-                                }
-                            },
-                            Cue = new Cue(1d)
-                        }
-                    },
-                    Duration = Duration
-                };
+                Animation animation = CreateAnimation(scaleProperty, 1d, 0d);
                 tasks.Add(animation.RunAsync(from, cancellationToken));
             }
 
             if (to != null)
             {
                 to.IsVisible = true;
-                var animation = new Animation
-                {
-                    Children =
-                    {
-                        new KeyFrame
-                        {
-                            Setters =
-                            {
-                                new Setter
-                                {
-                                    Property = scaleProperty,
-                                    Value = 0d
-                                }
-                            },
-                            Cue = new Cue(0d)
-                        },
-                        new KeyFrame
-                        {
-                            Setters = { new Setter { Property = scaleProperty, Value = 1d } },
-                            Cue = new Cue(1d)
-                        }
-                    },
-                    Duration = Duration
-                };
+                Animation animation = CreateAnimation(scaleProperty, 0d, 1d);
                 tasks.Add(animation.RunAsync(to, cancellationToken));
             }
 
             await Task.WhenAll(tasks);
 
             if (from != null && !cancellationToken.IsCancellationRequested) from.IsVisible = false;
+        }
+
+        private Animation CreateAnimation(AvaloniaProperty scaleProperty, double firstFrameValue, double lastFrameValue)
+        {
+            return new Animation
+            {
+                Children =
+                {
+                    new KeyFrame
+                    {
+                        Setters = { new Setter { Property = scaleProperty, Value = firstFrameValue } },
+                        Cue = new Cue(0d)
+                    },
+                    new KeyFrame
+                    {
+                        Setters = { new Setter { Property = scaleProperty, Value = lastFrameValue } },
+                        Cue = new Cue(1d)
+                    }
+                },
+                Duration = Duration
+            };
         }
 
         /// <summary>
