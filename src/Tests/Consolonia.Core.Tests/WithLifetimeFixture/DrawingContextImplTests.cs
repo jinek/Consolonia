@@ -30,7 +30,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 Assert.IsTrue(pixel.Width == 1);
                 Assert.IsTrue(pixel.Foreground.Symbol.Character == ' ');
                 Assert.IsTrue(pixel.Foreground.Color == Colors.Transparent);
-                Assert.IsTrue(pixel.Background.Color == Colors.Black);
+                Assert.IsTrue(pixel.Background.Color == Colors.Transparent);
             }
         }
 
@@ -89,12 +89,6 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     Assert.IsTrue(pixel.Foreground.Symbol.Complex == "🏳️‍🌈");
                     Assert.IsTrue(pixel.Foreground.Color == Colors.Blue);
                 }
-                else if (x == 6)
-                {
-                    Assert.IsTrue(pixel.Width == 0);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Character == char.MinValue);
-                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
-                }
                 else
                 {
                     Assert.IsTrue(pixel.Width == 1);
@@ -122,11 +116,6 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     Assert.IsTrue(pixel.Foreground.Symbol.Character == 'X');
                     Assert.IsTrue(pixel.Foreground.Color == Colors.Red);
                 }
-                else if (x == 6)
-                {
-                    Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Character == ' ');
-                }
                 else
                 {
                     Assert.IsTrue(pixel.Width == 1);
@@ -150,23 +139,34 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 Pixel pixel = buffer[x, 0];
                 if (x == 5)
                 {
-                    Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Character == ' ');
-                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
-                    Assert.IsTrue(pixel.Foreground.Color == Colors.Transparent);
+                    Assert.IsTrue(pixel.Width == 2,
+                        $"[{x},0] Expected wide character with width 2 at position {x}");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Complex == "🏳️‍🌈",
+                        $"[{x},0] Expected emoji '🏳️‍🌈' to remain at position {x} after drawing 'X' at position 6");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == char.MinValue,
+                        $"[{x},0] Expected Character to be char.MinValue for complex emoji at position {x}");
+                    Assert.IsTrue(pixel.Foreground.Color == Colors.Blue,
+                        $"[{x},0] Expected foreground color to be Blue at position {x} (wide char was overwritten by next position)");
                 }
                 else if (x == 6)
                 {
-                    Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Character == 'X');
-                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
-                    Assert.IsTrue(pixel.Foreground.Color == Colors.Red);
+                    Assert.IsTrue(pixel.Width == 1,
+                        $"[{x},0] Expected single-width character at position {x} after overwriting second cell of wide character");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == 'X',
+                        $"[{x},0] Expected 'X' character at position {x}");
+                    Assert.IsNull(pixel.Foreground.Symbol.Complex,
+                        $"[{x},0] Expected Complex to be null for simple character 'X' at position {x}");
+                    Assert.IsTrue(pixel.Foreground.Color == Colors.Red,
+                        $"[{x},0] Expected Red color at position {x} for 'X' character");
                 }
                 else
                 {
-                    Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Character == x.ToString()[0]);
-                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
+                    Assert.IsTrue(pixel.Width == 1,
+                        $"[{x},0] Expected single-width character at position {x}");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == x.ToString()[0],
+                        $"[{x},0] Expected digit '{x}' at position {x}");
+                    Assert.IsNull(pixel.Foreground.Symbol.Complex,
+                        $"[{x},0] Expected Complex to be null for simple digit at position {x}");
                 }
             }
         }
@@ -339,8 +339,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                         $"[{x},{y}] Expected empty char outside left border");
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
                         $"[{x},{y}] Expected transparent foreground color outside left border");
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                        $"[{x},{y}] Expected black background color outside left border");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent background color outside left border");
                 }
                 else if (y == 0)
                 {
@@ -348,8 +348,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                         $"[{x},{y}] Expected empty char outside top border");
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
                         $"[{x},{y}] Expected transparent foreground color outside top border");
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                        $"[{x},{y}] Expected black background color outside top border");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent background color outside top border");
                 }
                 else if (x >= right)
                 {
@@ -357,8 +357,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                         $"[{x},{y}] Expected empty char outside right border");
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
                         $"[{x},{y}] Expected transparent foreground  color outside right border");
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                        $"[{x},{y}] Expected black background color outside right border");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent background color outside right border");
                 }
                 else if (y >= bottom)
                 {
@@ -366,8 +366,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                         $"[{x},{y}] Expected empty char outside bottom border");
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
                         $"[{x},{y}] Expected transparent foreground color outside bottom border");
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                        $"[{x},{y}] Expected black background color outside bottom border");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent background color outside bottom border");
                 }
                 else
                 {
@@ -530,7 +530,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 : // pen has smaller rect
                 new Rect(.5, .5, 2, 2); // no pen has original rect
             dc.DrawRectangle(Brushes.Blue, pen, new RoundedRect(rect));
-            bool isEdgeStyle = pen?.Brush is LineBrush lineBrush && lineBrush.HasEdgeLineStyle();
+            bool isOuterBox = pen?.Brush is LineBrush lineBrush && lineBrush.HasEdgeLineStyle();
 
             // move to origin location
             rect = pen != null
@@ -554,8 +554,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                         $"[{x},{y}] Outside of box expected empty char");
                     Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
                         $"[{x},{y}] outside of box expected transparent Foreground");
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                        $"[{x},{y}] Outside of box expected black background");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                        $"[{x},{y}] Outside of box expected transparent background");
                 }
                 else if (x == newRect.X && y == newRect.Y)
                 {
@@ -569,9 +569,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
                             $"[{x},{y}] Upper left corner expected foreground of red for non empty char");
 
-                    if (isEdgeStyle)
-                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                            $"[{x},{y}] Upper left corner of outer box expected black background");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
                     else
                         Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
                             $"[{x},{y}] Upper left corner expected blue background");
@@ -588,9 +588,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
                             $"[{x},{y}] Upper right corner expected foreground of red for non empty char");
 
-                    if (isEdgeStyle)
-                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                            $"[{x},{y}] Upper left corner of outer box expected black background");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
                     else
                         Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
                             $"[{x},{y}] Upper right corner expected blue background");
@@ -606,9 +606,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
                             $"[{x},{y}] Lower right corner expected foreground of red for non empty char");
-                    if (isEdgeStyle)
-                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                            $"[{x},{y}] Upper left corner of outer box expected black background");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
                     else
                         Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
                             $"[{x},{y}] Lower right corner expected blue background");
@@ -624,9 +624,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
                             $"[{x},{y}] Lower left corner expected foreground of red for non empty char");
-                    if (isEdgeStyle)
-                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                            $"[{x},{y}] Upper left corner of outer box expected black background");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
                     else
                         Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
                             $"[{x},{y}] Lower left corner expected blue background");
@@ -642,9 +642,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
                             $"[{x},{y}] Left side expected foreground of red for non empty char");
-                    if (isEdgeStyle)
-                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                            $"[{x},{y}] Upper left corner of outer box expected black background");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
                     else
                         Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
                             $"[{x},{y}] Left side expected blue background");
@@ -660,9 +660,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
                             $"[{x},{y}] Top side expected foreground of red for non empty char");
-                    if (isEdgeStyle)
-                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                            $"[{x},{y}] Upper left corner of outer box expected black background");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
                     else
                         Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
                             $"[{x},{y}] Top side expected blue background");
@@ -678,9 +678,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
                             $"[{x},{y}] Right side expected foreground of red for non empty char");
-                    if (isEdgeStyle)
-                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                            $"[{x},{y}] Upper left corner of outer box expected black background");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
                     else
                         Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
                             $"[{x},{y}] Right side expected blue background");
@@ -696,9 +696,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     else
                         Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
                             $"[{x},{y}] Bottom side expected foreground of red for non empty char");
-                    if (isEdgeStyle)
-                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black,
-                            $"[{x},{y}] Upper left corner of outer box expected black background");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
                     else
                         Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
                             $"[{x},{y}] Bottom side expected blue background");

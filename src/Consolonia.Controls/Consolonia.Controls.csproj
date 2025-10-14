@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
@@ -10,7 +10,7 @@
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <PackageReference Include="Unicode.net" Version="2.0.0" />
-        <PackageReference Include="Wcwidth" Version="2.0.0" />
+        <PackageReference Include="Wcwidth" Version="3.0.0" />
     </ItemGroup>
 
 </Project>
