@@ -530,7 +530,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 : // pen has smaller rect
                 new Rect(.5, .5, 2, 2); // no pen has original rect
             dc.DrawRectangle(Brushes.Blue, pen, new RoundedRect(rect));
-            bool isEdgeStyle = pen?.Brush is LineBrush lineBrush && lineBrush.HasEdgeLineStyle();
+            bool isOuterBox = pen?.Brush is LineBrush lineBrush && lineBrush.HasEdgeLineStyle();
 
             // move to origin location
             rect = pen != null
