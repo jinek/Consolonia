@@ -29,7 +29,7 @@ namespace Consolonia.Core.Infrastructure
         }
 
         /// <summary>
-        /// Checks if a coordinate is contained within any rectangle
+        ///     Checks if a coordinate is contained within any rectangle
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
