@@ -8,7 +8,7 @@ namespace Consolonia.Core.Infrastructure
 {
     public sealed class AsyncDataTransfer : IAsyncDataTransfer
     {
-        private List<IAsyncDataTransferItem> _items;
+        private readonly List<IAsyncDataTransferItem> _items;
         private bool _disposedValue;
 
         public AsyncDataTransfer()
@@ -27,9 +27,9 @@ namespace Consolonia.Core.Infrastructure
         }
 
         public IReadOnlyList<DataFormat> Formats => _items.SelectMany(i => i.Formats)
-                                                          .Distinct()
-                                                          .ToList()
-                                                          .AsReadOnly();
+            .Distinct()
+            .ToList()
+            .AsReadOnly();
 
         public IReadOnlyList<IAsyncDataTransferItem> Items => _items.AsReadOnly();
 
@@ -38,14 +38,10 @@ namespace Consolonia.Core.Infrastructure
             if (!_disposedValue)
             {
                 if (disposing)
-                {
-                    foreach (var item in Items)
-                    {
+                    foreach (IAsyncDataTransferItem item in Items)
                         // ReSharper disable SuspiciousTypeConversion.Global
                         if (item is IDisposable disposable)
                             disposable.Dispose();
-                    }
-                }
 
                 _disposedValue = true;
             }
@@ -54,13 +50,13 @@ namespace Consolonia.Core.Infrastructure
         ~AsyncDataTransfer()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: false);
+            Dispose(false);
         }
 
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
     }
@@ -80,6 +76,7 @@ namespace Consolonia.Core.Infrastructure
         }
 
         #region IAsyncDataTransferItem Members
+
         public IReadOnlyList<DataFormat> Formats => _formats;
 
         public Task<object> TryGetRawAsync(DataFormat format)
@@ -88,9 +85,11 @@ namespace Consolonia.Core.Infrastructure
                 return Task.FromResult(_item);
             return Task.FromResult<object>(null);
         }
+
         #endregion
 
         #region IDataObject
+
         public bool Contains(string dataFormat)
         {
             return _formats.Any(f => f.Identifier == dataFormat);
@@ -107,6 +106,7 @@ namespace Consolonia.Core.Infrastructure
         {
             return _formats.Select(f => f.Identifier);
         }
+
         #endregion
     }
 }

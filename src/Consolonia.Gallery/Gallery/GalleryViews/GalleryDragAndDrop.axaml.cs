@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,9 +12,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public partial class GalleryDragAndDrop : UserControl
     {
+        private readonly DataFormat<string> _customFormat =
+            DataFormat.CreateStringApplicationFormat("xxx-avalonia-controlcatalog-custom");
 
         private readonly TextBlock _dropState;
-        private readonly DataFormat<string> _customFormat = DataFormat.CreateStringApplicationFormat("xxx-avalonia-controlcatalog-custom");
 
         public GalleryDragAndDrop()
         {
@@ -36,13 +38,15 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 "Files",
                 async d =>
                 {
-                    var path =Path.GetTempFileName();
-                    d.Add(DataTransferItem.CreateFile(await TopLevel.GetTopLevel(this).StorageProvider.TryGetFileFromPathAsync(path)));
+                    string path = Path.GetTempFileName();
+                    d.Add(DataTransferItem.CreateFile(await TopLevel.GetTopLevel(this).StorageProvider
+                        .TryGetFileFromPathAsync(path)));
                 },
                 DragDropEffects.Copy);
         }
 
-        private void SetupDnd(string suffix, Action<DataTransfer> factory, DragDropEffects effects) =>
+        private void SetupDnd(string suffix, Action<DataTransfer> factory, DragDropEffects effects)
+        {
             SetupDnd(
                 suffix,
                 o =>
@@ -51,6 +55,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     return Task.CompletedTask;
                 },
                 effects);
+        }
 
         private void SetupDnd(string suffix, Func<DataTransfer, Task> factory, DragDropEffects effects)
         {
@@ -62,7 +67,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 var dragData = new DataTransfer();
                 await factory(dragData);
 
-                var result = await DragDrop.DoDragDropAsync(e, dragData, effects);
+                DragDropEffects result = await DragDrop.DoDragDropAsync(e, dragData, effects);
                 switch (result)
                 {
                     case DragDropEffects.Move:
@@ -86,13 +91,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             void DragOver(object? sender, DragEventArgs e)
             {
                 if (e.Source is Control c && c.Name == "MoveTarget")
-                {
-                    e.DragEffects = e.DragEffects & (DragDropEffects.Move);
-                }
+                    e.DragEffects = e.DragEffects & DragDropEffects.Move;
                 else
-                {
-                    e.DragEffects = e.DragEffects & (DragDropEffects.Copy);
-                }
+                    e.DragEffects = e.DragEffects & DragDropEffects.Copy;
 
                 // Only allow if the dragged data contains text or filenames.
                 if (!e.DataTransfer.Formats.Contains(DataFormat.Text)
@@ -104,13 +105,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             async void Drop(object? sender, DragEventArgs e)
             {
                 if (e.Source is Control c && c.Name == "MoveTarget")
-                {
-                    e.DragEffects = e.DragEffects & (DragDropEffects.Move);
-                }
+                    e.DragEffects = e.DragEffects & DragDropEffects.Move;
                 else
-                {
-                    e.DragEffects = e.DragEffects & (DragDropEffects.Copy);
-                }
+                    e.DragEffects = e.DragEffects & DragDropEffects.Copy;
 
                 if (e.DataTransfer.Formats.Contains(DataFormat.Text))
                 {
@@ -118,34 +115,31 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 }
                 else if (e.DataTransfer.Formats.Contains(DataFormat.File))
                 {
-                    var files = e.DataTransfer.TryGetValues<IStorageItem>(DataFormat.File) ?? Array.Empty<IStorageItem>();
-                    var contentStr = "";
+                    IStorageItem[] files = e.DataTransfer.TryGetValues(DataFormat.File) ?? Array.Empty<IStorageItem>();
+                    string contentStr = "";
 
-                    foreach (var item in files)
-                    {
+                    foreach (IStorageItem item in files)
                         if (item is IStorageFile file)
                         {
                             // var content = await DialogsPage.ReadTextFromFile(file, 500);
                             string content = "text";
-                            contentStr += $"File {item.Name}:{Environment.NewLine}{content}{Environment.NewLine}{Environment.NewLine}";
+                            contentStr +=
+                                $"File {item.Name}:{Environment.NewLine}{content}{Environment.NewLine}{Environment.NewLine}";
                         }
                         else if (item is IStorageFolder folder)
                         {
-                            var childrenCount = 0;
-                            await foreach (var _ in folder.GetItemsAsync())
-                            {
-                                childrenCount++;
-                            }
-                            contentStr += $"Folder {item.Name}: items {childrenCount}{Environment.NewLine}{Environment.NewLine}";
+                            int childrenCount = 0;
+                            await foreach (IStorageItem _ in folder.GetItemsAsync()) childrenCount++;
+                            contentStr +=
+                                $"Folder {item.Name}: items {childrenCount}{Environment.NewLine}{Environment.NewLine}";
                         }
-                    }
 
                     _dropState.Text = contentStr;
                 }
 #pragma warning disable CS0618 // Type or member is obsolete
                 else if (e.Data.Contains(DataFormats.FileNames))
                 {
-                    var files = e.Data.GetFileNames();
+                    IEnumerable<string> files = e.Data.GetFileNames();
                     _dropState.Text = string.Join(Environment.NewLine, files ?? Array.Empty<string>());
                 }
                 else if (e.Data.Contains(_customFormat.Identifier))

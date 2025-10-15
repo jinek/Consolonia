@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Input;
-using Avalonia.Input.Platform;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport.Clipboard;
 using NUnit.Framework;
@@ -15,11 +14,12 @@ namespace Consolonia.Core.Tests
         [Test]
         public async Task ConsoleClipboardTest()
         {
-            ConsoleClipboard clipboard = new ConsoleClipboard();
+            var clipboard = new ConsoleClipboard();
 
-            await clipboard.SetDataAsync(new AsyncDataTransfer(new AsyncDataTransferItem("Hello, World!", DataFormat.Text)));
-            var data = await clipboard.TryGetDataAsync();
-            var text = await data.TryGetTextAsync();
+            await clipboard.SetDataAsync(
+                new AsyncDataTransfer(new AsyncDataTransferItem("Hello, World!", DataFormat.Text)));
+            IAsyncDataTransfer data = await clipboard.TryGetDataAsync();
+            string text = await data.TryGetTextAsync();
             Assert.AreEqual("Hello, World!", text);
 
             await clipboard.ClearAsync();
@@ -43,15 +43,16 @@ namespace Consolonia.Core.Tests
 
             string origText = await clipboard.GetTextAsync();
 
-            await clipboard.SetDataAsync(new AsyncDataTransfer(new AsyncDataTransferItem("Hello, World!", DataFormat.Text)));
-            var data = await clipboard.TryGetDataAsync();
-            var text = await data.TryGetTextAsync();
+            await clipboard.SetDataAsync(
+                new AsyncDataTransfer(new AsyncDataTransferItem("Hello, World!", DataFormat.Text)));
+            IAsyncDataTransfer data = await clipboard.TryGetDataAsync();
+            string text = await data.TryGetTextAsync();
             Assert.AreEqual("Hello, World!", text);
 
             await clipboard.ClearAsync();
             data = await clipboard.TryGetDataAsync();
             text = await data.TryGetTextAsync();
-            Assert.IsTrue(String.IsNullOrEmpty(text));
+            Assert.IsTrue(string.IsNullOrEmpty(text));
 
             // restore clipboard
             await clipboard.SetTextAsync(origText);

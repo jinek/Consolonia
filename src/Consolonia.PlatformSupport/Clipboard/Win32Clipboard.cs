@@ -1,13 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Formats.Tar;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
-using Avalonia.Input;
-using Avalonia.Input.Platform;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.PlatformSupport.Clipboard
@@ -18,11 +13,6 @@ namespace Consolonia.PlatformSupport.Clipboard
     [SupportedOSPlatform("windows")]
     public class Win32Clipboard : ConsoleClipboard
     {
-        public Win32Clipboard()
-        {
-
-        }
-
         public override async Task ClearAsync()
         {
             await base.ClearAsync();
