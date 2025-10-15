@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
@@ -9,7 +10,6 @@ using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
 using Consolonia.PlatformSupport.Clipboard;
-using DynamicData.Kernel;
 
 // ReSharper disable CheckNamespace
 #pragma warning disable IDE0161
@@ -69,7 +69,7 @@ namespace Consolonia
             else if (OperatingSystem.IsMacOS())
                 clipboardImpl = new MacClipboard();
             else if (OperatingSystem.IsLinux())
-            { 
+            {
                 if (IsWslPlatform())
                     clipboardImpl = new WslClipboard();
                 else
@@ -77,7 +77,7 @@ namespace Consolonia
                     //return builder.With<IClipboard>(new XClipClipboard());
                     clipboardImpl = new X11Clipboard();
             }
-            else 
+            else
                 clipboardImpl = new ConsoleClipboard();
 
             return builder.With<IClipboard>(CreateInternalInstance<IClipboard>("Avalonia.Base",
@@ -92,15 +92,25 @@ namespace Consolonia
 
         private static T CreateInternalInstance<T>(string assembly, string name, object[] args = null)
         {
-            var asm = Assembly.Load(assembly);
-            var type = asm.GetType(name, throwOnError: true);
-            var obj = Activator.CreateInstance(
-                type,
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
-                binder: null,
-                args: args,
-                culture: null);
-            return (T)obj;
+            try
+            {
+                var asm = Assembly.Load(assembly);
+                var type = asm.GetType(name, throwOnError: true);
+                var obj = Activator.CreateInstance(
+                    type,
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                    binder: null,
+                    args: args,
+                    culture: null);
+                return (T)obj;
+            }
+            catch (Exception ex) when (ex is FileNotFoundException or BadImageFormatException or TypeLoadException or
+                                        MissingMethodException or TargetInvocationException or InvalidCastException)
+            {
+                throw new InvalidOperationException(
+                    $"Failed to create internal instance of type '{name}' from assembly '{assembly}'. " +
+                    "This may indicate an incompatible Avalonia version.", ex);
+            }
         }
 
         public static AppBuilder UseAutoDetectConsoleColorMode(this AppBuilder builder)
