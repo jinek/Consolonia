@@ -38,6 +38,7 @@ namespace Consolonia.Core.Infrastructure
                 {
                     foreach (var item in Items)
                     {
+                        // ReSharper disable SuspiciousTypeConversion.Global
                         if (item is IDisposable disposable)
                             disposable.Dispose();
                     }
