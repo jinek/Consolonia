@@ -98,6 +98,7 @@ namespace Consolonia
         {
             try
             {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type
                 var asm = Assembly.Load(assembly);
                 var type = asm.GetType(name, throwOnError: true);
                 var result = Activator.CreateInstance(
@@ -106,7 +107,6 @@ namespace Consolonia
                     binder: null,
                     args: args,
                     culture: null);
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type
                 if (result == null)
                     throw new ArgumentNullException(name);
                 return (T)result!;
