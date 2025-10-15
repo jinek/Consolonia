@@ -25,7 +25,7 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public override async Task ClearAsync()
         {
-            await ClearAsync();
+            await base.ClearAsync();
 
             if (!OpenClipboard(IntPtr.Zero))
                 throw new InvalidOperationException("Could not open clipboard.");

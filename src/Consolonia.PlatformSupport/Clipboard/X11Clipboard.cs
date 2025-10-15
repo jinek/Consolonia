@@ -8,10 +8,11 @@ namespace Consolonia.PlatformSupport.Clipboard
     /// </summary>
     internal class X11Clipboard : ConsoleClipboard
     {
-        public override Task ClearAsync()
+        public override async Task ClearAsync()
         {
+            await base.ClearAsync();
+
             Medo.X11.X11Clipboard.Clipboard.Clear();
-            return Task.CompletedTask;
         }
 
         public override Task<string> GetTextAsync()
