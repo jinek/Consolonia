@@ -18,7 +18,7 @@ namespace Consolonia.Core.Infrastructure
 
         public AsyncDataTransfer(IAsyncDataTransferItem item)
         {
-            _items = [item];
+            _items = new List<IAsyncDataTransferItem> { item };
         }
 
         public AsyncDataTransfer(IEnumerable<IAsyncDataTransferItem> items)
@@ -26,9 +26,12 @@ namespace Consolonia.Core.Infrastructure
             _items = items.ToList();
         }
 
-        public IReadOnlyList<DataFormat> Formats => _items[0].Formats;
+        public IReadOnlyList<DataFormat> Formats => _items.SelectMany(i => i.Formats)
+                                                          .Distinct()
+                                                          .ToList()
+                                                          .AsReadOnly();
 
-        public IReadOnlyList<IAsyncDataTransferItem> Items => _items;
+        public IReadOnlyList<IAsyncDataTransferItem> Items => _items.AsReadOnly();
 
         private void Dispose(bool disposing)
         {
