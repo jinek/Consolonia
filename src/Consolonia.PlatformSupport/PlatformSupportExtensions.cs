@@ -100,14 +100,15 @@ namespace Consolonia
             {
                 var asm = Assembly.Load(assembly);
                 var type = asm.GetType(name, throwOnError: true);
-                var result = (T)Activator.CreateInstance(
+                var result = Activator.CreateInstance(
                     type,
                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
                     binder: null,
                     args: args,
                     culture: null);
-                ArgumentNullException.ThrowIfNull(result);
-                return result;
+                if (result == null)
+                    throw new ArgumentNullException(name);
+                return (T)result;
             }
             catch (Exception ex) when (ex is FileNotFoundException or BadImageFormatException or TypeLoadException or
                                         MissingMethodException or TargetInvocationException or InvalidCastException)
