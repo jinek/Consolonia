@@ -80,6 +80,9 @@ namespace Consolonia
             else
                 clipboardImpl = new ConsoleClipboard();
 
+            // Clipboard is new Avalonia wrapper around platform IClipboardImpl, but unfortunately is marked as internal.
+            // This can be replaced with: ```new Clipboard(clipboardImpl);``` when/if avalonia changes the visibility of
+            // Clipboard to public.
             return builder.With<IClipboard>(CreateInternalInstance<IClipboard>("Avalonia.Base",
                                                           "Avalonia.Input.Platform.Clipboard",
                                                           args: [clipboardImpl]));
