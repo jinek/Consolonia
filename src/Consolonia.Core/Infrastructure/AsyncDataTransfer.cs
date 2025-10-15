@@ -36,21 +36,22 @@ namespace Consolonia.Core.Infrastructure
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
+                    foreach (var item in Items)
+                    {
+                        if (item is IDisposable disposable)
+                            disposable.Dispose();
+                    }
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
                 _disposedValue = true;
             }
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~AsyncDataTransfer()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
+        ~AsyncDataTransfer()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
 
         public void Dispose()
         {
