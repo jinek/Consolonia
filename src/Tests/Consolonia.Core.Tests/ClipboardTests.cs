@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport.Clipboard;
@@ -12,44 +13,47 @@ namespace Consolonia.Core.Tests
     public class ClipboardTests
     {
         [Test]
-        public async Task InprocClipboardTest()
+        public async Task ConsoleClipboardTest()
         {
-            IClipboard clipboard = new InprocessClipboard();
+            ConsoleClipboard clipboard = new ConsoleClipboard();
 
-            string text = await clipboard.TryGetTextAsync();
+            await clipboard.SetDataAsync(new AsyncDataTransfer(new AsyncDataTransferItem("Hello, World!", DataFormat.Text)));
+            var data = await clipboard.TryGetDataAsync();
+            var text = await data.TryGetTextAsync();
+            Assert.AreEqual("Hello, World!", text);
 
-            await clipboard.SetTextAsync("Hello, World!");
-            string hello = await clipboard.TryGetTextAsync();
-            Assert.AreEqual("Hello, World!", hello);
             await clipboard.ClearAsync();
-            Assert.IsNull(await clipboard.TryGetTextAsync());
-
-            // restore clipboard
-            await clipboard.SetTextAsync(text);
+            data = await clipboard.TryGetDataAsync();
+            text = await data.TryGetTextAsync();
+            Assert.IsNull(text);
         }
+
 
         [Test]
         [Ignore("This doesn't run on server because X11 no there")]
         public async Task PlatformClipboardTest()
         {
-            IClipboard clipboard = Environment.OSVersion.Platform switch
+            ConsoleClipboard clipboard = Environment.OSVersion.Platform switch
             {
                 PlatformID.Win32NT => new Win32Clipboard(),
                 PlatformID.Unix => PlatformSupportExtensions.IsWslPlatform() ? new WslClipboard() : new X11Clipboard(),
                 PlatformID.MacOSX => new MacClipboard(),
-                _ => new InprocessClipboard()
+                _ => new ConsoleClipboard()
             };
 
-            string text = await clipboard.TryGetTextAsync();
+            string origText = await clipboard.GetTextAsync();
 
-            await clipboard.SetTextAsync("Hello, World!");
-            string hello = await clipboard.TryGetTextAsync();
-            Assert.AreEqual("Hello, World!", hello);
+            await clipboard.SetDataAsync(new AsyncDataTransfer(new AsyncDataTransferItem("Hello, World!", DataFormat.Text)));
+            var data = await clipboard.TryGetDataAsync();
+            var text = await data.TryGetTextAsync();
+            Assert.AreEqual("Hello, World!", text);
+
             await clipboard.ClearAsync();
-            Assert.AreEqual(string.Empty, await clipboard.TryGetTextAsync());
+            data = await clipboard.TryGetDataAsync();
+            text = await data.TryGetTextAsync();
 
             // restore clipboard
-            await clipboard.SetTextAsync(text);
+            await clipboard.SetTextAsync(origText);
         }
 
         // NOTE: This can mess up your clipboard state !

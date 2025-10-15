@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Formats.Tar;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -14,9 +16,31 @@ namespace Consolonia.PlatformSupport.Clipboard
     ///     A clipboard implementation for Win32 using PINvoke
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public class Win32Clipboard : IClipboard
+    public class Win32Clipboard : ConsoleClipboard
     {
-        public Task<string> GetTextAsync()
+        public Win32Clipboard()
+        {
+
+        }
+
+        public override async Task ClearAsync()
+        {
+            await base.ClearAsync();
+
+            if (!OpenClipboard(IntPtr.Zero))
+                throw new InvalidOperationException("Could not open clipboard.");
+
+            try
+            {
+                EmptyClipboard();
+            }
+            finally
+            {
+                CloseClipboard();
+            }
+        }
+
+        public override Task<string> GetTextAsync()
         {
             if (!OpenClipboard(IntPtr.Zero))
                 throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -50,7 +74,7 @@ namespace Consolonia.PlatformSupport.Clipboard
             }
         }
 
-        public Task SetTextAsync(string text)
+        public override Task SetTextAsync(string text)
         {
             if (!OpenClipboard(IntPtr.Zero))
                 throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -93,83 +117,12 @@ namespace Consolonia.PlatformSupport.Clipboard
             return Task.CompletedTask;
         }
 
-        public Task ClearAsync()
-        {
-            if (!OpenClipboard(IntPtr.Zero))
-                throw new InvalidOperationException("Could not open clipboard.");
-
-            try
-            {
-                EmptyClipboard();
-                return Task.CompletedTask;
-            }
-            finally
-            {
-                CloseClipboard();
-            }
-        }
-
-        public Task<string[]> GetFormatsAsync()
-        {
-            return Task.FromResult(new[] { "Text", "UnicodeText" });
-        }
-
-        public async Task<object> GetDataAsync(string format)
-        {
-            if (string.Equals(format, "text", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(format, "unicodetext", StringComparison.OrdinalIgnoreCase))
-                return await GetTextAsync();
-            return null;
-        }
-
-
-        public Task FlushAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public async Task SetDataAsync(IAsyncDataTransfer dataTransfer)
-        {
-            var item = dataTransfer.Items.FirstOrDefault(i => i.Formats.Contains(DataFormat.Text));
-            if (item != null)
-            {
-                var text = await item.TryGetTextAsync();
-                await SetTextAsync(text ?? string.Empty);
-            }
-        }
-
-        public async Task<IAsyncDataTransfer> TryGetDataAsync()
-        {
-            var text = await GetTextAsync();
-            return new AsyncDataTransfer(new AsyncDataTransferItem(text ?? String.Empty, DataFormat.Text));
-        }
-
-        public async Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
-        {
-            var text = await GetTextAsync();
-            return new AsyncDataTransfer(new AsyncDataTransferItem(text ?? String.Empty, DataFormat.Text));
-        }
-
-#pragma warning disable CS0618 // Type or member is obsolete
-        public Task SetDataObjectAsync(IDataObject data)
-        {
-            throw new NotImplementedException();
-        }
-#pragma warning restore CS0618 // Type or member is obsolete
-
-#pragma warning disable CS0618 // Type or member is obsolete
-        public Task<IDataObject> TryGetInProcessDataObjectAsync()
-        {
-            throw new NotImplementedException();
-        }
-#pragma warning restore CS0618 // Type or member is obsolete
-
-
 #pragma warning disable CA5392 // Use DefaultDllImportSearchPaths attribute for P/Invokes
 
         // ReSharper disable InconsistentNaming
 #pragma warning disable CA1707 // Identifiers should not contain underscores
         public const uint CF_UNICODETEXT = 13;
+
 #pragma warning restore CA1707 // Identifiers should not contain underscores
         // ReSharper enable InconsistentNaming
 
@@ -203,7 +156,6 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         [DllImport("kernel32.dll")]
         private static extern IntPtr GlobalFree(IntPtr hMem);
-
 #pragma warning restore CA5392 // Use DefaultDllImportSearchPaths attribute for P/Invokes
     }
 }

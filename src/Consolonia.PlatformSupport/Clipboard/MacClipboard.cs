@@ -12,7 +12,7 @@ namespace Consolonia.PlatformSupport.Clipboard
     ///     A clipboard implementation for MacOSX. This implementation uses the Mac clipboard API (via P/Invoke) to
     ///     copy/paste. The existence of the Mac pbcopy and pbpaste commands is used to determine if copy/paste is supported.
     /// </summary>
-    internal class MacClipboard : IClipboard
+    internal class MacClipboard : ConsoleClipboard
     {
         private readonly nint _allocRegister = sel_registerName("alloc");
         private readonly nint _clearContentsRegister = sel_registerName("clearContents");
@@ -46,7 +46,7 @@ namespace Consolonia.PlatformSupport.Clipboard
                     "clipboard operations are not supported pbcopy and pbpaste are not available on this system.");
         }
 
-        public Task<string> GetTextAsync()
+        public override Task<string> GetTextAsync()
         {
             nint ptr = objc_msgSend(_generalPasteboard, _stringForTypeRegister, _nsStringPboardType);
             nint charArray = objc_msgSend(ptr, _utf8Register);
@@ -54,7 +54,7 @@ namespace Consolonia.PlatformSupport.Clipboard
             return Task.FromResult(Marshal.PtrToStringAnsi(charArray));
         }
 
-        public Task SetTextAsync(string text)
+        public override Task SetTextAsync(string text)
         {
             nint str = default;
 
@@ -71,63 +71,6 @@ namespace Consolonia.PlatformSupport.Clipboard
 
             return Task.CompletedTask;
         }
-
-        public Task ClearAsync()
-        {
-            return SetTextAsync(string.Empty);
-        }
-
-#pragma warning disable CS0618 // Type or member is obsolete
-        public Task SetDataObjectAsync(IDataObject data)
-        {
-            throw new NotImplementedException();
-        }
-#pragma warning restore CS0618 // Type or member is obsolete
-
-        public Task<string[]> GetFormatsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<object> GetDataAsync(string format)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task FlushAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-#pragma warning disable CS0618 // Type or member is obsolete
-        public Task<IDataObject> TryGetInProcessDataObjectAsync()
-        {
-            return Task.FromResult<IDataObject>(null);
-        }
-
-        public async Task SetDataAsync(IAsyncDataTransfer dataTransfer)
-        {
-            var item = dataTransfer.Items.FirstOrDefault(i => i.Formats.Contains(DataFormat.Text));
-            if (item != null)
-            {
-                var text = await item.TryGetTextAsync();
-                await SetTextAsync(text ?? string.Empty);
-            }
-        }
-
-        public async Task<IAsyncDataTransfer> TryGetDataAsync()
-        {
-            var text = await GetTextAsync();
-            return new AsyncDataTransfer(new AsyncDataTransferItem(text ?? String.Empty, DataFormat.Text));
-        }
-
-        public async Task<IAsyncDataTransfer> TryGetInProcessDataAsync()
-        {
-            var text = await GetTextAsync();
-            return new AsyncDataTransfer(new AsyncDataTransferItem(text ?? String.Empty, DataFormat.Text));
-        }
-
-#pragma warning restore CS0618 // Type or member is obsolete
 
         private static bool CheckSupport()
         {

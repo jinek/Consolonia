@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input.Platform;
@@ -8,6 +9,7 @@ using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
 using Consolonia.PlatformSupport.Clipboard;
+using DynamicData.Kernel;
 
 // ReSharper disable CheckNamespace
 #pragma warning disable IDE0161
@@ -60,25 +62,45 @@ namespace Consolonia
         /// </remarks>
         public static AppBuilder UseAutoDetectClipboard(this AppBuilder builder)
         {
-            if (OperatingSystem.IsWindows()) return builder.With<IClipboard>(new Win32Clipboard());
+            IClipboardImpl clipboardImpl;
 
-            if (OperatingSystem.IsMacOS()) return builder.With<IClipboard>(new MacClipboard());
-
-            if (OperatingSystem.IsLinux())
-            {
+            if (OperatingSystem.IsWindows())
+                clipboardImpl = new Win32Clipboard();
+            else if (OperatingSystem.IsMacOS())
+                clipboardImpl = new MacClipboard();
+            else if (OperatingSystem.IsLinux())
+            { 
                 if (IsWslPlatform())
-                    return builder.With<IClipboard>(new WslClipboard());
-                // alternatively use xclip CLI tool
-                //return builder.With<IClipboard>(new XClipClipboard());
-                return builder.With<IClipboard>(new X11Clipboard());
+                    clipboardImpl = new WslClipboard();
+                else
+                    // alternatively use xclip CLI tool
+                    //return builder.With<IClipboard>(new XClipClipboard());
+                    clipboardImpl = new X11Clipboard();
             }
+            else 
+                clipboardImpl = new ConsoleClipboard();
 
-            return builder.With<IClipboard>(new InprocessClipboard());
+            return builder.With<IClipboard>(CreateInternalInstance<IClipboard>("Avalonia.Base",
+                                                          "Avalonia.Input.Platform.Clipboard",
+                                                          args: [clipboardImpl]));
         }
 
         public static bool IsWslPlatform()
         {
             return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WSL_DISTRO_NAME"));
+        }
+
+        private static T CreateInternalInstance<T>(string assembly, string name, object?[]? args = null)
+        {
+            var asm = Assembly.Load(assembly);
+            var type = asm.GetType(name, throwOnError: true);
+            var obj = Activator.CreateInstance(
+                type,
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                binder: null,
+                args: args,
+                culture: null);
+            return (T)obj;
         }
 
         public static AppBuilder UseAutoDetectConsoleColorMode(this AppBuilder builder)
@@ -90,13 +112,13 @@ namespace Consolonia
                 switch (Environment.OSVersion.Platform)
                 {
                     case PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT:
-                    {
-                        // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
-                        if (Console.IsOutputRedirected || IsWindowsTerminal())
-                            result = new RgbConsoleColorMode();
-                        else
-                            result = new EgaConsoleColorMode();
-                    }
+                        {
+                            // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
+                            if (Console.IsOutputRedirected || IsWindowsTerminal())
+                                result = new RgbConsoleColorMode();
+                            else
+                                result = new EgaConsoleColorMode();
+                        }
                         break;
                     case PlatformID.MacOSX:
                         result = new RgbConsoleColorMode();
