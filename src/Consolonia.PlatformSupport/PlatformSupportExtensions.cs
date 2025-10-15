@@ -103,15 +103,14 @@ namespace Consolonia
                 
                 ArgumentNullException.ThrowIfNull(type, nameof(type));
 
-                var result = Activator.CreateInstance(
+                var instance = Activator.CreateInstance(
                     type,
                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
                     binder: null,
                     args: args,
                     culture: null);
-                if (result == null)
-                    throw new ArgumentNullException(name);
-                return (T)result!;
+                ArgumentNullException.ThrowIfNull(instance, nameof(instance));
+                return (T)instance!;
             }
             catch (Exception ex) when (ex is FileNotFoundException or BadImageFormatException or TypeLoadException or
                                         MissingMethodException or TargetInvocationException or InvalidCastException)
