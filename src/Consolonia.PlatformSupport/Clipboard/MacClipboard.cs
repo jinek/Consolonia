@@ -9,6 +9,7 @@ namespace Consolonia.PlatformSupport.Clipboard
     ///     A clipboard implementation for MacOSX. This implementation uses the Mac clipboard API (via P/Invoke) to
     ///     copy/paste. The existence of the Mac pbcopy and pbpaste commands is used to determine if copy/paste is supported.
     /// </summary>
+    #pragma warning disable CA2216 // Disposable types should declare finalizer (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2216)
     public class MacClipboard : ConsoleClipboard
     {
         private readonly nint _allocRegister = sel_registerName("alloc");
@@ -78,12 +79,6 @@ namespace Consolonia.PlatformSupport.Clipboard
             (exitCode, result) = ClipboardProcessRunner.Bash("which pbpaste", waitForOutput: true);
 
             return exitCode == 0 && result.FileExists();
-        }
-
-        // CA2216: Disposable types should declare finalizer
-        ~MacClipboard()
-        {
-            Dispose(false);
         }
 
         [DllImport("/System/Library/Frameworks/AppKit.framework/AppKit", CharSet = CharSet.Unicode)]
