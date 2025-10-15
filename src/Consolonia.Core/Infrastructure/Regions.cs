@@ -28,6 +28,17 @@ namespace Consolonia.Core.Infrastructure
             return _rectangles.Any(rect => inclusive ? rect.Contains(point) : rect.ContainsExclusive(point));
         }
 
+        /// <summary>
+        ///     Checks if a coordinate is contained within any rectangle
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="inclusive"></param>
+        /// <returns></returns>
+        public bool Contains(ushort x, ushort y, bool inclusive)
+        {
+            return Contains(new PixelPoint(x, y), inclusive);
+        }
 
         /// <summary>
         ///     A thread-safe collection of normalized rectangles.

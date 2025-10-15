@@ -860,7 +860,7 @@ namespace Consolonia.Core.Drawing
             // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15); //todo: what to do if a rotation?
 
             var position = origin.Transform(Transform).ToPixelPoint();
-            int lineStartX = position.X;
+            PixelPoint startPosition = position;
 
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
@@ -877,7 +877,7 @@ namespace Consolonia.Core.Drawing
                     case "\r":
                     case "\f":
                     case "\n":
-                        position = new PixelPoint(lineStartX, position.Y + 1);
+                        position = new PixelPoint(startPosition.X, position.Y + 1);
                         break;
                     default:
                     {
@@ -885,42 +885,13 @@ namespace Consolonia.Core.Drawing
                         // if we are attempting to draw a wide glyph we need to make sure that the clipping point
                         // is for the last physical char. Aka a double char should be clipped if it's second rendered 
                         // char would break the boundary of the clip.
-                        // var clippingPoint = new Point(characterPoint.X + symbol.Width - 1, characterPoint.Y);
-                        var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
-                        if (CurrentClip.ContainsExclusive(position))
+                        if (CurrentClip.ContainsExclusive(position) &&
+                            (symbol.Width == 1 ||
+                             symbol.Width > 1 &&
+                             CurrentClip.ContainsExclusive(new PixelPoint(position.X + symbol.Width - 1, position.Y))))
                         {
-                            Pixel oldPixel = _pixelBuffer[position];
-                            if (oldPixel.Width == 0)
-                            {
-                                // if the oldPixel was empty, we need to set the previous pixel to space
-                                PixelPoint target = position.WithX(position.X - 1);
-                                if (target.X >= 0)
-                                    _pixelBuffer[target] = new Pixel(PixelForeground.Space,
-                                        _pixelBuffer[target].Background);
-                            }
-                            else if (oldPixel.Width > 1)
-                            {
-                                // if oldPixel was wide we need to reset overlapped symbols from empty to space
-                                for (ushort i = 1; i < oldPixel.Width; i++)
-                                {
-                                    PixelPoint target = position.WithX(position.X + i);
-                                    if (target.X < _pixelBuffer.Size.Width)
-                                        _pixelBuffer[target] = new Pixel(PixelForeground.Space,
-                                            _pixelBuffer[target].Background);
-                                }
-                            }
-
-                            // if the pixel was a wide character, we need to set the overlapped pixels to empty pixels.
-                            if (newPixel.Width > 1)
-                                for (int i = 1; i < symbol.Width; i++)
-                                {
-                                    PixelPoint target = position.WithX(position.X + i);
-                                    if (target.X < _pixelBuffer.Size.Width)
-                                        _pixelBuffer[target] = new Pixel(PixelForeground.Empty,
-                                            _pixelBuffer[target].Background);
-                                }
-
-                            _pixelBuffer[position] = oldPixel.Blend(newPixel);
+                            var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
+                            _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
                         }
 
                         position = position.WithX(position.X + symbol.Width);
@@ -929,9 +900,13 @@ namespace Consolonia.Core.Drawing
                 }
             }
 
-            // Width/height are exclusive, so add 1 to include the last column/row
-            var rectToRefresh = new PixelRect(position, new PixelSize(1, 1));
-            _consoleWindowImpl.DirtyRegions.AddRect(CurrentClip.Intersect(rectToRefresh));
+            // mark the dirty region, start to end, position is after the last drawn char so
+            // already aligned on x; y we need to add 1 to give the rect height.
+            var rectToRefresh = new PixelRect(startPosition,
+                new PixelSize(position.X - startPosition.X,
+                    position.Y - startPosition.Y + 1));
+            PixelRect intersectRect = CurrentClip.Intersect(rectToRefresh);
+            _consoleWindowImpl.DirtyRegions.AddRect(intersectRect);
         }
 
         /// <summary>
