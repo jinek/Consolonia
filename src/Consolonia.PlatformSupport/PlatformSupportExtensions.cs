@@ -106,9 +106,11 @@ namespace Consolonia
                     binder: null,
                     args: args,
                     culture: null);
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type
                 if (result == null)
                     throw new ArgumentNullException(name);
                 return (T)result!;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type
             }
             catch (Exception ex) when (ex is FileNotFoundException or BadImageFormatException or TypeLoadException or
                                         MissingMethodException or TargetInvocationException or InvalidCastException)
