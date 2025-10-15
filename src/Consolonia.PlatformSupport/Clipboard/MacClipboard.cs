@@ -86,12 +86,6 @@ namespace Consolonia.PlatformSupport.Clipboard
             Dispose(false);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            // Add any MacClipboard-specific cleanup here if needed
-        }
-
         [DllImport("/System/Library/Frameworks/AppKit.framework/AppKit", CharSet = CharSet.Unicode)]
         private static extern nint objc_getClass(string className);
 

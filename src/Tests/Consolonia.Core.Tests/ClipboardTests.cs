@@ -51,6 +51,7 @@ namespace Consolonia.Core.Tests
             await clipboard.ClearAsync();
             data = await clipboard.TryGetDataAsync();
             text = await data.TryGetTextAsync();
+            Assert.IsTrue(String.IsNullOrEmpty(text));
 
             // restore clipboard
             await clipboard.SetTextAsync(origText);

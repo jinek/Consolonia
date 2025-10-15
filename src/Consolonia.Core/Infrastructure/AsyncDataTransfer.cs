@@ -9,6 +9,7 @@ namespace Consolonia.Core.Infrastructure
     public sealed class AsyncDataTransfer : IAsyncDataTransfer
     {
         private List<IAsyncDataTransferItem> _items;
+        private bool _disposedValue;
 
         public AsyncDataTransfer()
         {
@@ -29,13 +30,33 @@ namespace Consolonia.Core.Infrastructure
 
         public IReadOnlyList<IAsyncDataTransferItem> Items => _items;
 
+        private void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                _disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~AsyncDataTransfer()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
         public void Dispose()
         {
-            foreach (var item in _items)
-            {
-                if (item is IDisposable disposable)
-                    disposable.Dispose();
-            }
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 
