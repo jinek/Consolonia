@@ -94,20 +94,20 @@ namespace Consolonia
         }
 
         private static T CreateInternalInstance<T>(string assembly, string name, object[] args = null)
+            where T : class
         {
             try
             {
                 var asm = Assembly.Load(assembly);
                 var type = asm.GetType(name, throwOnError: true);
-                var obj = Activator.CreateInstance(
+                var result = (T)Activator.CreateInstance(
                     type,
                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
                     binder: null,
                     args: args,
                     culture: null);
-                ArgumentNullException.ThrowIfNull(obj, name);
-                // ReSharper disable once AssignNullToNotNullAttribute
-                return (T)obj;
+                ArgumentNullException.ThrowIfNull(result);
+                return result;
             }
             catch (Exception ex) when (ex is FileNotFoundException or BadImageFormatException or TypeLoadException or
                                         MissingMethodException or TargetInvocationException or InvalidCastException)
