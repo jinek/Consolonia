@@ -105,6 +105,7 @@ namespace Consolonia
                     binder: null,
                     args: args,
                     culture: null);
+                ArgumentNullException.ThrowIfNull(obj, name);
                 return (T)obj;
             }
             catch (Exception ex) when (ex is FileNotFoundException or BadImageFormatException or TypeLoadException or
