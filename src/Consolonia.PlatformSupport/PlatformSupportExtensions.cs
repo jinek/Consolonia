@@ -106,6 +106,7 @@ namespace Consolonia
                     args: args,
                     culture: null);
                 ArgumentNullException.ThrowIfNull(obj, name);
+                // ReSharper disable once AssignNullToNotNullAttribute
                 return (T)obj;
             }
             catch (Exception ex) when (ex is FileNotFoundException or BadImageFormatException or TypeLoadException or
