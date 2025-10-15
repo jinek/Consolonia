@@ -108,7 +108,7 @@ namespace Consolonia
                     culture: null);
                 if (result == null)
                     throw new ArgumentNullException(name);
-                return (T)result;
+                return (T)result!;
             }
             catch (Exception ex) when (ex is FileNotFoundException or BadImageFormatException or TypeLoadException or
                                         MissingMethodException or TargetInvocationException or InvalidCastException)
