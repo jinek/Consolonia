@@ -1,9 +1,6 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Input;
-using Avalonia.Input.Platform;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.PlatformSupport.Clipboard

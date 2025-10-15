@@ -10,10 +10,11 @@ namespace Consolonia.Core.Infrastructure
     /// <summary>
     ///     This clipboard only stores memory in the same process, so it is not useful for sharing data between processes.
     /// </summary>
-    public class ConsoleClipboard : IClipboardImpl
+    public class ConsoleClipboard : IClipboardImpl, IDisposable
     {
         private IAsyncDataTransfer _asyncDataTransfer = new AsyncDataTransfer();
         private string _text;
+        private bool _disposed;
 
         public async Task SetDataAsync(IAsyncDataTransfer dataTransfer)
         {
@@ -35,16 +36,51 @@ namespace Consolonia.Core.Infrastructure
             return new AsyncDataTransfer(items);
         }
 
-        public async virtual Task ClearAsync()
+        public virtual Task ClearAsync()
         {
             _asyncDataTransfer = new AsyncDataTransfer();
             _text = null;
+            return Task.CompletedTask;
         }
 
-        public virtual async Task SetTextAsync(string text)
-            => _text = text;
+        public virtual Task SetTextAsync(string text)
+        {
+            _text = text;
+            return Task.CompletedTask;
+        }
 
-        public virtual async Task<string> GetTextAsync()
-            => _text;
+        public virtual Task<string> GetTextAsync()
+            => Task.FromResult(_text);
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // dispose managed state (managed objects)
+                    _asyncDataTransfer?.Dispose();
+                    _asyncDataTransfer = null;
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                _disposed = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~ConsoleClipboard()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

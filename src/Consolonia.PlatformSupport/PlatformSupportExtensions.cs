@@ -90,7 +90,7 @@ namespace Consolonia
             return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WSL_DISTRO_NAME"));
         }
 
-        private static T CreateInternalInstance<T>(string assembly, string name, object?[]? args = null)
+        private static T CreateInternalInstance<T>(string assembly, string name, object[] args = null)
         {
             var asm = Assembly.Load(assembly);
             var type = asm.GetType(name, throwOnError: true);

@@ -1,9 +1,6 @@
 using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Avalonia.Input;
-using Avalonia.Input.Platform;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.PlatformSupport.Clipboard
@@ -12,7 +9,7 @@ namespace Consolonia.PlatformSupport.Clipboard
     ///     A clipboard implementation for MacOSX. This implementation uses the Mac clipboard API (via P/Invoke) to
     ///     copy/paste. The existence of the Mac pbcopy and pbpaste commands is used to determine if copy/paste is supported.
     /// </summary>
-    internal class MacClipboard : ConsoleClipboard
+    public class MacClipboard : ConsoleClipboard
     {
         private readonly nint _allocRegister = sel_registerName("alloc");
         private readonly nint _clearContentsRegister = sel_registerName("clearContents");
@@ -81,6 +78,18 @@ namespace Consolonia.PlatformSupport.Clipboard
             (exitCode, result) = ClipboardProcessRunner.Bash("which pbpaste", waitForOutput: true);
 
             return exitCode == 0 && result.FileExists();
+        }
+
+        // CA2216: Disposable types should declare finalizer
+        ~MacClipboard()
+        {
+            Dispose(false);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            // Add any MacClipboard-specific cleanup here if needed
         }
 
         [DllImport("/System/Library/Frameworks/AppKit.framework/AppKit", CharSet = CharSet.Unicode)]
