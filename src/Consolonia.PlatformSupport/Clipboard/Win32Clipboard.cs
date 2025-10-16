@@ -3,8 +3,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
-using Avalonia.Input;
-using Avalonia.Input.Platform;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
@@ -12,9 +11,26 @@ namespace Consolonia.PlatformSupport.Clipboard
     ///     A clipboard implementation for Win32 using PINvoke
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public class Win32Clipboard : IClipboard
+    public class Win32Clipboard : ConsoleClipboard
     {
-        public Task<string> GetTextAsync()
+        public override async Task ClearAsync()
+        {
+            await base.ClearAsync();
+
+            if (!OpenClipboard(IntPtr.Zero))
+                throw new InvalidOperationException("Could not open clipboard.");
+
+            try
+            {
+                EmptyClipboard();
+            }
+            finally
+            {
+                CloseClipboard();
+            }
+        }
+
+        public override Task<string> GetTextAsync()
         {
             if (!OpenClipboard(IntPtr.Zero))
                 throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -48,7 +64,7 @@ namespace Consolonia.PlatformSupport.Clipboard
             }
         }
 
-        public Task SetTextAsync(string text)
+        public override Task SetTextAsync(string text)
         {
             if (!OpenClipboard(IntPtr.Zero))
                 throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -91,56 +107,12 @@ namespace Consolonia.PlatformSupport.Clipboard
             return Task.CompletedTask;
         }
 
-        public Task ClearAsync()
-        {
-            if (!OpenClipboard(IntPtr.Zero))
-                throw new InvalidOperationException("Could not open clipboard.");
-
-            try
-            {
-                EmptyClipboard();
-                return Task.CompletedTask;
-            }
-            finally
-            {
-                CloseClipboard();
-            }
-        }
-
-        public Task SetDataObjectAsync(IDataObject data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string[]> GetFormatsAsync()
-        {
-            return Task.FromResult(new[] { "Text", "UnicodeText" });
-        }
-
-        public async Task<object> GetDataAsync(string format)
-        {
-            if (string.Equals(format, "text", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(format, "unicodetext", StringComparison.OrdinalIgnoreCase))
-                return await GetTextAsync();
-            return null;
-        }
-
-
-        public Task FlushAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task<IDataObject> TryGetInProcessDataObjectAsync()
-        {
-            throw new NotImplementedException();
-        }
-
 #pragma warning disable CA5392 // Use DefaultDllImportSearchPaths attribute for P/Invokes
 
         // ReSharper disable InconsistentNaming
 #pragma warning disable CA1707 // Identifiers should not contain underscores
         public const uint CF_UNICODETEXT = 13;
+
 #pragma warning restore CA1707 // Identifiers should not contain underscores
         // ReSharper enable InconsistentNaming
 
