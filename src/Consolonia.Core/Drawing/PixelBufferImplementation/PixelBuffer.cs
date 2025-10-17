@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
-using Avalonia.Media;
 using Newtonsoft.Json;
 
 // ReSharper disable UnusedMember.Global
@@ -28,7 +27,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             // blended into it.
             for (ushort y = 0; y < height; y++)
             for (ushort x = 0; x < width; x++)
-                _buffer[x, y] = new Pixel(new PixelBackground(Colors.Black));
+                _buffer[x, y] = Pixel.Space;
         }
 
         // ReSharper disable once UnusedMember.Global
@@ -38,12 +37,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             get
             {
                 (ushort x, ushort y) = ToXY(i);
-                return this[(PixelBufferCoordinate)(x, y)];
+                return this[x, y];
             }
             set
             {
                 (ushort x, ushort y) = ToXY(i);
-                this[(PixelBufferCoordinate)(x, y)] = value;
+                this[x, y] = value;
             }
         }
 
@@ -52,7 +51,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             get => _buffer[point.X, point.Y];
             // ReSharper disable once MemberCanBePrivate.Global
-            set => _buffer[point.X, point.Y] = value;
+            set => this[point.X, point.Y] = value;
         }
 
         [JsonIgnore]
@@ -64,7 +63,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         [JsonIgnore]
-        public Pixel this[Point point]
+        public Pixel this[PixelPoint point]
         {
             get => this[(PixelBufferCoordinate)point];
             set => this[(PixelBufferCoordinate)point] = value;
@@ -72,7 +71,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         [JsonIgnore] public int Length => _buffer.Length;
 
-        [JsonIgnore] public Rect Size => new(0, 0, Width, Height);
+        [JsonIgnore] public PixelRect Size => new(0, 0, Width, Height);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

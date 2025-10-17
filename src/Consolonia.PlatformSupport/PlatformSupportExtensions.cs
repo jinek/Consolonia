@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input.Platform;
@@ -60,25 +62,69 @@ namespace Consolonia
         /// </remarks>
         public static AppBuilder UseAutoDetectClipboard(this AppBuilder builder)
         {
-            if (OperatingSystem.IsWindows()) return builder.With<IClipboard>(new Win32Clipboard());
+            IClipboardImpl clipboardImpl;
 
-            if (OperatingSystem.IsMacOS()) return builder.With<IClipboard>(new MacClipboard());
-
-            if (OperatingSystem.IsLinux())
+            if (OperatingSystem.IsWindows())
+            {
+                clipboardImpl = new Win32Clipboard();
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                clipboardImpl = new MacClipboard();
+            }
+            else if (OperatingSystem.IsLinux())
             {
                 if (IsWslPlatform())
-                    return builder.With<IClipboard>(new WslClipboard());
-                // alternatively use xclip CLI tool
-                //return builder.With<IClipboard>(new XClipClipboard());
-                return builder.With<IClipboard>(new X11Clipboard());
+                    clipboardImpl = new WslClipboard();
+                else
+                    // alternatively use xclip CLI tool
+                    //return builder.With<IClipboard>(new XClipClipboard());
+                    clipboardImpl = new X11Clipboard();
+            }
+            else
+            {
+                clipboardImpl = new ConsoleClipboard();
             }
 
-            return builder.With<IClipboard>(new InprocessClipboard());
+            // Clipboard is new Avalonia wrapper around platform IClipboardImpl, but unfortunately is marked as internal.
+            // This can be replaced with: ```new Clipboard(clipboardImpl);``` when/if avalonia changes the visibility of
+            // Clipboard to public.
+            return builder.With(CreateInternalInstance<IClipboard>("Avalonia.Base",
+                "Avalonia.Input.Platform.Clipboard",
+                [clipboardImpl]));
         }
 
         public static bool IsWslPlatform()
         {
             return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WSL_DISTRO_NAME"));
+        }
+
+        private static T CreateInternalInstance<T>(string assembly, string name, object[] args = null)
+            where T : class
+        {
+            try
+            {
+                Assembly asm = Assembly.Load(assembly);
+                Type type = asm.GetType(name, true);
+
+                ArgumentNullException.ThrowIfNull(type, nameof(type));
+
+                object instance = Activator.CreateInstance(
+                    type,
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                    null,
+                    args,
+                    null);
+                ArgumentNullException.ThrowIfNull(instance, nameof(instance));
+                return (T)instance!;
+            }
+            catch (Exception ex) when (ex is FileNotFoundException or BadImageFormatException or TypeLoadException or
+                                           MissingMethodException or TargetInvocationException or InvalidCastException)
+            {
+                throw new InvalidOperationException(
+                    $"Failed to create internal instance of type '{name}' from assembly '{assembly}'. " +
+                    "This may indicate an incompatible Avalonia version.", ex);
+            }
         }
 
         public static AppBuilder UseAutoDetectConsoleColorMode(this AppBuilder builder)

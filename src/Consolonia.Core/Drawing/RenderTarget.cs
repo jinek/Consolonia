@@ -106,9 +106,6 @@ namespace Consolonia.Core.Drawing
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void RenderToDevice()
         {
-            //todo: somewhere in this chain introduce _dirtyRects and render only those regions, BEB6BF21-2724-4E1B-B097-5563EE4C27D9
-            //todo: then refactor cursor drawing assuming this BEB6BF21-2724-4E1B-B097-5563EE4C27D9
-
             PixelBuffer pixelBuffer = _consoleTopLevelImpl.PixelBuffer;
             Snapshot dirtyRegions = _consoleTopLevelImpl.DirtyRegions.GetSnapshotAndClear();
 
@@ -119,9 +116,9 @@ namespace Consolonia.Core.Drawing
 
             var flushingBuffer = new FlushingBuffer(_console);
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-            for (ushort x = 0; x < pixelBuffer.Width; x++)
+            for (ushort x = 0; x < pixelBuffer.Width;)
             {
-                Pixel pixel = pixelBuffer[(PixelBufferCoordinate)(x, y)];
+                Pixel pixel = pixelBuffer[x, y];
 
                 if (pixel.IsCaret())
                 {
@@ -131,30 +128,57 @@ namespace Consolonia.Core.Drawing
                     caretStyle = pixel.CaretStyle;
                 }
 
-                if (!dirtyRegions.Contains(new Point(x, y), false)) /*checking caret duplication before to fail fast*/
-                    continue;
-
-                // injecting cursor
-                if (!_consoleCursor.IsEmpty() && _consoleCursor.Coordinate.X == x && _consoleCursor.Coordinate.Y == y)
+                // if it's not a dirty region, no need to paint it.
+                if (!dirtyRegions.Contains(x, y, false))
                 {
-                    Pixel currentPixel = pixel;
+                    // advance to next paintable pixel
+                    x += pixel.Width;
+                    continue;
+                }
 
-                    // Calculate the inverse color
-                    Color invertColor = Color.FromRgb((byte)(255 - currentPixel.Background.Color.R),
-                        (byte)(255 - currentPixel.Background.Color.G),
-                        (byte)(255 - currentPixel.Background.Color.B));
+                // if there is a cursor and it's in the range that will be painted by this pixel.
+                if (_consoleCursor.Coordinate.Y == y &&
+                    !_consoleCursor.IsEmpty() &&
+                    _consoleCursor.Coordinate.X >= x && _consoleCursor.Coordinate.X < x + pixel.Width)
+                {
+                    // cursor takes precedence over the overlapped pixel, we render the cursor pixel instead 
 
-                    pixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type), invertColor),
-                        new PixelBackground(currentPixel.Background.Color), pixel.CaretStyle);
+                    // clear cache for this pixel
+                    while (x < _consoleCursor.Coordinate.X)
+                        _cache[x++, y] = Pixel.Empty;
+
+                    // x is now the location of the cursor (because it can be pointing midway in a wide pixel)
+
+                    // get current pixel for consoleCursor location
+                    pixel = pixelBuffer[x, y];
+
+                    // create our cursor pixel, using current pixel to compute inverted foreground color
+                    var cursorPixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type),
+                        GetInvertColor(pixel.Background.Color)));
+                    pixel = pixel.Blend(cursorPixel);
+                }
+                // if it's not changed from last paint, no reason to paint it.
+                else if (_cache[x, y] == pixel)
+                {
+                    // just advance to next paintable pixel 
+                    x += pixel.Width;
+                    continue;
                 }
 
                 //todo: indexOutOfRange during resize
-                if (_cache[x, y] == pixel)
-                    continue;
 
-                _cache[x, y] = pixel;
-
+                // paint the pixel
                 flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+
+                // determine end point for wide pixels
+                int end = Math.Min(pixelBuffer.Width, x + pixel.Width);
+
+                // cache painted pixel
+                _cache[x++, y] = pixel;
+
+                // if it's a wide pixel clear cache for overlapped pixels
+                while (x < end)
+                    _cache[x++, y] = Pixel.Empty;
             }
 
             flushingBuffer.Flush();
@@ -171,6 +195,13 @@ namespace Consolonia.Core.Drawing
             }
         }
 
+        private static Color GetInvertColor(Color color)
+        {
+            return Color.FromRgb((byte)(255 - color.R),
+                (byte)(255 - color.G),
+                (byte)(255 - color.B));
+        }
+
         private void OnCursorChanged(ConsoleCursor consoleCursor)
         {
             if (_consoleCursor.CompareTo(consoleCursor) == 0)
@@ -180,10 +211,14 @@ namespace Consolonia.Core.Drawing
             _consoleCursor = consoleCursor;
 
             //todo: low excessive refresh, emptiness can be checked
-            _consoleTopLevelImpl.DirtyRegions.AddRect(new Rect(oldConsoleCursor.Coordinate.X,
-                oldConsoleCursor.Coordinate.Y, 1, 1));
-            _consoleTopLevelImpl.DirtyRegions.AddRect(new Rect(consoleCursor.Coordinate.X,
-                consoleCursor.Coordinate.Y, 1, 1));
+
+            // Dirty rects expanded to handle potential wide char overlap
+            var oldCursorRect = new PixelRect(oldConsoleCursor.Coordinate.X - 1,
+                oldConsoleCursor.Coordinate.Y, oldConsoleCursor.Width + 1, 1);
+            var newCursorRect = new PixelRect(consoleCursor.Coordinate.X - 1,
+                consoleCursor.Coordinate.Y, consoleCursor.Width + 1, 1);
+            _consoleTopLevelImpl.DirtyRegions.AddRect(oldCursorRect);
+            _consoleTopLevelImpl.DirtyRegions.AddRect(newCursorRect);
 
             RenderToDevice();
         }

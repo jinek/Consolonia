@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -11,7 +12,9 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public partial class GalleryDragAndDrop : UserControl
     {
-        private const string CustomFormat = "application/xxx-avalonia-controlcatalog-custom";
+        private readonly DataFormat<string> _customFormat =
+            DataFormat.CreateStringApplicationFormat("xxx-avalonia-controlcatalog-custom");
+
         private readonly TextBlock _dropState;
 
         public GalleryDragAndDrop()
@@ -23,32 +26,26 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 
             SetupDnd(
                 "Text",
-                d => d.Set(DataFormats.Text, $"Text was dragged {++textCount} times"),
+                d => d.Add(DataTransferItem.CreateText($"Text was dragged {++textCount} times")),
                 DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link);
 
             SetupDnd(
                 "Custom",
-                d => d.Set(CustomFormat, "Test123"),
+                d => d.Add(DataTransferItem.Create(_customFormat, "Test123")),
                 DragDropEffects.Move);
 
-            string filePath = Path.Combine(Environment.CurrentDirectory, "file.txt");
-            File.WriteAllText(filePath, "foo");
             SetupDnd(
                 "Files",
-                d =>
+                async d =>
                 {
-                    d.Set(DataFormats.Files,
-                        new[] { TopLevel.GetTopLevel(this).StorageProvider.TryGetFileFromPathAsync(filePath).Result });
+                    string path = Path.GetTempFileName();
+                    d.Add(DataTransferItem.CreateFile(await TopLevel.GetTopLevel(this).StorageProvider
+                        .TryGetFileFromPathAsync(path)));
                 },
                 DragDropEffects.Copy);
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
-        private void SetupDnd(string suffix, Action<DataObject> factory, DragDropEffects effects)
+        private void SetupDnd(string suffix, Action<DataTransfer> factory, DragDropEffects effects)
         {
             SetupDnd(
                 suffix,
@@ -60,18 +57,17 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 effects);
         }
 
-        private void SetupDnd(string suffix, Func<DataObject, Task> factory, DragDropEffects effects)
+        private void SetupDnd(string suffix, Func<DataTransfer, Task> factory, DragDropEffects effects)
         {
             var dragMe = this.Get<Border>("DragMe" + suffix);
             var dragState = this.Get<TextBlock>("DragState" + suffix);
 
-            async void DoDrag(object sender, PointerPressedEventArgs e)
+            async void DoDrag(object? sender, PointerPressedEventArgs e)
             {
-                var dragData = new DataObject();
+                var dragData = new DataTransfer();
                 await factory(dragData);
 
-                dragState.Text = "Dragging...";
-                DragDropEffects result = await DragDrop.DoDragDrop(e, dragData, effects);
+                DragDropEffects result = await DragDrop.DoDragDropAsync(e, dragData, effects);
                 switch (result)
                 {
                     case DragDropEffects.Move:
@@ -92,7 +88,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 }
             }
 
-            void DragOver(object sender, DragEventArgs e)
+            void DragOver(object? sender, DragEventArgs e)
             {
                 if (e.Source is Control c && c.Name == "MoveTarget")
                     e.DragEffects = e.DragEffects & DragDropEffects.Move;
@@ -100,33 +96,35 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     e.DragEffects = e.DragEffects & DragDropEffects.Copy;
 
                 // Only allow if the dragged data contains text or filenames.
-                if (!e.Data.Contains(DataFormats.Text)
-                    && !e.Data.Contains(DataFormats.Files)
-                    && !e.Data.Contains(CustomFormat))
+                if (!e.DataTransfer.Formats.Contains(DataFormat.Text)
+                    && !e.DataTransfer.Formats.Contains(DataFormat.File)
+                    && !e.DataTransfer.Formats.Contains(_customFormat))
                     e.DragEffects = DragDropEffects.None;
             }
 
-            async void Drop(object sender, DragEventArgs e)
+            async void Drop(object? sender, DragEventArgs e)
             {
                 if (e.Source is Control c && c.Name == "MoveTarget")
                     e.DragEffects = e.DragEffects & DragDropEffects.Move;
                 else
                     e.DragEffects = e.DragEffects & DragDropEffects.Copy;
 
-                if (e.Data.Contains(DataFormats.Text))
+                if (e.DataTransfer.Formats.Contains(DataFormat.Text))
                 {
-                    _dropState.Text = $"({e.DragEffects}) {e.Data.GetText()}";
+                    _dropState.Text = e.DataTransfer.TryGetText();
                 }
-                else if (e.Data.Contains(DataFormats.Files))
+                else if (e.DataTransfer.Formats.Contains(DataFormat.File))
                 {
-                    IEnumerable<IStorageItem> files = e.Data.GetFiles() ?? Array.Empty<IStorageItem>();
-                    string contentStr = $"({e.DragEffects}) {Environment.NewLine}";
+                    IStorageItem[] files = e.DataTransfer.TryGetValues(DataFormat.File) ?? Array.Empty<IStorageItem>();
+                    string contentStr = "";
 
                     foreach (IStorageItem item in files)
                         if (item is IStorageFile file)
                         {
-                            //var content = await DialogsPage.ReadTextFromFile(file, 500);
-                            contentStr += $"File {file.Name}:{Environment.NewLine}";
+                            // var content = await DialogsPage.ReadTextFromFile(file, 500);
+                            string content = "text";
+                            contentStr +=
+                                $"File {item.Name}:{Environment.NewLine}{content}{Environment.NewLine}{Environment.NewLine}";
                         }
                         else if (item is IStorageFolder folder)
                         {
@@ -142,20 +140,24 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                 else if (e.Data.Contains(DataFormats.FileNames))
                 {
                     IEnumerable<string> files = e.Data.GetFileNames();
-                    _dropState.Text =
-                        $"({e.DragEffects})  {string.Join(Environment.NewLine, files ?? Array.Empty<string>())}";
+                    _dropState.Text = string.Join(Environment.NewLine, files ?? Array.Empty<string>());
+                }
+                else if (e.Data.Contains(_customFormat.Identifier))
+                {
+                    _dropState.Text = "Custom: " + e.Data.Get(_customFormat.Identifier);
                 }
 #pragma warning restore CS0618 // Type or member is obsolete
-                else if (e.Data.Contains(CustomFormat))
-                {
-                    _dropState.Text = $"({e.DragEffects})  Custom: {e.Data.Get(CustomFormat)}";
-                }
             }
 
             dragMe.PointerPressed += DoDrag;
 
             AddHandler(DragDrop.DropEvent, Drop);
             AddHandler(DragDrop.DragOverEvent, DragOver);
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
         }
     }
 }

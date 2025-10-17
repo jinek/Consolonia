@@ -145,7 +145,7 @@ namespace Consolonia.PlatformSupport
         /// <returns></returns>
         private async Task ProcessClipboardInputAsync(IClipboard clipboard, INPUT_RECORD[] inputRecords)
         {
-            string clipboardText = await clipboard?.GetTextAsync() ?? string.Empty;
+            string clipboardText = await clipboard?.TryGetTextAsync() ?? string.Empty;
             if (clipboardText.Trim().Length == 0)
             {
                 // no text in clipboard, just process input records

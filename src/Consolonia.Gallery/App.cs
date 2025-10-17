@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -9,7 +10,7 @@ namespace Consolonia.Gallery
 {
     internal class App : Application
     {
-        internal const string TurboVisionProgramParameterUpperCase = "-TURBOVISION";
+        internal const string TurboVisionProgramParameter = "-turbovision";
 
         static App()
         {
@@ -21,7 +22,7 @@ namespace Consolonia.Gallery
         {
             if (((ConsoloniaLifetime)ApplicationLifetime).IsRgbColorMode()
                 && !((ConsoloniaLifetime)ApplicationLifetime).Args.Any(argument => argument != null &&
-                    argument.ToUpper().EndsWith(TurboVisionProgramParameterUpperCase)))
+                    argument.EndsWith(TurboVisionProgramParameter, StringComparison.OrdinalIgnoreCase)))
                 Styles.Add(new ModernTheme());
             else
                 Styles.Add(new TurboVisionTheme());

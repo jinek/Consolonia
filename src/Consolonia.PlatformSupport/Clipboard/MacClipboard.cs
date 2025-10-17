@@ -1,8 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Avalonia.Input;
-using Avalonia.Input.Platform;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
@@ -10,7 +9,8 @@ namespace Consolonia.PlatformSupport.Clipboard
     ///     A clipboard implementation for MacOSX. This implementation uses the Mac clipboard API (via P/Invoke) to
     ///     copy/paste. The existence of the Mac pbcopy and pbpaste commands is used to determine if copy/paste is supported.
     /// </summary>
-    internal class MacClipboard : IClipboard
+#pragma warning disable CA2216 // Disposable types should declare finalizer (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2216)
+    public class MacClipboard : ConsoleClipboard
     {
         private readonly nint _allocRegister = sel_registerName("alloc");
         private readonly nint _clearContentsRegister = sel_registerName("clearContents");
@@ -44,7 +44,7 @@ namespace Consolonia.PlatformSupport.Clipboard
                     "clipboard operations are not supported pbcopy and pbpaste are not available on this system.");
         }
 
-        public Task<string> GetTextAsync()
+        public override Task<string> GetTextAsync()
         {
             nint ptr = objc_msgSend(_generalPasteboard, _stringForTypeRegister, _nsStringPboardType);
             nint charArray = objc_msgSend(ptr, _utf8Register);
@@ -52,7 +52,7 @@ namespace Consolonia.PlatformSupport.Clipboard
             return Task.FromResult(Marshal.PtrToStringAnsi(charArray));
         }
 
-        public Task SetTextAsync(string text)
+        public override Task SetTextAsync(string text)
         {
             nint str = default;
 
@@ -68,36 +68,6 @@ namespace Consolonia.PlatformSupport.Clipboard
             }
 
             return Task.CompletedTask;
-        }
-
-        public Task ClearAsync()
-        {
-            return SetTextAsync(string.Empty);
-        }
-
-        public Task SetDataObjectAsync(IDataObject data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string[]> GetFormatsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<object> GetDataAsync(string format)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task FlushAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task<IDataObject> TryGetInProcessDataObjectAsync()
-        {
-            return Task.FromResult<IDataObject>(null);
         }
 
         private static bool CheckSupport()

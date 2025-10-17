@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
@@ -31,7 +30,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 Assert.IsTrue(pixel.Width == 1);
                 Assert.IsTrue(pixel.Foreground.Symbol.Character == ' ');
                 Assert.IsTrue(pixel.Foreground.Color == Colors.Transparent);
-                Assert.IsTrue(pixel.Background.Color == Colors.Black);
+                Assert.IsTrue(pixel.Background.Color == Colors.Transparent);
             }
         }
 
@@ -90,12 +89,6 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     Assert.IsTrue(pixel.Foreground.Symbol.Complex == "🏳️‍🌈");
                     Assert.IsTrue(pixel.Foreground.Color == Colors.Blue);
                 }
-                else if (x == 6)
-                {
-                    Assert.IsTrue(pixel.Width == 0);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Character == char.MinValue);
-                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
-                }
                 else
                 {
                     Assert.IsTrue(pixel.Width == 1);
@@ -123,11 +116,6 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     Assert.IsTrue(pixel.Foreground.Symbol.Character == 'X');
                     Assert.IsTrue(pixel.Foreground.Color == Colors.Red);
                 }
-                else if (x == 6)
-                {
-                    Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Character == ' ');
-                }
                 else
                 {
                     Assert.IsTrue(pixel.Width == 1);
@@ -151,23 +139,34 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 Pixel pixel = buffer[x, 0];
                 if (x == 5)
                 {
-                    Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Character == ' ');
-                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
-                    Assert.IsTrue(pixel.Foreground.Color == Colors.Transparent);
+                    Assert.IsTrue(pixel.Width == 2,
+                        $"[{x},0] Expected wide character with width 2 at position {x}");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Complex == "🏳️‍🌈",
+                        $"[{x},0] Expected emoji '🏳️‍🌈' to remain at position {x} after drawing 'X' at position 6");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == char.MinValue,
+                        $"[{x},0] Expected Character to be char.MinValue for complex emoji at position {x}");
+                    Assert.IsTrue(pixel.Foreground.Color == Colors.Blue,
+                        $"[{x},0] Expected foreground color to be Blue at position {x} (wide char was overwritten by next position)");
                 }
                 else if (x == 6)
                 {
-                    Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Character == 'X');
-                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
-                    Assert.IsTrue(pixel.Foreground.Color == Colors.Red);
+                    Assert.IsTrue(pixel.Width == 1,
+                        $"[{x},0] Expected single-width character at position {x} after overwriting second cell of wide character");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == 'X',
+                        $"[{x},0] Expected 'X' character at position {x}");
+                    Assert.IsNull(pixel.Foreground.Symbol.Complex,
+                        $"[{x},0] Expected Complex to be null for simple character 'X' at position {x}");
+                    Assert.IsTrue(pixel.Foreground.Color == Colors.Red,
+                        $"[{x},0] Expected Red color at position {x} for 'X' character");
                 }
                 else
                 {
-                    Assert.IsTrue(pixel.Width == 1);
-                    Assert.IsTrue(pixel.Foreground.Symbol.Character == x.ToString()[0]);
-                    Assert.IsNull(pixel.Foreground.Symbol.Complex);
+                    Assert.IsTrue(pixel.Width == 1,
+                        $"[{x},0] Expected single-width character at position {x}");
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == x.ToString()[0],
+                        $"[{x},0] Expected digit '{x}' at position {x}");
+                    Assert.IsNull(pixel.Foreground.Symbol.Complex,
+                        $"[{x},0] Expected Complex to be null for simple digit at position {x}");
                 }
             }
         }
@@ -319,38 +318,65 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
             SetOrigin(dc, 1, 1);
-            ushort left = 0;
-            ushort top = 0;
+            // NOTE: Rect in avalonia has interesting semantics
+            // Left and Top are INCLUSIVE
+            // Right and Bottom are EXCLUSIVE.
+            // So width=3 and height=3 means pixels at 0,1,2 even though Right = 4 and Bottom = 4
+            // Bottom and Right cells should NOT be drawn into.
             int width = 3;
             int height = 3;
-            int right = width;
-            int bottom = height;
-            dc.DrawRectangle(Brushes.Blue, null, new Rect(left, top, width, height));
+            int left = 1;
+            int top = 1;
+            int right = left + width;
+            int bottom = top + height;
+            dc.DrawRectangle(Brushes.Blue, null, new Rect(0, 0, width, height));
 
-            top++;
-            left++;
-            bottom++;
-            right++;
-            Debug.WriteLine($"{top} {left} {bottom} {right}");
             for (ushort y = 0; y <= bottom; y++)
             for (ushort x = 0; x <= right; x++)
-                if (x == 0 || x == right)
+                if (x == 0)
                 {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ',
+                        $"[{x},{y}] Expected empty char outside left border");
+                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent foreground color outside left border");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent background color outside left border");
                 }
-                else if (y == 0 || y == bottom)
+                else if (y == 0)
                 {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ',
+                        $"[{x},{y}] Expected empty char outside top border");
+                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent foreground color outside top border");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent background color outside top border");
+                }
+                else if (x >= right)
+                {
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ',
+                        $"[{x},{y}] Expected empty char outside right border");
+                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent foreground  color outside right border");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent background color outside right border");
+                }
+                else if (y >= bottom)
+                {
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ',
+                        $"[{x},{y}] Expected empty char outside bottom border");
+                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent foreground color outside bottom border");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent background color outside bottom border");
                 }
                 else
                 {
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ',
+                        $"[{x},{y}]  Expected empty char inside rectangle");
+                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                        $"[{x},{y}] Expected transparent foreground color inside rectangle");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
+                        $"[{x},{y}] Expected blue background color inside rectangle");
                 }
         }
 
@@ -422,6 +448,75 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             new object[] { new Pen(new LineBrush { Brush = Brushes.Red, LineStyle = LineStyle.Bold }), BoldBoxChars }
         };
 
+        // NOTE: <Rectangle with stroke in avalonia has interesting semantics
+        // <Rectangle with a Pen ends up sending us a rectangle which is 1 smaller on width and height, and .5 as origin so that strokes
+        // overlap the edge of the rectangle.
+        // We have a bunch of scenarios to test
+        // * No pen - just fill the rectangle
+        // * Edge chars are drawn outside of the rectangle
+        // * Line chars are drawn inside of the rectangle
+        // * Rectangle width/height is adjusted by 1 in both dimensions when there is a pen.
+        /* Example markup for these test cases.
+    <Window.Resources>
+        <console:LineBrush x:Key="EdgeBlack" LineStyle="Edge" Brush="Black"/>
+        <console:LineBrush x:Key="EdgeWideBlack" LineStyle="EdgeWide" Brush="Black"/>
+    </Window.Resources>
+
+    <StackPanel Orientation="Vertical" Spacing="2" Margin="2">
+        <!-- just rectangles -->
+        <TextBlock>3X3 Rectangle with brush and pen</TextBlock>
+        <StackPanel Orientation="Horizontal" Spacing="2">
+            <TextBlock>Single</TextBlock>
+            <Rectangle Fill="Pink" Width="3" Height="3" Grid.Column="0" Grid.Row="0" StrokeThickness="1" Stroke="Black" />
+            <TextBlock>Edge</TextBlock>
+            <Rectangle Fill="Pink" Width="3" Height="3" Grid.Column="0" Grid.Row="1" StrokeThickness="1" Stroke="{StaticResource EdgeBlack}"/>
+            <TextBlock>EdgeWide</TextBlock>
+            <Rectangle Fill="Pink" Width="3" Height="3" Grid.Column="0" Grid.Row="2" StrokeThickness="1" Stroke="{StaticResource EdgeWideBlack}"/>
+        </StackPanel>
+
+        <!-- just border wih no background -->
+        <TextBlock>Border with pen around 3X3 rectangle with brush</TextBlock>
+        <StackPanel Orientation="Horizontal" Spacing="2">
+            <TextBlock>Single</TextBlock>
+            <Border BorderBrush="Black"
+                    BorderThickness="1">
+                <Rectangle Fill="Pink" Width="3" Height="3" />
+            </Border>
+
+            <TextBlock>Edge</TextBlock>
+            <Border BorderThickness="1"
+                    BorderBrush="{StaticResource EdgeBlack}" >
+                <Rectangle Fill="Pink" Width="3" Height="3" />
+            </Border>
+
+            <TextBlock>EdgeWide</TextBlock>
+            <Border BorderThickness="1"
+                    BorderBrush="{StaticResource EdgeWideBlack}" >
+                <Rectangle Fill="Pink" Width="3" Height="3" />
+            </Border>
+        </StackPanel>
+
+        <!-- border background -->
+        <TextBlock>3X3 Border with brush and pen</TextBlock>
+        <StackPanel Orientation="Horizontal" Spacing="2">
+            <TextBlock>Single</TextBlock>
+            <Border BorderBrush="Black"
+                    BorderThickness="1"
+                    Background="Pink"
+                    Width="3" Height="3"/>
+            <TextBlock>Edge</TextBlock>
+            <Border BorderBrush="{StaticResource EdgeBlack}"
+                    BorderThickness="1"
+                    Background="Pink"
+                    Width="3" Height="3"/>
+            <TextBlock>EdgeWide</TextBlock>
+            <Border BorderBrush="{StaticResource EdgeWideBlack}"
+                    BorderThickness="1"
+                    Background="Pink"
+                    Width="3" Height="3"/>
+        </StackPanel>
+    </StackPanel>
+        */
         [TestCaseSource(nameof(BoxVariations))]
         public void DrawRectangleWithPen(IPen pen, char[] boxChars)
         {
@@ -429,108 +524,194 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
             SetOrigin(dc, 1, 1);
-            var rect = new Rect(.5, .5, 3, 3);
-            dc.DrawRectangle(Brushes.Blue, pen, rect);
+            // NOTE: Avalonia <Rectangle> ends up sending us a rectangle which is 1 smaller on width and height, this is testing that code path.
+            Rect rect = pen != null
+                ? new Rect(.5, .5, 1, 1)
+                : // pen has smaller rect
+                new Rect(.5, .5, 2, 2); // no pen has original rect
+            dc.DrawRectangle(Brushes.Blue, pen, new RoundedRect(rect));
+            bool isOuterBox = pen?.Brush is LineBrush lineBrush && lineBrush.HasEdgeLineStyle();
 
             // move to origin location
-            var newRect = new Rect(rect.Left + 1, rect.Top + 1, rect.Width, rect.Height);
-            for (ushort y = 0; y <= newRect.Bottom + 1; y++)
-            for (ushort x = 0; x <= newRect.Right + 1; x++)
-                if (x < (ushort)newRect.Left || x > (ushort)newRect.Right ||
-                    y < (ushort)newRect.Top || y > (ushort)newRect.Bottom)
+            rect = pen != null
+                ?
+                // pen needs to expand the width and height of where we think the rectangle is
+                new Rect(rect.Left + 1, rect.Top + 1, rect.Width + 1, rect.Height + 1)
+                :
+                // no pen just needs to move to the origin location
+                new Rect(rect.Left + 1, rect.Top + 1, rect.Width, rect.Height);
+
+            var newRect = rect.ToPixelRect();
+            int bottomRow = newRect.Bottom - 1;
+            int rightCol = newRect.Right - 1;
+            for (ushort y = 0; y <= newRect.Bottom; y++)
+            for (ushort x = 0; x <= newRect.Right; x++)
+                if (x < newRect.X || x >= newRect.Right ||
+                    y < newRect.Y || y >= newRect.Bottom)
                 {
                     // outside of box
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Black);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ',
+                        $"[{x},{y}] Outside of box expected empty char");
+                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                        $"[{x},{y}] outside of box expected transparent Foreground");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                        $"[{x},{y}] Outside of box expected transparent background");
                 }
-                else if (x == (ushort)newRect.Left && y == (ushort)newRect.Top)
+                else if (x == newRect.X && y == newRect.Y)
                 {
                     // upper left corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.UpperLeft]);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.UpperLeft],
+                        $"[{x},{y}] [{x},{y}] Upper left corner expected {boxChars[(int)LinePositions.UpperLeft]}");
                     if (boxChars[(int)LinePositions.UpperLeft] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner expected transparent for empty char");
                     else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
+                            $"[{x},{y}] Upper left corner expected foreground of red for non empty char");
+
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
+                    else
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
+                            $"[{x},{y}] Upper left corner expected blue background");
                 }
-                else if (x == (ushort)newRect.Right && y == (ushort)newRect.Top)
+                else if (x == rightCol && y == newRect.Y)
                 {
                     // upper right corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.UpperRight]);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.UpperRight],
+                        $"[{x},{y}] Upper right corner expected {boxChars[(int)LinePositions.UpperRight]}");
                     if (boxChars[(int)LinePositions.UpperRight] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper right corner expected transparent for empty char");
                     else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
+                            $"[{x},{y}] Upper right corner expected foreground of red for non empty char");
+
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
+                    else
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
+                            $"[{x},{y}] Upper right corner expected blue background");
                 }
-                else if (x == (ushort)newRect.Right && y == (ushort)newRect.Bottom)
+                else if (x == rightCol && y == bottomRow)
                 {
                     // lower right corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.LowerRight]);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.LowerRight],
+                        $"[{x},{y}] Lower right corner expected {boxChars[(int)LinePositions.LowerRight]}");
                     if (boxChars[(int)LinePositions.LowerRight] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                            $"[{x},{y}] Lower right corner expected transparent for empty char");
                     else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
+                            $"[{x},{y}] Lower right corner expected foreground of red for non empty char");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
+                    else
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
+                            $"[{x},{y}] Lower right corner expected blue background");
                 }
-                else if (x == (ushort)newRect.Left && y == (ushort)newRect.Bottom)
+                else if (x == newRect.X && y == bottomRow)
                 {
                     // lower left corner
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.LowerLeft]);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.LowerLeft],
+                        $"[{x},{y}] Lower left corner expected {boxChars[(int)LinePositions.LowerLeft]}");
                     if (boxChars[(int)LinePositions.LowerLeft] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                            $"[{x},{y}] Lower left corner expected transparent for empty char");
                     else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
+                            $"[{x},{y}] Lower left corner expected foreground of red for non empty char");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
+                    else
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
+                            $"[{x},{y}] Lower left corner expected blue background");
                 }
-                else if (x == (ushort)newRect.Left && y > (ushort)newRect.Top && y < (ushort)newRect.Bottom)
+                else if (x == newRect.X && y >= newRect.Y && y < newRect.Bottom)
                 {
                     // left side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Left]);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Left],
+                        $"[{x},{y}] Left side expected {boxChars[(int)LinePositions.Left]}");
                     if (boxChars[(int)LinePositions.Left] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                            $"[{x},{y}] Left side expected transparent for empty char");
                     else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
+                            $"[{x},{y}] Left side expected foreground of red for non empty char");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
+                    else
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
+                            $"[{x},{y}] Left side expected blue background");
                 }
-                else if (y == (ushort)newRect.Top && x >= (ushort)newRect.Left + 1 && x < (ushort)newRect.Right - 1)
+                else if (y == newRect.Y && x >= newRect.X && x < rightCol)
                 {
                     //top side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Top]);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Top],
+                        $"[{x},{y}] Top side expected {boxChars[(int)LinePositions.Top]}");
                     if (boxChars[(int)LinePositions.Top] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                            $"[{x},{y}] Top side expected transparent for empty char");
                     else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
+                            $"[{x},{y}] Top side expected foreground of red for non empty char");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
+                    else
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
+                            $"[{x},{y}] Top side expected blue background");
                 }
-                else if (x == (ushort)newRect.Right && y >= (ushort)newRect.Top && y < (ushort)newRect.Bottom)
+                else if (x == rightCol && y >= newRect.Y && y < newRect.Bottom)
                 {
                     // right side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Right]);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Right],
+                        $"[{x},{y}] Right side expected {boxChars[(int)LinePositions.Right]}");
                     if (boxChars[(int)LinePositions.Right] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                            $"[{x},{y}] Right side expected transparent for empty char");
                     else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
+                            $"[{x},{y}] Right side expected foreground of red for non empty char");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
+                    else
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
+                            $"[{x},{y}] Right side expected blue background");
                 }
-                else if (y == (ushort)newRect.Bottom && x >= (ushort)newRect.Left && x < (ushort)newRect.Right)
+                else if (y == bottomRow && x >= newRect.X && x < newRect.Right)
                 {
                     // bottom side
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Bottom]);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == boxChars[(int)LinePositions.Bottom],
+                        $"[{x},{y}] Bottom side expected {boxChars[(int)LinePositions.Bottom]}");
                     if (boxChars[(int)LinePositions.Bottom] == ' ')
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                            $"[{x},{y}] Bottom side expected transparent for empty char");
                     else
-                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                        Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Red,
+                            $"[{x},{y}] Bottom side expected foreground of red for non empty char");
+                    if (isOuterBox)
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Transparent,
+                            $"[{x},{y}] Upper left corner of outer box expected transparent background");
+                    else
+                        Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
+                            $"[{x},{y}] Bottom side expected blue background");
                 }
-                else if (x > (ushort)newRect.Left && x < (ushort)newRect.Right &&
-                         y > (ushort)newRect.Top && y < (ushort)newRect.Bottom)
+                else if (x > newRect.X && x < rightCol &&
+                         y > newRect.Y && y < bottomRow)
                 {
                     // inside
-                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ');
-                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent);
-                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue);
+                    Assert.IsTrue(buffer[x, y].Foreground.Symbol.Character == ' ', $"[{x},{y}] Inside expected ' '");
+                    Assert.IsTrue(buffer[x, y].Foreground.Color == Colors.Transparent,
+                        $"[{x},{y}] Inside expected transparent for empty char");
+                    Assert.IsTrue(buffer[x, y].Background.Color == Colors.Blue,
+                        $"[{x},{y}] Inside expected blue background");
                 }
         }
 
@@ -612,9 +793,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 new Rect(-1.5, 0, 2, 2),
                 new Pen(new LineBrush { Brush = Brushes.Black, LineStyle = LineStyle.Edge }),
                 """
-                                                                                                
+
                 ▏                                                                               
-                                               
+
                 """
             },
             new object[]
@@ -688,7 +869,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var consoleTopLevelImpl = new ConsoleWindowImpl();
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
-            dc.DrawRectangle(Brushes.Blue, pen, rect);
+            dc.DrawRectangle(null, pen, rect);
 
             string text = buffer.PrintBuffer();
             Assert.AreEqual(expected.Trim(), text.Trim());
