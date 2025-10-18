@@ -43,7 +43,7 @@ namespace Consolonia.Core.Infrastructure
                     $"It is not allowed to create more than one window of type {typeof(Window)} at the same time");
 
             _singletonGuard = true;
-            
+
             _myKeyboardDevice = AvaloniaLocator.Current.GetRequiredService<IKeyboardDevice>();
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             Console = AvaloniaLocator.Current.GetRequiredService<IConsole>();
