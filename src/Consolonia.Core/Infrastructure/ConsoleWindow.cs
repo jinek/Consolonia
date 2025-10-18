@@ -38,13 +38,12 @@ namespace Consolonia.Core.Infrastructure
 
         public ConsoleWindowImpl()
         {
-            {
-                if (_singletonGuard)
-                    throw new ConsoloniaException(
-                        $"It is not allowed to create more than one window of type {typeof(Window)}");
-                _singletonGuard = true;
-            }
+            if (_singletonGuard)
+                throw new ConsoloniaException(
+                    $"It is not allowed to create more than one window of type {typeof(Window)} at the same time");
 
+            _singletonGuard = true;
+            
             _myKeyboardDevice = AvaloniaLocator.Current.GetRequiredService<IKeyboardDevice>();
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             Console = AvaloniaLocator.Current.GetRequiredService<IConsole>();
@@ -471,6 +470,7 @@ namespace Consolonia.Core.Infrastructure
                     Console.MouseEvent -= ConsoleOnMouseEvent;
                     Console.FocusEvent -= ConsoleOnFocusEvent;
                     _ = DirtyRegions.GetSnapshotAndClear();
+                    _singletonGuard = false;
                 }
             }
         }
