@@ -40,7 +40,7 @@ namespace Consolonia.Core.Infrastructure
         {
             if (_singletonGuard)
                 throw new ConsoloniaException(
-                    $"It is not allowed to create more than one window of type {typeof(Window)} at the same time");
+                    $"Creating multiple {nameof(Window)} objects simultaneously is not allowed. Please use ManagedWindow instead.");
 
             _singletonGuard = true;
 
