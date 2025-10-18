@@ -520,7 +520,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [TestCaseSource(nameof(BoxVariations))]
         public void DrawRectangleWithPen(IPen pen, char[] boxChars)
         {
-            using var consoleTopLevelImpl = new ConsoleWindowImpl();//todo: low: this and other initializations can be moved to test initialization
+            using var
+                consoleTopLevelImpl =
+                    new ConsoleWindowImpl(); //todo: low: this and other initializations can be moved to test initialization
             PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
             SetOrigin(dc, 1, 1);
