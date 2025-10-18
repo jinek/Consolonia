@@ -21,13 +21,8 @@ namespace Consolonia.Core.Infrastructure
     {
         internal static ConsoloniaPlatformSettings Settings =>
             AvaloniaLocator.Current.GetService<IPlatformSettings>() as ConsoloniaPlatformSettings;
-
-        public IWindowImpl CreateWindow()
-        {
-            //todo: throw notSupported if more than one window
-            //return RaiseNotSupported<IWindowImpl>(NotSupportedRequestCode.CreateWindow);
-            return new ConsoleWindowImpl();
-        }
+        
+        public IWindowImpl CreateWindow() => new ConsoleWindowImpl();
 
         public IWindowImpl CreateEmbeddableWindow()
         {
