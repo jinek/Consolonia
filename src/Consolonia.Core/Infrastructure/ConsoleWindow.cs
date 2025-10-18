@@ -26,6 +26,7 @@ namespace Consolonia.Core.Infrastructure
     public class ConsoleWindowImpl : IWindowImpl
 #pragma warning restore CA1711 // Identifiers should not have incorrect suffix
     {
+        private static bool _singletonGuard;
         [NotNull] internal readonly IConsole Console;
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
@@ -34,7 +35,6 @@ namespace Consolonia.Core.Infrastructure
         private StandardCursorType _cursorType = StandardCursorType.Arrow;
         private bool _disposedValue;
         private IInputRoot _inputRoot;
-        private static bool _singletonGuard;
 
         public ConsoleWindowImpl()
         {
@@ -44,7 +44,7 @@ namespace Consolonia.Core.Infrastructure
                         $"It is not allowed to create more than one window of type {typeof(Window)}");
                 _singletonGuard = true;
             }
-            
+
             _myKeyboardDevice = AvaloniaLocator.Current.GetRequiredService<IKeyboardDevice>();
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
             Console = AvaloniaLocator.Current.GetRequiredService<IConsole>();

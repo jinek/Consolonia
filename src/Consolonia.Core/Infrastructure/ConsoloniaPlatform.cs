@@ -21,8 +21,11 @@ namespace Consolonia.Core.Infrastructure
     {
         internal static ConsoloniaPlatformSettings Settings =>
             AvaloniaLocator.Current.GetService<IPlatformSettings>() as ConsoloniaPlatformSettings;
-        
-        public IWindowImpl CreateWindow() => new ConsoleWindowImpl();
+
+        public IWindowImpl CreateWindow()
+        {
+            return new ConsoleWindowImpl();
+        }
 
         public IWindowImpl CreateEmbeddableWindow()
         {
