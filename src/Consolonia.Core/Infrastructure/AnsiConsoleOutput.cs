@@ -20,10 +20,10 @@ namespace Consolonia.Core.Infrastructure
 
         private PixelBufferCoordinate _headBufferPoint;
 
-        private bool? _supportsEmoji;
+        private bool? _supportsComplexEmoji;
         private bool? _supportsEmojiVariation;
 
-        public bool SupportsComplexEmoji => _supportsEmoji ?? false;
+        public bool SupportsComplexEmoji => _supportsComplexEmoji ?? false;
 
         public bool SupportsEmojiVariation => _supportsEmojiVariation ?? false;
 
