@@ -29,7 +29,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 writer.WriteValue(value.Pattern);
             else if (!string.IsNullOrEmpty(value.Complex))
                 writer.WriteValue(value.Complex);
-            else if (value.Character != Char.MinValue)
+            else if (value.Character != char.MinValue)
                 writer.WriteValue(value.Character.ToString());
             else
                 writer.WriteValue((string)null);

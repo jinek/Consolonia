@@ -112,7 +112,6 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [TestCase("⚙")]
         [TestCase("👨‍👩‍👧‍👦")]
         [TestCase("☰")]
-
         public void GetGlyphsEmojiWithTextPresentation(string text)
         {
             // Emoji followed by FE0E (text presentation selector)
@@ -190,7 +189,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             // Mix of emojis with variation selectors
             string text = "🏳️‍🌈🏳️‍🌈";
-            Assert.AreEqual(4, text.MeasureText()); 
+            Assert.AreEqual(4, text.MeasureText());
 
             IReadOnlyList<string> glyphs = text.GetGlyphs(true);
             Assert.AreEqual(2, glyphs.Count);

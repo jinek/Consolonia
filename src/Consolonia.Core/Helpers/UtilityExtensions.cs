@@ -95,6 +95,7 @@ namespace Consolonia.Core.Helpers
                                 glyphs.Add(emoji.ToString());
                                 emoji.Clear();
                             }
+
                             emoji.Append(runes.Current);
                         }
                     }
@@ -103,13 +104,8 @@ namespace Consolonia.Core.Helpers
                     {
                         // Append joiner to current emoji if building; otherwise, attach to last glyph (if any).
                         if (emoji.Length > 0)
-                        {
                             emoji.Append(runes.Current);
-                        }
-                        else if (glyphs.Count > 0)
-                        {
-                            glyphs[^1] = glyphs[^1] + runes.Current;
-                        }
+                        else if (glyphs.Count > 0) glyphs[^1] = glyphs[^1] + runes.Current;
                         // else: stray joiner — ignore
                     }
                     else if (runes.Current.Value == Codepoints.VariationSelectors.EmojiSymbol ||

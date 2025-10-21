@@ -6,8 +6,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Consolonia.Controls;
-using DynamicData.Kernel;
-using HarfBuzzSharp;
 using NeoSmart.Unicode;
 using Newtonsoft.Json;
 using Wcwidth;
@@ -45,21 +43,17 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Width = (byte)UnicodeCalculator.GetWidth(ch);
             Pattern = 0;
             // if we think it should be wide, OR we know it's an emoji 
-            if (Width == 2 || Emoji.IsEmoji(new(ch, 1)))
+            if (Width == 2 || Emoji.IsEmoji(new string(ch, 1)))
             {
                 // we want to use EmojiVariation to signal we think it's wide.
                 Character = char.MinValue;
                 Width = 2;
                 lock (GlyphCharCache)
                 {
-                    if (GlyphCharCache.TryGetValue(ch, out var wideChar))
-                    {
+                    if (GlyphCharCache.TryGetValue(ch, out string wideChar))
                         Complex = wideChar;
-                    }
                     else
-                    {
                         Complex = GlyphCharCache[ch] = $"{ch}{EmojiVariation}";
-                    }
                 }
             }
         }
@@ -78,8 +72,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             Pattern = 0;
             Complex = null;
-            Character = Char.MinValue;
-            if (String.IsNullOrEmpty(glyph))
+            Character = char.MinValue;
+            if (string.IsNullOrEmpty(glyph))
             {
                 Width = 0;
             }
@@ -103,7 +97,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     Character = char.MinValue;
                     lock (GlyphComplexCache)
                     {
-                        if (GlyphComplexCache.TryGetValue(glyph, out var complex))
+                        if (GlyphComplexCache.TryGetValue(glyph, out string complex))
                         {
                             Complex = complex;
                         }
@@ -165,8 +159,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 #pragma warning restore CA1024 // Use properties where appropriate
         {
             if (Width == 0)
-                return String.Empty;
-            return Complex != null && Complex.Length > 1 ? Complex : new(Character, 1);
+                return string.Empty;
+            return Complex != null && Complex.Length > 1 ? Complex : new string(Character, 1);
         }
 
         public bool NothingToDraw()
