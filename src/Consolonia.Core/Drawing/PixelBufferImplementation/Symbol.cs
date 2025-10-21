@@ -92,7 +92,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     // we can use the single char constructor for optimization
                     this = new Symbol(glyph[0]);
                 }
-                else if (glyph.Any(glyph => glyph == TextVariation || glyph == EmojiVariation))
+                else if (glyph.Any(ch => ch == TextVariation || ch == EmojiVariation))
                 {
                     // it already has the variation selector so we just use it as is
                     Complex = glyph;
@@ -103,9 +103,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     Character = char.MinValue;
                     lock (GlyphComplexCache)
                     {
-                        if (GlyphComplexCache.TryGetValue(glyph, out var complexGlyph))
+                        if (GlyphComplexCache.TryGetValue(glyph, out var complex))
                         {
-                            Complex = complexGlyph;
+                            Complex = complex;
                         }
                         else
                         {
