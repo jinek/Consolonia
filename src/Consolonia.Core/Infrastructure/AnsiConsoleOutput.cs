@@ -94,7 +94,7 @@ namespace Consolonia.Core.Infrastructure
             {
                 WriteText(sb.ToString());
 
-                foreach (var glyph in str.GetGlyphs(SupportsComplexEmoji))
+                foreach (string glyph in str.GetGlyphs(SupportsComplexEmoji))
                 {
                     SetCaretPosition(bufferPoint);
                     WriteText(glyph);
@@ -105,6 +105,7 @@ namespace Consolonia.Core.Infrastructure
                     else
                         bufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(bufferPoint.Y + 1));
                 }
+
                 sb.Append(str);
                 WriteText(Esc.Reset);
                 _headBufferPoint = bufferPoint;
@@ -139,7 +140,7 @@ namespace Consolonia.Core.Infrastructure
             _supportsComplexEmoji = left2 - left == 2;
 
             // write out a char with wide variation selector
-            WriteText($"⚙\ufe0f");
+            WriteText("⚙\ufe0f");
             (int left3, _) = Console.GetCursorPosition();
             _supportsEmojiVariation = left3 - left2 == 2;
 
