@@ -20,9 +20,12 @@ namespace Consolonia.Core.Infrastructure
 
         private PixelBufferCoordinate _headBufferPoint;
 
-        private bool? _supportEmoji;
+        private bool? _supportsEmoji;
+        private bool? _supportsEmojiVariation;
 
-        public bool SupportsComplexEmoji => _supportEmoji ?? false;
+        public bool SupportsComplexEmoji => _supportsEmoji ?? false;
+
+        public bool SupportsEmojiVariation => _supportsEmojiVariation ?? false;
 
         public PixelBufferSize Size { get; set; }
 
@@ -112,7 +115,12 @@ namespace Consolonia.Core.Infrastructure
             (int left, _) = Console.GetCursorPosition();
             WriteText(TestEmoji);
             (int left2, _) = Console.GetCursorPosition();
-            _supportEmoji = left2 - left == 2;
+            _supportsComplexEmoji = left2 - left == 2;
+
+            // write out a char with wide variation selector
+            WriteText($"⚙\ufe0f");
+            (int left3, _) = Console.GetCursorPosition();
+            _supportsEmojiVariation = left3 - left2 == 2;
 
             ClearScreen();
 #pragma warning restore CA1303 // Do not pass literals as localized parameters

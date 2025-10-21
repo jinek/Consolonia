@@ -4,6 +4,7 @@ using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
+using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -18,10 +19,14 @@ namespace Consolonia.Core.Infrastructure
         private ConsoleColor _originalBackground;
         private ConsoleColor _originalForeground;
 
+        private bool _supportsComplexEmoji;
+        private bool _supportsEmojiVariation;
 
         public virtual PixelBufferSize Size { get; set; }
 
-        public virtual bool SupportsComplexEmoji => false;
+        public virtual bool SupportsComplexEmoji => _supportsComplexEmoji;
+
+        public virtual bool SupportsEmojiVariation => _supportsEmojiVariation;
 
         public virtual void SetTitle(string title)
         {
@@ -111,6 +116,19 @@ namespace Consolonia.Core.Infrastructure
             _originalForeground = Console.ForegroundColor;
             _originalBackground = Console.BackgroundColor;
             Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
+            // Detect complex emoji support by writing a complex emoji and checking cursor position.
+            // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
+            (int left, _) = Console.GetCursorPosition();
+            Console.WriteLine("👨‍👩‍👧‍👦");
+            (int left2, _) = Console.GetCursorPosition();
+            _supportsComplexEmoji = left2 - left == 2;
+
+            // write out a wide char
+            WriteText($"⚙\ufe0f");
+            (int left3, _) = Console.GetCursorPosition();
+            _supportsEmojiVariation = left3 - left2 == 2;
+
+
             Console.Clear();
         }
 
