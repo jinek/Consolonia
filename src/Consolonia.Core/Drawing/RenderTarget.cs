@@ -272,11 +272,7 @@ namespace Consolonia.Core.Drawing
                 {
                     if (!string.IsNullOrEmpty(pixel.Foreground.Symbol.Complex))
                     {
-                        if (_console.SupportsEmojiVariation)
-                            _stringBuilder.Append(pixel.Foreground.Symbol.Complex);
-                        else
-                            // if we don't support complex emoji, we replace the variation selector with space to simulate it.
-                            _stringBuilder.Append(pixel.Foreground.Symbol.Complex.Replace('\ufe0f', ' ').Replace("\ufe0e",String.Empty));
+                        _stringBuilder.Append(pixel.Foreground.Symbol.Complex);
                     }
                     else
                         _stringBuilder.Append(pixel.Foreground.Symbol.Character);
