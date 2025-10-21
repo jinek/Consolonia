@@ -154,7 +154,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// </summary>
         /// <returns>symbol as string</returns>
         /// NOTE: This is only for debug purposes, do not use in rendering code as it allocates a string for the character.
+#pragma warning disable CA1024 // Use properties where appropriate
         public string GetText()
+#pragma warning restore CA1024 // Use properties where appropriate
         {
             if (Width == 0)
                 return String.Empty;
