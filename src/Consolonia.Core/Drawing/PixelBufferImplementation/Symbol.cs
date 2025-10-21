@@ -50,13 +50,16 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 // we want to use EmojiVariation to signal we think it's wide.
                 Character = char.MinValue;
                 Width = 2;
-                if (GlyphCharCache.TryGetValue(ch, out var wideChar))
+                lock (GlyphCharCache)
                 {
-                    Complex = wideChar;
-                }
-                else
-                {
-                    Complex = GlyphCharCache[ch] = $"{ch}{EmojiVariation}";
+                    if (GlyphCharCache.TryGetValue(ch, out var wideChar))
+                    {
+                        Complex = wideChar;
+                    }
+                    else
+                    {
+                        Complex = GlyphCharCache[ch] = $"{ch}{EmojiVariation}";
+                    }
                 }
             }
         }
@@ -75,10 +78,10 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             Pattern = 0;
             Complex = null;
-            if (glyph.Length == 0)
+            Character = Char.MinValue;
+            if (String.IsNullOrEmpty(glyph))
             {
-                Character = Char.MinValue;
-                Width = 1;
+                Width = 0;
             }
             else
             {
@@ -98,17 +101,20 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 {
                     // we want to store as complex glyph with variation selector
                     Character = char.MinValue;
-                    if (GlyphComplexCache.TryGetValue(glyph, out var complexGlyph))
+                    lock (GlyphComplexCache)
                     {
-                        Complex = complexGlyph;
-                    }
-                    else
-                    {
-                        // use text variation for narrow glyphs, emoji variation for wide glyphs
-                        if (Width == 1)
-                            Complex = GlyphComplexCache[glyph] = $"{glyph}{TextVariation}";
+                        if (GlyphComplexCache.TryGetValue(glyph, out var complexGlyph))
+                        {
+                            Complex = complexGlyph;
+                        }
                         else
-                            Complex = GlyphComplexCache[glyph] = $"{glyph}{EmojiVariation}";
+                        {
+                            // use text variation for narrow glyphs, emoji variation for wide glyphs
+                            if (Width == 1)
+                                Complex = GlyphComplexCache[glyph] = $"{glyph}{TextVariation}";
+                            else
+                                Complex = GlyphComplexCache[glyph] = $"{glyph}{EmojiVariation}";
+                        }
                     }
                 }
             }

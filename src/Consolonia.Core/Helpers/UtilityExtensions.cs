@@ -98,11 +98,19 @@ namespace Consolonia.Core.Helpers
                             emoji.Append(runes.Current);
                         }
                     }
-                    else if (runes.Current.Value == Codepoints.ZWJ||
+                    else if (runes.Current.Value == Codepoints.ZWJ ||
                              runes.Current.Value == Codepoints.ORC)
                     {
-                        // we append the joiner or object replacement to the current emoji being built
-                        emoji.Append(runes.Current);
+                        // Append joiner to current emoji if building; otherwise, attach to last glyph (if any).
+                        if (emoji.Length > 0)
+                        {
+                            emoji.Append(runes.Current);
+                        }
+                        else if (glyphs.Count > 0)
+                        {
+                            glyphs[^1] = glyphs[^1] + runes.Current;
+                        }
+                        // else: stray joiner — ignore
                     }
                     else if (runes.Current.Value == Codepoints.VariationSelectors.EmojiSymbol ||
                              runes.Current.Value == Codepoints.VariationSelectors.TextSymbol)
