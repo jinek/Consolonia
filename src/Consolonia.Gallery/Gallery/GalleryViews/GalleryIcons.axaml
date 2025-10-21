@@ -13,16 +13,19 @@
                 <TextBlock Width="20"
                            Text="Home" />
                 <TextBlock Text="{StaticResource Icon_Home}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Search" />
                 <TextBlock Text="{StaticResource Icon_Search}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Settings" />
                 <TextBlock Text="{StaticResource Icon_Settings}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
@@ -33,136 +36,163 @@
                 <TextBlock Width="20"
                            Text="Warning" />
                 <TextBlock Text="{StaticResource Icon_Warning}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Help" />
                 <TextBlock Text="{StaticResource Icon_Help}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Menu" />
                 <TextBlock Text="{StaticResource Icon_Menu}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="MoreHorizontal" />
                 <TextBlock Text="{StaticResource Icon_MoreHorizontal}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="MoreVertical" />
                 <TextBlock Text="{StaticResource Icon_MoreVertical}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Refresh" />
                 <TextBlock Text="{StaticResource Icon_Refresh}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ArrowLeft" />
                 <TextBlock Text="{StaticResource Icon_ArrowLeft}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ArrowRight" />
                 <TextBlock Text="{StaticResource Icon_ArrowRight}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ArrowUp" />
                 <TextBlock Text="{StaticResource Icon_ArrowUp}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ArrowDown" />
                 <TextBlock Text="{StaticResource Icon_ArrowDown}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ArrowUpLeft" />
                 <TextBlock Text="{StaticResource Icon_ArrowUpLeft}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ArrowUpRight" />
                 <TextBlock Text="{StaticResource Icon_ArrowUpRight}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ArrowDownLeft" />
                 <TextBlock Text="{StaticResource Icon_ArrowDownLeft}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ArrowDownRight" />
                 <TextBlock Text="{StaticResource Icon_ArrowDownRight}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ChevronLeft" />
                 <TextBlock Text="{StaticResource Icon_ChevronLeft}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ChevronRight" />
                 <TextBlock Text="{StaticResource Icon_ChevronRight}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ChevronUp" />
                 <TextBlock Text="{StaticResource Icon_ChevronUp}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ChevronDown" />
                 <TextBlock Text="{StaticResource Icon_ChevronDown}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Play" />
                 <TextBlock Text="{StaticResource Icon_Play}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Pause" />
                 <TextBlock Text="{StaticResource Icon_Pause}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Stop" />
                 <TextBlock Text="{StaticResource Icon_Stop}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="FastForward" />
                 <TextBlock Text="{StaticResource Icon_FastForward}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Rewind" />
                 <TextBlock Text="{StaticResource Icon_Rewind}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="First" />
                 <TextBlock Text="{StaticResource Icon_First}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Last" />
                 <TextBlock Text="{StaticResource Icon_Last}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Back" />
                 <TextBlock Text="{StaticResource Icon_Back}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Forward" />
                 <TextBlock Text="{StaticResource Icon_Forward}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Actions -->
@@ -172,136 +202,163 @@
                 <TextBlock Width="20"
                            Text="Add" />
                 <TextBlock Text="{StaticResource Icon_Add}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Remove" />
                 <TextBlock Text="{StaticResource Icon_Remove}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Close" />
                 <TextBlock Text="{StaticResource Icon_Close}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Edit" />
                 <TextBlock Text="{StaticResource Icon_Edit}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Delete" />
                 <TextBlock Text="{StaticResource Icon_Delete}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Attach" />
                 <TextBlock Text="{StaticResource Icon_Attach}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Tag" />
                 <TextBlock Text="{StaticResource Icon_Tag}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Bookmark" />
                 <TextBlock Text="{StaticResource Icon_Bookmark}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Share" />
                 <TextBlock Text="{StaticResource Icon_Share}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Download" />
                 <TextBlock Text="{StaticResource Icon_Download}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Upload" />
                 <TextBlock Text="{StaticResource Icon_Upload}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Filter" />
                 <TextBlock Text="{StaticResource Icon_Filter}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Sort" />
                 <TextBlock Text="{StaticResource Icon_Sort}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Open" />
                 <TextBlock Text="{StaticResource Icon_Open}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="New" />
                 <TextBlock Text="{StaticResource Icon_New}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Undo" />
                 <TextBlock Text="{StaticResource Icon_Undo}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Redo" />
                 <TextBlock Text="{StaticResource Icon_Redo}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Refresh2" />
                 <TextBlock Text="{StaticResource Icon_Refresh2}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Reload" />
                 <TextBlock Text="{StaticResource Icon_Reload}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Sync" />
                 <TextBlock Text="{StaticResource Icon_Sync}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Cancel" />
                 <TextBlock Text="{StaticResource Icon_Cancel}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Check" />
                 <TextBlock Text="{StaticResource Icon_Check}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Plus" />
                 <TextBlock Text="{StaticResource Icon_Plus}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Minus" />
                 <TextBlock Text="{StaticResource Icon_Minus}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Maximize" />
                 <TextBlock Text="{StaticResource Icon_Maximize}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Minimize" />
                 <TextBlock Text="{StaticResource Icon_Minimize}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Restore" />
                 <TextBlock Text="{StaticResource Icon_Restore}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Communication -->
@@ -311,76 +368,91 @@
                 <TextBlock Width="20"
                            Text="Mail" />
                 <TextBlock Text="{StaticResource Icon_Mail}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Phone" />
                 <TextBlock Text="{StaticResource Icon_Phone}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Chat" />
                 <TextBlock Text="{StaticResource Icon_Chat}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Comment" />
                 <TextBlock Text="{StaticResource Icon_Comment}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Lock" />
                 <TextBlock Text="{StaticResource Icon_Lock}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Unlock" />
                 <TextBlock Text="{StaticResource Icon_Unlock}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Bell" />
                 <TextBlock Text="{StaticResource Icon_Bell}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="BellOff" />
                 <TextBlock Text="{StaticResource Icon_BellOff}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Send" />
                 <TextBlock Text="{StaticResource Icon_Send}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Receive" />
                 <TextBlock Text="{StaticResource Icon_Receive}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Reply" />
                 <TextBlock Text="{StaticResource Icon_Reply}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ReplyAll" />
                 <TextBlock Text="{StaticResource Icon_ReplyAll}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ReplyForward" />
                 <TextBlock Text="{StaticResource Icon_ReplyForward}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Loudspeaker" />
                 <TextBlock Text="{StaticResource Icon_Loudspeaker}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Megaphone" />
                 <TextBlock Text="{StaticResource Icon_Megaphone}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Files & Folders -->
@@ -390,111 +462,133 @@
                 <TextBlock Width="20"
                            Text="Folder" />
                 <TextBlock Text="{StaticResource Icon_Folder}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="FolderOpen" />
                 <TextBlock Text="{StaticResource Icon_FolderOpen}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Document" />
                 <TextBlock Text="{StaticResource Icon_Document}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Copy" />
                 <TextBlock Text="{StaticResource Icon_Copy}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Cut" />
                 <TextBlock Text="{StaticResource Icon_Cut}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Paste" />
                 <TextBlock Text="{StaticResource Icon_Paste}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Save" />
                 <TextBlock Text="{StaticResource Icon_Save}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Print" />
                 <TextBlock Text="{StaticResource Icon_Print}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Archive" />
                 <TextBlock Text="{StaticResource Icon_Archive}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="File" />
                 <TextBlock Text="{StaticResource Icon_File}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="FileText" />
                 <TextBlock Text="{StaticResource Icon_FileText}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="FileImage" />
                 <TextBlock Text="{StaticResource Icon_FileImage}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="FileVideo" />
                 <TextBlock Text="{StaticResource Icon_FileVideo}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="FileAudio" />
                 <TextBlock Text="{StaticResource Icon_FileAudio}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="FilePdf" />
                 <TextBlock Text="{StaticResource Icon_FilePdf}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="FileZip" />
                 <TextBlock Text="{StaticResource Icon_FileZip}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="FileCode" />
                 <TextBlock Text="{StaticResource Icon_FileCode}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="SaveAs" />
                 <TextBlock Text="{StaticResource Icon_SaveAs}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Export" />
                 <TextBlock Text="{StaticResource Icon_Export}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Import" />
                 <TextBlock Text="{StaticResource Icon_Import}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Trashcan" />
                 <TextBlock Text="{StaticResource Icon_Trashcan}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Recycle" />
                 <TextBlock Text="{StaticResource Icon_Recycle}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Media -->
@@ -504,76 +598,91 @@
                 <TextBlock Width="20"
                            Text="Camera" />
                 <TextBlock Text="{StaticResource Icon_Camera}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Video" />
                 <TextBlock Text="{StaticResource Icon_Video}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Image" />
                 <TextBlock Text="{StaticResource Icon_Image}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Music" />
                 <TextBlock Text="{StaticResource Icon_Music}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="VolumeUp" />
                 <TextBlock Text="{StaticResource Icon_VolumeUp}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="VolumeDown" />
                 <TextBlock Text="{StaticResource Icon_VolumeDown}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="VolumeMute" />
                 <TextBlock Text="{StaticResource Icon_VolumeMute}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Microphone" />
                 <TextBlock Text="{StaticResource Icon_Microphone}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Record" />
                 <TextBlock Text="{StaticResource Icon_Record}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="LivePhoto" />
                 <TextBlock Text="{StaticResource Icon_LivePhoto}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="SkipNext" />
                 <TextBlock Text="{StaticResource Icon_SkipNext}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="SkipPrevious" />
                 <TextBlock Text="{StaticResource Icon_SkipPrevious}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Shuffle" />
                 <TextBlock Text="{StaticResource Icon_Shuffle}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Repeat" />
                 <TextBlock Text="{StaticResource Icon_Repeat}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="RepeatOne" />
                 <TextBlock Text="{StaticResource Icon_RepeatOne}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Time & Date -->
@@ -583,46 +692,55 @@
                 <TextBlock Width="20"
                            Text="Calendar" />
                 <TextBlock Text="{StaticResource Icon_Calendar}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Clock" />
                 <TextBlock Text="{StaticResource Icon_Clock}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Alarm" />
                 <TextBlock Text="{StaticResource Icon_Alarm}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Stopwatch" />
                 <TextBlock Text="{StaticResource Icon_Stopwatch}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Timer" />
                 <TextBlock Text="{StaticResource Icon_Timer}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Schedule" />
                 <TextBlock Text="{StaticResource Icon_Schedule}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Event" />
                 <TextBlock Text="{StaticResource Icon_Event}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Today" />
                 <TextBlock Text="{StaticResource Icon_Today}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="History" />
                 <TextBlock Text="{StaticResource Icon_History}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Location & Travel -->
@@ -632,41 +750,49 @@
                 <TextBlock Width="20"
                            Text="Location" />
                 <TextBlock Text="{StaticResource Icon_Location}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Map" />
                 <TextBlock Text="{StaticResource Icon_Map}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Compass" />
                 <TextBlock Text="{StaticResource Icon_Compass}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Pin" />
                 <TextBlock Text="{StaticResource Icon_Pin}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="PinOff" />
                 <TextBlock Text="{StaticResource Icon_PinOff}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Navigation" />
                 <TextBlock Text="{StaticResource Icon_Navigation}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Route" />
                 <TextBlock Text="{StaticResource Icon_Route}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="GPS" />
                 <TextBlock Text="{StaticResource Icon_GPS}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Commerce -->
@@ -676,31 +802,37 @@
                 <TextBlock Width="20"
                            Text="ShoppingCart" />
                 <TextBlock Text="{StaticResource Icon_ShoppingCart}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="CreditCard" />
                 <TextBlock Text="{StaticResource Icon_CreditCard}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Gift" />
                 <TextBlock Text="{StaticResource Icon_Gift}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Purchase" />
                 <TextBlock Text="{StaticResource Icon_Purchase}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Sale" />
                 <TextBlock Text="{StaticResource Icon_Sale}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Receipt" />
                 <TextBlock Text="{StaticResource Icon_Receipt}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Weather -->
@@ -710,46 +842,55 @@
                 <TextBlock Width="20"
                            Text="Sun" />
                 <TextBlock Text="{StaticResource Icon_Sun}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Moon" />
                 <TextBlock Text="{StaticResource Icon_Moon}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Cloud" />
                 <TextBlock Text="{StaticResource Icon_Cloud}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Rain" />
                 <TextBlock Text="{StaticResource Icon_Rain}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Snow" />
                 <TextBlock Text="{StaticResource Icon_Snow}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Thunderstorm" />
                 <TextBlock Text="{StaticResource Icon_Thunderstorm}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Umbrella" />
                 <TextBlock Text="{StaticResource Icon_Umbrella}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Wind" />
                 <TextBlock Text="{StaticResource Icon_Wind}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Temperature" />
                 <TextBlock Text="{StaticResource Icon_Temperature}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Technology & Development -->
@@ -759,61 +900,73 @@
                 <TextBlock Width="20"
                            Text="Code" />
                 <TextBlock Text="{StaticResource Icon_Code}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Terminal" />
                 <TextBlock Text="{StaticResource Icon_Terminal}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Database" />
                 <TextBlock Text="{StaticResource Icon_Database}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Server" />
                 <TextBlock Text="{StaticResource Icon_Server}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Network" />
                 <TextBlock Text="{StaticResource Icon_Network}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Wifi" />
                 <TextBlock Text="{StaticResource Icon_Wifi}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="WifiOff" />
                 <TextBlock Text="{StaticResource Icon_WifiOff}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Bluetooth" />
                 <TextBlock Text="{StaticResource Icon_Bluetooth}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Power" />
                 <TextBlock Text="{StaticResource Icon_Power}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="PowerButton" />
                 <TextBlock Text="{StaticResource Icon_PowerButton}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Battery" />
                 <TextBlock Text="{StaticResource Icon_Battery}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="PluggedIn" />
                 <TextBlock Text="{StaticResource Icon_PluggedIn}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Office & Education -->
@@ -823,56 +976,67 @@
                 <TextBlock Width="20"
                            Text="Pencil" />
                 <TextBlock Text="{StaticResource Icon_Pencil}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Pen" />
                 <TextBlock Text="{StaticResource Icon_Pen}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Book" />
                 <TextBlock Text="{StaticResource Icon_Book}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Books" />
                 <TextBlock Text="{StaticResource Icon_Books}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Notebook" />
                 <TextBlock Text="{StaticResource Icon_Notebook}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Ruler" />
                 <TextBlock Text="{StaticResource Icon_Ruler}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Graph" />
                 <TextBlock Text="{StaticResource Icon_Graph}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Newspaper" />
                 <TextBlock Text="{StaticResource Icon_Newspaper}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ChartUp" />
                 <TextBlock Text="{StaticResource Icon_ChartUp}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ChartDown" />
                 <TextBlock Text="{StaticResource Icon_ChartDown}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="BarChart" />
                 <TextBlock Text="{StaticResource Icon_BarChart}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- User & People -->
@@ -882,41 +1046,49 @@
                 <TextBlock Width="20"
                            Text="User" />
                 <TextBlock Text="{StaticResource Icon_User}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Users" />
                 <TextBlock Text="{StaticResource Icon_Users}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Profile" />
                 <TextBlock Text="{StaticResource Icon_Profile}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Account" />
                 <TextBlock Text="{StaticResource Icon_Account}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Group" />
                 <TextBlock Text="{StaticResource Icon_Group}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Team" />
                 <TextBlock Text="{StaticResource Icon_Team}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Contact" />
                 <TextBlock Text="{StaticResource Icon_Contact}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Person" />
                 <TextBlock Text="{StaticResource Icon_Person}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Status & Feedback -->
@@ -926,61 +1098,73 @@
                 <TextBlock Width="20"
                            Text="Success" />
                 <TextBlock Text="{StaticResource Icon_Success}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Error" />
                 <TextBlock Text="{StaticResource Icon_Error}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Loading" />
                 <TextBlock Text="{StaticResource Icon_Loading}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Progress" />
                 <TextBlock Text="{StaticResource Icon_Progress}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Complete" />
                 <TextBlock Text="{StaticResource Icon_Complete}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Pending" />
                 <TextBlock Text="{StaticResource Icon_Pending}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Active" />
                 <TextBlock Text="{StaticResource Icon_Active}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Inactive" />
                 <TextBlock Text="{StaticResource Icon_Inactive}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Online" />
                 <TextBlock Text="{StaticResource Icon_Online}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Busy" />
                 <TextBlock Text="{StaticResource Icon_Busy}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Away" />
                 <TextBlock Text="{StaticResource Icon_Away}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Offline" />
                 <TextBlock Text="{StaticResource Icon_Offline}" />
+                <TextBlock Text="|"/>
             </StackPanel>
 
             <!-- Misc -->
@@ -990,111 +1174,133 @@
                 <TextBlock Width="20"
                            Text="Star" />
                 <TextBlock Text="{StaticResource Icon_Star}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Heart" />
                 <TextBlock Text="{StaticResource Icon_Heart}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="HeartBroken" />
                 <TextBlock Text="{StaticResource Icon_HeartBroken}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Key" />
                 <TextBlock Text="{StaticResource Icon_Key}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Lightbulb" />
                 <TextBlock Text="{StaticResource Icon_Lightbulb}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Trophy" />
                 <TextBlock Text="{StaticResource Icon_Trophy}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Flag" />
                 <TextBlock Text="{StaticResource Icon_Flag}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Globe" />
                 <TextBlock Text="{StaticResource Icon_Globe}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Eye" />
                 <TextBlock Text="{StaticResource Icon_Eye}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Question" />
                 <TextBlock Text="{StaticResource Icon_Question}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Exclamation" />
                 <TextBlock Text="{StaticResource Icon_Exclamation}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Favorite" />
                 <TextBlock Text="{StaticResource Icon_Favorite}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Like" />
                 <TextBlock Text="{StaticResource Icon_Like}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Dislike" />
                 <TextBlock Text="{StaticResource Icon_Dislike}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ThumbsUp" />
                 <TextBlock Text="{StaticResource Icon_ThumbsUp}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="ThumbsDown" />
                 <TextBlock Text="{StaticResource Icon_ThumbsDown}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Award" />
                 <TextBlock Text="{StaticResource Icon_Award}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Certificate" />
                 <TextBlock Text="{StaticResource Icon_Certificate}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Shield" />
                 <TextBlock Text="{StaticResource Icon_Shield}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Security" />
                 <TextBlock Text="{StaticResource Icon_Security}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Private" />
                 <TextBlock Text="{StaticResource Icon_Private}" />
+                <TextBlock Text="|"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
                            Text="Public" />
                 <TextBlock Text="{StaticResource Icon_Public}" />
+                <TextBlock Text="|"/>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

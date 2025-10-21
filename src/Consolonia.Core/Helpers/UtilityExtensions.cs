@@ -77,18 +77,48 @@ namespace Consolonia.Core.Helpers
             while (runes.MoveNext())
                 if (supportsComplexEmoji)
                 {
-                    if (lastRune.Value == Codepoints.ZWJ ||
-                        lastRune.Value == Codepoints.ORC ||
-                        Emoji.IsEmoji(runes.Current.ToString()))
+                    // if last rune was a joiner, then we append to the emoji
+                    if (Emoji.IsEmoji(runes.Current.ToString()))
                     {
+                        if (lastRune.Value == Codepoints.ZWJ ||
+                            lastRune.Value == Codepoints.ORC)
+                        {
+                            // the last char was a joiner or object replacement, so we continue building the emoji
+                            emoji.Append(runes.Current);
+                        }
+                        else
+                        {
+                            // we have a new emoji starting, so we flush any existing emoji buffer
+                            // ending the previous glyph and starting a new one
+                            if (emoji.Length > 0)
+                            {
+                                glyphs.Add(emoji.ToString());
+                                emoji.Clear();
+                            }
+                            emoji.Append(runes.Current);
+                        }
+                    }
+                    else if (runes.Current.Value == Codepoints.ZWJ||
+                             runes.Current.Value == Codepoints.ORC)
+                    {
+                        // we append the joiner or object replacement to the current emoji being built
                         emoji.Append(runes.Current);
                     }
-                    else if (runes.Current.Value == Emoji.ZeroWidthJoiner ||
-                             runes.Current.Value == Emoji.ObjectReplacementCharacter ||
-                             runes.Current.Value == Codepoints.VariationSelectors.EmojiSymbol ||
+                    else if (runes.Current.Value == Codepoints.VariationSelectors.EmojiSymbol ||
                              runes.Current.Value == Codepoints.VariationSelectors.TextSymbol)
                     {
-                        emoji.Append(runes.Current);
+                        // Variation selectors should be appended to the current glyph being built
+                        // If we have a glyph in progress (emoji buffer), append to it
+                        if (emoji.Length > 0)
+                        {
+                            emoji.Append(runes.Current);
+                        }
+                        // Otherwise, if we have any glyphs, we need to append the variation selector to the last glyph
+                        else if (glyphs.Count > 0)
+                        {
+                            string lastGlyph = glyphs[glyphs.Count - 1];
+                            glyphs[glyphs.Count - 1] = lastGlyph + runes.Current;
+                        }
                     }
                     else
                     {

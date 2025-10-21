@@ -26,8 +26,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             // initialize the buffer with space so it draws any background color
             // blended into it.
             for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-                _buffer[x, y] = Pixel.Space;
+                for (ushort x = 0; x < width; x++)
+                    _buffer[x, y] = Pixel.Space;
         }
 
         // ReSharper disable once UnusedMember.Global
@@ -86,15 +86,19 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             for (ushort j = 0; j < Height; j++)
             {
-                for (ushort i = 0; i < Width; i++)
+                for (ushort i = 0; i < Width;)
                 {
-                    if (i == Width - 1 && j == Height - 1)
-                        break;
                     Pixel pixel = this[new PixelBufferCoordinate(i, j)];
-                    string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.GetText();
-
-                    //todo: check why cursor is not drawing
-                    stringBuilder.Append(text);
+                    if (pixel.Width > 0)
+                    {
+                        string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.GetText();
+                        
+                        //todo: check why cursor is not drawing
+                        stringBuilder.Append(text);
+                        i += pixel.Width;
+                    }
+                    else
+                        i++;
                 }
 
                 stringBuilder.AppendLine();

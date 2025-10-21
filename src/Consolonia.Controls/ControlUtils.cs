@@ -41,17 +41,33 @@ namespace Consolonia.Controls
             ushort lastWidth = 0;
             foreach (Rune rune in text.EnumerateRunes())
             {
-                int runeWidth = UnicodeCalculator.GetWidth(rune);
+                int runeWidth = Emoji.IsEmoji(rune.ToString()) ? 2 : UnicodeCalculator.GetWidth(rune);
                 if (runeWidth >= 0)
                 {
                     if (supportsComplexEmoji &&
                         (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter))
                         width -= lastWidth;
+                    else if (rune.Value == Codepoints.VariationSelectors.EmojiSymbol && 
+                        lastWidth == 1)
+                    {
+                        // adjust for the emoji presentation, which is width 2
+                        width++;
+                        lastWidth = 2;
+                    }
+                    else if (rune.Value == Codepoints.VariationSelectors.TextSymbol && 
+                        lastWidth == 2)
+                    {
+                        // adjust for the text presentation, which is width 1
+                        width--;
+                        lastWidth = 1;
+                    }
                     else
                         width += (ushort)runeWidth;
 
                     if (runeWidth > 0)
+                    {
                         lastWidth = (ushort)runeWidth;
+                    }
                 }
                 // Control chars return as width < 0
                 else
