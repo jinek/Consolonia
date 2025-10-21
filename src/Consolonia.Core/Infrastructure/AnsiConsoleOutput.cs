@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
@@ -61,8 +62,6 @@ namespace Consolonia.Core.Infrastructure
             //todo: performance of retrieval of the service, at least can be retrieved once
             Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
-            SetCaretPosition(bufferPoint);
-
             var sb = new StringBuilder();
             if (textDecoration == TextDecorationLocation.Underline)
                 sb.Append(Esc.Underline);
@@ -77,17 +76,39 @@ namespace Consolonia.Core.Infrastructure
                 consoleColorMode.Value.MapColors(background, foreground, weight);
             sb.Append(Esc.Foreground(mappedForeground));
             sb.Append(Esc.Background(mappedBackground));
-            sb.Append(str);
-            sb.Append(Esc.Reset);
 
-            WriteText(sb.ToString());
+            if (SupportsEmojiVariation)
+            {
+                sb.Append(str);
+                sb.Append(Esc.Reset);
 
-            ushort textWidth = str.MeasureText();
-            if (_headBufferPoint.X < Size.Width - textWidth)
-                _headBufferPoint =
-                    new PixelBufferCoordinate((ushort)(_headBufferPoint.X + textWidth), _headBufferPoint.Y);
+                WriteText(sb.ToString());
+                ushort textWidth = str.MeasureText();
+                if (_headBufferPoint.X < Size.Width - textWidth)
+                    _headBufferPoint =
+                        new PixelBufferCoordinate((ushort)(_headBufferPoint.X + textWidth), _headBufferPoint.Y);
+                else
+                    _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
+            }
             else
-                _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
+            {
+                WriteText(sb.ToString());
+
+                foreach (var glyph in str.GetGlyphs(SupportsComplexEmoji))
+                {
+                    SetCaretPosition(bufferPoint);
+                    WriteText(glyph);
+                    ushort textWidth = glyph.MeasureText();
+                    if (bufferPoint.X < Size.Width - textWidth)
+                        bufferPoint =
+                            new PixelBufferCoordinate((ushort)(bufferPoint.X + textWidth), _headBufferPoint.Y);
+                    else
+                        bufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(bufferPoint.Y + 1));
+                }
+                sb.Append(str);
+                WriteText(Esc.Reset);
+                _headBufferPoint = bufferPoint;
+            }
         }
 
         /// <summary>
