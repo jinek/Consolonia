@@ -1,13 +1,17 @@
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using Consolonia.Core.Infrastructure;
+using jinek.X11;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
-    /// <summary>
-    ///     A clipboard implementation for X11;
-    /// </summary>
     internal class X11Clipboard : ConsoleClipboard
     {
+        public X11Clipboard()
+        {
+            jinek.X11.X11Clipboard.Clipboard.UnhandledException += ClipboardOnUnhandledException;
+        }
+
         public override async Task ClearAsync()
         {
             await base.ClearAsync();
@@ -25,6 +29,23 @@ namespace Consolonia.PlatformSupport.Clipboard
         {
             jinek.X11.X11Clipboard.Clipboard.SetText(text ?? string.Empty);
             return Task.CompletedTask;
+        }
+
+        private static void ClipboardOnUnhandledException(object sender, X11ClipboardLoopExceptionEventArgs e)
+        {
+            e.Handled = true;
+            Dispatcher.UIThread.Post(
+                () => throw new ConsoloniaException("Exception in clipboard loop", e.Exception),
+                DispatcherPriority.MaxValue);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                jinek.X11.X11Clipboard.Clipboard.UnhandledException -= ClipboardOnUnhandledException;
+            }
         }
     }
 }
