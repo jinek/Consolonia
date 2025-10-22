@@ -76,76 +76,75 @@ namespace Consolonia.Core.Helpers
 
             while (runes.MoveNext())
             {
-                    // if last rune was a joiner, then we append to the emoji
-                    if (Emoji.IsEmoji(runes.Current.ToString()))
+                // if last rune was a joiner, then we append to the emoji
+                if (Emoji.IsEmoji(runes.Current.ToString()))
+                {
+                    if (lastRune.Value == Codepoints.ZWJ ||
+                        lastRune.Value == Codepoints.ORC)
                     {
-                        if (lastRune.Value == Codepoints.ZWJ ||
-                            lastRune.Value == Codepoints.ORC)
-                        {
-                            // the last char was a joiner or object replacement, so we continue building the emoji
-                            emoji.Append(runes.Current);
-                        }
-                        else
-                        {
-                            // we have a new emoji starting, so we flush any existing emoji buffer
-                            // ending the previous glyph and starting a new one
-                            if (emoji.Length > 0)
-                            {
-                                glyphs.Add(emoji.ToString());
-                                emoji.Clear();
-                            }
-
-                            emoji.Append(runes.Current);
-                        }
-                    }
-                    // Emoji modifier (skin tone) or keycap extender should continue current glyph
-                    else if (runes.Current.Value >= 0x1F3FB && runes.Current.Value <= 0x1F3FF || // Fitzpatrick
-                             runes.Current.Value == 0x20E3) // COMBINING ENCLOSING KEYCAP
-                    {
-                        if (emoji.Length > 0)
-                            emoji.Append(runes.Current);
-                        else if (glyphs.Count > 0) glyphs[^1] = glyphs[^1] + runes.Current;
-                        // else: stray — ignore
-                    }
-                    else if (runes.Current.Value == Codepoints.ZWJ ||
-                             runes.Current.Value == Codepoints.ORC)
-                    {
-                        // Append joiner to current emoji if building; otherwise, attach to last glyph (if any).
-                        if (emoji.Length > 0)
-                            emoji.Append(runes.Current);
-                        else if (glyphs.Count > 0) glyphs[^1] = glyphs[^1] + runes.Current;
-                        // else: stray joiner — ignore
-                    }
-                    else if (runes.Current.Value == Codepoints.VariationSelectors.EmojiSymbol ||
-                             runes.Current.Value == Codepoints.VariationSelectors.TextSymbol)
-                    {
-                        // Variation selectors should be appended to the current glyph being built
-                        // If we have a glyph in progress (emoji buffer), append to it
-                        if (emoji.Length > 0)
-                        {
-                            emoji.Append(runes.Current);
-                        }
-                        // Otherwise, if we have any glyphs, we need to append the variation selector to the last glyph
-                        else if (glyphs.Count > 0)
-                        {
-                            string lastGlyph = glyphs[glyphs.Count - 1];
-                            glyphs[glyphs.Count - 1] = lastGlyph + runes.Current;
-                        }
+                        // the last char was a joiner or object replacement, so we continue building the emoji
+                        emoji.Append(runes.Current);
                     }
                     else
                     {
+                        // we have a new emoji starting, so we flush any existing emoji buffer
+                        // ending the previous glyph and starting a new one
                         if (emoji.Length > 0)
                         {
                             glyphs.Add(emoji.ToString());
                             emoji.Clear();
                         }
 
-                        glyphs.Add(runes.Current.ToString());
+                        emoji.Append(runes.Current);
+                    }
+                }
+                // Emoji modifier (skin tone) or keycap extender should continue current glyph
+                else if (runes.Current.Value >= 0x1F3FB && runes.Current.Value <= 0x1F3FF || // Fitzpatrick
+                         runes.Current.Value == 0x20E3) // COMBINING ENCLOSING KEYCAP
+                {
+                    if (emoji.Length > 0)
+                        emoji.Append(runes.Current);
+                    else if (glyphs.Count > 0) glyphs[^1] = glyphs[^1] + runes.Current;
+                    // else: stray — ignore
+                }
+                else if (runes.Current.Value == Codepoints.ZWJ ||
+                         runes.Current.Value == Codepoints.ORC)
+                {
+                    // Append joiner to current emoji if building; otherwise, attach to last glyph (if any).
+                    if (emoji.Length > 0)
+                        emoji.Append(runes.Current);
+                    else if (glyphs.Count > 0) glyphs[^1] = glyphs[^1] + runes.Current;
+                    // else: stray joiner — ignore
+                }
+                else if (runes.Current.Value == Codepoints.VariationSelectors.EmojiSymbol ||
+                         runes.Current.Value == Codepoints.VariationSelectors.TextSymbol)
+                {
+                    // Variation selectors should be appended to the current glyph being built
+                    // If we have a glyph in progress (emoji buffer), append to it
+                    if (emoji.Length > 0)
+                    {
+                        emoji.Append(runes.Current);
+                    }
+                    // Otherwise, if we have any glyphs, we need to append the variation selector to the last glyph
+                    else if (glyphs.Count > 0)
+                    {
+                        string lastGlyph = glyphs[glyphs.Count - 1];
+                        glyphs[glyphs.Count - 1] = lastGlyph + runes.Current;
+                    }
+                }
+                else
+                {
+                    if (emoji.Length > 0)
+                    {
+                        glyphs.Add(emoji.ToString());
+                        emoji.Clear();
                     }
 
-                    lastRune = runes.Current;
-             
+                    glyphs.Add(runes.Current.ToString());
                 }
+
+                lastRune = runes.Current;
+            }
 
             if (emoji.Length > 0) glyphs.Add(emoji.ToString());
             return glyphs;
