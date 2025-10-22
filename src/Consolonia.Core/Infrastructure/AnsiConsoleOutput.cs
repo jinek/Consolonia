@@ -90,13 +90,15 @@ namespace Consolonia.Core.Infrastructure
             }
             else
             {
+                // process each glyph, rendering the width as spaces then moving the cursor and
+                // rendering over the top with the glyph.
                 foreach (var glyph in str.GetGlyphs(SupportsComplexEmoji))
                 {
                     ushort glyphWidth  = glyph.MeasureText();
                     if (glyphWidth > 1)
                     {
-                        WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-                        WriteText(new string(' ',textWidth));
+                        WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
+                        WriteText(new string(' ',textWidth - 1));
                     }
 
                     WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));

@@ -75,8 +75,7 @@ namespace Consolonia.Core.Helpers
             var lastRune = new Rune();
 
             while (runes.MoveNext())
-                if (supportsComplexEmoji)
-                {
+            {
                     // if last rune was a joiner, then we append to the emoji
                     if (Emoji.IsEmoji(runes.Current.ToString()))
                     {
@@ -150,14 +149,7 @@ namespace Consolonia.Core.Helpers
                     }
 
                     lastRune = runes.Current;
-                }
-                else
-                {
-                    if (runes.Current.Value != Emoji.ZeroWidthJoiner &&
-                        runes.Current.Value != Emoji.ObjectReplacementCharacter &&
-                        runes.Current.Value != Codepoints.VariationSelectors.EmojiSymbol &&
-                        runes.Current.Value != Codepoints.VariationSelectors.TextSymbol)
-                        glyphs.Add(runes.Current.ToString());
+             
                 }
 
             if (emoji.Length > 0) glyphs.Add(emoji.ToString());
