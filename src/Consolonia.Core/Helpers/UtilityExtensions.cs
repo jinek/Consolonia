@@ -110,14 +110,14 @@ namespace Consolonia.Core.Helpers
                     // else: stray — ignore
                 }
                 else if (runes.Current.Value == Codepoints.ZWJ ||
-                          runes.Current.Value == Codepoints.ORC)
+                         runes.Current.Value == Codepoints.ORC)
                 {
                     if (supportsComplexEmoji)
                     {
                         // Append joiner to current emoji if building; otherwise, attach to last glyph (if any).
                         if (emoji.Length > 0)
                             emoji.Append(runes.Current);
-                        else if (glyphs.Count > 0) 
+                        else if (glyphs.Count > 0)
                             glyphs[^1] = glyphs[^1] + runes.Current;
                     }
                     // else: stray joiner — ignore
@@ -150,7 +150,6 @@ namespace Consolonia.Core.Helpers
                 }
 
                 lastRune = runes.Current;
-
             }
 
             if (emoji.Length > 0) glyphs.Add(emoji.ToString());
