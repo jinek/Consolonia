@@ -45,7 +45,7 @@ namespace Consolonia.Core.Dummy
         public bool SupportsComplexEmoji => true;
 
 
-        public bool SupportsEmojiVariation => throw new NotImplementedException();
+        public bool SupportsEmojiVariation => true;
 
         public PixelBufferCoordinate GetCaretPosition()
         {
