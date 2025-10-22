@@ -146,23 +146,13 @@ namespace Consolonia.Core.Helpers
                     }
                     else if (emoji.Length > 0)
                     {
-                        // Emoji modifier (skin tone) or keycap extender should continue current glyph
-                        if (runes.Current.Value >= Emoji.SkinTones.Light &&
-                            runes.Current.Value <= Emoji.SkinTones.Dark ||
-                            runes.Current.Value == Codepoints.Keycap)
-                        {
-                            emoji.Append(runes.Current);
-                            // else: stray — ignore
-                        }
-                        else
-                        {
-                            // we have a new emoji starting, so we flush any existing emoji buffer
-                            // ending the previous glyph and starting a new one
-                            glyphs.Add(emoji.ToString());
-                            emoji.Clear();
-                            regionalRuneCount = 0;
-                            emoji.Append(runes.Current);
-                        }
+                        
+                        // we have a new emoji starting, so we flush any existing emoji buffer
+                        // ending the previous glyph and starting a new one
+                        glyphs.Add(emoji.ToString());
+                        emoji.Clear();
+                        regionalRuneCount = 0;
+                        emoji.Append(runes.Current);
                     }
                     else
                     {
