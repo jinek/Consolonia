@@ -100,17 +100,12 @@ namespace Consolonia.Core.Helpers
                         }
                     }
                     // Emoji modifier (skin tone) or keycap extender should continue current glyph
-                    else if ((runes.Current.Value >= 0x1F3FB && runes.Current.Value <= 0x1F3FF) || // Fitzpatrick
+                    else if (runes.Current.Value >= 0x1F3FB && runes.Current.Value <= 0x1F3FF || // Fitzpatrick
                              runes.Current.Value == 0x20E3) // COMBINING ENCLOSING KEYCAP
                     {
                         if (emoji.Length > 0)
-                        {
                             emoji.Append(runes.Current);
-                        }
-                        else if (glyphs.Count > 0)
-                        {
-                            glyphs[^1] = glyphs[^1] + runes.Current;
-                        }
+                        else if (glyphs.Count > 0) glyphs[^1] = glyphs[^1] + runes.Current;
                         // else: stray — ignore
                     }
                     else if (runes.Current.Value == Codepoints.ZWJ ||

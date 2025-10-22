@@ -90,22 +90,23 @@ namespace Consolonia.Core.Infrastructure
             }
             else
             {
-                foreach (var glyph in str.GetGlyphs(SupportsComplexEmoji))
+                foreach (string glyph in str.GetGlyphs(SupportsComplexEmoji))
                 {
-                    ushort glyphWidth  = glyph.MeasureText();
+                    ushort glyphWidth = glyph.MeasureText();
                     if (glyphWidth > 1)
                     {
                         WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-                        WriteText(new string(' ',textWidth));
+                        WriteText(new string(' ', textWidth));
                     }
 
                     WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
                     WriteText(glyph);
-                    
+
                     bufferPoint =
                         new PixelBufferCoordinate((ushort)(bufferPoint.X + glyphWidth), bufferPoint.Y);
                 }
             }
+
             WriteText(Esc.Reset);
             if (_headBufferPoint.X < Size.Width - textWidth)
                 _headBufferPoint =
@@ -139,12 +140,12 @@ namespace Consolonia.Core.Infrastructure
             (int left, _) = Console.GetCursorPosition();
             WriteText(TestEmoji);
             (int left2, _) = Console.GetCursorPosition();
-            _supportsComplexEmoji =  left2 - left == 2;
+            _supportsComplexEmoji = left2 - left == 2;
 
             // write out a char with wide variation selector
-            WriteText($"🗑\ufe0f");
+            WriteText("🗑\ufe0f");
             (int left3, _) = Console.GetCursorPosition();
-            _supportsEmojiVariation =  left3 - left2 == 2;
+            _supportsEmojiVariation = left3 - left2 == 2;
 
             ClearScreen();
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
