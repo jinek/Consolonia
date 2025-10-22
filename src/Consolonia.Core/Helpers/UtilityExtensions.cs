@@ -146,7 +146,6 @@ namespace Consolonia.Core.Helpers
                     }
                     else if (emoji.Length > 0)
                     {
-                        
                         // we have a new emoji starting, so we flush any existing emoji buffer
                         // ending the previous glyph and starting a new one
                         glyphs.Add(emoji.ToString());
