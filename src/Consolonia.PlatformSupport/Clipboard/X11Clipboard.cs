@@ -42,10 +42,7 @@ namespace Consolonia.PlatformSupport.Clipboard
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            if (disposing)
-            {
-                jinek.X11.X11Clipboard.Clipboard.UnhandledException -= ClipboardOnUnhandledException;
-            }
+            if (disposing) jinek.X11.X11Clipboard.Clipboard.UnhandledException -= ClipboardOnUnhandledException;
         }
     }
 }
