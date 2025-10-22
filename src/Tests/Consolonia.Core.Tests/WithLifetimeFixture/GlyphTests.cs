@@ -70,8 +70,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
+        [TestCase("1\uFE0f\u20e3")]
         [TestCase("👍🏻")]
-        [TestCase("1️⃣")]
         [TestCase("👨‍👩‍👧‍👦")]
         public void GetGlyphsWithComplexEmoji(string text)
         {
@@ -197,6 +197,69 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             Assert.AreEqual(2, glyphs.Count);
             Assert.AreEqual("🏳️‍🌈", glyphs[0]);
             Assert.AreEqual("🏳️‍🌈", glyphs[1]);
+        }
+
+        // Add regional indicator tests below
+        [Test]
+        public void GetGlyphsRegionalIndicatorSingleFlag()
+        {
+            // US flag: 🇺🇸 (U+1F1FA U+1F1F8)
+            string text = "🇺🇸flag";
+            Assert.AreEqual(6, text.MeasureText());
+
+            IReadOnlyList<string> glyphs = text.GetGlyphs(true);
+            Assert.AreEqual(5, glyphs.Count);
+            Assert.AreEqual("🇺🇸", glyphs[0]);
+            Assert.AreEqual("f", glyphs[1]);
+            Assert.AreEqual("l", glyphs[2]);
+            Assert.AreEqual("a", glyphs[3]);
+            Assert.AreEqual("g", glyphs[4]);
+        }
+
+        [Test]
+        public void GetGlyphsRegionalIndicatorMultipleFlags()
+        {
+            // US flag + UK flag: 🇺🇸🇬🇧
+            string text = "🇺🇸🇬🇧";
+            Assert.AreEqual(4, text.MeasureText());
+
+            IReadOnlyList<string> glyphs = text.GetGlyphs(true);
+            Assert.AreEqual(2, glyphs.Count);
+            Assert.AreEqual("🇺🇸", glyphs[0]);
+            Assert.AreEqual("🇬🇧", glyphs[1]);
+        }
+
+        [Test]
+        public void GetGlyphsRegionalIndicatorWithText()
+        {
+            // Text with flag: "Hello 🇺🇸"
+            string text = "Hello 🇺🇸";
+            Assert.AreEqual(8, text.MeasureText()); // H-e-l-l-o-space + flag(2)
+
+            IReadOnlyList<string> glyphs = text.GetGlyphs(true);
+            Assert.AreEqual(7, glyphs.Count);
+            Assert.AreEqual("H", glyphs[0]);
+            Assert.AreEqual("e", glyphs[1]);
+            Assert.AreEqual("l", glyphs[2]);
+            Assert.AreEqual("l", glyphs[3]);
+            Assert.AreEqual("o", glyphs[4]);
+            Assert.AreEqual(" ", glyphs[5]);
+            Assert.AreEqual("🇺🇸", glyphs[6]);
+        }
+
+        [Test]
+        [TestCase("🇦🇺")] // Australia
+        [TestCase("🇨🇦")] // Canada
+        [TestCase("🇩🇪")] // Germany
+        [TestCase("🇫🇷")] // France
+        [TestCase("🇯🇵")] // Japan
+        public void GetGlyphsRegionalIndicatorVariousFlags(string text)
+        {
+            Assert.AreEqual(2, text.MeasureText());
+
+            IReadOnlyList<string> glyphs = text.GetGlyphs(true);
+            Assert.AreEqual(1, glyphs.Count);
+            Assert.AreEqual(text, glyphs[0]);
         }
     }
 }

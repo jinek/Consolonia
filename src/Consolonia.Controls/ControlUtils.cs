@@ -39,6 +39,8 @@ namespace Consolonia.Controls
 
             ushort width = 0;
             ushort lastWidth = 0;
+            Rune lastRune = new Rune();
+            int regionalRuneCount = 0;
             foreach (Rune rune in text.EnumerateRunes())
             {
                 int runeWidth = Emoji.IsEmoji(rune.ToString()) ? 2 : UnicodeCalculator.GetWidth(rune);
@@ -63,12 +65,24 @@ namespace Consolonia.Controls
                         width--;
                         lastWidth = 1;
                     }
-                    else if (rune.Value >= 0x1F3FB && rune.Value <= 0x1F3FF || // Fitzpatrick
-                             rune.Value == 0x20E3) // COMBINING ENCLOSING KEYCAP
+                    else if (lastWidth > 0 && 
+                             ((rune.Value >= Emoji.SkinTones.Light && rune.Value <= Emoji.SkinTones.Dark) || 
+                              (rune.Value == Codepoints.Keycap)))
                     {
                         // Emoji modifier (skin tone) or keycap extender should continue current glyph
 
                         // else: combining — ignore
+                    }
+                    // regional indicator symbols
+                    else if (rune.Value >= 0x1F1E6 && rune.Value <= 0x1F1FF)
+                    {
+                        regionalRuneCount++;
+                        if (regionalRuneCount % 2 == 0)
+                        {
+                            // every pair of regional indicator symbols form a single glyph
+                            width += (ushort)runeWidth;
+                        }
+                        // If the last rune is a regional indicator symbol, continue the current glyph
                     }
                     else
                     {
@@ -88,6 +102,7 @@ namespace Consolonia.Controls
                         lastWidth = 4;
                     }
                 }
+                lastRune = rune;
             }
 
             return width;
