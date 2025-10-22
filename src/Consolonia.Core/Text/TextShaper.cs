@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Avalonia;
@@ -13,8 +12,8 @@ namespace Consolonia.Core.Text
 {
     public class TextShaper : ITextShaperImpl
     {
-        private readonly static Dictionary<ushort, string> GlyphByIndex = new();
-        private readonly static Dictionary<string, ushort> IndexByGlyph = new();
+        private static readonly Dictionary<ushort, string> GlyphByIndex = new();
+        private static readonly Dictionary<string, ushort> IndexByGlyph = new();
 
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
@@ -27,7 +26,7 @@ namespace Consolonia.Core.Text
 
             for (ushort i = 0; i < shapedBuffer.Length; i++)
             {
-                var glyph = glyphs[i];
+                string glyph = glyphs[i];
                 ushort glyphIndex;
                 lock (IndexByGlyph)
                 {
