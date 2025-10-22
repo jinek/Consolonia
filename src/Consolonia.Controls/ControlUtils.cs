@@ -63,10 +63,16 @@ namespace Consolonia.Controls
                         width--;
                         lastWidth = 1;
                     }
-                    else
+                    else if ((rune.Value >= 0x1F3FB && rune.Value <= 0x1F3FF) || // Fitzpatrick
+                              rune.Value == 0x20E3) // COMBINING ENCLOSING KEYCAP
                     {
-                        width += (ushort)runeWidth;
+                        // Emoji modifier (skin tone) or keycap extender should continue current glyph
+
+                        // else: combining — ignore
                     }
+                    else
+                        width += (ushort)runeWidth;
+
 
                     if (runeWidth > 0) lastWidth = (ushort)runeWidth;
                 }

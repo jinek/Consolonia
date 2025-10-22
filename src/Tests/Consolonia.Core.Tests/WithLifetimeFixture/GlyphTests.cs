@@ -70,14 +70,16 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetGlyphsWithComplexEmoji()
+        [TestCase("👍🏻")]
+        [TestCase("1️⃣")]
+        [TestCase("👨‍👩‍👧‍👦")]
+        public void GetGlyphsWithComplexEmoji(string text)
         {
-            string text = "👨‍👩‍👧‍👦";
             Assert.AreEqual(2, text.MeasureText());
 
             IReadOnlyList<string> glyphs = text.GetGlyphs(true);
             Assert.AreEqual(1, glyphs.Count);
-            Assert.AreEqual("👨‍👩‍👧‍👦", glyphs[0]);
+            Assert.AreEqual(text, glyphs[0]);
         }
 
         [Test]

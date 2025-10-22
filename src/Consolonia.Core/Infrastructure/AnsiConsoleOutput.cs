@@ -139,7 +139,7 @@ namespace Consolonia.Core.Infrastructure
             (int left, _) = Console.GetCursorPosition();
             WriteText(TestEmoji);
             (int left2, _) = Console.GetCursorPosition();
-            _supportsComplexEmoji =  true;// left2 - left == 2;
+            _supportsComplexEmoji =  left2 - left == 2;
 
             // write out a char with wide variation selector
             WriteText($"🗑\ufe0f");

@@ -118,7 +118,7 @@ namespace Consolonia.Core.Infrastructure
             // Detect complex emoji support by writing a complex emoji and checking cursor position.
             // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
             (int left, _) = Console.GetCursorPosition();
-            Console.WriteLine("👨‍👩‍👧‍👦");
+            WriteText("👨‍👩‍👧‍👦");
             (int left2, _) = Console.GetCursorPosition();
             _supportsComplexEmoji = left2 - left == 2;
 
