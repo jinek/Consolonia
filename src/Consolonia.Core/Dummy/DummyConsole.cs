@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -44,7 +45,7 @@ namespace Consolonia.Core.Dummy
         public bool SupportsComplexEmoji => true;
 
 
-        public bool SupportsEmojiVariation => throw new System.NotImplementedException();
+        public bool SupportsEmojiVariation => throw new NotImplementedException();
 
         public PixelBufferCoordinate GetCaretPosition()
         {

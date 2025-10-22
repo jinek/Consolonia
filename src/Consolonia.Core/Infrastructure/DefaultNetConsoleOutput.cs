@@ -4,7 +4,6 @@ using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
-using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
 {
@@ -124,7 +123,7 @@ namespace Consolonia.Core.Infrastructure
             _supportsComplexEmoji = left2 - left == 2;
 
             // write out a wide char
-            WriteText($"⚙\ufe0f");
+            WriteText("⚙\ufe0f");
             (int left3, _) = Console.GetCursorPosition();
             _supportsEmojiVariation = left3 - left2 == 2;
 
