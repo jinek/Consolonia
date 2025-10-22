@@ -100,17 +100,17 @@ namespace Consolonia.Core.Helpers
                 }
                 // regional indicator symbols
                 else if (runes.Current.Value >= 0x1F1E6 && runes.Current.Value <= 0x1F1FF)
+
                 {
                     regionalRuneCount++;
-                    if (regionalRuneCount % 2 == 0)
+                    if ((regionalRuneCount % 2 == 0) && emoji.Length > 0)
                     {
-                        // every pair of regional indicator symbols form a single glyph
+                        // complete the flag pair
                         emoji.Append(runes.Current);
                     }
                     else
                     {
-                        // we have a new emoji starting, so we flush any existing emoji buffer
-                        // ending the previous glyph and starting a new one
+                        // start a new RI run (or recover if buffer was empty)
                         if (emoji.Length > 0)
                         {
                             glyphs.Add(emoji.ToString());
