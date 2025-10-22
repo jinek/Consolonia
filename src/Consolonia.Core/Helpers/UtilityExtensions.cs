@@ -103,7 +103,7 @@ namespace Consolonia.Core.Helpers
 
                 {
                     regionalRuneCount++;
-                    if ((regionalRuneCount % 2 == 0) && emoji.Length > 0)
+                    if (regionalRuneCount % 2 == 0 && emoji.Length > 0)
                     {
                         // complete the flag pair
                         emoji.Append(runes.Current);
