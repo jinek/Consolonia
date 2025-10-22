@@ -82,6 +82,7 @@ namespace Consolonia.Core.Infrastructure
                 sb.Append(str);
                 sb.Append(Esc.Reset);
 
+                SetCaretPosition(bufferPoint);
                 WriteText(sb.ToString());
                 ushort textWidth = str.MeasureText();
                 if (_headBufferPoint.X < Size.Width - textWidth)
@@ -94,9 +95,9 @@ namespace Consolonia.Core.Infrastructure
             {
                 WriteText(sb.ToString());
 
+                SetCaretPosition(bufferPoint);
                 foreach (var glyph in str.GetGlyphs(SupportsComplexEmoji))
                 {
-                    SetCaretPosition(bufferPoint);
                     WriteText(glyph);
                     ushort textWidth = glyph.MeasureText();
                     if (bufferPoint.X < Size.Width - textWidth)
@@ -104,8 +105,10 @@ namespace Consolonia.Core.Infrastructure
                             new PixelBufferCoordinate((ushort)(bufferPoint.X + textWidth), _headBufferPoint.Y);
                     else
                         bufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(bufferPoint.Y + 1));
+                   
+                    // we explicitely move the cursor because we can't rely on the terminal to do it properly
+                    SetCaretPosition(bufferPoint);
                 }
-                sb.Append(str);
                 WriteText(Esc.Reset);
                 _headBufferPoint = bufferPoint;
             }
@@ -136,12 +139,12 @@ namespace Consolonia.Core.Infrastructure
             (int left, _) = Console.GetCursorPosition();
             WriteText(TestEmoji);
             (int left2, _) = Console.GetCursorPosition();
-            _supportsComplexEmoji = left2 - left == 2;
+            _supportsComplexEmoji =  true;// left2 - left == 2;
 
             // write out a char with wide variation selector
-            WriteText($"⚙\ufe0f");
+            WriteText($"🗑\ufe0f");
             (int left3, _) = Console.GetCursorPosition();
-            _supportsEmojiVariation = left3 - left2 == 2;
+            _supportsEmojiVariation =  left3 - left2 == 2;
 
             ClearScreen();
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
