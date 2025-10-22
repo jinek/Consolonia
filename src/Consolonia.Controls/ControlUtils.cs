@@ -39,7 +39,6 @@ namespace Consolonia.Controls
 
             ushort width = 0;
             ushort lastWidth = 0;
-            Rune lastRune = new Rune();
             int regionalRuneCount = 0;
             foreach (Rune rune in text.EnumerateRunes())
             {
@@ -102,7 +101,6 @@ namespace Consolonia.Controls
                         lastWidth = 4;
                     }
                 }
-                lastRune = rune;
             }
 
             return width;

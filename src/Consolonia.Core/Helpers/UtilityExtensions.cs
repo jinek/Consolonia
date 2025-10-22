@@ -77,7 +77,7 @@ namespace Consolonia.Core.Helpers
             while (runes.MoveNext())
             {
                 if (runes.Current.Value == Codepoints.ZWJ ||
-                                         runes.Current.Value == Codepoints.ORC)
+                    runes.Current.Value == Codepoints.ORC)
                 {
                     if (supportsComplexEmoji)
                     {
@@ -138,8 +138,7 @@ namespace Consolonia.Core.Helpers
                 else if (Emoji.IsEmoji(runes.Current.ToString()))
                 {
                     if (supportsComplexEmoji &&
-                        lastRune.Value == Codepoints.ZWJ ||
-                        lastRune.Value == Codepoints.ORC)
+                        (lastRune.Value == Codepoints.ZWJ || lastRune.Value == Codepoints.ORC))
                     {
                         // the last char was a joiner or object replacement, so we continue building the emoji
                         emoji.Append(runes.Current);
@@ -148,7 +147,7 @@ namespace Consolonia.Core.Helpers
                     {
                         // Emoji modifier (skin tone) or keycap extender should continue current glyph
                         if ((runes.Current.Value >= Emoji.SkinTones.Light && runes.Current.Value <= Emoji.SkinTones.Dark) ||
-                                runes.Current.Value == Codepoints.Keycap)
+                             runes.Current.Value == Codepoints.Keycap)
                         {
                             emoji.Append(runes.Current);
                             // else: stray — ignore
