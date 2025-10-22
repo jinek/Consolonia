@@ -64,9 +64,9 @@ namespace Consolonia.Controls
                         width--;
                         lastWidth = 1;
                     }
-                    else if (lastWidth > 0 && 
-                             ((rune.Value >= Emoji.SkinTones.Light && rune.Value <= Emoji.SkinTones.Dark) || 
-                              (rune.Value == Codepoints.Keycap)))
+                    else if (lastWidth > 0 &&
+                             (rune.Value >= Emoji.SkinTones.Light && rune.Value <= Emoji.SkinTones.Dark ||
+                              rune.Value == Codepoints.Keycap))
                     {
                         // Emoji modifier (skin tone) or keycap extender should continue current glyph
 
@@ -77,10 +77,8 @@ namespace Consolonia.Controls
                     {
                         regionalRuneCount++;
                         if (regionalRuneCount % 2 == 0)
-                        {
                             // every pair of regional indicator symbols form a single glyph
                             width += (ushort)runeWidth;
-                        }
                         // If the last rune is a regional indicator symbol, continue the current glyph
                     }
                     else

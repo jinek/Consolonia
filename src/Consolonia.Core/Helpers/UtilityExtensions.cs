@@ -89,8 +89,8 @@ namespace Consolonia.Core.Helpers
                     }
                     // else: stray joiner — ignore
                 }
-                else if ((runes.Current.Value >= Emoji.SkinTones.Light && runes.Current.Value <= Emoji.SkinTones.Dark) ||
-                          runes.Current.Value == Codepoints.Keycap)
+                else if (runes.Current.Value >= Emoji.SkinTones.Light && runes.Current.Value <= Emoji.SkinTones.Dark ||
+                         runes.Current.Value == Codepoints.Keycap)
                 {
                     // Append to current emoji if building; otherwise, attach to last glyph (if any).
                     if (emoji.Length > 0)
@@ -116,6 +116,7 @@ namespace Consolonia.Core.Helpers
                             glyphs.Add(emoji.ToString());
                             emoji.Clear();
                         }
+
                         emoji.Append(runes.Current);
                     }
                 }
@@ -146,8 +147,9 @@ namespace Consolonia.Core.Helpers
                     else if (emoji.Length > 0)
                     {
                         // Emoji modifier (skin tone) or keycap extender should continue current glyph
-                        if ((runes.Current.Value >= Emoji.SkinTones.Light && runes.Current.Value <= Emoji.SkinTones.Dark) ||
-                             runes.Current.Value == Codepoints.Keycap)
+                        if (runes.Current.Value >= Emoji.SkinTones.Light &&
+                            runes.Current.Value <= Emoji.SkinTones.Dark ||
+                            runes.Current.Value == Codepoints.Keycap)
                         {
                             emoji.Append(runes.Current);
                             // else: stray — ignore
