@@ -68,7 +68,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Symbol(string glyph)
+        public Symbol(string glyph, byte? width = null)
         {
             Pattern = 0;
             Complex = null;
@@ -79,7 +79,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
             else
             {
-                Width = (byte)glyph.MeasureText();
+                Width = width ?? (byte)glyph.MeasureText();
 
                 if (glyph.Length == 1)
                 {
