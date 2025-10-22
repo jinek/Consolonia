@@ -166,6 +166,7 @@ namespace Consolonia.Core.Helpers
                     }
                     else
                     {
+                        regionalRuneCount = 0;
                         emoji.Append(runes.Current);
                     }
                 }
