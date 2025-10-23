@@ -97,8 +97,8 @@ namespace Consolonia.Core.Infrastructure
                     ushort glyphWidth = glyph.MeasureText();
                     if (glyphWidth > 1)
                     {
-                        WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-                        WriteText(new string(' ', Math.Min(Size.Width - bufferPoint.X, bufferPoint.X + glyphWidth)));
+                        WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
+                        WriteText(new string(' ', Math.Min(Size.Width - bufferPoint.X, glyphWidth - 1)));
                     }
 
                     WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
