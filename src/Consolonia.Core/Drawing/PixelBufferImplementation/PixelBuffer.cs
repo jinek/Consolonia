@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
+using Consolonia.Controls;
 using Newtonsoft.Json;
 
 // ReSharper disable UnusedMember.Global
@@ -95,7 +96,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
                         //todo: check why cursor is not drawing
                         stringBuilder.Append(text);
-                        i += pixel.Width;
+                        i += text.MeasureText();
                     }
                     else
                     {
