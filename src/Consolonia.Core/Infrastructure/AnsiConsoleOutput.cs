@@ -99,7 +99,7 @@ namespace Consolonia.Core.Infrastructure
                     if (glyphWidth > 1)
                     {
                         WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
-                        WriteText(new string(' ', Math.Min(Size.Width - bufferPoint.X, glyphWidth - 1)));
+                        WriteText(new string(' ', Math.Min(Size.Width - bufferPoint.X - 1, glyphWidth - 1)));
                     }
 
                     WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
