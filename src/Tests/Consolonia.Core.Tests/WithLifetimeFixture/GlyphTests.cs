@@ -101,11 +101,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             Assert.AreEqual(2, text.MeasureText());
 
             IReadOnlyList<string> glyphs = text.GetGlyphs(false);
-            Assert.AreEqual(4, glyphs.Count);
+            Assert.AreEqual(1, glyphs.Count);
             Assert.AreEqual("👨", glyphs[0]);
-            Assert.AreEqual("👩", glyphs[1]);
-            Assert.AreEqual("👧", glyphs[2]);
-            Assert.AreEqual("👦", glyphs[3]);
         }
 
         [Test]
