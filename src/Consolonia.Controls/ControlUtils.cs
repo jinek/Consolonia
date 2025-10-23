@@ -48,14 +48,10 @@ namespace Consolonia.Controls
                     if (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter)
                     {
                         if (supportsComplexEmoji)
-                        {
                             width -= lastWidth;
-                        }
                         else
-                        {
                             // we return the first emoji as the result because terminal doesn't support chaining them
                             break;
-                        }
                     }
                     else if (rune.Value == Codepoints.VariationSelectors.EmojiSymbol &&
                              lastWidth == 1)
