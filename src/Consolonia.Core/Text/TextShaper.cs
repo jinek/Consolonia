@@ -35,7 +35,6 @@ namespace Consolonia.Core.Text
                         glyphIndex = (ushort)GlyphByIndex.Count;
                         GlyphByIndex[glyphIndex] = glyph;
                         IndexByGlyph[glyph] = glyphIndex;
-                        Debug.WriteLine(glyphIndex);
                     }
                 }
 

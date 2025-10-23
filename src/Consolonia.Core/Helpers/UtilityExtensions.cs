@@ -87,7 +87,11 @@ namespace Consolonia.Core.Helpers
                         else if (glyphs.Count > 0)
                             glyphs[^1] = glyphs[^1] + runes.Current;
                     }
-                    // else: stray joiner — ignore
+                    else
+                    {
+                        // we terminate multi-chained 1 because terminal doesn't support it 
+                        break;
+                    }
                 }
                 else if (runes.Current.Value >= Emoji.SkinTones.Light && runes.Current.Value <= Emoji.SkinTones.Dark ||
                          runes.Current.Value == Codepoints.Keycap)

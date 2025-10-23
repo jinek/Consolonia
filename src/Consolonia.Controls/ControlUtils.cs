@@ -45,10 +45,17 @@ namespace Consolonia.Controls
                 int runeWidth = Emoji.IsEmoji(rune.ToString()) ? 2 : UnicodeCalculator.GetWidth(rune);
                 if (runeWidth >= 0)
                 {
-                    if (supportsComplexEmoji &&
-                        (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter))
+                    if (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter)
                     {
-                        width -= lastWidth;
+                        if (supportsComplexEmoji)
+                        {
+                            width -= lastWidth;
+                        }
+                        else
+                        {
+                            // we return the first emoji as the result because terminal doesn't support chaining them
+                            break;
+                        }
                     }
                     else if (rune.Value == Codepoints.VariationSelectors.EmojiSymbol &&
                              lastWidth == 1)
