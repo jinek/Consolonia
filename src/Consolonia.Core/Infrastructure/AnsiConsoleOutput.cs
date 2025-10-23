@@ -87,6 +87,7 @@ namespace Consolonia.Core.Infrastructure
             {
                 SetCaretPosition(bufferPoint);
                 WriteText(str);
+                bufferPoint = new PixelBufferCoordinate((ushort)(bufferPoint.X + textWidth), bufferPoint.Y);
             }
             else
             {
@@ -110,11 +111,7 @@ namespace Consolonia.Core.Infrastructure
             }
 
             WriteText(Esc.Reset);
-            if (_headBufferPoint.X < Size.Width - textWidth)
-                _headBufferPoint =
-                    new PixelBufferCoordinate((ushort)(_headBufferPoint.X + textWidth), _headBufferPoint.Y);
-            else
-                _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
+            _headBufferPoint = bufferPoint;
         }
 
         /// <summary>

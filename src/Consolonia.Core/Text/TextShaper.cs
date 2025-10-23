@@ -11,6 +11,7 @@ namespace Consolonia.Core.Text
 {
     public class TextShaper : ITextShaperImpl
     {
+        private static readonly object GlyphCacheSync = new();
         private static readonly Dictionary<ushort, string> GlyphByIndex = new();
         private static readonly Dictionary<string, ushort> IndexByGlyph = new();
 
@@ -27,7 +28,7 @@ namespace Consolonia.Core.Text
             {
                 string glyph = glyphs[i];
                 ushort glyphIndex;
-                lock (IndexByGlyph)
+                lock (GlyphCacheSync)
                 {
                     if (!IndexByGlyph.TryGetValue(glyph, out glyphIndex))
                     {
@@ -47,7 +48,7 @@ namespace Consolonia.Core.Text
 
         public static string GetGlyphByIndex(ushort glyphIndex)
         {
-            lock (IndexByGlyph)
+            lock (GlyphCacheSync)
             {
                 return GlyphByIndex[glyphIndex];
             }
