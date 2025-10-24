@@ -860,7 +860,9 @@ namespace Consolonia.Core.Drawing
 
         private void DrawGlyphInfo(IBrush foreground, GlyphInfo glyphInfo, IGlyphTypeface typeface, PixelPoint position)
         {
-            string glyph = TextShaper.GetGlyphByIndex(glyphInfo.GlyphIndex);
+            var glyphTypeface = (GlyphTypeface)typeface;
+            string glyph = glyphTypeface.GetGlyphText(glyphInfo.GlyphIndex);
+
             if (foreground is not ISolidColorBrush solidColorBrush)
             {
                 solidColorBrush = ConsoloniaPlatform.RaiseNotSupported<ISolidColorBrush>(

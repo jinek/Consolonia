@@ -1,59 +1,103 @@
 using System;
+using System.Collections.Generic;
 using Avalonia.Media;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing;
 
 namespace Consolonia.Core.Text
 {
     public sealed class GlyphTypeface : IGlyphTypeface
     {
-        // NOTE: We are using this placeholder glyph since we are pushing
-        // raw text to the console and not using a font system to render the text
-        internal const ushort Glyph = 21; // ASCII NAK
+        private static readonly object GlyphCacheSync = new();
+        private static readonly Dictionary<ushort, string> GlyphByIndex = new();
+        private static readonly Dictionary<ushort, ushort> WidthByIndex = new();
+        private static readonly Dictionary<string, ushort> IndexByGlyph = new();
 
         public void Dispose()
         {
         }
 
-        public bool TryGetGlyphMetrics(ushort glyph, out GlyphMetrics metrics)
+        public bool TryGetGlyphMetrics(ushort glyphIndex, out GlyphMetrics metrics)
         {
-            /*todo: handle special characters here?*/
-            metrics = new GlyphMetrics
+            lock (GlyphCacheSync)
             {
-                XBearing = 0,
-                YBearing = 0,
-                Height = 1,
-                Width = 1
-            };
-            return true;
+                var glyph = GlyphByIndex[glyphIndex];
+                metrics = new GlyphMetrics
+                {
+                    XBearing = 0,
+                    YBearing = 0,
+                    Height = 1,
+                    Width = WidthByIndex[glyphIndex],
+                };
+                return true;
+            }
         }
 
         public ushort GetGlyph(uint codepoint)
         {
-            return Glyph;
+            return GetGlyphIndex(Char.ConvertFromUtf32((int)codepoint));
         }
 
-        public bool TryGetGlyph(uint codepoint, out ushort glyph)
+        public bool TryGetGlyph(uint codepoint, out ushort glyphIndex)
         {
-            glyph = Glyph;
+            glyphIndex = GetGlyphIndex(Char.ConvertFromUtf32((int)codepoint));
             return true;
+        }
+
+        public ushort GetGlyphIndex(string glyph)
+        {
+            ushort glyphIndex;
+            lock (GlyphCacheSync)
+            {
+                if (!IndexByGlyph.TryGetValue(glyph, out glyphIndex))
+                {
+                    if (IndexByGlyph.Count >= ushort.MaxValue)
+                        throw new InvalidOperationException("Glyph cache overflow.");
+                    glyphIndex = (ushort)GlyphByIndex.Count;
+                    GlyphByIndex[glyphIndex] = glyph;
+                    WidthByIndex[glyphIndex] = glyph.MeasureText();
+                    IndexByGlyph[glyph] = glyphIndex;
+                }
+            }
+            return glyphIndex;
+        }
+
+        public string GetGlyphText(ushort glyphIndex)
+        {
+            lock (GlyphCacheSync)
+            {
+                return GlyphByIndex[glyphIndex];
+            }
         }
 
         public ushort[] GetGlyphs(ReadOnlySpan<uint> codepoints)
         {
             ushort[] glyphs = new ushort[codepoints.Length];
-            Array.Fill(glyphs, Glyph);
+            for (int i = 0; i < codepoints.Length; i++)
+            {
+                glyphs[i] = GetGlyphIndex(Char.ConvertFromUtf32((int)codepoints[i]));
+            }
             return glyphs;
         }
 
-        public int GetGlyphAdvance(ushort glyph)
+        public int GetGlyphAdvance(ushort glyphIndex)
         {
-            return 1;
+            lock (GlyphCacheSync)
+            {
+                return WidthByIndex[glyphIndex];
+            }
         }
 
         public int[] GetGlyphAdvances(ReadOnlySpan<ushort> glyphs)
         {
             int[] advances = new int[glyphs.Length];
-            Array.Fill(advances, 1);
+            lock (GlyphCacheSync)
+            {
+                for (int i = 0; i < glyphs.Length; i++)
+                {
+                    advances[i] = GetGlyphAdvance(glyphs[i]);
+                }
+            }
             return advances;
         }
 
