@@ -24,7 +24,7 @@ namespace Consolonia.Core.Text
             var shapedBuffer = new ShapedBuffer(text, glyphs.Count,
                 options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);
 
-            var glyphTypeface = options.Typeface as GlyphTypeface;
+            var glyphTypeface = options.Typeface as ConsoleTypeface;
             for (ushort i = 0; i < shapedBuffer.Length; i++)
             {
                 var glyph = glyphs[i];

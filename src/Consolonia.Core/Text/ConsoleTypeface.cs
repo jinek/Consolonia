@@ -6,7 +6,10 @@ using Consolonia.Core.Drawing;
 
 namespace Consolonia.Core.Text
 {
-    public sealed class GlyphTypeface : IGlyphTypeface
+    /// <summary>
+    /// This represents a psuedo-typeface for console rendering.
+    /// </summary>
+    public sealed class ConsoleTypeface : IGlyphTypeface
     {
         private static readonly object GlyphCacheSync = new();
         private static readonly Dictionary<ushort, string> GlyphByIndex = new();
