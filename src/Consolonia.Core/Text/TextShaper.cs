@@ -19,20 +19,20 @@ namespace Consolonia.Core.Text
         {
             var console = AvaloniaLocator.Current.GetRequiredService<IConsoleOutput>();
 
-            IReadOnlyList<string> glyphs = text.Span.ToString().GetGlyphs(console.SupportsComplexEmoji);
+            IReadOnlyList<Grapheme> graphemes = text.Span.ToString().GetGraphemes(console.SupportsComplexEmoji);
 
-            var shapedBuffer = new ShapedBuffer(text, glyphs.Count,
+            var shapedBuffer = new ShapedBuffer(text, graphemes.Count,
                 options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);
 
             var glyphTypeface = options.Typeface as ConsoleTypeface;
             for (ushort i = 0; i < shapedBuffer.Length; i++)
             {
-                var glyph = glyphs[i];
-                var glyphIndex = glyphTypeface.GetGlyphIndex(glyph);
+                var grapheme = graphemes[i];
+                var glyphIndex = glyphTypeface.GetGlyphIndex(grapheme.Text);
                 var glyphWidth = glyphTypeface.GetGlyphAdvance(glyphIndex);
                 // NOTE: We are using the placeholder glyph since we are pushing
                 // raw text to the console and not using a font system to render the text
-                shapedBuffer[i] = new GlyphInfo(glyphIndex, i, glyphWidth);
+                shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphWidth);
             }
             //Debug.WriteLine(text);
             //Debug.WriteLine($"Indexed as:{String.Join(',', shapedBuffer.Select(gi=> gi.GlyphIndex))}");

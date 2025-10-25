@@ -93,9 +93,9 @@ namespace Consolonia.Core.Infrastructure
             {
                 // rendering over the top with the glyph.
                 // process each glyph, rendering the width as spaces then moving the cursor and
-                foreach (string glyph in str.GetGlyphs(SupportsComplexEmoji))
+                foreach (Grapheme grapheme in str.GetGraphemes(SupportsComplexEmoji))
                 {
-                    ushort glyphWidth = glyph.MeasureText();
+                    ushort glyphWidth = grapheme.Text.MeasureText();
                     if (glyphWidth > 1)
                     {
                         WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
@@ -103,7 +103,7 @@ namespace Consolonia.Core.Infrastructure
                     }
 
                     WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-                    WriteText(glyph);
+                    WriteText(grapheme.Text);
 
                     bufferPoint =
                         new PixelBufferCoordinate((ushort)(bufferPoint.X + glyphWidth), bufferPoint.Y);

@@ -11,6 +11,13 @@ using NeoSmart.Unicode;
 
 namespace Consolonia.Core.Helpers
 {
+    public class Grapheme
+    {
+        public string Text { get; set; }
+
+        public int Cluster { get; set; }
+    }
+
     public static class UtilityExtensions
     {
         public static IDisposable SubscribeAction<TValue>(
@@ -67,13 +74,15 @@ namespace Consolonia.Core.Helpers
         /// <param name="text">text to get glyphs from</param>
         /// <param name="supportsComplexEmoji">If true, emojis like 👨‍👩‍👧‍👦 will be treated as a single glyph></param>
         /// <returns></returns>
-        public static IReadOnlyList<string> GetGlyphs(this string text, bool supportsComplexEmoji)
+        public static IReadOnlyList<Grapheme> GetGraphemes(this string text, bool supportsComplexEmoji)
         {
-            var glyphs = new List<string>();
+            var glyphs = new List<Grapheme>();
             var emoji = new StringBuilder();
             StringRuneEnumerator runes = text.EnumerateRunes();
             var lastRune = new Rune();
             int regionalRuneCount = 0;
+            int index = 0;
+            int cluster = 0;
             while (runes.MoveNext())
             {
                 if (runes.Current.Value == Codepoints.ZWJ ||
@@ -85,7 +94,7 @@ namespace Consolonia.Core.Helpers
                         if (emoji.Length > 0)
                             emoji.Append(runes.Current);
                         else if (glyphs.Count > 0)
-                            glyphs[^1] = glyphs[^1] + runes.Current;
+                            glyphs[^1].Text = glyphs[^1].Text + runes.Current;
                     }
                     else
                     {
@@ -100,7 +109,7 @@ namespace Consolonia.Core.Helpers
                     if (emoji.Length > 0)
                         emoji.Append(runes.Current);
                     else if (glyphs.Count > 0)
-                        glyphs[^1] = glyphs[^1] + runes.Current;
+                        glyphs[^1].Text = glyphs[^1].Text + runes.Current;
                 }
                 // regional indicator symbols
                 else if (runes.Current.Value >= 0x1F1E6 && runes.Current.Value <= 0x1F1FF)
@@ -111,13 +120,17 @@ namespace Consolonia.Core.Helpers
                     {
                         // complete the flag pair
                         emoji.Append(runes.Current);
+                        glyphs.Add(new Grapheme() { Text = emoji.ToString(), Cluster = cluster });
+                        cluster = index + runes.Current.Utf16SequenceLength;
+                        emoji.Clear();
                     }
                     else
                     {
                         // start a new RI run (or recover if buffer was empty)
                         if (emoji.Length > 0)
                         {
-                            glyphs.Add(emoji.ToString());
+                            glyphs.Add(new Grapheme() { Text = emoji.ToString(), Cluster = cluster });
+                            cluster = index + runes.Current.Utf16SequenceLength;
                             emoji.Clear();
                         }
 
@@ -136,8 +149,7 @@ namespace Consolonia.Core.Helpers
                     // Otherwise, if we have any glyphs, we need to append the variation selector to the last glyph
                     else if (glyphs.Count > 0)
                     {
-                        string lastGlyph = glyphs[glyphs.Count - 1];
-                        glyphs[glyphs.Count - 1] = lastGlyph + runes.Current;
+                        glyphs[^1].Text = glyphs[^1].Text + runes.Current;
                     }
                 }
                 else if (Emoji.IsEmoji(runes.Current.ToString()))
@@ -152,7 +164,8 @@ namespace Consolonia.Core.Helpers
                     {
                         // we have a new emoji starting, so we flush any existing emoji buffer
                         // ending the previous glyph and starting a new one
-                        glyphs.Add(emoji.ToString());
+                        glyphs.Add(new Grapheme() { Text = emoji.ToString(), Cluster = cluster });
+                        cluster = index;
                         emoji.Clear();
                         regionalRuneCount = 0;
                         emoji.Append(runes.Current);
@@ -167,17 +180,20 @@ namespace Consolonia.Core.Helpers
                 {
                     if (emoji.Length > 0)
                     {
-                        glyphs.Add(emoji.ToString());
+                        glyphs.Add(new Grapheme() { Text = emoji.ToString(), Cluster = cluster });
+                        cluster = index + runes.Current.Utf16SequenceLength;
                         emoji.Clear();
                     }
 
-                    glyphs.Add(runes.Current.ToString());
+                    glyphs.Add(new Grapheme() { Text = runes.Current.ToString(), Cluster = cluster });
+                    cluster = index + runes.Current.Utf16SequenceLength;
                 }
 
                 lastRune = runes.Current;
+                index += runes.Current.Utf16SequenceLength;
             }
 
-            if (emoji.Length > 0) glyphs.Add(emoji.ToString());
+            if (emoji.Length > 0) glyphs.Add(new Grapheme() { Text = emoji.ToString(), Cluster = cluster });
             return glyphs;
         }
     }
