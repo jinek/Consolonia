@@ -33,7 +33,7 @@ namespace Consolonia.Core.Text
             out IGlyphTypeface glyphTypeface)
         {
             //todo: check font is ours the only
-            glyphTypeface = new GlyphTypeface
+            glyphTypeface = new ConsoleTypeface
             {
                 Weight = weight,
                 Style = style
@@ -46,7 +46,7 @@ namespace Consolonia.Core.Text
             [NotNullWhen(true)] out IGlyphTypeface glyphTypeface)
 #pragma warning restore CA1822 // Mark members as static
         {
-            glyphTypeface = new GlyphTypeface();
+            glyphTypeface = new ConsoleTypeface();
             return true;
         }
 
@@ -54,7 +54,7 @@ namespace Consolonia.Core.Text
         public bool TryCreateGlyphTypeface(Stream stream, out IGlyphTypeface glyphTypeface)
 #pragma warning restore CA1822 // Mark members as static
         {
-            glyphTypeface = new GlyphTypeface();
+            glyphTypeface = new ConsoleTypeface();
             return true;
         }
 

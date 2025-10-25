@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
@@ -20,9 +21,12 @@ namespace Consolonia.Core.Infrastructure
 
         private PixelBufferCoordinate _headBufferPoint;
 
-        private bool? _supportEmoji;
+        private bool? _supportsComplexEmoji;
+        private bool? _supportsEmojiVariation;
 
-        public bool SupportsComplexEmoji => _supportEmoji ?? false;
+        public bool SupportsComplexEmoji => _supportsComplexEmoji ?? false;
+
+        public bool SupportsEmojiVariation => _supportsEmojiVariation ?? false;
 
         public PixelBufferSize Size { get; set; }
 
@@ -58,8 +62,6 @@ namespace Consolonia.Core.Infrastructure
             //todo: performance of retrieval of the service, at least can be retrieved once
             Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
-            SetCaretPosition(bufferPoint);
-
             var sb = new StringBuilder();
             if (textDecoration == TextDecorationLocation.Underline)
                 sb.Append(Esc.Underline);
@@ -74,17 +76,42 @@ namespace Consolonia.Core.Infrastructure
                 consoleColorMode.Value.MapColors(background, foreground, weight);
             sb.Append(Esc.Foreground(mappedForeground));
             sb.Append(Esc.Background(mappedBackground));
-            sb.Append(str);
-            sb.Append(Esc.Reset);
 
+            // write attributes
             WriteText(sb.ToString());
 
             ushort textWidth = str.MeasureText();
-            if (_headBufferPoint.X < Size.Width - textWidth)
-                _headBufferPoint =
-                    new PixelBufferCoordinate((ushort)(_headBufferPoint.X + textWidth), _headBufferPoint.Y);
+
+            // move to position
+            if (SupportsEmojiVariation)
+            {
+                SetCaretPosition(bufferPoint);
+                WriteText(str);
+                bufferPoint = new PixelBufferCoordinate((ushort)(bufferPoint.X + textWidth), bufferPoint.Y);
+            }
             else
-                _headBufferPoint = (PixelBufferCoordinate)((ushort)0, (ushort)(_headBufferPoint.Y + 1));
+            {
+                // rendering over the top with the glyph.
+                // process each glyph, rendering the width as spaces then moving the cursor and
+                foreach (Grapheme grapheme in Grapheme.Parse(str, SupportsComplexEmoji))
+                {
+                    ushort glyphWidth = grapheme.Glyph.MeasureText();
+                    if (glyphWidth > 1)
+                    {
+                        WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
+                        WriteText(new string(' ', Math.Min(Size.Width - bufferPoint.X - 1, glyphWidth - 1)));
+                    }
+
+                    WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+                    WriteText(grapheme.Glyph);
+
+                    bufferPoint =
+                        new PixelBufferCoordinate((ushort)(bufferPoint.X + glyphWidth), bufferPoint.Y);
+                }
+            }
+
+            WriteText(Esc.Reset);
+            _headBufferPoint = bufferPoint;
         }
 
         /// <summary>
@@ -112,7 +139,12 @@ namespace Consolonia.Core.Infrastructure
             (int left, _) = Console.GetCursorPosition();
             WriteText(TestEmoji);
             (int left2, _) = Console.GetCursorPosition();
-            _supportEmoji = left2 - left == 2;
+            _supportsComplexEmoji = left2 - left == 2;
+
+            // write out a char with wide variation selector
+            WriteText("\U0001F5D1\uFE0F"); // 🗑 Wastebasket + emoji variation selector
+            (int left3, _) = Console.GetCursorPosition();
+            _supportsEmojiVariation = left3 - left2 == 2;
 
             ClearScreen();
 #pragma warning restore CA1303 // Do not pass literals as localized parameters

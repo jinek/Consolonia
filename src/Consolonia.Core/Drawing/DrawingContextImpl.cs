@@ -5,14 +5,13 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using Consolonia.Controls;
 using Consolonia.Controls.Brushes;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
 using SkiaSharp;
+using TextShaper = Consolonia.Core.Text.TextShaper;
 
 namespace Consolonia.Core.Drawing
 {
@@ -277,9 +276,22 @@ namespace Consolonia.Core.Drawing
                     return;
             }
 
-            var shapedBuffer = (ShapedBuffer)glyphRunImpl.GlyphInfos;
-            string text = shapedBuffer.Text.ToString();
-            DrawStringInternal(foreground, text, glyphRun.GlyphTypeface);
+            var startPosition = new Point().Transform(Transform).ToPixelPoint();
+            PixelPoint position = startPosition;
+            foreach (GlyphInfo glyphInfo in glyphRunImpl.GlyphInfos)
+            {
+                DrawGlyphInfo(foreground, glyphInfo, glyphRun.GlyphTypeface, position);
+
+                position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
+            }
+
+            // mark the dirty region, start to end, position is after the last drawn char so
+            // already aligned on x; y we need to add 1 to give the rect height.
+            var rectToRefresh = new PixelRect(startPosition,
+                new PixelSize(position.X - startPosition.X,
+                    position.Y - startPosition.Y + 1));
+            PixelRect intersectRect = CurrentClip.Intersect(rectToRefresh);
+            _consoleWindowImpl.DirtyRegions.AddRect(intersectRect);
         }
 
         public IDrawingContextLayerImpl CreateLayer(PixelSize size)
@@ -846,12 +858,16 @@ namespace Consolonia.Core.Drawing
             _consoleWindowImpl.DirtyRegions.AddRect(intersectLine);
         }
 
-        private void DrawStringInternal(IBrush foreground, string text, IGlyphTypeface typeface, Point origin = new())
+        private void DrawGlyphInfo(IBrush foreground, GlyphInfo glyphInfo, IGlyphTypeface typeface, PixelPoint position)
         {
+            var glyphTypeface = (ConsoleTypeface)typeface;
+            string glyph = glyphTypeface.GetGlyphText(glyphInfo.GlyphIndex);
+
             if (foreground is not ISolidColorBrush solidColorBrush)
             {
                 solidColorBrush = ConsoloniaPlatform.RaiseNotSupported<ISolidColorBrush>(
-                    NotSupportedRequestCode.DrawStringWithNonSolidColorBrush, this, foreground, text, typeface, origin);
+                    NotSupportedRequestCode.DrawStringWithNonSolidColorBrush, this, foreground, glyph, typeface,
+                    position);
 
                 if (solidColorBrush == null)
                     return;
@@ -859,54 +875,23 @@ namespace Consolonia.Core.Drawing
 
             // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15); //todo: what to do if a rotation?
 
-            var position = origin.Transform(Transform).ToPixelPoint();
-            PixelPoint startPosition = position;
-
             // Each glyph maps to a pixel as a starting point.
             // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
             // the x and y are adjusted accordingly.
-            foreach (string glyph in text.GetGlyphs(_consoleWindowImpl.Console.SupportsComplexEmoji))
+            Color foregroundColor = solidColorBrush.Color;
+
+            var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
+            // if we are attempting to draw a wide glyph we need to make sure that the clipping point
+            // is for the last physical char. Aka a double char should be clipped if it's second rendered 
+            // char would break the boundary of the clip.
+            if (CurrentClip.ContainsExclusive(position) &&
+                (symbol.Width == 1 ||
+                 symbol.Width > 1 &&
+                 CurrentClip.ContainsExclusive(new PixelPoint(position.X + symbol.Width - 1, position.Y))))
             {
-                Color foregroundColor = solidColorBrush.Color;
-
-                switch (glyph)
-                {
-                    case "\t":
-                        position = position.WithX(position.X + glyph.MeasureText());
-                        break;
-                    case "\r":
-                    case "\f":
-                    case "\n":
-                        position = new PixelPoint(startPosition.X, position.Y + 1);
-                        break;
-                    default:
-                    {
-                        var symbol = new Symbol(glyph);
-                        // if we are attempting to draw a wide glyph we need to make sure that the clipping point
-                        // is for the last physical char. Aka a double char should be clipped if it's second rendered 
-                        // char would break the boundary of the clip.
-                        if (CurrentClip.ContainsExclusive(position) &&
-                            (symbol.Width == 1 ||
-                             symbol.Width > 1 &&
-                             CurrentClip.ContainsExclusive(new PixelPoint(position.X + symbol.Width - 1, position.Y))))
-                        {
-                            var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
-                            _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
-                        }
-
-                        position = position.WithX(position.X + symbol.Width);
-                    }
-                        break;
-                }
+                var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
+                _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
             }
-
-            // mark the dirty region, start to end, position is after the last drawn char so
-            // already aligned on x; y we need to add 1 to give the rect height.
-            var rectToRefresh = new PixelRect(startPosition,
-                new PixelSize(position.X - startPosition.X,
-                    position.Y - startPosition.Y + 1));
-            PixelRect intersectRect = CurrentClip.Intersect(rectToRefresh);
-            _consoleWindowImpl.DirtyRegions.AddRect(intersectRect);
         }
 
         /// <summary>

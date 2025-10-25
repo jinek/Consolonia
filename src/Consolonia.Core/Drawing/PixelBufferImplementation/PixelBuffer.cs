@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
+using Consolonia.Controls;
 using Newtonsoft.Json;
 
 // ReSharper disable UnusedMember.Global
@@ -86,15 +87,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             for (ushort j = 0; j < Height; j++)
             {
-                for (ushort i = 0; i < Width; i++)
+                for (ushort i = 0; i < Width;)
                 {
-                    if (i == Width - 1 && j == Height - 1)
-                        break;
                     Pixel pixel = this[new PixelBufferCoordinate(i, j)];
-                    string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.GetText();
+                    if (pixel.Width > 0)
+                    {
+                        string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.GetText();
 
-                    //todo: check why cursor is not drawing
-                    stringBuilder.Append(text);
+                        //todo: check why cursor is not drawing
+                        stringBuilder.Append(text);
+                        i += text.MeasureText();
+                    }
+                    else
+                    {
+                        i++;
+                    }
                 }
 
                 stringBuilder.AppendLine();

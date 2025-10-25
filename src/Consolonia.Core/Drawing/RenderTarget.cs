@@ -248,7 +248,7 @@ namespace Consolonia.Core.Drawing
                 Pixel pixel)
             {
                 if (!bufferPoint.Equals(_currentBufferPoint) /*todo: performance*/ ||
-                    _lastForegroundColor != pixel.Foreground.Color ||
+                    !pixel.Foreground.IsNothingToDraw() && _lastForegroundColor != pixel.Foreground.Color ||
                     _lastBackgroundColor != pixel.Background.Color ||
                     _lastWeight != pixel.Foreground.Weight ||
                     _lastStyle != pixel.Foreground.Style ||
@@ -276,7 +276,8 @@ namespace Consolonia.Core.Drawing
                         _stringBuilder.Append(pixel.Foreground.Symbol.Character);
                 }
 
-                _currentBufferPoint = _currentBufferPoint.WithXpp();
+                _currentBufferPoint = new PixelBufferCoordinate((ushort)(_currentBufferPoint.X + pixel.Width),
+                    _currentBufferPoint.Y);
             }
 
             public void Flush()

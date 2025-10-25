@@ -30,6 +30,8 @@ namespace Consolonia.NUnit
         public PixelBufferSize Size { get; set; }
 
         public bool SupportsComplexEmoji => true;
+        public bool SupportsEmojiVariation => true;
+
         public bool SupportsAltSolo => true;
         public bool SupportsMouse => false;
         public bool SupportsMouseMove => false;

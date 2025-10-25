@@ -21,7 +21,7 @@
 
             <x:String x:Key="ThemeProgressBarBackgroundSymbol">░</x:String>
 
-            <x:String x:Key="ThemeSliderHorizontalThumbSymbol">🠷</x:String>
+            <x:String x:Key="ThemeSliderHorizontalThumbSymbol">🠷&#xFE0E;</x:String>
             <x:String x:Key="ThemeSliderHorizontalBackgroundSymbol">─</x:String>
 
             <x:String x:Key="ThemeSliderVerticalThumbSymbol">🠴</x:String>
