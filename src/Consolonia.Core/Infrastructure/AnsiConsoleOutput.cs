@@ -142,7 +142,7 @@ namespace Consolonia.Core.Infrastructure
             _supportsComplexEmoji = left2 - left == 2;
 
             // write out a char with wide variation selector
-            WriteText("\U0001F5D1\uFE0F");  // 🗑 Wastebasket + emoji variation selector
+            WriteText("\U0001F5D1\uFE0F"); // 🗑 Wastebasket + emoji variation selector
             (int left3, _) = Console.GetCursorPosition();
             _supportsEmojiVariation = left3 - left2 == 2;
 
