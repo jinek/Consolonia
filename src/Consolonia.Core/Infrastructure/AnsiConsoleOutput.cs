@@ -93,7 +93,7 @@ namespace Consolonia.Core.Infrastructure
             {
                 // rendering over the top with the glyph.
                 // process each glyph, rendering the width as spaces then moving the cursor and
-                foreach (Grapheme grapheme in str.GetGraphemes(SupportsComplexEmoji))
+                foreach (Grapheme grapheme in Grapheme.Parse(str, SupportsComplexEmoji))
                 {
                     ushort glyphWidth = grapheme.Text.MeasureText();
                     if (glyphWidth > 1)

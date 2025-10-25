@@ -19,7 +19,7 @@ namespace Consolonia.Core.Text
         {
             var console = AvaloniaLocator.Current.GetRequiredService<IConsoleOutput>();
 
-            IReadOnlyList<Grapheme> graphemes = text.Span.ToString().GetGraphemes(console.SupportsComplexEmoji);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text.Span.ToString(), console.SupportsComplexEmoji);
 
             var shapedBuffer = new ShapedBuffer(text, graphemes.Count,
                 options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);
