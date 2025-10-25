@@ -95,7 +95,7 @@ namespace Consolonia.Core.Infrastructure
                 // process each glyph, rendering the width as spaces then moving the cursor and
                 foreach (Grapheme grapheme in Grapheme.Parse(str, SupportsComplexEmoji))
                 {
-                    ushort glyphWidth = grapheme.Text.MeasureText();
+                    ushort glyphWidth = grapheme.Glyph.MeasureText();
                     if (glyphWidth > 1)
                     {
                         WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
@@ -103,7 +103,7 @@ namespace Consolonia.Core.Infrastructure
                     }
 
                     WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-                    WriteText(grapheme.Text);
+                    WriteText(grapheme.Glyph);
 
                     bufferPoint =
                         new PixelBufferCoordinate((ushort)(bufferPoint.X + glyphWidth), bufferPoint.Y);

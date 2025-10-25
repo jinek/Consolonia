@@ -25,7 +25,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
-            Assert.AreEqual("a", graphemes[0].Text);
+            Assert.AreEqual("a", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
         }
 
@@ -37,15 +37,15 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(5, graphemes.Count);
-            Assert.AreEqual("h", graphemes[0].Text);
+            Assert.AreEqual("h", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
-            Assert.AreEqual("e", graphemes[1].Text);
+            Assert.AreEqual("e", graphemes[1].Glyph);
             Assert.AreEqual(1, graphemes[1].Cluster);
-            Assert.AreEqual("l", graphemes[2].Text);
+            Assert.AreEqual("l", graphemes[2].Glyph);
             Assert.AreEqual(2, graphemes[2].Cluster);
-            Assert.AreEqual("l", graphemes[3].Text);
+            Assert.AreEqual("l", graphemes[3].Glyph);
             Assert.AreEqual(3, graphemes[3].Cluster);
-            Assert.AreEqual("o", graphemes[4].Text);
+            Assert.AreEqual("o", graphemes[4].Glyph);
             Assert.AreEqual(4, graphemes[4].Cluster);
         }
 
@@ -57,15 +57,15 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(5, graphemes.Count);
-            Assert.AreEqual("𝔉", graphemes[0].Text);
+            Assert.AreEqual("𝔉", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
-            Assert.AreEqual("𝔞", graphemes[1].Text);
+            Assert.AreEqual("𝔞", graphemes[1].Glyph);
             Assert.AreEqual(2, graphemes[1].Cluster);
-            Assert.AreEqual("𝔫", graphemes[2].Text);
+            Assert.AreEqual("𝔫", graphemes[2].Glyph);
             Assert.AreEqual(4, graphemes[2].Cluster);
-            Assert.AreEqual("𝔠", graphemes[3].Text);
+            Assert.AreEqual("𝔠", graphemes[3].Glyph);
             Assert.AreEqual(6, graphemes[3].Cluster);
-            Assert.AreEqual("𝔶", graphemes[4].Text);
+            Assert.AreEqual("𝔶", graphemes[4].Glyph);
             Assert.AreEqual(8, graphemes[4].Cluster);
         }
 
@@ -77,7 +77,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
-            Assert.AreEqual("👍", graphemes[0].Text);
+            Assert.AreEqual("👍", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
         }
 
@@ -91,7 +91,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
-            Assert.AreEqual(text, graphemes[0].Text);
+            Assert.AreEqual(text, graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
         }
 
@@ -103,9 +103,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(2, graphemes.Count);
-            Assert.AreEqual("a", graphemes[0].Text);
+            Assert.AreEqual("a", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
-            Assert.AreEqual("👍", graphemes[1].Text);
+            Assert.AreEqual("👍", graphemes[1].Glyph);
             Assert.AreEqual(1, graphemes[1].Cluster);
         }
 
@@ -117,7 +117,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, false);
             Assert.AreEqual(1, graphemes.Count);
-            Assert.AreEqual("👨", graphemes[0].Text);
+            Assert.AreEqual("👨", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
         }
 
@@ -136,7 +136,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
-            Assert.AreEqual(text, graphemes[0].Text);
+            Assert.AreEqual(text, graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
         }
 
@@ -155,7 +155,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
-            Assert.AreEqual(text, graphemes[0].Text);
+            Assert.AreEqual(text, graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
         }
 
@@ -170,10 +170,10 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
-            Assert.AreEqual(text, graphemes[0].Text);
+            Assert.AreEqual(text, graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
 
-            var symbol = new Symbol(graphemes[0].Text);
+            var symbol = new Symbol(graphemes[0].Glyph);
             Assert.AreEqual($"{text}\ufe0f", symbol.Complex);
         }
 
@@ -186,7 +186,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
-            Assert.AreEqual("🗙\uFE0E", graphemes[0].Text);
+            Assert.AreEqual("🗙\uFE0E", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
         }
 
@@ -199,9 +199,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(2, graphemes.Count);
-            Assert.AreEqual("☺\uFE0E", graphemes[0].Text);
+            Assert.AreEqual("☺\uFE0E", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
-            Assert.AreEqual("☺\uFE0F", graphemes[1].Text);
+            Assert.AreEqual("☺\uFE0F", graphemes[1].Glyph);
             Assert.AreEqual(2, graphemes[1].Cluster);
         }
 
@@ -214,9 +214,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(2, graphemes.Count);
-            Assert.AreEqual("🏳️‍🌈", graphemes[0].Text);
+            Assert.AreEqual("🏳️‍🌈", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
-            Assert.AreEqual("🏳️‍🌈", graphemes[1].Text);
+            Assert.AreEqual("🏳️‍🌈", graphemes[1].Glyph);
             Assert.AreEqual(6, graphemes[1].Cluster);
         }
 
@@ -230,15 +230,15 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(5, graphemes.Count);
-            Assert.AreEqual("🇺🇸", graphemes[0].Text);
+            Assert.AreEqual("🇺🇸", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
-            Assert.AreEqual("f", graphemes[1].Text);
+            Assert.AreEqual("f", graphemes[1].Glyph);
             Assert.AreEqual(4, graphemes[1].Cluster);
-            Assert.AreEqual("l", graphemes[2].Text);
+            Assert.AreEqual("l", graphemes[2].Glyph);
             Assert.AreEqual(5, graphemes[2].Cluster);
-            Assert.AreEqual("a", graphemes[3].Text);
+            Assert.AreEqual("a", graphemes[3].Glyph);
             Assert.AreEqual(6, graphemes[3].Cluster);
-            Assert.AreEqual("g", graphemes[4].Text);
+            Assert.AreEqual("g", graphemes[4].Glyph);
             Assert.AreEqual(7, graphemes[4].Cluster);
         }
 
@@ -251,9 +251,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(2, graphemes.Count);
-            Assert.AreEqual("🇺🇸", graphemes[0].Text);
+            Assert.AreEqual("🇺🇸", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
-            Assert.AreEqual("🇬🇧", graphemes[1].Text);
+            Assert.AreEqual("🇬🇧", graphemes[1].Glyph);
             Assert.AreEqual(4, graphemes[1].Cluster);
         }
 
@@ -266,21 +266,21 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(8, graphemes.Count);
-            Assert.AreEqual("H", graphemes[0].Text);
+            Assert.AreEqual("H", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
-            Assert.AreEqual("e", graphemes[1].Text);
+            Assert.AreEqual("e", graphemes[1].Glyph);
             Assert.AreEqual(1, graphemes[1].Cluster);
-            Assert.AreEqual("l", graphemes[2].Text);
+            Assert.AreEqual("l", graphemes[2].Glyph);
             Assert.AreEqual(2, graphemes[2].Cluster);
-            Assert.AreEqual("l", graphemes[3].Text);
+            Assert.AreEqual("l", graphemes[3].Glyph);
             Assert.AreEqual(3, graphemes[3].Cluster);
-            Assert.AreEqual("o", graphemes[4].Text);
+            Assert.AreEqual("o", graphemes[4].Glyph);
             Assert.AreEqual(4, graphemes[4].Cluster);
-            Assert.AreEqual(" ", graphemes[5].Text);
+            Assert.AreEqual(" ", graphemes[5].Glyph);
             Assert.AreEqual(5, graphemes[5].Cluster);
-            Assert.AreEqual("🇺🇸", graphemes[6].Text);
+            Assert.AreEqual("🇺🇸", graphemes[6].Glyph);
             Assert.AreEqual(6, graphemes[6].Cluster);
-            Assert.AreEqual("!", graphemes[7].Text);
+            Assert.AreEqual("!", graphemes[7].Glyph);
             Assert.AreEqual(10, graphemes[7].Cluster);
         }
 
@@ -296,7 +296,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             var graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
-            Assert.AreEqual(text, graphemes[0].Text);
+            Assert.AreEqual(text, graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
         }
     }

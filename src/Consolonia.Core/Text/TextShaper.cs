@@ -28,7 +28,7 @@ namespace Consolonia.Core.Text
             for (ushort i = 0; i < shapedBuffer.Length; i++)
             {
                 var grapheme = graphemes[i];
-                var glyphIndex = glyphTypeface.GetGlyphIndex(grapheme.Text);
+                var glyphIndex = glyphTypeface.GetGlyphIndex(grapheme.Glyph);
                 var glyphWidth = glyphTypeface.GetGlyphAdvance(glyphIndex);
                 // NOTE: We are using the placeholder glyph since we are pushing
                 // raw text to the console and not using a font system to render the text

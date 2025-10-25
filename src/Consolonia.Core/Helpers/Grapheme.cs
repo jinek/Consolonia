@@ -4,15 +4,22 @@ using NeoSmart.Unicode;
 
 namespace Consolonia.Core.Helpers
 {
+    /// <summary>
+    /// Represents a single Glyph, the codepoints that produce it and the position in the text.
+    /// </summary>
     public class Grapheme
     {
-        public string Text { get; set; }
+        // sequence of unicode codepoints that produce the glyph
+        public string Glyph { get; set; }
 
+        /// <summary>
+        /// Index into original string of codepoints for start for Glyph
+        /// </summary>
         public int Cluster { get; set; }
 
         /// <summary>
-        ///     Process text into collection of glyphs where a glyph is either text or a combination of chars which make up an
-        ///     emoji.
+        ///     Process text into collection of grapheme where a graphemeis either text or a combination of chars which make up an
+        ///     emoji
         /// </summary>
         /// <param name="text">text to get glyphs from</param>
         /// <param name="supportsComplexEmoji">If true, emojis like 👨‍👩‍👧‍👦 will be treated as a single glyph></param>
@@ -60,11 +67,11 @@ namespace Consolonia.Core.Helpers
                     case RuneType.Regular:
                         if (buffer.Length > 0)
                         {
-                            glyphs.Add(new Grapheme { Text = buffer.ToString(), Cluster = cluster });
+                            glyphs.Add(new Grapheme { Glyph = buffer.ToString(), Cluster = cluster });
                             cluster = index;
                             buffer.Clear();
                         }
-                        glyphs.Add(new Grapheme { Text = rune.ToString(), Cluster = cluster });
+                        glyphs.Add(new Grapheme { Glyph = rune.ToString(), Cluster = cluster });
                         cluster = index + rune.Utf16SequenceLength;
                         break;
                 }
@@ -129,7 +136,7 @@ namespace Consolonia.Core.Helpers
             if (buffer.Length > 0)
                 buffer.Append(rune);
             else if (glyphs.Count > 0)
-                glyphs[^1].Text += rune.ToString();
+                glyphs[^1].Glyph += rune.ToString();
         }
 
         private static void HandleRegionalIndicator(Rune rune, ref int regionalIndicatorCount, StringBuilder buffer,
@@ -141,7 +148,7 @@ namespace Consolonia.Core.Helpers
             {
                 // Complete the flag pair
                 buffer.Append(rune);
-                glyphs.Add(new Grapheme { Text = buffer.ToString(), Cluster = cluster });
+                glyphs.Add(new Grapheme { Glyph = buffer.ToString(), Cluster = cluster });
                 cluster = index + rune.Utf16SequenceLength;
                 buffer.Clear();
             }
@@ -150,7 +157,7 @@ namespace Consolonia.Core.Helpers
                 // Start a new regional indicator sequence
                 if (buffer.Length > 0)
                 {
-                    glyphs.Add(new Grapheme { Text = buffer.ToString(), Cluster = cluster });
+                    glyphs.Add(new Grapheme { Glyph = buffer.ToString(), Cluster = cluster });
                     cluster = index + rune.Utf16SequenceLength;
                     buffer.Clear();
                 }
@@ -172,7 +179,7 @@ namespace Consolonia.Core.Helpers
             else if (buffer.Length > 0)
             {
                 // Flush existing emoji and start new one
-                glyphs.Add(new Grapheme { Text = buffer.ToString(), Cluster = cluster });
+                glyphs.Add(new Grapheme { Glyph = buffer.ToString(), Cluster = cluster });
                 cluster = index;
                 buffer.Clear();
                 regionalIndicatorCount = 0;
@@ -189,7 +196,7 @@ namespace Consolonia.Core.Helpers
         {
             if (buffer.Length > 0)
             {
-                glyphs.Add(new Grapheme { Text = buffer.ToString(), Cluster = cluster });
+                glyphs.Add(new Grapheme { Glyph = buffer.ToString(), Cluster = cluster });
                 buffer.Clear();
             }
         }
