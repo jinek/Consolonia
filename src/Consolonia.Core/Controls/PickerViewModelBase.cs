@@ -38,7 +38,8 @@ namespace Consolonia.Core.Controls
                 case nameof(CurrentFolderPath):
                     try
                     {
-                        CurrentFolder = new SystemStorageFolder(new DirectoryInfo(CurrentFolderPath));
+                        if (!string.IsNullOrEmpty(CurrentFolderPath))
+                            CurrentFolder = new SystemStorageFolder(new DirectoryInfo(Path.Combine(CurrentFolderPath)));
                     }
                     catch (DirectoryNotFoundException)
                     {

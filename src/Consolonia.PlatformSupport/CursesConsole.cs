@@ -510,7 +510,10 @@ namespace Consolonia.PlatformSupport
             {
                 case ConsoleKey.NoName:
                     return;
-                case 0:
+                case 0
+                    when
+                    Enum.IsDefined(
+                        key) /*because we want string representation only when defined, we don't want numeric value*/:
                 {
                     bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
                     break;
@@ -544,7 +547,7 @@ namespace Consolonia.PlatformSupport
         {
             // System.Diagnostics.Debug.WriteLine($"{JsonConvert.SerializeObject(ev)} {(Curses.Event)ev.ButtonState}");
 
-            const double velocity = 1 / 12D;
+            const double velocity = 1;
 
             RawInputModifiers rawInputModifiers = MouseModifiersFlagTranslator.Translate(ev.ButtonState);
 

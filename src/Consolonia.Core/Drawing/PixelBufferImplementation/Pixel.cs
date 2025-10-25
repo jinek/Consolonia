@@ -18,7 +18,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Color")]
     [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Symbol")]
     [DebuggerDisplay(
-        "'{Foreground.Symbol.Text}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
+        "'{Foreground.Symbol}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
     public readonly struct Pixel : IEquatable<Pixel>
     {
         private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
@@ -95,7 +95,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
         // Pixel empty is a non-pixel. It has no symbol, no color, no weight, no style, no text decoration, and no background.
         // it is used only when a multichar sequence overlaps a pixel making it a non-entity.
-        public static Pixel Empty => new();
+        public static Pixel Empty =>
+            new(new PixelForeground(Symbol.Empty, Colors.Transparent), PixelBackground.Transparent);
 
         // pixel space is a pixel with a space symbol, but could have color blended into. it is used to advance the cursor
         // and set the background color

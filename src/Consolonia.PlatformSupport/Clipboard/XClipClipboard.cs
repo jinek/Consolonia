@@ -1,13 +1,13 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Avalonia.Input;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
     /// <summary>A clipboard implementation for Linux. This implementation uses the xclip command to access the clipboard.</summary>
     /// <remarks>If xclip is not installed, this implementation will not work.</remarks>
-    internal class XClipClipboard : IClipboardBase
+    internal class XClipClipboard : ConsoleClipboard
     {
         private readonly bool _isSupported;
         private readonly string _xclipPath = string.Empty;
@@ -28,23 +28,7 @@ namespace Consolonia.PlatformSupport.Clipboard
             }
         }
 
-
-        public Task ClearAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task FlushAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task<string[]> GetFormatsAsync()
-        {
-            return Task.FromResult(new[] { "text", "unicodetext" });
-        }
-
-        public async Task<string> GetTextAsync()
+        public override async Task<string> GetTextAsync()
         {
             if (!_isSupported) throw new NotSupportedException("xclip is not installed.");
 
@@ -66,12 +50,7 @@ namespace Consolonia.PlatformSupport.Clipboard
             }
         }
 
-        public Task SetDataObjectAsync(IDataObject data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SetTextAsync(string text)
+        public override Task SetTextAsync(string text)
         {
             if (!_isSupported) throw new NotSupportedException("xclip is not installed.");
 
@@ -81,11 +60,6 @@ namespace Consolonia.PlatformSupport.Clipboard
             if (exitCode != 0) throw new NotSupportedException($"\"{_xclipPath} {xclipargs} < {text}\" failed");
 
             return Task.CompletedTask;
-        }
-
-        public Task<IDataObject> TryGetInProcessDataObjectAsync()
-        {
-            return Task.FromResult<IDataObject>(null);
         }
     }
 }

@@ -1,50 +1,48 @@
-using System;
 using System.Threading.Tasks;
-using Avalonia.Input;
+using Avalonia.Threading;
+using Consolonia.Core.Infrastructure;
+using jinek.X11;
 
 namespace Consolonia.PlatformSupport.Clipboard
 {
-    /// <summary>
-    ///     A clipboard implementation for X11;
-    /// </summary>
-    internal class X11Clipboard : IClipboardBase
+    internal class X11Clipboard : ConsoleClipboard
     {
-        public Task ClearAsync()
+        public X11Clipboard()
         {
-            Medo.X11.X11Clipboard.Clipboard.Clear();
-            return Task.CompletedTask;
+            jinek.X11.X11Clipboard.Clipboard.UnhandledException += ClipboardOnUnhandledException;
         }
 
-        public Task FlushAsync()
+        public override async Task ClearAsync()
         {
-            return Task.CompletedTask;
+            await base.ClearAsync();
+
+            jinek.X11.X11Clipboard.Clipboard.Clear();
         }
 
-        public Task<string[]> GetFormatsAsync()
+        public override Task<string> GetTextAsync()
         {
-            return Task.FromResult(new[] { "text", "unicodetext" });
-        }
-
-        public Task<string> GetTextAsync()
-        {
-            string text = Medo.X11.X11Clipboard.Clipboard.GetText();
+            string text = jinek.X11.X11Clipboard.Clipboard.GetText();
             return Task.FromResult(text);
         }
 
-        public Task SetDataObjectAsync(IDataObject data)
+        public override Task SetTextAsync(string text)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task SetTextAsync(string text)
-        {
-            Medo.X11.X11Clipboard.Clipboard.SetText(text ?? string.Empty);
+            jinek.X11.X11Clipboard.Clipboard.SetText(text ?? string.Empty);
             return Task.CompletedTask;
         }
 
-        public Task<IDataObject> TryGetInProcessDataObjectAsync()
+        private static void ClipboardOnUnhandledException(object sender, X11ClipboardLoopExceptionEventArgs e)
         {
-            throw new NotImplementedException();
+            e.Handled = true;
+            Dispatcher.UIThread.Post(
+                () => throw new ConsoloniaException("Exception in clipboard loop", e.Exception),
+                DispatcherPriority.MaxValue);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing) jinek.X11.X11Clipboard.Clipboard.UnhandledException -= ClipboardOnUnhandledException;
         }
     }
 }

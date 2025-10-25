@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -24,7 +25,7 @@ namespace Consolonia.Gallery.View
         TurboVisionElegant
     }
 
-    public partial class ControlsListView : Window
+    public partial class ControlsListView : UserControl
     {
         private static readonly HttpClient Client = new();
         private readonly IEnumerable<GalleryItem> _items;
@@ -35,6 +36,9 @@ namespace Consolonia.Gallery.View
             InitializeComponent();
 
             DataContext = new ControlsListViewModel();
+
+            ViewModel.SelectedTheme = Application.Current.Styles[0].GetType().ToString().Split('.').Last()
+                .Replace("Theme", string.Empty, StringComparison.OrdinalIgnoreCase);
 
             GalleryGrid.ItemsSource = _items = GalleryItem.Enumerated.ToArray();
 
@@ -48,10 +52,12 @@ namespace Consolonia.Gallery.View
             Loaded += OnLoaded;
         }
 
+        public ControlsListViewModel ViewModel => (ControlsListViewModel)DataContext!;
+
         private void TrySetupSelected()
         {
             string[] commandLineArgs = _commandLineArgs.Where(s => s != null)
-                .Where(s => !s.ToUpper().EndsWith(App.TurboVisionProgramParameterUpperCase)).ToArray();
+                .Where(s => !s.EndsWith(App.TurboVisionProgramParameter, StringComparison.OrdinalIgnoreCase)).ToArray();
             if (commandLineArgs.Length == 0)
             {
                 GalleryGrid.SelectedIndex = 0;
@@ -121,14 +127,12 @@ namespace Consolonia.Gallery.View
 
         private void OnThemeVariantLightMenuClick(object sender, RoutedEventArgs e)
         {
-            RequestedThemeVariant = ThemeVariant.Light;
-            UpdateThemeMenuItems();
+            ViewModel.RequestedThemeVariant = ThemeVariant.Light;
         }
 
         private void OnThemeVariantDarkMenuClick(object sender, RoutedEventArgs e)
         {
-            RequestedThemeVariant = ThemeVariant.Dark;
-            UpdateThemeMenuItems();
+            ViewModel.RequestedThemeVariant = ThemeVariant.Dark;
         }
 
         private void OnThemeMenuItemClick(object sender, RoutedEventArgs e)
@@ -149,44 +153,50 @@ namespace Consolonia.Gallery.View
                 _ => throw new InvalidDataException("Unknown theme name")
             };
 
-            UpdateThemeMenuItems();
-            GalleryGrid.Focus();
+            ViewModel.SelectedTheme = themeName;
+
+            if (App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+                desktopLifetime.MainWindow.Content = new ControlsListView { DataContext = DataContext };
         }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            UpdateThemeMenuItems();
-        }
-
-        private void UpdateThemeMenuItems()
-        {
-            string themeName = Application.Current.Styles[0].GetType().Name[..^5];
-            ThemeModernMenuItem.IsChecked = themeName == nameof(ThemesList.Modern);
-            ThemeModernContrastMenuItem.IsChecked = themeName == nameof(ThemesList.ModernContrast);
-            ThemeTurboVisionMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVision);
-            ThemeTurboVisionCompatibleMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionCompatible);
-            ThemeTurboVisionGrayMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionGray);
-            ThemeTurboVisionElegantMenuItem.IsChecked = themeName == nameof(ThemesList.TurboVisionElegant);
-
-            ThemeDarkMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Dark;
-            ThemeLightMenuItem.IsChecked = ActualThemeVariant == ThemeVariant.Light;
         }
     }
 
     public partial class ControlsListViewModel : ObservableObject
     {
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsTurboVision))]
         [NotifyPropertyChangedFor(nameof(IsModern))]
+        [NotifyPropertyChangedFor(nameof(IsModernContrast))]
+        [NotifyPropertyChangedFor(nameof(IsTurboVision))]
+        [NotifyPropertyChangedFor(nameof(IsTurboVisionCompatible))]
+        [NotifyPropertyChangedFor(nameof(IsTurboVisionGray))]
+        [NotifyPropertyChangedFor(nameof(IsTurboVisionElegant))]
         private string _selectedTheme;
 
-        public bool IsModern => SelectedTheme == nameof(ThemesList.Modern) ||
-                                SelectedTheme == nameof(ThemesList.ModernContrast);
+        public ThemeVariant RequestedThemeVariant
+        {
+            get => Application.Current!.RequestedThemeVariant;
+            set
+            {
+                Application.Current!.RequestedThemeVariant = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsLight));
+                OnPropertyChanged(nameof(IsDark));
+            }
+        }
 
-        public bool IsTurboVision =>
-            SelectedTheme == nameof(ThemesList.TurboVision) ||
-            SelectedTheme == nameof(ThemesList.TurboVisionCompatible) ||
-            SelectedTheme == nameof(ThemesList.TurboVisionGray) ||
-            SelectedTheme == nameof(ThemesList.TurboVisionElegant);
+        public bool IsLight =>
+            RequestedThemeVariant == ThemeVariant.Default || RequestedThemeVariant == ThemeVariant.Light;
+
+        public bool IsDark => RequestedThemeVariant == ThemeVariant.Dark;
+
+        public bool IsModern => SelectedTheme == nameof(ThemesList.Modern);
+        public bool IsModernContrast => SelectedTheme == nameof(ThemesList.ModernContrast);
+        public bool IsTurboVision => SelectedTheme == nameof(ThemesList.TurboVision);
+        public bool IsTurboVisionCompatible => SelectedTheme == nameof(ThemesList.TurboVisionCompatible);
+        public bool IsTurboVisionGray => SelectedTheme == nameof(ThemesList.TurboVisionGray);
+        public bool IsTurboVisionElegant => SelectedTheme == nameof(ThemesList.TurboVisionElegant);
     }
 }

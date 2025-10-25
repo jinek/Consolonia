@@ -5,7 +5,7 @@
         <Nullable>disable</Nullable>
     </PropertyGroup>
     <PropertyGroup>
-        <VersionPrefix>11.3.4</VersionPrefix>
+        <VersionPrefix>11.3.7</VersionPrefix>
         <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
         <Copyright>© 2021–2025 Evgeny Gorbovoy &amp; Tom Laird-McConnell</Copyright>
         <PackageIcon>Icon.png</PackageIcon>
@@ -15,7 +15,7 @@
         <IsPackable>False</IsPackable>
     </PropertyGroup>
     <PropertyGroup>
-        <AvaloniaVersion>11.3.4</AvaloniaVersion>
+        <AvaloniaVersion>11.3.7</AvaloniaVersion>
     </PropertyGroup>
     <ItemGroup Condition="'$(IsPackable)' != 'false'">
         <None Include="$(SolutionDir)/../Icon.png" Pack="True" PackagePath="\" />
