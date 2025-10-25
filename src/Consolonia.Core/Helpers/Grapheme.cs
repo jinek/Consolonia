@@ -20,125 +20,178 @@ namespace Consolonia.Core.Helpers
         public static IReadOnlyList<Grapheme> Parse(string text, bool supportsComplexEmoji)
         {
             var glyphs = new List<Grapheme>();
-            var emoji = new StringBuilder();
-            StringRuneEnumerator runes = text.EnumerateRunes();
-            var lastRune = new Rune();
-            int regionalRuneCount = 0;
-            int index = 0;
+            var buffer = new StringBuilder();
             int cluster = 0;
-            while (runes.MoveNext())
+            int index = 0;
+            int regionalIndicatorCount = 0;
+            Rune? previousRune = null;
+
+            foreach (var rune in text.EnumerateRunes())
             {
-                if (runes.Current.Value == Codepoints.ZWJ ||
-                    runes.Current.Value == Codepoints.ORC)
-                {
-                    if (supportsComplexEmoji)
-                    {
-                        // Append joiner to current emoji if building; otherwise, attach to last glyph (if any).
-                        if (emoji.Length > 0)
-                            emoji.Append(runes.Current);
-                        else if (glyphs.Count > 0)
-                            glyphs[^1].Text = glyphs[^1].Text + runes.Current;
-                    }
-                    else
-                    {
-                        // we terminate multi-chained 1 because terminal doesn't support it 
-                        break;
-                    }
-                }
-                else if (runes.Current.Value >= Emoji.SkinTones.Light && runes.Current.Value <= Emoji.SkinTones.Dark ||
-                         runes.Current.Value == Codepoints.Keycap)
-                {
-                    // Append to current emoji if building; otherwise, attach to last glyph (if any).
-                    if (emoji.Length > 0)
-                        emoji.Append(runes.Current);
-                    else if (glyphs.Count > 0)
-                        glyphs[^1].Text = glyphs[^1].Text + runes.Current;
-                }
-                // regional indicator symbols
-                else if (runes.Current.Value >= 0x1F1E6 && runes.Current.Value <= 0x1F1FF)
+                var runeType = ClassifyRune(rune);
 
+                switch (runeType)
                 {
-                    regionalRuneCount++;
-                    if (regionalRuneCount % 2 == 0 && emoji.Length > 0)
-                    {
-                        // complete the flag pair
-                        emoji.Append(runes.Current);
-                        glyphs.Add(new Grapheme() { Text = emoji.ToString(), Cluster = cluster });
-                        cluster = index + runes.Current.Utf16SequenceLength;
-                        emoji.Clear();
-                    }
-                    else
-                    {
-                        // start a new RI run (or recover if buffer was empty)
-                        if (emoji.Length > 0)
+                    case RuneType.ZeroWidthJoiner:
+                        if (!supportsComplexEmoji)
                         {
-                            glyphs.Add(new Grapheme() { Text = emoji.ToString(), Cluster = cluster });
-                            cluster = index + runes.Current.Utf16SequenceLength;
-                            emoji.Clear();
+                            FlushBufferIfNeeded(buffer, glyphs, cluster);
+                            return glyphs; // Terminal doesn't support complex emoji, stop parsing
                         }
+                        HandleZeroWidthJoiner(rune, buffer, glyphs);
+                        break;
 
-                        emoji.Append(runes.Current);
-                    }
-                }
-                else if (runes.Current.Value == Codepoints.VariationSelectors.EmojiSymbol ||
-                         runes.Current.Value == Codepoints.VariationSelectors.TextSymbol)
-                {
-                    // Variation selectors should be appended to the current glyph being built
-                    // If we have a glyph in progress (emoji buffer), append to it
-                    if (emoji.Length > 0)
-                    {
-                        emoji.Append(runes.Current);
-                    }
-                    // Otherwise, if we have any glyphs, we need to append the variation selector to the last glyph
-                    else if (glyphs.Count > 0)
-                    {
-                        glyphs[^1].Text = glyphs[^1].Text + runes.Current;
-                    }
-                }
-                else if (Emoji.IsEmoji(runes.Current.ToString()))
-                {
-                    if (supportsComplexEmoji &&
-                        (lastRune.Value == Codepoints.ZWJ || lastRune.Value == Codepoints.ORC))
-                    {
-                        // the last char was a joiner or object replacement, so we continue building the emoji
-                        emoji.Append(runes.Current);
-                    }
-                    else if (emoji.Length > 0)
-                    {
-                        // we have a new emoji starting, so we flush any existing emoji buffer
-                        // ending the previous glyph and starting a new one
-                        glyphs.Add(new Grapheme() { Text = emoji.ToString(), Cluster = cluster });
-                        cluster = index;
-                        emoji.Clear();
-                        regionalRuneCount = 0;
-                        emoji.Append(runes.Current);
-                    }
-                    else
-                    {
-                        regionalRuneCount = 0;
-                        emoji.Append(runes.Current);
-                    }
-                }
-                else
-                {
-                    if (emoji.Length > 0)
-                    {
-                        glyphs.Add(new Grapheme() { Text = emoji.ToString(), Cluster = cluster });
-                        cluster = index + runes.Current.Utf16SequenceLength;
-                        emoji.Clear();
-                    }
+                    case RuneType.Modifier:
+                        AppendToCurrentOrLastGlyph(rune, buffer, glyphs);
+                        break;
 
-                    glyphs.Add(new Grapheme() { Text = runes.Current.ToString(), Cluster = cluster });
-                    cluster = index + runes.Current.Utf16SequenceLength;
+                    case RuneType.RegionalIndicator:
+                        HandleRegionalIndicator(rune, ref regionalIndicatorCount, buffer, glyphs, ref cluster, index);
+                        break;
+
+                    case RuneType.VariationSelector:
+                        AppendToCurrentOrLastGlyph(rune, buffer, glyphs);
+                        break;
+
+                    case RuneType.Emoji:
+                        HandleEmoji(rune, previousRune, supportsComplexEmoji, buffer, glyphs, ref cluster, index, ref regionalIndicatorCount);
+                        break;
+
+                    case RuneType.Regular:
+                        if (buffer.Length > 0)
+                        {
+                            glyphs.Add(new Grapheme { Text = buffer.ToString(), Cluster = cluster });
+                            cluster = index;
+                            buffer.Clear();
+                        }
+                        glyphs.Add(new Grapheme { Text = rune.ToString(), Cluster = cluster });
+                        cluster = index + rune.Utf16SequenceLength;
+                        break;
                 }
 
-                lastRune = runes.Current;
-                index += runes.Current.Utf16SequenceLength;
+                previousRune = rune;
+                index += rune.Utf16SequenceLength;
             }
 
-            if (emoji.Length > 0) glyphs.Add(new Grapheme() { Text = emoji.ToString(), Cluster = cluster });
+            FlushBufferIfNeeded(buffer, glyphs, cluster);
             return glyphs;
         }
 
+        private enum RuneType
+        {
+            ZeroWidthJoiner,
+            Modifier,
+            RegionalIndicator,
+            VariationSelector,
+            Emoji,
+            Regular
+        }
+
+        private static RuneType ClassifyRune(Rune rune)
+        {
+            if (rune.Value == Codepoints.ZWJ || rune.Value == Codepoints.ORC)
+                return RuneType.ZeroWidthJoiner;
+
+            if (IsModifier(rune))
+                return RuneType.Modifier;
+
+            if (IsRegionalIndicator(rune))
+                return RuneType.RegionalIndicator;
+
+            if (IsVariationSelector(rune))
+                return RuneType.VariationSelector;
+
+            if (Emoji.IsEmoji(rune.ToString()))
+                return RuneType.Emoji;
+
+            return RuneType.Regular;
+        }
+
+        private static bool IsModifier(Rune rune) =>
+            (rune.Value >= Emoji.SkinTones.Light && rune.Value <= Emoji.SkinTones.Dark) ||
+            rune.Value == Codepoints.Keycap;
+
+        private static bool IsRegionalIndicator(Rune rune) =>
+            rune.Value >= 0x1F1E6 && rune.Value <= 0x1F1FF;
+
+        private static bool IsVariationSelector(Rune rune) =>
+            rune.Value == Codepoints.VariationSelectors.EmojiSymbol ||
+            rune.Value == Codepoints.VariationSelectors.TextSymbol;
+
+        private static bool HandleZeroWidthJoiner(Rune rune, StringBuilder buffer, List<Grapheme> glyphs)
+        {
+            AppendToCurrentOrLastGlyph(rune, buffer, glyphs);
+            return true;
+        }
+
+        private static void AppendToCurrentOrLastGlyph(Rune rune, StringBuilder buffer, List<Grapheme> glyphs)
+        {
+            if (buffer.Length > 0)
+                buffer.Append(rune);
+            else if (glyphs.Count > 0)
+                glyphs[^1].Text += rune.ToString();
+        }
+
+        private static void HandleRegionalIndicator(Rune rune, ref int regionalIndicatorCount, StringBuilder buffer,
+            List<Grapheme> glyphs, ref int cluster, int index)
+        {
+            regionalIndicatorCount++;
+
+            if (regionalIndicatorCount % 2 == 0 && buffer.Length > 0)
+            {
+                // Complete the flag pair
+                buffer.Append(rune);
+                glyphs.Add(new Grapheme { Text = buffer.ToString(), Cluster = cluster });
+                cluster = index + rune.Utf16SequenceLength;
+                buffer.Clear();
+            }
+            else
+            {
+                // Start a new regional indicator sequence
+                if (buffer.Length > 0)
+                {
+                    glyphs.Add(new Grapheme { Text = buffer.ToString(), Cluster = cluster });
+                    cluster = index + rune.Utf16SequenceLength;
+                    buffer.Clear();
+                }
+                buffer.Append(rune);
+            }
+        }
+
+        private static void HandleEmoji(Rune rune, Rune? previousRune, bool supportsComplexEmoji,
+            StringBuilder buffer, List<Grapheme> glyphs, ref int cluster, int index, ref int regionalIndicatorCount)
+        {
+            bool continueBuilding = supportsComplexEmoji && previousRune.HasValue &&
+                                   (previousRune.Value.Value == Codepoints.ZWJ ||
+                                    previousRune.Value.Value == Codepoints.ORC);
+
+            if (continueBuilding)
+            {
+                buffer.Append(rune);
+            }
+            else if (buffer.Length > 0)
+            {
+                // Flush existing emoji and start new one
+                glyphs.Add(new Grapheme { Text = buffer.ToString(), Cluster = cluster });
+                cluster = index;
+                buffer.Clear();
+                regionalIndicatorCount = 0;
+                buffer.Append(rune);
+            }
+            else
+            {
+                regionalIndicatorCount = 0;
+                buffer.Append(rune);
+            }
+        }
+
+        private static void FlushBufferIfNeeded(StringBuilder buffer, List<Grapheme> glyphs, int cluster)
+        {
+            if (buffer.Length > 0)
+            {
+                glyphs.Add(new Grapheme { Text = buffer.ToString(), Cluster = cluster });
+                buffer.Clear();
+            }
+        }
     }
 }
