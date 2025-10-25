@@ -1,3 +1,5 @@
+// DUPFINDER_ignore
+
 using System.Collections.Generic;
 using Avalonia.Media;
 using Consolonia.Controls;
