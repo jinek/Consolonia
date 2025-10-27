@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Avalonia.Input;
 using Consolonia.Gallery.Tests.Base;
 using Consolonia.NUnit;
 using NUnit.Framework;
