@@ -12,7 +12,6 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText("First", "Second");
             await UITest.KeyInput(Key.Enter);
             await UITest.AssertHasText("Standard Menu Item", @"Ctrl\+A");

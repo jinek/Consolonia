@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Gallery.Gallery;
 using Consolonia.Themes;
@@ -81,7 +84,8 @@ namespace Consolonia.Gallery.View
             }
 
             GalleryGrid.SelectedItem = itemToSelect;
-            GalleryGrid.Focus();
+
+            GalleryGrid.Focus(); // F393122D-9623-4535-A87A-F031C2769386
         }
 
 

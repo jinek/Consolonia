@@ -12,7 +12,6 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText("2/16/2022");
             await UITest.KeyInput(Key.Right);
             await UITest.KeyInput(9, Key.Left);

@@ -12,6 +12,7 @@
         </DockPanel.Resources>
 
         <Menu DockPanel.Dock="Top"
+              x:Name="Menu"
               IsTabStop="False">
             <MenuItem Header="_File"
                       IsTabStop="False">
@@ -65,20 +66,14 @@
 
         <ListBox x:Name="GalleryGrid"
                  DockPanel.Dock="Left"
-                 SelectedIndex="0"
-                 Focusable="True"
+                 AutoScrollToSelectedItem="True"
+                 DisplayMemberBinding="{Binding Name}"
                  SelectionMode="Single">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical" />
+                    <StackPanel Orientation="Vertical"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
         </ListBox>
 
         <Border

@@ -12,7 +12,6 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText("│⏵ Item 0  ",
                 "│⏵ Item 1  ",
                 "│⏵ Item 2  ");

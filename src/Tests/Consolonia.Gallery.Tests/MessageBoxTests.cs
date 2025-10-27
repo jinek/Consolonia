@@ -13,7 +13,6 @@ namespace Consolonia.Gallery.Tests
         public async Task PerformSingleTest()
         {
             await UITest.KeyInput(Key.Tab);
-            await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Enter); // show messagebox
             //await Task.Delay(100); // animation
             await UITest.AssertHasText("OK/Cancel Message box", "Do you want to");
