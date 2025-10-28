@@ -47,7 +47,9 @@ namespace Consolonia.Core.Text
             return true;
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public ushort GetGlyphIndex(string glyph)
+#pragma warning restore CA1822 // Mark members as static
         {
             ushort glyphIndex;
             lock (GlyphCacheSync)
@@ -65,7 +67,9 @@ namespace Consolonia.Core.Text
             return glyphIndex;
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public string GetGlyphText(ushort glyphIndex)
+#pragma warning restore CA1822 // Mark members as static
         {
             lock (GlyphCacheSync)
             {
