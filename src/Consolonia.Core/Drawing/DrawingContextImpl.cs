@@ -300,11 +300,28 @@ namespace Consolonia.Core.Drawing
                     if (CurrentClip.ContainsExclusive(position))
                     {
                         string glyph = glyphTypeface.GetGlyphText(glyphInfo.GlyphIndex);
-                        var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
-                        var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style, glyphTypeface.Weight);
-                        _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
+                        if (glyph == "\t")
+                        {
+                            var symbol = new Symbol(' ', 1);
+                            var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style, glyphTypeface.Weight);
+
+                            for (int i=0; i < glyphInfo.GlyphAdvance;i++)
+                            {
+                                if (CurrentClip.ContainsExclusive(position))
+                                    _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
+                                position = position.WithX(position.X + 1);
+                            }
+                        }
+                        else
+                        {
+                            var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
+                            var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style, glyphTypeface.Weight);
+                            _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
+                            position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
+                        }
                     }
-                    position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
+                    else
+                        position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
                 }
             }
 

@@ -271,8 +271,6 @@ namespace Consolonia.Core.Drawing
                 {
                     if (!string.IsNullOrEmpty(pixel.Foreground.Symbol.Complex))
                         _stringBuilder.Append(pixel.Foreground.Symbol.Complex);
-                    else if (pixel.Foreground.Symbol.Character == '\t')
-                        _stringBuilder.Append(' ', pixel.Foreground.Symbol.Width); // replace tab with space to avoid issues
                     else
                         _stringBuilder.Append(pixel.Foreground.Symbol.Character);
                 }
