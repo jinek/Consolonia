@@ -18,8 +18,7 @@ namespace Consolonia.Core.Helpers
         public int Cluster { get; set; }
 
         /// <summary>
-        ///     Process text into collection of grapheme where a graphemeis either text or a combination of chars which make up an
-        ///     emoji
+        ///     Process text into collection of grapheme where a grapheme is a single glyph
         /// </summary>
         /// <param name="text">text to get glyphs from</param>
         /// <param name="supportsComplexEmoji">If true, emojis like 👨‍👩‍👧‍👦 will be treated as a single glyph></param>

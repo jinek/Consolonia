@@ -30,13 +30,8 @@ namespace Consolonia.Core.Text
                 var grapheme = graphemes[i];
                 var glyphIndex = glyphTypeface.GetGlyphIndex(grapheme.Glyph);
                 var glyphWidth = glyphTypeface.GetGlyphAdvance(glyphIndex);
-                // NOTE: We are using the placeholder glyph since we are pushing
-                // raw text to the console and not using a font system to render the text
                 shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphWidth);
             }
-            //Debug.WriteLine(text);
-            //Debug.WriteLine($"Indexed as:{String.Join(',', shapedBuffer.Select(gi=> gi.GlyphIndex))}");
-            //Debug.WriteLine($"Advance as:{String.Join(',', shapedBuffer.Select(gi=> gi.GlyphAdvance))}");
             return shapedBuffer;
         }
     }
