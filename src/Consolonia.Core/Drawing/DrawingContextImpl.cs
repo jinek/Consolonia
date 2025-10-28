@@ -291,27 +291,21 @@ namespace Consolonia.Core.Drawing
             var position = startPosition;
 
             ShapedBuffer buf = (ShapedBuffer)glyphRunImpl.GlyphInfos;
-            Debug.WriteLine($"[{position}] DrawGlyphRun(\"{buf.Text}\") {CurrentClip}");
             foreach (GlyphInfo glyphInfo in glyphRunImpl.GlyphInfos)
             {
-                // NOTE: we clip at the position of the wide char. If we attempt to clip for the width of the wide
-                // char it introduces artifacts when a wide char is partially clipped.
-                if (CurrentClip.ContainsExclusive(position))
+                if (glyphInfo.GlyphAdvance > 0)
                 {
-                    string glyph = glyphTypeface.GetGlyphText(glyphInfo.GlyphIndex);
-
-                    // if (!Transform.IsTranslateOnly()) ConsoloniaPlatform.RaiseNotSupported(15); //todo: what to do if a rotation?
-
-                    // Each glyph maps to a pixel as a starting point.
-                    // Emoji's and Ligatures are complex strings, so they start at a point and then overlap following pixels
-                    // the x and y are adjusted accordingly.
-
-                    var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
-                    var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style, glyphTypeface.Weight);
-                    _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
+                    // NOTE: we clip at the position of the wide char. If we attempt to clip for the width of the wide
+                    // char it introduces artifacts when a wide char is partially clipped.
+                    if (CurrentClip.ContainsExclusive(position))
+                    {
+                        string glyph = glyphTypeface.GetGlyphText(glyphInfo.GlyphIndex);
+                        var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
+                        var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style, glyphTypeface.Weight);
+                        _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
+                    }
+                    position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
                 }
-
-                position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
             }
 
             // mark the dirty region, start to end, position is after the last drawn char so

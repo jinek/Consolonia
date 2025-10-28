@@ -36,11 +36,11 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Symbol(char ch)
+        public Symbol(char ch, byte? width = null)
         {
             Character = ch;
             Complex = null;
-            Width = (byte)UnicodeCalculator.GetWidth(ch);
+            Width = width ?? (byte)UnicodeCalculator.GetWidth(ch);
             Pattern = 0;
             // if we think it should be wide, OR we know it's an emoji 
             if (Width == 2 || Emoji.IsEmoji(new string(ch, 1)))
@@ -84,7 +84,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 if (glyph.Length == 1)
                 {
                     // we can use the single char constructor for optimization
-                    this = new Symbol(glyph[0]);
+                    this = new Symbol(glyph[0], width);
                 }
                 else if (glyph.Any(ch => ch == TextVariation || ch == EmojiVariation))
                 {

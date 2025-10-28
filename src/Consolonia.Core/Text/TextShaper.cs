@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using Avalonia;
-using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using Consolonia.Controls;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 
@@ -28,9 +25,22 @@ namespace Consolonia.Core.Text
             for (ushort i = 0; i < shapedBuffer.Length; i++)
             {
                 var grapheme = graphemes[i];
-                var glyphIndex = glyphTypeface.GetGlyphIndex(grapheme.Glyph);
-                var glyphWidth = glyphTypeface.GetGlyphAdvance(glyphIndex);
-                shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphWidth);
+                ushort glyphIndex;
+                int glyphAdvance = 0;
+                switch (grapheme.Glyph)
+                {
+                    case "\r":
+                    case "\n":
+                        glyphIndex = glyphTypeface.GetGlyphIndex("\u200c");
+                        glyphAdvance = 0;
+                        break;
+                    default:
+                        glyphIndex = glyphTypeface.GetGlyphIndex(grapheme.Glyph);
+                        glyphAdvance =  glyphTypeface.GetGlyphAdvance(glyphIndex);
+                        break;
+                }
+
+                shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphAdvance);
             }
             return shapedBuffer;
         }

@@ -31,7 +31,6 @@ namespace Consolonia.Core.Helpers
             int index = 0;
             int regionalIndicatorCount = 0;
             Rune? previousRune = null;
-
             foreach (var rune in text.EnumerateRunes())
             {
                 var runeType = ClassifyRune(rune);
