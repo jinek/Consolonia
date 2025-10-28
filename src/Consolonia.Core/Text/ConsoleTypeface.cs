@@ -12,25 +12,25 @@ namespace Consolonia.Core.Text
     public sealed class ConsoleTypeface : IGlyphTypeface
     {
         private static readonly object GlyphCacheSync = new();
-        private static readonly Dictionary<ushort, string> GlyphByIndex = new();
-        private static readonly Dictionary<ushort, ushort> WidthByIndex = new();
-        private static readonly Dictionary<string, ushort> IndexByGlyph = new();
+        private static readonly Dictionary<ushort, string> GlyphTextByIndex = new();
+        private static readonly Dictionary<ushort, ushort> GlyphWidthByIndex = new();
+        private static readonly Dictionary<string, ushort> GlyphIndexByText = new();
 
         public void Dispose()
         {
         }
 
-        public bool TryGetGlyphMetrics(ushort glyphIndex, out GlyphMetrics metrics)
+        public bool TryGetGlyphMetrics(ushort glyph, out GlyphMetrics metrics)
         {
             lock (GlyphCacheSync)
             {
-                var glyph = GlyphByIndex[glyphIndex];
+                var glyphText = GlyphTextByIndex[glyph];
                 metrics = new GlyphMetrics
                 {
                     XBearing = 0,
                     YBearing = 0,
                     Height = 1,
-                    Width = WidthByIndex[glyphIndex],
+                    Width = GlyphWidthByIndex[glyph],
                 };
                 return true;
             }
@@ -41,39 +41,39 @@ namespace Consolonia.Core.Text
             return GetGlyphIndex(Char.ConvertFromUtf32((int)codepoint));
         }
 
-        public bool TryGetGlyph(uint codepoint, out ushort glyphIndex)
+        public bool TryGetGlyph(uint codepoint, out ushort glyph)
         {
-            glyphIndex = GetGlyphIndex(Char.ConvertFromUtf32((int)codepoint));
+            glyph = GetGlyphIndex(Char.ConvertFromUtf32((int)codepoint));
             return true;
         }
 
 #pragma warning disable CA1822 // Mark members as static
-        public ushort GetGlyphIndex(string glyph)
+        public ushort GetGlyphIndex(string glyphText)
 #pragma warning restore CA1822 // Mark members as static
         {
-            ushort glyphIndex;
+            ushort glyph;
             lock (GlyphCacheSync)
             {
-                if (!IndexByGlyph.TryGetValue(glyph, out glyphIndex))
+                if (!GlyphIndexByText.TryGetValue(glyphText, out glyph))
                 {
-                    if (IndexByGlyph.Count >= ushort.MaxValue)
+                    if (GlyphIndexByText.Count >= ushort.MaxValue)
                         throw new InvalidOperationException("Glyph cache overflow.");
-                    glyphIndex = (ushort)GlyphByIndex.Count;
-                    GlyphByIndex[glyphIndex] = glyph;
-                    WidthByIndex[glyphIndex] = glyph.MeasureText();
-                    IndexByGlyph[glyph] = glyphIndex;
+                    glyph = (ushort)GlyphTextByIndex.Count;
+                    GlyphTextByIndex[glyph] = glyphText;
+                    GlyphWidthByIndex[glyph] = glyphText.MeasureText();
+                    GlyphIndexByText[glyphText] = glyph;
                 }
             }
-            return glyphIndex;
+            return glyph;
         }
 
 #pragma warning disable CA1822 // Mark members as static
-        public string GetGlyphText(ushort glyphIndex)
+        public string GetGlyphText(ushort glyph)
 #pragma warning restore CA1822 // Mark members as static
         {
             lock (GlyphCacheSync)
             {
-                return GlyphByIndex[glyphIndex];
+                return GlyphTextByIndex[glyph];
             }
         }
 
@@ -87,11 +87,11 @@ namespace Consolonia.Core.Text
             return glyphs;
         }
 
-        public int GetGlyphAdvance(ushort glyphIndex)
+        public int GetGlyphAdvance(ushort glyph)
         {
             lock (GlyphCacheSync)
             {
-                return WidthByIndex[glyphIndex];
+                return GlyphWidthByIndex[glyph];
             }
         }
 
