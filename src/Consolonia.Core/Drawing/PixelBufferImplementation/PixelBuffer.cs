@@ -93,8 +93,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     if (pixel.Width > 0)
                     {
                         string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.GetText();
-
-                        //todo: check why cursor is not drawing
                         stringBuilder.Append(text);
                         i += text.MeasureText();
                     }

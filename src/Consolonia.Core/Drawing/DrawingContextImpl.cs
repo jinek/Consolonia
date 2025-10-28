@@ -405,7 +405,6 @@ namespace Consolonia.Core.Drawing
             if (brush == null && pen == null) return; //this is simple Panel for example
 
             Rect rectangleRect = rect.TransformToAABB(Transform);
-
             if (boxShadows.Count > 0)
                 foreach (BoxShadow boxShadow in boxShadows)
                     // BoxShadow none is OK
@@ -881,13 +880,10 @@ namespace Consolonia.Core.Drawing
             Color foregroundColor = solidColorBrush.Color;
 
             var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
-            // if we are attempting to draw a wide glyph we need to make sure that the clipping point
-            // is for the last physical char. Aka a double char should be clipped if it's second rendered 
-            // char would break the boundary of the clip.
-            if (CurrentClip.ContainsExclusive(position) &&
-                (symbol.Width == 1 ||
-                 symbol.Width > 1 &&
-                 CurrentClip.ContainsExclusive(new PixelPoint(position.X + symbol.Width - 1, position.Y))))
+
+            // NOTE: we clip at the position of the wide char. If we attempt to clip for the width of the wide
+            // char it introduces artifacts when a wide char is partially clipped.
+            if (CurrentClip.ContainsExclusive(position))
             {
                 var newPixel = new Pixel(symbol, foregroundColor, typeface.Style, typeface.Weight);
                 _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
