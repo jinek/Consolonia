@@ -8,7 +8,6 @@ using Avalonia.Styling;
 
 namespace Consolonia.Core.Helpers
 {
-
     public static class UtilityExtensions
     {
         public static IDisposable SubscribeAction<TValue>(
@@ -57,6 +56,5 @@ namespace Consolonia.Core.Helpers
                 //});
             }
         }
-
     }
 }

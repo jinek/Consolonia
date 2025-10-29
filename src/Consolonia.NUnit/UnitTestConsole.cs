@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
@@ -58,7 +57,7 @@ namespace Consolonia.NUnit
             (ushort x, ushort y) = bufferPoint;
 
             int i = 0;
-            foreach (var grapheme in Grapheme.Parse(str, true))
+            foreach (Grapheme grapheme in Grapheme.Parse(str, true))
             {
                 var coord = new PixelBufferCoordinate((ushort)(x + i), y);
                 PixelBuffer[coord] =

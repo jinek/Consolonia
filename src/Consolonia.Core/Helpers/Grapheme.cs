@@ -5,7 +5,7 @@ using NeoSmart.Unicode;
 namespace Consolonia.Core.Helpers
 {
     /// <summary>
-    /// Represents a single Glyph, the codepoints that produce it and the position in the text.
+    ///     Represents a single Glyph, the codepoints that produce it and the position in the text.
     /// </summary>
     public class Grapheme
     {
@@ -13,7 +13,7 @@ namespace Consolonia.Core.Helpers
         public string Glyph { get; init; }
 
         /// <summary>
-        /// Index into original string of codepoints for start for Glyph
+        ///     Index into original string of codepoints for start for Glyph
         /// </summary>
         public int Cluster { get; init; }
 
@@ -31,9 +31,9 @@ namespace Consolonia.Core.Helpers
             int index = 0;
             int regionalIndicatorCount = 0;
             Rune? previousRune = null;
-            foreach (var rune in text.EnumerateRunes())
+            foreach (Rune rune in text.EnumerateRunes())
             {
-                var runeType = ClassifyRune(rune);
+                RuneType runeType = ClassifyRune(rune);
 
                 switch (runeType)
                 {
@@ -43,6 +43,7 @@ namespace Consolonia.Core.Helpers
                             FlushBufferIfNeeded(buffer, glyphs, cluster);
                             return glyphs; // Terminal doesn't support complex emoji, stop parsing
                         }
+
                         HandleZeroWidthJoiner(rune, buffer, glyphs);
                         break;
 
@@ -59,7 +60,8 @@ namespace Consolonia.Core.Helpers
                         break;
 
                     case RuneType.Emoji:
-                        HandleEmoji(rune, previousRune, supportsComplexEmoji, buffer, glyphs, ref cluster, index, ref regionalIndicatorCount);
+                        HandleEmoji(rune, previousRune, supportsComplexEmoji, buffer, glyphs, ref cluster, index,
+                            ref regionalIndicatorCount);
                         break;
 
                     case RuneType.Regular:
@@ -69,6 +71,7 @@ namespace Consolonia.Core.Helpers
                             cluster = index;
                             buffer.Clear();
                         }
+
                         glyphs.Add(new Grapheme { Glyph = rune.ToString(), Cluster = cluster });
                         cluster = index + rune.Utf16SequenceLength;
                         break;
@@ -80,16 +83,6 @@ namespace Consolonia.Core.Helpers
 
             FlushBufferIfNeeded(buffer, glyphs, cluster);
             return glyphs;
-        }
-
-        private enum RuneType
-        {
-            ZeroWidthJoiner,
-            Modifier,
-            RegionalIndicator,
-            VariationSelector,
-            Emoji,
-            Regular
         }
 
         private static RuneType ClassifyRune(Rune rune)
@@ -112,16 +105,22 @@ namespace Consolonia.Core.Helpers
             return RuneType.Regular;
         }
 
-        private static bool IsModifier(Rune rune) =>
-            (rune.Value >= Emoji.SkinTones.Light && rune.Value <= Emoji.SkinTones.Dark) ||
-            rune.Value == Codepoints.Keycap;
+        private static bool IsModifier(Rune rune)
+        {
+            return rune.Value >= Emoji.SkinTones.Light && rune.Value <= Emoji.SkinTones.Dark ||
+                   rune.Value == Codepoints.Keycap;
+        }
 
-        private static bool IsRegionalIndicator(Rune rune) =>
-            rune.Value >= 0x1F1E6 && rune.Value <= 0x1F1FF;
+        private static bool IsRegionalIndicator(Rune rune)
+        {
+            return rune.Value >= 0x1F1E6 && rune.Value <= 0x1F1FF;
+        }
 
-        private static bool IsVariationSelector(Rune rune) =>
-            rune.Value == Codepoints.VariationSelectors.EmojiSymbol ||
-            rune.Value == Codepoints.VariationSelectors.TextSymbol;
+        private static bool IsVariationSelector(Rune rune)
+        {
+            return rune.Value == Codepoints.VariationSelectors.EmojiSymbol ||
+                   rune.Value == Codepoints.VariationSelectors.TextSymbol;
+        }
 
         private static void HandleZeroWidthJoiner(Rune rune, StringBuilder buffer, List<Grapheme> glyphs)
         {
@@ -131,14 +130,16 @@ namespace Consolonia.Core.Helpers
         private static void AppendToCurrentOrLastGlyph(Rune rune, StringBuilder buffer, List<Grapheme> glyphs)
         {
             if (buffer.Length > 0)
+            {
                 buffer.Append(rune);
+            }
             else if (glyphs.Count > 0)
             {
-                var glyph= glyphs[^1];
-                glyphs[^1] = new Grapheme 
-                { 
-                    Glyph = glyph.Glyph + rune.ToString(), 
-                    Cluster = glyph.Cluster 
+                Grapheme glyph = glyphs[^1];
+                glyphs[^1] = new Grapheme
+                {
+                    Glyph = glyph.Glyph + rune,
+                    Cluster = glyph.Cluster
                 };
             }
         }
@@ -165,6 +166,7 @@ namespace Consolonia.Core.Helpers
                     cluster = index + rune.Utf16SequenceLength;
                     buffer.Clear();
                 }
+
                 buffer.Append(rune);
             }
         }
@@ -173,8 +175,8 @@ namespace Consolonia.Core.Helpers
             StringBuilder buffer, List<Grapheme> glyphs, ref int cluster, int index, ref int regionalIndicatorCount)
         {
             bool continueBuilding = supportsComplexEmoji && previousRune.HasValue &&
-                                   (previousRune.Value.Value == Codepoints.ZWJ ||
-                                    previousRune.Value.Value == Codepoints.ORC);
+                                    (previousRune.Value.Value == Codepoints.ZWJ ||
+                                     previousRune.Value.Value == Codepoints.ORC);
 
             if (continueBuilding)
             {
@@ -203,6 +205,16 @@ namespace Consolonia.Core.Helpers
                 glyphs.Add(new Grapheme { Glyph = buffer.ToString(), Cluster = cluster });
                 buffer.Clear();
             }
+        }
+
+        private enum RuneType
+        {
+            ZeroWidthJoiner,
+            Modifier,
+            RegionalIndicator,
+            VariationSelector,
+            Emoji,
+            Regular
         }
     }
 }

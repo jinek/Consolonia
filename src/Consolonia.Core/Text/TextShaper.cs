@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.JavaScript;
 using Avalonia;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
@@ -11,7 +10,6 @@ namespace Consolonia.Core.Text
 {
     public class TextShaper : ITextShaperImpl
     {
-
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
             var console = AvaloniaLocator.Current.GetRequiredService<IConsoleOutput>();
@@ -24,7 +22,7 @@ namespace Consolonia.Core.Text
             var glyphTypeface = options.Typeface as ConsoleTypeface;
             for (ushort i = 0; i < shapedBuffer.Length; i++)
             {
-                var grapheme = graphemes[i];
+                Grapheme grapheme = graphemes[i];
                 ushort glyphIndex;
                 int glyphAdvance;
                 switch (grapheme.Glyph)
@@ -36,12 +34,13 @@ namespace Consolonia.Core.Text
                         break;
                     default:
                         glyphIndex = glyphTypeface.GetGlyphIndex(grapheme.Glyph);
-                        glyphAdvance =  glyphTypeface.GetGlyphAdvance(glyphIndex);
+                        glyphAdvance = glyphTypeface.GetGlyphAdvance(glyphIndex);
                         break;
                 }
 
                 shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphAdvance);
             }
+
             return shapedBuffer;
         }
     }

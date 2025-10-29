@@ -7,7 +7,7 @@ using Consolonia.Core.Drawing;
 namespace Consolonia.Core.Text
 {
     /// <summary>
-    /// This represents a psuedo-typeface for console rendering.
+    ///     This represents a psuedo-typeface for console rendering.
     /// </summary>
     public sealed class ConsoleTypeface : IGlyphTypeface
     {
@@ -24,17 +24,18 @@ namespace Consolonia.Core.Text
         {
             lock (GlyphCacheSync)
             {
-                if (GlyphWidthByIndex.TryGetValue(glyph, out var width))
+                if (GlyphWidthByIndex.TryGetValue(glyph, out ushort width))
                 {
                     metrics = new GlyphMetrics
                     {
                         XBearing = 0,
                         YBearing = 0,
                         Height = 1,
-                        Width = width,
+                        Width = width
                     };
                     return true;
                 }
+
                 metrics = default;
                 return false;
             }
@@ -42,52 +43,20 @@ namespace Consolonia.Core.Text
 
         public ushort GetGlyph(uint codepoint)
         {
-            return GetGlyphIndex(Char.ConvertFromUtf32((int)codepoint));
+            return GetGlyphIndex(char.ConvertFromUtf32((int)codepoint));
         }
 
         public bool TryGetGlyph(uint codepoint, out ushort glyph)
         {
-            glyph = GetGlyphIndex(Char.ConvertFromUtf32((int)codepoint));
+            glyph = GetGlyphIndex(char.ConvertFromUtf32((int)codepoint));
             return true;
         }
-
-#pragma warning disable CA1822 // Mark members as static
-        public ushort GetGlyphIndex(string glyphText)
-        {
-            ushort glyph;
-            lock (GlyphCacheSync)
-            {
-                if (!GlyphIndexByText.TryGetValue(glyphText, out glyph))
-                {
-                    if (GlyphIndexByText.Count >= ushort.MaxValue)
-                        throw new InvalidOperationException("Glyph cache overflow.");
-                    glyph = (ushort)GlyphTextByIndex.Count;
-                    GlyphTextByIndex[glyph] = glyphText;
-                    GlyphWidthByIndex[glyph] = glyphText.MeasureText();
-                    GlyphIndexByText[glyphText] = glyph;
-                }
-            }
-            return glyph;
-        }
-
-        public string GetGlyphText(ushort glyph)
-        {
-            lock (GlyphCacheSync)
-            {
-                if (!GlyphTextByIndex.TryGetValue(glyph, out var text))
-                    throw new ArgumentException($"Glyph index {glyph} not found in cache.", nameof(glyph));
-                return text;
-            }
-        }
-#pragma warning restore CA1822 // Mark members as static
 
         public ushort[] GetGlyphs(ReadOnlySpan<uint> codepoints)
         {
             ushort[] glyphs = new ushort[codepoints.Length];
             for (int i = 0; i < codepoints.Length; i++)
-            {
-                glyphs[i] = GetGlyphIndex(Char.ConvertFromUtf32((int)codepoints[i]));
-            }
+                glyphs[i] = GetGlyphIndex(char.ConvertFromUtf32((int)codepoints[i]));
             return glyphs;
         }
 
@@ -104,11 +73,9 @@ namespace Consolonia.Core.Text
             int[] advances = new int[glyphs.Length];
             lock (GlyphCacheSync)
             {
-                for (int i = 0; i < glyphs.Length; i++)
-                {
-                    advances[i] = GetGlyphAdvance(glyphs[i]);
-                }
+                for (int i = 0; i < glyphs.Length; i++) advances[i] = GetGlyphAdvance(glyphs[i]);
             }
+
             return advances;
         }
 
@@ -138,5 +105,36 @@ namespace Consolonia.Core.Text
         };
 
         public FontSimulations FontSimulations => FontSimulations.None;
+
+#pragma warning disable CA1822 // Mark members as static
+        public ushort GetGlyphIndex(string glyphText)
+        {
+            ushort glyph;
+            lock (GlyphCacheSync)
+            {
+                if (!GlyphIndexByText.TryGetValue(glyphText, out glyph))
+                {
+                    if (GlyphIndexByText.Count >= ushort.MaxValue)
+                        throw new InvalidOperationException("Glyph cache overflow.");
+                    glyph = (ushort)GlyphTextByIndex.Count;
+                    GlyphTextByIndex[glyph] = glyphText;
+                    GlyphWidthByIndex[glyph] = glyphText.MeasureText();
+                    GlyphIndexByText[glyphText] = glyph;
+                }
+            }
+
+            return glyph;
+        }
+
+        public string GetGlyphText(ushort glyph)
+        {
+            lock (GlyphCacheSync)
+            {
+                if (!GlyphTextByIndex.TryGetValue(glyph, out string text))
+                    throw new ArgumentException($"Glyph index {glyph} not found in cache.", nameof(glyph));
+                return text;
+            }
+        }
+#pragma warning restore CA1822 // Mark members as static
     }
 }

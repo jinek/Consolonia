@@ -13,7 +13,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void GetGraphemesEmptyStringReturnsEmptyList()
         {
             string text = string.Empty;
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.IsEmpty(graphemes);
         }
 
@@ -23,7 +23,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "a";
             Assert.AreEqual(1, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
             Assert.AreEqual("a", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -35,7 +35,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "hello";
             Assert.AreEqual(5, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(5, graphemes.Count);
             Assert.AreEqual("h", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -55,7 +55,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "𝔉𝔞𝔫𝔠𝔶";
             Assert.AreEqual(5, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(5, graphemes.Count);
             Assert.AreEqual("𝔉", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -75,7 +75,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "👍";
             Assert.AreEqual(2, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
             Assert.AreEqual("👍", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -89,7 +89,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             Assert.AreEqual(2, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
             Assert.AreEqual(text, graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -101,7 +101,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "a👍";
             Assert.AreEqual(3, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(2, graphemes.Count);
             Assert.AreEqual("a", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -115,7 +115,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "👨‍👩‍👧‍👦";
             Assert.AreEqual(2, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, false);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, false);
             Assert.AreEqual(1, graphemes.Count);
             Assert.AreEqual("👨", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -134,7 +134,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             text = $"{text}\uFE0E";
             Assert.AreEqual(1, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
             Assert.AreEqual(text, graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -153,7 +153,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             text = $"{text}\uFE0F";
             Assert.AreEqual(2, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
             Assert.AreEqual(text, graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -168,7 +168,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             // 🗙 (U+1F5D9) followed by FE0F (emoji presentation selector)
             Assert.AreEqual(2, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
             Assert.AreEqual(text, graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -184,7 +184,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "🗙\uFE0E";
             Assert.AreEqual(1, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
             Assert.AreEqual("🗙\uFE0E", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -197,7 +197,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "☺\uFE0E☺\uFE0F";
             Assert.AreEqual(3, text.MeasureText()); // 1 (text) + 2 (emoji)
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(2, graphemes.Count);
             Assert.AreEqual("☺\uFE0E", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -212,7 +212,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "🏳️‍🌈🏳️‍🌈";
             Assert.AreEqual(4, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(2, graphemes.Count);
             Assert.AreEqual("🏳️‍🌈", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -228,7 +228,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "🇺🇸flag";
             Assert.AreEqual(6, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(5, graphemes.Count);
             Assert.AreEqual("🇺🇸", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -249,7 +249,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "🇺🇸🇬🇧";
             Assert.AreEqual(4, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(2, graphemes.Count);
             Assert.AreEqual("🇺🇸", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -264,7 +264,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             string text = "Hello 🇺🇸!";
             Assert.AreEqual(9, text.MeasureText()); // H-e-l-l-o-space + flag(2)
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(8, graphemes.Count);
             Assert.AreEqual("H", graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
@@ -294,7 +294,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             Assert.AreEqual(2, text.MeasureText());
 
-            var graphemes = Grapheme.Parse(text, true);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text, true);
             Assert.AreEqual(1, graphemes.Count);
             Assert.AreEqual(text, graphemes[0].Glyph);
             Assert.AreEqual(0, graphemes[0].Cluster);
