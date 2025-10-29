@@ -26,7 +26,7 @@ namespace Consolonia.Core.Text
             {
                 var grapheme = graphemes[i];
                 ushort glyphIndex;
-                int glyphAdvance = 0;
+                int glyphAdvance;
                 switch (grapheme.Glyph)
                 {
                     case "\r":

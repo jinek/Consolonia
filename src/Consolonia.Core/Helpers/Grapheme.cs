@@ -10,19 +10,19 @@ namespace Consolonia.Core.Helpers
     public class Grapheme
     {
         // sequence of unicode codepoints that produce the glyph
-        public string Glyph { get; set; }
+        public string Glyph { get; init; }
 
         /// <summary>
         /// Index into original string of codepoints for start for Glyph
         /// </summary>
-        public int Cluster { get; set; }
+        public int Cluster { get; init; }
 
         /// <summary>
         ///     Process text into collection of grapheme where a grapheme is a single glyph
         /// </summary>
         /// <param name="text">text to get glyphs from</param>
-        /// <param name="supportsComplexEmoji">If true, emojis like 👨‍👩‍👧‍👦 will be treated as a single glyph></param>
-        /// <returns></returns>
+        /// <param name="supportsComplexEmoji">If true, emojis like 👨‍👩‍👧‍👦 will be treated as a single glyph</param>
+        /// <returns>collection of grapheme structures</returns>
         public static IReadOnlyList<Grapheme> Parse(string text, bool supportsComplexEmoji)
         {
             var glyphs = new List<Grapheme>();
@@ -133,7 +133,14 @@ namespace Consolonia.Core.Helpers
             if (buffer.Length > 0)
                 buffer.Append(rune);
             else if (glyphs.Count > 0)
-                glyphs[^1].Glyph += rune.ToString();
+            {
+                var glyph= glyphs[^1];
+                glyphs[^1] = new Grapheme 
+                { 
+                    Glyph = glyph.Glyph + rune.ToString(), 
+                    Cluster = glyph.Cluster 
+                };
+            }
         }
 
         private static void HandleRegionalIndicator(Rune rune, ref int regionalIndicatorCount, StringBuilder buffer,

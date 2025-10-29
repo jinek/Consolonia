@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
@@ -12,7 +11,6 @@ using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
 using SkiaSharp;
-using TextShaper = Consolonia.Core.Text.TextShaper;
 
 namespace Consolonia.Core.Drawing
 {
