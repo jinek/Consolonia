@@ -290,7 +290,6 @@ namespace Consolonia.Core.Drawing
             var startPosition = new Point().Transform(Transform).ToPixelPoint();
             var position = startPosition;
 
-            ShapedBuffer buf = (ShapedBuffer)glyphRunImpl.GlyphInfos;
             foreach (GlyphInfo glyphInfo in glyphRunImpl.GlyphInfos)
             {
                 if (glyphInfo.GlyphAdvance > 0)

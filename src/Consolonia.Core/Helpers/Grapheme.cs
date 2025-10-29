@@ -123,10 +123,9 @@ namespace Consolonia.Core.Helpers
             rune.Value == Codepoints.VariationSelectors.EmojiSymbol ||
             rune.Value == Codepoints.VariationSelectors.TextSymbol;
 
-        private static bool HandleZeroWidthJoiner(Rune rune, StringBuilder buffer, List<Grapheme> glyphs)
+        private static void HandleZeroWidthJoiner(Rune rune, StringBuilder buffer, List<Grapheme> glyphs)
         {
             AppendToCurrentOrLastGlyph(rune, buffer, glyphs);
-            return true;
         }
 
         private static void AppendToCurrentOrLastGlyph(Rune rune, StringBuilder buffer, List<Grapheme> glyphs)

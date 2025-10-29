@@ -10,7 +10,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
     public class GlyphTests
     {
         [Test]
-        public void GetgraphemesEmptyStringReturnsEmptyList()
+        public void GetGraphemesEmptyStringReturnsEmptyList()
         {
             string text = string.Empty;
             var graphemes = Grapheme.Parse(text, true);
@@ -18,7 +18,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetgraphemesSingleCharacterReturnsSingleGlyph()
+        public void GetGraphemesSingleCharacterReturnsSingleGlyph()
         {
             string text = "a";
             Assert.AreEqual(1, text.MeasureText());
@@ -30,7 +30,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetgraphemesMultipleCharsReturnsMultipleGlyph()
+        public void GetGraphemesMultipleCharsReturnsMultipleGlyph()
         {
             string text = "hello";
             Assert.AreEqual(5, text.MeasureText());
@@ -50,7 +50,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetgraphemesComplexCharsReturnsSingleGlyph()
+        public void GetGraphemesComplexCharsReturnsSingleGlyph()
         {
             string text = "𝔉𝔞𝔫𝔠𝔶";
             Assert.AreEqual(5, text.MeasureText());
@@ -70,7 +70,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetgraphemesSingleEmojiReturnsSingleGlyph()
+        public void GetGraphemesSingleEmojiReturnsSingleGlyph()
         {
             string text = "👍";
             Assert.AreEqual(2, text.MeasureText());
@@ -85,7 +85,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [TestCase("1\uFE0f\u20e3")]
         [TestCase("👍🏻")]
         [TestCase("👨‍👩‍👧‍👦")]
-        public void GetgraphemesWithComplexEmoji(string text)
+        public void GetGraphemesWithComplexEmoji(string text)
         {
             Assert.AreEqual(2, text.MeasureText());
 
@@ -96,7 +96,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetgraphemesWithMultiplegraphemes()
+        public void GetGraphemesWithMultiplegraphemes()
         {
             string text = "a👍";
             Assert.AreEqual(3, text.MeasureText());
@@ -110,7 +110,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetgraphemesWithOutComplexEmojiSupport()
+        public void GetGraphemesWithOutComplexEmojiSupport()
         {
             string text = "👨‍👩‍👧‍👦";
             Assert.AreEqual(2, text.MeasureText());
@@ -127,7 +127,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [TestCase("⚙")]
         [TestCase("👨‍👩‍👧‍👦")]
         [TestCase("☰")]
-        public void GetgraphemesEmojiWithTextPresentation(string text)
+        public void GetGraphemesEmojiWithTextPresentation(string text)
         {
             // Emoji followed by FE0E (text presentation selector)
             // The emoji should be rendered as text (single-wide)
@@ -146,7 +146,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [TestCase("⚙")]
         [TestCase("👨‍👩‍👧‍👦")]
         [TestCase("☰")]
-        public void GetgraphemesEmojiWithEmojiPresentation(string text)
+        public void GetGraphemesEmojiWithEmojiPresentation(string text)
         {
             // Emoji followed by FE0F (emoji presentation selector)
             // The emoji should be rendered as emoji (double-wide)
@@ -163,7 +163,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [TestCase("⚙")]
         [TestCase("👨‍👩‍👧‍👦")]
         [TestCase("☰")]
-        public void GetgraphemesAutoEmojiPresentation(string text)
+        public void GetGraphemesAutoEmojiPresentation(string text)
         {
             // 🗙 (U+1F5D9) followed by FE0F (emoji presentation selector)
             Assert.AreEqual(2, text.MeasureText());
@@ -178,7 +178,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetgraphemesCancelSignWithTextPresentation()
+        public void GetGraphemesCancelSignWithTextPresentation()
         {
             // 🗙 (U+1F5D9) followed by FE0E (text presentation selector)
             string text = "🗙\uFE0E";
@@ -191,7 +191,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetgraphemesMultipleEmojisWithVariationSelectors()
+        public void GetGraphemesMultipleEmojisWithVariationSelectors()
         {
             // Mix of emojis with variation selectors
             string text = "☺\uFE0E☺\uFE0F";
@@ -206,7 +206,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetgraphemesMultipleEmojisWithoutVariationSelectors()
+        public void GetGraphemesMultipleEmojisWithoutVariationSelectors()
         {
             // Mix of emojis with variation selectors
             string text = "🏳️‍🌈🏳️‍🌈";
@@ -222,7 +222,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
         // Add regional indicator tests below
         [Test]
-        public void GetgraphemesRegionalIndicatorSingleFlag()
+        public void GetGraphemesRegionalIndicatorSingleFlag()
         {
             // US flag: 🇺🇸 (U+1F1FA U+1F1F8)
             string text = "🇺🇸flag";
@@ -243,7 +243,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetgraphemesRegionalIndicatorMultipleFlags()
+        public void GetGraphemesRegionalIndicatorMultipleFlags()
         {
             // US flag + UK flag: 🇺🇸🇬🇧
             string text = "🇺🇸🇬🇧";
@@ -258,7 +258,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
-        public void GetgraphemesRegionalIndicatorWithText()
+        public void GetGraphemesRegionalIndicatorWithText()
         {
             // Text with flag: "Hello 🇺🇸"
             string text = "Hello 🇺🇸!";
@@ -290,7 +290,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         [TestCase("🇩🇪")] // Germany
         [TestCase("🇫🇷")] // France
         [TestCase("🇯🇵")] // Japan
-        public void GetgraphemesRegionalIndicatorVariousFlags(string text)
+        public void GetGraphemesRegionalIndicatorVariousFlags(string text)
         {
             Assert.AreEqual(2, text.MeasureText());
 

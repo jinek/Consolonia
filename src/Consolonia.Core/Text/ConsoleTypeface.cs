@@ -24,15 +24,19 @@ namespace Consolonia.Core.Text
         {
             lock (GlyphCacheSync)
             {
-                var glyphText = GlyphTextByIndex[glyph];
-                metrics = new GlyphMetrics
+                if (GlyphWidthByIndex.TryGetValue(glyph, out var width))
                 {
-                    XBearing = 0,
-                    YBearing = 0,
-                    Height = 1,
-                    Width = GlyphWidthByIndex[glyph],
-                };
-                return true;
+                    metrics = new GlyphMetrics
+                    {
+                        XBearing = 0,
+                        YBearing = 0,
+                        Height = 1,
+                        Width = width,
+                    };
+                    return true;
+                }
+                metrics = default;
+                return false;
             }
         }
 
@@ -49,7 +53,6 @@ namespace Consolonia.Core.Text
 
 #pragma warning disable CA1822 // Mark members as static
         public ushort GetGlyphIndex(string glyphText)
-#pragma warning restore CA1822 // Mark members as static
         {
             ushort glyph;
             lock (GlyphCacheSync)
@@ -67,15 +70,16 @@ namespace Consolonia.Core.Text
             return glyph;
         }
 
-#pragma warning disable CA1822 // Mark members as static
         public string GetGlyphText(ushort glyph)
-#pragma warning restore CA1822 // Mark members as static
         {
             lock (GlyphCacheSync)
             {
-                return GlyphTextByIndex[glyph];
+                if (!GlyphTextByIndex.TryGetValue(glyph, out var text))
+                    throw new ArgumentException($"Glyph index {glyph} not found in cache.", nameof(glyph));
+                return text;
             }
         }
+#pragma warning restore CA1822 // Mark members as static
 
         public ushort[] GetGlyphs(ReadOnlySpan<uint> codepoints)
         {
