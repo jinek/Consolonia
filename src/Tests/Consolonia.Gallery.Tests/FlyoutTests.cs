@@ -12,7 +12,6 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Enter);
             await UITest.AssertHasText(@"Item 1\s+⏵",
                 "Item 2");

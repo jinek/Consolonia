@@ -13,7 +13,6 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText("24 25 26 27 28 29 30");
             await UITest.AssertHasText(@"April", @"2022");
             await UITest.KeyInput(Key.Tab, Key.Back);

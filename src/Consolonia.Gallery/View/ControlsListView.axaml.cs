@@ -81,7 +81,8 @@ namespace Consolonia.Gallery.View
             }
 
             GalleryGrid.SelectedItem = itemToSelect;
-            GalleryGrid.Focus();
+
+            GalleryGrid.Focus(); // F393122D-9623-4535-A87A-F031C2769386
         }
 
 
