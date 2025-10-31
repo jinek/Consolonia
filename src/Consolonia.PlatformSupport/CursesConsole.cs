@@ -238,7 +238,7 @@ namespace Consolonia.PlatformSupport
             // PASTE block
             yield return new SafeLockMatcher(
                 new PasteBlockMatcher<int>(buffer => { RaiseTextInput(buffer, (ulong)Environment.TickCount64); },
-                    ToChar), 0, 0, 0);
+                    ToText), 0, 0, 0);
 
             (string, Key)[] fSequences =
             [
@@ -296,16 +296,16 @@ namespace Consolonia.PlatformSupport
 
             foreach ((string, Key) fSequence in fSequences)
                 yield return new SafeLockMatcher(
-                    new StartsEndsWithMatcher<int>(_ => { RaiseKeyPressInternal(fSequence.Item2); }, ToChar,
+                    new StartsEndsWithMatcher<int>(_ => { RaiseKeyPressInternal(fSequence.Item2); }, ToText,
                         fSequence.Item1, fSequence.Item1), 0, 0, 0);
 
             // escape of ESC
             yield return new SafeLockMatcher(
-                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.Esc); }, ToChar, @"^\x1B+$", 2), 0, 0);
+                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.Esc); }, ToText, @"^\x1B+$", 2), 0, 0);
 
             // SHIFT+TAB is received as ESC then TAB, both locked by key 0: https://unix.stackexchange.com/a/238412
             yield return new SafeLockMatcher(
-                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.BackTab); }, ToChar, @"^\x1B\t?$", 2), 0, 0);
+                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.BackTab); }, ToText, @"^\x1B\t?$", 2), 0, 0);
 
             // The ESC-number handling, debatable.
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
@@ -358,7 +358,7 @@ namespace Consolonia.PlatformSupport
                 }
 
                 RaiseKeyPressInternal(k);
-            }, ToChar, @"^\x1B[^\x1B\[]*$", 2), 0, 0);
+            }, ToText, @"^\x1B[^\x1B\[]*$", 2), 0, 0);
 
             // alt mask
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
@@ -366,7 +366,7 @@ namespace Consolonia.PlatformSupport
                 int wch = tuple.Item2[0];
                 Key k = Key.AltMask | MapCursesKey(wch);
                 RaiseKeyPressInternal(k);
-            }, ToChar, @"^\x1B[^\x00]*$", 2), 0, Curses.KEY_CODE_YES);
+            }, ToText, @"^\x1B[^\x00]*$", 2), 0, Curses.KEY_CODE_YES);
 
             // mouse and resize detection and some special processing
             yield return new SafeLockMatcher(new GenericMatcher<int>(wch =>
@@ -435,7 +435,7 @@ namespace Consolonia.PlatformSupport
                 if (processSeparateKeys)
                     foreach (int key in tuple.Item2)
                         ProcessKeyInternal(key);
-            }, ToChar, 10 /* todo: low: magic number here*/), 0);
+            }, ToText, 10 /* todo: low: magic number here*/), 0);
             yield return textInputMatcher;
 
             // general keys backup
@@ -485,9 +485,9 @@ namespace Consolonia.PlatformSupport
             RaiseKeyPressInternal(k);
         }
 
-        private static char ToChar(int arg)
+        private static string ToText(int arg)
         {
-            return (char)arg;
+            return char.ConvertFromUtf32(arg);
         }
 
         private void RaiseKeyPressInternal(Key key)

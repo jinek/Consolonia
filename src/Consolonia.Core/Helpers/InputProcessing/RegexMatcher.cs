@@ -7,7 +7,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
 {
     public class RegexMatcher<T>(
         Action<(string, T[])> onComplete,
-        Func<T, char> toChar,
+        Func<T, string> toText,
         string regex,
         int? autoFlushOnLength = null)
         : MatcherWithComplete<T, (string, T[])>(onComplete)
@@ -19,9 +19,9 @@ namespace Consolonia.Core.Helpers.InputProcessing
 
         public override AppendResult Append(T input)
         {
-            char c = toChar(input);
+            string text = toText(input);
 
-            _accumulator.Append(c);
+            _accumulator.Append(text);
 
             string accumulatedString = _accumulator.ToString();
             AppendResult matchResultInternal = MatchResultInternal(accumulatedString);

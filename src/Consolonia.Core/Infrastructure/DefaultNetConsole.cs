@@ -72,7 +72,7 @@ namespace Consolonia.Core.Infrastructure
                     if (processSeparateKeys)
                         foreach (ConsoleKeyInfo consoleKeyInfo in tuple.Item2)
                             RaiseKeyInputInternal(consoleKeyInfo, false);
-                }, ToChar),
+                }, ToText),
                 new GenericMatcher<ConsoleKeyInfo>(consoleKeyInfo => RaiseKeyInputInternal(consoleKeyInfo))
             ]);
             // ReSharper disable VirtualMemberCallInConstructor
@@ -83,9 +83,9 @@ namespace Consolonia.Core.Infrastructure
             _inputBuffer.StartReading();
         }
 
-        private static char ToChar(ConsoleKeyInfo arg)
+        private static string ToText(ConsoleKeyInfo arg)
         {
-            return arg.KeyChar;
+            return arg.KeyChar.ToString();
         }
 
         private readonly FastBuffer<ConsoleKeyInfo> _inputBuffer;
