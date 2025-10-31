@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Avalonia;
@@ -74,18 +75,39 @@ namespace Consolonia
             }
             else if (OperatingSystem.IsLinux())
             {
-                if (IsWslPlatform())
-                    clipboardImpl = new WslClipboard();
-                else
-                    // alternatively use xclip CLI tool
-                    //return builder.With<IClipboard>(new XClipClipboard());
-                    clipboardImpl = new X11Clipboard();
+                try
+                {
+
+                    if (IsWslPlatform())
+                        clipboardImpl = new WslClipboard();
+                    else
+                        clipboardImpl = new X11Clipboard();
+                }
+                catch (jinek.X11.X11ClipboardException err)
+                {
+                    try
+                    {
+                        Debug.WriteLine(err.Message);
+                        // alternatively use xclip CLI tool
+                        clipboardImpl = new XClipClipboard();
+                    }
+                    catch (NotSupportedException  err2)
+                    {
+                        Debug.WriteLine(err2.Message);
+                        clipboardImpl = new ConsoleClipboard();
+                    }
+                }
             }
             else
             {
                 clipboardImpl = new ConsoleClipboard();
             }
 
+            return builder.UseClipboard(clipboardImpl);
+        }
+
+        public static AppBuilder UseClipboard(this AppBuilder builder, IClipboardImpl clipboardImpl)
+        {
             // Clipboard is new Avalonia wrapper around platform IClipboardImpl, but unfortunately is marked as internal.
             // This can be replaced with: ```new Clipboard(clipboardImpl);``` when/if avalonia changes the visibility of
             // Clipboard to public.
@@ -136,13 +158,13 @@ namespace Consolonia
                 switch (Environment.OSVersion.Platform)
                 {
                     case PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT:
-                    {
-                        // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
-                        if (Console.IsOutputRedirected || IsWindowsTerminal())
-                            result = new RgbConsoleColorMode();
-                        else
-                            result = new EgaConsoleColorMode();
-                    }
+                        {
+                            // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
+                            if (Console.IsOutputRedirected || IsWindowsTerminal())
+                                result = new RgbConsoleColorMode();
+                            else
+                                result = new EgaConsoleColorMode();
+                        }
                         break;
                     case PlatformID.MacOSX:
                         result = new RgbConsoleColorMode();
