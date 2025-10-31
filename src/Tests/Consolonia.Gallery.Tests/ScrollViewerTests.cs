@@ -12,7 +12,6 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab, Key.Tab, Key.Tab);
             await UITest.KeyInput(30, Key.Right);
 
