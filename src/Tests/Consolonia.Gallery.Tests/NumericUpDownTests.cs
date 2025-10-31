@@ -12,7 +12,7 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 6; i++)
                 await UITest.KeyInput(Key.Tab);
 
             await UITest.AssertHasText(@"│ Minimum:    0  ▴▾");
