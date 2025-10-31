@@ -12,8 +12,6 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            await UITest.KeyInput(Key.Tab);
-
             await UITest.AssertHasNoText("A control which pops up a hint");
             await UITest.KeyInput(Key.Space);
             await UITest.AssertHasText("A control which pops up a hint");

@@ -12,7 +12,6 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText("Co.+Region.+Population.+Area",
                 @"Afg.+ASIA \(EX. NEAR");
             await UITest.KeyInput(Key.Tab, Key.Tab);
