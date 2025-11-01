@@ -18,6 +18,12 @@ namespace Consolonia.Core.Text
 
         public void Dispose()
         {
+            lock(GlyphCacheSync)
+            {
+                GlyphTextByIndex.Clear();
+                GlyphWidthByIndex.Clear();
+                GlyphIndexByText.Clear();
+            }
         }
 
         public bool TryGetGlyphMetrics(ushort glyph, out GlyphMetrics metrics)

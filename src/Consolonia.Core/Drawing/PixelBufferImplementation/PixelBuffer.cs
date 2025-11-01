@@ -90,11 +90,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 for (ushort i = 0; i < Width;)
                 {
                     Pixel pixel = this[new PixelBufferCoordinate(i, j)];
+
                     if (pixel.Width > 0)
                     {
                         string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.GetText();
                         stringBuilder.Append(text);
-                        i += text.MeasureText();
+                        i += pixel.Width;
                     }
                     else
                     {
