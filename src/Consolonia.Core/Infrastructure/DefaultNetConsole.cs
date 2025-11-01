@@ -73,7 +73,7 @@ namespace Consolonia.Core.Infrastructure
                     if (processSeparateKeys)
                         foreach (ConsoleKeyInfo consoleKeyInfo in tuple.Item2)
                             RaiseKeyInputInternal(consoleKeyInfo, false);
-                }, (ck) => new Rune(ck.KeyChar)),
+                }, ck => new Rune(ck.KeyChar)),
                 new GenericMatcher<ConsoleKeyInfo>(consoleKeyInfo => RaiseKeyInputInternal(consoleKeyInfo))
             ]);
             // ReSharper disable VirtualMemberCallInConstructor
