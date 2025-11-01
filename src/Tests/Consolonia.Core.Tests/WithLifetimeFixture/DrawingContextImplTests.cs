@@ -171,6 +171,60 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             }
         }
 
+        [Test]
+        public void DrawTabText()
+        {
+            using var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
+            DrawText(dc, 0, 0, "A\tB", Brushes.White);
+            Assert.IsTrue(buffer[0, 0].Foreground.Symbol.Character == 'A');
+            for (ushort i =1; i < 5; i++)
+                Assert.IsTrue(buffer[i, 0].Foreground.Symbol.Character == ' ');
+            Assert.IsTrue(buffer[5, 0].Foreground.Symbol.Character == 'B');
+        }
+
+        [Test]
+        public void DrawTabTextClippedStart()
+        {
+            using var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
+            DrawText(dc, 0, 0, "xxxxxxxxxx", Brushes.White);
+
+            for (ushort x = 0; x < 10; x++)
+                Assert.IsTrue(buffer[x, 0].Foreground.Symbol.Character == 'x');
+
+            dc.PushClip(new Rect(2, 0, 10, 1));
+            DrawText(dc, 0, 0, "A\tB", Brushes.White);
+            Assert.IsTrue(buffer[0, 0].Foreground.Symbol.Character == 'x');
+            Assert.IsTrue(buffer[1, 0].Foreground.Symbol.Character == 'x');
+            for (ushort i = 2; i < 5; i++)
+                Assert.IsTrue(buffer[i, 0].Foreground.Symbol.Character == ' ');
+            Assert.IsTrue(buffer[5, 0].Foreground.Symbol.Character == 'B');
+            Assert.IsTrue(buffer[6, 0].Foreground.Symbol.Character == 'x');
+        }
+
+        [Test]
+        public void DrawTabTextClippedEnd()
+        {
+            using var consoleTopLevelImpl = new ConsoleWindowImpl();
+            PixelBuffer buffer = consoleTopLevelImpl.PixelBuffer;
+            var dc = new DrawingContextImpl(consoleTopLevelImpl);
+            DrawText(dc, 0, 0, "xxxxxxxxxx", Brushes.White);
+
+            for (ushort x = 0; x < 10; x++)
+                Assert.IsTrue(buffer[x, 0].Foreground.Symbol.Character == 'x');
+
+            dc.PushClip(new Rect(0, 0, 3, 1));
+            DrawText(dc, 0, 0, "A\tB", Brushes.White);
+            Assert.IsTrue(buffer[0, 0].Foreground.Symbol.Character == 'A');
+            Assert.IsTrue(buffer[1, 0].Foreground.Symbol.Character == ' ');
+            Assert.IsTrue(buffer[2, 0].Foreground.Symbol.Character == ' ');
+            for (ushort i = 3; i < 10; i++)
+                Assert.IsTrue(buffer[i, 0].Foreground.Symbol.Character == 'x');
+        }
+
 
         [Test]
         public void DrawLineStrikethrough()
