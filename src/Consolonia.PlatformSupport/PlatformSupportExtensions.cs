@@ -75,28 +75,31 @@ namespace Consolonia
             }
             else if (OperatingSystem.IsLinux())
             {
-                try
-                {
-
                     if (IsWslPlatform())
                         clipboardImpl = new WslClipboard();
-                    else
-                        clipboardImpl = new X11Clipboard();
-                }
-                catch (jinek.X11.X11ClipboardException err)
-                {
-                    try
-                    {
-                        Debug.WriteLine(err.Message);
-                        // alternatively use xclip CLI tool
-                        clipboardImpl = new XClipClipboard();
-                    }
-                    catch (NotSupportedException  err2)
-                    {
-                        Debug.WriteLine(err2.Message);
+                    else if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
                         clipboardImpl = new ConsoleClipboard();
+                    else
+                    {
+                        try
+                        {
+                             clipboardImpl = new X11Clipboard();
+                        }
+                        catch (jinek.X11.X11ClipboardException err)
+                        {
+                            try
+                            {
+                                Debug.WriteLine(err.Message);
+                                // alternatively use xclip CLI tool
+                                clipboardImpl = new XClipClipboard();
+                            }
+                            catch (NotSupportedException  err2)
+                            {
+                                Debug.WriteLine(err2.Message);
+                                clipboardImpl = new ConsoleClipboard();
+                            }
+                        }
                     }
-                }
             }
             else
             {
