@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using Avalonia.Input;
 using Consolonia.Core.Helpers;
@@ -72,7 +73,7 @@ namespace Consolonia.Core.Infrastructure
                     if (processSeparateKeys)
                         foreach (ConsoleKeyInfo consoleKeyInfo in tuple.Item2)
                             RaiseKeyInputInternal(consoleKeyInfo, false);
-                }, ToText),
+                }, (ck) => new Rune(ck.KeyChar)),
                 new GenericMatcher<ConsoleKeyInfo>(consoleKeyInfo => RaiseKeyInputInternal(consoleKeyInfo))
             ]);
             // ReSharper disable VirtualMemberCallInConstructor
@@ -81,11 +82,6 @@ namespace Consolonia.Core.Infrastructure
             StartSizeCheckTimerAsync();
             StartInputReading();
             _inputBuffer.StartReading();
-        }
-
-        private static string ToText(ConsoleKeyInfo arg)
-        {
-            return arg.KeyChar.ToString();
         }
 
         private readonly FastBuffer<ConsoleKeyInfo> _inputBuffer;

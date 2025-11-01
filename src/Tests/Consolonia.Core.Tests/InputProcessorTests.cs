@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Consolonia.Core.Helpers.InputProcessing;
 using NUnit.Framework;
 
@@ -29,10 +30,10 @@ namespace Consolonia.Core.Tests
             var chunkedDataProcessor = new InputProcessor<ConsoleKeyInfo>([
                 new PasteBlockMatcher<ConsoleKeyInfo>(
                     str => { output.Add((typeof(PasteBlockMatcher<ConsoleKeyInfo>), null, null, str)); },
-                    arg => arg.KeyChar.ToString()),
+                    arg => new Rune(arg.KeyChar)),
                 new TextInputMatcher<ConsoleKeyInfo>(
                     tuple => { output.Add((typeof(TextInputMatcher<ConsoleKeyInfo>), null, tuple.Item1, null)); },
-                    arg => arg.KeyChar.ToString()),
+                    arg => new Rune(arg.KeyChar)),
                 new GenericMatcher<ConsoleKeyInfo>(info =>
                 {
                     output.Add((typeof(GenericMatcher<ConsoleKeyInfo>), info.Key, null, null));
@@ -119,8 +120,8 @@ namespace Consolonia.Core.Tests
 
             IEnumerable<IMatcher<char>> matchers =
             [
-                new StartsEndsWithMatcher<char>(s => OnComplete("!" + s), c => char.ConvertFromUtf32(c), "<13>", "</13>"),
-                new StartsEndsWithMatcher<char>(s => OnComplete("!!" + s), c => char.ConvertFromUtf32(c), "<14>", "</14>"),
+                new StartsEndsWithMatcher<char>(s => OnComplete("!" + s), c => new Rune(c), "<13>", "</13>"),
+                new StartsEndsWithMatcher<char>(s => OnComplete("!!" + s), c => new Rune(c), "<14>", "</14>"),
                 new GenericMatcher<char>(c => OnComplete(c.ToString()))
             ];
 

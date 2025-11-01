@@ -1,7 +1,8 @@
 using System;
+using System.Text;
 
 namespace Consolonia.Core.Helpers.InputProcessing
 {
-    public class PasteBlockMatcher<T>(Action<string> onComplete, Func<T, string> toText)
-        : StartsEndsWithMatcher<T>(onComplete, toText, @"[200~", @"[201~");
+    public class PasteBlockMatcher<T>(Action<string> onComplete, Func<T, Rune> toRune)
+        : StartsEndsWithMatcher<T>(onComplete, toRune, @"[200~", @"[201~");
 }
