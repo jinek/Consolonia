@@ -79,7 +79,10 @@ namespace Consolonia
                 else
                     // alternatively use xclip CLI tool
                     //return builder.With<IClipboard>(new XClipClipboard());
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
                     clipboardImpl = new X11Clipboard();
+                else
+                    clipboardImpl = new ConsoleClipboard();
             }
             else
             {

@@ -13,7 +13,6 @@ namespace Consolonia.Gallery.Tests
         public async Task PerformSingleTest()
         {
             await UITest.KeyInput(Key.Tab);
-            await UITest.KeyInput(Key.Tab);
             // await UITest.KeyInput(Key.Down); // change startup to be centerowner
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Down); // change startup to be maximized
