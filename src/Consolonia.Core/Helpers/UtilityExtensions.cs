@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
