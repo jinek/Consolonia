@@ -894,8 +894,8 @@ namespace Consolonia.Core.Drawing
                             _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
                         }
 
-                        position = position.WithX(position.X + symbol.Width);
-                    }
+                            position = position.WithX(position.X + symbol.Width);
+                        }
                         break;
                 }
             }

@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Sandbox
 {
-    public class App : Application
+    public partial class App : Application
     {
         public override void Initialize()
         {
@@ -14,7 +14,9 @@ namespace Sandbox
         public override void OnFrameworkInitializationCompleted()
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            {
                 desktopLifetime.MainWindow = new MainWindow();
+            }
 
             base.OnFrameworkInitializationCompleted();
         }
