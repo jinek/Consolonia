@@ -1,22 +1,16 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
-using Avalonia.Reactive;
 using Avalonia.Styling;
 
 namespace Consolonia.Core.Helpers
 {
     public static class UtilityExtensions
     {
-        public static IDisposable SubscribeAction<TValue>(
-            this IObservable<AvaloniaPropertyChangedEventArgs<TValue>> observable,
-            Action<AvaloniaPropertyChangedEventArgs<TValue>> action)
-        {
-            return observable.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<TValue>>(action));
-        }
-
         public static void AddConsoloniaDesignMode(this Application application)
         {
             if (Design.IsDesignMode)

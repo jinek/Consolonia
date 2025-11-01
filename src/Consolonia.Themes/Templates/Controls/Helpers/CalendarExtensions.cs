@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Consolonia.Core.Helpers;
+using Consolonia.Controls;
 
 namespace Consolonia.Themes.Templates.Controls.Helpers
 {

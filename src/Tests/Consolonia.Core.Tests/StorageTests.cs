@@ -43,11 +43,17 @@ namespace Consolonia.Core.Tests
             Assert.True(File.Exists(tempFile));
             Assert.True(File.Exists(file.Path.LocalPath));
             StorageItemProperties props = await file.GetBasicPropertiesAsync();
-            Assert.AreEqual(File.GetCreationTime(tempFile).ToString("G", CultureInfo.InvariantCulture),
-                props.DateCreated?.DateTime.ToString("G", CultureInfo.InvariantCulture));
-            Assert.AreEqual(File.GetLastWriteTime(tempFile).ToString("G", CultureInfo.InvariantCulture),
-                props.DateModified?.DateTime.ToString("G", CultureInfo.InvariantCulture));
-            Assert.AreEqual(new FileInfo(tempFile).Length, (long)(props.Size ?? 0));
+
+            void CheckTimingMatches()
+            {
+                Assert.AreEqual(File.GetCreationTime(tempFile).ToString("G", CultureInfo.InvariantCulture),
+                    props.DateCreated?.DateTime.ToString("G", CultureInfo.InvariantCulture));
+                Assert.AreEqual(File.GetLastWriteTime(tempFile).ToString("G", CultureInfo.InvariantCulture),
+                    props.DateModified?.DateTime.ToString("G", CultureInfo.InvariantCulture));
+                Assert.AreEqual(new FileInfo(tempFile).Length, (long)(props.Size ?? 0));
+            }
+
+            CheckTimingMatches();
 
             using (Stream stream = await file.OpenReadAsync())
             {
@@ -59,11 +65,8 @@ namespace Consolonia.Core.Tests
             }
 
             props = await file.GetBasicPropertiesAsync();
-            Assert.AreEqual(File.GetCreationTime(tempFile).ToString("G", CultureInfo.InvariantCulture),
-                props.DateCreated?.DateTime.ToString("G", CultureInfo.InvariantCulture));
-            Assert.AreEqual(File.GetLastWriteTime(tempFile).ToString("G", CultureInfo.InvariantCulture),
-                props.DateModified?.DateTime.ToString("G", CultureInfo.InvariantCulture));
-            Assert.AreEqual(new FileInfo(tempFile).Length, (long)(props.Size ?? 0));
+
+            CheckTimingMatches();
 
             IStorageFolder parentFolder = await file.GetParentAsync();
             Assert.IsNotNull(parentFolder);
