@@ -19,8 +19,7 @@
             Value="35" />
             </Style>
             </StackPanel.Styles>-->
-            <TextBox Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                     AcceptsTab="True">
+            <TextBox Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
                 <TextBox.ContextFlyout>
                     <Flyout>
                         <TextBlock>Custom context flyout</TextBlock>

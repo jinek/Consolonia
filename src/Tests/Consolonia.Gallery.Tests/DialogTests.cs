@@ -13,7 +13,6 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Enter);
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText(SomeDialogWindow.DialogTitle);

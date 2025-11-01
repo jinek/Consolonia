@@ -24,8 +24,6 @@ namespace Consolonia.Core.Infrastructure
 
         public IWindowImpl CreateWindow()
         {
-            //todo: throw notSupported if more than one window
-            //return RaiseNotSupported<IWindowImpl>(NotSupportedRequestCode.CreateWindow);
             return new ConsoleWindowImpl();
         }
 

@@ -26,6 +26,7 @@ namespace Consolonia.Core.Infrastructure
     public class ConsoleWindowImpl : IWindowImpl
 #pragma warning restore CA1711 // Identifiers should not have incorrect suffix
     {
+        private static bool _singletonGuard;
         [NotNull] internal readonly IConsole Console;
         private readonly bool _accessKeysAlwaysOn;
         private readonly IDisposable _accessKeysAlwaysOnDisposable;
@@ -37,9 +38,15 @@ namespace Consolonia.Core.Infrastructure
 
         public ConsoleWindowImpl()
         {
-            _myKeyboardDevice = AvaloniaLocator.Current.GetService<IKeyboardDevice>();
+            if (_singletonGuard)
+                throw new ConsoloniaException(
+                    $"Creating multiple {nameof(Window)} objects simultaneously is not allowed. Please use ManagedWindow instead.");
+
+            _singletonGuard = true;
+
+            _myKeyboardDevice = AvaloniaLocator.Current.GetRequiredService<IKeyboardDevice>();
             MouseDevice = AvaloniaLocator.Current.GetService<IMouseDevice>();
-            Console = AvaloniaLocator.Current.GetService<IConsole>() ?? throw new NotImplementedException();
+            Console = AvaloniaLocator.Current.GetRequiredService<IConsole>();
             PixelBuffer = new PixelBuffer(Console.Size);
             DirtyRegions.AddRect(PixelBuffer.Size);
             Console.Resized += OnConsoleOnResized;
@@ -59,7 +66,6 @@ namespace Consolonia.Core.Infrastructure
         public PixelBuffer PixelBuffer { get; private set; }
 
         private IMouseDevice MouseDevice { get; }
-
 
         public void SetInputRoot(IInputRoot inputRoot)
         {
@@ -453,23 +459,21 @@ namespace Consolonia.Core.Infrastructure
         {
             if (!_disposedValue)
             {
+                _disposedValue = true;
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
                     Closed?.Invoke();
                     _accessKeysAlwaysOnDisposable?.Dispose();
                     Console.Resized -= OnConsoleOnResized;
                     Console.KeyEvent -= ConsoleOnKeyEvent;
+                    Console.TextInputEvent -= ConsoleOnTextInputEvent;
                     Console.MouseEvent -= ConsoleOnMouseEvent;
                     Console.FocusEvent -= ConsoleOnFocusEvent;
-
+                    _ = DirtyRegions.GetSnapshotAndClear();
                     if (Console is IDisposable disposableConsole)
                         disposableConsole.Dispose();
+                    _singletonGuard = false;
                 }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                _disposedValue = true;
             }
         }
 

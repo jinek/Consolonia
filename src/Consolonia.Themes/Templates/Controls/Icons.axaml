@@ -11,7 +11,7 @@
     <x:String x:Key="Icon_Info">ℹ</x:String>
     <x:String x:Key="Icon_Warning">⚠</x:String>
     <x:String x:Key="Icon_Help">❓</x:String>
-    <x:String x:Key="Icon_Menu">☰</x:String>
+    <x:String x:Key="Icon_Menu">≡</x:String>
     <x:String x:Key="Icon_MoreHorizontal">⋯</x:String>
     <x:String x:Key="Icon_MoreVertical">⋮</x:String>
     <x:String x:Key="Icon_Refresh">🔄</x:String>

@@ -13,7 +13,6 @@ namespace Consolonia.Gallery.Tests
         public async Task PerformSingleTest()
         {
             await UITest.AssertHasNoText("It's");
-            await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Enter);
             await Task.Delay(500);
             await UITest.AssertHasText("It's");

@@ -13,7 +13,6 @@ namespace Consolonia.Gallery.Tests
         [Order(1)]
         public async Task TestStart()
         {
-            await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText(@"Up.*▴", @"Down.*▾", @"⏴.*Left", @"Right.*⏵");
             await UITest.AssertHasNoText("Top content");
             await UITest.AssertHasNoText("Right content");
