@@ -239,7 +239,7 @@ namespace Consolonia.PlatformSupport
             // PASTE block
             yield return new SafeLockMatcher(
                 new PasteBlockMatcher<int>(buffer => { RaiseTextInput(buffer, (ulong)Environment.TickCount64); },
-                    (cp) => new Rune(cp)), 0, 0, 0);
+                    cp => new Rune(cp)), 0, 0, 0);
 
             (string, Key)[] fSequences =
             [
@@ -297,16 +297,18 @@ namespace Consolonia.PlatformSupport
 
             foreach ((string, Key) fSequence in fSequences)
                 yield return new SafeLockMatcher(
-                    new StartsEndsWithMatcher<int>(_ => { RaiseKeyPressInternal(fSequence.Item2); }, (cp) => new Rune(cp),
+                    new StartsEndsWithMatcher<int>(_ => { RaiseKeyPressInternal(fSequence.Item2); }, cp => new Rune(cp),
                         fSequence.Item1, fSequence.Item1), 0, 0, 0);
 
             // escape of ESC
             yield return new SafeLockMatcher(
-                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.Esc); }, (cp) => new Rune(cp), @"^\x1B+$", 2), 0, 0);
+                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.Esc); }, cp => new Rune(cp), @"^\x1B+$", 2), 0,
+                0);
 
             // SHIFT+TAB is received as ESC then TAB, both locked by key 0: https://unix.stackexchange.com/a/238412
             yield return new SafeLockMatcher(
-                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.BackTab); }, (cp) => new Rune(cp), @"^\x1B\t?$", 2), 0, 0);
+                new RegexMatcher<int>(_ => { RaiseKeyPressInternal(Key.BackTab); }, cp => new Rune(cp), @"^\x1B\t?$",
+                    2), 0, 0);
 
             // The ESC-number handling, debatable.
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
@@ -359,7 +361,7 @@ namespace Consolonia.PlatformSupport
                 }
 
                 RaiseKeyPressInternal(k);
-            }, (cp) => new Rune(cp), @"^\x1B[^\x1B\[]*$", 2), 0, 0);
+            }, cp => new Rune(cp), @"^\x1B[^\x1B\[]*$", 2), 0, 0);
 
             // alt mask
             yield return new SafeLockMatcher(new RegexMatcher<int>(tuple =>
@@ -367,7 +369,7 @@ namespace Consolonia.PlatformSupport
                 int wch = tuple.Item2[0];
                 Key k = Key.AltMask | MapCursesKey(wch);
                 RaiseKeyPressInternal(k);
-            }, (cp) => new Rune(cp), @"^\x1B[^\x00]*$", 2), 0, Curses.KEY_CODE_YES);
+            }, cp => new Rune(cp), @"^\x1B[^\x00]*$", 2), 0, Curses.KEY_CODE_YES);
 
             // mouse and resize detection and some special processing
             yield return new SafeLockMatcher(new GenericMatcher<int>(wch =>
@@ -436,7 +438,7 @@ namespace Consolonia.PlatformSupport
                 if (processSeparateKeys)
                     foreach (int key in tuple.Item2)
                         ProcessKeyInternal(key);
-            }, (cp) => new Rune(cp), 10 /* todo: low: magic number here*/), 0);
+            }, cp => new Rune(cp), 10 /* todo: low: magic number here*/), 0);
             yield return textInputMatcher;
 
             // general keys backup
@@ -510,10 +512,10 @@ namespace Consolonia.PlatformSupport
                     when
                     Enum.IsDefined(
                         key) /*because we want string representation only when defined, we don't want numeric value*/:
-                    {
-                        bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
-                        break;
-                    }
+                {
+                    bool _ = Enum.TryParse(key.ToString(), true, out consoleKey);
+                    break;
+                }
             }
 
             if (((uint)keyValue & (uint)Key.CharMask) > 27)
