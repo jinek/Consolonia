@@ -6,5 +6,7 @@ namespace Consolonia.Controls
         ///     This is true if console supports composing multiple emojis together (like: 👨‍👩‍👧‍👦).
         /// </summary>
         bool SupportsComplexEmoji { get; }
+
+        bool SupportsEmojiVariation { get; }
     }
 }

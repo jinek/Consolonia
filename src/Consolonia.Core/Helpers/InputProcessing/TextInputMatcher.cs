@@ -1,12 +1,13 @@
 using System;
+using System.Text;
 
 namespace Consolonia.Core.Helpers.InputProcessing
 {
     /// <summary>
     ///     A matcher that matches any text input.
     /// </summary>
-    public class TextInputMatcher<T>(Action<(string, T[])> onComplete, Func<T, char> toChar, uint? min = null)
-        : RegexMatcher<T>(onComplete, toChar, @"\A[^\x00\x1B]+\z")
+    public class TextInputMatcher<T>(Action<(string, T[])> onComplete, Func<T, Rune> toRune, uint? min = null)
+        : RegexMatcher<T>(onComplete, toRune, @"\A[^\x00\x1B]+\z")
     {
         public override bool TryFlush()
         {

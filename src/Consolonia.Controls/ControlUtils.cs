@@ -39,19 +39,58 @@ namespace Consolonia.Controls
 
             ushort width = 0;
             ushort lastWidth = 0;
+            int regionalRuneCount = 0;
             foreach (Rune rune in text.EnumerateRunes())
             {
-                int runeWidth = UnicodeCalculator.GetWidth(rune);
+                int runeWidth = Emoji.IsEmoji(rune.ToString()) ? 2 : UnicodeCalculator.GetWidth(rune);
                 if (runeWidth >= 0)
                 {
-                    if (supportsComplexEmoji &&
-                        (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter))
-                        width -= lastWidth;
-                    else
-                        width += (ushort)runeWidth;
+                    if (rune.Value == Emoji.ZeroWidthJoiner || rune.Value == Emoji.ObjectReplacementCharacter)
+                    {
+                        if (supportsComplexEmoji)
+                            width -= lastWidth;
+                        else
+                            // we return the first emoji as the result because terminal doesn't support chaining them
+                            break;
+                    }
+                    else if (rune.Value == Codepoints.VariationSelectors.EmojiSymbol &&
+                             lastWidth == 1)
+                    {
+                        // adjust for the emoji presentation, which is width 2
+                        width++;
+                        lastWidth = 2;
+                    }
+                    else if (rune.Value == Codepoints.VariationSelectors.TextSymbol &&
+                             lastWidth == 2)
+                    {
+                        // adjust for the text presentation, which is width 1
+                        width--;
+                        lastWidth = 1;
+                    }
+                    else if (lastWidth > 0 &&
+                             (rune.Value >= Emoji.SkinTones.Light && rune.Value <= Emoji.SkinTones.Dark ||
+                              rune.Value == Codepoints.Keycap))
+                    {
+                        // Emoji modifier (skin tone) or keycap extender should continue current glyph
 
-                    if (runeWidth > 0)
-                        lastWidth = (ushort)runeWidth;
+                        // else: combining — ignore
+                    }
+                    // regional indicator symbols
+                    else if (rune.Value >= 0x1F1E6 && rune.Value <= 0x1F1FF)
+                    {
+                        regionalRuneCount++;
+                        if (regionalRuneCount % 2 == 0)
+                            // every pair of regional indicator symbols form a single glyph
+                            width += (ushort)runeWidth;
+                        // If the last rune is a regional indicator symbol, continue the current glyph
+                    }
+                    else
+                    {
+                        width += (ushort)runeWidth;
+                    }
+
+
+                    if (runeWidth > 0) lastWidth = (ushort)runeWidth;
                 }
                 // Control chars return as width < 0
                 else
