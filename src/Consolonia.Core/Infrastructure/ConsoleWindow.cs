@@ -470,6 +470,8 @@ namespace Consolonia.Core.Infrastructure
                     Console.MouseEvent -= ConsoleOnMouseEvent;
                     Console.FocusEvent -= ConsoleOnFocusEvent;
                     _ = DirtyRegions.GetSnapshotAndClear();
+                    if(Console is IDisposable disposableConsole)
+                        disposableConsole.Dispose();
                     _singletonGuard = false;
                 }
             }
