@@ -292,37 +292,8 @@ namespace Consolonia.Core.Drawing
             foreach (GlyphInfo glyphInfo in glyphRunImpl.GlyphInfos)
                 if (glyphInfo.GlyphAdvance > 0)
                 {
-                    // NOTE: we clip at the position of the wide char. If we attempt to clip for the width of the wide
-                    // char it introduces artifacts when a wide char is partially clipped.
-                    if (CurrentClip.ContainsExclusive(position))
-                    {
-                        string glyph = glyphTypeface.GetGlyphText(glyphInfo.GlyphIndex);
-                        if (glyph == "\t")
-                        {
-                            var symbol = new Symbol(' ', 1);
-                            var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style,
-                                glyphTypeface.Weight);
-
-                            for (int i = 0; i < glyphInfo.GlyphAdvance; i++)
-                            {
-                                if (CurrentClip.ContainsExclusive(position))
-                                    _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
-                                position = position.WithX(position.X + 1);
-                            }
-                        }
-                        else
-                        {
-                            var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
-                            var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style,
-                                glyphTypeface.Weight);
-                            _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
-                            position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
-                        }
-                    }
-                    else
-                    {
-                        position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
-                    }
+                    DrawGlyphInfoInternal(foregroundColor, glyphInfo, glyphTypeface, position);
+                    position = position.WithX(position.X + (ushort)glyphInfo.GlyphAdvance);
                 }
 
             // mark the dirty region, start to end, position is after the last drawn char so
@@ -845,6 +816,36 @@ namespace Consolonia.Core.Drawing
                     return BoxPattern.BoldPattern;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(lineStyle), lineStyle, null);
+            }
+        }
+
+        private void DrawGlyphInfoInternal(Color foregroundColor, GlyphInfo glyphInfo, ConsoleTypeface glyphTypeface, PixelPoint position)
+        {
+            // NOTE: we clip at the position of the wide char. If we attempt to clip for the width of the wide
+            // char it introduces artifacts when a wide char is partially clipped.
+            if (CurrentClip.ContainsExclusive(position))
+            {
+                string glyph = glyphTypeface.GetGlyphText(glyphInfo.GlyphIndex);
+                if (glyph == "\t")
+                {
+                    var symbol = new Symbol(' ', 1);
+                    var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style,
+                        glyphTypeface.Weight);
+
+                    for (int i = 0; i < glyphInfo.GlyphAdvance; i++)
+                    {
+                        if (CurrentClip.ContainsExclusive(position))
+                            _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
+                        position = position.WithX(position.X + 1);
+                    }
+                }
+                else
+                {
+                    var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
+                    var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style,
+                        glyphTypeface.Weight);
+                    _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
+                }
             }
         }
 

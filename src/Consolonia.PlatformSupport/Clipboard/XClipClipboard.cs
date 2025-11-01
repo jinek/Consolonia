@@ -9,7 +9,7 @@ namespace Consolonia.PlatformSupport.Clipboard
     /// <remarks>If xclip is not installed, this implementation will not work.</remarks>
     internal class XClipClipboard : ConsoleClipboard
     {
-        private readonly string _xclipPath = string.Empty;
+        private readonly string _xclipPath;
 
         public XClipClipboard()
         {
