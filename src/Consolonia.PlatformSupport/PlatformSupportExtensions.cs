@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Avalonia;
@@ -10,6 +11,8 @@ using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
 using Consolonia.PlatformSupport.Clipboard;
+using jinek.X11;
+using X11Clipboard = Consolonia.PlatformSupport.Clipboard.X11Clipboard;
 
 // ReSharper disable CheckNamespace
 #pragma warning disable IDE0161
@@ -76,19 +79,38 @@ namespace Consolonia
             {
                 if (IsWslPlatform())
                     clipboardImpl = new WslClipboard();
-                else
-                    // alternatively use xclip CLI tool
-                    //return builder.With<IClipboard>(new XClipClipboard());
-                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
-                    clipboardImpl = new X11Clipboard();
-                else
+                else if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
                     clipboardImpl = new ConsoleClipboard();
+                else
+                    try
+                    {
+                        clipboardImpl = new X11Clipboard();
+                    }
+                    catch (X11ClipboardException err)
+                    {
+                        try
+                        {
+                            Debug.WriteLine(err.Message);
+                            // alternatively use xclip CLI tool
+                            clipboardImpl = new XClipClipboard();
+                        }
+                        catch (NotSupportedException err2)
+                        {
+                            Debug.WriteLine(err2.Message);
+                            clipboardImpl = new ConsoleClipboard();
+                        }
+                    }
             }
             else
             {
                 clipboardImpl = new ConsoleClipboard();
             }
 
+            return builder.UseClipboard(clipboardImpl);
+        }
+
+        public static AppBuilder UseClipboard(this AppBuilder builder, IClipboardImpl clipboardImpl)
+        {
             // Clipboard is new Avalonia wrapper around platform IClipboardImpl, but unfortunately is marked as internal.
             // This can be replaced with: ```new Clipboard(clipboardImpl);``` when/if avalonia changes the visibility of
             // Clipboard to public.

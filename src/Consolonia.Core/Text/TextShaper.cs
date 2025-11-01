@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using Consolonia.Controls;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 
@@ -15,15 +14,32 @@ namespace Consolonia.Core.Text
         {
             var console = AvaloniaLocator.Current.GetRequiredService<IConsoleOutput>();
 
-            IReadOnlyList<string> glyphs = text.Span.ToString().GetGlyphs(console.SupportsComplexEmoji);
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text.Span.ToString(), console.SupportsComplexEmoji);
 
-            var shapedBuffer = new ShapedBuffer(text, glyphs.Count,
+            var shapedBuffer = new ShapedBuffer(text, graphemes.Count,
                 options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);
 
-            for (int i = 0; i < shapedBuffer.Length; i++)
-                // NOTE: We are using the placeholder glyph since we are pushing
-                // raw text to the console and not using a font system to render the text
-                shapedBuffer[i] = new GlyphInfo(GlyphTypeface.Glyph, i, glyphs[i].MeasureText());
+            var glyphTypeface = options.Typeface as ConsoleTypeface;
+            for (ushort i = 0; i < shapedBuffer.Length; i++)
+            {
+                Grapheme grapheme = graphemes[i];
+                ushort glyphIndex;
+                int glyphAdvance;
+                switch (grapheme.Glyph)
+                {
+                    case "\r":
+                    case "\n":
+                        glyphIndex = glyphTypeface.GetGlyphIndex("\u200c");
+                        glyphAdvance = 0;
+                        break;
+                    default:
+                        glyphIndex = glyphTypeface.GetGlyphIndex(grapheme.Glyph);
+                        glyphAdvance = glyphTypeface.GetGlyphAdvance(glyphIndex);
+                        break;
+                }
+
+                shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphAdvance);
+            }
 
             return shapedBuffer;
         }

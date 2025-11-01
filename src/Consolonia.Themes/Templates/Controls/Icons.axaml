@@ -11,30 +11,30 @@
     <x:String x:Key="Icon_Info">ℹ</x:String>
     <x:String x:Key="Icon_Warning">⚠</x:String>
     <x:String x:Key="Icon_Help">❓</x:String>
-    <x:String x:Key="Icon_Menu">≡</x:String>
-    <x:String x:Key="Icon_MoreHorizontal">⋯</x:String>
-    <x:String x:Key="Icon_MoreVertical">⋮</x:String>
+    <x:String x:Key="Icon_Menu">☰</x:String>
+    <x:String x:Key="Icon_MoreHorizontal">⋯&#xFE0F;</x:String>
+    <x:String x:Key="Icon_MoreVertical"> ⋮</x:String>
     <x:String x:Key="Icon_Refresh">🔄</x:String>
-    <x:String x:Key="Icon_ArrowLeft">←</x:String>
-    <x:String x:Key="Icon_ArrowRight">→</x:String>
-    <x:String x:Key="Icon_ArrowUp">↑</x:String>
-    <x:String x:Key="Icon_ArrowDown">↓</x:String>
+    <x:String x:Key="Icon_ArrowLeft">←&#xFE0F;</x:String>
+    <x:String x:Key="Icon_ArrowRight">→&#xFE0F;</x:String>
+    <x:String x:Key="Icon_ArrowUp">↑&#xFE0F;</x:String>
+    <x:String x:Key="Icon_ArrowDown">↓&#xFE0F;</x:String>
     <x:String x:Key="Icon_ArrowUpLeft">↖</x:String>
     <x:String x:Key="Icon_ArrowUpRight">↗</x:String>
     <x:String x:Key="Icon_ArrowDownLeft">↙</x:String>
     <x:String x:Key="Icon_ArrowDownRight">↘</x:String>
     <x:String x:Key="Icon_ChevronLeft">◀</x:String>
     <x:String x:Key="Icon_ChevronRight">▶</x:String>
-    <x:String x:Key="Icon_ChevronUp">▲</x:String>
-    <x:String x:Key="Icon_ChevronDown">▼</x:String>
-    <x:String x:Key="Icon_Back">⇦</x:String>
-    <x:String x:Key="Icon_Forward">⇨</x:String>
+    <x:String x:Key="Icon_ChevronUp">🞁&#xFE0F;</x:String>
+    <x:String x:Key="Icon_ChevronDown">🞃&#xFE0F;</x:String>
+    <x:String x:Key="Icon_Back">🢦&#xFE0F;</x:String>
+    <x:String x:Key="Icon_Forward">🢧&#xFE0F;</x:String>
 
     <!-- Actions -->
-    <x:String x:Key="Icon_Add">＋</x:String>
-    <x:String x:Key="Icon_Remove">−</x:String>
-    <x:String x:Key="Icon_Close">🗙</x:String>
-    <x:String x:Key="Icon_Edit">✎</x:String>
+    <x:String x:Key="Icon_Add">➕</x:String>
+    <x:String x:Key="Icon_Remove">➖</x:String>
+    <x:String x:Key="Icon_Close">🗙&#xFE0F;</x:String>
+    <x:String x:Key="Icon_Edit">✎&#xFE0F;</x:String>
     <x:String x:Key="Icon_Delete">🗑</x:String>
     <x:String x:Key="Icon_Attach">📎</x:String>
     <x:String x:Key="Icon_Tag">🏷</x:String>
@@ -43,21 +43,21 @@
     <x:String x:Key="Icon_Download">📥</x:String>
     <x:String x:Key="Icon_Upload">📤</x:String>
     <x:String x:Key="Icon_Filter">🔍</x:String>
-    <x:String x:Key="Icon_Sort">⇅</x:String>
+    <x:String x:Key="Icon_Sort">⮃&#xFE0F;</x:String>
     <x:String x:Key="Icon_Open">📂</x:String>
     <x:String x:Key="Icon_New">📄</x:String>
-    <x:String x:Key="Icon_Undo">⤺</x:String>
-    <x:String x:Key="Icon_Redo">⤻</x:String>
-    <x:String x:Key="Icon_Refresh2">⟳</x:String>
+    <x:String x:Key="Icon_Undo">⤺&#xFE0F;</x:String>
+    <x:String x:Key="Icon_Redo">⤻&#xFE0F;</x:String>
+    <x:String x:Key="Icon_Refresh2">🗘&#xFE0F;</x:String>
     <x:String x:Key="Icon_Reload">🔃</x:String>
     <x:String x:Key="Icon_Sync">🔄</x:String>
-    <x:String x:Key="Icon_Cancel">🗙</x:String>
-    <x:String x:Key="Icon_Check">✓</x:String>
-    <x:String x:Key="Icon_Plus">+</x:String>
-    <x:String x:Key="Icon_Minus">−</x:String>
-    <x:String x:Key="Icon_Maximize">🗖</x:String>
-    <x:String x:Key="Icon_Minimize">🗕</x:String>
-    <x:String x:Key="Icon_Restore">🗗</x:String>
+    <x:String x:Key="Icon_Cancel">🗙&#xFE0F;</x:String>
+    <x:String x:Key="Icon_Check">✔</x:String>
+    <x:String x:Key="Icon_Plus">➕</x:String>
+    <x:String x:Key="Icon_Minus">➖</x:String>
+    <x:String x:Key="Icon_Maximize">🗖&#xFE0F;</x:String>
+    <x:String x:Key="Icon_Minimize">🗕&#xFE0F;</x:String>
+    <x:String x:Key="Icon_Restore">🗗&#xFE0F;</x:String>
 
     <!-- Communication -->
     <x:String x:Key="Icon_Mail">✉</x:String>
@@ -70,9 +70,9 @@
     <x:String x:Key="Icon_BellOff">🔕</x:String>
     <x:String x:Key="Icon_Send">📤</x:String>
     <x:String x:Key="Icon_Receive">📥</x:String>
-    <x:String x:Key="Icon_Reply">⬏</x:String>
-    <x:String x:Key="Icon_ReplyAll">⮆</x:String>
-    <x:String x:Key="Icon_ReplyForward">⭜</x:String>
+    <x:String x:Key="Icon_Reply">⬏&#xFE0F;</x:String>
+    <x:String x:Key="Icon_ReplyAll">⮆&#xFE0F;</x:String>
+    <x:String x:Key="Icon_ReplyForward">⭜&#xFE0F;</x:String>
     <x:String x:Key="Icon_Loudspeaker">📢</x:String>
     <x:String x:Key="Icon_Megaphone">📣</x:String>
 
@@ -80,7 +80,7 @@
     <x:String x:Key="Icon_Folder">📁</x:String>
     <x:String x:Key="Icon_FolderOpen">📂</x:String>
     <x:String x:Key="Icon_Document">📄</x:String>
-    <x:String x:Key="Icon_Copy">🗐</x:String>
+    <x:String x:Key="Icon_Copy">🗐&#xFE0F;</x:String>
     <x:String x:Key="Icon_Cut">✂</x:String>
     <x:String x:Key="Icon_Paste">📋</x:String>
     <x:String x:Key="Icon_Save">💾</x:String>
@@ -95,8 +95,8 @@
     <x:String x:Key="Icon_FileZip">🗜</x:String>
     <x:String x:Key="Icon_FileCode">📝</x:String>
     <x:String x:Key="Icon_SaveAs">💾</x:String>
-    <x:String x:Key="Icon_Export">⭸</x:String>
-    <x:String x:Key="Icon_Import">⭶</x:String>
+    <x:String x:Key="Icon_Export">⭸&#xFE0F;</x:String>
+    <x:String x:Key="Icon_Import">⭶&#xFE0F;</x:String>
     <x:String x:Key="Icon_Trashcan">🗑</x:String>
     <x:String x:Key="Icon_Recycle">♻</x:String>
 
@@ -109,7 +109,7 @@
     <x:String x:Key="Icon_VolumeDown">🔉</x:String>
     <x:String x:Key="Icon_VolumeMute">🔇</x:String>
     <x:String x:Key="Icon_Microphone">🎤</x:String>
-    <x:String x:Key="Icon_Play">▶</x:String>
+    <x:String x:Key="Icon_Play">▶️</x:String>
     <x:String x:Key="Icon_Pause">⏸</x:String>
     <x:String x:Key="Icon_Stop">⏹</x:String>
     <x:String x:Key="Icon_FastForward">⏩</x:String>
@@ -174,7 +174,7 @@
     <x:String x:Key="Icon_WifiOff">📴</x:String>
     <x:String x:Key="Icon_Bluetooth">📱</x:String>
     <x:String x:Key="Icon_Power">⚡</x:String>
-    <x:String x:Key="Icon_PowerButton">⏻</x:String>
+    <x:String x:Key="Icon_PowerButton">⏻&#xFE0F;</x:String>
     <x:String x:Key="Icon_Battery">🔋</x:String>
     <x:String x:Key="Icon_PluggedIn">🔌</x:String>
 
@@ -216,8 +216,8 @@
     <x:String x:Key="Icon_Offline">⚪</x:String>
 
     <!-- Misc -->
-    <x:String x:Key="Icon_Star">★</x:String>
-    <x:String x:Key="Icon_Heart">♥</x:String>
+    <x:String x:Key="Icon_Star">⚝&#xFE0F;</x:String>
+    <x:String x:Key="Icon_Heart">💖</x:String>
     <x:String x:Key="Icon_HeartBroken">💔</x:String>
     <x:String x:Key="Icon_Key">🔑</x:String>
     <x:String x:Key="Icon_Lightbulb">💡</x:String>

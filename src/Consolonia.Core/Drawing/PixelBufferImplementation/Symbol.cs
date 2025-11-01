@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Consolonia.Controls;
+using NeoSmart.Unicode;
 using Newtonsoft.Json;
 using Wcwidth;
 
@@ -13,6 +16,12 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [JsonConverter(typeof(SymbolConverter))]
     public readonly struct Symbol : IEquatable<Symbol>
     {
+        private const char TextVariation = '\ufe0e';
+        private const char EmojiVariation = '\ufe0f';
+
+        private static readonly Dictionary<char, string> GlyphCharCache = new();
+        private static readonly Dictionary<string, string> GlyphComplexCache = new();
+
         public static readonly Symbol Empty = new();
         public static readonly Symbol Space = new(' ');
 
@@ -27,12 +36,26 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Symbol(char ch)
+        public Symbol(char ch, byte? width = null)
         {
             Character = ch;
             Complex = null;
-            Width = (byte)UnicodeCalculator.GetWidth(ch);
+            Width = width ?? (byte)UnicodeCalculator.GetWidth(ch);
             Pattern = 0;
+            // if we think it should be wide, OR we know it's an emoji 
+            if (Width == 2 || Emoji.IsEmoji(new string(ch, 1)))
+            {
+                // we want to use EmojiVariation to signal we think it's wide.
+                Character = char.MinValue;
+                Width = 2;
+                lock (GlyphCharCache)
+                {
+                    if (GlyphCharCache.TryGetValue(ch, out string wideChar))
+                        Complex = wideChar;
+                    else
+                        Complex = GlyphCharCache[ch] = $"{ch}{EmojiVariation}";
+                }
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -45,22 +68,50 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Symbol(string glyph)
+        public Symbol(string glyph, byte? width = null)
         {
-            if (glyph.Length == 1)
+            Pattern = 0;
+            Complex = null;
+            Character = char.MinValue;
+            ArgumentNullException.ThrowIfNull(glyph);
+            if (glyph.Length == 0)
             {
-                Character = glyph[0];
-                Complex = null;
-                Width = (byte)UnicodeCalculator.GetWidth(Character);
-                Pattern = 0;
+                // empty string means nothing to draw, this is used in blending situations
+                // we want to use char.MinValue and null for Complex to indicate this is empty.
+                Width = 0;
             }
             else
             {
-                // this is a multi-char glyph, we don't cache it. 
-                Character = char.MinValue;
-                Pattern = 0;
-                Complex = glyph;
-                Width = (byte)Complex.MeasureText();
+                Width = width ?? (byte)glyph.MeasureText();
+
+                if (glyph.Length == 1)
+                {
+                    // we can use the single char constructor for optimization
+                    this = new Symbol(glyph[0], width);
+                }
+                else if (glyph.Any(ch => ch == TextVariation || ch == EmojiVariation))
+                {
+                    // it already has the variation selector so we just use it as is
+                    Complex = glyph;
+                }
+                else
+                {
+                    // we want to store as complex glyph with variation selector
+                    Character = char.MinValue;
+                    lock (GlyphComplexCache)
+                    {
+                        if (GlyphComplexCache.TryGetValue(glyph, out string complex))
+                        {
+                            Complex = complex;
+                        }
+                        else
+                        {
+                            // use text variation for narrow glyphs, emoji variation for wide glyphs
+                            char variation = width == 1 ? TextVariation : EmojiVariation;
+                            Complex = GlyphComplexCache[glyph] = $"{glyph}{variation}";
+                        }
+                    }
+                }
             }
         }
 
@@ -104,9 +155,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         /// </summary>
         /// <returns>symbol as string</returns>
         /// NOTE: This is only for debug purposes, do not use in rendering code as it allocates a string for the character.
+#pragma warning disable CA1024 // Use properties where appropriate
         public string GetText()
+#pragma warning restore CA1024 // Use properties where appropriate
         {
-            return Complex != null && Complex.Length > 1 ? Complex : Character.ToString();
+            if (Width == 0)
+                return string.Empty;
+            return Complex != null && Complex.Length > 1 ? Complex : new string(Character, 1);
         }
 
         public bool NothingToDraw()

@@ -8,7 +8,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
     /// </summary>
     public class StartsEndsWithMatcher<T>(
         Action<string> onComplete,
-        Func<T, char> toChar,
+        Func<T, Rune> toRune,
         string startsWith,
         string endsWith)
         : MatcherWithComplete<T, string>(onComplete)
@@ -17,10 +17,10 @@ namespace Consolonia.Core.Helpers.InputProcessing
 
         public override AppendResult Append(T input)
         {
-            char c = toChar(input);
+            Rune rune = toRune(input);
 
-            AppendResult matchResultInternal = MatchResultInternal(_accumulator.ToString() + c);
-            if (matchResultInternal == AppendResult.Match) _accumulator.Append(c);
+            AppendResult matchResultInternal = MatchResultInternal(_accumulator.ToString() + rune);
+            if (matchResultInternal == AppendResult.Match) _accumulator.Append(rune);
 
             return matchResultInternal;
         }

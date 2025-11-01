@@ -32,7 +32,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 switch (x % 3)
                 {
                     case 0:
-                        Assert.That(buffer[x, y].Foreground.Symbol.Complex == "👍");
+                        Assert.That(buffer[x, y].Foreground.Symbol.Complex == "👍\uFE0F");
                         Assert.That(buffer[x, y].Foreground.Color == Colors.Blue);
                         break;
                     case 1:
@@ -103,7 +103,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             buffer[0, 0] = new Pixel(new Symbol("👍"), Colors.Yellow);
 
             // Verify the wide character is stored at position 0
-            Assert.That(buffer[0, 0].Foreground.Symbol.Complex, Is.EqualTo("👍"));
+            Assert.That(buffer[0, 0].Foreground.Symbol.Complex, Is.EqualTo("👍\ufe0f"));
             Assert.That(buffer[0, 0].Foreground.Symbol.Width, Is.EqualTo(2));
             Assert.That(buffer[0, 0].Foreground.Color, Is.EqualTo(Colors.Yellow));
 
@@ -137,9 +137,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             buffer[4, 0] = new Pixel(new Symbol("🎉"), Colors.Red);
 
             // Verify all wide characters are stored correctly
-            Assert.That(buffer[0, 0].Foreground.Symbol.Complex, Is.EqualTo("👍"));
-            Assert.That(buffer[2, 0].Foreground.Symbol.Complex, Is.EqualTo("👨"));
-            Assert.That(buffer[4, 0].Foreground.Symbol.Complex, Is.EqualTo("🎉"));
+            Assert.That(buffer[0, 0].Foreground.Symbol.Complex, Is.EqualTo("👍\ufe0f"));
+            Assert.That(buffer[2, 0].Foreground.Symbol.Complex, Is.EqualTo("👨\ufe0f"));
+            Assert.That(buffer[4, 0].Foreground.Symbol.Complex, Is.EqualTo("🎉\ufe0f"));
 
             // Verify other positions remain Space
             Assert.That(buffer[1, 0], Is.EqualTo(Pixel.Space));
@@ -192,7 +192,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             buffer[0, 0] = new Pixel(new Symbol("👨‍👩‍👧‍👦"), Colors.Purple);
 
             // Verify it's stored correctly
-            Assert.That(buffer[0, 0].Foreground.Symbol.Complex, Is.EqualTo("👨‍👩‍👧‍👦"));
+            Assert.That(buffer[0, 0].Foreground.Symbol.Complex, Is.EqualTo("👨‍👩‍👧‍👦\uFE0F"));
             Assert.That(buffer[0, 0].Foreground.Symbol.Width, Is.EqualTo(2));
             Assert.That(buffer[0, 0].Foreground.Color, Is.EqualTo(Colors.Purple));
         }

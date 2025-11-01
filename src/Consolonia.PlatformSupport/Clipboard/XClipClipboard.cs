@@ -9,29 +9,20 @@ namespace Consolonia.PlatformSupport.Clipboard
     /// <remarks>If xclip is not installed, this implementation will not work.</remarks>
     internal class XClipClipboard : ConsoleClipboard
     {
-        private readonly bool _isSupported;
-        private readonly string _xclipPath = string.Empty;
+        private readonly string _xclipPath;
 
         public XClipClipboard()
         {
             (int exitCode, string result) = ClipboardProcessRunner.Bash("which xclip", waitForOutput: true);
 
             if (exitCode == 0 && result.FileExists())
-            {
                 _xclipPath = result;
-
-                _isSupported = true;
-            }
             else
-            {
-                _isSupported = false;
-            }
+                throw new NotSupportedException("xclip is not installed.");
         }
 
         public override async Task<string> GetTextAsync()
         {
-            if (!_isSupported) throw new NotSupportedException("xclip is not installed.");
-
             string tempFileName = Path.GetTempFileName();
             string xclipargs = "-selection clipboard -o";
 
@@ -52,8 +43,6 @@ namespace Consolonia.PlatformSupport.Clipboard
 
         public override Task SetTextAsync(string text)
         {
-            if (!_isSupported) throw new NotSupportedException("xclip is not installed.");
-
             string xclipargs = "-selection clipboard -i";
 
             (int exitCode, _) = ClipboardProcessRunner.Bash($"{_xclipPath} {xclipargs}", text);

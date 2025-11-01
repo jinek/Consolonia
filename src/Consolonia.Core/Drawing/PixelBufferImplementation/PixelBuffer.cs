@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
@@ -86,15 +87,24 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
             for (ushort j = 0; j < Height; j++)
             {
-                for (ushort i = 0; i < Width; i++)
+                for (ushort i = 0; i < Width;)
                 {
-                    if (i == Width - 1 && j == Height - 1)
-                        break;
                     Pixel pixel = this[new PixelBufferCoordinate(i, j)];
-                    string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.GetText();
 
-                    //todo: check why cursor is not drawing
-                    stringBuilder.Append(text);
+                    if (pixel.IsCaret())
+                    {
+                        stringBuilder.Append('Ꮖ');
+                        i += Math.Max(pixel.Width, (ushort)1);
+                    }
+                    else if (pixel.Width > 0)
+                    {
+                        stringBuilder.Append(pixel.Foreground.Symbol.GetText());
+                        i += pixel.Width;
+                    }
+                    else
+                    {
+                        i++;
+                    }
                 }
 
                 stringBuilder.AppendLine();
