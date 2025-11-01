@@ -1,4 +1,5 @@
 //DUPFINDER_ignore
+
 using System.Collections.Generic;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;

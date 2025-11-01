@@ -181,7 +181,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var dc = new DrawingContextImpl(consoleTopLevelImpl);
             DrawText(dc, 0, 0, "A\tB", Brushes.White);
             Assert.IsTrue(buffer[0, 0].Foreground.Symbol.Character == 'A');
-            for (ushort i =1; i < 5; i++)
+            for (ushort i = 1; i < 5; i++)
                 Assert.IsTrue(buffer[i, 0].Foreground.Symbol.Character == ' ');
             Assert.IsTrue(buffer[5, 0].Foreground.Symbol.Character == 'B');
         }
