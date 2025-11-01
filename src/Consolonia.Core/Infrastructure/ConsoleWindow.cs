@@ -13,8 +13,8 @@ using Avalonia.Input.Raw;
 using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Helpers;
 using Window = Avalonia.Controls.Window;
 
 namespace Consolonia.Core.Infrastructure

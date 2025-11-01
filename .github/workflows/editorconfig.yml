@@ -47,6 +47,7 @@ jobs:
           jb cleanupcode Consolonia.sln --exclude="**Consolonia.GuiCS/**.*;**Consolonia.Templates/**.*;**Consolonia.Editor/**.*"
         working-directory: ./src
 
+
       - name: Inspect code
         uses: muno92/resharper_inspectcode@1.12.0
         with:
@@ -69,3 +70,62 @@ jobs:
         with:
           branch: ${{ steps.comment-branch.outputs.ref }}
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+  dupfinder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Get branch info # todo: is this needed?
+        id: comment-branch
+        uses: xt0rted/pull-request-comment-branch@v1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.comment-branch.outputs.ref }}
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore
+        working-directory: ./src
+
+      - name: Install JetBrains ReSharper GlobalTools (dupfinder 2021.2.3)
+        run: dotnet tool install -g JetBrains.ReSharper.GlobalTools --version 2021.2.3
+
+      - name: Run dupfinder (duplicate code check, produce XML)
+        run: |
+          ~/.dotnet/tools/jb dupfinder Consolonia.sln --exclude-code-regions='DUPFINDER_ignore' --exclude-by-comment='DUPFINDER_ignore' --output=dupfinder-report.xml --discard-cost=100
+        working-directory: ./src
+
+      - name: Upload dupfinder XML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dupfinder-report-${{ github.run_number }}
+          path: ./src/dupfinder-report.xml
+          if-no-files-found: error
+
+      - name: Print dupfinder XML report to log
+        if: always()
+        run: |
+          echo "::group::dupfinder-report.xml"
+          cat dupfinder-report.xml
+          echo "::endgroup::"
+        working-directory: ./src
+
+      - name: Fail if duplicates found
+        run: |
+          if grep -Eq "<Duplicate( |>)" dupfinder-report.xml; then
+            echo "Duplicate code detected by dupfinder. See the uploaded artifact: dupfinder-report-${{ github.run_number }}";
+            exit 1;
+          else
+            echo "No duplicate code detected by dupfinder.";
+          fi
+        working-directory: ./src
