@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Avalonia;
@@ -90,10 +91,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 {
                     Pixel pixel = this[new PixelBufferCoordinate(i, j)];
 
-                    if (pixel.Width > 0)
+                    if (pixel.IsCaret())
                     {
-                        string text = pixel.IsCaret() ? "Ꮖ" : pixel.Foreground.Symbol.GetText();
-                        stringBuilder.Append(text);
+                        stringBuilder.Append('Ꮖ');
+                        i += Math.Max(pixel.Width, (ushort)1);
+                    }
+                    else if (pixel.Width > 0)
+                    {
+                        stringBuilder.Append(pixel.Foreground.Symbol.GetText());
                         i += pixel.Width;
                     }
                     else
