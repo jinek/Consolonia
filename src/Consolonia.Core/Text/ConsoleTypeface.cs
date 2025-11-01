@@ -18,7 +18,7 @@ namespace Consolonia.Core.Text
 
         public void Dispose()
         {
-            lock(GlyphCacheSync)
+            lock (GlyphCacheSync)
             {
                 GlyphTextByIndex.Clear();
                 GlyphWidthByIndex.Clear();

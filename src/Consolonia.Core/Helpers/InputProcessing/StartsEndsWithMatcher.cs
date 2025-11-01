@@ -19,7 +19,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
         {
             string s = toText(input);
 
-            AppendResult matchResultInternal = MatchResultInternal(_accumulator.ToString() + s);
+            AppendResult matchResultInternal = MatchResultInternal(_accumulator + s);
             if (matchResultInternal == AppendResult.Match) _accumulator.Append(s);
 
             return matchResultInternal;

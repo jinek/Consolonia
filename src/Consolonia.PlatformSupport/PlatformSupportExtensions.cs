@@ -11,6 +11,8 @@ using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
 using Consolonia.PlatformSupport.Clipboard;
+using jinek.X11;
+using X11Clipboard = Consolonia.PlatformSupport.Clipboard.X11Clipboard;
 
 // ReSharper disable CheckNamespace
 #pragma warning disable IDE0161
@@ -75,29 +77,27 @@ namespace Consolonia
             }
             else if (OperatingSystem.IsLinux())
             {
-                    if (IsWslPlatform())
-                        clipboardImpl = new WslClipboard();
-                    else if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
-                        clipboardImpl = new ConsoleClipboard();
-                    else
+                if (IsWslPlatform())
+                    clipboardImpl = new WslClipboard();
+                else if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
+                    clipboardImpl = new ConsoleClipboard();
+                else
+                    try
+                    {
+                        clipboardImpl = new X11Clipboard();
+                    }
+                    catch (X11ClipboardException err)
                     {
                         try
                         {
-                             clipboardImpl = new X11Clipboard();
+                            Debug.WriteLine(err.Message);
+                            // alternatively use xclip CLI tool
+                            clipboardImpl = new XClipClipboard();
                         }
-                        catch (jinek.X11.X11ClipboardException err)
+                        catch (NotSupportedException err2)
                         {
-                            try
-                            {
-                                Debug.WriteLine(err.Message);
-                                // alternatively use xclip CLI tool
-                                clipboardImpl = new XClipClipboard();
-                            }
-                            catch (NotSupportedException  err2)
-                            {
-                                Debug.WriteLine(err2.Message);
-                                clipboardImpl = new ConsoleClipboard();
-                            }
+                            Debug.WriteLine(err2.Message);
+                            clipboardImpl = new ConsoleClipboard();
                         }
                     }
             }
@@ -161,13 +161,13 @@ namespace Consolonia
                 switch (Environment.OSVersion.Platform)
                 {
                     case PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT:
-                        {
-                            // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
-                            if (Console.IsOutputRedirected || IsWindowsTerminal())
-                                result = new RgbConsoleColorMode();
-                            else
-                                result = new EgaConsoleColorMode();
-                        }
+                    {
+                        // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
+                        if (Console.IsOutputRedirected || IsWindowsTerminal())
+                            result = new RgbConsoleColorMode();
+                        else
+                            result = new EgaConsoleColorMode();
+                    }
                         break;
                     case PlatformID.MacOSX:
                         result = new RgbConsoleColorMode();

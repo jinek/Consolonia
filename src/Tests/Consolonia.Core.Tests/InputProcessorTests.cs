@@ -119,8 +119,10 @@ namespace Consolonia.Core.Tests
 
             IEnumerable<IMatcher<char>> matchers =
             [
-                new StartsEndsWithMatcher<char>(s => OnComplete("!" + s), c => char.ConvertFromUtf32(c), "<13>", "</13>"),
-                new StartsEndsWithMatcher<char>(s => OnComplete("!!" + s), c => char.ConvertFromUtf32(c), "<14>", "</14>"),
+                new StartsEndsWithMatcher<char>(s => OnComplete("!" + s), c => char.ConvertFromUtf32(c), "<13>",
+                    "</13>"),
+                new StartsEndsWithMatcher<char>(s => OnComplete("!!" + s), c => char.ConvertFromUtf32(c), "<14>",
+                    "</14>"),
                 new GenericMatcher<char>(c => OnComplete(c.ToString()))
             ];
 

@@ -16,13 +16,9 @@ namespace Consolonia.PlatformSupport.Clipboard
             (int exitCode, string result) = ClipboardProcessRunner.Bash("which xclip", waitForOutput: true);
 
             if (exitCode == 0 && result.FileExists())
-            {
                 _xclipPath = result;
-            }
             else
-            {
                 throw new NotSupportedException("xclip is not installed.");
-            }
         }
 
         public override async Task<string> GetTextAsync()

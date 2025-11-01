@@ -74,7 +74,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             Complex = null;
             Character = char.MinValue;
             ArgumentNullException.ThrowIfNull(glyph);
-            if (glyph.Length== 0)
+            if (glyph.Length == 0)
             {
                 // empty string means nothing to draw, this is used in blending situations
                 // we want to use char.MinValue and null for Complex to indicate this is empty.
@@ -107,7 +107,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                         else
                         {
                             // use text variation for narrow glyphs, emoji variation for wide glyphs
-                            var variation = (width == 1) ? TextVariation : EmojiVariation;
+                            char variation = width == 1 ? TextVariation : EmojiVariation;
                             Complex = GlyphComplexCache[glyph] = $"{glyph}{variation}";
                         }
                     }

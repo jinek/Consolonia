@@ -819,7 +819,8 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawGlyphInfoInternal(Color foregroundColor, GlyphInfo glyphInfo, ConsoleTypeface glyphTypeface, PixelPoint position)
+        private void DrawGlyphInfoInternal(Color foregroundColor, GlyphInfo glyphInfo, ConsoleTypeface glyphTypeface,
+            PixelPoint position)
         {
             // NOTE: we clip at the position of the wide char. If we attempt to clip for the width of the wide
             // char it introduces artifacts when a wide char is partially clipped.
