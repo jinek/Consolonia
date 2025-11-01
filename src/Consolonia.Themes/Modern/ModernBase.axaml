@@ -46,7 +46,7 @@
             <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
             <BoxShadows x:Key="ManagedWindow_BoxShadows">none</BoxShadows>
             <Thickness x:Key='ManagedWindow_BorderThickness'>1</Thickness>
-            <x:Double x:Key="ManagedWindow_SystemIconSpacing">0</x:Double>
+            <x:Double x:Key="ManagedWindow_SystemIconSpacing">-1</x:Double>
             <x:Double x:Key="ManagedWindow_SystemIconSize">1</x:Double>
             <x:Int32 x:Key="ManagedWindow_SizingVector">1</x:Int32>
             <Thickness x:Key='ManagedWindow_TitleMargin'>1 0 0 0</Thickness>
