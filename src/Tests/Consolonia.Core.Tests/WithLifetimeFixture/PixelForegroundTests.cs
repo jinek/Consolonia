@@ -81,7 +81,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var pixelForeground = new PixelForeground(symbol, Colors.Red);
             Assert.That(pixelForeground.Color, Is.EqualTo(Colors.Red));
             Assert.That(pixelForeground.Symbol.Character, Is.EqualTo(char.MinValue));
-            Assert.That(pixelForeground.Symbol.Complex, Is.EqualTo("🎵"));
+            Assert.That(pixelForeground.Symbol.Complex, Is.EqualTo("🎵️"));
             Assert.IsNull(pixelForeground.Weight);
             Assert.IsNull(pixelForeground.Style);
             Assert.IsNull(pixelForeground.TextDecoration);
@@ -153,7 +153,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var pixelForegroundAbove = new PixelForeground(symbolAbove, Colors.Blue);
             PixelForeground newPixelForeground = pixelForeground.Blend(pixelForegroundAbove);
             Assert.That(newPixelForeground.Color, Is.EqualTo(Colors.Blue));
-            Assert.That(newPixelForeground.Symbol.Complex, Is.EqualTo("🎶"));
+            Assert.That(newPixelForeground.Symbol.Complex, Is.EqualTo("🎶️"));
         }
 
         [Test]

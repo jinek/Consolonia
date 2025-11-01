@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
@@ -9,6 +8,7 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.NUnit
@@ -30,6 +30,8 @@ namespace Consolonia.NUnit
         public PixelBufferSize Size { get; set; }
 
         public bool SupportsComplexEmoji => true;
+        public bool SupportsEmojiVariation => true;
+
         public bool SupportsAltSolo => true;
         public bool SupportsMouse => false;
         public bool SupportsMouseMove => false;
@@ -55,12 +57,12 @@ namespace Consolonia.NUnit
             (ushort x, ushort y) = bufferPoint;
 
             int i = 0;
-            foreach (Rune rune in str.EnumerateRunes())
+            foreach (Grapheme grapheme in Grapheme.Parse(str, true))
             {
                 var coord = new PixelBufferCoordinate((ushort)(x + i), y);
                 PixelBuffer[coord] =
                     new Pixel(
-                        new PixelForeground(new Symbol(rune), foreground, style: style, weight: weight,
+                        new PixelForeground(new Symbol(grapheme.Glyph), foreground, style: style, weight: weight,
                             textDecoration: textDecoration),
                         new PixelBackground(background));
                 i++;
