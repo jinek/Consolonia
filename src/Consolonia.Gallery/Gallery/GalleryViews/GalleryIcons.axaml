@@ -31,6 +31,7 @@
                 <TextBlock Width="20"
                            Text="Info" />
                 <TextBlock Text="{StaticResource Icon_Info}" />
+                <TextBlock Text="|" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="20"
