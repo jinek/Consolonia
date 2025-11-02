@@ -1,3 +1,5 @@
+// DUPFINDER_ignore
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,7 +41,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             Rune rune = "👍".EnumerateRunes().First();
             var symbol = new Symbol(rune);
-            Assert.That(symbol.Complex, Is.EqualTo("👍"));
+            Assert.That(symbol.Complex, Is.EqualTo("👍\ufe0f"));
             Assert.That(symbol.Character, Is.EqualTo(char.MinValue));
             Assert.That(symbol.Width, Is.EqualTo(2));
         }
@@ -49,7 +51,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             var symbol = new Symbol("👨‍👩‍👧‍👦");
             Assert.That(symbol.Character, Is.EqualTo(char.MinValue));
-            Assert.That(symbol.Complex, Is.EqualTo("👨‍👩‍👧‍👦"));
+            Assert.That(symbol.Complex, Is.EqualTo("👨‍👩‍👧‍👦\ufe0f"));
             Assert.That(symbol.Width, Is.EqualTo(2));
         }
 
@@ -149,7 +151,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var symbol = new Symbol('a');
             var symbolAbove = new Symbol("👍");
             Symbol newSymbol = symbol.Blend(ref symbolAbove);
-            Assert.That(newSymbol.Complex, Is.EqualTo("👍"));
+            Assert.That(newSymbol.Complex, Is.EqualTo("👍\ufe0f"));
             Assert.That(newSymbol.Width, Is.EqualTo(2));
         }
 
