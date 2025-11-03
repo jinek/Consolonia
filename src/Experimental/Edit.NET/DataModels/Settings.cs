@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Edit.NET.DataModels
+namespace EditNET.DataModels
 {
     [JsonSerializable(typeof(Settings))]
     [JsonSourceGenerationOptions(WriteIndented = true, GenerationMode = JsonSourceGenerationMode.Default)]

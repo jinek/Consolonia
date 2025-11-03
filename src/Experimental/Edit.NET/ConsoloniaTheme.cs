@@ -1,4 +1,4 @@
-namespace Edit.NET
+namespace EditNET
 {
     public enum ConsoloniaTheme
     {

@@ -1,15 +1,12 @@
-using System;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Styling;
 using Consolonia.Themes;
-using Edit.NET.ViewModels;
-using Edit.NET.Views;
-using TextMateSharp.Grammars;
+using EditNET.ViewModels;
+using EditNET.Views;
 
-namespace Edit.NET;
+namespace EditNET;
 
 public partial class App : Application
 {
@@ -49,15 +46,15 @@ public partial class App : Application
 
     private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(ViewModel.UITheme))
+        if (e.PropertyName == nameof(AppViewModel.UITheme))
         {
             ChangeUITheme(ViewModel.UITheme);
         }
-        else if (e.PropertyName == nameof(ViewModel.UIThemeVariant))
+        else if (e.PropertyName == nameof(AppViewModel.UIThemeVariant))
         {
             MainWindow.RequestedThemeVariant = ViewModel.UIThemeVariant;
         }
-        else if (e.PropertyName == nameof(ViewModel.SyntaxTheme))
+        else if (e.PropertyName == nameof(AppViewModel.SyntaxTheme))
         {
             var theme = EditorView.ViewModel!.RegistryOptions!.LoadTheme(ViewModel.SyntaxTheme);
             EditorView.ViewModel.TextMateInstallation!.SetTheme(theme);

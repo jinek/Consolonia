@@ -5,11 +5,11 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using AvaloniaEdit.TextMate;
-using Edit.NET.DataModels;
-using Edit.NET.ViewModels;
+using EditNET.DataModels;
+using EditNET.ViewModels;
 using TextMateSharp.Grammars;
 
-namespace Edit.NET.Views
+namespace EditNET.Views
 {
 
     public partial class EditorView : UserControl
@@ -30,7 +30,7 @@ namespace Edit.NET.Views
             Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
 
             var registryOptions = new RegistryOptions(ThemeName.VisualStudioDark);
-            var textMateInstallation = Editor.InstallTextMate(registryOptions);
+            var textMateInstallation = TextMate.InstallTextMate(Editor, registryOptions);
             // Install TextMate syntax highlighting similar to Consolonia.Editor
             textMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
             ApplyThemeColorsToEditor(textMateInstallation);

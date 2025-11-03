@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Data.Converters;
 
-namespace Edit.NET
+namespace EditNET
 {
     public static class EditConverters
     {
-        public static readonly IValueConverter ModifiedConverter = new FuncValueConverter<bool, string>(modified => modified ? "Modified" : "Saved");
+        public static readonly IValueConverter ModifiedConverter =
+            new FuncValueConverter<bool, string>(modified => modified ? "Modified" : "Saved");
     }
 }

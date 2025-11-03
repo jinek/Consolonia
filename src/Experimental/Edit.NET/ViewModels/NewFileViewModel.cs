@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Edit.NET.ViewModels
+namespace EditNET.ViewModels
 {
     public partial class NewFileViewModel : ObservableValidator
     {

@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Edit.NET.Views
+namespace EditNET.Views
 {
 
     public partial class MainWindow : Window

@@ -4,10 +4,10 @@ using System.Text.Json;
 using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Controls;
-using Edit.NET.DataModels;
+using EditNET.DataModels;
 using TextMateSharp.Grammars;
 
-namespace Edit.NET.ViewModels
+namespace EditNET.ViewModels
 {
     public partial class AppViewModel : ObservableObject
     {
@@ -19,7 +19,7 @@ namespace Edit.NET.ViewModels
         }
 
         [ObservableProperty]
-        private ConsoloniaTheme _uITheme = NET.ConsoloniaTheme.Modern;
+        private ConsoloniaTheme _uITheme = ConsoloniaTheme.Modern;
 
         [ObservableProperty]
         private ThemeVariant _uIThemeVariant = ThemeVariant.Dark;

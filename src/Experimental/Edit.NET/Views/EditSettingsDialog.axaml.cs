@@ -1,9 +1,9 @@
 using Avalonia.Interactivity;
-using Edit.NET.DataModels;
-using Edit.NET.ViewModels;
+using EditNET.DataModels;
+using EditNET.ViewModels;
 using Iciclecreek.Avalonia.WindowManager;
 
-namespace Edit.NET.Views
+namespace EditNET.Views
 {
     public partial class EditSettingsDialog : ManagedWindow
     {

@@ -10,11 +10,11 @@ using AvaloniaEdit.TextMate;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Consolonia.Controls;
-using Edit.NET.Views;
+using EditNET.Views;
 using ReactiveUI;
 using TextMateSharp.Grammars;
 
-namespace Edit.NET.ViewModels
+namespace EditNET.ViewModels
 {
     public partial class EditorViewModel : ObservableObject
     {
@@ -24,8 +24,8 @@ namespace Edit.NET.ViewModels
             this._currentFolder = Environment.CurrentDirectory;
             FilePath = Path.Combine(CurrentFolder, "Untitled.txt");
             // call ApplyLanguage when Language changes
-            this.WhenAnyValue(x => x.FilePath).Subscribe(OnFilePath);
-            this.WhenAnyValue(x => x.Syntax).Subscribe(OnSyntax);
+            this.WhenAnyValue<EditorViewModel, string>(x => x.FilePath).Subscribe(OnFilePath);
+            this.WhenAnyValue<EditorViewModel, Language>(x => x.Syntax).Subscribe(OnSyntax);
         }
 
         public TextEditor Editor { get; set; }
@@ -44,11 +44,11 @@ namespace Edit.NET.ViewModels
         [ObservableProperty]
         private string? _filePath;
 
-        public string? FileName => Path.GetFileName(FilePath);
+        public string? FileName => Path.GetFileName((string?)FilePath);
 
-        public string? FileNameOnly => Path.GetFileNameWithoutExtension(FilePath);
+        public string? FileNameOnly => Path.GetFileNameWithoutExtension((string?)FilePath);
 
-        public string? Extension => Path.GetExtension(FilePath);
+        public string? Extension => Path.GetExtension((string?)FilePath);
 
         [ObservableProperty]
         private Language? _syntax;
@@ -81,7 +81,7 @@ namespace Edit.NET.ViewModels
             {
                 await File.WriteAllTextAsync(FilePath, Editor.Text);
                 Modified = false;
-                CurrentFolder = Path.GetDirectoryName(FilePath) ?? Environment.CurrentDirectory;
+                CurrentFolder = Path.GetDirectoryName((string?)FilePath) ?? Environment.CurrentDirectory;
             }
             catch (IOException ex)
             {
@@ -157,7 +157,7 @@ namespace Edit.NET.ViewModels
             var files = await MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 AllowMultiple = false,
-                SuggestedStartLocation = await MainWindow.StorageProvider.TryGetFolderFromPathAsync(CurrentFolder),
+                SuggestedStartLocation = await StorageProviderExtensions.TryGetFolderFromPathAsync(MainWindow.StorageProvider, CurrentFolder),
                 Title = "Open File"
             });
             if (files != null && files.Count > 0)
@@ -200,7 +200,7 @@ namespace Edit.NET.ViewModels
             var file = await MainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save As",
-                SuggestedStartLocation = await MainWindow.StorageProvider.TryGetFolderFromPathAsync(CurrentFolder),
+                SuggestedStartLocation = await StorageProviderExtensions.TryGetFolderFromPathAsync(MainWindow.StorageProvider, CurrentFolder),
                 SuggestedFileName = FileName ?? "Untitled.txt"
             });
             if (file != null)

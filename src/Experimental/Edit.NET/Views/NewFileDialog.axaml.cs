@@ -1,8 +1,8 @@
 using Avalonia.Interactivity;
-using Edit.NET.ViewModels;
+using EditNET.ViewModels;
 using Iciclecreek.Avalonia.WindowManager;
 
-namespace Edit.NET.Views
+namespace EditNET.Views
 {
     public partial class NewFileDialog : ManagedWindow
     {

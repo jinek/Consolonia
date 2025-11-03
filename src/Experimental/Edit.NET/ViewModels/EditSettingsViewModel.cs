@@ -2,10 +2,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Edit.NET.DataModels;
+using EditNET.DataModels;
 using TextMateSharp.Grammars;
 
-namespace Edit.NET.ViewModels
+namespace EditNET.ViewModels
 {
     public partial class EditSettingsViewModel : ObservableValidator
     {
