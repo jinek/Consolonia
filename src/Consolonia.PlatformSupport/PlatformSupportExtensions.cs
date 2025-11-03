@@ -11,7 +11,6 @@ using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
 using Consolonia.PlatformSupport.Clipboard;
-using jinek.X11;
 using X11Clipboard = Consolonia.PlatformSupport.Clipboard.X11Clipboard;
 
 // ReSharper disable CheckNamespace
