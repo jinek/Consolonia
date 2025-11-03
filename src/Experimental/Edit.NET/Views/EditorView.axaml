@@ -94,7 +94,7 @@
                                  HorizontalScrollBarVisibility="Visible"
                                  VerticalScrollBarVisibility="Visible">
             <avaloniaEdit:TextEditor.Options>
-                <avaloniaEdit:TextEditorOptions AcceptsTab="{Binding}"
+                <avaloniaEdit:TextEditorOptions AcceptsTab="true"
                                                 AllowToggleOverstrikeMode="true"
                                                 EnableTextDragDrop="true"
                                                 EnableRectangularSelection="False"
