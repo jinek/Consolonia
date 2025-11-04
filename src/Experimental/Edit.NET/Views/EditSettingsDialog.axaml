@@ -17,7 +17,7 @@
         <TabControl Margin="0"
                     TabStripPlacement="Left"
                     MinHeight="15"
-                    Width="50">
+                    MinWidth="50">
             <TabItem Header="Editor">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal"
@@ -39,8 +39,7 @@
                     </StackPanel>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="UI"
-                     IsSelected="True">
+            <TabItem Header="UI">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Theme" />
