@@ -9,14 +9,14 @@ public partial class AboutWindow : ManagedWindow
     public AboutWindow()
     {
         InitializeComponent();
-        TrySetVersion();
+        SetVersion();
     }
 
-    private void TrySetVersion()
+    private void SetVersion()
     {
         var asm = Assembly.GetExecutingAssembly();
-        string ver = asm.GetName().Version?.ToString() ?? "";
-        VersionText.Text = string.IsNullOrWhiteSpace(ver) ? "" : $"Version {ver}";
+        string ver = asm.GetName().Version!.ToString();
+        VersionText.Text = $"Version {ver}";
     }
 
     private void Ok_OnClick(object? sender, RoutedEventArgs e)

@@ -2,28 +2,26 @@ using Avalonia.Interactivity;
 using EditNET.DataModels;
 using EditNET.ViewModels;
 using Iciclecreek.Avalonia.WindowManager;
+using JetBrains.Annotations;
 
 namespace EditNET.Views
 {
     public partial class EditSettingsDialog : ManagedWindow
     {
+        [UsedImplicitly]
         public EditSettingsDialog()
         {
+            InitializeComponent();
         }
 
-        public EditSettingsDialog(Settings settings)
+        public EditSettingsDialog(Settings settings) : this()
         {
-            InitializeComponent();
-
             DataContext = new EditSettingsViewModel(settings);
         }
 
-
-        private EditSettingsViewModel ViewModel => (EditSettingsViewModel)DataContext!;
-
         private void OnOk(object sender, RoutedEventArgs e)
         {
-            Close(ViewModel.ToSettings());
+            Close(((EditSettingsViewModel)DataContext!).Settings);
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)

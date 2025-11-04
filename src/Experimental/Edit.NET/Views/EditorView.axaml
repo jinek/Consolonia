@@ -1,27 +1,37 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
-        xmlns:editNet="clr-namespace:EditNET"
-        x:Class="EditNET.Views.EditorView"
-        Background="#2D2D2D">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
+             xmlns:editNet="clr-namespace:EditNET"
+             xmlns:viewModels="clr-namespace:EditNET.ViewModels"
+             xmlns:helpers="clr-namespace:EditNET.Helpers"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             x:Class="EditNET.Views.EditorView"
+             Background="#2D2D2D"
+             x:DataType="viewModels:EditorViewModel"
+             d:DataContext="{viewModels:EditorViewModel}">
+    <UserControl.Resources>
+        <helpers:SettingsToEditorOptionsConverter x:Key="SettingsToEditorOptionsConverter" />
+    </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="MenuItem[IsChecked=true]">
-            <Setter Property="Icon" Value="{StaticResource Icon_Check}" />
+            <Setter Property="Icon"
+                    Value="{StaticResource Icon_Check}" />
         </Style>
     </UserControl.Styles>
 
     <!-- Explicit key bindings so shortcuts work in the console/ManagedWindow host -->
     <UserControl.KeyBindings>
-        <KeyBinding Gesture="Ctrl+N" Command="{Binding NewCommand}" />
-        <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenCommand}" CommandParameter="{Binding #Editor}" />
-        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}" CommandParameter="{Binding #Editor}" />
-        <KeyBinding Gesture="Ctrl+Shift+S" Command="{Binding SaveAsCommand}" CommandParameter="{Binding #Editor}" />
-        <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}" />
-        <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoCommand}" />
-        <KeyBinding Gesture="Ctrl+X" Command="{Binding CutCommand}" />
-        <KeyBinding Gesture="Ctrl+C" Command="{Binding CopyCommand}" />
-        <KeyBinding Gesture="Ctrl+V" Command="{Binding PasteCommand}" />
-        <KeyBinding Gesture="Ctrl+A" Command="{Binding SelectAllCommand}" />
+        <KeyBinding Gesture="Ctrl+N"
+                    Command="{Binding NewCommand}" />
+        <KeyBinding Gesture="Ctrl+O"
+                    Command="{Binding OpenCommand}"
+                    CommandParameter="{Binding #Editor}" />
+        <KeyBinding Gesture="Ctrl+S"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding #Editor}" />
+        <KeyBinding Gesture="Ctrl+Shift+S"
+                    Command="{Binding SaveAsCommand}"
+                    CommandParameter="{Binding #Editor}" />
     </UserControl.KeyBindings>
 
     <DockPanel LastChildFill="True">
@@ -46,72 +56,78 @@
                 <MenuItem Header="E_xit"
                           Command="{Binding ExitCommand}" />
             </MenuItem>
-            <MenuItem Header="_Edit">
+            <MenuItem Header="_Edit"
+                      SubmenuOpened="EditMenu_OnSubmenuOpened">
                 <MenuItem Header="_Undo"
-                          Command="{Binding UndoCommand}"
-                          InputGesture="Ctrl+Z" />
+                          Command="{Binding ElementName=Editor, Path=Undo}"
+                          IsEnabled="{Binding ElementName=Editor, Path=CanUndo}"
+                          InputGesture="CTRL+Z" />
                 <MenuItem Header="_Redo"
-                          Command="{Binding RedoCommand}"
+                          Command="{Binding ElementName=Editor, Path=Redo}"
+                          IsEnabled="{Binding ElementName=Editor, Path=CanRedo}"
                           InputGesture="Ctrl+Y" />
                 <Separator />
                 <MenuItem Header="Cu_t"
-                          Command="{Binding CutCommand}"
+                          Command="{Binding ElementName=Editor, Path=Cut}"
+                          IsEnabled="{Binding ElementName=Editor, Path=CanCut}"
                           InputGesture="Ctrl+X" />
                 <MenuItem Header="_Copy"
-                          Command="{Binding CopyCommand}"
+                          Command="{Binding ElementName=Editor, Path=Copy}"
+                          IsEnabled="{Binding ElementName=Editor, Path=CanCopy}"
                           InputGesture="Ctrl+C" />
                 <MenuItem Header="_Paste"
-                          Command="{Binding PasteCommand}"
+                          Command="{Binding ElementName=Editor, Path=Paste}"
+                          IsEnabled="{Binding ElementName=Editor, Path=CanPaste}"
                           InputGesture="Ctrl+V" />
                 <Separator />
                 <MenuItem Header="Select _All"
-                          Command="{Binding SelectAllCommand}"
+                          Command="{Binding ElementName=Editor, Path=SelectAll}"
+                          IsEnabled="{Binding ElementName=Editor, Path=CanSelectAll}"
                           InputGesture="Ctrl+A" />
                 <Separator />
-                <MenuItem Header="_Settings..." Click="OnShowSettings" />
+                <MenuItem Header="_Settings..."
+                          Click="OnShowSettings" />
             </MenuItem>
             <MenuItem Header="_Help">
-                <MenuItem Header="_About" Click="MenuItem_OnClick"/>
+                <MenuItem Header="_About"
+                          Click="MenuItem_OnClick" />
             </MenuItem>
         </Menu>
         <Border x:Name="BottomPanel"
                 Background="{DynamicResource ThemeAlternativeBackgroundBrush}"
                 DockPanel.Dock="Bottom">
-            <UniformGrid Columns="4" ColumnSpacing="1" Margin="1,0">
+            <UniformGrid Columns="4"
+                         ColumnSpacing="1"
+                         Margin="1,0">
                 <UniformGrid.Styles>
                     <Style Selector="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
                     </Style>
                 </UniformGrid.Styles>
-                <TextBlock Name="FileNameText" Text="{Binding FileName}" HorizontalAlignment="Left"/>
-                <TextBlock Name="PositionText" Text="Ln 1, Col 1"/>
-                <TextBlock Name="LengthText" Text="Len 0"/>
-                <TextBlock Text="{Binding Modified, Converter={x:Static editNet:EditConverters.ModifiedConverter}}" HorizontalAlignment="Right"/>
+                <TextBlock Name="FileNameText"
+                           Text="{Binding FilePath, Converter={x:Static editNet:EditConverters.FilePathToNameConverter}}"
+                           HorizontalAlignment="Left" />
+                <TextBlock Name="PositionText"
+                           Text="Ln 1, Col 1" />
+                <TextBlock Name="LengthText"
+                           Text="Len 0" />
+                <TextBlock Text="{Binding Modified, Converter={x:Static editNet:EditConverters.ModifiedConverter}}"
+                           HorizontalAlignment="Right" />
             </UniformGrid>
         </Border>
         <avaloniaEdit:TextEditor Name="Editor"
                                  ShowLineNumbers="True"
                                  HorizontalScrollBarVisibility="Visible"
-                                 VerticalScrollBarVisibility="Visible">
-            <avaloniaEdit:TextEditor.Options>
-                <avaloniaEdit:TextEditorOptions AcceptsTab="true"
-                                                AllowToggleOverstrikeMode="true"
-                                                EnableTextDragDrop="true"
-                                                EnableRectangularSelection="False"
-                                                ShowBoxForControlCharacters="true"
-                                                EnableHyperlinks="false"
-                                                EnableEmailHyperlinks="false"
-                                                EnableVirtualSpace="False"
-                                                HighlightCurrentLine="true" />
-            </avaloniaEdit:TextEditor.Options>
-
-
+                                 VerticalScrollBarVisibility="Visible"
+                                 Document="{Binding Document}"
+                                 Options="{Binding Path=Settings, Converter={StaticResource SettingsToEditorOptionsConverter}}">
             <avaloniaEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>
                     <MenuItem Header="Copy"
                               InputGesture="ctrl+C"
-                              Command="{Binding CopyMouseCommmand}"
-                              CommandParameter="{Binding #Editor.TextArea}">
+                              Command="{Binding ElementName=Editor, Path=Copy}"
+                              IsEnabled="{Binding ElementName=Editor, Path=CanCopy}">
                     </MenuItem>
                     <MenuItem Header="Cut"
                               InputGesture="ctrl+X"
@@ -120,14 +136,14 @@
                     </MenuItem>
                     <MenuItem Header="Paste"
                               InputGesture="ctrl+V"
-                              Command="{Binding PasteMouseCommmand}"
-                              CommandParameter="{Binding #Editor.TextArea}">
+                              Command="{Binding ElementName=Editor, Path=Paste}"
+                              IsEnabled="{Binding ElementName=Editor, Path=CanPaste}">
                     </MenuItem>
                     <MenuItem Header="-" />
                     <MenuItem Header="Select All"
                               InputGesture="ctrl+A"
-                              Command="{Binding SelectAllCommand}"
-                              CommandParameter="{Binding #Editor.TextArea}">
+                              Command="{Binding ElementName=Editor, Path=SelectAll}"
+                              IsEnabled="{Binding ElementName=Editor, Path=CanSelectAll}">
                     </MenuItem>
                 </MenuFlyout>
             </avaloniaEdit:TextEditor.ContextFlyout>

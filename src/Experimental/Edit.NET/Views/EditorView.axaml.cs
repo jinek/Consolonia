@@ -1,13 +1,27 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Platform.Storage;
+using Avalonia.VisualTree;
 using AvaloniaEdit.TextMate;
+using Consolonia.Controls;
 using EditNET.DataModels;
+using EditNET.Helpers;
 using EditNET.ViewModels;
+using Newtonsoft.Json;
+using ReactiveUI;
 using TextMateSharp.Grammars;
+using TextMateSharp.Themes;
 
 namespace EditNET.Views
 {
@@ -17,51 +31,138 @@ namespace EditNET.Views
         public EditorView()
         {
             InitializeComponent();
+            
             Editor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Editor.Options);
             Editor.TextArea.RightClickMovesCaret = true;
+            Editor.AttachedToVisualTree += (_, _) => { UpdateStatus(); };
+            Editor.TextArea.Caret.PositionChanged += (_, _) => UpdateStatus();
 
-            // Wire up editor events for status updates
-            Editor.AttachedToVisualTree += (_, __) => { UpdateStatus(); };
-            Editor.TextChanged += (_, __) =>
-            {
-                ViewModel.Modified = true;
-                UpdateStatus();
-            };
-            Editor.TextArea.Caret.PositionChanged += (_, __) => UpdateStatus();
-
-            var registryOptions = new RegistryOptions(ThemeName.VisualStudioDark);
-            var textMateInstallation = TextMate.InstallTextMate(Editor, registryOptions);
-            // Install TextMate syntax highlighting similar to Consolonia.Editor
-            textMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
-            ApplyThemeColorsToEditor(textMateInstallation);
-
-            this.Editor.Options.ShowSpaces = App.ViewModel.ShowSpaces;
-            this.Editor.Options.ShowTabs = App.ViewModel.ShowTabs;
-
-            // Default to plaintext
-            this.DataContext = new EditorViewModel()
-            {
-                Editor = this.Editor,
-                TextMateInstallation = textMateInstallation,
-                RegistryOptions = registryOptions,
-                Syntax = registryOptions.GetLanguageByExtension(".txt")
-            };
+            _registryOptions = new RegistryOptions(ThemeName.VisualStudioDark);
+            _textMateInstallation = Editor.InstallTextMate(_registryOptions);
+            _textMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
+            ApplyThemeColorsToEditor(_textMateInstallation);
 
             Loaded += OnLoaded;
         }
 
-        public EditorViewModel ViewModel
+        private CompositeDisposable? _dataContextHandlers;
+        private readonly RegistryOptions _registryOptions;
+        private readonly TextMate.Installation _textMateInstallation;
+
+        protected override void OnDataContextChanged(EventArgs e)
         {
-            get => (EditorViewModel)DataContext!;
+            _dataContextHandlers?.Dispose();
+            
+            base.OnDataContextChanged(e);
+            
+            _dataContextHandlers = [];
+
+            if (ViewModel == null) return;
+            EditorViewModel editorViewModel = ViewModel!;
+            editorViewModel.MessageBoxInteraction.RegisterHandler(MessageBoxHandler).DisposeWith(_dataContextHandlers);
+            editorViewModel.FocusEditorInteraction.RegisterHandler(FocusEditorHandler).DisposeWith(_dataContextHandlers);
+            editorViewModel.ShutdownInteraction.RegisterHandler(ShutDownHandler).DisposeWith(_dataContextHandlers);
+            editorViewModel.OpenFileInteraction.RegisterHandler(OpenFileHandler).DisposeWith(_dataContextHandlers);
+            editorViewModel.SaveFileInteraction.RegisterHandler(SaveFileHandler).DisposeWith(_dataContextHandlers);
+            editorViewModel.WhenAnyValue(model => model.FilePath).Subscribe(OnFilePathChanged)
+                .DisposeWith(_dataContextHandlers);
+            editorViewModel.UpdateStatusInteraction.RegisterHandler(context =>
+            {
+                UpdateStatus();
+                context.SetOutput(Unit.Default);
+            }).DisposeWith(_dataContextHandlers);
+            editorViewModel.Syntax = _registryOptions.GetLanguageByExtension(".txt");
+            editorViewModel.WhenAnyValue(model => model.Settings).Subscribe(OnSettingsUpdated)
+                .DisposeWith(_dataContextHandlers);
+        }
+
+        private void OnSettingsUpdated(Settings settings)
+        {
+            IRawTheme? theme = _registryOptions.LoadTheme(settings.SyntaxTheme);
+            _textMateInstallation.SetTheme(theme);
+        }
+
+        private void OnFilePathChanged(string? filePath)
+        {
+            if (filePath == null)
+            {
+                ViewModel!.Syntax = null;
+                _textMateInstallation.SetGrammar(null);
+                return;
+            }
+            Language language = ViewModel!.Syntax = _registryOptions.GetLanguageByExtension(Path.GetExtension(filePath));
+            string? scope = _registryOptions.GetScopeByLanguageId(language.Id);
+            _textMateInstallation.SetGrammar(scope);
+        }
+
+        private async Task OpenFileHandler(IInteractionContext<Unit, string?> interactionContext)
+        {
+            IStorageProvider storageProvider = MainWindow.StorageProvider;
+            IReadOnlyList<IStorageFile> files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                AllowMultiple = false,
+                SuggestedStartLocation =
+                    await storageProvider.TryGetFolderFromPathAsync(Directory.GetCurrentDirectory()),
+                Title = "Open File"
+            });
+            if (files.Count > 0)
+            {
+                IStorageFile file = files[0];
+                interactionContext.SetOutput(file.Path.AbsolutePath);
+            }
+            else
+                interactionContext.SetOutput(null);
+        }
+
+        private MainWindow MainWindow => this.FindAncestorOfType<MainWindow>()!;
+
+        private async Task SaveFileHandler(IInteractionContext<Unit, string?> context)
+        {
+            IStorageFile? file = await MainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            {
+                Title = "Save As",
+                SuggestedStartLocation = await MainWindow.StorageProvider.TryGetFolderFromPathAsync(Directory.GetCurrentDirectory()),
+                SuggestedFileName = "Untitled.txt"
+            });
+
+            context.SetOutput(file?.Path.AbsolutePath);
+        }
+
+        private static void ShutDownHandler(IInteractionContext<Unit, Unit> context)
+        {
+            ((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).Shutdown();
+            context.SetOutput(Unit.Default);
+        }
+
+        private void FocusEditorHandler(IInteractionContext<Unit, Unit> context)
+        {
+            Editor.TextArea.Focus();
+            context.SetOutput(Unit.Default);
+        }
+
+        private static async Task MessageBoxHandler(IInteractionContext<MessageBoxModel, bool> interactionContext)
+        {
+            MessageBoxResult result = await MessageBox.ShowDialog(interactionContext.Input.Title,
+                interactionContext.Input.Message,
+                interactionContext.Input.Buttons switch
+                {
+                    MessageBoxButtons.OkCancel => MessageBoxStyle.OkCancel,
+                    MessageBoxButtons.YesNo => MessageBoxStyle.YesNoCancel,
+                    MessageBoxButtons.Ok => MessageBoxStyle.Ok,
+                    _ => throw new NotSupportedException("Unsupported MessageBoxButtons value: " + interactionContext.Input.Buttons)
+                });
+            interactionContext.SetOutput(result is MessageBoxResult.Ok or MessageBoxResult.Yes);
+        }
+
+        public EditorViewModel? ViewModel
+        {
+            get => (EditorViewModel?)DataContext;
             set => DataContext = value;
         }
 
-        public static IClassicDesktopStyleApplicationLifetime Lifetime
+        private static IClassicDesktopStyleApplicationLifetime Lifetime
             => (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-
-        public static Window MainWindow
-            => Lifetime!.MainWindow!;
-
+        
         private void UpdateStatus()
         {
             // Position
@@ -105,18 +206,20 @@ namespace EditNET.Views
             {
                 Editor.LineNumbersForeground = Editor.TextArea.Foreground;
             }
-        }
 
-        private static bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
-        {
-            if (!e.TryGetThemeColor(colorKeyNameFromJson, out var colorString))
-                return false;
-            if (!Color.TryParse(colorString, out var color))
-                return false;
+            return;
 
-            var colorBrush = new SolidColorBrush(color);
-            applyColorAction(colorBrush);
-            return true;
+            static bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
+            {
+                if (!e.TryGetThemeColor(colorKeyNameFromJson, out var colorString))
+                    return false;
+                if (!Color.TryParse(colorString, out var color))
+                    return false;
+
+                var colorBrush = new SolidColorBrush(color);
+                applyColorAction(colorBrush);
+                return true;
+            }
         }
 
         private void MenuItem_OnClick(object? sender, RoutedEventArgs e)
@@ -126,15 +229,20 @@ namespace EditNET.Views
 
         private async void OnShowSettings(object? sender, RoutedEventArgs e)
         {
-            var dlg = new EditSettingsDialog(App.ViewModel.GetSettings());
-            var newSettings = await dlg.ShowDialog<Settings>(this);
+            var dlg = new EditSettingsDialog(ViewModel!.Settings.SerializedCopy());
+            var newSettings = await dlg.ShowDialog<Settings?>(this);
             if (newSettings != null)
             {
-                App.ViewModel.SetSettings(newSettings);
-                App.ViewModel.SaveSettings();
-                this.Editor.Options.ShowSpaces = newSettings.ShowSpaces;
-                this.Editor.Options.ShowTabs = newSettings.ShowTabs;
-                this.Editor.TextArea.Focus();
+                ViewModel.Settings = newSettings;
+                Editor.TextArea.Focus();
+            }
+        }
+
+        private void EditMenu_OnSubmenuOpened(object sender, RoutedEventArgs e)
+        {
+            foreach (MenuItem subMenu in ((MenuItem)sender).Items.OfType<MenuItem>())
+            {
+                BindingOperations.GetBindingExpressionBase(subMenu, IsEnabledProperty)?.UpdateTarget();
             }
         }
     }

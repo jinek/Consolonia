@@ -1,16 +1,13 @@
 using System;
 using System.IO;
+using System.Reactive;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Platform.Storage;
-using AvaloniaEdit;
-using AvaloniaEdit.TextMate;
+using AvaloniaEdit.Document;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Consolonia.Controls;
-using EditNET.Views;
+using EditNET.DataModels;
+using JetBrains.Annotations;
 using ReactiveUI;
 using TextMateSharp.Grammars;
 
@@ -18,220 +15,136 @@ namespace EditNET.ViewModels
 {
     public partial class EditorViewModel : ObservableObject
     {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. 
-        public EditorViewModel()
+        [ObservableProperty] private TextDocument _document = new();
+        [ObservableProperty] private string? _filePath;
+        [ObservableProperty] private bool _modified;
+        [ObservableProperty] private Language? _syntax;
+        [ObservableProperty] private Settings _settings;
+        private TextDocument? _previousDocument;
+
+        public Interaction<MessageBoxModel, bool> MessageBoxInteraction { get; } = new();
+        public Interaction<Unit, Unit> FocusEditorInteraction { get; } = new();
+        public Interaction<Unit, string?> OpenFileInteraction { get; } = new();
+        public Interaction<Unit, string?> SaveFileInteraction { get; } = new();
+        public Interaction<Unit, Unit> ShutdownInteraction { get; } = new();
+        public Interaction<Unit, Unit> UpdateStatusInteraction { get; } = new();
+
+        public EditorViewModel(Settings settings)
         {
-            this._currentFolder = Environment.CurrentDirectory;
-            FilePath = Path.Combine(CurrentFolder, "Untitled.txt");
-            // call ApplyLanguage when Language changes
-            this.WhenAnyValue<EditorViewModel, string>(x => x.FilePath).Subscribe(OnFilePath);
-            this.WhenAnyValue<EditorViewModel, Language>(x => x.Syntax).Subscribe(OnSyntax);
+            _settings = settings;
+            this.WhenAnyValue(model => model.Document).Subscribe(OnDocumentUpdated);
         }
 
-        public TextEditor Editor { get; set; }
-        public RegistryOptions? RegistryOptions { get; set; }
-        public TextMate.Installation? TextMateInstallation { get; set; }
+        private void OnDocumentUpdated(TextDocument newDocument)
+        {
+            if (_previousDocument != null) _previousDocument.TextChanged -= NewDocumentOnTextChanged;
+            _previousDocument = newDocument;
+            Modified = false;
+            newDocument.TextChanged += NewDocumentOnTextChanged;
+            UpdateStatusInteraction.Handle(Unit.Default).SubscribeOn(ThreadPoolScheduler.Instance);
+        }
 
-        public static IClassicDesktopStyleApplicationLifetime Lifetime
-            => (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
+        private void NewDocumentOnTextChanged(object? sender, EventArgs e)
+        {
+            Modified = true;
+            UpdateStatusInteraction.Handle(Unit.Default).Wait();
+        }
 
-        public static Window MainWindow
-            => Lifetime!.MainWindow!;
+        public async Task NewCommand()
+        {
+            if (!await CheckSaved())
+                return;
 
-        [NotifyPropertyChangedFor(nameof(FileName))]
-        [NotifyPropertyChangedFor(nameof(FileNameOnly))]
-        [NotifyPropertyChangedFor(nameof(Extension))]
-        [ObservableProperty]
-        private string? _filePath;
+            Document = new TextDocument();
+            await FocusEditorInteraction.Handle(Unit.Default);
+        }
 
-        public string? FileName => Path.GetFileName((string?)FilePath);
+        public async Task OpenCommand()
+        {
+            if (!await CheckSaved())
+                return;
 
-        public string? FileNameOnly => Path.GetFileNameWithoutExtension((string?)FilePath);
+            string? filePath = await OpenFileInteraction.Handle(Unit.Default);
+            if (filePath == null)
+                return;
 
-        public string? Extension => Path.GetExtension((string?)FilePath);
+            await OpenFile(Path.GetFullPath(filePath));
 
-        [ObservableProperty]
-        private Language? _syntax;
+            await FocusEditorInteraction.Handle(Unit.Default);
+        }
 
-        [ObservableProperty]
-        private bool _modified;
+        public async Task SaveCommand()
+        {
+            if (FilePath == null)
+                await SaveAsCommand();
+            else await SaveFileInternalAsync();
 
-        [ObservableProperty]
-        private string _currentFolder = Environment.CurrentDirectory;
+            await FocusEditorInteraction.Handle(Unit.Default);
+        }
 
-        public async Task OpenFile(string? path)
+        public async Task SaveAsCommand()
+        {
+            string? filePath = await SaveFileInteraction.Handle(Unit.Default);
+            if (filePath == null)
+                return;
+
+            FilePath = Path.GetFullPath(filePath);
+            await SaveFileInternalAsync();
+
+            await FocusEditorInteraction.Handle(Unit.Default);
+        }
+
+        public async Task ExitCommand()
+        {
+            if (!await CheckSaved())
+                return;
+            await ShutdownInteraction.Handle(Unit.Default);
+        }
+
+        public async Task OpenFile(string path)
         {
             FilePath = path;
-            Syntax = RegistryOptions!.GetLanguageByExtension(Path.GetExtension(path));
-            Editor.Text = File.Exists(path) ? await File.ReadAllTextAsync(path) : string.Empty;
-            Modified = false;
-            CurrentFolder = Path.GetDirectoryName(path) ?? Environment.CurrentDirectory;
+            await HandleFileExceptions(async () =>
+            {
+                Document = new TextDocument(new StringTextSource(await File.ReadAllTextAsync(path)));
+            });
+
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(path)!);
         }
 
-        public async Task SaveFileAsync()
+        private async Task SaveFileInternalAsync()
         {
+            await HandleFileExceptions(async () => { await File.WriteAllTextAsync(FilePath!, Document.Text); });
+            Modified = false;
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(FilePath!)!);
+        }
 
-            if (String.IsNullOrEmpty(FilePath))
-            {
-                await MessageBox.ShowDialog("Save Error", "File path is not set.");
-                return;
-            }
+        private async Task<bool> CheckSaved()
+        {
+            if (Modified)
+                return await MessageBoxInteraction.Handle(new MessageBoxModel("Unsaved Changes",
+                    "You have unsaved changes. Do you want to discard them?", MessageBoxButtons.YesNo));
 
+            return true;
+        }
+
+        private async Task HandleFileExceptions(Func<Task> action)
+        {
             try
             {
-                await File.WriteAllTextAsync(FilePath, Editor.Text);
-                Modified = false;
-                CurrentFolder = Path.GetDirectoryName((string?)FilePath) ?? Environment.CurrentDirectory;
+                await action();
             }
-            catch (IOException ex)
+            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
             {
-                await MessageBox.ShowDialog("Save Error", ex.Message);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                await MessageBox.ShowDialog("Save Error", ex.Message);
+                await MessageBoxInteraction.Handle(new MessageBoxModel("File Access Exception", exception.Message,
+                    MessageBoxButtons.Ok));
             }
         }
-
-        public async Task SaveAsToPathAsync(string fullPath)
+        
+        [UsedImplicitly]
+        public EditorViewModel()
         {
-            FilePath = fullPath;
-            await SaveFileAsync();
-        }
-
-        [RelayCommand(CanExecute = nameof(CanCut))]
-        public void Cut() => Editor.Cut();
-        public bool CanCut() => Editor.CanCut;
-
-
-        [RelayCommand(CanExecute = nameof(CanCopy))]
-        public void Copy() => Editor.Copy();
-        public bool CanCopy() => Editor.CanCopy;
-
-
-        [RelayCommand(CanExecute = nameof(CanPaste))]
-        public void Paste() => Editor.Paste();
-        public bool CanPaste() => Editor.CanPaste;
-
-        [RelayCommand(CanExecute = nameof(CanUndo))]
-        public void Undo() => Editor.Undo();
-        public bool CanUndo() => Editor.CanUndo;
-
-        [RelayCommand(CanExecute = nameof(CanRedo))]
-        public void Redo() => Editor.Redo();
-        public bool CanRedo() => Editor.CanRedo;
-
-        [RelayCommand]
-        public void SelectAll() => Editor.SelectAll();
-
-
-        [RelayCommand]
-        public async Task New()
-        {
-            if (Modified)
-            {
-                var result = await MessageBox.ShowDialog("Unsaved Changes", "You have unsaved changes. Do you want to discard them?", MessageBoxStyle.YesNoCancel);
-                if (result == MessageBoxResult.Cancel || result == MessageBoxResult.No)
-                    return;
-            }
-
-            var fileName = await new NewFileDialog().ShowDialog<string?>(MainWindow);
-            if (fileName == null)
-                fileName = "Untitled.txt";
-            FilePath = Path.Combine(CurrentFolder, fileName);
-            Editor.Text = string.Empty;
-            Modified = false;
-            Editor.TextArea.Focus();
-        }
-
-        [RelayCommand]
-        public async Task Open()
-        {
-            if (Modified)
-            {
-                var result = await MessageBox.ShowDialog("Unsaved Changes", "You have unsaved changes. Do you want to discard them?", MessageBoxStyle.YesNoCancel);
-                if (result == MessageBoxResult.Cancel || result == MessageBoxResult.No)
-                    return;
-            }
-
-            var files = await MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
-            {
-                AllowMultiple = false,
-                SuggestedStartLocation = await StorageProviderExtensions.TryGetFolderFromPathAsync(MainWindow.StorageProvider, CurrentFolder),
-                Title = "Open File"
-            });
-            if (files != null && files.Count > 0)
-            {
-                var file = files[0];
-                try
-                {
-                    await OpenFile(Path.GetFullPath(file.Path.AbsolutePath));
-                }
-                catch (IOException ex)
-                {
-                    await MessageBox.ShowDialog("Open Error", ex.Message);
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    await MessageBox.ShowDialog("Open Error", ex.Message);
-                }
-            }
-            Editor.TextArea.Focus();
-        }
-
-        [RelayCommand(CanExecute = nameof(CanSave))]
-        private async Task Save()
-        {
-            if (string.IsNullOrEmpty(FilePath))
-            {
-                if (SaveAsCommand is IAsyncRelayCommand asyncCmd)
-                    await asyncCmd.ExecuteAsync(null);
-                else
-                    SaveAsCommand?.Execute(null);
-                return;
-            }
-            await SaveFileAsync();
-        }
-        public bool CanSave() => Modified;
-
-        [RelayCommand]
-        private async Task SaveAs()
-        {
-            var file = await MainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
-            {
-                Title = "Save As",
-                SuggestedStartLocation = await StorageProviderExtensions.TryGetFolderFromPathAsync(MainWindow.StorageProvider, CurrentFolder),
-                SuggestedFileName = FileName ?? "Untitled.txt"
-            });
-            if (file != null)
-            {
-                FilePath = Path.GetFullPath(file.Path.AbsolutePath);
-                await SaveFileAsync();
-            }
-            Editor.TextArea.Focus();
-        }
-
-        [RelayCommand]
-        public static void Exit()
-        {
-            Lifetime.Shutdown();
-        }
-
-        private void OnFilePath(string? path)
-        {
-            ArgumentNullException.ThrowIfNull(path);
-            Syntax = RegistryOptions?.GetLanguageByExtension(Path.GetExtension(path));
-        }
-
-        private void OnSyntax(Language? language)
-        {
-            if (language == null)
-            {
-                TextMateInstallation?.SetGrammar(null);
-                return;
-            }
-            var scope = RegistryOptions!.GetScopeByLanguageId(language.Id);
-            TextMateInstallation!.SetGrammar(scope);
+            _settings = new Settings();
         }
     }
 }
