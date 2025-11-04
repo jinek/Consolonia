@@ -1,6 +1,11 @@
 using System;
+using System.Linq;
 using Avalonia;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using AvaloniaEdit;
 using AvaloniaEdit.Editing;
 
@@ -43,14 +48,26 @@ namespace Consolonia.AvaloniaEdit
                             textEditor.TextArea.LeftMargins[i] = new ConsoleLineNumberMargin();
                             break;
                         }
+
+                    textEditor.TextArea.TemplateApplied += OnTextAreaTemplateApplied;
                 }
                 else
-                {
+                {//todo: old brush must not be single for all Text Editors in the application
                     // restore default caret
                     textEditor.TextArea.Caret.CaretBrush = oldBrush;
                     textEditor.TextArea.PropertyChanged -= TextArea_PropertyChanged;
+                    textEditor.TextArea.TemplateApplied -= OnTextAreaTemplateApplied;
                 }
             });
+        }
+
+        private static void OnTextAreaTemplateApplied(object sender, TemplateAppliedEventArgs e)
+        {
+            var textArea = (TextArea)sender;
+            ContentPresenter textAreaContentPresenter = textArea.GetVisualDescendants()
+                .OfType<ContentPresenter>().SingleOrDefault(presenter => presenter.Name == "PART_CP");
+            if (textAreaContentPresenter != null)
+                textAreaContentPresenter.Cursor = new Cursor(StandardCursorType.Arrow);
         }
 
         public static void SetUseConsole(TextEditor textEditor, bool value)
