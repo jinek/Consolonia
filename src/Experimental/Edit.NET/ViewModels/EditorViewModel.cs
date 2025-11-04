@@ -54,8 +54,10 @@ namespace EditNET.ViewModels
         {
             if (!await CheckSaved())
                 return;
-
+            
             Document = new TextDocument();
+            FilePath = null;
+            
             await FocusEditorInteraction.Handle(Unit.Default);
         }
 
