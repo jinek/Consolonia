@@ -4,6 +4,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.VisualTree;
@@ -41,9 +43,15 @@ namespace Consolonia.AvaloniaEdit
                     /*textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
                     { CaretStyle = CaretStyle.SteadyBar };*/
 #endif
-                    textEditor.TextArea.TextView.SetValue(TextBlock.ForegroundProperty,
-                        new MoveConsoleCaretToPositionBrush
-                            { CaretStyle = CaretStyle.SteadyBar }); //todo: delete this
+                    textEditor.TextArea.TextView.Bind(TextBlock.ForegroundProperty, new Binding
+                    {//todo: this is just proof of concept
+                        RelativeSource = new RelativeSource { Mode = RelativeSourceMode.FindAncestor, AncestorType = typeof(TextArea)},
+                        Path = "IsFocused",
+                        Converter = new FuncValueConverter<bool, object>(b => (b
+                            ? new MoveConsoleCaretToPositionBrush
+                                { CaretStyle = CaretStyle.SteadyBar }
+                            : AvaloniaProperty.UnsetValue))
+                    });
                     
                     textEditor.TextArea.PropertyChanged += TextArea_PropertyChanged;
 
