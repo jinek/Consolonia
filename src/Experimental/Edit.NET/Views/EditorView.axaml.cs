@@ -14,6 +14,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
+using AvaloniaEdit;
 using AvaloniaEdit.TextMate;
 using Consolonia.Controls;
 using EditNET.DataModels;
@@ -190,24 +191,38 @@ namespace EditNET.Views
             ApplyBrushAction(e, "editor.background", brush => Editor.Background = brush);
             ApplyBrushAction(e, "editor.foreground", brush => Editor.TextArea.Foreground = brush);
 
-            // Selection brush
-            if (!ApplyBrushAction(e, "editor.selectionBackground", brush => Editor.TextArea.SelectionBrush = brush))
+            if (!ApplyBrushAction(e, "editor.selectionBackground",
+                                brush => Editor.TextArea.SelectionBrush = brush))
             {
-                ApplyBrushAction(e, "editor.selectionHighlightBackground", brush => Editor.TextArea.SelectionBrush = brush);
+                if (!ApplyBrushAction(e, "editor.selectionHighlightBackground",
+                        brush => Editor.TextArea.SelectionBrush = brush))
+                {
+                    if (Application.Current!.TryGetResource("TextAreaSelectionBrush", out var resourceObject))
+                    {
+                        if (resourceObject is IBrush brush)
+                        {
+                            Editor.TextArea.SelectionBrush = brush;
+                        }
+                    }
+                }
             }
 
-            // Current line highlight
-            if (!ApplyBrushAction(e, "editor.lineHighlightBackground", brush => Editor.TextArea.TextView.CurrentLineBackground = brush))
+            if (!ApplyBrushAction(e, "editor.lineHighlightBackground",
+                    brush =>
+                    {
+                        Editor.TextArea.TextView.CurrentLineBackground = brush;
+                    }))
             {
-                // Editor.TextArea.TextView.SetDefaultHighlightLineColors();
+                Editor.TextArea.TextView.SetDefaultHighlightLineColors();
             }
 
-            // Line numbers
-            if (!ApplyBrushAction(e, "editorLineNumber.foreground", brush => Editor.LineNumbersForeground = brush))
+            //Todo: looks like the margin doesn't have a active line highlight, would be a nice addition
+            if (!ApplyBrushAction(e, "editorLineNumber.foreground",
+                    brush => Editor.LineNumbersForeground = brush))
             {
                 Editor.LineNumbersForeground = Editor.TextArea.Foreground;
             }
-
+            Editor.TextArea.TextView.CurrentLineBorder = new Pen(Brushes.Transparent, thickness: 0);
             return;
 
             static bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
