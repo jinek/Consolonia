@@ -8,6 +8,7 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.ReactiveUI;
 using Avalonia.VisualTree;
 using AvaloniaEdit;
 using AvaloniaEdit.Editing;
@@ -39,19 +40,22 @@ namespace Consolonia.AvaloniaEdit
                 {
                     // replace caret with console caret.
                     oldBrush = textEditor.TextArea.Caret.CaretBrush;
-#if USE_CONSOLE_CARET
-                    /*textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
-                    { CaretStyle = CaretStyle.SteadyBar };*/
-#endif
-                    textEditor.TextArea.TextView.Bind(TextBlock.ForegroundProperty, new Binding
-                    {//todo: this is just proof of concept
-                        RelativeSource = new RelativeSource { Mode = RelativeSourceMode.FindAncestor, AncestorType = typeof(TextArea)},
-                        Path = "IsFocused",
-                        Converter = new FuncValueConverter<bool, object>(b => (b
-                            ? new MoveConsoleCaretToPositionBrush
-                                { CaretStyle = CaretStyle.SteadyBar }
-                            : AvaloniaProperty.UnsetValue))
-                    });
+
+                    textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
+                    { CaretStyle = CaretStyle.SteadyBar };
+
+                    {
+                        // This is needed because we can not render more than one caret at once, which happens during search
+                        Visual caretLayer = textEditor.TextArea.TextView.GetVisualDescendants()
+                            .Single(visual => visual.GetType().FullName == "AvaloniaEdit.Editing.CaretLayer");
+
+                        caretLayer.Bind(Visual.IsVisibleProperty, new Binding
+                        {
+                            RelativeSource = new RelativeSource
+                                { Mode = RelativeSourceMode.FindAncestor, AncestorType = typeof(TextArea) },
+                            Path = nameof(Control.IsFocused)
+                        });
+                    }
                     
                     textEditor.TextArea.PropertyChanged += TextArea_PropertyChanged;
 
@@ -100,14 +104,12 @@ namespace Consolonia.AvaloniaEdit
             // monitor OverstrikeMode property changes to update caret style to match
             if (e.Property == TextArea.OverstrikeModeProperty)
             {
-#if USE_CONSOLE_CARET
                 var textArea = (TextArea)sender;
-                //if (textArea.Caret.CaretBrush is MoveConsoleCaretToPositionBrush caretBrush)
-                //    // NOTE: We use SteadyBlock and SteadyBar because AvaloniaEdit has blinking animation hardcoded in.
-                //    caretBrush.CaretStyle = (bool)e.NewValue
-                //        ? CaretStyle.SteadyBlock
-                //        : CaretStyle.SteadyBar;
-#endif
+                if (textArea.Caret.CaretBrush is MoveConsoleCaretToPositionBrush caretBrush)
+                    // NOTE: We use SteadyBlock and SteadyBar because AvaloniaEdit has blinking animation hardcoded in.
+                    caretBrush.CaretStyle = (bool)e.NewValue
+                        ? CaretStyle.SteadyBlock
+                        : CaretStyle.SteadyBar;
             }
         }
     }
