@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -8,6 +9,8 @@ using Avalonia.Media;
 using Avalonia.VisualTree;
 using AvaloniaEdit;
 using AvaloniaEdit.Editing;
+using Consolonia.Controls;
+using Consolonia.Controls.Brushes;
 
 namespace Consolonia.AvaloniaEdit
 {
@@ -35,9 +38,13 @@ namespace Consolonia.AvaloniaEdit
                     // replace caret with console caret.
                     oldBrush = textEditor.TextArea.Caret.CaretBrush;
 #if USE_CONSOLE_CARET
-                    textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
-                    { CaretStyle = CaretStyle.SteadyBar };
+                    /*textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
+                    { CaretStyle = CaretStyle.SteadyBar };*/
 #endif
+                    textEditor.TextArea.TextView.SetValue(TextBlock.ForegroundProperty,
+                        new MoveConsoleCaretToPositionBrush
+                            { CaretStyle = CaretStyle.SteadyBar }); //todo: delete this
+                    
                     textEditor.TextArea.PropertyChanged += TextArea_PropertyChanged;
 
                     // The built in LineNumberMargin miscalculates the top of the line, 
