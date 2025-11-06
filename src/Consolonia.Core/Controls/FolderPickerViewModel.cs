@@ -9,9 +9,7 @@ namespace Consolonia.Core.Controls
 {
     internal partial class FolderPickerViewModel : PickerViewModelBase<FolderPickerOpenOptions>
     {
-        [NotifyPropertyChangedFor(nameof(HasSelection))] [ObservableProperty]
-        private ObservableCollection<IStorageFile> _selectedFiles = new();
-
+        [NotifyPropertyChangedFor(nameof(HasSelection))] 
         [ObservableProperty] private ObservableCollection<IStorageFolder> _selectedFolders = new();
 
         [ObservableProperty] private SelectionMode _selectionMode;
@@ -21,7 +19,7 @@ namespace Consolonia.Core.Controls
         {
             ArgumentNullException.ThrowIfNull(options, nameof(options));
             SelectionMode = options.AllowMultiple ? SelectionMode.Multiple : SelectionMode.Single;
-            SelectedFiles.CollectionChanged += (_, _) => OnPropertyChanged(nameof(HasSelection));
+            SelectedFolders.CollectionChanged += (_, _) => OnPropertyChanged(nameof(HasSelection));
         }
 
         public bool HasSelection => SelectedFolders.Any();
