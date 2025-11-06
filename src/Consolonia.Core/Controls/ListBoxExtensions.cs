@@ -39,7 +39,7 @@ namespace Consolonia.Core.Controls
 
         internal static void KeepFocus(this ListBox listBox, Func<bool> keepFocus)
         {
-            listBox.Items.CollectionChanged += (s, e) =>
+            listBox.Items.CollectionChanged += (_, _) =>
             {
                 if (!keepFocus())
                     return;
