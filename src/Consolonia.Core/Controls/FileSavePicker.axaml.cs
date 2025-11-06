@@ -60,7 +60,7 @@ namespace Consolonia.Core.Controls
             Height = WindowsPanel.Bounds.Height - 4;
         }
 
-     
+
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {
             var listbox = (ListBox)sender;
@@ -74,15 +74,14 @@ namespace Consolonia.Core.Controls
                 ViewModel.SavePath = file.Name;
                 OnOK(sender, e);
             }
-
         }
 
         private async void OnOK(object sender, RoutedEventArgs e)
         {
-            var focusedListBoxItem = ItemsListBox.GetFocusedListBoxItem();
+            ListBoxItem focusedListBoxItem = ItemsListBox.GetFocusedListBoxItem();
             if (focusedListBoxItem != null)
             {
-                var item = ItemsListBox.ItemFromContainer(focusedListBoxItem);
+                object item = ItemsListBox.ItemFromContainer(focusedListBoxItem);
                 if (item is IStorageFolder folder)
                 {
                     ViewModel.CurrentFolder = folder;
@@ -101,7 +100,8 @@ namespace Consolonia.Core.Controls
 
                 string savePath = ViewModel.SavePath;
                 if (!Path.IsPathFullyQualified(ViewModel.SavePath))
-                    savePath = Path.GetFullPath(Path.Combine(ViewModel.CurrentFolder.Path.LocalPath, ViewModel.SavePath));
+                    savePath = Path.GetFullPath(
+                        Path.Combine(ViewModel.CurrentFolder.Path.LocalPath, ViewModel.SavePath));
 
                 IStorageFile file =
                     await storageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));

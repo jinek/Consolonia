@@ -7,12 +7,9 @@ namespace Consolonia.Core.Controls
 {
     internal partial class FileSavePickerViewModel : PickerViewModelBase<FilePickerSaveOptions>
     {
-        [ObservableProperty] 
-        private string _savePath = string.Empty;
+        [ObservableProperty] private string _savePath = string.Empty;
 
-        public bool HasSelection => SelectedItem != null;
-
-        [ObservableProperty] 
+        [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(SelectedFile))]
         [NotifyPropertyChangedFor(nameof(HasSelection))]
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
@@ -25,6 +22,8 @@ namespace Consolonia.Core.Controls
             ArgumentNullException.ThrowIfNull(options, nameof(options));
             PropertyChanged += FileSavePickerViewModel_PropertyChanged;
         }
+
+        public bool HasSelection => SelectedItem != null;
 
         public IStorageFile SelectedFile => SelectedItem as IStorageFile;
 

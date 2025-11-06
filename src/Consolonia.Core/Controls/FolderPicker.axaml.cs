@@ -63,10 +63,10 @@ namespace Consolonia.Core.Controls
         {
             e.Handled = true;
 
-            var focusedListBoxItem = ItemsListBox.GetFocusedListBoxItem();
+            ListBoxItem focusedListBoxItem = ItemsListBox.GetFocusedListBoxItem();
             if (focusedListBoxItem != null)
             {
-                var item = ItemsListBox.ItemFromContainer(focusedListBoxItem);
+                object item = ItemsListBox.ItemFromContainer(focusedListBoxItem);
                 if (item is IStorageFolder folder)
                 {
                     ViewModel.CurrentFolder = folder;
@@ -78,16 +78,10 @@ namespace Consolonia.Core.Controls
 
             if (ViewModel.SelectionMode == SelectionMode.Single &&
                 !ViewModel.HasSelection)
-            {
                 ViewModel.SelectedFolders.Add(ViewModel.CurrentFolder);
-            }
 
 
-            if (ViewModel.HasSelection)
-            {
-                Close(ViewModel.SelectedFolders);
-                return;
-            }
+            if (ViewModel.HasSelection) Close(ViewModel.SelectedFolders);
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
