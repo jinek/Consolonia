@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Specialized;
-using System.Threading;
 using Avalonia.Controls;
-using Avalonia.Threading;
 
 namespace Consolonia.Core.Controls
 {
@@ -20,6 +16,5 @@ namespace Consolonia.Core.Controls
 
             return null;
         }
-
     }
 }

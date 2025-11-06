@@ -29,12 +29,6 @@ namespace Consolonia.Core.Controls
             ItemsListBox.Items.CollectionChanged += Items_CollectionChanged;
         }
 
-        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (!CurrentFolderTextBox.IsFocused)
-                Dispatcher.UIThread.Post(() => (ItemsListBox.ContainerFromIndex(0) as ListBoxItem)?.Focus(), DispatcherPriority.Background);
-        }
-
         /// <summary>
         ///     Gets the file picker save options associated with this dialog.
         /// </summary>
@@ -50,6 +44,27 @@ namespace Consolonia.Core.Controls
         private FileSavePickerViewModel ViewModel =>
             DataContext as FileSavePickerViewModel
             ?? throw new InvalidOperationException($"Invalid DataContext. Expected {nameof(FileSavePickerViewModel)}");
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~FileSavePicker()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (!CurrentFolderTextBox.IsFocused)
+                Dispatcher.UIThread.Post(() => (ItemsListBox.ContainerFromIndex(0) as ListBoxItem)?.Focus(),
+                    DispatcherPriority.Background);
+        }
 
         protected override void OnLoaded(RoutedEventArgs e)
         {
@@ -133,29 +148,13 @@ namespace Consolonia.Core.Controls
             if (!_disposedValue)
             {
                 if (disposing)
-                {
                     // TODO: dispose managed state (managed objects)
                     ItemsListBox.Items.CollectionChanged -= Items_CollectionChanged;
-                }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 _disposedValue = true;
             }
-        }
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~FileSavePicker()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
         }
     }
 }

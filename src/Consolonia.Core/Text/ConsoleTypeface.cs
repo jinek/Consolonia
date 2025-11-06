@@ -15,6 +15,7 @@ namespace Consolonia.Core.Text
         private static readonly Dictionary<ushort, string> GlyphTextByIndex = new();
         private static readonly Dictionary<ushort, ushort> GlyphWidthByIndex = new();
         private static readonly Dictionary<string, ushort> GlyphIndexByText = new();
+
         private static readonly FontMetrics MetricsSingleton = new()
         {
             // https://docs.microsoft.com/en-us/typography/opentype/spec/ttch01#funits-and-the-em-square
