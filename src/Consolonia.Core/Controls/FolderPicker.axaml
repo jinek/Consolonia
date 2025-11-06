@@ -17,7 +17,6 @@
             <TextBlock Text="📁"
                        Margin="0 0 1 0" />
             <TextBox x:Name="CurrentFolderTextBox" Text="{Binding CurrentFolderPath, Mode=TwoWay}"
-                     KeyDown="CurrentFolderTextBox_KeyDown"
                      Grid.Column="1" />
         </Grid>
         <ListBox x:Name="ItemsListBox"

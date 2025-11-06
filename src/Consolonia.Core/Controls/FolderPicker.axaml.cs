@@ -1,9 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Dialogs.Internal;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Iciclecreek.Avalonia.WindowManager;
+using NLog.Filters;
 
 namespace Consolonia.Core.Controls
 {
@@ -44,7 +46,8 @@ namespace Consolonia.Core.Controls
                 ViewModel.CurrentFolder = folder;
                 ViewModel.CurrentFolderPath = folder.Path.LocalPath;
                 ViewModel.SelectedFolders.Clear();
-                ViewModel.HasSelection = false;
+                if (folder.Name != "..")
+                    ViewModel.SelectedFolders.Add(folder);
                 e.Handled = true;
             }
         }
@@ -52,6 +55,7 @@ namespace Consolonia.Core.Controls
         private void OnOK(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
+
             var focusedListBoxItem = ItemsListBox.GetFocusedListBoxItem();
             if (focusedListBoxItem != null)
             {
@@ -61,10 +65,18 @@ namespace Consolonia.Core.Controls
                     ViewModel.CurrentFolder = folder;
                     ViewModel.CurrentFolderPath = folder.Path.LocalPath;
                     ViewModel.SelectedFolders.Clear();
-                    ViewModel.HasSelection = false;
                     return;
                 }
             }
+
+            if (ViewModel.SelectionMode == SelectionMode.Single &&
+                !ViewModel.HasSelection &&
+                ViewModel.CurrentFolder != null)
+            {
+                if (ViewModel.CurrentFolder.Name != "..")
+                    ViewModel.SelectedFolders.Add(ViewModel.CurrentFolder);
+            }
+
 
             if (ViewModel.HasSelection)
             {
@@ -86,43 +98,20 @@ namespace Consolonia.Core.Controls
                     e.AddedItems[0] is IStorageFolder folder)
                 {
                     ViewModel.SelectedFolders.Clear();
-                    ViewModel.SelectedFolders.Add(folder);
+                    if (folder.Name != "..")
+                        ViewModel.SelectedFolders.Add(folder);
                 }
             }
             else
             {
                 foreach (object item in e.AddedItems)
-                    if (item is IStorageFolder folder)
+                    if (item is IStorageFolder folder && 
+                        folder.Name != "..")
                         ViewModel.SelectedFolders.Add(folder);
 
                 foreach (object item in e.RemovedItems)
                     if (item is IStorageFolder folder)
                         ViewModel.SelectedFolders.Remove(folder);
-            }
-
-            ViewModel.HasSelection = ViewModel.SelectedFolders.Count > 0;
-        }
-
-        private void CurrentFolderTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.Down:
-                    if (ItemsListBox.SelectedIndex < ItemsListBox.Items.Count - 1)
-                    {
-                        ItemsListBox.SelectedIndex++;
-                        ItemsListBox.ScrollIntoView(ItemsListBox.SelectedItem);
-                    }
-                    e.Handled = true;
-                    break;
-                case Key.Up:
-                    if (ItemsListBox.SelectedIndex > 0)
-                    {
-                        ItemsListBox.SelectedIndex--;
-                        ItemsListBox.ScrollIntoView(ItemsListBox.SelectedItem);
-                    }
-                    e.Handled = true;
-                    break;
             }
         }
     }

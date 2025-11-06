@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -8,11 +9,17 @@ namespace Consolonia.Core.Controls
 {
     internal partial class FolderPickerViewModel : PickerViewModelBase<FolderPickerOpenOptions>
     {
-        [ObservableProperty] private bool _hasSelection;
+        public bool HasSelection => SelectedFolders.Any();
 
-        [ObservableProperty] private ObservableCollection<IStorageFolder> _selectedFolders = new();
+        [NotifyPropertyChangedFor(nameof(HasSelection))]
+        [ObservableProperty]
+        private ObservableCollection<IStorageFile> _selectedFiles = new();
 
-        [ObservableProperty] private SelectionMode _selectionMode;
+        [ObservableProperty] 
+        private ObservableCollection<IStorageFolder> _selectedFolders = new();
+
+        [ObservableProperty] 
+        private SelectionMode _selectionMode;
 
         public FolderPickerViewModel(FolderPickerOpenOptions options)
             : base(options)

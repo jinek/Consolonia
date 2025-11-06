@@ -105,8 +105,6 @@ namespace Consolonia.Core.Controls
                     if (item is IStorageFile file)
                         ViewModel.SelectedFiles.Remove(file);
             }
-
-            ViewModel.HasSelection = ViewModel.SelectedFiles.Count > 0;
         }
     }
 }
