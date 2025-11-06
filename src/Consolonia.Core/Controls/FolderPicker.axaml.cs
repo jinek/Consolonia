@@ -66,8 +66,7 @@ namespace Consolonia.Core.Controls
             }
 
             if (ViewModel.SelectionMode == SelectionMode.Single &&
-                !ViewModel.HasSelection &&
-                ViewModel.CurrentFolder != null)
+                !ViewModel.HasSelection)
             {
                 ViewModel.SelectedFolders.Add(ViewModel.CurrentFolder);
             }
