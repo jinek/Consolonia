@@ -14,6 +14,12 @@
                              x:DataType="viewModels:EditSettingsViewModel">
     <StackPanel d:DataContext="{viewModels:EditSettingsViewModel}"
                 x:DataType="viewModels:EditSettingsViewModel">
+        <TextBlock x:Name="CompatibilityErrorTxt"
+                   IsVisible="False"
+                   Margin="1,0"
+                   Foreground="{StaticResource ThemeErrorBrush}">
+            Theme switching is not supported in this environment
+        </TextBlock>
         <TabControl Margin="0"
                     TabStripPlacement="Left"
                     MinHeight="15"
