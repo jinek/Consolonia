@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Reactive;
 using Avalonia;
@@ -5,10 +6,12 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
+using Consolonia;
 using Consolonia.Themes;
 using EditNET.ViewModels;
 using EditNET.Views;
 using ReactiveUI;
+using TextMateSharp.Grammars;
 using Notification = Avalonia.Controls.Notifications.Notification;
 
 namespace EditNET;
@@ -34,10 +37,14 @@ public partial class App : Application
 
     private void SetThemeHandler(IInteractionContext<(ConsoloniaTheme, bool), Unit> context)
     {
-        MainWindow.RequestedThemeVariant = context.Input.Item2 ? ThemeVariant.Light : ThemeVariant.Dark;
-        LoadUITheme(context.Input.Item1);
-        MainWindow.Content = new EditorView { DataContext = ViewModel.EditorViewModel };
         context.SetOutput(Unit.Default);
+        MainWindow.RequestedThemeVariant = context.Input.Item2 ? ThemeVariant.Light : ThemeVariant.Dark;
+        if(!LoadUITheme(context.Input.Item1))
+        {
+            ShowThemeIncompatible();
+            return;
+        }
+        MainWindow.Content = new EditorView { DataContext = ViewModel.EditorViewModel };
     }
 
     private MainWindow MainWindow =>
@@ -47,9 +54,10 @@ public partial class App : Application
 
     public override async void OnFrameworkInitializationCompleted()
     {
+        bool themeLoaded = false;
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
-            LoadUITheme(ViewModel.EditorViewModel.Settings.ConsoloniaTheme);
+            themeLoaded = LoadUITheme(ViewModel.EditorViewModel.Settings.ConsoloniaTheme);
             desktopLifetime.MainWindow = new MainWindow
             {
                 DataContext = ViewModel,
@@ -73,6 +81,18 @@ public partial class App : Application
             ShowNotification("Settings Error",
                 "Failed to load settings: " + ViewModel.InitialLoadSettingsException.Message, NotificationType.Error);
         }
+
+        if (!themeLoaded)
+        {
+            ShowThemeIncompatible();
+        }
+    }
+
+    private void ShowThemeIncompatible()
+    {
+        ShowNotification("Theme Error",
+            $"Modern themes are not supported in this environment. Switching back to {nameof(ConsoloniaTheme.TurboVisionCompatible)} and {Enum.GetName(EditorView.DefaultEditorTheme)}",
+            NotificationType.Error);
     }
 
     private void ShowNotification(string title, string message, NotificationType notificationType)
@@ -80,8 +100,12 @@ public partial class App : Application
         _notificationManager.Show(new Notification { Type = notificationType, Message = message, Title = title });
     }
 
-    private void LoadUITheme(ConsoloniaTheme theme)
+    private bool LoadUITheme(ConsoloniaTheme theme)
     {
+        if (!((ConsoloniaLifetime)ApplicationLifetime!).IsRgbColorMode() &&
+            theme is ConsoloniaTheme.Modern or ConsoloniaTheme.ModernContrast)
+            return false;
+        
         Styles[0] = theme switch
         {
             ConsoloniaTheme.Modern => new ModernTheme(),
@@ -92,5 +116,7 @@ public partial class App : Application
             ConsoloniaTheme.TurboVisionElegant => new TurboVisionElegantTheme(),
             _ => throw new InvalidDataException("Unknown theme name")
         };
+        
+        return true;
     }
 }

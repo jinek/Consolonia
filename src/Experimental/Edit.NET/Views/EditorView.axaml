@@ -82,8 +82,8 @@
                 <Separator />
                 <MenuItem Header="Select _All"
                           Command="{Binding ElementName=Editor, Path=SelectAll}"
-                          IsEnabled="{Binding ElementName=Editor, Path=CanSelectAll}"
                           InputGesture="Ctrl+A" />
+                <!--todo low:this does not work IsEnabled="{Binding ElementName=Editor, Path=CanSelectAll}"-->
                 <Separator />
                 <MenuItem Header="_Settings..."
                           Click="OnShowSettings" />

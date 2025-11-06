@@ -16,6 +16,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 using AvaloniaEdit;
 using AvaloniaEdit.TextMate;
+using Consolonia;
 using Consolonia.Controls;
 using EditNET.DataModels;
 using EditNET.Helpers;
@@ -27,9 +28,10 @@ using TextMateSharp.Themes;
 
 namespace EditNET.Views
 {
-
     public partial class EditorView : UserControl
     {
+        public const ThemeName DefaultEditorTheme = ThemeName.DimmedMonokai;
+
         public EditorView()
         {
             InitializeComponent();
@@ -39,7 +41,7 @@ namespace EditNET.Views
             Editor.AttachedToVisualTree += (_, _) => { UpdateStatus(); };
             Editor.TextArea.Caret.PositionChanged += (_, _) => UpdateStatus();
 
-            _registryOptions = new RegistryOptions(ThemeName.VisualStudioDark);
+            _registryOptions = new RegistryOptions(DefaultEditorTheme);
             _textMateInstallation = Editor.InstallTextMate(_registryOptions);
             _textMateInstallation.AppliedTheme += TextMateInstallationOnAppliedTheme;
             ApplyThemeColorsToEditor(_textMateInstallation);
@@ -80,6 +82,9 @@ namespace EditNET.Views
 
         private void OnSettingsUpdated(Settings settings)
         {
+            if(!((ConsoloniaLifetime)Lifetime).IsRgbColorMode())
+                return;
+            
             IRawTheme? theme = _registryOptions.LoadTheme(settings.SyntaxTheme);
             _textMateInstallation.SetTheme(theme);
         }
