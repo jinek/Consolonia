@@ -26,6 +26,7 @@ namespace Consolonia.Core.Controls
         {
             ArgumentNullException.ThrowIfNull(options, nameof(options));
             SelectionMode = options.AllowMultiple ? SelectionMode.Multiple : SelectionMode.Single;
+            SelectedFiles.CollectionChanged += (_, _) => OnPropertyChanged(nameof(HasSelection));
         }
 
         protected override bool FilterItem(IStorageItem item)

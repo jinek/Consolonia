@@ -1,11 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Dialogs.Internal;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Iciclecreek.Avalonia.WindowManager;
-using NLog.Filters;
 
 namespace Consolonia.Core.Controls
 {
@@ -46,8 +44,6 @@ namespace Consolonia.Core.Controls
                 ViewModel.CurrentFolder = folder;
                 ViewModel.CurrentFolderPath = folder.Path.LocalPath;
                 ViewModel.SelectedFolders.Clear();
-                if (folder.Name != "..")
-                    ViewModel.SelectedFolders.Add(folder);
                 e.Handled = true;
             }
         }
@@ -73,9 +69,8 @@ namespace Consolonia.Core.Controls
                 !ViewModel.HasSelection &&
                 ViewModel.CurrentFolder != null)
             {
-                if (ViewModel.CurrentFolder.Name != "..")
-                    ViewModel.SelectedFolders.Add(ViewModel.CurrentFolder);
-            }
+                ViewModel.SelectedFolders.Add(ViewModel.CurrentFolder);
+            }cleanup
 
 
             if (ViewModel.HasSelection)
@@ -105,7 +100,7 @@ namespace Consolonia.Core.Controls
             else
             {
                 foreach (object item in e.AddedItems)
-                    if (item is IStorageFolder folder && 
+                    if (item is IStorageFolder folder &&
                         folder.Name != "..")
                         ViewModel.SelectedFolders.Add(folder);
 

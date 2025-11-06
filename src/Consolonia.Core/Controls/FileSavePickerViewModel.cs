@@ -15,7 +15,7 @@ namespace Consolonia.Core.Controls
         [ObservableProperty] 
         [NotifyPropertyChangedFor(nameof(SelectedFile))]
         [NotifyPropertyChangedFor(nameof(HasSelection))]
-        private IStorageItem _selectedItem;
+        private IStorageItem? _selectedItem;
 
         public FileSavePickerViewModel(FilePickerSaveOptions options)
             : base(options)

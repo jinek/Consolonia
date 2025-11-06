@@ -77,9 +77,7 @@ namespace Consolonia.Core.Controls
                 {
                     ViewModel.CurrentFolder = folder;
                     ViewModel.CurrentFolderPath = folder.Path.LocalPath;
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
                     ViewModel.SelectedItem = null;
-#pragma warning restore CS8625
                     e.Handled = true;
                     return;
                 }

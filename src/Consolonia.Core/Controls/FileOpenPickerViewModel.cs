@@ -10,24 +10,25 @@ namespace Consolonia.Core.Controls
 {
     internal partial class FileOpenPickerViewModel : PickerViewModelBase<FilePickerOpenOptions>
     {
-        
         public bool HasSelection => SelectedFiles.Any();
 
         [NotifyPropertyChangedFor(nameof(HasSelection))]
-        [ObservableProperty] 
+        [ObservableProperty]
         private ObservableCollection<IStorageFile> _selectedFiles = new();
 
-        [ObservableProperty] 
+        [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(CurrentFolderPath))]
         private int _selectedFilterIndex;
 
-        [ObservableProperty] private SelectionMode _selectionMode;
+        [ObservableProperty]
+        private SelectionMode _selectionMode;
 
         public FileOpenPickerViewModel(FilePickerOpenOptions options)
             : base(options)
         {
             ArgumentNullException.ThrowIfNull(options, nameof(options));
             SelectionMode = options.AllowMultiple ? SelectionMode.Multiple : SelectionMode.Single;
+            SelectedFiles.CollectionChanged += (_, _) => OnPropertyChanged(nameof(HasSelection));
         }
 
         protected override bool FilterItem(IStorageItem item)

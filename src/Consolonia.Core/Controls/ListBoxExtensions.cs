@@ -23,7 +23,7 @@ namespace Consolonia.Core.Controls
         //    return null;
         //}
 
-        internal static ListBoxItem GetFocusedListBoxItem(this ListBox listBox)
+        internal static ListBoxItem? GetFocusedListBoxItem(this ListBox listBox)
         {
             // 1) Check realized containers (fast, reliable when items are materialized)
             for (int i = 0; i < listBox.ItemCount; i++)
