@@ -13,6 +13,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using AvaloniaEdit;
 using AvaloniaEdit.TextMate;
@@ -141,10 +142,11 @@ namespace EditNET.Views
             context.SetOutput(Unit.Default);
         }
 
-        private void FocusEditorHandler(IInteractionContext<Unit, Unit> context)
+        private async void FocusEditorHandler(IInteractionContext<Unit, Unit> context)
         {
-            Editor.TextArea.Focus();
             context.SetOutput(Unit.Default);
+            await Task.Delay(500); // todo: low magic number, I don't know how to make focus working
+            Dispatcher.UIThread.Post(_ => { Editor.TextArea.Focus(); }, null);
         }
 
         private static async Task MessageBoxHandler(IInteractionContext<MessageBoxModel, bool> interactionContext)
