@@ -58,7 +58,6 @@
                     Spacing="1">
             <Button x:Name="SaveButton"
                     Content="Save"
-                    IsDefault="True"
                     Click="OnOK"
                     IsEnabled="{Binding SavePath, Converter={x:Static ObjectConverters.IsNotNull}}" />
             <Button x:Name="CancelButton"

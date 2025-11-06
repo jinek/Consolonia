@@ -67,7 +67,6 @@
                     HorizontalAlignment="Right">
             <Button Content="OK"
                     Name="OkButton"
-                    IsDefault="True"
                     Click="OnOk"
                     Margin="1" />
             <Button Content="Cancel"
