@@ -33,15 +33,20 @@ namespace EditNET.ViewModels
         {
             _settings = settings;
             this.WhenAnyValue(model => model.Document).Subscribe(OnDocumentUpdated);
+            this.WhenAnyValue(model => model.Document).Skip(1).Subscribe(OnDocumentUpdatedNoInitial);
         }
 
+        private async void OnDocumentUpdatedNoInitial(TextDocument newDocument)
+        {
+            await UpdateStatusInteraction.Handle(Unit.Default);
+        }
+        
         private void OnDocumentUpdated(TextDocument newDocument)
         {
             if (_previousDocument != null) _previousDocument.TextChanged -= NewDocumentOnTextChanged;
             _previousDocument = newDocument;
             Modified = false;
             newDocument.TextChanged += NewDocumentOnTextChanged;
-            UpdateStatusInteraction.Handle(Unit.Default).SubscribeOn(ThreadPoolScheduler.Instance);
         }
 
         private void NewDocumentOnTextChanged(object? sender, EventArgs e)
