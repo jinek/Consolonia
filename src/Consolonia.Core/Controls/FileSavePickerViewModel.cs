@@ -15,7 +15,9 @@ namespace Consolonia.Core.Controls
         [ObservableProperty] 
         [NotifyPropertyChangedFor(nameof(SelectedFile))]
         [NotifyPropertyChangedFor(nameof(HasSelection))]
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         private IStorageItem? _selectedItem;
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
         public FileSavePickerViewModel(FilePickerSaveOptions options)
             : base(options)
