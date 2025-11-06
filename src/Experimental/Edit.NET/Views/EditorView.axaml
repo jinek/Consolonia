@@ -142,8 +142,8 @@
                     <MenuItem Header="-" />
                     <MenuItem Header="Select All"
                               InputGesture="ctrl+A"
-                              Command="{Binding ElementName=Editor, Path=SelectAll}"
-                              IsEnabled="{Binding ElementName=Editor, Path=CanSelectAll}">
+                              Command="{Binding ElementName=Editor, Path=SelectAll}">
+                        <!--todo: low: does not work: IsEnabled="{Binding ElementName=Editor, Path=CanSelectAll}"-->
                     </MenuItem>
                 </MenuFlyout>
             </avaloniaEdit:TextEditor.ContextFlyout>
