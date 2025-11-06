@@ -34,7 +34,7 @@ public partial class App : Application
 
     private void SetThemeHandler(IInteractionContext<(ConsoloniaTheme, bool), Unit> context)
     {
-        MainWindow.RequestedThemeVariant = context.Input.Item2 ? ThemeVariant.Light : ThemeVariant.Default;
+        MainWindow.RequestedThemeVariant = context.Input.Item2 ? ThemeVariant.Light : ThemeVariant.Dark;
         LoadUITheme(context.Input.Item1);
         MainWindow.Content = new EditorView { DataContext = ViewModel.EditorViewModel };
         context.SetOutput(Unit.Default);
