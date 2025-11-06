@@ -116,7 +116,7 @@ namespace Consolonia.Core.Controls
             ViewModel.HasSelection = ViewModel.SelectedFolders.Count > 0;
         }
 
-        private void CurrentFolderTextBox_KeyDown(object? sender, KeyEventArgs e)
+        private void CurrentFolderTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
