@@ -15,7 +15,8 @@
     <Grid RowDefinitions="Auto * Auto Auto">
         <Grid ColumnDefinitions="Auto *">
             <TextBlock Text="📁 " />
-            <TextBox x:Name="CurrentFolderTextBox" Text="{Binding CurrentFolderPath, Mode=TwoWay}"
+            <TextBox x:Name="CurrentFolderTextBox"
+                     Text="{Binding CurrentFolderPath, Mode=TwoWay}"
                      Grid.Column="1" />
         </Grid>
         <ListBox x:Name="ItemsListBox"
