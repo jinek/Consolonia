@@ -1,11 +1,9 @@
 using System;
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Avalonia.Threading;
 using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Controls
@@ -23,19 +21,7 @@ namespace Consolonia.Core.Controls
             InitializeComponent();
 
             CurrentFolderTextBox.Focus();
-            ItemsListBox.Items.CollectionChanged += (s, e) =>
-            {
-                if (CurrentFolderTextBox.IsFocused)
-                    return;
-                Dispatcher.UIThread.Post(() =>
-                {
-                    if (ItemsListBox.ItemCount > 0)
-                    {
-                        var firstItemContainer = ItemsListBox.ContainerFromIndex(0) as ListBoxItem;
-                        firstItemContainer?.Focus();
-                    }
-                }, DispatcherPriority.Background);
-            };
+            ItemsListBox.KeepFocus(() => !CurrentFolderTextBox.IsFocused);
         }
 
         /// <summary>

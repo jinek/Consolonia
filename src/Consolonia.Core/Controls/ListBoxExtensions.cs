@@ -1,11 +1,13 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
+using Avalonia.Threading;
 
 namespace Consolonia.Core.Controls
 {
-    public static class ListBoxExtensions
+    internal static class ListBoxExtensions
     {
         //public static object? GetFocusedListBoxItem(this ListBox listBox)
         //{
@@ -21,7 +23,7 @@ namespace Consolonia.Core.Controls
         //    return null;
         //}
 
-        public static ListBoxItem GetFocusedListBoxItem(this ListBox listBox)
+        internal static ListBoxItem GetFocusedListBoxItem(this ListBox listBox)
         {
             // 1) Check realized containers (fast, reliable when items are materialized)
             for (int i = 0; i < listBox.ItemCount; i++)
@@ -33,6 +35,23 @@ namespace Consolonia.Core.Controls
                 }
             }
             return null;
+        }
+
+        internal static void KeepFocus(this ListBox listBox, Func<bool> keepFocus)
+        {
+            listBox.Items.CollectionChanged += (s, e) =>
+            {
+                if (!keepFocus())
+                    return;
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (listBox.ItemCount > 0)
+                    {
+                        var firstItemContainer = listBox.ContainerFromIndex(0) as ListBoxItem;
+                        firstItemContainer?.Focus();
+                    }
+                }, DispatcherPriority.Background);
+            };
         }
 
     }
