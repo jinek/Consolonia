@@ -70,7 +70,7 @@ namespace Consolonia.Core.Controls
                 ViewModel.CurrentFolder != null)
             {
                 ViewModel.SelectedFolders.Add(ViewModel.CurrentFolder);
-            }cleanup
+            }
 
 
             if (ViewModel.HasSelection)
