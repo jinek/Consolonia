@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Specialized;
+using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Threading;
 
@@ -20,23 +22,6 @@ namespace Consolonia.Core.Controls
                 }
             }
             return null;
-        }
-
-        internal static void KeepFocus(this ListBox listBox, Func<bool> keepFocus)
-        {
-            listBox.Items.CollectionChanged += (_, _) =>
-            {
-                if (!keepFocus())
-                    return;
-                Dispatcher.UIThread.Post(() =>
-                {
-                    if (listBox.ItemCount > 0)
-                    {
-                        var firstItemContainer = listBox.ContainerFromIndex(0) as ListBoxItem;
-                        firstItemContainer?.Focus();
-                    }
-                }, DispatcherPriority.Background);
-            };
         }
 
     }

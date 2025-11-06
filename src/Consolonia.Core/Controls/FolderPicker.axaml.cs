@@ -1,14 +1,19 @@
+using System;
+using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FolderPicker : ManagedWindow
+    internal partial class FolderPicker : ManagedWindow, IDisposable
     {
+        private bool _disposedValue;
+
         public FolderPicker()
             : this(new FolderPickerOpenOptions())
         {
@@ -20,7 +25,13 @@ namespace Consolonia.Core.Controls
             InitializeComponent();
 
             CurrentFolderTextBox.Focus();
-            ItemsListBox.KeepFocus(() => !CurrentFolderTextBox.IsFocused);
+            ItemsListBox.Items.CollectionChanged += Items_CollectionChanged;
+        }
+
+        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (!CurrentFolderTextBox.IsFocused)
+                Dispatcher.UIThread.Post(() => (ItemsListBox.ContainerFromIndex(0) as ListBoxItem)?.Focus(), DispatcherPriority.Background);
         }
 
         private FolderPickerViewModel ViewModel => (FolderPickerViewModel)DataContext;
@@ -107,6 +118,35 @@ namespace Consolonia.Core.Controls
                     if (item is IStorageFolder folder)
                         ViewModel.SelectedFolders.Remove(folder);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    ItemsListBox.Items.CollectionChanged -= Items_CollectionChanged;
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                _disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~FolderPicker()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

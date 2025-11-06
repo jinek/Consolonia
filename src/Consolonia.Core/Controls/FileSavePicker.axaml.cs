@@ -1,16 +1,20 @@
 using System;
+using System.Collections.Specialized;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FileSavePicker : ManagedWindow
+    internal partial class FileSavePicker : ManagedWindow, IDisposable
     {
+        private bool _disposedValue;
+
         public FileSavePicker()
             : this(new FilePickerSaveOptions())
         {
@@ -22,7 +26,13 @@ namespace Consolonia.Core.Controls
             InitializeComponent();
 
             CurrentFolderTextBox.Focus();
-            ItemsListBox.KeepFocus(() => !CurrentFolderTextBox.IsFocused);
+            ItemsListBox.Items.CollectionChanged += Items_CollectionChanged;
+        }
+
+        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (!CurrentFolderTextBox.IsFocused)
+                Dispatcher.UIThread.Post(() => (ItemsListBox.ContainerFromIndex(0) as ListBoxItem)?.Focus(), DispatcherPriority.Background);
         }
 
         /// <summary>
@@ -116,6 +126,36 @@ namespace Consolonia.Core.Controls
         private void OnCancel(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                    ItemsListBox.Items.CollectionChanged -= Items_CollectionChanged;
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                _disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~FileSavePicker()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
