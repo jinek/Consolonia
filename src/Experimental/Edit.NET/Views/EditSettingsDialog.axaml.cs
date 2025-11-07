@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Interactivity;
 using Consolonia;
 using EditNET.DataModels;
@@ -13,7 +14,7 @@ namespace EditNET.Views
         public EditSettingsDialog()
         {
             InitializeComponent();
-            if (!((ConsoloniaLifetime)App.Current.ApplicationLifetime).IsRgbColorMode())
+            if (!((ConsoloniaLifetime)Application.Current!.ApplicationLifetime!).IsRgbColorMode())
                 CompatibilityErrorTxt.IsVisible = true;
         }
 

@@ -25,6 +25,7 @@ namespace EditNET.ViewModels
         [UsedImplicitly]
         public EditSettingsViewModel()
         {
+            Settings = new Settings();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace EditNET;
 
 public partial class App : Application
 {
-    private WindowNotificationManager _notificationManager;
+    private WindowNotificationManager? _notificationManager;
 
     public override void Initialize()
     {
@@ -31,7 +31,7 @@ public partial class App : Application
 
     private void ShowNotificationHandler(IInteractionContext<Notification, Unit> context)
     {
-        _notificationManager.Show(context.Input);
+        _notificationManager!.Show(context.Input);
         context.SetOutput(Unit.Default);
     }
 
@@ -97,7 +97,7 @@ public partial class App : Application
 
     private void ShowNotification(string title, string message, NotificationType notificationType)
     {
-        _notificationManager.Show(new Notification { Type = notificationType, Message = message, Title = title });
+        _notificationManager!.Show(new Notification { Type = notificationType, Message = message, Title = title });
     }
 
     private bool LoadUITheme(ConsoloniaTheme theme)
