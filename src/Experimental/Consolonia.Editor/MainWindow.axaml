@@ -37,6 +37,8 @@
                 <AvalonEdit:TextEditorOptions
                     AcceptsTab="true"
                     AllowToggleOverstrikeMode = "true"
+                    EnableEmailHyperlinks="true"
+                    EnableHyperlinks="true"
                     EnableTextDragDrop = "true"
                     EnableRectangularSelection = "False"
                     ShowBoxForControlCharacters = "true"

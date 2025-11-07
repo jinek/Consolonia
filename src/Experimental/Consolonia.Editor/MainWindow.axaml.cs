@@ -6,6 +6,7 @@ using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Folding;
 using AvaloniaEdit.TextMate;
+using Consolonia.AvaloniaEdit;
 using ConsoloniaEdit.Demo.Resources;
 using ConsoloniaEdit.Demo.ViewModels;
 using TextMateSharp.Grammars;
@@ -56,7 +57,6 @@ namespace ConsoloniaEdit.Demo
 
             _statusTextBlock = this.Find<TextBlock>("StatusText")!;
 
-
             var mainWindowVM = new MainWindowViewModel(_textMateInstallation, _registryOptions);
             foreach (ThemeName themeName in Enum.GetValues<ThemeName>())
             {
@@ -68,8 +68,6 @@ namespace ConsoloniaEdit.Demo
                 }
             }
             DataContext = mainWindowVM;
-
-
         }
 
         private void TextMateInstallationOnAppliedTheme(object sender, TextMate.Installation e)
