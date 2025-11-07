@@ -27,6 +27,7 @@
                 <MergeResourceInclude Source="/Templates/Controls/HeaderedContentControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/HyperlinkButton.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Icons.axaml" />
+                <!--todo: icons should not be included to turbovision themes-->
                 <MergeResourceInclude Source="/Templates/Controls/ItemsControl.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/Label.axaml" />
                 <MergeResourceInclude Source="/Templates/Controls/LightDismissOverlaylayer.axaml" />

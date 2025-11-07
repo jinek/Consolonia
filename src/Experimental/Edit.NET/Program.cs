@@ -3,7 +3,7 @@
 using Avalonia;
 using Consolonia;
 
-namespace Example
+namespace EditNET
 {
     public static class Program
     {
@@ -13,11 +13,12 @@ namespace Example
                 .StartWithConsoleLifetime(args);
         }
 
-        public static AppBuilder BuildAvaloniaApp()
+        private static AppBuilder BuildAvaloniaApp()
         {
             return AppBuilder.Configure<App>()
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
+                .WithDeveloperTools()
                 .LogToException();
         }
     }
