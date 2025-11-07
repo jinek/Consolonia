@@ -53,7 +53,7 @@
                                 <Border.BorderBrush>
                                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
                                     <brushes:LineBrush LineStyle="DoubleLine"
-                                                       Brush="{DynamicResource ThemeBorderBrush}" />
+                                                       Brush="{StaticResource ThemeBorderBrush}" />
                                 </Border.BorderBrush>
                                 <Panel>
                                     <DockPanel LastChildFill="True"
@@ -166,7 +166,7 @@
 
             <Style Selector="^:noborder /template/ Border#PART_WindowBorder">
                 <Setter Property="BorderThickness"
-                        Value="{DynamicResource NoThickness}" />
+                        Value="1" />
             </Style>
 
             <Style Selector="^:maximized /template/ Border#PART_WindowBorder">
@@ -183,7 +183,7 @@
                     <Setter.Value>
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
                         <brushes:LineBrush LineStyle="DoubleLine"
-                                           Brush="{DynamicResource ThemeActionBackgroundBrush}" />
+                                           Brush="{StaticResource ThemeActionBackgroundBrush}" />
                     </Setter.Value>
                 </Setter>
             </Style>
@@ -191,12 +191,16 @@
                 <Setter Property="IsVisible"
                         Value="False" />
             </Style>
+            <Style Selector="^:noresize /template/ Border#PART_WindowBorder">
+                <Setter Property="BorderThickness" Value="1"/>
+            </Style>
+            
             <Style Selector="^:moving /template/ Border#PART_WindowBorder">
                 <Setter Property="BorderBrush">
                     <Setter.Value>
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved only staticResource works here-->
                         <brushes:LineBrush LineStyle="DoubleLine"
-                                           Brush="{DynamicResource ThemeActionBackgroundBrush}" />
+                                           Brush="{StaticResource ThemeActionBackgroundBrush}" />
                     </Setter.Value>
                 </Setter>
             </Style>

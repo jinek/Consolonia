@@ -32,15 +32,11 @@ namespace Consolonia.AvaloniaEdit
 
         static Caret()
         {
-            IBrush oldBrush = null;
             UseConsoleProperty.Changed.AddClassHandler<TextEditor>((textEditor, e) =>
             {
                 bool value = (bool)e.NewValue;
                 if (value)
                 {
-                    // replace caret with console caret.
-                    oldBrush = textEditor.TextArea.Caret.CaretBrush;
-
                     textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
                     { CaretStyle = CaretStyle.SteadyBar };
 
@@ -71,9 +67,8 @@ namespace Consolonia.AvaloniaEdit
                     textEditor.TextArea.TemplateApplied += OnTextAreaTemplateApplied;
                 }
                 else
-                {//todo: old brush must not be single for all Text Editors in the application
-                    // restore default caret
-                    textEditor.TextArea.Caret.CaretBrush = oldBrush;
+                {
+                    /*todo: brush setup and restoration: textEditor.TextArea.Caret.CaretBrush = oldBrush;*/
                     textEditor.TextArea.PropertyChanged -= TextArea_PropertyChanged;
                     textEditor.TextArea.TemplateApplied -= OnTextAreaTemplateApplied;
                 }

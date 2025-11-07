@@ -6,10 +6,7 @@
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>Edit.NET</ToolCommandName>
         <IsPackable>true</IsPackable>
-        <RootNamespace>EditNET</RootNamespace>
-        <SelfContained>true</SelfContained>
-        <PublishReadyToRun>true</PublishReadyToRun>
-        <PublishTrimmed>false</PublishTrimmed>
+        <RootNamespace>EditNET</RootNamespace>        
     </PropertyGroup>
 
     <ItemGroup>
