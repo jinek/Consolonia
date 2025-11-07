@@ -85,6 +85,7 @@ namespace Consolonia.Core.Controls
                 {
                     ViewModel.CurrentFolder = folder;
                     ViewModel.CurrentFolderPath = folder.Path.LocalPath;
+                    // ReSharper disable once AssignNullToNotNull
                     ViewModel.SelectedItem = null;
                     e.Handled = true;
                     return;
