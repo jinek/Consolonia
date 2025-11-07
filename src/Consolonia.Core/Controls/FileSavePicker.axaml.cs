@@ -91,9 +91,9 @@ namespace Consolonia.Core.Controls
                 }
             }
 
-            if (ViewModel.SelectedFile != null)
+            if (ViewModel.HasSelection)
             {
-                // Otherwise, perform save operation
+                // get an IStorageFile from the savepath
                 IStorageProvider storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
                 ArgumentNullException.ThrowIfNull(storageProvider);
 
