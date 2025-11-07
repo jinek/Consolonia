@@ -71,12 +71,13 @@
             </Setter>
             <Setter Property="SelectionCornerRadius"
                     Value="0" />
-            
+
             <Style Selector="^[IsFocused=True] /template/ ContentPresenter#PART_CP">
                 <!--IsFocused here is a hack to ensure it's applied after inlined value in the template itself-->
-                <Setter Property="Cursor" Value="Arrow"/>
+                <Setter Property="Cursor"
+                        Value="Arrow" />
             </Style>
-            
+
         </ControlTheme>
 
         <ControlTheme x:Key="{x:Type search:SearchPanel}"
