@@ -11,7 +11,7 @@ namespace Consolonia.AvaloniaEdit
         public static void UseConsolonia(this TextEditor textEditor)
         {
             // add fontmetric transformer so that underlines and strikethroughs use glyph metrics
-            textEditor.TextArea.TextView.LineTransformers.Add(new FontMetricsTransformer());
+            textEditor.TextArea.TextView.LineTransformers.Add(new DecorationsFontMetricsTransformer());
         }
     }
 }
