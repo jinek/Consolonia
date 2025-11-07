@@ -47,6 +47,11 @@ namespace Consolonia.Core.Controls
 
                         Inlines = inlines;
                     }
+                    else
+                    {
+                        Inlines = [];
+                        _accessRun = null;
+                    }
                 }
                     break;
             }

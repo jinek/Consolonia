@@ -1,7 +1,5 @@
 ﻿// ReSharper disable All
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
@@ -24,6 +22,10 @@ namespace Terminal.Gui
                                CONSOLE_INPUT_MODE.ENABLE_EXTENDED_FLAGS);
             newConsoleMode &= ~CONSOLE_INPUT_MODE.ENABLE_QUICK_EDIT_MODE;
             newConsoleMode &= ~CONSOLE_INPUT_MODE.ENABLE_PROCESSED_INPUT;
+            // Harden input mode: disable line/echo (this fixes CTRL+S freezes)
+            newConsoleMode &= ~CONSOLE_INPUT_MODE.ENABLE_LINE_INPUT;
+            newConsoleMode &= ~CONSOLE_INPUT_MODE.ENABLE_ECHO_INPUT; 
+            //newConsoleMode |= CONSOLE_INPUT_MODE.ENABLE_VIRTUAL_TERMINAL_INPUT;
             ConsoleMode = newConsoleMode;
         }
 
