@@ -6,6 +6,7 @@ using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Folding;
 using AvaloniaEdit.TextMate;
+using Consolonia.AvaloniaEdit;
 using ConsoloniaEdit.Demo.Resources;
 using ConsoloniaEdit.Demo.ViewModels;
 using TextMateSharp.Grammars;
@@ -69,7 +70,7 @@ namespace ConsoloniaEdit.Demo
             }
             DataContext = mainWindowVM;
 
-
+            _textEditor.UseConsolonia();
         }
 
         private void TextMateInstallationOnAppliedTheme(object sender, TextMate.Installation e)

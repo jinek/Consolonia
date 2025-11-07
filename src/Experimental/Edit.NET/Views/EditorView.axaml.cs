@@ -9,18 +9,16 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
-using AvaloniaEdit;
 using AvaloniaEdit.TextMate;
+using Consolonia.AvaloniaEdit;
 using Consolonia.Controls;
 using EditNET.DataModels;
 using EditNET.Helpers;
 using EditNET.ViewModels;
-using Newtonsoft.Json;
 using ReactiveUI;
 using TextMateSharp.Grammars;
 using TextMateSharp.Themes;
@@ -178,6 +176,7 @@ namespace EditNET.Views
 
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
+            Editor.UseConsolonia();
             Editor.TextArea.Focus();
         }
 
