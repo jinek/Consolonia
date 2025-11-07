@@ -192,7 +192,6 @@ namespace EditNET.Views
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
             Editor.TextArea.Focus();
-            Editor.UseConsolonia();
         }
 
         private void TextMateInstallationOnAppliedTheme(object? sender, TextMate.Installation e)

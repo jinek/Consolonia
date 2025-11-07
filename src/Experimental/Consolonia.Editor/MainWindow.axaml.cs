@@ -68,8 +68,6 @@ namespace ConsoloniaEdit.Demo
                 }
             }
             DataContext = mainWindowVM;
-
-            _textEditor.UseConsolonia();
         }
 
         private void TextMateInstallationOnAppliedTheme(object sender, TextMate.Installation e)

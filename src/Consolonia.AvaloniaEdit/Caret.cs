@@ -30,6 +30,7 @@ namespace Consolonia.AvaloniaEdit
                 bool value = (bool)e.NewValue;
                 if (value)
                 {
+                    textEditor.TextArea.TextView.LineTransformers.Add(new DecorationsFontMetricsTransformer());
                     textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
                         { CaretStyle = CaretStyle.SteadyBar };
 
@@ -38,6 +39,7 @@ namespace Consolonia.AvaloniaEdit
                         Visual caretLayer = textEditor.TextArea.TextView.GetVisualDescendants()
                             .Single(visual => visual.GetType().FullName == "AvaloniaEdit.Editing.CaretLayer");
 
+                        //todo: try to move this binding to style
                         caretLayer.Bind(Visual.IsVisibleProperty, new Binding
                         {
                             RelativeSource = new RelativeSource

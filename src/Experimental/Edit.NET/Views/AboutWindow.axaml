@@ -3,7 +3,7 @@
                              xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager"
                              xmlns:viewModels="clr-namespace:EditNET.ViewModels"
                              x:Class="EditNET.Views.AboutWindow"
-                             Title="About Edit.NET"
+                             Title="{Binding Source={x:Static viewModels:AppViewModel.EditNetTitle}, StringFormat='About {0}'}"
                              CanResize="False"
                              WindowStartupLocation="CenterOwner">
     <Border Padding="1"
