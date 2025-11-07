@@ -1,8 +1,5 @@
 ﻿// ReSharper disable All
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
