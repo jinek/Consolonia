@@ -70,7 +70,6 @@ namespace EditNET
             base.OnFrameworkInitializationCompleted();
 
             HandleDispatcherExceptions();
-
             if (ViewModel.InitialLoadSettingsException != null)
                 ShowNotification("Settings Error",
                     "Failed to load settings: " + ViewModel.InitialLoadSettingsException.Message,
