@@ -1,7 +1,12 @@
+using System.Linq;
 using Avalonia;
-using Avalonia.Media;
+using Avalonia.Controls;
+using Avalonia.Data;
+using Avalonia.VisualTree;
 using AvaloniaEdit;
 using AvaloniaEdit.Editing;
+using Consolonia.Controls;
+using Consolonia.Controls.Brushes;
 
 namespace Consolonia.AvaloniaEdit
 {
@@ -20,18 +25,29 @@ namespace Consolonia.AvaloniaEdit
 
         static Caret()
         {
-            IBrush oldBrush = null;
             UseConsoleProperty.Changed.AddClassHandler<TextEditor>((textEditor, e) =>
             {
                 bool value = (bool)e.NewValue;
                 if (value)
                 {
-                    // replace caret with console caret.
-                    oldBrush = textEditor.TextArea.Caret.CaretBrush;
-#if USE_CONSOLE_CARET
+                    textEditor.TextArea.TextView.LineTransformers.Add(new DecorationsFontMetricsTransformer());
                     textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
-                    { CaretStyle = CaretStyle.SteadyBar };
-#endif
+                        { CaretStyle = CaretStyle.SteadyBar };
+
+                    {
+                        // This is needed because we can not render more than one caret at once, which happens during search
+                        Visual caretLayer = textEditor.TextArea.TextView.GetVisualDescendants()
+                            .Single(visual => visual.GetType().FullName == "AvaloniaEdit.Editing.CaretLayer");
+
+                        //todo: try to move this binding to style
+                        caretLayer.Bind(Visual.IsVisibleProperty, new Binding
+                        {
+                            RelativeSource = new RelativeSource
+                                { Mode = RelativeSourceMode.FindAncestor, AncestorType = typeof(TextArea) },
+                            Path = nameof(Control.IsFocused)
+                        });
+                    }
+
                     textEditor.TextArea.PropertyChanged += TextArea_PropertyChanged;
 
                     // The built in LineNumberMargin miscalculates the top of the line, 
@@ -45,8 +61,7 @@ namespace Consolonia.AvaloniaEdit
                 }
                 else
                 {
-                    // restore default caret
-                    textEditor.TextArea.Caret.CaretBrush = oldBrush;
+                    /*todo: brush setup and restoration: textEditor.TextArea.Caret.CaretBrush = oldBrush;*/
                     textEditor.TextArea.PropertyChanged -= TextArea_PropertyChanged;
                 }
             });
@@ -67,14 +82,12 @@ namespace Consolonia.AvaloniaEdit
             // monitor OverstrikeMode property changes to update caret style to match
             if (e.Property == TextArea.OverstrikeModeProperty)
             {
-#if USE_CONSOLE_CARET
                 var textArea = (TextArea)sender;
                 if (textArea.Caret.CaretBrush is MoveConsoleCaretToPositionBrush caretBrush)
                     // NOTE: We use SteadyBlock and SteadyBar because AvaloniaEdit has blinking animation hardcoded in.
                     caretBrush.CaretStyle = (bool)e.NewValue
                         ? CaretStyle.SteadyBlock
                         : CaretStyle.SteadyBar;
-#endif
             }
         }
     }
