@@ -127,18 +127,15 @@
                     <MenuItem Header="Copy"
                               InputGesture="ctrl+C"
                               Command="{Binding ElementName=Editor, Path=Copy}"
-                              IsEnabled="{Binding ElementName=Editor, Path=CanCopy}">
-                    </MenuItem>
+                              IsEnabled="{Binding ElementName=Editor, Path=CanCopy}" />
                     <MenuItem Header="Cut"
                               InputGesture="ctrl+X"
                               Command="{Binding CutMouseCommand}"
-                              CommandParameter="{Binding #Editor.TextArea}">
-                    </MenuItem>
+                              CommandParameter="{Binding #Editor.TextArea}" />
                     <MenuItem Header="Paste"
                               InputGesture="ctrl+V"
                               Command="{Binding ElementName=Editor, Path=Paste}"
-                              IsEnabled="{Binding ElementName=Editor, Path=CanPaste}">
-                    </MenuItem>
+                              IsEnabled="{Binding ElementName=Editor, Path=CanPaste}" />
                     <MenuItem Header="-" />
                     <MenuItem Header="Select All"
                               InputGesture="ctrl+A"

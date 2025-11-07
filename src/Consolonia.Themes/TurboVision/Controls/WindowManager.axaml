@@ -192,9 +192,10 @@
                         Value="False" />
             </Style>
             <Style Selector="^:noresize /template/ Border#PART_WindowBorder">
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderThickness"
+                        Value="1" />
             </Style>
-            
+
             <Style Selector="^:moving /template/ Border#PART_WindowBorder">
                 <Setter Property="BorderBrush">
                     <Setter.Value>

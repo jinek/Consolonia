@@ -1,12 +1,11 @@
 using Avalonia.Media;
-using Avalonia.Platform;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Rendering;
 
 namespace Consolonia.AvaloniaEdit
 {
     /// <summary>
-    /// Transformer that makes sure that glyphe metrics are used for underling and strikethrough decorations
+    ///     Transformer that makes sure that glyphe metrics are used for underling and strikethrough decorations
     /// </summary>
     public class FontMetricsTransformer : DocumentColorizingTransformer
     {
@@ -20,22 +19,20 @@ namespace Consolonia.AvaloniaEdit
             {
                 // Check if the element has underline decoration
                 if (element.TextRunProperties?.TextDecorations != null)
-                {
                     // Create a new decoration collection with FontRecommended
-                    foreach (var decoration in element.TextRunProperties.TextDecorations)
-                    {
+                    foreach (TextDecoration decoration in element.TextRunProperties.TextDecorations)
                         if (decoration.Location == TextDecorationLocation.Underline)
                         {
                             decoration.StrokeThicknessUnit = TextDecorationUnit.Pixel;
-                            decoration.StrokeThickness = element.TextRunProperties.Typeface.GlyphTypeface.Metrics.UnderlineThickness;
+                            decoration.StrokeThickness = element.TextRunProperties.Typeface.GlyphTypeface.Metrics
+                                .UnderlineThickness;
                         }
                         else if (decoration.Location == TextDecorationLocation.Strikethrough)
                         {
                             decoration.StrokeThicknessUnit = TextDecorationUnit.Pixel;
-                            decoration.StrokeThickness = element.TextRunProperties.Typeface.GlyphTypeface.Metrics.StrikethroughThickness;
+                            decoration.StrokeThickness = element.TextRunProperties.Typeface.GlyphTypeface.Metrics
+                                .StrikethroughThickness;
                         }
-                    }
-                }
             });
         }
     }

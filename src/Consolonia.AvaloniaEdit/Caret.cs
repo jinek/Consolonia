@@ -1,14 +1,10 @@
-using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
-using Avalonia.Data.Converters;
 using Avalonia.Input;
-using Avalonia.Media;
-using Avalonia.ReactiveUI;
 using Avalonia.VisualTree;
 using AvaloniaEdit;
 using AvaloniaEdit.Editing;
@@ -38,7 +34,7 @@ namespace Consolonia.AvaloniaEdit
                 if (value)
                 {
                     textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
-                    { CaretStyle = CaretStyle.SteadyBar };
+                        { CaretStyle = CaretStyle.SteadyBar };
 
                     {
                         // This is needed because we can not render more than one caret at once, which happens during search
@@ -52,7 +48,7 @@ namespace Consolonia.AvaloniaEdit
                             Path = nameof(Control.IsFocused)
                         });
                     }
-                    
+
                     textEditor.TextArea.PropertyChanged += TextArea_PropertyChanged;
 
                     // The built in LineNumberMargin miscalculates the top of the line, 

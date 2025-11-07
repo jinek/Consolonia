@@ -14,9 +14,10 @@ using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using AvaloniaEdit.Indentation.CSharp;
 using AvaloniaEdit.TextMate;
-using Consolonia.AvaloniaEdit;
 using Consolonia;
+using Consolonia.AvaloniaEdit;
 using Consolonia.Controls;
 using EditNET.DataModels;
 using EditNET.Helpers;
@@ -30,12 +31,16 @@ namespace EditNET.Views
     public partial class EditorView : UserControl
     {
         public const ThemeName DefaultEditorTheme = ThemeName.DimmedMonokai;
+        private readonly RegistryOptions _registryOptions;
+        private readonly TextMate.Installation _textMateInstallation;
+
+        private CompositeDisposable? _dataContextHandlers;
 
         public EditorView()
         {
             InitializeComponent();
-            
-            Editor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Editor.Options);
+
+            Editor.TextArea.IndentationStrategy = new CSharpIndentationStrategy(Editor.Options);
             Editor.TextArea.RightClickMovesCaret = true;
             Editor.AttachedToVisualTree += (_, _) => { UpdateStatus(); };
             Editor.TextArea.Caret.PositionChanged += (_, _) => UpdateStatus();
@@ -48,22 +53,30 @@ namespace EditNET.Views
             Loaded += OnLoaded;
         }
 
-        private CompositeDisposable? _dataContextHandlers;
-        private readonly RegistryOptions _registryOptions;
-        private readonly TextMate.Installation _textMateInstallation;
+        private MainWindow MainWindow => this.FindAncestorOfType<MainWindow>()!;
+
+        public EditorViewModel? ViewModel
+        {
+            get => (EditorViewModel?)DataContext;
+            set => DataContext = value;
+        }
+
+        private static IClassicDesktopStyleApplicationLifetime Lifetime
+            => (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
 
         protected override void OnDataContextChanged(EventArgs e)
         {
             _dataContextHandlers?.Dispose();
-            
+
             base.OnDataContextChanged(e);
-            
+
             _dataContextHandlers = [];
 
             if (ViewModel == null) return;
             EditorViewModel editorViewModel = ViewModel!;
             editorViewModel.MessageBoxInteraction.RegisterHandler(MessageBoxHandler).DisposeWith(_dataContextHandlers);
-            editorViewModel.FocusEditorInteraction.RegisterHandler(FocusEditorHandler).DisposeWith(_dataContextHandlers);
+            editorViewModel.FocusEditorInteraction.RegisterHandler(FocusEditorHandler)
+                .DisposeWith(_dataContextHandlers);
             editorViewModel.ShutdownInteraction.RegisterHandler(ShutDownHandler).DisposeWith(_dataContextHandlers);
             editorViewModel.OpenFileInteraction.RegisterHandler(OpenFileHandler).DisposeWith(_dataContextHandlers);
             editorViewModel.SaveFileInteraction.RegisterHandler(SaveFileHandler).DisposeWith(_dataContextHandlers);
@@ -81,9 +94,9 @@ namespace EditNET.Views
 
         private void OnSettingsUpdated(Settings settings)
         {
-            if(!((ConsoloniaLifetime)Lifetime).IsRgbColorMode())
+            if (!((ConsoloniaLifetime)Lifetime).IsRgbColorMode())
                 return;
-            
+
             IRawTheme? theme = _registryOptions.LoadTheme(settings.SyntaxTheme);
             _textMateInstallation.SetTheme(theme);
         }
@@ -96,7 +109,9 @@ namespace EditNET.Views
                 _textMateInstallation.SetGrammar(null);
                 return;
             }
-            Language language = ViewModel!.Syntax = _registryOptions.GetLanguageByExtension(Path.GetExtension(filePath));
+
+            Language language =
+                ViewModel!.Syntax = _registryOptions.GetLanguageByExtension(Path.GetExtension(filePath));
             string? scope = _registryOptions.GetScopeByLanguageId(language.Id);
             _textMateInstallation.SetGrammar(scope);
         }
@@ -117,17 +132,18 @@ namespace EditNET.Views
                 interactionContext.SetOutput(file.Path.AbsolutePath);
             }
             else
+            {
                 interactionContext.SetOutput(null);
+            }
         }
-
-        private MainWindow MainWindow => this.FindAncestorOfType<MainWindow>()!;
 
         private async Task SaveFileHandler(IInteractionContext<Unit, string?> context)
         {
             IStorageFile? file = await MainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save As",
-                SuggestedStartLocation = await MainWindow.StorageProvider.TryGetFolderFromPathAsync(Directory.GetCurrentDirectory()),
+                SuggestedStartLocation =
+                    await MainWindow.StorageProvider.TryGetFolderFromPathAsync(Directory.GetCurrentDirectory()),
                 SuggestedFileName = "Untitled.txt"
             });
 
@@ -156,28 +172,20 @@ namespace EditNET.Views
                     MessageBoxButtons.OkCancel => MessageBoxStyle.OkCancel,
                     MessageBoxButtons.YesNo => MessageBoxStyle.YesNoCancel,
                     MessageBoxButtons.Ok => MessageBoxStyle.Ok,
-                    _ => throw new NotSupportedException("Unsupported MessageBoxButtons value: " + interactionContext.Input.Buttons)
+                    _ => throw new NotSupportedException("Unsupported MessageBoxButtons value: " +
+                                                         interactionContext.Input.Buttons)
                 });
             interactionContext.SetOutput(result is MessageBoxResult.Ok or MessageBoxResult.Yes);
         }
 
-        public EditorViewModel? ViewModel
-        {
-            get => (EditorViewModel?)DataContext;
-            set => DataContext = value;
-        }
-
-        private static IClassicDesktopStyleApplicationLifetime Lifetime
-            => (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-        
         private void UpdateStatus()
         {
             // Position
-            var line = Editor.TextArea.Caret.Line;
-            var column = Editor.TextArea.Caret.Column;
+            int line = Editor.TextArea.Caret.Line;
+            int column = Editor.TextArea.Caret.Column;
             PositionText.Text = $"Ln {line}, Col {column}";
             // Length
-            var length = Editor.Document?.TextLength ?? (Editor.Text?.Length ?? 0);
+            int length = Editor.Document?.TextLength ?? (Editor.Text?.Length ?? 0);
             LengthText.Text = $"Len {length}";
         }
 
@@ -199,43 +207,29 @@ namespace EditNET.Views
 
             if (!ApplyBrushAction(e, "editor.selectionBackground",
                     brush => Editor.TextArea.SelectionBrush = brush))
-            {
                 if (!ApplyBrushAction(e, "editor.selectionHighlightBackground",
                         brush => Editor.TextArea.SelectionBrush = brush))
-                {
-                    if (Application.Current!.TryGetResource("TextAreaSelectionBrush", out var resourceObject))
-                    {
+                    if (Application.Current!.TryGetResource("TextAreaSelectionBrush", out object? resourceObject))
                         if (resourceObject is IBrush brush)
-                        {
                             Editor.TextArea.SelectionBrush = brush;
-                        }
-                    }
-                }
-            }
 
             if (!ApplyBrushAction(e, "editor.lineHighlightBackground",
-                    brush =>
-                    {
-                        Editor.TextArea.TextView.CurrentLineBackground = brush;
-                    }))
-            {
+                    brush => { Editor.TextArea.TextView.CurrentLineBackground = brush; }))
                 Editor.TextArea.TextView.SetDefaultHighlightLineColors();
-            }
 
             //Todo: looks like the margin doesn't have a active line highlight, would be a nice addition
             if (!ApplyBrushAction(e, "editorLineNumber.foreground",
                     brush => Editor.LineNumbersForeground = brush))
-            { 
                 Editor.LineNumbersForeground = Editor.TextArea.Foreground;
-            }
-            Editor.TextArea.TextView.CurrentLineBorder = new Pen(Brushes.Transparent, thickness: 0);
+            Editor.TextArea.TextView.CurrentLineBorder = new Pen(Brushes.Transparent, 0);
             return;
 
-            static bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
+            static bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson,
+                Action<IBrush> applyColorAction)
             {
-                if (!e.TryGetThemeColor(colorKeyNameFromJson, out var colorString))
+                if (!e.TryGetThemeColor(colorKeyNameFromJson, out string? colorString))
                     return false;
-                if (!Color.TryParse(colorString, out var color))
+                if (!Color.TryParse(colorString, out Color color))
                     return false;
 
                 var colorBrush = new SolidColorBrush(color);
@@ -263,9 +257,7 @@ namespace EditNET.Views
         private void EditMenu_OnSubmenuOpened(object sender, RoutedEventArgs e)
         {
             foreach (MenuItem subMenu in ((MenuItem)sender).Items.OfType<MenuItem>())
-            {
                 BindingOperations.GetBindingExpressionBase(subMenu, IsEnabledProperty)?.UpdateTarget();
-            }
         }
     }
 }

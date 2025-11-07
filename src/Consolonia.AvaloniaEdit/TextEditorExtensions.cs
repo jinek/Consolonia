@@ -5,7 +5,7 @@ namespace Consolonia.AvaloniaEdit
     public static class TextEditorExtensions
     {
         /// <summary>
-        ///  Enable Consolonia features in the TextEditor
+        ///     Enable Consolonia features in the TextEditor
         /// </summary>
         /// <param name="textEditor"></param>
         public static void UseConsolonia(this TextEditor textEditor)

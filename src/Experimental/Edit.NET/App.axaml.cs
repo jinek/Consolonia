@@ -11,112 +11,107 @@ using Consolonia.Themes;
 using EditNET.ViewModels;
 using EditNET.Views;
 using ReactiveUI;
-using TextMateSharp.Grammars;
 using Notification = Avalonia.Controls.Notifications.Notification;
 
-namespace EditNET;
-
-public partial class App : Application
+namespace EditNET
 {
-    private WindowNotificationManager? _notificationManager;
-
-    public override void Initialize()
+    public class App : Application
     {
-        AvaloniaXamlLoader.Load(this);
+        private WindowNotificationManager? _notificationManager;
 
-        DataContext = new AppViewModel();
-        ViewModel.SetThemeInteraction.RegisterHandler(SetThemeHandler);
-        ViewModel.ShowNotificationInteraction.RegisterHandler(ShowNotificationHandler);
-    }
+        private MainWindow MainWindow =>
+            (MainWindow)((IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!).MainWindow!;
 
-    private void ShowNotificationHandler(IInteractionContext<Notification, Unit> context)
-    {
-        _notificationManager!.Show(context.Input);
-        context.SetOutput(Unit.Default);
-    }
+        private AppViewModel ViewModel => (AppViewModel)DataContext!;
 
-    private void SetThemeHandler(IInteractionContext<(ConsoloniaTheme, bool), Unit> context)
-    {
-        context.SetOutput(Unit.Default);
-        MainWindow.RequestedThemeVariant = context.Input.Item2 ? ThemeVariant.Light : ThemeVariant.Dark;
-        if(!LoadUITheme(context.Input.Item1))
+        public override void Initialize()
         {
-            ShowThemeIncompatible();
-            return;
+            AvaloniaXamlLoader.Load(this);
+
+            DataContext = new AppViewModel();
+            ViewModel.SetThemeInteraction.RegisterHandler(SetThemeHandler);
+            ViewModel.ShowNotificationInteraction.RegisterHandler(ShowNotificationHandler);
         }
-        MainWindow.Content = new EditorView { DataContext = ViewModel.EditorViewModel };
-    }
 
-    private MainWindow MainWindow =>
-        (MainWindow)((IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!).MainWindow!;
-
-    private AppViewModel ViewModel => (AppViewModel)DataContext!;
-
-    public override async void OnFrameworkInitializationCompleted()
-    {
-        bool themeLoaded = false;
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+        private void ShowNotificationHandler(IInteractionContext<Notification, Unit> context)
         {
-            themeLoaded = LoadUITheme(ViewModel.EditorViewModel.Settings.ConsoloniaTheme);
-            desktopLifetime.MainWindow = new MainWindow
-            {
-                DataContext = ViewModel,
-                RequestedThemeVariant = ViewModel.EditorViewModel.Settings.LightVariant
-                    ? ThemeVariant.Light
-                    : ThemeVariant.Default
-            };
+            _notificationManager!.Show(context.Input);
+            context.SetOutput(Unit.Default);
+        }
 
-            if (desktopLifetime.Args is { Length: > 0 })
+        private void SetThemeHandler(IInteractionContext<(ConsoloniaTheme, bool), Unit> context)
+        {
+            context.SetOutput(Unit.Default);
+            MainWindow.RequestedThemeVariant = context.Input.Item2 ? ThemeVariant.Light : ThemeVariant.Dark;
+            if (!LoadUITheme(context.Input.Item1))
             {
-                await ViewModel.EditorViewModel.OpenFile(desktopLifetime.Args[0]);
+                ShowThemeIncompatible();
+                return;
             }
 
-            _notificationManager = new WindowNotificationManager(desktopLifetime.MainWindow!);
+            MainWindow.Content = new EditorView { DataContext = ViewModel.EditorViewModel };
         }
 
-        base.OnFrameworkInitializationCompleted();
-
-        if (ViewModel.InitialLoadSettingsException != null)
+        public override async void OnFrameworkInitializationCompleted()
         {
-            ShowNotification("Settings Error",
-                "Failed to load settings: " + ViewModel.InitialLoadSettingsException.Message, NotificationType.Error);
+            bool themeLoaded = false;
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            {
+                themeLoaded = LoadUITheme(ViewModel.EditorViewModel.Settings.ConsoloniaTheme);
+                desktopLifetime.MainWindow = new MainWindow
+                {
+                    DataContext = ViewModel,
+                    RequestedThemeVariant = ViewModel.EditorViewModel.Settings.LightVariant
+                        ? ThemeVariant.Light
+                        : ThemeVariant.Default
+                };
+
+                if (desktopLifetime.Args is { Length: > 0 })
+                    await ViewModel.EditorViewModel.OpenFile(desktopLifetime.Args[0]);
+
+                _notificationManager = new WindowNotificationManager(desktopLifetime.MainWindow!);
+            }
+
+            base.OnFrameworkInitializationCompleted();
+
+            if (ViewModel.InitialLoadSettingsException != null)
+                ShowNotification("Settings Error",
+                    "Failed to load settings: " + ViewModel.InitialLoadSettingsException.Message,
+                    NotificationType.Error);
+
+            if (!themeLoaded) ShowThemeIncompatible();
         }
 
-        if (!themeLoaded)
+        private void ShowThemeIncompatible()
         {
-            ShowThemeIncompatible();
+            ShowNotification("Theme Error",
+                $"Modern themes are not supported in this environment. Switching back to {nameof(ConsoloniaTheme.TurboVisionCompatible)} and {Enum.GetName(EditorView.DefaultEditorTheme)}",
+                NotificationType.Error);
         }
-    }
 
-    private void ShowThemeIncompatible()
-    {
-        ShowNotification("Theme Error",
-            $"Modern themes are not supported in this environment. Switching back to {nameof(ConsoloniaTheme.TurboVisionCompatible)} and {Enum.GetName(EditorView.DefaultEditorTheme)}",
-            NotificationType.Error);
-    }
-
-    private void ShowNotification(string title, string message, NotificationType notificationType)
-    {
-        _notificationManager!.Show(new Notification { Type = notificationType, Message = message, Title = title });
-    }
-
-    private bool LoadUITheme(ConsoloniaTheme theme)
-    {
-        if (!((ConsoloniaLifetime)ApplicationLifetime!).IsRgbColorMode() &&
-            theme is ConsoloniaTheme.Modern or ConsoloniaTheme.ModernContrast)
-            return false;
-        
-        Styles[0] = theme switch
+        private void ShowNotification(string title, string message, NotificationType notificationType)
         {
-            ConsoloniaTheme.Modern => new ModernTheme(),
-            ConsoloniaTheme.ModernContrast => new ModernContrastTheme(),
-            ConsoloniaTheme.TurboVision => new TurboVisionTheme(),
-            ConsoloniaTheme.TurboVisionCompatible => new TurboVisionCompatibleTheme(),
-            ConsoloniaTheme.TurboVisionGray => new TurboVisionGrayTheme(),
-            ConsoloniaTheme.TurboVisionElegant => new TurboVisionElegantTheme(),
-            _ => throw new InvalidDataException("Unknown theme name")
-        };
-        
-        return true;
+            _notificationManager!.Show(new Notification { Type = notificationType, Message = message, Title = title });
+        }
+
+        private bool LoadUITheme(ConsoloniaTheme theme)
+        {
+            if (!((ConsoloniaLifetime)ApplicationLifetime!).IsRgbColorMode() &&
+                theme is ConsoloniaTheme.Modern or ConsoloniaTheme.ModernContrast)
+                return false;
+
+            Styles[0] = theme switch
+            {
+                ConsoloniaTheme.Modern => new ModernTheme(),
+                ConsoloniaTheme.ModernContrast => new ModernContrastTheme(),
+                ConsoloniaTheme.TurboVision => new TurboVisionTheme(),
+                ConsoloniaTheme.TurboVisionCompatible => new TurboVisionCompatibleTheme(),
+                ConsoloniaTheme.TurboVisionGray => new TurboVisionGrayTheme(),
+                ConsoloniaTheme.TurboVisionElegant => new TurboVisionElegantTheme(),
+                _ => throw new InvalidDataException("Unknown theme name")
+            };
+
+            return true;
+        }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Reactive;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using AvaloniaEdit.Document;
@@ -18,16 +17,9 @@ namespace EditNET.ViewModels
         [ObservableProperty] private TextDocument _document = new();
         [ObservableProperty] private string? _filePath;
         [ObservableProperty] private bool _modified;
-        [ObservableProperty] private Language? _syntax;
-        [ObservableProperty] private Settings _settings;
         private TextDocument? _previousDocument;
-
-        public Interaction<MessageBoxModel, bool> MessageBoxInteraction { get; } = new();
-        public Interaction<Unit, Unit> FocusEditorInteraction { get; } = new();
-        public Interaction<Unit, string?> OpenFileInteraction { get; } = new();
-        public Interaction<Unit, string?> SaveFileInteraction { get; } = new();
-        public Interaction<Unit, Unit> ShutdownInteraction { get; } = new();
-        public Interaction<Unit, Unit> UpdateStatusInteraction { get; } = new();
+        [ObservableProperty] private Settings _settings;
+        [ObservableProperty] private Language? _syntax;
 
         public EditorViewModel(Settings settings)
         {
@@ -36,11 +28,24 @@ namespace EditNET.ViewModels
             this.WhenAnyValue(model => model.Document).Skip(1).Subscribe(OnDocumentUpdatedNoInitial);
         }
 
+        [UsedImplicitly]
+        public EditorViewModel()
+        {
+            _settings = new Settings();
+        }
+
+        public Interaction<MessageBoxModel, bool> MessageBoxInteraction { get; } = new();
+        public Interaction<Unit, Unit> FocusEditorInteraction { get; } = new();
+        public Interaction<Unit, string?> OpenFileInteraction { get; } = new();
+        public Interaction<Unit, string?> SaveFileInteraction { get; } = new();
+        public Interaction<Unit, Unit> ShutdownInteraction { get; } = new();
+        public Interaction<Unit, Unit> UpdateStatusInteraction { get; } = new();
+
         private async void OnDocumentUpdatedNoInitial(TextDocument newDocument)
         {
             await UpdateStatusInteraction.Handle(Unit.Default);
         }
-        
+
         private void OnDocumentUpdated(TextDocument newDocument)
         {
             if (_previousDocument != null) _previousDocument.TextChanged -= NewDocumentOnTextChanged;
@@ -59,10 +64,10 @@ namespace EditNET.ViewModels
         {
             if (!await CheckSaved())
                 return;
-            
+
             Document = new TextDocument();
             FilePath = null;
-            
+
             await FocusEditorInteraction.Handle(Unit.Default);
         }
 
@@ -146,12 +151,6 @@ namespace EditNET.ViewModels
                 await MessageBoxInteraction.Handle(new MessageBoxModel("File Access Exception", exception.Message,
                     MessageBoxButtons.Ok));
             }
-        }
-        
-        [UsedImplicitly]
-        public EditorViewModel()
-        {
-            _settings = new Settings();
         }
     }
 }
