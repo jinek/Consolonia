@@ -23,9 +23,9 @@
                                      ResourceKey="ThemeForegroundBrush" />
                     <DynamicResource x:Key="OverloadViewerBorderBrush"
                                      ResourceKey="ThemeBorderBrush" />
+                    <DynamicResource x:Key="TextAreaSelectionBrush"
+                                     ResourceKey="ThemeSelectionBackgroundBrush" />
                     <!-- ReSharper enable Xaml.DynamicResourceError -->
-                    <SolidColorBrush x:Key="TextAreaSelectionBrush"
-                                     Color="{DynamicResource ThemeSelectionBrush}" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
