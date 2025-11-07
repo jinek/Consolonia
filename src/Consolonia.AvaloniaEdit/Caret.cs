@@ -59,25 +59,13 @@ namespace Consolonia.AvaloniaEdit
                             textEditor.TextArea.LeftMargins[i] = new ConsoleLineNumberMargin();
                             break;
                         }
-
-                    textEditor.TextArea.TemplateApplied += OnTextAreaTemplateApplied;
                 }
                 else
                 {
                     /*todo: brush setup and restoration: textEditor.TextArea.Caret.CaretBrush = oldBrush;*/
                     textEditor.TextArea.PropertyChanged -= TextArea_PropertyChanged;
-                    textEditor.TextArea.TemplateApplied -= OnTextAreaTemplateApplied;
                 }
             });
-        }
-
-        private static void OnTextAreaTemplateApplied(object sender, TemplateAppliedEventArgs e)
-        {
-            var textArea = (TextArea)sender;
-            ContentPresenter textAreaContentPresenter = textArea.GetVisualDescendants()
-                .OfType<ContentPresenter>().SingleOrDefault(presenter => presenter.Name == "PART_CP");
-            if (textAreaContentPresenter != null)
-                textAreaContentPresenter.Cursor = new Cursor(StandardCursorType.Arrow);
         }
 
         public static void SetUseConsole(TextEditor textEditor, bool value)
