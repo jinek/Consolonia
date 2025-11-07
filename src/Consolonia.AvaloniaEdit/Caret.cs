@@ -1,14 +1,7 @@
-using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
-using Avalonia.Controls.Primitives;
 using Avalonia.Data;
-using Avalonia.Data.Converters;
-using Avalonia.Input;
-using Avalonia.Media;
-using Avalonia.ReactiveUI;
 using Avalonia.VisualTree;
 using AvaloniaEdit;
 using AvaloniaEdit.Editing;
@@ -37,14 +30,16 @@ namespace Consolonia.AvaloniaEdit
                 bool value = (bool)e.NewValue;
                 if (value)
                 {
+                    textEditor.TextArea.TextView.LineTransformers.Add(new DecorationsFontMetricsTransformer());
                     textEditor.TextArea.Caret.CaretBrush = new MoveConsoleCaretToPositionBrush
-                    { CaretStyle = CaretStyle.SteadyBar };
+                        { CaretStyle = CaretStyle.SteadyBar };
 
                     {
                         // This is needed because we can not render more than one caret at once, which happens during search
                         Visual caretLayer = textEditor.TextArea.TextView.GetVisualDescendants()
                             .Single(visual => visual.GetType().FullName == "AvaloniaEdit.Editing.CaretLayer");
 
+                        //todo: try to move this binding to style
                         caretLayer.Bind(Visual.IsVisibleProperty, new Binding
                         {
                             RelativeSource = new RelativeSource
@@ -52,7 +47,7 @@ namespace Consolonia.AvaloniaEdit
                             Path = nameof(Control.IsFocused)
                         });
                     }
-                    
+
                     textEditor.TextArea.PropertyChanged += TextArea_PropertyChanged;
 
                     // The built in LineNumberMargin miscalculates the top of the line, 
@@ -63,25 +58,13 @@ namespace Consolonia.AvaloniaEdit
                             textEditor.TextArea.LeftMargins[i] = new ConsoleLineNumberMargin();
                             break;
                         }
-
-                    textEditor.TextArea.TemplateApplied += OnTextAreaTemplateApplied;
                 }
                 else
                 {
                     /*todo: brush setup and restoration: textEditor.TextArea.Caret.CaretBrush = oldBrush;*/
                     textEditor.TextArea.PropertyChanged -= TextArea_PropertyChanged;
-                    textEditor.TextArea.TemplateApplied -= OnTextAreaTemplateApplied;
                 }
             });
-        }
-
-        private static void OnTextAreaTemplateApplied(object sender, TemplateAppliedEventArgs e)
-        {
-            var textArea = (TextArea)sender;
-            ContentPresenter textAreaContentPresenter = textArea.GetVisualDescendants()
-                .OfType<ContentPresenter>().SingleOrDefault(presenter => presenter.Name == "PART_CP");
-            if (textAreaContentPresenter != null)
-                textAreaContentPresenter.Cursor = new Cursor(StandardCursorType.Arrow);
         }
 
         public static void SetUseConsole(TextEditor textEditor, bool value)

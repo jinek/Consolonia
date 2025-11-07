@@ -17,7 +17,7 @@
         <TextBlock x:Name="CompatibilityErrorTxt"
                    IsVisible="False"
                    Margin="1,0"
-                   Foreground="{StaticResource ThemeErrorBrush}">
+                   Foreground="{DynamicResource ThemeErrorBrush}">
             Theme switching is not supported in this environment
         </TextBlock>
         <TabControl Margin="0"

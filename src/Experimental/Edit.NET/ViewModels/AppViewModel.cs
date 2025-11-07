@@ -1,21 +1,17 @@
 using System;
 using System.IO;
 using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text.Json;
 using Avalonia.Controls.Notifications;
-using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Consolonia.Controls;
 using EditNET.DataModels;
 using ReactiveUI;
-using TextMateSharp.Grammars;
 using Notification = Avalonia.Controls.Notifications.Notification;
 
 namespace EditNET.ViewModels
 {
-    public partial class AppViewModel : ObservableObject
+    public class AppViewModel : ObservableObject
     {
         public const string EditNetTitle = "Edit.NET";
 
@@ -24,12 +20,8 @@ namespace EditNET.ViewModels
                 EditNetTitle,
                 "settings.json");
 
-        public EditorViewModel EditorViewModel { get; private set; }
-        public Interaction<(ConsoloniaTheme, bool), Unit> SetThemeInteraction { get; } = new();
-        public Interaction<Notification, Unit> ShowNotificationInteraction { get; } = new();
         private ConsoloniaTheme _consoloniaTheme;
         private bool _consoloniaThemeLight;
-        public Exception? InitialLoadSettingsException { get; }
 
         public AppViewModel()
         {
@@ -53,6 +45,11 @@ namespace EditNET.ViewModels
             EditorViewModel = new EditorViewModel(settings);
             EditorViewModel.WhenAnyValue(model => model.Settings).Skip(1).Subscribe(OnSettingsUpdated);
         }
+
+        public EditorViewModel EditorViewModel { get; }
+        public Interaction<(ConsoloniaTheme, bool), Unit> SetThemeInteraction { get; } = new();
+        public Interaction<Notification, Unit> ShowNotificationInteraction { get; } = new();
+        public Exception? InitialLoadSettingsException { get; }
 
         private void OnSettingsUpdated(Settings settings)
         {

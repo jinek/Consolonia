@@ -3,7 +3,7 @@
                              xmlns:windowManager="clr-namespace:Iciclecreek.Avalonia.WindowManager;assembly=Iciclecreek.Avalonia.WindowManager"
                              xmlns:viewModels="clr-namespace:EditNET.ViewModels"
                              x:Class="EditNET.Views.AboutWindow"
-                             Title="About Edit.NET"
+                             Title="{Binding Source={x:Static viewModels:AppViewModel.EditNetTitle}, StringFormat='About {0}'}"
                              CanResize="False"
                              WindowStartupLocation="CenterOwner">
     <Border Padding="1"
@@ -19,8 +19,7 @@
             <TextBlock TextWrapping="Wrap"
                        HorizontalAlignment="Center"
                        Text="A simple text editor built with Avalonia and Consolonia." />
-            <TextBlock Classes="link"
-                       HorizontalAlignment="Center"
+            <TextBlock HorizontalAlignment="Center"
                        Margin="0,1,0,0"
                        Text="https://github.com/jinek/consolonia" />
             <Separator />

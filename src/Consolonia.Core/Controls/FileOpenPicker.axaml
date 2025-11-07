@@ -64,6 +64,7 @@
                     Spacing="1">
             <Button x:Name="OkButton"
                     Content="OK"
+                    IsDefault="True"
                     Click="OnOK"
                     IsEnabled="{Binding HasSelection}" />
             <Button x:Name="CancelButton"
