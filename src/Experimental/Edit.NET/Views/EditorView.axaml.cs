@@ -17,7 +17,6 @@ using Avalonia.VisualTree;
 using AvaloniaEdit.Indentation.CSharp;
 using AvaloniaEdit.TextMate;
 using Consolonia;
-using Consolonia.AvaloniaEdit;
 using Consolonia.Controls;
 using EditNET.DataModels;
 using EditNET.Helpers;
