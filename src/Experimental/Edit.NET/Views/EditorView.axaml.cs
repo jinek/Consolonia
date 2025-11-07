@@ -183,8 +183,8 @@ namespace EditNET.Views
 
         private void OnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
-            Editor.UseConsolonia();
             Editor.TextArea.Focus();
+            Editor.UseConsolonia();
         }
 
         private void TextMateInstallationOnAppliedTheme(object? sender, TextMate.Installation e)
@@ -198,7 +198,7 @@ namespace EditNET.Views
             ApplyBrushAction(e, "editor.foreground", brush => Editor.TextArea.Foreground = brush);
 
             if (!ApplyBrushAction(e, "editor.selectionBackground",
-                                brush => Editor.TextArea.SelectionBrush = brush))
+                    brush => Editor.TextArea.SelectionBrush = brush))
             {
                 if (!ApplyBrushAction(e, "editor.selectionHighlightBackground",
                         brush => Editor.TextArea.SelectionBrush = brush))
@@ -225,7 +225,7 @@ namespace EditNET.Views
             //Todo: looks like the margin doesn't have a active line highlight, would be a nice addition
             if (!ApplyBrushAction(e, "editorLineNumber.foreground",
                     brush => Editor.LineNumbersForeground = brush))
-            {
+            { 
                 Editor.LineNumbersForeground = Editor.TextArea.Foreground;
             }
             Editor.TextArea.TextView.CurrentLineBorder = new Pen(Brushes.Transparent, thickness: 0);

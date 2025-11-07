@@ -57,7 +57,6 @@ namespace ConsoloniaEdit.Demo
 
             _statusTextBlock = this.Find<TextBlock>("StatusText")!;
 
-
             var mainWindowVM = new MainWindowViewModel(_textMateInstallation, _registryOptions);
             foreach (ThemeName themeName in Enum.GetValues<ThemeName>())
             {

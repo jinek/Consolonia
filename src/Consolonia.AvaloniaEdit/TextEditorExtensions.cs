@@ -10,8 +10,6 @@ namespace Consolonia.AvaloniaEdit
         /// <param name="textEditor"></param>
         public static void UseConsolonia(this TextEditor textEditor)
         {
-            Caret.SetUseConsole(textEditor, true);
-
             // add fontmetric transformer so that underlines and strikethroughs use glyph metrics
             textEditor.TextArea.TextView.LineTransformers.Add(new FontMetricsTransformer());
         }
