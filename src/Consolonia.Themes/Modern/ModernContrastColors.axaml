@@ -51,29 +51,9 @@
             <SolidColorBrush x:Key="ThemeErrorBrush"
                              Color="#FF0000" />
 
-            <!-- ManagedWindow resources -->
-            <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
-            <SolidColorBrush x:Key="ManagedWindow_ForegroundBrush"
-                             Color="#FFFFFF" />
-            <SolidColorBrush x:Key="ManagedWindow_BackgroundBrush"
-                             Color="#000000" />
-            <SolidColorBrush x:Key="ManagedWindow_TitleBarBackgroundBrush"
-                             Color="#404040" />
-            <SolidColorBrush x:Key="ManagedWindow_TitleBarForegroundBrush"
-                             Color="#FFFFFF" />
-            <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarBackgroundBrush"
-                             Color="#808080" />
-            <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarForegroundBrush"
-                             Color="#FFFFFF" />
-            <controls:LineBrush x:Key="ManagedWindow_BorderBrush"
-                                Brush="#00FFFF"
-                                LineStyle="Edge" />
-            <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush"
-                                Brush="#00FFFF"
-                                LineStyle="Edge" />
-            <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush"
-                             Color="#7F000000" />
-            <!-- ReSharper enable InconsistentNaming We need to keep same names as in WindowManager-->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Consolonia.Themes/Modern/ModernWindowColors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
