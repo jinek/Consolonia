@@ -5,24 +5,24 @@
     <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
     <StaticResource x:Key="ManagedWindow_ForegroundBrush"
-                ResourceKey="ThemeForegroundBrush" />
+                    ResourceKey="ThemeForegroundBrush" />
     <StaticResource x:Key="ManagedWindow_BackgroundBrush"
-                ResourceKey="ThemeBackgroundBrush" />
+                    ResourceKey="ThemeBackgroundBrush" />
     <StaticResource x:Key="ManagedWindow_TitleBarBackgroundBrush"
-                ResourceKey="ThemeAlternativeBackgroundBrush" />
+                    ResourceKey="ThemeAlternativeBackgroundBrush" />
     <StaticResource x:Key="ManagedWindow_TitleBarForegroundBrush"
-                ResourceKey="ThemeForegroundBrush" />
+                    ResourceKey="ThemeForegroundBrush" />
     <StaticResource x:Key="ManagedWindow_Active_TitleBarBackgroundBrush"
-                ResourceKey="ThemeAlternativeBackgroundBrush" />
+                    ResourceKey="ThemeAlternativeBackgroundBrush" />
     <StaticResource x:Key="ManagedWindow_Active_TitleBarForegroundBrush"
-                ResourceKey="ThemeForegroundBrush" />
+                    ResourceKey="ThemeForegroundBrush" />
     <controls:LineBrush x:Key="ManagedWindow_BorderBrush"
-                    Brush="{StaticResource ThemeAlternativeBackgroundBrush}"
-                    LineStyle="Edge" />
+                        Brush="{StaticResource ThemeAlternativeBackgroundBrush}"
+                        LineStyle="Edge" />
     <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush"
-                    Brush="{StaticResource ThemeBorderBrush}"
-                    LineStyle="Edge" />
+                        Brush="{StaticResource ThemeBorderBrush}"
+                        LineStyle="Edge" />
     <StaticResource x:Key="ManagedWindow_ModalBackgroundBrush"
-                ResourceKey="ThemeShadeBrush" />
+                    ResourceKey="ThemeShadeBrush" />
     <!-- ReSharper enable InconsistentNaming We need to keep same names as in WindowManager-->
 </ResourceDictionary>
