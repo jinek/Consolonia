@@ -15,7 +15,7 @@
     <UserControl.Styles>
         <Style Selector="MenuItem[IsChecked=true]">
             <Setter Property="Icon"
-                    Value="{StaticResource Icon_Check}" />
+                    Value="{DynamicResource Icon_Check}" />
         </Style>
     </UserControl.Styles>
 

@@ -19,8 +19,7 @@
             <TextBlock TextWrapping="Wrap"
                        HorizontalAlignment="Center"
                        Text="A simple text editor built with Avalonia and Consolonia." />
-            <TextBlock Classes="link"
-                       HorizontalAlignment="Center"
+            <TextBlock HorizontalAlignment="Center"
                        Margin="0,1,0,0"
                        Text="https://github.com/jinek/consolonia" />
             <Separator />
