@@ -10,10 +10,8 @@ using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Controls
 {
-    internal partial class FileOpenPicker : ManagedWindow, IDisposable
+    internal partial class FileOpenPicker : ManagedWindow
     {
-        private bool _disposedValue;
-
         public FileOpenPicker()
             : this(new FilePickerOpenOptions())
         {
@@ -35,20 +33,6 @@ namespace Consolonia.Core.Controls
         private FileOpenPickerViewModel ViewModel =>
             DataContext as FileOpenPickerViewModel
             ?? throw new InvalidOperationException("DataContext is not properly initialized.");
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~FileOpenPicker()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -126,18 +110,6 @@ namespace Consolonia.Core.Controls
                 foreach (object item in e.RemovedItems)
                     if (item is IStorageFile file)
                         ViewModel.SelectedFiles.Remove(file);
-            }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing) ItemsListBox.Items.CollectionChanged -= Items_CollectionChanged;
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                _disposedValue = true;
             }
         }
     }

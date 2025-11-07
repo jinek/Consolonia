@@ -9,7 +9,7 @@ namespace Consolonia.Core.Controls
 {
     internal partial class FolderPickerViewModel : PickerViewModelBase<FolderPickerOpenOptions>
     {
-        [NotifyPropertyChangedFor(nameof(HasSelection))] [ObservableProperty]
+        [ObservableProperty]
         private ObservableCollection<IStorageFolder> _selectedFolders = new();
 
         [ObservableProperty] private SelectionMode _selectionMode;
