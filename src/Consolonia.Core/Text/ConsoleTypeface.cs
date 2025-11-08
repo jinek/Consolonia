@@ -16,6 +16,20 @@ namespace Consolonia.Core.Text
         private static readonly Dictionary<ushort, ushort> GlyphWidthByIndex = new();
         private static readonly Dictionary<string, ushort> GlyphIndexByText = new();
 
+        private static readonly FontMetrics MetricsSingleton = new()
+        {
+            // https://docs.microsoft.com/en-us/typography/opentype/spec/ttch01#funits-and-the-em-square
+            DesignEmHeight = 1,
+            Ascent = -1, //var height = (GlyphTypeface.Descent - GlyphTypeface.Ascent + GlyphTypeface.LineGap) * Scale; //todo: need to consult Avalonia guys
+            Descent = 0,
+            LineGap = 0,
+            UnderlinePosition = -1,
+            UnderlineThickness = DrawingContextImpl.UnderlineThickness,
+            StrikethroughPosition = -1,
+            StrikethroughThickness = DrawingContextImpl.StrikethroughThickness,
+            IsFixedPitch = true
+        };
+
         public void Dispose()
         {
             lock (GlyphCacheSync)
@@ -96,19 +110,7 @@ namespace Consolonia.Core.Text
         public FontStretch Stretch => FontStretch.Normal;
         public int GlyphCount => char.MaxValue;
 
-        public FontMetrics Metrics { get; } = new()
-        {
-            // https://docs.microsoft.com/en-us/typography/opentype/spec/ttch01#funits-and-the-em-square
-            DesignEmHeight = 1,
-            Ascent = -1, //var height = (GlyphTypeface.Descent - GlyphTypeface.Ascent + GlyphTypeface.LineGap) * Scale; //todo: need to consult Avalonia guys
-            Descent = 0,
-            LineGap = 0,
-            UnderlinePosition = -1,
-            UnderlineThickness = DrawingContextImpl.UnderlineThickness,
-            StrikethroughPosition = -1,
-            StrikethroughThickness = DrawingContextImpl.StrikethroughThickness,
-            IsFixedPitch = true
-        };
+        public FontMetrics Metrics { get; } = MetricsSingleton;
 
         public FontSimulations FontSimulations => FontSimulations.None;
 

@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Controls
@@ -19,7 +21,9 @@ namespace Consolonia.Core.Controls
         {
             DataContext = new FileOpenPickerViewModel(options);
             InitializeComponent();
-            CancelButton.Focus();
+
+            CurrentFolderTextBox.Focus();
+            ItemsListBox.Items.CollectionChanged += Items_CollectionChanged;
         }
 
         /// <summary>
@@ -29,6 +33,13 @@ namespace Consolonia.Core.Controls
         private FileOpenPickerViewModel ViewModel =>
             DataContext as FileOpenPickerViewModel
             ?? throw new InvalidOperationException("DataContext is not properly initialized.");
+
+        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (!CurrentFolderTextBox.IsFocused)
+                Dispatcher.UIThread.Post(() => (ItemsListBox.ContainerFromIndex(0) as ListBoxItem)?.Focus(),
+                    DispatcherPriority.Background);
+        }
 
         protected override void OnLoaded(RoutedEventArgs e)
         {
@@ -41,22 +52,37 @@ namespace Consolonia.Core.Controls
 
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {
-            var listbox = (ListBox)sender;
-            if (listbox.SelectedItem is IStorageFolder folder)
+            if (ItemsListBox.SelectedItem is IStorageFolder folder)
             {
                 ViewModel.CurrentFolder = folder;
                 ViewModel.CurrentFolderPath = folder.Path.LocalPath;
                 ViewModel.SelectedFiles.Clear();
             }
-            else if (listbox.SelectedItem is IStorageFile file)
+            else if (ItemsListBox.SelectedItem is IStorageFile file)
             {
                 Close(new[] { file });
             }
+
+            e.Handled = true;
         }
 
         private void OnOK(object sender, RoutedEventArgs e)
         {
-            Close(ViewModel.SelectedFiles);
+            ListBoxItem focusedListBoxItem = ItemsListBox.GetFocusedListBoxItem();
+            if (focusedListBoxItem != null)
+            {
+                object item = ItemsListBox.ItemFromContainer(focusedListBoxItem);
+                if (item is IStorageFolder folder)
+                {
+                    ViewModel.CurrentFolder = folder;
+                    ViewModel.CurrentFolderPath = folder.Path.LocalPath;
+                    ViewModel.SelectedFiles.Clear();
+                    e.Handled = true;
+                    return;
+                }
+            }
+
+            if (ViewModel.HasSelection) Close(ViewModel.SelectedFiles);
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
@@ -85,8 +111,6 @@ namespace Consolonia.Core.Controls
                     if (item is IStorageFile file)
                         ViewModel.SelectedFiles.Remove(file);
             }
-
-            ViewModel.HasSelection = ViewModel.SelectedFiles.Count > 0;
         }
     }
 }
