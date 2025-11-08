@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Specialized;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Controls
@@ -20,7 +22,9 @@ namespace Consolonia.Core.Controls
         {
             DataContext = new FileSavePickerViewModel(options);
             InitializeComponent();
-            CancelButton.Focus();
+
+            CurrentFolderTextBox.Focus();
+            ItemsListBox.Items.CollectionChanged += Items_CollectionChanged;
         }
 
         /// <summary>
@@ -39,6 +43,13 @@ namespace Consolonia.Core.Controls
             DataContext as FileSavePickerViewModel
             ?? throw new InvalidOperationException($"Invalid DataContext. Expected {nameof(FileSavePickerViewModel)}");
 
+        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (!CurrentFolderTextBox.IsFocused)
+                Dispatcher.UIThread.Post(() => (ItemsListBox.ContainerFromIndex(0) as ListBoxItem)?.Focus(),
+                    DispatcherPriority.Background);
+        }
+
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
@@ -47,6 +58,7 @@ namespace Consolonia.Core.Controls
             Width = WindowsPanel.Bounds.Width - 4;
             Height = WindowsPanel.Bounds.Height - 4;
         }
+
 
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {
@@ -58,36 +70,57 @@ namespace Consolonia.Core.Controls
             }
             else if (listbox.SelectedItem is IStorageFile file)
             {
-                Close(file);
+                ViewModel.SavePath = file.Name;
+                OnOK(sender, e);
             }
         }
 
         private async void OnOK(object sender, RoutedEventArgs e)
         {
-            IStorageProvider storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
-            ArgumentNullException.ThrowIfNull(storageProvider);
-
-            string savePath = ViewModel.SavePath;
-            if (!Path.IsPathFullyQualified(ViewModel.SavePath))
-                savePath = Path.GetFullPath(Path.Combine(ViewModel.CurrentFolder.Path.LocalPath, ViewModel.SavePath));
-
-            IStorageFile file =
-                await storageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));
-            if (file == null)
+            ListBoxItem focusedListBoxItem = ItemsListBox.GetFocusedListBoxItem();
+            if (focusedListBoxItem != null)
             {
-                IStorageFolder folder =
-                    await storageProvider.TryGetFolderFromPathAsync(
-                        new Uri($"file://{Path.GetDirectoryName(savePath)}"));
-                if (folder == null)
+                object item = ItemsListBox.ItemFromContainer(focusedListBoxItem);
+                if (item is IStorageFolder folder)
                 {
-                    Close();
+                    ViewModel.CurrentFolder = folder;
+                    ViewModel.CurrentFolderPath = folder.Path.LocalPath;
+                    // ReSharper disable once AssignNullToNotNullAttribute
+                    ViewModel.SelectedItem = null;
+                    e.Handled = true;
                     return;
                 }
-
-                file = await folder.CreateFileAsync(Path.GetFileName(savePath));
             }
 
-            Close(file);
+            if (ViewModel.HasSelection)
+            {
+                // get an IStorageFile from the savepath
+                IStorageProvider storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                ArgumentNullException.ThrowIfNull(storageProvider);
+
+                string savePath = ViewModel.SavePath;
+                if (!Path.IsPathFullyQualified(ViewModel.SavePath))
+                    savePath = Path.GetFullPath(
+                        Path.Combine(ViewModel.CurrentFolder.Path.LocalPath, ViewModel.SavePath));
+
+                IStorageFile file =
+                    await storageProvider.TryGetFileFromPathAsync(new Uri($"file://{savePath}"));
+                if (file == null)
+                {
+                    IStorageFolder folder =
+                        await storageProvider.TryGetFolderFromPathAsync(
+                            new Uri($"file://{Path.GetDirectoryName(savePath)}"));
+                    if (folder == null)
+                    {
+                        Close();
+                        return;
+                    }
+
+                    file = await folder.CreateFileAsync(Path.GetFileName(savePath));
+                }
+
+                Close(file);
+            }
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)

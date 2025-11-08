@@ -1,8 +1,10 @@
+using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Iciclecreek.Avalonia.WindowManager;
 
 namespace Consolonia.Core.Controls
@@ -18,13 +20,22 @@ namespace Consolonia.Core.Controls
         {
             DataContext = new FolderPickerViewModel(options);
             InitializeComponent();
-            CancelButton.Focus();
+
+            CurrentFolderTextBox.Focus();
+            ItemsListBox.Items.CollectionChanged += Items_CollectionChanged;
         }
 
         private FolderPickerViewModel ViewModel => (FolderPickerViewModel)DataContext;
 
         public FolderPickerOpenOptions Options =>
             ((FolderPickerViewModel)DataContext)?.Options ?? new FolderPickerOpenOptions();
+
+        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (!CurrentFolderTextBox.IsFocused)
+                Dispatcher.UIThread.Post(() => (ItemsListBox.ContainerFromIndex(0) as ListBoxItem)?.Focus(),
+                    DispatcherPriority.Background);
+        }
 
         protected override void OnLoaded(RoutedEventArgs e)
         {
@@ -37,19 +48,38 @@ namespace Consolonia.Core.Controls
 
         private void OnDoubleTapped(object sender, TappedEventArgs e)
         {
-            var listbox = (ListBox)sender;
-            if (listbox.SelectedItem is SystemStorageFolder folder)
+            if (ItemsListBox.SelectedItem is SystemStorageFolder folder)
             {
                 ViewModel.CurrentFolder = folder;
                 ViewModel.CurrentFolderPath = folder.Path.LocalPath;
                 ViewModel.SelectedFolders.Clear();
-                ViewModel.HasSelection = false;
+                e.Handled = true;
             }
         }
 
         private void OnOK(object sender, RoutedEventArgs e)
         {
-            Close(ViewModel.SelectedFolders);
+            e.Handled = true;
+
+            ListBoxItem focusedListBoxItem = ItemsListBox.GetFocusedListBoxItem();
+            if (focusedListBoxItem != null)
+            {
+                object item = ItemsListBox.ItemFromContainer(focusedListBoxItem);
+                if (item is IStorageFolder folder)
+                {
+                    ViewModel.CurrentFolder = folder;
+                    ViewModel.CurrentFolderPath = folder.Path.LocalPath;
+                    ViewModel.SelectedFolders.Clear();
+                    return;
+                }
+            }
+
+            if (ViewModel.SelectionMode == SelectionMode.Single &&
+                !ViewModel.HasSelection)
+                ViewModel.SelectedFolders.Add(ViewModel.CurrentFolder);
+
+
+            if (ViewModel.HasSelection) Close(ViewModel.SelectedFolders);
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
@@ -65,21 +95,21 @@ namespace Consolonia.Core.Controls
                     e.AddedItems[0] is IStorageFolder folder)
                 {
                     ViewModel.SelectedFolders.Clear();
-                    ViewModel.SelectedFolders.Add(folder);
+                    if (folder.Name != "..")
+                        ViewModel.SelectedFolders.Add(folder);
                 }
             }
             else
             {
                 foreach (object item in e.AddedItems)
-                    if (item is IStorageFolder folder)
+                    if (item is IStorageFolder folder &&
+                        folder.Name != "..")
                         ViewModel.SelectedFolders.Add(folder);
 
                 foreach (object item in e.RemovedItems)
                     if (item is IStorageFolder folder)
                         ViewModel.SelectedFolders.Remove(folder);
             }
-
-            ViewModel.HasSelection = ViewModel.SelectedFolders.Count > 0;
         }
     }
 }
