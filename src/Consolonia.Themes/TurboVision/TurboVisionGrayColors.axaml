@@ -63,6 +63,10 @@
             <SolidColorBrush x:Key="ThemeTransparentBrush"
                              Color="{consolonia:EgaColor Mode=Transparent}" />
 
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Consolonia.Themes/TurboVision/TurboVisionWindowColors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 </ResourceDictionary>

@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="https://github.com/jinek/consolonia">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.ThemeDictionaries>
 
         <ResourceDictionary x:Key="Default">
@@ -13,7 +12,7 @@
                              Color="#000000" />
             <!--Alternative to main background. Must fit same foreground. Used where there is a need to make difference, for instance, button background in fluent theme, popup background etc-->
             <SolidColorBrush x:Key="ThemeAlternativeBackgroundBrush"
-                             Color="#404040" />
+                             Color="#000000" />
 
             <!--Used to highlight selected but no focused item (selected list item, on switch etc-->
             <SolidColorBrush x:Key="ThemeChooserBackgroundBrush"
@@ -34,7 +33,7 @@
 
             <!--Color of borders ( grid borders, panel borders etc)-->
             <SolidColorBrush x:Key="ThemeBorderBrush"
-                             Color="#FFFFFF" />
+                             Color="#00FFFF" />
 
             <!--Disabled foreground or background. e.g. disabled menu item foreground, disabled button foreground-->
             <SolidColorBrush x:Key="ThemeNoDisturbBrush"
@@ -51,27 +50,9 @@
             <SolidColorBrush x:Key="ThemeErrorBrush"
                              Color="#FF0000" />
 
-            <!-- ManagedWindow resources -->
-            <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
-            <SolidColorBrush x:Key="ManagedWindow_BackgroundBrush"
-                             Color="#000000" />
-            <SolidColorBrush x:Key="ManagedWindow_TitleBarBackgroundBrush"
-                             Color="#404040" />
-            <SolidColorBrush x:Key="ManagedWindow_TitleBarForegroundBrush"
-                             Color="#FFFFFF" />
-            <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarBackgroundBrush"
-                             Color="#808080" />
-            <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarForegroundBrush"
-                             Color="#FFFFFF" />
-            <controls:LineBrush x:Key="ManagedWindow_BorderBrush"
-                                Brush="#FFFFFF"
-                                LineStyle="Edge" />
-            <controls:LineBrush x:Key="ManagedWindow_Active_BorderBrush"
-                                Brush="#00FFFF"
-                                LineStyle="Edge" />
-            <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush"
-                             Color="#7F404040" />
-            <!-- ReSharper enable InconsistentNaming We need to keep same names as in WindowManager-->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Consolonia.Themes/Modern/ModernWindowColors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
