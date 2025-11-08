@@ -62,25 +62,10 @@
             <SolidColorBrush x:Key="ThemeTransparentBrush"
                              Color="{consolonia:EgaColor Mode=Transparent}" />
 
-            <!-- ManagedWindow resources -->
-            <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
-            <SolidColorBrush x:Key="ManagedWindow_BackgroundBrush"
-                             Color="{consolonia:EgaColor Gray}" />
-            <SolidColorBrush x:Key="ManagedWindow_TitleBarBackgroundBrush"
-                             Color="{consolonia:EgaColor DarkCyan}" />
-            <SolidColorBrush x:Key="ManagedWindow_TitleBarForegroundBrush"
-                             Color="{consolonia:EgaColor Black}" />
-            <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarBackgroundBrush"
-                             Color="{consolonia:EgaColor DarkGreen}" />
-            <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarForegroundBrush"
-                             Color="{consolonia:EgaColor White}" />
-            <SolidColorBrush x:Key="ManagedWindow_BorderBrush"
-                             Color="{consolonia:EgaColor DarkGray}" />
-            <SolidColorBrush x:Key="ManagedWindow_Active_BorderBrush"
-                             Color="{consolonia:EgaColor Black}" />
-            <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush"
-                             Color="{consolonia:EgaColor Mode=Shaded}" />
-            <!-- ReSharper enable InconsistentNaming We need to keep same names as in WindowManager-->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Consolonia.Themes/TurboVision/TurboVisionWindowColors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Dark">
@@ -141,24 +126,9 @@
             <!--Just transparent background or foreground-->
             <SolidColorBrush x:Key="ThemeTransparentBrush"
                              Color="{consolonia:EgaColor Mode=Transparent}" />
-            <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
-            <SolidColorBrush x:Key="ManagedWindow_BackgroundBrush"
-                             Color="{consolonia:EgaColor Black}" />
-            <SolidColorBrush x:Key="ManagedWindow_TitleBarBackgroundBrush"
-                             Color="{consolonia:EgaColor DarkBlue}" />
-            <SolidColorBrush x:Key="ManagedWindow_TitleBarForegroundBrush"
-                             Color="{consolonia:EgaColor Gray}" />
-            <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarBackgroundBrush"
-                             Color="{consolonia:EgaColor DarkMagenta}" />
-            <SolidColorBrush x:Key="ManagedWindow_Active_TitleBarForegroundBrush"
-                             Color="{consolonia:EgaColor White}" />
-            <SolidColorBrush x:Key="ManagedWindow_BorderBrush"
-                             Color="{consolonia:EgaColor White}" />
-            <SolidColorBrush x:Key="ManagedWindow_Active_BorderBrush"
-                             Color="{consolonia:EgaColor Yellow}" />
-            <SolidColorBrush x:Key="ManagedWindow_ModalBackgroundBrush"
-                             Color="{consolonia:EgaColor Mode=Shaded}" />
-            <!-- ReSharper enable InconsistentNaming We need to keep same names as in WindowManager-->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Consolonia.Themes/TurboVision/TurboVisionWindowColors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
     </ResourceDictionary.ThemeDictionaries>

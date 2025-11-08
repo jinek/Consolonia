@@ -1,0 +1,25 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- ManagedWindow resources -->
+    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+    <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
+    <StaticResource x:Key="ManagedWindow_ForegroundBrush"
+                    ResourceKey="ThemeForegroundBrush" />
+    <StaticResource x:Key="ManagedWindow_BackgroundBrush"
+                    ResourceKey="ThemeBackgroundBrush" />
+    <StaticResource x:Key="ManagedWindow_TitleBarBackgroundBrush"
+                    ResourceKey="ThemeAlternativeBackgroundBrush" />
+    <StaticResource x:Key="ManagedWindow_TitleBarForegroundBrush"
+                    ResourceKey="ThemeForegroundBrush" />
+    <StaticResource x:Key="ManagedWindow_Active_TitleBarBackgroundBrush"
+                    ResourceKey="ThemeAlternativeBackgroundBrush" />
+    <StaticResource x:Key="ManagedWindow_Active_TitleBarForegroundBrush"
+                    ResourceKey="ThemeForegroundBrush" />
+    <StaticResource x:Key="ManagedWindow_BorderBrush"
+                    ResourceKey="ThemeAlternativeBackgroundBrush" />
+    <StaticResource x:Key="ManagedWindow_Active_BorderBrush"
+                    ResourceKey="ThemeBorderBrush" />
+    <StaticResource x:Key="ManagedWindow_ModalBackgroundBrush"
+                    ResourceKey="ThemeShadeBrush" />
+    <!-- ReSharper enable InconsistentNaming We need to keep same names as in WindowManager-->
+</ResourceDictionary>
