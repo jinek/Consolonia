@@ -30,7 +30,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             FontWeight? weight = null, FontStyle? style = null,
             TextDecorationLocation? textDecoration = null)
         {
-            ArgumentNullException.ThrowIfNull(symbol);
             Symbol = symbol;
             Color = color;
             Weight = weight;
