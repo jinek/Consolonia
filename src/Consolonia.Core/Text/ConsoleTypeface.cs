@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
@@ -131,6 +132,7 @@ namespace Consolonia.Core.Text
                     glyph = (ushort)GlyphTextByIndex.Count;
                     GlyphTextByIndex[glyph] = glyphText;
                     GlyphWidthByIndex[glyph] = glyphText.MeasureText();
+                    Debug.Assert(GlyphWidthByIndex[glyph] > 0, "Glyph width should be greater than zero.");
                     GlyphIndexByText[glyphText] = glyph;
                 }
             }

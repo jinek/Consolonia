@@ -19,7 +19,7 @@
         </StackPanel>
 
         <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1">
-            <TextBox AcceptsReturn="true"
+            <TextBox AcceptsReturn="true" AcceptsTab="true"
                      FontFamily="{Binding SelectedFont.FontFamily}"
                      FontSize="{Binding SelectedFont.FontSize}"
                      FontStyle="{Binding SelectedFontStyle}"
