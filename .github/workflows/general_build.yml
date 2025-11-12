@@ -5,6 +5,7 @@ concurrency:
   cancel-in-progress: true
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
   pull_request:
@@ -36,5 +37,5 @@ jobs:
       - name: Pack
         run: dotnet pack --configuration release -o ./packages --version-suffix beta.${{ github.run_number }} # https://stackoverflow.com/a/60067489/2362847
       - name: Push
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
+        if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'}}
         run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
