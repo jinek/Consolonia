@@ -1,18 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting;
+using Avalonia.Platform;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
+using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Text.Fonts
 {
     /// <summary>
     ///     This represents a psuedo-typeface for console rendering.
     /// </summary>
-    public sealed class ConsoleTypeface : IGlyphTypeface, IGlyphRunRender
+    public sealed class ConsoleTypeface : IGlyphTypeface, ITextShaperImpl, IGlyphRunRender
     {
         private static readonly object GlyphCacheSync = new();
         private static readonly Dictionary<ushort, string> GlyphTextByIndex = new();
@@ -147,6 +150,27 @@ namespace Consolonia.Core.Text.Fonts
             }
         }
 
+       public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
+        {
+            if (!(options.Typeface is ConsoleTypeface))
+                throw new ArgumentException("TextShaperOptions.Typeface must be of type ConsoleTypeface.", nameof(options));
+
+            var console = AvaloniaLocator.Current.GetRequiredService<IConsoleOutput>();
+
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text.Span.ToString(), console.SupportsComplexEmoji);
+
+            var shapedBuffer = new ShapedBuffer(text, graphemes.Count,
+                this, 1, 0 /*todo: must be 1 for right to left?*/);
+            for (ushort i = 0; i < shapedBuffer.Length; i++)
+            {
+                Grapheme grapheme = graphemes[i];
+                ushort glyphIndex = GetGlyphIndex(grapheme.Glyph); ;
+                int glyphAdvance = GetGlyphAdvance(glyphIndex);
+                shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphAdvance);
+            }
+            return shapedBuffer;
+        }
+
         PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun, Color foreground)
         {
             var startPosition = position;
@@ -179,6 +203,7 @@ namespace Consolonia.Core.Text.Fonts
             }
             return new PixelRect(startPosition, new PixelSize(position.X - startPosition.X, 1));
         }
-    }
+
 #pragma warning restore CA1822 // Mark members as static
+    }
 }

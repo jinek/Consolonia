@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting;
+using Avalonia.Platform;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using HarfBuzzSharp;
@@ -14,7 +17,7 @@ namespace Consolonia.Core.Text.Fonts
     /// <summary>
     /// Typeface which is made up of multiple design em height typefaces
     /// </summary>
-    public class AsciiFamilyTypeface : IGlyphTypeface, IGlyphRunRender
+    public class AsciiFamilyTypeface : IGlyphTypeface, ITextShaperImpl, IGlyphRunRender
     {
         private Dictionary<int, IGlyphTypeface> _typefaces = new Dictionary<int, IGlyphTypeface>();
         private bool _disposedValue;
@@ -126,6 +129,13 @@ namespace Consolonia.Core.Text.Fonts
             IGlyphRunRender typefaceDrawing = typeface as IGlyphRunRender;
             ArgumentNullException.ThrowIfNull(typefaceDrawing);
             return typefaceDrawing.DrawGlyphRun(context, position, glyphRun, foreground);
+        }
+
+        public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
+        {
+            var typeface = GetTypeface((int)options.FontRenderingEmSize);
+            var textShaper = typeface as ITextShaperImpl;
+            return textShaper.ShapeText(text, options);
         }
     }
 }

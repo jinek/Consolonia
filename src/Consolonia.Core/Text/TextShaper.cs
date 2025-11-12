@@ -15,41 +15,12 @@ namespace Consolonia.Core.Text
     {
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
-            var console = AvaloniaLocator.Current.GetRequiredService<IConsoleOutput>();
-
-            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text.Span.ToString(), console.SupportsComplexEmoji);
-
-            var glyphTypeface = options.Typeface;
-            if (glyphTypeface is AsciiFamilyTypeface asciiFamilyTypeface)
+            if (options.Typeface is ITextShaperImpl textShaper)
             {
-                glyphTypeface = asciiFamilyTypeface.GetTypeface((int)options.FontRenderingEmSize);
+                return textShaper.ShapeText(text, options);
             }
 
-            var shapedBuffer = new ShapedBuffer(text, graphemes.Count,
-                glyphTypeface, 1, 0 /*todo: must be 1 for right to left?*/);
-
-
-            for (ushort i = 0; i < shapedBuffer.Length; i++)
-            {
-                Grapheme grapheme = graphemes[i];
-                ushort glyphIndex;
-                int glyphAdvance;
-                if (glyphTypeface is ConsoleTypeface consoleTypeface)
-                {
-                    // ConsoleTypefaces support complex graphemes (unicode sequences)
-                    glyphIndex = consoleTypeface.GetGlyphIndex(grapheme.Glyph);
-                }
-                else
-                {
-                    // AsciiArtTypefaces only support simple single code point rune glyphs. 
-                    glyphTypeface.TryGetGlyph((uint)grapheme.Glyph.EnumerateRunes().First().Value, out glyphIndex);
-                }
-
-                glyphAdvance = glyphTypeface.GetGlyphAdvance(glyphIndex);
-                shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphAdvance);
-            }
-
-            return shapedBuffer;
+            throw new ArgumentNullException(nameof(options.Typeface.FamilyName), "Unsupported glyph typeface.");
         }
     }
 }
