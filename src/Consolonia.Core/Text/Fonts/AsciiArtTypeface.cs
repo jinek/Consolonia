@@ -23,7 +23,8 @@ namespace Consolonia.Core.Text.Fonts
         private Dictionary<uint, AsciiArtGlyph> _glyphs = new();
 
         // glyphindex to codepoint
-        private List<uint> _codepoints = new();
+        private Dictionary<uint, ushort> _codepointsToIndex = new();
+        private Dictionary<ushort, uint> _indexToCodepoint = new();
         private bool _disposedValue;
 
         public AsciiArtTypeface(string familyName)
@@ -39,22 +40,23 @@ namespace Consolonia.Core.Text.Fonts
         {
             if (codepoint == ' ')
             {
-                // generate a TAB glyph based on space advance
+                // generate a TAB glyph based on space advance, none of these fonts have tab glyphs
                 var tabCodepoint = (uint)'\t';
                 var advance = "\t".MeasureText();
-                var tabGlyph = new AsciiArtGlyph(glyph.Typeface, tabCodepoint, glyph.Lines.Select(line =>
+                AddGlyph(tabCodepoint, new AsciiArtGlyph(glyph.Typeface, tabCodepoint, glyph.Lines.Select(line =>
                 {
+                    // we duplicate the "space" definition for each line "Advance" (4) times to make a tab
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < advance; i++)
                         sb.Append(line);
                     return sb.ToString();
-                }).ToArray());
-                _glyphs[tabCodepoint] = tabGlyph;
-                _codepoints.Add(tabCodepoint);
+                }).ToArray()));
             }
             _glyphs[codepoint] = glyph;
-            _codepoints.Add(codepoint);
-            return (ushort)_codepoints.IndexOf(codepoint);
+            var index = (ushort)_codepointsToIndex.Count;
+            _codepointsToIndex[codepoint] = index;
+            _indexToCodepoint[index] = codepoint;
+            return index;
         }
 
         public string FamilyName { get; init; }
@@ -75,15 +77,16 @@ namespace Consolonia.Core.Text.Fonts
 
         public ushort GetGlyph(uint codepoint)
         {
-            // unknown code points are (ushort)-1 => ushort.MaxValue
-            return (ushort)_codepoints.IndexOf(codepoint);
+            if (_codepointsToIndex.TryGetValue(codepoint, out var index))
+                return index;
+            return ushort.MaxValue;
         }
 
         public int GetGlyphAdvance(ushort glyph)
         {
             if (glyph == ushort.MaxValue)
                 return 0;
-            var codepoint = _codepoints[glyph];
+            var codepoint = _indexToCodepoint[glyph];
             var asciiGlyph = _glyphs[codepoint];
             return asciiGlyph.Width;
         }
@@ -110,17 +113,14 @@ namespace Consolonia.Core.Text.Fonts
 
         public bool TryGetGlyph(uint codepoint, out ushort glyph)
         {
-            var index = _codepoints.IndexOf(codepoint);
-            if (index < 0)
+            if (!_codepointsToIndex.TryGetValue(codepoint, out glyph))
             {
                 // THIN SPACE 0x2009 used as codepoint for unknown glyphs
-                index = _codepoints.IndexOf(0x2009); 
-                if (index < 0)
+                if (!_codepointsToIndex.TryGetValue(0x2009, out glyph)) 
                 {
-                    index = AddGlyph(0x2009, new AsciiArtGlyph(this, 0x2009, Enumerable.Repeat(" ", Metrics.DesignEmHeight).ToArray()));
+                    glyph = AddGlyph(0x2009, new AsciiArtGlyph(this, 0x2009, Enumerable.Repeat(" ", Metrics.DesignEmHeight).ToArray()));
                 }
             }
-            glyph = (ushort)index;
             return true;
         }
 
@@ -197,7 +197,7 @@ namespace Consolonia.Core.Text.Fonts
             var pos = new PixelPoint(position.X, position.Y);
             foreach (var glyphInfo in glyphRun.GlyphInfos.Where(gi => gi.GlyphIndex != ushort.MaxValue))
             {
-                AsciiArtGlyph asciiGlyph = _glyphs[_codepoints[glyphInfo.GlyphIndex]];
+                AsciiArtGlyph asciiGlyph = _glyphs[_indexToCodepoint[glyphInfo.GlyphIndex]];
                 foreach (var graphemeLine in asciiGlyph.GraphemeLines)
                 {
                     int iChar = pos.X;
