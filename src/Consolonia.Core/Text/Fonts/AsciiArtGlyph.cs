@@ -65,6 +65,7 @@ namespace Consolonia.Core.Text.Fonts
 
         public uint Codepoint { get; init; }
 
+#pragma warning disable CA1819 // Properties should not return arrays
         public Grapheme[][] GraphemeLines { get; init; }
 
         public string[] Lines { get; init; }
@@ -72,5 +73,6 @@ namespace Consolonia.Core.Text.Fonts
         public int[] Ends { get; set; }
 
         public int[] Starts { get; set; }
+#pragma warning restore CA1819 // Properties should not return arrays
     }
 }
