@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media.TextFormatting;
@@ -33,27 +34,18 @@ namespace Consolonia.Core.Text
                 Grapheme grapheme = graphemes[i];
                 ushort glyphIndex;
                 int glyphAdvance;
-                switch (grapheme.Glyph)
+                if (glyphTypeface is ConsoleTypeface consoleTypeface)
                 {
-                    case "\r":
-                    case "\n":
-                        glyphTypeface.TryGetGlyph(0x200c, out glyphIndex);
-                        glyphAdvance = 0;
-                        break;
-                    default:
-                        if (glyphTypeface is ConsoleTypeface consoleTypeface)
-                        {
-                            glyphIndex = consoleTypeface.GetGlyphIndex(grapheme.Glyph);
-                            glyphAdvance = consoleTypeface.GetGlyphAdvance(glyphIndex);
-                        }
-                        else
-                        {
-                            glyphTypeface.TryGetGlyph((uint)grapheme.Glyph.EnumerateRunes().First().Value, out glyphIndex);
-                            glyphAdvance = glyphTypeface.GetGlyphAdvance(glyphIndex);
-                        }
-                        break;
+                    // ConsoleTypefaces support complex graphemes (unicode sequences)
+                    glyphIndex = consoleTypeface.GetGlyphIndex(grapheme.Glyph);
+                }
+                else
+                {
+                    // AsciiArtTypefaces only support simple single code point rune glyphs. 
+                    glyphTypeface.TryGetGlyph((uint)grapheme.Glyph.EnumerateRunes().First().Value, out glyphIndex);
                 }
 
+                glyphAdvance = glyphTypeface.GetGlyphAdvance(glyphIndex);
                 shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphAdvance);
             }
 

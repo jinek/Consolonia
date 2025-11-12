@@ -80,7 +80,16 @@ namespace Consolonia.Core.Text.Fonts
 
         public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch, string familyName, CultureInfo culture, out Typeface typeface)
         {
-            throw new NotImplementedException();
+            if (TryGetGlyphTypeface(familyName, fontStyle, fontWeight, fontStretch, out var glyphTypeface))
+            {
+                if (glyphTypeface.TryGetGlyph((uint)codepoint, out var glyphIndex))
+                {
+                    typeface = new Typeface(familyName, fontStyle, fontWeight, fontStretch);
+                    return true;
+                }
+            }
+            typeface = default;
+            return false;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
