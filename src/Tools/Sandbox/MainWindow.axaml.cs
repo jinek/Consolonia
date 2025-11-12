@@ -6,6 +6,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Consolonia.Controls;
+using Consolonia.Fonts;
 
 namespace Sandbox
 {
@@ -91,10 +92,10 @@ namespace Sandbox
             Fonts.Add(new FontViewModel("Standard", 5));
             Fonts.Add(new FontViewModel("Standard", 6));
             Fonts.Add(new FontViewModel("Standard", 8));
-            Fonts.Add(new FontViewModel("Mono", 9));
-            Fonts.Add(new FontViewModel("Mono", 12));
-            Fonts.Add(new FontViewModel("SmallMono", 9));
-            Fonts.Add(new FontViewModel("SmallMono", 12));
+            Fonts.Add(new FontViewModel("Mono", 8));
+            Fonts.Add(new FontViewModel("Mono", 10));
+            Fonts.Add(new FontViewModel("SmallMono", 8));
+            Fonts.Add(new FontViewModel("SmallMono", 10));
             SelectedFont = Fonts.First(f => f.Font == "ConsoleDefault");
         }
     }
