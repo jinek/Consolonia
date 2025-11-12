@@ -9,6 +9,7 @@ using Avalonia.Media;
 namespace Consolonia.Core.Text.Fonts
 {
 
+#pragma warning disable CA1310 // Specify StringComparison for correctness
     /// <summary>
     /// FIGlet font parser and renderer
     /// Handles FLF (FIGlet) fonts with flf2a header

@@ -10,6 +10,7 @@ using Consolonia.Core.Text.Fonts;
 
 namespace Consolonia.Fonts
 {
+#pragma warning disable CA1310 // Specify StringComparison for correctness
     internal sealed class ConsoleFontCollection : FontCollectionBase
     {
         private Dictionary<string, IGlyphTypeface> _typefaceByName = new();

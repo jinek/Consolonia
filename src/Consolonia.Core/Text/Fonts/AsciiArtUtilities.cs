@@ -42,7 +42,7 @@ namespace Consolonia.Core.Text.Fonts
                 using var reader = new StreamReader(entryStream);
 
                 var lines = new List<string>();
-                string? line;
+                string line;
                 while ((line = reader.ReadLine()) != null)
                 {
                     lines.Add(line);
@@ -55,7 +55,7 @@ namespace Consolonia.Core.Text.Fonts
                 stream.Seek(0, SeekOrigin.Begin);
                 using var reader = new StreamReader(stream);
                 var lines = new List<string>();
-                string? line;
+                string line;
                 while ((line = reader.ReadLine()) != null)
                 {
                     lines.Add(line);

@@ -18,6 +18,7 @@ namespace Consolonia.Core.Text.Fonts
 
         // glyphindex to codepoint
         private List<uint> _codepoints = new();
+        private bool _disposedValue;
 
         public AsciiArtTypeface(string familyName)
         {
@@ -49,10 +50,6 @@ namespace Consolonia.Core.Text.Fonts
         public FontSimulations FontSimulations { get; init; }
 
         public char Hardblank { get; set; } = '$';
-
-        public void Dispose()
-        {
-        }
 
         public ushort GetGlyph(uint codepoint)
         {
@@ -132,6 +129,35 @@ namespace Consolonia.Core.Text.Fonts
                 pos = pos.WithX(pos.X + asciiGlyph.Width).WithY(position.Y);
             }
             return new PixelRect(startPosition, new PixelSize(pos.X - startPosition.X, this.Metrics.DesignEmHeight));
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                _disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~AsciiArtTypeface()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
