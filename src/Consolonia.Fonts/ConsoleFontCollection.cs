@@ -21,34 +21,7 @@ namespace Consolonia.Fonts
 
         public ConsoleFontCollection()
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             _key = new Uri("fonts:Consolonia");
-            LoadTypeface("BigFig.flf");
-            LoadTypeface("Mini.flf");
-            LoadTypeface("Braille.tlf");
-            LoadTypeface("Emboss.tlf");
-            LoadTypeface("Circle.tlf");
-            LoadTypeface("WideTerm.tlf");
-            LoadTypeface("Benjamin.flf");
-            LoadTypeface("Contessa.flf");
-            LoadTypeface("Cursive.flf");
-            LoadTypeface("Cygnet.flf");
-            LoadTypeface("Digital.flf");
-            LoadTypeface("Doom.flf");
-            LoadTypeface("Graffiti.flf");
-            LoadTypeface("Pepper.flf");
-            LoadTypeface("Rectangles.flf");
-            LoadTypeface("Short.flf");
-            LoadTypeface("Slant.flf");  
-            LoadTypeface("Straight.flf");
-            LoadFamily("Point", "Point2.flf", "Point3.flf");
-            LoadFamily("Standard", "Standard5.flf", "Standard6.flf", "Standard8.flf");
-            LoadFamily("Mono", "Mono9.tlf", "Mono12.tlf");
-            LoadFamily("BigMono", "BigMono9.tlf", "BigMono12.tlf");
-            LoadFamily("SmallMono", "SmallMono9.tlf", "SmallMono12.tlf");
-            sw.Stop();
-            Debug.WriteLine("Fonts loaded in " + sw.ElapsedMilliseconds + " ms");
         }
 
         public override FontFamily this[int index] => _fontFamilies[index];
@@ -69,10 +42,42 @@ namespace Consolonia.Fonts
 
         public override bool TryGetGlyphTypeface(string familyName, FontStyle style, FontWeight weight, FontStretch stretch, [NotNullWhen(true)] out IGlyphTypeface glyphTypeface)
         {
-            return _typefaceByName.TryGetValue(familyName, out glyphTypeface);
+            if (_typefaceByName.TryGetValue(familyName, out glyphTypeface))
+            {
+                return true;
+            }
+            // try to load on demand
+            glyphTypeface = familyName switch
+            {
+                "BigFig" => LoadTypeface("BigFig.flf"),
+                "Mini" => LoadTypeface("Mini.flf"),
+                "Braille" => LoadTypeface("Braille.tlf"),
+                "Emboss" => LoadTypeface("Emboss.tlf"),
+                "Circle" => LoadTypeface("Circle.tlf"),
+                "WideTerm" => LoadTypeface("WideTerm.tlf"),
+                "Benjamin" => LoadTypeface("Benjamin.flf"),
+                "Contessa" => LoadTypeface("Contessa.flf"),
+                "Cursive" => LoadTypeface("Cursive.flf"),
+                "Cygnet" => LoadTypeface("Cygnet.flf"),
+                "Digital" => LoadTypeface("Digital.flf"),
+                "Doom" => LoadTypeface("Doom.flf"),
+                "Graffiti" => LoadTypeface("Graffiti.flf"),
+                "Pepper" => LoadTypeface("Pepper.flf"),
+                "Rectangles" => LoadTypeface("Rectangles.flf"),
+                "Short" => LoadTypeface("Short.flf"),
+                "Slant" => LoadTypeface("Slant.flf"),
+                "Straight" => LoadTypeface("Straight.flf"),
+                "Point" => LoadFamily("Point", "Point2.flf", "Point3.flf"),
+                "Standard" => LoadFamily("Standard", "Standard5.flf", "Standard6.flf", "Standard8.flf"),
+                "Mono" => LoadFamily("Mono", "Mono9.tlf", "Mono12.tlf"),
+                "BigMono" => LoadFamily("BigMono", "BigMono9.tlf", "BigMono12.tlf"),
+                "SmallMono" => LoadFamily("SmallMono", "SmallMono9.tlf", "SmallMono12.tlf"),
+                _ => null
+            };
+            return glyphTypeface != null;
         }
 
-        private void LoadFamily(string familyName, params string[] variations)
+        private IGlyphTypeface LoadFamily(string familyName, params string[] variations)
         {
             var fontFamily = new FontFamily(Key, $"#{familyName.TrimStart('#')}");
             var familyTypespace = new AsciiFamilyTypeface(familyName);
@@ -85,6 +90,7 @@ namespace Consolonia.Fonts
 
             _typefaceByName[familyName] = familyTypespace;
             _fontFamilies.Add(fontFamily);
+            return familyTypespace;
         }
 
         private IGlyphTypeface LoadTypeface(string variation)

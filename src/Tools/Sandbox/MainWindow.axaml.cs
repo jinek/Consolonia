@@ -38,6 +38,35 @@ namespace Sandbox
         [ObservableProperty]
         private FontViewModel _selectedFont;
 
+        [ObservableProperty]
+        private FontWeight _selectedFontWeight = FontWeight.Normal;
+
+        [ObservableProperty]
+        private FontStyle _selectedFontStyle = FontStyle.Normal;
+
+        [ObservableProperty]
+        private List<FontWeight> _fontWeights = new()
+        {
+            FontWeight.Thin,
+            FontWeight.ExtraLight,
+            FontWeight.Light,
+            FontWeight.Normal,
+            FontWeight.Medium,
+            FontWeight.SemiBold,
+            FontWeight.Bold,
+            FontWeight.ExtraBold,
+            FontWeight.Black,
+            FontWeight.Heavy,
+        };
+
+        [ObservableProperty]
+        private List<FontStyle> _fontStyles = new()
+        {
+            FontStyle.Normal,
+            FontStyle.Italic,
+            FontStyle.Oblique,
+        };
+        
         public FontsViewModel()
         {
             Fonts.Add(new FontViewModel() { Font = "ConsoleDefault", FontFamily = FontFamily.Parse("ConsoleDefault"), FontSize = 1 });
@@ -94,5 +123,11 @@ namespace Sandbox
 
         [ObservableProperty]
         private int _fontSize;
+
+        [ObservableProperty]
+        private FontStyle _style;
+
+        [ObservableProperty]
+        private FontWeight _weight;
     }
 }
