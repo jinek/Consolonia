@@ -13,6 +13,7 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
+using Consolonia.Core.Text.Fonts;
 using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
@@ -69,7 +70,7 @@ namespace Consolonia.Core.Drawing
             _clipStack.Push(_pixelBuffer.Size);
         }
 
-        private PixelRect CurrentClip => _clipStack.Peek();
+        public PixelRect CurrentClip => _clipStack.Peek();
 
         public void Dispose()
         {
@@ -164,38 +165,38 @@ namespace Consolonia.Core.Drawing
                     DrawLineInternal(pen, myLine);
                     break;
                 case StreamGeometryImpl streamGeometry:
-                {
-                    // if we have fills to do and a brush with opacity
-                    if (brush != null &&
-                        brush.Opacity > 0 &&
-                        streamGeometry.Fills.Count > 0)
-                        foreach (Rectangle fill in streamGeometry.Fills)
-                            // Investigate: Does the pen apply to rectangle or not?
-                            DrawRectangle(brush, null, new RoundedRect(fill.Rect));
-
-                    // if we have strokes to draw, and a valid pen 
-                    if (pen != null &&
-                        pen.Thickness > 0 &&
-                        pen.Brush != null &&
-                        pen.Brush.Opacity > 0 &&
-                        streamGeometry.Strokes.Count > 0)
                     {
-                        RectangleLinePosition[] strokePositions = InferStrokePositions(streamGeometry);
-                        for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
+                        // if we have fills to do and a brush with opacity
+                        if (brush != null &&
+                            brush.Opacity > 0 &&
+                            streamGeometry.Fills.Count > 0)
+                            foreach (Rectangle fill in streamGeometry.Fills)
+                                // Investigate: Does the pen apply to rectangle or not?
+                                DrawRectangle(brush, null, new RoundedRect(fill.Rect));
+
+                        // if we have strokes to draw, and a valid pen 
+                        if (pen != null &&
+                            pen.Thickness > 0 &&
+                            pen.Brush != null &&
+                            pen.Brush.Opacity > 0 &&
+                            streamGeometry.Strokes.Count > 0)
                         {
-                            Line stroke = streamGeometry.Strokes[iStroke];
-                            RectangleLinePosition strokePosition = strokePositions[iStroke];
-                            if (strokePosition == RectangleLinePosition.Left)
-                                DrawLineInternal(pen, stroke, RectangleLinePosition.Left);
-                            else if (strokePosition == RectangleLinePosition.Right)
-                                DrawLineInternal(pen, stroke, RectangleLinePosition.Right);
-                            else if (strokePosition == RectangleLinePosition.Top)
-                                DrawLineInternal(pen, stroke, RectangleLinePosition.Top);
-                            else if (strokePosition == RectangleLinePosition.Bottom)
-                                DrawLineInternal(pen, stroke, RectangleLinePosition.Bottom);
+                            RectangleLinePosition[] strokePositions = InferStrokePositions(streamGeometry);
+                            for (int iStroke = 0; iStroke < streamGeometry.Strokes.Count; iStroke++)
+                            {
+                                Line stroke = streamGeometry.Strokes[iStroke];
+                                RectangleLinePosition strokePosition = strokePositions[iStroke];
+                                if (strokePosition == RectangleLinePosition.Left)
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Left);
+                                else if (strokePosition == RectangleLinePosition.Right)
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Right);
+                                else if (strokePosition == RectangleLinePosition.Top)
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Top);
+                                else if (strokePosition == RectangleLinePosition.Bottom)
+                                    DrawLineInternal(pen, stroke, RectangleLinePosition.Bottom);
+                            }
                         }
                     }
-                }
                     break;
                 default:
                     ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawGeometryNotSupported, this, brush,
@@ -262,13 +263,6 @@ namespace Consolonia.Core.Drawing
         public void DrawGlyphRun(IBrush foreground, IGlyphRunImpl glyphRun)
         {
             if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
-            if (!glyphRun.FontRenderingEmSize.IsNearlyEqual(1))
-            {
-                ConsoloniaPlatform.RaiseNotSupported(
-                    NotSupportedRequestCode.DrawGlyphRunWithNonDefaultFontRenderingEmSize, this, foreground,
-                    glyphRun);
-                return;
-            }
 
             if (glyphRun is not GlyphRunImpl glyphRunImpl)
             {
@@ -287,23 +281,11 @@ namespace Consolonia.Core.Drawing
                     return;
             }
 
-            var glyphTypeface = (ConsoleTypeface)glyphRun.GlyphTypeface;
+            var glyphTypefaceRender = (IGlyphRunRender)glyphRun.GlyphTypeface;
             Color foregroundColor = solidColorBrush.Color;
             var startPosition = new Point().Transform(Transform).ToPixelPoint();
-            PixelPoint position = startPosition;
+            var rectToRefresh = glyphTypefaceRender.DrawGlyphRun(this, startPosition, glyphRunImpl, foregroundColor);
 
-            foreach (GlyphInfo glyphInfo in glyphRunImpl.GlyphInfos)
-                if (glyphInfo.GlyphAdvance > 0)
-                {
-                    DrawGlyphInfoInternal(foregroundColor, glyphInfo, glyphTypeface, position);
-                    position = position.WithX(position.X + (ushort)glyphInfo.GlyphAdvance);
-                }
-
-            // mark the dirty region, start to end, position is after the last drawn char so
-            // already aligned on x; y we need to add 1 to give the rect height.
-            var rectToRefresh = new PixelRect(startPosition,
-                new PixelSize(position.X - startPosition.X,
-                    position.Y - startPosition.Y + 1));
             PixelRect intersectRect = CurrentClip.Intersect(rectToRefresh);
             _consoleWindowImpl.DirtyRegions.AddRect(intersectRect);
         }
@@ -436,28 +418,28 @@ namespace Consolonia.Core.Drawing
                     case VisualBrush:
                         throw new NotImplementedException();
                     case ISceneBrush sceneBrush:
-                    {
-                        ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
-                        sceneBrushContent?.Render(this, Matrix.Identity);
-                        return;
-                    }
-                    case MoveConsoleCaretToPositionBrush moveBrush:
-                    {
-                        var head = rectangleRect.TopLeft.ToPixelPoint();
-                        if (CurrentClip.ContainsExclusive(head))
                         {
-                            Pixel pixel = _pixelBuffer[head];
-                            if (pixel.CaretStyle != moveBrush.CaretStyle)
-                            {
-                                // only be dirty if something changed
-                                _consoleWindowImpl.DirtyRegions.AddRect(new PixelRect(head, new PixelSize(1, 1)));
-                                _pixelBuffer[head] =
-                                    pixel.Blend(new Pixel(moveBrush.CaretStyle));
-                            }
+                            ISceneBrushContent sceneBrushContent = sceneBrush.CreateContent();
+                            sceneBrushContent?.Render(this, Matrix.Identity);
+                            return;
                         }
+                    case MoveConsoleCaretToPositionBrush moveBrush:
+                        {
+                            var head = rectangleRect.TopLeft.ToPixelPoint();
+                            if (CurrentClip.ContainsExclusive(head))
+                            {
+                                Pixel pixel = _pixelBuffer[head];
+                                if (pixel.CaretStyle != moveBrush.CaretStyle)
+                                {
+                                    // only be dirty if something changed
+                                    _consoleWindowImpl.DirtyRegions.AddRect(new PixelRect(head, new PixelSize(1, 1)));
+                                    _pixelBuffer[head] =
+                                        pixel.Blend(new Pixel(moveBrush.CaretStyle));
+                                }
+                            }
 
-                        return;
-                    }
+                            return;
+                        }
                 }
 
                 FillRectangleWithBrush(brush, rectangleRect.ToPixelRect());
@@ -616,18 +598,18 @@ namespace Consolonia.Core.Drawing
             {
                 case ShadeBrush:
                     for (ushort y = (ushort)targetRect.Y; y < targetRect.Bottom; y++, brushY++)
-                    for (ushort x = (ushort)targetRect.X; x < targetRect.Right; x++)
-                        _pixelBuffer[x, y] = _pixelBuffer[x, y].Shade();
+                        for (ushort x = (ushort)targetRect.X; x < targetRect.Right; x++)
+                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Shade();
                     break;
                 case BrightenBrush:
                     for (ushort y = (ushort)targetRect.Y; y < targetRect.Bottom; y++, brushY++)
-                    for (ushort x = (ushort)targetRect.X; x < targetRect.Right; x++)
-                        _pixelBuffer[x, y] = _pixelBuffer[x, y].Brighten();
+                        for (ushort x = (ushort)targetRect.X; x < targetRect.Right; x++)
+                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Brighten();
                     break;
                 case InvertBrush:
                     for (ushort y = (ushort)targetRect.Y; y < targetRect.Bottom; y++, brushY++)
-                    for (ushort x = (ushort)targetRect.X; x < targetRect.Right; x++)
-                        _pixelBuffer[x, y] = _pixelBuffer[x, y].Invert();
+                        for (ushort x = (ushort)targetRect.X; x < targetRect.Right; x++)
+                            _pixelBuffer[x, y] = _pixelBuffer[x, y].Invert();
                     break;
                 default:
                     for (ushort y = (ushort)targetRect.Y; y < (ushort)targetRect.Bottom; y++, brushY++)
@@ -822,34 +804,11 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawGlyphInfoInternal(Color foregroundColor, GlyphInfo glyphInfo, ConsoleTypeface glyphTypeface,
-            PixelPoint position)
+        public void DrawPixel(Pixel pixel, PixelPoint position)
         {
-            // NOTE: we clip at the position of the wide char. If we attempt to clip for the width of the wide
-            // char it introduces artifacts when a wide char is partially clipped.
-            string glyph = glyphTypeface.GetGlyphText(glyphInfo.GlyphIndex);
-            if (glyph == "\t")
+            if (CurrentClip.ContainsExclusive(position))
             {
-                var symbol = new Symbol(' ', 1);
-                var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style,
-                    glyphTypeface.Weight);
-
-                for (int i = 0; i < glyphInfo.GlyphAdvance; i++)
-                {
-                    if (CurrentClip.ContainsExclusive(position))
-                        _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
-                    position = position.WithX(position.X + 1);
-                }
-            }
-            else
-            {
-                if (CurrentClip.ContainsExclusive(position))
-                {
-                    var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
-                    var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style,
-                        glyphTypeface.Weight);
-                    _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
-                }
+                _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
             }
         }
 

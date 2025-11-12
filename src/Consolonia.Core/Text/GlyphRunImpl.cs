@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
@@ -8,14 +9,14 @@ namespace Consolonia.Core.Text
 {
     internal class GlyphRunImpl : IGlyphRunImpl
     {
-        public GlyphRunImpl(IGlyphTypeface glyphTypeface, IReadOnlyList<GlyphInfo> glyphInfos, Point baselineOrigin)
+        public GlyphRunImpl(IGlyphTypeface glyphTypeface, double fontRenderingEmSize, IReadOnlyList<GlyphInfo> glyphInfos, Point baselineOrigin)
         {
-            FontRenderingEmSize = glyphTypeface.Metrics.DesignEmHeight;
+            FontRenderingEmSize = fontRenderingEmSize;
             GlyphTypeface = glyphTypeface;
             BaselineOrigin = baselineOrigin;
             GlyphInfos = glyphInfos;
             Bounds = new Rect(new Point(0, 0),
-                new Size(glyphInfos.Count, FontRenderingEmSize));
+                new Size(glyphInfos.Sum(gi => gi.GlyphAdvance), glyphTypeface.Metrics.DesignEmHeight));
         }
 
         public IReadOnlyList<GlyphInfo> GlyphInfos { get; }

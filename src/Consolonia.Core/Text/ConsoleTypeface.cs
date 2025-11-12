@@ -1,15 +1,19 @@
 using System;
 using System.Collections.Generic;
+using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Text.Fonts;
 
 namespace Consolonia.Core.Text
 {
     /// <summary>
     ///     This represents a psuedo-typeface for console rendering.
     /// </summary>
-    public sealed class ConsoleTypeface : IGlyphTypeface
+    public sealed class ConsoleTypeface : IGlyphTypeface, IGlyphRunRender
     {
         private static readonly object GlyphCacheSync = new();
         private static readonly Dictionary<ushort, string> GlyphTextByIndex = new();
@@ -104,7 +108,7 @@ namespace Consolonia.Core.Text
             throw new NotImplementedException();
         }
 
-        public string FamilyName { get; } = FontManagerImpl.GetTheOnlyFontFamilyName();
+        public string FamilyName { get; } = FontManagerImpl.ConsoleDefaultFontFamily();
         public FontWeight Weight { get; init; } = FontWeight.Normal;
         public FontStyle Style { get; init; } = FontStyle.Normal;
         public FontStretch Stretch => FontStretch.Normal;
@@ -143,6 +147,34 @@ namespace Consolonia.Core.Text
                 return text;
             }
         }
-#pragma warning restore CA1822 // Mark members as static
+
+        PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun, Color foreground)
+        {
+            var startPosition = position;
+            foreach (var glyphInfo in glyphRun.GlyphInfos)
+            {
+                // char it introduces artifacts when a wide char is partially clipped.
+                string glyph = this.GetGlyphText(glyphInfo.GlyphIndex);
+                if (glyph == "\t")
+                {
+                    var symbol = new Symbol(' ', 1);
+                    var newPixel = new Pixel(symbol, foreground, this.Style, this.Weight);
+
+                    for (int i = 0; i < glyphInfo.GlyphAdvance; i++)
+                    {
+                        context.DrawPixel(newPixel, position);
+                        position = position.WithX(position.X + 1);
+                    }
+                }
+                else
+                {
+                    var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
+                    context.DrawPixel(new Pixel(symbol, foreground, this.Style, this.Weight), position);
+                }
+                position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
+            }
+            return new PixelRect(startPosition, new PixelSize(position.X - startPosition.X, 1));
+        }
     }
+#pragma warning restore CA1822 // Mark members as static
 }

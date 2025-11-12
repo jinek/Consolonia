@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
+using Consolonia.Core.Text.Fonts;
 
 namespace Consolonia.Core.Text
 {
@@ -16,10 +18,16 @@ namespace Consolonia.Core.Text
 
             IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text.Span.ToString(), console.SupportsComplexEmoji);
 
-            var shapedBuffer = new ShapedBuffer(text, graphemes.Count,
-                options.Typeface, 1, 0 /*todo: must be 1 for right to left?*/);
+            var glyphTypeface = options.Typeface;
+            if (glyphTypeface is AsciiFamilyTypeface asciiFamilyTypeface)
+            {
+                glyphTypeface = asciiFamilyTypeface.GetTypeface((int)options.FontRenderingEmSize);
+            }
 
-            var glyphTypeface = options.Typeface as ConsoleTypeface;
+            var shapedBuffer = new ShapedBuffer(text, graphemes.Count,
+                glyphTypeface, 1, 0 /*todo: must be 1 for right to left?*/);
+
+
             for (ushort i = 0; i < shapedBuffer.Length; i++)
             {
                 Grapheme grapheme = graphemes[i];
@@ -29,12 +37,20 @@ namespace Consolonia.Core.Text
                 {
                     case "\r":
                     case "\n":
-                        glyphIndex = glyphTypeface.GetGlyphIndex("\u200c");
+                        glyphTypeface.TryGetGlyph(0x200c, out glyphIndex);
                         glyphAdvance = 0;
                         break;
                     default:
-                        glyphIndex = glyphTypeface.GetGlyphIndex(grapheme.Glyph);
-                        glyphAdvance = glyphTypeface.GetGlyphAdvance(glyphIndex);
+                        if (glyphTypeface is ConsoleTypeface consoleTypeface)
+                        {
+                            glyphIndex = consoleTypeface.GetGlyphIndex(grapheme.Glyph);
+                            glyphAdvance = consoleTypeface.GetGlyphAdvance(glyphIndex);
+                        }
+                        else
+                        {
+                            glyphTypeface.TryGetGlyph((uint)grapheme.Glyph.EnumerateRunes().First().Value, out glyphIndex);
+                            glyphAdvance = glyphTypeface.GetGlyphAdvance(glyphIndex);
+                        }
                         break;
                 }
 

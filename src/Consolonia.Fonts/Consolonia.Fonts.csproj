@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Core.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+    <PropertyGroup>
+        <Description>This package supplies console fonts for Consolonia.</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Fonts\*.?lf" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
+    </ItemGroup>
+
+</Project>

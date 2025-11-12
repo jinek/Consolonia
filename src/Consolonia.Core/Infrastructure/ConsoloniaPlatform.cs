@@ -147,6 +147,7 @@ namespace Consolonia.Core.Infrastructure
                     if (glyphRunImpl is GlyphRunImpl glyphRunImpl2)
                         ((DrawingContextImpl)notSupportedRequest.Information[0]).DrawGlyphRun(
                             (IBrush)notSupportedRequest.Information[1], new GlyphRunImpl(glyphRunImpl.GlyphTypeface,
+                                glyphRunImpl.FontRenderingEmSize,
                                 glyphRunImpl2.GlyphInfos,
                                 glyphRunImpl2.BaselineOrigin));
 
