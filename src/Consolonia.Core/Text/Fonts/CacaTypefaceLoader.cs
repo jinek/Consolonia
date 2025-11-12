@@ -87,7 +87,7 @@ namespace Consolonia.Core.Text.Fonts
                 }
 
                 // Store the glyph if we got any lines
-                typeface.AddGlyph(asciiCode, new AsciiArtGlyph(asciiCode, typeface.Hardblank, glyphLines.ToArray()));
+                typeface.AddGlyph(asciiCode, new AsciiArtGlyph(typeface, asciiCode, glyphLines.ToArray()));
                 asciiCode++;
             }
             typeface.Metrics = new FontMetrics

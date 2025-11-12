@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Avalonia;
 using Avalonia.Media;
+using Consolonia.Controls;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 
@@ -31,6 +34,21 @@ namespace Consolonia.Core.Text.Fonts
 
         public void AddGlyph(uint codepoint, AsciiArtGlyph glyph)
         {
+            if (codepoint == ' ')
+            {
+                // we gin up a definition for tab as 4 spaces
+                var tabCodepoint = (uint)'\t';
+                var advance = "\t".MeasureText();
+                var tabGlyph = new AsciiArtGlyph(glyph.Typeface, tabCodepoint, glyph.Lines.Select(line =>
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < advance; i++)
+                        sb.Append(line);
+                    return sb.ToString();
+                }).ToArray());
+                _glyphs[tabCodepoint] = tabGlyph;
+                _codepoints.Add(tabCodepoint);
+            }
             _glyphs[codepoint] = glyph;
             _codepoints.Add(codepoint);
         }

@@ -99,7 +99,7 @@ namespace Consolonia.Core.Text.Fonts
                     var line = lines[currentLine++];
                     charLines[i] = RemoveEndmarks(line, endmarkChar, i == height - 1);
                 }
-                typeface.AddGlyph(codepoint, new AsciiArtGlyph(codepoint, typeface.Hardblank, charLines));
+                typeface.AddGlyph(codepoint, new AsciiArtGlyph(typeface, codepoint, charLines));
             }
 
             // Load extended characters if available
@@ -144,7 +144,7 @@ namespace Consolonia.Core.Text.Fonts
                 }
                 
                 if (charCode > 0)
-                    typeface.AddGlyph(charCode, new AsciiArtGlyph(charCode, typeface.Hardblank, charLines));
+                    typeface.AddGlyph(charCode, new AsciiArtGlyph(typeface, charCode, charLines));
             }
             typeface.Metrics = new FontMetrics
             {

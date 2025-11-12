@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using NeoSmart.Unicode;
@@ -37,6 +38,16 @@ namespace Consolonia.Core.Helpers
 
                 switch (runeType)
                 {
+                    case RuneType.Cr:
+                        FlushBufferIfNeeded(buffer, glyphs, cluster);
+                        buffer.Append('\r');
+                        break;
+
+                    case RuneType.Lf:
+                        buffer.Append('\n');
+                        FlushBufferIfNeeded(buffer, glyphs, cluster);
+                        break;
+
                     case RuneType.ZeroWidthJoiner:
                         if (!supportsComplexEmoji)
                         {
@@ -87,6 +98,12 @@ namespace Consolonia.Core.Helpers
 
         private static RuneType ClassifyRune(Rune rune)
         {
+            if (rune.Value == '\r')
+                return RuneType.Cr;
+            
+            if (rune.Value == '\n')
+                return RuneType.Lf;
+
             if (rune.Value == Codepoints.ZWJ || rune.Value == Codepoints.ORC)
                 return RuneType.ZeroWidthJoiner;
 
@@ -214,6 +231,8 @@ namespace Consolonia.Core.Helpers
             RegionalIndicator,
             VariationSelector,
             Emoji,
+            Cr,
+            Lf,
             Regular
         }
     }

@@ -10,9 +10,9 @@ namespace Consolonia.Core.Text.Fonts
 {
     public class AsciiArtGlyph
     {
-        public AsciiArtGlyph(uint codepoint, char hardblank, string[] lines)
+        public AsciiArtGlyph(AsciiArtTypeface typeface, uint codepoint, string[] lines)
         {
-            Hardblank = hardblank;
+            Typeface = typeface;
             Codepoint = codepoint;
             Lines = lines;
             Ends = new int[Lines.Length];
@@ -21,7 +21,7 @@ namespace Consolonia.Core.Text.Fonts
 
             for (int iLine = 0; iLine < Lines.Length; iLine++)
             {
-                var line = EncodeUnicode(Lines[iLine].Replace(hardblank, ' '));
+                var line = EncodeUnicode(Lines[iLine].Replace(typeface.Hardblank, ' '));
                 GraphemeLines[iLine] = Grapheme.Parse(line, false).ToArray();
                 var width = (byte)line.MeasureText();
                 if (width > Width)
@@ -57,7 +57,7 @@ namespace Consolonia.Core.Text.Fonts
             });
         }
 
-        public char Hardblank { get; set; }
+        public AsciiArtTypeface Typeface { get; set; }
 
         public byte Width { get; init; }
 

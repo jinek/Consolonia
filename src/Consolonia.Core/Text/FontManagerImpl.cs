@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Consolonia.Core.Text.Fonts;
 
 namespace Consolonia.Core.Text
 {

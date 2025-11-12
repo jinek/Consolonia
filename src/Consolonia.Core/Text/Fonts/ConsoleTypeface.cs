@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Media.TextFormatting;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Text.Fonts;
 
-namespace Consolonia.Core.Text
+namespace Consolonia.Core.Text.Fonts
 {
     /// <summary>
     ///     This represents a psuedo-typeface for console rendering.
@@ -132,7 +130,6 @@ namespace Consolonia.Core.Text
                     glyph = (ushort)GlyphTextByIndex.Count;
                     GlyphTextByIndex[glyph] = glyphText;
                     GlyphWidthByIndex[glyph] = glyphText.MeasureText();
-                    Debug.Assert(GlyphWidthByIndex[glyph] > 0, "Glyph width should be greater than zero.");
                     GlyphIndexByText[glyphText] = glyph;
                 }
             }
@@ -168,12 +165,17 @@ namespace Consolonia.Core.Text
                         position = position.WithX(position.X + 1);
                     }
                 }
+                else if (glyph == "\n" || glyph == "\r\n")
+                {
+                    // we represent new lines as glyphs so that the layout engine can edit the cluster that represents the
+                    // new line,                     // but we don't draw them
+                }
                 else
                 {
                     var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
                     context.DrawPixel(new Pixel(symbol, foreground, this.Style, this.Weight), position);
+                    position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
                 }
-                position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
             }
             return new PixelRect(startPosition, new PixelSize(position.X - startPosition.X, 1));
         }
