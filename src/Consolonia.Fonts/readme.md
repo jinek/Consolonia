@@ -22,7 +22,7 @@ Update Program.cs to call ```appBuilder.WithConsoleFonts()```
         }
 ```
 
-Then set your fontamily and fontsize whereever fonts can be used:
+Then set your font family and fontsize whereever fonts can be used:
 
 ```xml
 <TextBlock FontFamily="fonts:Consolonia#Standard" FontSize="8">...</TextBlock>

@@ -38,6 +38,11 @@ namespace Consolonia.Core.Text.Fonts
             _fontFamilyUris = _fontUris// .Where(kv => Char.IsDigit(kv.Key[^1]))
                     .GroupBy(kv => kv.Key.TrimEnd('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'))
                     .ToDictionary(g => g.Key, g => g.Select(kv => kv.Value).ToArray());
+            foreach (var familyName in _fontFamilyUris.Keys)
+            {
+                var key = familyName.TrimStart('#');
+                _fontFamilies.Add(new FontFamily(_key, $"#{key}"));
+            }
         }
 
         public FontFamily this[int index] => _fontFamilies[index];
@@ -118,7 +123,6 @@ namespace Consolonia.Core.Text.Fonts
             }
 
             _typefaceByName[familyName] = familyTypespace;
-            _fontFamilies.Add(fontFamily);
             return familyTypespace;
         }
 

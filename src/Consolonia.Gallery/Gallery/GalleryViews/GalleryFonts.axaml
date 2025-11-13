@@ -7,7 +7,7 @@
    <Grid RowDefinitions="Auto * *">
         <StackPanel Orientation="Horizontal">
             <Label>Font</Label>
-            <ComboBox x:Name="Fonts" ItemsSource="{Binding Fonts}" Grid.Row="0" SelectedItem="{Binding SelectedFont}" >
+            <ComboBox x:Name="Fonts" ItemsSource="{Binding Fonts}" SelectedItem="{Binding SelectedFont}" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding DisplayName}"/>

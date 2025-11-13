@@ -131,19 +131,21 @@ namespace Consolonia.Core.Text.Fonts
             GC.SuppressFinalize(this);
         }
 
+
+        public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
+        {
+            var typeface = GetTypeface((int)options.FontRenderingEmSize);
+            var textShaper = typeface as ITextShaperImpl;
+            ArgumentNullException.ThrowIfNull(textShaper);
+            return textShaper.ShapeText(text, options);
+        }
+
         PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun, Color foreground)
         {
             var typeface = GetTypeface((int)glyphRun.FontRenderingEmSize);
             IGlyphRunRender typefaceDrawing = typeface as IGlyphRunRender;
             ArgumentNullException.ThrowIfNull(typefaceDrawing);
             return typefaceDrawing.DrawGlyphRun(context, position, glyphRun, foreground);
-        }
-
-        public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
-        {
-            var typeface = GetTypeface((int)options.FontRenderingEmSize);
-            var textShaper = typeface as ITextShaperImpl;
-            return textShaper.ShapeText(text, options);
         }
     }
 }

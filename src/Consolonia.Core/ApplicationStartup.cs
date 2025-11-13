@@ -29,7 +29,7 @@ namespace Consolonia
             params string[] args) where TApp : Application, new()
         {
             ConsoloniaLifetime lifetime =
-                BuildLifetime<TApp>(console, consoleColorMode, null, new ConsoloniaPlatformSettings(), args);
+                BuildLifetime<TApp>(console, consoleColorMode, (builder) => builder, new ConsoloniaPlatformSettings(), args);
 
             lifetime.Start(args);
         }
