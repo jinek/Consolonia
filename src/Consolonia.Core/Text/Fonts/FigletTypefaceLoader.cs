@@ -75,7 +75,8 @@ namespace Consolonia.Core.Text.Fonts
             var oldLayout = parts.Length > 3 ? int.Parse(parts[3]) : 0;
             var commentLines = parts.Length > 4 ? int.Parse(parts[4]) : 0;
             var printDirection = parts.Length > 5 ? int.Parse(parts[5]) : 0;
-            var fullLayout = parts.Length > 6 ? int.Parse(parts[6]) : 0;
+            var layoutMode = parts.Length > 6 ? int.Parse(parts[6]) : 0;
+            typeface.LayoutMode = (SmushMode)layoutMode;
             var codeTagCount = parts.Length > 7 ? int.Parse(parts[7]) : 0;
 
             int currentLine = 1 + commentLines;

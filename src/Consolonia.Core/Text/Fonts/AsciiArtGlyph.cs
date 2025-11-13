@@ -26,7 +26,7 @@ namespace Consolonia.Core.Text.Fonts
                 var width = (byte)line.MeasureText();
                 if (width > Width)
                     Width = width;
-                
+                Starts[iLine] = line.Length;
                 for (var iStart = 0; iStart < line.Length; iStart++)
                 {
                     if (line[iStart] != ' ')
@@ -35,6 +35,7 @@ namespace Consolonia.Core.Text.Fonts
                         break;
                     }
                 }
+                Ends[iLine] = 0;
                 for (var iEnd = line.Length - 1; iEnd >= 0; iEnd--)
                 {
                     if (line[iEnd] != ' ')
