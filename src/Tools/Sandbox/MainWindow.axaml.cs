@@ -74,8 +74,6 @@ namespace Sandbox
             Fonts.Add(new FontViewModel("WideTerm", 1));
             Fonts.Add(new FontViewModel("Braille", 2));
             Fonts.Add(new FontViewModel("Circle", 1));
-            Fonts.Add(new FontViewModel("BigFig", 3));
-            Fonts.Add(new FontViewModel("Contessa", 4));
             Fonts.Add(new FontViewModel("Cursive", 6));
             Fonts.Add(new FontViewModel("Digital", 3));
             Fonts.Add(new FontViewModel("Doom", 8));

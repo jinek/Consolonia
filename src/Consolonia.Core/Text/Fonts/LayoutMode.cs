@@ -7,12 +7,12 @@ namespace Consolonia.Core.Text.Fonts
     /// These flags control how adjacent characters are combined when rendering ASCII art fonts.
     /// </summary>
     [Flags]
-    public enum SmushMode
+    public enum LayoutMode
     {
         /// <summary>
         /// No smushing - characters are rendered at full width with spacing
         /// </summary>
-        FullWidth = 0,
+        None = 0,
 
         /// <summary>
         /// Equal character smushing - two identical characters can overlap

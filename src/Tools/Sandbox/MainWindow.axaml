@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="Sandbox.MainWindow"
         Title="Sandbox">
-    <Grid RowDefinitions="Auto *">
+    <Grid RowDefinitions="Auto * *">
         <StackPanel Orientation="Horizontal">
             <Label>Font</Label>
             <ComboBox x:Name="Fonts" ItemsSource="{Binding Fonts}" Grid.Row="0" SelectedItem="{Binding SelectedFont}">
@@ -20,11 +20,22 @@
 
         <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1">
             <TextBox AcceptsReturn="true" AcceptsTab="true"
+                     x:Name="Textbox"
                      FontFamily="{Binding SelectedFont.FontFamily}"
                      FontSize="{Binding SelectedFont.FontSize}"
                      FontStyle="{Binding SelectedFontStyle}"
                      FontWeight="{Binding SelectedFontWeight}"
                      ></TextBox>
+        </Border>
+        <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="2">
+            <TextBlock 
+                     FontFamily="{Binding SelectedFont.FontFamily}"
+                     FontSize="{Binding SelectedFont.FontSize}"
+                     FontStyle="{Binding SelectedFontStyle}"
+                     FontWeight="{Binding SelectedFontWeight}"
+                     Foreground="Blue"
+                     Text="{Binding #Textbox.Text}"
+                     />
         </Border>
     </Grid>
 </Window>

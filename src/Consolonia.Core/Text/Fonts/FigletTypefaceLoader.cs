@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using System.Linq;
 using Avalonia.Media;
+using System.Diagnostics;
 
 namespace Consolonia.Core.Text.Fonts
 {
@@ -73,11 +74,53 @@ namespace Consolonia.Core.Text.Fonts
             var baseline = parts.Length > 1 ? int.Parse(parts[1]) : 0;
             var maxLength = parts.Length > 2 ? int.Parse(parts[2]) : 0;
             var oldLayout = parts.Length > 3 ? int.Parse(parts[3]) : 0;
+            typeface.OldLayoutMode = (OldLayoutMode)oldLayout; // Store legacy layout mode
             var commentLines = parts.Length > 4 ? int.Parse(parts[4]) : 0;
             var printDirection = parts.Length > 5 ? int.Parse(parts[5]) : 0;
             var layoutMode = parts.Length > 6 ? int.Parse(parts[6]) : 0;
-            typeface.LayoutMode = (SmushMode)layoutMode;
+            if (layoutMode > 0)
+            {
+                typeface.LayoutMode = (LayoutMode)layoutMode;
+            }
+            else
+            {
+                typeface.LayoutMode = LayoutMode.Kern;
+                if (typeface.OldLayoutMode.HasFlag(OldLayoutMode.HorizontalKerning))
+                    typeface.LayoutMode |= LayoutMode.Kern;
+                if (typeface.OldLayoutMode.HasFlag(OldLayoutMode.HorizontalFitting))
+                    typeface.LayoutMode |= LayoutMode.Smush | LayoutMode.Equal;
+            }
             var codeTagCount = parts.Length > 7 ? int.Parse(parts[7]) : 0;
+
+            Debug.WriteLine($"Figlet font '{name}': height={height}, baseline={baseline}, maxLength={maxLength}, oldLayout={oldLayout} (legacy) layoutMode={layoutMode}");
+
+            // Debug output for legacy layout mode
+            if (typeface.OldLayoutMode > 0)
+            {
+                Debug.Write("  OldLayoutMode (legacy):");
+                foreach (var flag in Enum.GetValues<OldLayoutMode>())
+                {
+                    if (flag != OldLayoutMode.None && typeface.OldLayoutMode.HasFlag(flag))
+                    {
+                        Debug.Write($" {flag}");
+                    }
+                }
+                Debug.WriteLine("");
+            }
+
+            // Debug output for modern layout mode
+            if (typeface.LayoutMode > 0)
+            {
+                Debug.Write("  LayoutMode:");
+                foreach (var flag in Enum.GetValues<LayoutMode>())
+                {
+                    if (flag != LayoutMode.None && typeface.LayoutMode.HasFlag(flag))
+                    {
+                        Debug.Write($" {flag}");
+                    }
+                }
+                Debug.WriteLine("");
+            }
 
             int currentLine = 1 + commentLines;
 
@@ -143,7 +186,7 @@ namespace Consolonia.Core.Text.Fonts
                     var line = lines[currentLine++];
                     charLines[i] = RemoveEndmarks(line, endmarkChar, i == height - 1);
                 }
-                
+
                 if (charCode > 0)
                     typeface.AddGlyph(charCode, new AsciiArtGlyph(typeface, charCode, charLines));
             }

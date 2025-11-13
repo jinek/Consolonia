@@ -10,6 +10,7 @@ using Consolonia.Controls;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
+using DynamicData.Kernel;
 
 
 namespace Consolonia.Core.Text.Fonts
@@ -78,7 +79,13 @@ namespace Consolonia.Core.Text.Fonts
         /// <summary>
         /// Layout mode flags that control character smushing and kerning behavior
         /// </summary>
-        public SmushMode LayoutMode { get; set; } = SmushMode.FullWidth;
+        public LayoutMode LayoutMode { get; set; } = Fonts.LayoutMode.None;
+
+        /// <summary>
+        /// Legacy layout mode flags (pre-FIGlet 2a). This is deprecated and replaced by LayoutMode.
+        /// Preserved for compatibility and reference purposes only.
+        /// </summary>
+        public OldLayoutMode OldLayoutMode { get; set; } = OldLayoutMode.None;
 
         /// <summary>
         /// Debug helper to visualize which smush flags are set
@@ -196,7 +203,17 @@ namespace Consolonia.Core.Text.Fonts
                 codepoint = _indexToCodepoint[glyphIndices[i]];
                 glyphs[i] = _glyphs[codepoint];
             }
-            var advances = CalculateAdvancesWithKerning(glyphs, this.LayoutMode);
+
+            byte[] advances;
+            if (LayoutMode.HasFlag(Fonts.LayoutMode.Kern) || LayoutMode.HasFlag(Fonts.LayoutMode.Smush))
+            {
+                advances = CalculateAdvancesWithKerning(glyphs);
+            }
+            else
+            {
+                advances = glyphs.Select(g => g.Width).ToArray();
+            }
+
 
             var shapedBuffer = new ShapedBuffer(text, graphemes.Count, this, 1, 0 /*todo: must be 1 for right to left?*/);
 
@@ -209,6 +226,7 @@ namespace Consolonia.Core.Text.Fonts
 
         PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun, Color foreground)
         {
+            var smushing = LayoutMode.HasFlag(Fonts.LayoutMode.Smush) || LayoutMode.HasFlag(Fonts.LayoutMode.Kern);
             var startPosition = position;
             var pos = new PixelPoint(position.X, position.Y);
             foreach (var glyphInfo in glyphRun.GlyphInfos.Where(gi => gi.GlyphIndex != ushort.MaxValue))
@@ -221,7 +239,9 @@ namespace Consolonia.Core.Text.Fonts
                     foreach (var grapheme in graphemeLine)
                     {
                         var symbol = new Symbol(grapheme.Glyph);
-                        if (codepoint == 0x2009 || 
+                        // When we draw with smushing we need to skip whitespace but not for glyphs that are whitespace themselves.
+                        if (!smushing ||
+                            codepoint == 0x2009 ||
                             codepoint == '\t' ||
                             grapheme.Glyph != " ")
                         {
@@ -244,12 +264,12 @@ namespace Consolonia.Core.Text.Fonts
         /// <param name="glyphs">Sequence of glyphs to process</param>
         /// <param name="smushMode">Smush mode flags (SmushMode.FullWidth for no smushing, use kerning only)</param>
         /// <returns>Array of advances for each glyph</returns>
-        public int[] CalculateAdvancesWithKerning(ReadOnlySpan<AsciiArtGlyph> glyphs, SmushMode smushMode = SmushMode.FullWidth)
+        public byte[] CalculateAdvancesWithKerning(ReadOnlySpan<AsciiArtGlyph> glyphs)
         {
             if (glyphs.Length == 0)
-                return Array.Empty<int>();
+                return Array.Empty<byte>();
 
-            var advances = new int[glyphs.Length];
+            var advances = new byte[glyphs.Length];
 
             for (int i = 1; i < glyphs.Length; i++)
             {
@@ -266,28 +286,21 @@ namespace Consolonia.Core.Text.Fonts
                 }
 
                 // Calculate maximum overlap between glyphs
-                int maxOverlap = CalculateMaxOverlap(leftGlyph, rightGlyph, smushMode);
+                int maxOverlap = CalculateMaxOverlap(leftGlyph, rightGlyph);
 
                 // Advance is the width minus the overlap
-                advances[i - 1] = leftGlyph.Width - maxOverlap;
+                advances[i - 1] = (byte)(leftGlyph.Width - maxOverlap);
             }
             // last glyph advance is its full width
-            advances[^1] = glyphs[^1].Width;
+            advances[^1] = (byte)glyphs[^1].Width;
             return advances;
         }
 
         /// <summary>
         /// Calculate the maximum overlap (kerning/smush amount) between two glyphs
         /// </summary>
-        private int CalculateMaxOverlap(AsciiArtGlyph leftGlyph, AsciiArtGlyph rightGlyph, SmushMode smushMode)
+        private int CalculateMaxOverlap(AsciiArtGlyph leftGlyph, AsciiArtGlyph rightGlyph)
         {
-            // SM_FULLWIDTH means no kerning/smushing at all
-            if (smushMode == SmushMode.FullWidth)
-                return 0;
-
-            if (!smushMode.HasFlag(SmushMode.Kern) && !smushMode.HasFlag(SmushMode.Smush))
-                return 0;
-
             int minMove = int.MaxValue;
 
             // Check each line to find the minimum move (tightest constraint)
@@ -316,8 +329,8 @@ namespace Consolonia.Core.Text.Fonts
                     char leftBackChar = leftLine[leftEnd];
                     char rightFrontChar = rightLine[rightStart];
 
-                    if (smushMode.HasFlag(SmushMode.Smush) && 
-                        TrySmush(leftBackChar, rightFrontChar, smushMode) != '\0')
+                    if (LayoutMode.HasFlag(LayoutMode.Smush) &&
+                        TrySmush(leftBackChar, rightFrontChar) != '\0')
                     {
                         // If we can smush, we can move one character closer
                         move++;
@@ -342,7 +355,7 @@ namespace Consolonia.Core.Text.Fonts
         /// <summary>
         /// Check if two characters can smush together, returning the resulting character or '\0' if they can't
         /// </summary>
-        private char TrySmush(char leftChar, char rightChar, SmushMode smushMode)
+        private char TrySmush(char leftChar, char rightChar)
         {
             // If either is space, they can't smush (but can kern)
             if (leftChar == ' ' || rightChar == ' ')
@@ -351,19 +364,19 @@ namespace Consolonia.Core.Text.Fonts
             // Hardblank is treated specially
             if (leftChar == Hardblank || rightChar == Hardblank)
             {
-                if (smushMode.HasFlag(SmushMode.Hardblank))
+                if (LayoutMode.HasFlag(LayoutMode.Hardblank))
                     return leftChar == Hardblank ? rightChar : leftChar;
                 return '\0';
             }
 
             // Check smush rules
-            if (smushMode.HasFlag(SmushMode.Equal))
+            if (LayoutMode.HasFlag(LayoutMode.Equal))
             {
                 if (leftChar == rightChar)
                     return leftChar;
             }
 
-            if (smushMode.HasFlag(SmushMode.Lowline))
+            if (LayoutMode.HasFlag(LayoutMode.Lowline))
             {
                 if (leftChar == '_' && "|/\\[]{}()<>".IndexOf(rightChar) >= 0)
                     return rightChar;
@@ -371,7 +384,7 @@ namespace Consolonia.Core.Text.Fonts
                     return leftChar;
             }
 
-            if (smushMode.HasFlag(SmushMode.Hierarchy))
+            if (LayoutMode.HasFlag(LayoutMode.Hierarchy))
             {
                 string hierarchy = "|/\\[]{}()<>";
                 int leftLevel = hierarchy.IndexOf(leftChar);
@@ -381,7 +394,7 @@ namespace Consolonia.Core.Text.Fonts
                     return leftLevel > rightLevel ? leftChar : rightChar;
             }
 
-            if (smushMode.HasFlag(SmushMode.Pair))
+            if (LayoutMode.HasFlag(LayoutMode.Pair))
             {
                 if ((leftChar == '[' && rightChar == ']') || (leftChar == ']' && rightChar == '['))
                     return '|';
@@ -391,7 +404,7 @@ namespace Consolonia.Core.Text.Fonts
                     return '|';
             }
 
-            if (smushMode.HasFlag(SmushMode.BigX))
+            if (LayoutMode.HasFlag(LayoutMode.BigX))
             {
                 if (leftChar == '/' && rightChar == '\\')
                     return '|';
