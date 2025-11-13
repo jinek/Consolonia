@@ -25,6 +25,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Update="Gallery\GalleryViews\GalleryFonts.axaml.cs">
+        <DependentUpon>GalleryFonts.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
       <None Update="NLog.config">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
