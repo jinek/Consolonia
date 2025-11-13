@@ -29,11 +29,17 @@ namespace Consolonia.Core.Text.Fonts
 
         public void AddTypeface(IGlyphTypeface typeface)
         {
+            ArgumentNullException.ThrowIfNull(typeface);
             _typefaces[typeface.Metrics.DesignEmHeight] = typeface;
         }
 
         public IGlyphTypeface GetTypeface(int designEmHeight)
         {
+            if (_typefaces.Count == 0)
+            {
+                throw new InvalidOperationException($"No typefaces available in {FamilyName}.");
+            }
+
             if (_typefaces.ContainsKey(designEmHeight))
             {
                 return _typefaces[designEmHeight];
@@ -66,7 +72,7 @@ namespace Consolonia.Core.Text.Fonts
 
         public int GetGlyphAdvance(ushort glyph)
         {
-            return PrimaryTypeface.GetGlyphAdvance(glyph);  
+            return PrimaryTypeface.GetGlyphAdvance(glyph);
         }
 
         public int[] GetGlyphAdvances(ReadOnlySpan<ushort> glyphs)
@@ -76,7 +82,7 @@ namespace Consolonia.Core.Text.Fonts
 
         public ushort[] GetGlyphs(ReadOnlySpan<uint> codepoints)
         {
-            return PrimaryTypeface.GetGlyphs(codepoints);   
+            return PrimaryTypeface.GetGlyphs(codepoints);
         }
 
         public bool TryGetGlyph(uint codepoint, out ushort glyph)
@@ -86,12 +92,12 @@ namespace Consolonia.Core.Text.Fonts
 
         public bool TryGetGlyphMetrics(ushort glyph, out GlyphMetrics metrics)
         {
-            return PrimaryTypeface.TryGetGlyphMetrics(glyph, out metrics);  
+            return PrimaryTypeface.TryGetGlyphMetrics(glyph, out metrics);
         }
 
         public bool TryGetTable(uint tag, out byte[] table)
         {
-            return PrimaryTypeface.TryGetTable(tag, out table); 
+            return PrimaryTypeface.TryGetTable(tag, out table);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -100,11 +106,13 @@ namespace Consolonia.Core.Text.Fonts
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
+                    foreach (var typeface in _typefaces.Values)
+                    {
+                        typeface.Dispose();
+                    }
+                    _typefaces.Clear();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
                 _disposedValue = true;
             }
         }

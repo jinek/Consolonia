@@ -15,8 +15,9 @@ namespace Consolonia.Core.Text
             GlyphTypeface = glyphTypeface;
             BaselineOrigin = baselineOrigin;
             GlyphInfos = glyphInfos;
-            Bounds = new Rect(new Point(0, 0),
-                new Size(glyphInfos.Sum(gi => gi.GlyphAdvance), glyphTypeface.Metrics.DesignEmHeight));
+            var scale = glyphTypeface.Metrics.DesignEmHeight != 0 ? fontRenderingEmSize / glyphTypeface.Metrics.DesignEmHeight : 1;
+            var width = glyphInfos.Sum(gi => gi.GlyphAdvance) * scale;
+            Bounds = new Rect(new Point(0, 0), new Size(width, fontRenderingEmSize));
         }
 
         public IReadOnlyList<GlyphInfo> GlyphInfos { get; }

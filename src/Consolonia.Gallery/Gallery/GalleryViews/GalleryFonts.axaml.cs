@@ -25,7 +25,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     }
 
     [ObservableObject]
-    public partial class FontsViewModel
+    public partial class FontsViewModel 
     {
         [ObservableProperty]
         private ObservableCollection<FontViewModel> _fonts = new();
@@ -89,7 +89,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     }
 
     [ObservableObject]
-    public partial class FontViewModel
+    public partial class FontViewModel 
     {
         public FontViewModel()
         {
@@ -102,15 +102,17 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             FontFamily = FontFamily.Parse($"fonts:Consolonia#{fontFamily}");
         }
 
-        private string DisplayName => $"{Font} [{FontSize}]";
+        public string DisplayName => $"{Font} [{FontSize}]";
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(DisplayName))]
         private string _font;
 
         [ObservableProperty]
         private FontFamily _fontFamily;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(DisplayName))]
         private int _fontSize;
 
         [ObservableProperty]
