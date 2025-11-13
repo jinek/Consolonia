@@ -77,13 +77,13 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Fonts.Add(new FontViewModel("Slant", 6));
             Fonts.Add(new FontViewModel("Emboss", 3));
             Fonts.Add(new FontViewModel("Point", 3));
+            Fonts.Add(new FontViewModel("Straight", 4));
+            Fonts.Add(new FontViewModel("Pepper", 4));
             Fonts.Add(new FontViewModel("Standard", 5));
             Fonts.Add(new FontViewModel("Standard", 6));
             Fonts.Add(new FontViewModel("Standard", 8));
             Fonts.Add(new FontViewModel("Mono", 8));
             Fonts.Add(new FontViewModel("Mono", 10));
-            Fonts.Add(new FontViewModel("SmallMono", 8));
-            Fonts.Add(new FontViewModel("SmallMono", 10));
             SelectedFont = Fonts.First(f => f.Font == "ConsoleDefault");
         }
     }

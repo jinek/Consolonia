@@ -19,7 +19,6 @@ namespace Consolonia.Gallery.Tests
         public async Task DisplaysBasicText()
         {
             await SelectFont("ConsoleDefault");
-
             await UITest.AssertHasText("Hello World!");
         }
 
@@ -27,7 +26,6 @@ namespace Consolonia.Gallery.Tests
         public async Task DisplaysWideTermText()
         {
             await SelectFont("WideTerm");
-
             await UITest.AssertHasRawText("Ｈ️ｅ️ｌ️ｌ️ｏ️  Ｗ️ｏ️ｒ️ｌ️ｄ️！️");
         }
 
@@ -63,6 +61,7 @@ namespace Consolonia.Gallery.Tests
                 FontsViewModel vm = (FontsViewModel)combo.DataContext!;
                 vm.SelectedFont = vm.Fonts.FirstOrDefault(f => f.Font == font);
             });
+            await Task.Delay(50);
         }
     }
 }
