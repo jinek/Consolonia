@@ -15,7 +15,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             FontsViewModel fonts = new FontsViewModel();
             this.DataContext = fonts;
             this.Fonts.SelectedIndex = 0;
+            this.Loaded += GalleryFonts_Loaded;
+        }
 
+        private void GalleryFonts_Loaded(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            this.Fonts.Focus();
         }
     }
 

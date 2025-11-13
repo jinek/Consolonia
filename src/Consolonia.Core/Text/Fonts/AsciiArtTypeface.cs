@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Avalonia;
@@ -15,6 +16,7 @@ using DynamicData.Kernel;
 
 namespace Consolonia.Core.Text.Fonts
 {
+#pragma warning disable CA1307 // Specify StringComparison for clarity
     /// <summary>
     /// Fonts which use the TLF/Caca format
     /// </summary>
@@ -378,9 +380,9 @@ namespace Consolonia.Core.Text.Fonts
 
             if (LayoutMode.HasFlag(LayoutMode.Lowline))
             {
-                if (leftChar == '_' && "|/\\[]{}()<>".IndexOf(rightChar) >= 0)
+                if (leftChar == '_' && "|/\\[]{}()<>".Contains(rightChar))
                     return rightChar;
-                if (rightChar == '_' && "|/\\[]{}()<>".IndexOf(leftChar) >= 0)
+                if (rightChar == '_' && "|/\\[]{}()<>".Contains(leftChar))
                     return leftChar;
             }
 

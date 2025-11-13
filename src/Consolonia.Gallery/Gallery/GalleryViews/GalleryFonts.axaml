@@ -7,27 +7,24 @@
    <Grid RowDefinitions="Auto * *">
         <StackPanel Orientation="Horizontal">
             <Label>Font</Label>
-            <ComboBox x:Name="Fonts" ItemsSource="{Binding Fonts}" Grid.Row="0" SelectedItem="{Binding SelectedFont}">
+            <ComboBox x:Name="Fonts" ItemsSource="{Binding Fonts}" Grid.Row="0" SelectedItem="{Binding SelectedFont}" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding DisplayName}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-          <!--  <Label>FontWeight</Label>
-            <ComboBox Grid.Row="0" SelectedItem="{Binding SelectedFontWeight}" ItemsSource="{Binding FontWeights}"/>
-            <Label>FontStyle</Label>
-            <ComboBox Grid.Row="0" SelectedItem="{Binding SelectedFontStyle}" ItemsSource="{Binding FontStyles}"/>-->
         </StackPanel>
 
         <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1">
-            <TextBox AcceptsReturn="true" AcceptsTab="true"
-                     x:Name="Textbox"
+            <TextBox x:Name="Textbox"
+                     AcceptsReturn="true" 
                      FontFamily="{Binding SelectedFont.FontFamily}"
                      FontSize="{Binding SelectedFont.FontSize}"
                      FontStyle="{Binding SelectedFontStyle}"
-                     FontWeight="{Binding SelectedFontWeight}"
-                     ></TextBox>
+                     FontWeight="{Binding SelectedFontWeight}">
+                Hello World!
+            </TextBox>
         </Border>
         <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="2">
             <TextBlock 

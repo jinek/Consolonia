@@ -4,6 +4,7 @@ using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
+using Consolonia.Fonts;
 using Consolonia.NUnit;
 using NUnit.Framework;
 using static System.GC;
@@ -42,6 +43,7 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
 
             _scope = AvaloniaLocator.EnterScope();
             _lifetime = ApplicationStartup.BuildLifetime<ContextApp2>(new DummyConsole(), new RgbConsoleColorMode(),
+                (builder) => builder.WithConsoleFonts(),
                 new ConsoloniaPlatformSettings
                 {
                     UnsafeInput = false,

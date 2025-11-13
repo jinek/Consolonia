@@ -1,13 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Avalonia;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using Consolonia.Core.Helpers;
-using Consolonia.Core.Infrastructure;
-using Consolonia.Core.Text.Fonts;
 
 namespace Consolonia.Core.Text
 {
@@ -20,7 +14,7 @@ namespace Consolonia.Core.Text
                 return textShaper.ShapeText(text, options);
             }
 
-            throw new ArgumentNullException(nameof(options.Typeface.FamilyName), "Unsupported glyph typeface.");
+            throw new KeyNotFoundException("Unsupported console glyph typeface, we only work with ITextShaperImpl typefaces.");
         }
     }
 }

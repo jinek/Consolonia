@@ -7,10 +7,33 @@ namespace Consolonia.NUnit
 {
     public static class TestHelpers
     {
+        public static async Task AssertHasRawText(this UnitTestConsole unitTestConsole, params string[] textToSearch)
+        {
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                var printBuffer = unitTestConsole.PixelBuffer.PrintBuffer();
+
+                foreach (string text in textToSearch)
+                {
+                    Assert.IsTrue(printBuffer.Contains(text), $"{text} not at the buffer: \r\n" + printBuffer);
+                }
+            }, DispatcherPriority.Render);
+        }
+
         public static async Task AssertHasText(this UnitTestConsole unitTestConsole, params string[] regexesToSearch)
         {
-            foreach (string regexString in regexesToSearch)
-                await unitTestConsole.AssertHasText(regexString).ConfigureAwait(true);
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                var printBuffer = unitTestConsole.PixelBuffer.PrintBuffer();
+
+                foreach (var regexToSearch in regexesToSearch)
+                {
+                    var regex = new Regex(regexToSearch);
+                    var found = regex.IsMatch(printBuffer);
+                    Assert.IsTrue(found,
+                        $"'{regexToSearch}' was not found at the buffer: \r\n" + printBuffer);
+                }
+            }, DispatcherPriority.Render);
         }
 
         public static async Task AssertHasText(this UnitTestConsole unitTestConsole, string regexToSearch)
@@ -40,7 +63,7 @@ namespace Consolonia.NUnit
 
                 var regex = new Regex(regexToSearch);
                 found = regex.IsMatch(printBuffer);
-            }).GetTask().ConfigureAwait(true);
+            }, DispatcherPriority.Render).GetTask().ConfigureAwait(true);
 
 
             return (found, printBuffer);

@@ -12,6 +12,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Core\Consolonia.Core.csproj" />
+        <ProjectReference Include="..\Consolonia.Fonts\Consolonia.Fonts.csproj" />
     </ItemGroup>
 
 </Project>
