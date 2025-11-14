@@ -172,7 +172,7 @@ namespace Consolonia.NUnit
             await WaitRendered().ConfigureAwait(true);
         }
 
-        public IInputElement? GetFocus()
+        public IInputElement GetFocus()
         {
             return this._lifetime.MainWindow.FocusManager.GetFocusedElement();
         }

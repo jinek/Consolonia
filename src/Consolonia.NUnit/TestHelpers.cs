@@ -1,3 +1,4 @@
+using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -15,7 +16,7 @@ namespace Consolonia.NUnit
 
                 foreach (string text in textToSearch)
                 {
-                    Assert.IsTrue(printBuffer.Contains(text), $"{text} not at the buffer: \r\n" + printBuffer);
+                    Assert.IsTrue(printBuffer.Contains(text, StringComparison.Ordinal), $"{text} not at the buffer: \r\n" + printBuffer);
                 }
             }, DispatcherPriority.Render);
         }
