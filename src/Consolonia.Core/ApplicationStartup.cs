@@ -29,7 +29,7 @@ namespace Consolonia
             params string[] args) where TApp : Application, new()
         {
             ConsoloniaLifetime lifetime =
-                BuildLifetime<TApp>(console, consoleColorMode, (builder) => builder, new ConsoloniaPlatformSettings(), args);
+                BuildLifetime<TApp>(console, consoleColorMode, new ConsoloniaPlatformSettings(), args);
 
             lifetime.Start(args);
         }
@@ -78,7 +78,7 @@ namespace Consolonia
         }
 
         public static ConsoloniaLifetime BuildLifetime<TApp>(IConsole console,
-            IConsoleColorMode consoleColorMode, Func<AppBuilder, AppBuilder> configureApp, ConsoloniaPlatformSettings settings, string[] args)
+            IConsoleColorMode consoleColorMode, ConsoloniaPlatformSettings settings, string[] args)
             where TApp : Application, new()
         {
             AppBuilder consoloniaAppBuilder = AppBuilder.Configure<TApp>()
@@ -87,8 +87,6 @@ namespace Consolonia
                 .UseConsoleColorMode(consoleColorMode)
                 .With<IPlatformSettings>(settings)
                 .LogToException();
-            if (configureApp != null)
-                consoloniaAppBuilder = configureApp(consoloniaAppBuilder);
             return CreateLifetime(consoloniaAppBuilder, args);
         }
 
@@ -120,7 +118,7 @@ namespace Consolonia
                 throw new InvalidOperationException("The lifetime does not support controlled shutdown.");
         }
 
-        private static ConsoloniaLifetime CreateLifetime(AppBuilder builder, string[] args)
+        public static ConsoloniaLifetime CreateLifetime(AppBuilder builder, string[] args)
         {
             var lifetime = new ConsoloniaLifetime
             {
