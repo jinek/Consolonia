@@ -1,16 +1,24 @@
-using System.IO;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
 using Avalonia.Media;
+using Avalonia.Controls;
+
+#if DEBUG
+using System.Diagnostics;
+#endif
 
 namespace Consolonia.Core.Text.Fonts
 {
-
 #pragma warning disable CA1310 // Specify StringComparison for correctness
+
     /// <summary>
     /// FIGlet font parser and renderer
-    /// Handles FLF (FIGlet) fonts with flf2a header
+    /// Handles TLF (Caca) fonts with tlf2a header
     /// </summary>
-    public static class FigletTypefaceLoader
+    public static class AsciiArtTypefaceLoader
     {
         private readonly static uint[] Codepoints = [
             32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
@@ -40,18 +48,16 @@ namespace Consolonia.Core.Text.Fonts
             var typeface = new AsciiArtTypeface(name);
 
             string[] lines = AsciiArtUtilities.ReadFontStream(stream);
-
-            if (lines.Length == 0)
-                throw new InvalidDataException("Empty font file");
-
-            // Parse header: flf2a{hardblank} height baseline maxLength oldLayout commentLines [printDirection [fullLayout [codeTagCount]]]
+            // Parse header: tlf2a{hardblank} height baseline maxLength oldLayout commentLines
             var header = lines[0];
 
-            if (!header.StartsWith("flf2a"))
-                throw new InvalidDataException($"Invalid FIGlet header - must start with 'flf2a', got: '{header.Substring(0, Math.Min(10, header.Length))}'");
+            bool isFiglet = header.StartsWith("flf2a", StringComparison.Ordinal);
+            bool isCaca = header.StartsWith("tlf2a", StringComparison.Ordinal);
+            if (!isFiglet && !isCaca)
+                throw new InvalidDataException($"Invalid font header - must start with 'flf2a' or 'tlf2a', got: '{header.Substring(0, Math.Min(10, header.Length))}'");
 
             if (header.Length < 7)
-                throw new InvalidDataException("Invalid FIGlet header - too short");
+                throw new InvalidDataException("Invalid font header - too short");
 
             typeface.Hardblank = header[5];
 
@@ -66,37 +72,55 @@ namespace Consolonia.Core.Text.Fonts
                 throw new InvalidDataException("Invalid FIGlet header - missing height parameter");
 
             // ReSharper disable UnusedVariable
-            var height = int.Parse(parts[0]);
+            var height = int.Parse(parts[0]); 
             var baseline = parts.Length > 1 ? int.Parse(parts[1]) : 0;
-            var maxLength = parts.Length > 2 ? int.Parse(parts[2]) : 0;
+            var width = parts.Length > 2 ? int.Parse(parts[2]) : 0;
             var oldLayout = parts.Length > 3 ? int.Parse(parts[3]) : 0;
-            typeface.OldLayoutMode = (OldLayoutMode)oldLayout; // Store legacy layout mode
+            OldLayoutMode oldLayoutMode = (OldLayoutMode)oldLayout;
             var commentLines = parts.Length > 4 ? int.Parse(parts[4]) : 0;
             var printDirection = parts.Length > 5 ? int.Parse(parts[5]) : 0;
-            var layoutMode = parts.Length > 6 ? int.Parse(parts[6]) : 0;
-            if (layoutMode > 0)
+            var layout = parts.Length > 6 ? int.Parse(parts[6]) : -1;
+            var codeTagCount = parts.Length > 7 ? int.Parse(parts[7]) : 0;
+            if (isFiglet)
             {
-                typeface.LayoutMode = (LayoutMode)layoutMode;
+                if (layout >= 0)
+                {
+                    typeface.LayoutMode = (LayoutMode)layout;
+                }
+                else
+                {
+                    typeface.LayoutMode = LayoutMode.Kern;
+                    if (oldLayoutMode.HasFlag(OldLayoutMode.HorizontalKerning))
+                        typeface.LayoutMode |= LayoutMode.Kern;
+                    if (oldLayoutMode.HasFlag(OldLayoutMode.HorizontalFitting))
+                        typeface.LayoutMode |= LayoutMode.Smush | LayoutMode.Equal;
+                }
             }
             else
             {
-                typeface.LayoutMode = LayoutMode.Kern;
-                if (typeface.OldLayoutMode.HasFlag(OldLayoutMode.HorizontalKerning))
-                    typeface.LayoutMode |= LayoutMode.Kern;
-                if (typeface.OldLayoutMode.HasFlag(OldLayoutMode.HorizontalFitting))
-                    typeface.LayoutMode |= LayoutMode.Smush | LayoutMode.Equal;
+                if (layout >= 0)
+                {
+                    typeface.LayoutMode = (LayoutMode)layout;
+                }
+                else
+                {
+                    typeface.LayoutMode = LayoutMode.Smush;
+                    if (oldLayoutMode.HasFlag(OldLayoutMode.HorizontalKerning))
+                        typeface.LayoutMode |= LayoutMode.Kern;
+                    if (oldLayoutMode.HasFlag(OldLayoutMode.HorizontalFitting))
+                        typeface.LayoutMode |= LayoutMode.Smush | LayoutMode.Equal;
+                }
             }
-            var codeTagCount = parts.Length > 7 ? int.Parse(parts[7]) : 0;
-#if DEBUG // diagnostic output of parsing. Only in DEBUG builds.
-            Debug.WriteLine($"Figlet font '{name}': height={height}, baseline={baseline}, maxLength={maxLength}, oldLayout={oldLayout} (legacy) layoutMode={layoutMode}");
 
-            // Debug output for legacy layout mode
-            if (typeface.OldLayoutMode > 0)
+#if DEBUG // diagnostic output of parsing. Only in DEBUG builds.
+            Debug.WriteLine($"Font '{name}': height={height}, baseline={baseline}, width={width}, oldLayout={oldLayoutMode} (legacy) layoutMode={typeface.LayoutMode}");
+            // Debug output for modern layout mode
+            if (oldLayoutMode >= 0)
             {
-                Debug.Write("  OldLayoutMode (legacy):");
+                Debug.Write("  OldLayoutMode:");
                 foreach (var flag in Enum.GetValues<OldLayoutMode>())
                 {
-                    if (flag != OldLayoutMode.None && typeface.OldLayoutMode.HasFlag(flag))
+                    if (flag != OldLayoutMode.None && oldLayoutMode.HasFlag(flag))
                     {
                         Debug.Write($" {flag}");
                     }
@@ -121,12 +145,6 @@ namespace Consolonia.Core.Text.Fonts
             // ReSharper enable UnusedVariable
             int currentLine = 1 + commentLines;
 
-            // Detect endmark character from first character line
-            char endmarkChar = '@';
-            if (currentLine < lines.Length && lines[currentLine].Length > 0)
-            {
-                endmarkChar = lines[currentLine][lines[currentLine].Length - 1];
-            }
 
             // Load standard ASCII characters (32-126)+ extended characters
             foreach (var codepoint in Codepoints)
@@ -137,14 +155,17 @@ namespace Consolonia.Core.Text.Fonts
                     if (currentLine >= lines.Length)
                         break;
 
-                    var line = lines[currentLine++];
-                    charLines[i] = line.TrimEnd().TrimEnd(endmarkChar);
+                    var line = lines[currentLine++].TrimEnd();
+                    charLines[i] = ProcessLine(line.Trim(line[^1]));
                 }
                 typeface.AddGlyph(codepoint, new AsciiArtGlyph(typeface, codepoint, charLines));
+                if (currentLine >= lines.Length)
+                    break;
             }
 
             // Load extended characters if available
-            uint charCode = 224;
+            uint extendedCodepoint = 0;
+
             while (currentLine < lines.Length)
             {
                 var codeLine = lines[currentLine].TrimEnd();
@@ -153,39 +174,36 @@ namespace Consolonia.Core.Text.Fonts
                     currentLine++;
                     continue;
                 }
-                if (!codeLine.EndsWith(endmarkChar))
+                var codeTokens = codeLine.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                if (codeTokens.Length == 0)
                 {
-                    var codeTokens = codeLine.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (codeTokens.Length == 0)
-                    {
-                        currentLine++;
-                        continue;
-                    }
-
-                    var codeToken = codeTokens[0];
-                    if (codeToken.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-                    {
-                        charCode = Convert.ToUInt32(codeToken, 16);
-                        currentLine++;
-                        continue;
-                    }
-                    else if (codeToken.Length > 0 && Char.IsNumber(codeToken[0]))
-                    {
-                        charCode = Convert.ToUInt32(codeToken);
-                        currentLine++;
-                        continue;
-                    }
+                    currentLine++;
+                    continue;
                 }
 
+                var codeToken = codeTokens[0];
+                if (codeToken.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+                {
+                    extendedCodepoint = Convert.ToUInt32(codeToken, 16);
+                    currentLine++;
+                    continue;
+                }
+                else if (codeToken.Length > 0 && Char.IsNumber(codeToken[0]))
+                {
+                    extendedCodepoint = Convert.ToUInt32(codeToken);
+                    currentLine++;
+                }
+                
                 var charLines = new string[height];
-                for (int i = 0; i < height && currentLine < lines.Length; i++)
+                for (int i = 0; i < height; i++)
                 {
-                    var line = lines[currentLine++];
-                    charLines[i] = line.TrimEnd().TrimEnd(endmarkChar);
-                }
+                    if (currentLine >= lines.Length)
+                        break;
 
-                if (charCode > 0)
-                    typeface.AddGlyph(charCode, new AsciiArtGlyph(typeface, charCode, charLines));
+                    var line = lines[currentLine++].TrimEnd();
+                    charLines[i] = ProcessLine(line.Trim(line[^1]));
+                }
+                typeface.AddGlyph(extendedCodepoint, new AsciiArtGlyph(typeface, extendedCodepoint, charLines));
             }
             typeface.Metrics = new FontMetrics
             {
@@ -195,11 +213,19 @@ namespace Consolonia.Core.Text.Fonts
                 StrikethroughThickness = 1,
                 UnderlinePosition = (short)(height - 2),
                 UnderlineThickness = 1,
-                Ascent = 0, // height-baseline,
+                Ascent = 0,
                 Descent = height,
                 LineGap = 0,
             };
+
             return typeface;
+        }
+
+        private static readonly Regex AnsiRegex = new Regex(@"\x1B\[[0-9;]*[A-Za-z]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+        public static string ProcessLine(string input)
+        {
+            return AnsiRegex.Replace(input, string.Empty);
         }
     }
 }

@@ -138,14 +138,14 @@ namespace Consolonia.Core.Text.Fonts
             var fontName = Path.GetFileNameWithoutExtension(uri.AbsolutePath);
             using var stream = AssetLoader.Open(uri);
             IGlyphTypeface typeface = null;
-            if (resourceName.EndsWith(".flf"))
-            {
-                typeface = FigletTypefaceLoader.Load(stream, resourceName);
-            }
-            else if (resourceName.EndsWith(".tlf"))
-            {
-                typeface = CacaTypefaceLoader.Load(stream, Path.GetFileNameWithoutExtension(resourceName));
-            }
+            //if (resourceName.EndsWith(".flf"))
+            //{
+            //    typeface = FigletTypefaceLoader.Load(stream, resourceName);
+            //}
+            //else if (resourceName.EndsWith(".tlf"))
+            //{
+                typeface = AsciiArtTypefaceLoader.Load(stream, Path.GetFileNameWithoutExtension(resourceName));
+            //}
             ArgumentNullException.ThrowIfNull(typeface, $"Failed to load font variation: {resourceName}");
             _typefaceByName[fontName] = typeface;
             _typefaceByUri[uri] = typeface;

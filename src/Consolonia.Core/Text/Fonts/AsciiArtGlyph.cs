@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Consolonia.Controls;
@@ -45,6 +46,18 @@ namespace Consolonia.Core.Text.Fonts
                     }
                 }
             }
+#if DEBUG_FONT_GLYPH
+            Debug.WriteLine("==============================");
+            Debug.WriteLine($"NEW GLYPH: U+{codepoint:X4} ({char.ConvertFromUtf32((int)codepoint)})");
+            foreach (var graphemeLine in GraphemeLines)
+            {
+                foreach(var grapheme in graphemeLine)
+                {
+                    Debug.Write(grapheme.Glyph);
+                }
+                Debug.WriteLine("");
+            }
+#endif
         }
 
         private static readonly Regex UnicodeEscapeRegex = new(@"\\u([0-9A-Fa-f]{4})", RegexOptions.Compiled);
