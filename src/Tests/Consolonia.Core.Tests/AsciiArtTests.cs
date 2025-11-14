@@ -24,6 +24,12 @@ namespace Consolonia.Core.Tests
             };
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _typeface?.Dispose();
+        }
+
         [Test]
         public void ConstructorWithSimpleLineCreatesGlyph()
         {
