@@ -182,12 +182,11 @@ namespace Consolonia.NUnit
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                var control = this._lifetime.MainWindow.GetVisualDescendants()
+                var control = _lifetime.MainWindow.GetVisualDescendants()
                     .OfType<T>()
-                    .FirstOrDefault(cb => cb.Name == controlName);     
+                    .FirstOrDefault(cb => cb.Name == controlName);
                 if (control == null)
-                    throw new InvalidOperationException(
-                        $"Control of type {typeof(T)} with name '{controlName}' not found");
+                    throw new InvalidOperationException($"Control '{controlName}' of type {typeof(T).Name} not found.");
                 control.Focus();
             }, DispatcherPriority.Input);
         }
