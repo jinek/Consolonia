@@ -164,7 +164,7 @@ namespace Consolonia.Core.Text.Fonts
             for (ushort i = 0; i < shapedBuffer.Length; i++)
             {
                 Grapheme grapheme = graphemes[i];
-                ushort glyphIndex = GetGlyphIndex(grapheme.Glyph); ;
+                ushort glyphIndex = GetGlyphIndex(grapheme.Glyph); 
                 int glyphAdvance = GetGlyphAdvance(glyphIndex);
                 shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphAdvance);
             }

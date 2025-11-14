@@ -184,7 +184,10 @@ namespace Consolonia.NUnit
             {
                 var control = this._lifetime.MainWindow.GetVisualDescendants()
                     .OfType<T>()
-                    .FirstOrDefault(cb => cb.Name == controlName);
+                    .FirstOrDefault(cb => cb.Name == controlName);     
+                if (control == null)
+                    throw new InvalidOperationException(
+                        $"Control of type {typeof(T)} with name '{controlName}' not found");
                 control.Focus();
             }, DispatcherPriority.Input);
         }
@@ -197,6 +200,9 @@ namespace Consolonia.NUnit
                 var control = this._lifetime.MainWindow.GetVisualDescendants()
                     .OfType<T>()
                     .FirstOrDefault(cb => cb.Name == controlName);
+                if (control == null)
+                    throw new InvalidOperationException(
+                        $"Control of type {typeof(T)} with name '{controlName}' not found");
                 return control;
             }, DispatcherPriority.Input);
         }

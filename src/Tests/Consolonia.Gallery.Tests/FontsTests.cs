@@ -59,7 +59,7 @@ namespace Consolonia.Gallery.Tests
             {
                 var combo = await UITest.GetControl<ComboBox>("Fonts");
                 FontsViewModel vm = (FontsViewModel)combo.DataContext!;
-                vm.SelectedFont = vm.Fonts.FirstOrDefault(f => f.Font == font);
+                vm.SelectedFont = vm.Fonts.FirstOrDefault(f => f.Font == font) ?? vm.Fonts[0];
             });
             await Task.Delay(50);
         }

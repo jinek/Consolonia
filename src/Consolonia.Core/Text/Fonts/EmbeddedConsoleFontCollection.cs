@@ -74,14 +74,15 @@ namespace Consolonia.Core.Text.Fonts
             {
                 // load the family and all it's members
                 glyphTypeface = LoadEmbeddedFontFamily(familyName, uris.ToArray());
+                return true;
             }
             else if (_fontUris.TryGetValue(familyName, out var uri))
             {
                 // load just the font
                 glyphTypeface = LoadEmbeddedFont(uri);
+                return true;
             }
-
-            return glyphTypeface != null;
+            return false;
         }
 
         public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch, string familyName, CultureInfo culture, out Typeface typeface)
@@ -111,8 +112,7 @@ namespace Consolonia.Core.Text.Fonts
         /// <returns></returns>
         protected IGlyphTypeface LoadEmbeddedFontFamily(string familyName, params Uri[] resources)
         {
-            var fontFamily = new FontFamily(Key, $"#{familyName.TrimStart('#')}");
-            var familyTypespace = new AsciiFamilyTypeface(familyName);
+            var familyTypespace = new AsciiArtFamilyTypeface(familyName);
 
             foreach (var resource in resources)
             {

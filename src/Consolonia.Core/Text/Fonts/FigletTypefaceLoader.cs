@@ -1,11 +1,6 @@
-using System.Text;
-using System.IO.Compression;
-using System.Collections.Generic;
 using System.IO;
 using System;
-using System.Linq;
 using Avalonia.Media;
-using System.Diagnostics;
 
 namespace Consolonia.Core.Text.Fonts
 {
@@ -17,7 +12,7 @@ namespace Consolonia.Core.Text.Fonts
     /// </summary>
     public static class FigletTypefaceLoader
     {
-        private static uint[] _codepoints = [
+        private readonly static uint[] Codepoints = [
             32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
             42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
             52, 53, 54, 55, 56, 57, 58, 59, 60, 61,
@@ -134,7 +129,7 @@ namespace Consolonia.Core.Text.Fonts
             }
 
             // Load standard ASCII characters (32-126)+ extended characters
-            foreach (var codepoint in _codepoints)
+            foreach (var codepoint in Codepoints)
             {
                 var charLines = new string[height];
                 for (int i = 0; i < height; i++)
@@ -143,7 +138,7 @@ namespace Consolonia.Core.Text.Fonts
                         break;
 
                     var line = lines[currentLine++];
-                    charLines[i] = RemoveEndmarks(line, endmarkChar, i == height - 1);
+                    charLines[i] = line.TrimEnd().TrimEnd(endmarkChar);
                 }
                 typeface.AddGlyph(codepoint, new AsciiArtGlyph(typeface, codepoint, charLines));
             }
@@ -186,7 +181,7 @@ namespace Consolonia.Core.Text.Fonts
                 for (int i = 0; i < height && currentLine < lines.Length; i++)
                 {
                     var line = lines[currentLine++];
-                    charLines[i] = RemoveEndmarks(line, endmarkChar, i == height - 1);
+                    charLines[i] = line.TrimEnd().TrimEnd(endmarkChar);
                 }
 
                 if (charCode > 0)
@@ -205,32 +200,6 @@ namespace Consolonia.Core.Text.Fonts
                 LineGap = 0,
             };
             return typeface;
-        }
-
-        private static string RemoveEndmarks(string line, char endmarkChar, bool isLastLine)
-        {
-            if (string.IsNullOrEmpty(line))
-                return line;
-
-            line = line.TrimEnd();
-
-            if (line.Length == 0)
-                return line;
-
-            if (isLastLine)
-            {
-                // Last line has doubled endmark
-                if (line.Length >= 2 && line[line.Length - 1] == line[line.Length - 2])
-                {
-                    return line.Substring(0, line.Length - 2);
-                }
-                return line.Substring(0, line.Length - 1);
-            }
-            else
-            {
-                // Non-last lines have single endmark
-                return line.Substring(0, line.Length - 1);
-            }
         }
     }
 }

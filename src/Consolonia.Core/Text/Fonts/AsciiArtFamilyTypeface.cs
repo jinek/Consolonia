@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing;
-using Consolonia.Core.Drawing.PixelBufferImplementation;
-using HarfBuzzSharp;
 
 
 namespace Consolonia.Core.Text.Fonts
@@ -17,12 +14,12 @@ namespace Consolonia.Core.Text.Fonts
     /// <summary>
     /// Typeface which is made up of multiple design em height typefaces
     /// </summary>
-    public class AsciiFamilyTypeface : IGlyphTypeface, ITextShaperImpl, IGlyphRunRender
+    public class AsciiArtFamilyTypeface : IGlyphTypeface, ITextShaperImpl, IGlyphRunRender
     {
         private Dictionary<int, IGlyphTypeface> _typefaces = new Dictionary<int, IGlyphTypeface>();
         private bool _disposedValue;
 
-        public AsciiFamilyTypeface(string name)
+        public AsciiArtFamilyTypeface(string name)
         {
             FamilyName = name;
         }
