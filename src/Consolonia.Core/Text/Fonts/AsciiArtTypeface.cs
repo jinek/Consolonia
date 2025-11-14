@@ -281,8 +281,11 @@ namespace Consolonia.Core.Text.Fonts
                 // Calculate maximum overlap between glyphs
                 int maxOverlap = CalculateMaxOverlap(leftGlyph, rightGlyph);
 
-                // Advance is the width minus the overlap
-                advances[i - 1] = (byte)(leftGlyph.Width - maxOverlap);
+                // Advance is the width minus the overlap; clamp to avoid underflow
+                var width = (int)leftGlyph.Width;
+                var overlap = Math.Min(maxOverlap, width);
+                var advance = Math.Max(0, width - overlap);
+                advances[i - 1] = (byte)advance;
             }
             // last glyph advance is its full width
             advances[^1] = (byte)glyphs[^1].Width;

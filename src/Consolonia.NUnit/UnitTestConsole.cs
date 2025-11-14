@@ -182,9 +182,10 @@ namespace Consolonia.NUnit
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
+                // ReSharper disable once AssignNullToNotNullAttribute
                 var control = _lifetime.MainWindow.GetVisualDescendants()
                     .OfType<T>()
-                    .FirstOrDefault(cb => cb.Name == controlName);
+                    .FirstOrDefault(cb => cb.Name == controlName)!;
                 if (control == null)
                     throw new InvalidOperationException($"Control '{controlName}' of type {typeof(T).Name} not found.");
                 control.Focus();
@@ -196,9 +197,10 @@ namespace Consolonia.NUnit
         {
             return await Dispatcher.UIThread.InvokeAsync(() =>
             {
+                // ReSharper disable once AssignNullToNotNullAttribute
                 var control = this._lifetime.MainWindow.GetVisualDescendants()
                     .OfType<T>()
-                    .FirstOrDefault(cb => cb.Name == controlName);
+                    .FirstOrDefault(cb => cb.Name == controlName)!;
                 if (control == null)
                     throw new InvalidOperationException(
                         $"Control of type {typeof(T)} with name '{controlName}' not found");
