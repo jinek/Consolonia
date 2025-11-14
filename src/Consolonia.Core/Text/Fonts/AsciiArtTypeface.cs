@@ -136,6 +136,7 @@ namespace Consolonia.Core.Text.Fonts
             return true;
         }
 
+        // Resharper disable AssignNullToNotNullAttribute
         public bool TryGetGlyphMetrics(ushort glyph, out GlyphMetrics metrics)
         {
             metrics = new GlyphMetrics()
@@ -147,6 +148,7 @@ namespace Consolonia.Core.Text.Fonts
             };
             return true;
         }
+        // Resharper restore AssignNullToNotNullAttribute
 
         public bool TryGetTable(uint tag, out byte[] table)
         {

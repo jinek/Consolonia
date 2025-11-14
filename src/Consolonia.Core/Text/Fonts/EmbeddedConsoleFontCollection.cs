@@ -86,6 +86,8 @@ namespace Consolonia.Core.Text.Fonts
             return false;
         }
 
+
+        // Resharper disable AssignNullToNotNullAttribute
         public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch, string familyName, CultureInfo culture, out Typeface typeface)
         {
             if (TryGetGlyphTypeface(familyName, fontStyle, fontWeight, fontStretch, out var glyphTypeface))
@@ -99,6 +101,7 @@ namespace Consolonia.Core.Text.Fonts
             typeface = default;
             return false;
         }
+        // Resharper enable AssignNullToNotNullAttribute
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -138,8 +141,7 @@ namespace Consolonia.Core.Text.Fonts
             var resourceName = Path.GetFileName(uri.AbsolutePath);
             var fontName = Path.GetFileNameWithoutExtension(uri.AbsolutePath);
             using var stream = AssetLoader.Open(uri);
-            IGlyphTypeface typeface = null;
-            typeface = AsciiArtTypefaceLoader.Load(stream, Path.GetFileNameWithoutExtension(resourceName));
+            IGlyphTypeface typeface = AsciiArtTypefaceLoader.Load(stream, Path.GetFileNameWithoutExtension(resourceName));
             ArgumentNullException.ThrowIfNull(typeface, $"Failed to load font variation: {resourceName}");
             _typefaceByName[fontName] = typeface;
             _typefaceByUri[uri] = typeface;
