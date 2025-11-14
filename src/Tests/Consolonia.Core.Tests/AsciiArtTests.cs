@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Media;
 using Consolonia.Core.Text.Fonts;
 using NUnit.Framework;
@@ -5,9 +6,10 @@ using NUnit.Framework;
 namespace Consolonia.Core.Tests
 {
     [TestFixture]
-    public class AsciiArtGlyphTests
+    public class AsciiArtGlyphTests: IDisposable
     {
         private AsciiArtTypeface _typeface;
+        private bool _disposedValue;
 
         [SetUp]
         public void Setup()
@@ -72,7 +74,7 @@ namespace Consolonia.Core.Tests
             {
                 foreach (var grapheme in line)
                 {
-                    Assert.IsFalse(grapheme.Glyph.Contains("$"));
+                    Assert.IsFalse(grapheme.Glyph.Contains('$', StringComparison.Ordinal));
                 }
             }
         }
@@ -283,6 +285,34 @@ namespace Consolonia.Core.Tests
 
             // Assert
             Assert.AreEqual(5, glyph.Width); // Maximum width from middle line
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _typeface.Dispose();
+                    _typeface = null;
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~AsciiArtGlyphTests()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
