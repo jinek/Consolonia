@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Avalonia;
@@ -11,7 +10,6 @@ using Consolonia.Controls;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
-using DynamicData.Kernel;
 
 
 namespace Consolonia.Core.Text.Fonts
@@ -88,12 +86,6 @@ namespace Consolonia.Core.Text.Fonts
         /// Preserved for compatibility and reference purposes only.
         /// </summary>
         public OldLayoutMode OldLayoutMode { get; set; } = OldLayoutMode.None;
-
-        /// <summary>
-        /// Debug helper to visualize which smush flags are set
-        /// </summary>
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
-        private string[] LayoutModeFlags => LayoutMode.ToString().Split(new[] { ", " }, StringSplitOptions.None);
 
         public ushort GetGlyph(uint codepoint)
         {

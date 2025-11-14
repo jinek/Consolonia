@@ -51,6 +51,7 @@ namespace Consolonia.Core.Text.Fonts
 
         public int Count => _fontUris.Count;
 
+        // Resharper disable once UnusedAutoPropertyAccessor.Global
         public IFontManagerImpl FontManager => _fontManager;
 
         public IEnumerator<FontFamily> GetEnumerator()
@@ -87,7 +88,7 @@ namespace Consolonia.Core.Text.Fonts
         {
             if (TryGetGlyphTypeface(familyName, fontStyle, fontWeight, fontStretch, out var glyphTypeface))
             {
-                if (glyphTypeface.TryGetGlyph((uint)codepoint, out var glyphIndex))
+                if (glyphTypeface.TryGetGlyph((uint)codepoint, out var _))
                 {
                     typeface = new Typeface(familyName, fontStyle, fontWeight, fontStretch);
                     return true;

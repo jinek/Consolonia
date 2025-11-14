@@ -70,6 +70,7 @@ namespace Consolonia.Core.Text.Fonts
             if (parts.Length < 1)
                 throw new InvalidDataException("Invalid FIGlet header - missing height parameter");
 
+            // ReSharper disable UnusedVariable
             var height = int.Parse(parts[0]);
             var baseline = parts.Length > 1 ? int.Parse(parts[1]) : 0;
             var maxLength = parts.Length > 2 ? int.Parse(parts[2]) : 0;
@@ -91,7 +92,7 @@ namespace Consolonia.Core.Text.Fonts
                     typeface.LayoutMode |= LayoutMode.Smush | LayoutMode.Equal;
             }
             var codeTagCount = parts.Length > 7 ? int.Parse(parts[7]) : 0;
-
+#if DEBUG // diagnostic output of parsing. Only in DEBUG builds.
             Debug.WriteLine($"Figlet font '{name}': height={height}, baseline={baseline}, maxLength={maxLength}, oldLayout={oldLayout} (legacy) layoutMode={layoutMode}");
 
             // Debug output for legacy layout mode
@@ -121,7 +122,8 @@ namespace Consolonia.Core.Text.Fonts
                 }
                 Debug.WriteLine("");
             }
-
+#endif
+            // ReSharper enable UnusedVariable
             int currentLine = 1 + commentLines;
 
             // Detect endmark character from first character line
@@ -156,7 +158,7 @@ namespace Consolonia.Core.Text.Fonts
                     currentLine++;
                     continue;
                 }
-                if (!codeLine.EndsWith("@"))
+                if (!codeLine.EndsWith(endmarkChar))
                 {
                     var codeTokens = codeLine.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                     if (codeTokens.Length == 0)
