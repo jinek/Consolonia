@@ -8,6 +8,7 @@ using System.Linq;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
 using Avalonia.Platform;
+using SkiaSharp;
 
 namespace Consolonia.Core.Text.Fonts
 {
@@ -138,14 +139,7 @@ namespace Consolonia.Core.Text.Fonts
             var fontName = Path.GetFileNameWithoutExtension(uri.AbsolutePath);
             using var stream = AssetLoader.Open(uri);
             IGlyphTypeface typeface = null;
-            //if (resourceName.EndsWith(".flf"))
-            //{
-            //    typeface = FigletTypefaceLoader.Load(stream, resourceName);
-            //}
-            //else if (resourceName.EndsWith(".tlf"))
-            //{
-                typeface = AsciiArtTypefaceLoader.Load(stream, Path.GetFileNameWithoutExtension(resourceName));
-            //}
+            typeface = AsciiArtTypefaceLoader.Load(stream, Path.GetFileNameWithoutExtension(resourceName));
             ArgumentNullException.ThrowIfNull(typeface, $"Failed to load font variation: {resourceName}");
             _typefaceByName[fontName] = typeface;
             _typefaceByUri[uri] = typeface;
@@ -159,6 +153,13 @@ namespace Consolonia.Core.Text.Fonts
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
+                    foreach (var typeface in _typefaceByUri.Values.Distinct())
+                    {
+                        typeface.Dispose();
+                    }
+                    _typefaceByUri.Clear();
+                    _typefaceByName.Clear();
+                    _fontFamilies.Clear();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

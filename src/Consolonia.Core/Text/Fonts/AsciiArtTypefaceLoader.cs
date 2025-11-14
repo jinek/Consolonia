@@ -59,14 +59,10 @@ namespace Consolonia.Core.Text.Fonts
             if (header.Length < 7)
                 throw new InvalidDataException("Invalid font header - too short");
 
+            // 6th character is the hardblank
             typeface.Hardblank = header[5];
 
-            var parametersStart = 6;
-            while (parametersStart < header.Length && header[parametersStart] == ' ')
-                parametersStart++;
-
-            var paramsString = header.Substring(parametersStart);
-            var parts = paramsString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = header[6..].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length < 1)
                 throw new InvalidDataException("Invalid FIGlet header - missing height parameter");
@@ -153,7 +149,7 @@ namespace Consolonia.Core.Text.Fonts
                 for (int i = 0; i < height; i++)
                 {
                     if (currentLine >= lines.Length)
-                        break;
+                        throw new InvalidDataException($"Unexpected end of file while loading glyph for codepoint {codepoint}");
 
                     var line = lines[currentLine++].TrimEnd();
                     charLines[i] = ProcessLine(line.Trim(line[^1]));

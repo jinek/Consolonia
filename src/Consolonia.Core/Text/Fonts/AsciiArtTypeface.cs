@@ -256,7 +256,6 @@ namespace Consolonia.Core.Text.Fonts
         /// Calculate advances for a sequence of glyphs with kerning and smush support
         /// </summary>
         /// <param name="glyphs">Sequence of glyphs to process</param>
-        /// <param name="smushMode">Smush mode flags (SmushMode.FullWidth for no smushing, use kerning only)</param>
         /// <returns>Array of advances for each glyph</returns>
         public byte[] CalculateAdvancesWithKerning(ReadOnlySpan<AsciiArtGlyph> glyphs)
         {
