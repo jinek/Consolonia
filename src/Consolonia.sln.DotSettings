@@ -29,6 +29,4 @@
   <s:String x:Key="/Default/CodeInspection/DupFinder/ExcludedProjects/=Consolonia.Gallery.Tests/@EntryIndexedValue">
     Consolonia.Gallery.Tests
   </s:String>
-
-</wpf:ResourceDictionary>
 </wpf:ResourceDictionary>

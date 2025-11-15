@@ -27,7 +27,7 @@ namespace Consolonia.Core.Text
             CultureInfo culture, out Typeface typeface)
         {
             typeface = new Typeface(ConsoleDefaultFontFamily(), fontStyle, fontWeight, fontStretch);
-            return false;
+            return true;
         }
 
         public bool TryCreateGlyphTypeface(string familyName, FontStyle style, FontWeight weight, FontStretch stretch,
