@@ -152,8 +152,8 @@ namespace Consolonia.Core.Tests
         public void ConstructorWithGraphemesParsesCorrectly()
         {
             // Arrange
-            uint codepoint = 'A';
-            string[] lines = ["ABC", "DEF"];
+            uint codepoint = 'X';
+            string[] lines = ["XYZ", "PDQ"];
 
             // Act
             var glyph = new AsciiArtGlyph(_typeface, codepoint, lines);
@@ -161,9 +161,9 @@ namespace Consolonia.Core.Tests
             // Assert
             Assert.AreEqual(2, glyph.GraphemeLines.Length);
             Assert.AreEqual(3, glyph.GraphemeLines[0].Length);
-            Assert.AreEqual("A", glyph.GraphemeLines[0][0].Glyph);
-            Assert.AreEqual("B", glyph.GraphemeLines[0][1].Glyph);
-            Assert.AreEqual("C", glyph.GraphemeLines[0][2].Glyph);
+            Assert.AreEqual("X", glyph.GraphemeLines[0][0].Glyph);
+            Assert.AreEqual("Y", glyph.GraphemeLines[0][1].Glyph);
+            Assert.AreEqual("Z", glyph.GraphemeLines[0][2].Glyph);
         }
 
         [Test]
@@ -185,17 +185,17 @@ namespace Consolonia.Core.Tests
         public void ConstructorWithMultipleUnicodeEscapesDecodesAll()
         {
             // Arrange
-            uint codepoint = 'A';
-            string[] lines = ["\\u0041\\u0042\\u0043"]; // ABC
+            uint codepoint = 'F';
+            string[] lines = ["\\u0047\\u0048\\u0049"]; // GHI
 
             // Act
             var glyph = new AsciiArtGlyph(_typeface, codepoint, lines);
 
             // Assert
             Assert.AreEqual(3, glyph.GraphemeLines[0].Length);
-            Assert.AreEqual("A", glyph.GraphemeLines[0][0].Glyph);
-            Assert.AreEqual("B", glyph.GraphemeLines[0][1].Glyph);
-            Assert.AreEqual("C", glyph.GraphemeLines[0][2].Glyph);
+            Assert.AreEqual("G", glyph.GraphemeLines[0][0].Glyph);
+            Assert.AreEqual("H", glyph.GraphemeLines[0][1].Glyph);
+            Assert.AreEqual("I", glyph.GraphemeLines[0][2].Glyph);
         }
 
         [Test]
