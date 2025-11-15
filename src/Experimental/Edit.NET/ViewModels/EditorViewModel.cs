@@ -150,7 +150,7 @@ namespace EditNET.ViewModels
             }
             catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
             {
-                await MessageBox.ShowDialog("File Access Exception", exception.Message, MessageBoxStyle.Ok);
+                await MessageBox.ShowDialog("File Access Exception", exception.Message);
             }
         }
     }
