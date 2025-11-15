@@ -119,16 +119,28 @@ namespace EditNET.ViewModels
             await HandleFileExceptions(async () =>
             {
                 Document = new TextDocument(new StringTextSource(await File.ReadAllTextAsync(path)));
+                
+                string? directory = Path.GetDirectoryName(path);
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    Directory.SetCurrentDirectory(directory);
+                }
             });
-
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(path)!);
         }
 
         private async Task SaveFileInternalAsync()
         {
-            await HandleFileExceptions(async () => { await File.WriteAllTextAsync(FilePath!, Document.Text); });
+            await HandleFileExceptions(async () =>
+            {
+                await File.WriteAllTextAsync(FilePath!, Document.Text);
+                
+                string? directory = Path.GetDirectoryName(FilePath!);
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    Directory.SetCurrentDirectory(directory);
+                }
+            });
             Modified = false;
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(FilePath!)!);
         }
 
         private async Task<bool> CheckSaved()
@@ -146,7 +158,7 @@ namespace EditNET.ViewModels
             {
                 await action();
             }
-            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or ArgumentException)
             {
                 await MessageBoxInteraction.Handle(new MessageBoxModel("File Access Exception", exception.Message,
                     MessageBoxButtons.Ok));
