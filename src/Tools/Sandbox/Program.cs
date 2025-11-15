@@ -1,5 +1,6 @@
 using Avalonia;
 using Consolonia;
+using Consolonia.Fonts;
 
 namespace Sandbox
 {
@@ -16,6 +17,7 @@ namespace Sandbox
             return AppBuilder.Configure<App>()
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
+                .WithConsoleFonts()
                 .WithDeveloperTools()
                 .LogToException();
         }

@@ -67,7 +67,13 @@ namespace EditNET
                 };
 
                 if (desktopLifetime.Args is { Length: > 0 })
-                    await ViewModel.EditorViewModel.OpenFile(desktopLifetime.Args[0]);
+                {
+                    string filePath = desktopLifetime.Args[0];
+                    if (!Path.IsPathFullyQualified(desktopLifetime.Args[0]))
+                        filePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory,
+                            desktopLifetime.Args[0]));
+                    await ViewModel.EditorViewModel.OpenFile(filePath);
+                }
 
                 _notificationManager = new WindowNotificationManager(desktopLifetime.MainWindow!);
             }

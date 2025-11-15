@@ -1,15 +1,21 @@
 using System;
 using System.Collections.Generic;
+using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting;
+using Avalonia.Platform;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing;
+using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Helpers;
+using Consolonia.Core.Infrastructure;
 
-namespace Consolonia.Core.Text
+namespace Consolonia.Core.Text.Fonts
 {
     /// <summary>
     ///     This represents a psuedo-typeface for console rendering.
     /// </summary>
-    public sealed class ConsoleTypeface : IGlyphTypeface
+    public sealed class ConsoleTypeface : IGlyphTypeface, ITextShaperImpl, IGlyphRunRender
     {
         private static readonly object GlyphCacheSync = new();
         private static readonly Dictionary<ushort, string> GlyphTextByIndex = new();
@@ -104,7 +110,7 @@ namespace Consolonia.Core.Text
             throw new NotImplementedException();
         }
 
-        public string FamilyName { get; } = FontManagerImpl.GetTheOnlyFontFamilyName();
+        public string FamilyName { get; } = FontManagerImpl.ConsoleDefaultFontFamily();
         public FontWeight Weight { get; init; } = FontWeight.Normal;
         public FontStyle Style { get; init; } = FontStyle.Normal;
         public FontStretch Stretch => FontStretch.Normal;
@@ -143,6 +149,65 @@ namespace Consolonia.Core.Text
                 return text;
             }
         }
+
+        public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
+        {
+            if (!(options.Typeface is ConsoleTypeface))
+                throw new ArgumentException("TextShaperOptions.Typeface must be of type ConsoleTypeface.",
+                    nameof(options));
+
+            var console = AvaloniaLocator.Current.GetRequiredService<IConsoleOutput>();
+
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse(text.Span.ToString(), console.SupportsComplexEmoji);
+
+            var shapedBuffer = new ShapedBuffer(text, graphemes.Count,
+                this, 1, 0 /*todo: must be 1 for right to left?*/);
+            for (ushort i = 0; i < shapedBuffer.Length; i++)
+            {
+                Grapheme grapheme = graphemes[i];
+                ushort glyphIndex = GetGlyphIndex(grapheme.Glyph);
+                int glyphAdvance = GetGlyphAdvance(glyphIndex);
+                shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphAdvance);
+            }
+
+            return shapedBuffer;
+        }
+
+        PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
+            Color foreground)
+        {
+            PixelPoint startPosition = position;
+            foreach (GlyphInfo glyphInfo in glyphRun.GlyphInfos)
+            {
+                // char it introduces artifacts when a wide char is partially clipped.
+                string glyph = GetGlyphText(glyphInfo.GlyphIndex);
+                if (glyph == "\t")
+                {
+                    var symbol = new Symbol(' ', 1);
+                    var newPixel = new Pixel(symbol, foreground, Style, Weight);
+
+                    for (int i = 0; i < glyphInfo.GlyphAdvance; i++)
+                    {
+                        context.DrawPixel(newPixel, position);
+                        position = position.WithX(position.X + 1);
+                    }
+                }
+                else if (glyph == "\n" || glyph == "\r\n")
+                {
+                    // we represent new lines as glyphs so that the layout engine can edit the cluster that represents the
+                    // new line,                     // but we don't draw them
+                }
+                else
+                {
+                    var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
+                    context.DrawPixel(new Pixel(symbol, foreground, Style, Weight), position);
+                    position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
+                }
+            }
+
+            return new PixelRect(startPosition, new PixelSize(position.X - startPosition.X, 1));
+        }
+
 #pragma warning restore CA1822 // Mark members as static
     }
 }

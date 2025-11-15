@@ -18,7 +18,7 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Space);
-            await Task.Delay(500); // Wait for the animation to finish
+            await Task.Delay(1000); // Wait for the animation to finish
             await UITest.AssertHasNoText("Lorem ipsum dolor sit");
             await UITest.AssertHasText("Ut enim ad minima ");
         }

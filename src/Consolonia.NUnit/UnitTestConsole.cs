@@ -2,10 +2,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Helpers;
@@ -65,7 +67,7 @@ namespace Consolonia.NUnit
                         new PixelForeground(new Symbol(grapheme.Glyph), foreground, style: style, weight: weight,
                             textDecoration: textDecoration),
                         new PixelBackground(background));
-                i++;
+                i += grapheme.Glyph.MeasureText();
             }
         }
 
@@ -170,6 +172,41 @@ namespace Consolonia.NUnit
             await WaitRendered().ConfigureAwait(true);
         }
 
+        public IInputElement GetFocus()
+        {
+            return _lifetime.MainWindow.FocusManager.GetFocusedElement();
+        }
+
+        public async Task SetFocus<T>(string controlName)
+            where T : InputElement
+        {
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                // ReSharper disable once AssignNullToNotNullAttribute
+                T control = _lifetime.MainWindow.GetVisualDescendants()
+                    .OfType<T>()
+                    .FirstOrDefault(cb => cb.Name == controlName)!;
+                if (control == null)
+                    throw new InvalidOperationException($"Control '{controlName}' of type {typeof(T).Name} not found.");
+                control.Focus();
+            }, DispatcherPriority.Input);
+        }
+
+        public async Task<T> GetControl<T>(string controlName)
+            where T : Control
+        {
+            return await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                // ReSharper disable once AssignNullToNotNullAttribute
+                T control = _lifetime.MainWindow.GetVisualDescendants()
+                    .OfType<T>()
+                    .FirstOrDefault(cb => cb.Name == controlName)!;
+                if (control == null)
+                    throw new InvalidOperationException(
+                        $"Control of type {typeof(T)} with name '{controlName}' not found");
+                return control;
+            }, DispatcherPriority.Input);
+        }
 
         public void SetupLifetime(ConsoloniaLifetime lifetime)
         {

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Edit.NET": {
+      "commandName": "Project",
+      "commandLineArgs": "foo.cs"
+    }
+  }
+}

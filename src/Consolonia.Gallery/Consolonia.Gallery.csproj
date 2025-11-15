@@ -13,6 +13,7 @@
     </ItemGroup>
     
     <ItemGroup>
+        <ProjectReference Include="..\Consolonia.Fonts\Consolonia.Fonts.csproj" />
         <ProjectReference Include="..\Consolonia\Consolonia.csproj" />
         <ProjectReference Include="..\Experimental\Consolonia.Designer\Consolonia.Designer.csproj" />
     </ItemGroup>
@@ -21,6 +22,12 @@
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
         <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Gallery\GalleryViews\GalleryFonts.axaml.cs">
+        <DependentUpon>GalleryFonts.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

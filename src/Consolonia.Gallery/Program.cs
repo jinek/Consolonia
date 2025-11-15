@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
+using Consolonia.Fonts;
 
 namespace Consolonia.Gallery
 {
@@ -29,6 +30,7 @@ namespace Consolonia.Gallery
             return AppBuilder.Configure<App>()
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
+                .WithConsoleFonts()
                 //.ThrowOnErrors()
                 .WithDeveloperTools()
                 .LogToException();

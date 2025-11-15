@@ -4,9 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Platform;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
+using Consolonia.Fonts;
 using NUnit.Framework;
 
 namespace Consolonia.NUnit
@@ -45,12 +47,17 @@ namespace Consolonia.NUnit
             {
                 _disposeTaskCompletionSource = new TaskCompletionSource();
                 _scope = AvaloniaLocator.EnterScope();
-                _lifetime = ApplicationStartup.BuildLifetime<TApp>(UITest, new RgbConsoleColorMode(),
-                    new ConsoloniaPlatformSettings
+                _lifetime = ApplicationStartup.CreateLifetime(AppBuilder.Configure<TApp>()
+                    .UseConsole(UITest)
+                    .UseConsolonia()
+                    .WithConsoleFonts()
+                    .UseConsoleColorMode(new RgbConsoleColorMode())
+                    .With<IPlatformSettings>(new ConsoloniaPlatformSettings
                     {
                         UnsafeInput = false,
                         UnsafeRendering = false
-                    }, Args);
+                    })
+                    .LogToException(), Args);
                 UITest.SetupLifetime(_lifetime);
                 setupTaskSource.SetResult();
                 _lifetime.Start(Args);

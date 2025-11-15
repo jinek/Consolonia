@@ -1,9 +1,11 @@
 using System;
 using Avalonia;
+using Avalonia.Platform;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
+using Consolonia.Fonts;
 using Consolonia.NUnit;
 using NUnit.Framework;
 using static System.GC;
@@ -41,12 +43,17 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                 .Bind<IConsoleCapabilities>().ToConstant(console);
 
             _scope = AvaloniaLocator.EnterScope();
-            _lifetime = ApplicationStartup.BuildLifetime<ContextApp2>(new DummyConsole(), new RgbConsoleColorMode(),
-                new ConsoloniaPlatformSettings
+            _lifetime = ApplicationStartup.CreateLifetime(AppBuilder.Configure<ContextApp2>()
+                .UseConsole(new DummyConsole())
+                .UseConsolonia()
+                .UseConsoleColorMode(new RgbConsoleColorMode())
+                .WithConsoleFonts()
+                .With<IPlatformSettings>(new ConsoloniaPlatformSettings
                 {
                     UnsafeInput = false,
                     UnsafeRendering = false
-                }, []);
+                })
+                .LogToException(), []);
         }
 
         [OneTimeTearDown]

@@ -87,7 +87,6 @@ namespace Consolonia
                 .UseConsoleColorMode(consoleColorMode)
                 .With<IPlatformSettings>(settings)
                 .LogToException();
-
             return CreateLifetime(consoloniaAppBuilder, args);
         }
 
@@ -119,7 +118,7 @@ namespace Consolonia
                 throw new InvalidOperationException("The lifetime does not support controlled shutdown.");
         }
 
-        private static ConsoloniaLifetime CreateLifetime(AppBuilder builder, string[] args)
+        public static ConsoloniaLifetime CreateLifetime(AppBuilder builder, string[] args)
         {
             var lifetime = new ConsoloniaLifetime
             {

@@ -131,7 +131,7 @@ namespace Consolonia.Core.Drawing
                 // if it's not a dirty region, no need to paint it.
                 if (!dirtyRegions.Contains(x, y, false))
                 {
-                    x += pixel.Width;
+                    x += Math.Max((ushort)1, pixel.Width);
                     continue;
                 }
 
@@ -160,7 +160,7 @@ namespace Consolonia.Core.Drawing
                 else if (_cache[x, y] == pixel)
                 {
                     // just advance to next paintable pixel 
-                    x += pixel.Width;
+                    x += Math.Max((ushort)1, pixel.Width);
                     continue;
                 }
 

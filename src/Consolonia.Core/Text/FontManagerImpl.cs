@@ -1,9 +1,9 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Consolonia.Core.Text.Fonts;
 
 namespace Consolonia.Core.Text
 {
@@ -14,31 +14,38 @@ namespace Consolonia.Core.Text
     {
         public string GetDefaultFontFamilyName()
         {
-            return GetTheOnlyFontFamilyName();
+            return ConsoleDefaultFontFamily();
         }
 
         string[] IFontManagerImpl.GetInstalledFontFamilyNames(bool checkForUpdates)
         {
-            return new[] { GetTheOnlyFontFamilyName() };
+            return new[] { ConsoleDefaultFontFamily() };
         }
 
         public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight,
             FontStretch fontStretch,
             CultureInfo culture, out Typeface typeface)
         {
-            throw new NotImplementedException();
+            typeface = new Typeface(ConsoleDefaultFontFamily(), fontStyle, fontWeight, fontStretch);
+            return true;
         }
 
         public bool TryCreateGlyphTypeface(string familyName, FontStyle style, FontWeight weight, FontStretch stretch,
             out IGlyphTypeface glyphTypeface)
         {
-            //todo: check font is ours the only
-            glyphTypeface = new ConsoleTypeface
+            if (familyName == ConsoleDefaultFontFamily())
             {
-                Weight = weight,
-                Style = style
-            };
-            return true;
+                //todo: check font is ours the only
+                glyphTypeface = new ConsoleTypeface
+                {
+                    Weight = weight,
+                    Style = style
+                };
+                return true;
+            }
+
+            glyphTypeface = null;
+            return false;
         }
 
 #pragma warning disable CA1822 // Mark members as static
@@ -58,9 +65,9 @@ namespace Consolonia.Core.Text
             return true;
         }
 
-        public static string GetTheOnlyFontFamilyName()
+        public static string ConsoleDefaultFontFamily()
         {
-            return "ConsoleDefault(F7D6533C-AC9D-4C4A-884F-7719A9B5DC0C)";
+            return "ConsoleDefault";
         }
     }
 }
