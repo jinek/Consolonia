@@ -182,9 +182,9 @@ namespace Consolonia.Core.Drawing
 
 
         public IGlyphRunImpl CreateGlyphRun(IGlyphTypeface glyphTypeface,
-                                            double fontRenderingEmSize,
-                                            IReadOnlyList<GlyphInfo> glyphInfos,
-                                            Point baselineOrigin)
+            double fontRenderingEmSize,
+            IReadOnlyList<GlyphInfo> glyphInfos,
+            Point baselineOrigin)
         {
             return new GlyphRunImpl(glyphTypeface, fontRenderingEmSize, glyphInfos, baselineOrigin);
         }

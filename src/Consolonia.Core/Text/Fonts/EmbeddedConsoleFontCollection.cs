@@ -8,53 +8,50 @@ using System.Linq;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
 using Avalonia.Platform;
-using SkiaSharp;
 
 namespace Consolonia.Core.Text.Fonts
 {
 #pragma warning disable CA1310 // Specify StringComparison for correctness
     public class EmbeddedConsoleFontCollection : IFontCollection
     {
-        private Dictionary<string, IGlyphTypeface> _typefaceByName = new();
-        private Dictionary<Uri, IGlyphTypeface> _typefaceByUri = new();
-        private List<FontFamily> _fontFamilies = new();
-        private IFontManagerImpl _fontManager;
-        private Uri _key;
-        private Dictionary<string, Uri> _fontUris;
-        private Dictionary<string, Uri[]> _fontFamilyUris;
+        private readonly List<FontFamily> _fontFamilies = new();
+        private readonly Dictionary<string, Uri[]> _fontFamilyUris;
+        private readonly Dictionary<string, Uri> _fontUris;
+        private readonly Dictionary<string, IGlyphTypeface> _typefaceByName = new();
+        private readonly Dictionary<Uri, IGlyphTypeface> _typefaceByUri = new();
         private bool _disposedValue;
 
         /// <summary>
-        /// Construct a font collection from a font URI
+        ///     Construct a font collection from a font URI
         /// </summary>
         /// <param name="fontUri">Example: fonts:Consolonia </param>
         /// <param name="resourceUri">The a embedded resources Uri. Example: avares://MyAssembly/Fonts</param>
         public EmbeddedConsoleFontCollection(Uri fontUri, Uri resourceUri)
         {
-            _key = fontUri;
+            Key = fontUri;
             _fontUris = AssetLoader.GetAssets(resourceUri, null)
-                .Where(asset => asset.AbsolutePath.EndsWith(".tlf", StringComparison.OrdinalIgnoreCase) || 
-                       asset.AbsolutePath.EndsWith(".flf", StringComparison.OrdinalIgnoreCase))
+                .Where(asset => asset.AbsolutePath.EndsWith(".tlf", StringComparison.OrdinalIgnoreCase) ||
+                                asset.AbsolutePath.EndsWith(".flf", StringComparison.OrdinalIgnoreCase))
                 .ToDictionary(uri => Path.GetFileNameWithoutExtension(uri.AbsolutePath));
 
-            _fontFamilyUris = _fontUris// .Where(kv => Char.IsDigit(kv.Key[^1]))
-                    .GroupBy(kv => kv.Key.TrimEnd('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))
-                    .ToDictionary(g => g.Key, g => g.Select(kv => kv.Value).ToArray());
-            foreach (var familyName in _fontFamilyUris.Keys)
+            _fontFamilyUris = _fontUris // .Where(kv => Char.IsDigit(kv.Key[^1]))
+                .GroupBy(kv => kv.Key.TrimEnd('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))
+                .ToDictionary(g => g.Key, g => g.Select(kv => kv.Value).ToArray());
+            foreach (string familyName in _fontFamilyUris.Keys)
             {
-                var key = familyName.TrimStart('#');
-                _fontFamilies.Add(new FontFamily(_key, $"#{key}"));
+                string key = familyName.TrimStart('#');
+                _fontFamilies.Add(new FontFamily(Key, $"#{key}"));
             }
         }
 
+        // Resharper disable once UnusedAutoPropertyAccessor.Global
+        public IFontManagerImpl FontManager { get; private set; }
+
         public FontFamily this[int index] => _fontFamilies[index];
 
-        public Uri Key => _key;
+        public Uri Key { get; }
 
         public int Count => _fontUris.Count;
-
-        // Resharper disable once UnusedAutoPropertyAccessor.Global
-        public IFontManagerImpl FontManager => _fontManager;
 
         public IEnumerator<FontFamily> GetEnumerator()
         {
@@ -63,42 +60,40 @@ namespace Consolonia.Core.Text.Fonts
 
         public void Initialize(IFontManagerImpl fontManager)
         {
-            _fontManager = fontManager;
+            FontManager = fontManager;
         }
 
-        public bool TryGetGlyphTypeface(string familyName, FontStyle style, FontWeight weight, FontStretch stretch, [NotNullWhen(true)] out IGlyphTypeface glyphTypeface)
+        public bool TryGetGlyphTypeface(string familyName, FontStyle style, FontWeight weight, FontStretch stretch,
+            [NotNullWhen(true)] out IGlyphTypeface glyphTypeface)
         {
-            if (_typefaceByName.TryGetValue(familyName, out glyphTypeface))
-            {
-                return true;
-            }
-            else if (_fontFamilyUris.TryGetValue(familyName, out var uris))
+            if (_typefaceByName.TryGetValue(familyName, out glyphTypeface)) return true;
+
+            if (_fontFamilyUris.TryGetValue(familyName, out Uri[] uris))
             {
                 // load the family and all it's members
                 glyphTypeface = LoadEmbeddedFontFamily(familyName, uris.ToArray());
                 return true;
             }
-            else if (_fontUris.TryGetValue(familyName, out var uri))
+
+            if (_fontUris.TryGetValue(familyName, out Uri uri))
             {
                 // load just the font
                 glyphTypeface = LoadEmbeddedFont(uri);
                 return true;
             }
+
             return false;
-        }
-
-
-        // Resharper disable AssignNullToNotNullAttribute
-        public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch, string familyName, CultureInfo culture, out Typeface typeface)
+        } // Resharper disable AssignNullToNotNullAttribute
+        public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight,
+            FontStretch fontStretch, string familyName, CultureInfo culture, out Typeface typeface)
         {
-            if (TryGetGlyphTypeface(familyName, fontStyle, fontWeight, fontStretch, out var glyphTypeface))
-            {
-                if (glyphTypeface.TryGetGlyph((uint)codepoint, out var _))
+            if (TryGetGlyphTypeface(familyName, fontStyle, fontWeight, fontStretch, out IGlyphTypeface glyphTypeface))
+                if (glyphTypeface.TryGetGlyph((uint)codepoint, out _))
                 {
                     typeface = new Typeface(familyName, fontStyle, fontWeight, fontStretch);
                     return true;
                 }
-            }
+
             typeface = default;
             return false;
         }
@@ -110,7 +105,7 @@ namespace Consolonia.Core.Text.Fonts
         }
 
         /// <summary>
-        /// Load a typeface from an embedded resource by name
+        ///     Load a typeface from an embedded resource by name
         /// </summary>
         /// <param name="familyName"></param>
         /// <param name="resources"></param>
@@ -119,12 +114,10 @@ namespace Consolonia.Core.Text.Fonts
         {
             var familyTypespace = new AsciiArtFamilyTypeface(familyName);
 
-            foreach (var resource in resources)
+            foreach (Uri resource in resources)
             {
-                if (!_typefaceByUri.TryGetValue(resource, out var typeface))
-                {
+                if (!_typefaceByUri.TryGetValue(resource, out IGlyphTypeface typeface))
                     typeface = LoadEmbeddedFont(resource);
-                }
                 familyTypespace.AddTypeface(typeface);
             }
 
@@ -133,16 +126,17 @@ namespace Consolonia.Core.Text.Fonts
         }
 
         /// <summary>
-        /// Load an embedded font from a given asset URI
+        ///     Load an embedded font from a given asset URI
         /// </summary>
         /// <param name="uri">avares: uri to the font</param>
         /// <returns></returns>
         protected IGlyphTypeface LoadEmbeddedFont(Uri uri)
         {
-            var resourceName = Path.GetFileName(uri.AbsolutePath);
-            var fontName = Path.GetFileNameWithoutExtension(uri.AbsolutePath);
-            using var stream = AssetLoader.Open(uri);
-            IGlyphTypeface typeface = AsciiArtTypefaceLoader.Load(stream, Path.GetFileNameWithoutExtension(resourceName));
+            string resourceName = Path.GetFileName(uri.AbsolutePath);
+            string fontName = Path.GetFileNameWithoutExtension(uri.AbsolutePath);
+            using Stream stream = AssetLoader.Open(uri);
+            IGlyphTypeface typeface =
+                AsciiArtTypefaceLoader.Load(stream, Path.GetFileNameWithoutExtension(resourceName));
             if (typeface == null)
                 throw new InvalidOperationException($"Failed to load font variation: {resourceName}");
             _typefaceByName[fontName] = typeface;
@@ -157,10 +151,7 @@ namespace Consolonia.Core.Text.Fonts
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
-                    foreach (var typeface in _typefaceByUri.Values.Distinct())
-                    {
-                        typeface.Dispose();
-                    }
+                    foreach (IGlyphTypeface typeface in _typefaceByUri.Values.Distinct()) typeface.Dispose();
                     _typefaceByUri.Clear();
                     _typefaceByName.Clear();
                     _fontFamilies.Clear();
@@ -182,7 +173,7 @@ namespace Consolonia.Core.Text.Fonts
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
     }

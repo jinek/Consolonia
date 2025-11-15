@@ -1,16 +1,14 @@
 using System;
 using Avalonia.Media;
+using Consolonia.Core.Helpers;
 using Consolonia.Core.Text.Fonts;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests
 {
     [TestFixture]
-    public class AsciiArtGlyphTests: IDisposable
+    public class AsciiArtGlyphTests : IDisposable
     {
-        private AsciiArtTypeface _typeface;
-        private bool _disposedValue;
-
         [SetUp]
         public void Setup()
         {
@@ -29,6 +27,9 @@ namespace Consolonia.Core.Tests
         {
             _typeface?.Dispose();
         }
+
+        private AsciiArtTypeface _typeface;
+        private bool _disposedValue;
 
         [Test]
         public void ConstructorWithSimpleLineCreatesGlyph()
@@ -76,13 +77,9 @@ namespace Consolonia.Core.Tests
 
             // Assert
             Assert.AreEqual(3, glyph.GraphemeLines.Length);
-            foreach (var line in glyph.GraphemeLines)
-            {
-                foreach (var grapheme in line)
-                {
-                    Assert.IsFalse(grapheme.Glyph.Contains('$', StringComparison.Ordinal));
-                }
-            }
+            foreach (Grapheme[] line in glyph.GraphemeLines)
+            foreach (Grapheme grapheme in line)
+                Assert.IsFalse(grapheme.Glyph.Contains('$', StringComparison.Ordinal));
         }
 
         [Test]
@@ -127,13 +124,13 @@ namespace Consolonia.Core.Tests
 
             // Assert
             Assert.AreEqual(2, glyph.Starts[0]); // First non-space at index 2
-            Assert.AreEqual(2, glyph.Ends[0]);   // Last non-space at index 2
+            Assert.AreEqual(2, glyph.Ends[0]); // Last non-space at index 2
 
             Assert.AreEqual(1, glyph.Starts[1]); // First non-space at index 1
-            Assert.AreEqual(3, glyph.Ends[1]);   // Last non-space at index 3
+            Assert.AreEqual(3, glyph.Ends[1]); // Last non-space at index 3
 
             Assert.AreEqual(0, glyph.Starts[2]); // First non-space at index 0
-            Assert.AreEqual(4, glyph.Ends[2]);   // Last non-space at index 4
+            Assert.AreEqual(4, glyph.Ends[2]); // Last non-space at index 4
         }
 
         [Test]
@@ -148,7 +145,7 @@ namespace Consolonia.Core.Tests
 
             // Assert
             Assert.AreEqual(5, glyph.Starts[0]); // No non-space characters found
-            Assert.AreEqual(0, glyph.Ends[0]);   // No non-space characters found
+            Assert.AreEqual(0, glyph.Ends[0]); // No non-space characters found
         }
 
         [Test]
@@ -317,7 +314,7 @@ namespace Consolonia.Core.Tests
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
     }

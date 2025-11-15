@@ -150,10 +150,11 @@ namespace Consolonia.Core.Text.Fonts
             }
         }
 
-       public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
+        public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
             if (!(options.Typeface is ConsoleTypeface))
-                throw new ArgumentException("TextShaperOptions.Typeface must be of type ConsoleTypeface.", nameof(options));
+                throw new ArgumentException("TextShaperOptions.Typeface must be of type ConsoleTypeface.",
+                    nameof(options));
 
             var console = AvaloniaLocator.Current.GetRequiredService<IConsoleOutput>();
 
@@ -164,24 +165,26 @@ namespace Consolonia.Core.Text.Fonts
             for (ushort i = 0; i < shapedBuffer.Length; i++)
             {
                 Grapheme grapheme = graphemes[i];
-                ushort glyphIndex = GetGlyphIndex(grapheme.Glyph); 
+                ushort glyphIndex = GetGlyphIndex(grapheme.Glyph);
                 int glyphAdvance = GetGlyphAdvance(glyphIndex);
                 shapedBuffer[i] = new GlyphInfo(glyphIndex, grapheme.Cluster, glyphAdvance);
             }
+
             return shapedBuffer;
         }
 
-        PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun, Color foreground)
+        PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
+            Color foreground)
         {
-            var startPosition = position;
-            foreach (var glyphInfo in glyphRun.GlyphInfos)
+            PixelPoint startPosition = position;
+            foreach (GlyphInfo glyphInfo in glyphRun.GlyphInfos)
             {
                 // char it introduces artifacts when a wide char is partially clipped.
-                string glyph = this.GetGlyphText(glyphInfo.GlyphIndex);
+                string glyph = GetGlyphText(glyphInfo.GlyphIndex);
                 if (glyph == "\t")
                 {
                     var symbol = new Symbol(' ', 1);
-                    var newPixel = new Pixel(symbol, foreground, this.Style, this.Weight);
+                    var newPixel = new Pixel(symbol, foreground, Style, Weight);
 
                     for (int i = 0; i < glyphInfo.GlyphAdvance; i++)
                     {
@@ -197,10 +200,11 @@ namespace Consolonia.Core.Text.Fonts
                 else
                 {
                     var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
-                    context.DrawPixel(new Pixel(symbol, foreground, this.Style, this.Weight), position);
+                    context.DrawPixel(new Pixel(symbol, foreground, Style, Weight), position);
                     position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
                 }
             }
+
             return new PixelRect(startPosition, new PixelSize(position.X - startPosition.X, 1));
         }
 

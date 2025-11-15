@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using NeoSmart.Unicode;
@@ -100,7 +99,7 @@ namespace Consolonia.Core.Helpers
         {
             if (rune.Value == '\r')
                 return RuneType.Cr;
-            
+
             if (rune.Value == '\n')
                 return RuneType.Lf;
 

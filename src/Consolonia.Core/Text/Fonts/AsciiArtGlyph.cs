@@ -1,16 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Consolonia.Controls;
 using Consolonia.Core.Helpers;
 
-
 namespace Consolonia.Core.Text.Fonts
 {
     public class AsciiArtGlyph
     {
+        private static readonly Regex UnicodeEscapeRegex = new(@"\\u([0-9A-Fa-f]{4})", RegexOptions.Compiled);
+
         public AsciiArtGlyph(AsciiArtTypeface typeface, uint codepoint, string[] lines)
         {
             Typeface = typeface;
@@ -22,29 +21,26 @@ namespace Consolonia.Core.Text.Fonts
 
             for (int iLine = 0; iLine < Lines.Length; iLine++)
             {
-                var line = EncodeUnicode(Lines[iLine].Replace(typeface.Hardblank, ' '));
+                string line = EncodeUnicode(Lines[iLine].Replace(typeface.Hardblank, ' '));
                 GraphemeLines[iLine] = Grapheme.Parse(line, false).ToArray();
-                var width = (byte)line.MeasureText();
+                byte width = (byte)line.MeasureText();
                 if (width > Width)
                     Width = width;
                 Starts[iLine] = line.Length;
-                for (var iStart = 0; iStart < line.Length; iStart++)
-                {
+                for (int iStart = 0; iStart < line.Length; iStart++)
                     if (line[iStart] != ' ')
                     {
                         Starts[iLine] = iStart;
                         break;
                     }
-                }
+
                 Ends[iLine] = 0;
-                for (var iEnd = line.Length - 1; iEnd >= 0; iEnd--)
-                {
+                for (int iEnd = line.Length - 1; iEnd >= 0; iEnd--)
                     if (line[iEnd] != ' ')
                     {
                         Ends[iLine] = iEnd;
                         break;
                     }
-                }
             }
 #if DEBUG_FONT_GLYPH
             Debug.WriteLine("==============================");
@@ -60,7 +56,13 @@ namespace Consolonia.Core.Text.Fonts
 #endif
         }
 
-        private static readonly Regex UnicodeEscapeRegex = new(@"\\u([0-9A-Fa-f]{4})", RegexOptions.Compiled);
+        public AsciiArtTypeface Typeface { get; set; }
+
+        public byte Width { get; init; }
+
+        public byte Height => (byte)Lines.Length;
+
+        public uint Codepoint { get; init; }
 
         private static string EncodeUnicode(string text)
         {
@@ -70,14 +72,6 @@ namespace Consolonia.Core.Text.Fonts
                 return new string((char)codePoint, 1);
             });
         }
-
-        public AsciiArtTypeface Typeface { get; set; }
-
-        public byte Width { get; init; }
-
-        public byte Height => (byte)Lines.Length;
-
-        public uint Codepoint { get; init; }
 
 #pragma warning disable CA1819 // Properties should not return arrays
         public Grapheme[][] GraphemeLines { get; init; }

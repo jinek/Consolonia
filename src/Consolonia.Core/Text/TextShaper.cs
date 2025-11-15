@@ -9,12 +9,10 @@ namespace Consolonia.Core.Text
     {
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
-            if (options.Typeface is ITextShaperImpl textShaper)
-            {
-                return textShaper.ShapeText(text, options);
-            }
+            if (options.Typeface is ITextShaperImpl textShaper) return textShaper.ShapeText(text, options);
 
-            throw new KeyNotFoundException("Unsupported console glyph typeface, we only work with ITextShaperImpl typefaces.");
+            throw new KeyNotFoundException(
+                "Unsupported console glyph typeface, we only work with ITextShaperImpl typefaces.");
         }
     }
 }
