@@ -33,11 +33,12 @@ namespace Consolonia.Core.Text.Fonts
         {
             _key = fontUri;
             _fontUris = AssetLoader.GetAssets(resourceUri, null)
-                .Where(asset => asset.AbsolutePath.EndsWith(".tlf") || asset.AbsolutePath.EndsWith(".flf"))
+                .Where(asset => asset.AbsolutePath.EndsWith(".tlf", StringComparison.OrdinalIgnoreCase) || 
+                       asset.AbsolutePath.EndsWith(".flf", StringComparison.OrdinalIgnoreCase))
                 .ToDictionary(uri => Path.GetFileNameWithoutExtension(uri.AbsolutePath));
 
             _fontFamilyUris = _fontUris// .Where(kv => Char.IsDigit(kv.Key[^1]))
-                    .GroupBy(kv => kv.Key.TrimEnd('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'))
+                    .GroupBy(kv => kv.Key.TrimEnd('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))
                     .ToDictionary(g => g.Key, g => g.Select(kv => kv.Value).ToArray());
             foreach (var familyName in _fontFamilyUris.Keys)
             {
@@ -142,7 +143,8 @@ namespace Consolonia.Core.Text.Fonts
             var fontName = Path.GetFileNameWithoutExtension(uri.AbsolutePath);
             using var stream = AssetLoader.Open(uri);
             IGlyphTypeface typeface = AsciiArtTypefaceLoader.Load(stream, Path.GetFileNameWithoutExtension(resourceName));
-            ArgumentNullException.ThrowIfNull(typeface, $"Failed to load font variation: {resourceName}");
+            if (typeface == null)
+                throw new InvalidOperationException($"Failed to load font variation: {resourceName}");
             _typefaceByName[fontName] = typeface;
             _typefaceByUri[uri] = typeface;
             return typeface;

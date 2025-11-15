@@ -148,7 +148,6 @@ namespace Consolonia.Core.Text.Fonts
             };
             return true;
         }
-        // Resharper restore AssignNullToNotNullAttribute
 
         public bool TryGetTable(uint tag, out byte[] table)
         {
@@ -184,6 +183,7 @@ namespace Consolonia.Core.Text.Fonts
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+        // Resharper restore AssignNullToNotNullAttribute
 
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
