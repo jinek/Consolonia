@@ -7,16 +7,14 @@ using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing;
 
-
 namespace Consolonia.Core.Text.Fonts
 {
-
     /// <summary>
-    /// Typeface which is made up of multiple design em height typefaces
+    ///     Typeface which is made up of multiple design em height typefaces
     /// </summary>
     public class AsciiArtFamilyTypeface : IGlyphTypeface, ITextShaperImpl, IGlyphRunRender
     {
-        private Dictionary<int, IGlyphTypeface> _typefaces = new Dictionary<int, IGlyphTypeface>();
+        private readonly Dictionary<int, IGlyphTypeface> _typefaces = new();
         private bool _disposedValue;
 
         public AsciiArtFamilyTypeface(string name)
@@ -24,29 +22,16 @@ namespace Consolonia.Core.Text.Fonts
             FamilyName = name;
         }
 
-        public void AddTypeface(IGlyphTypeface typeface)
-        {
-            ArgumentNullException.ThrowIfNull(typeface);
-            _typefaces[typeface.Metrics.DesignEmHeight] = typeface;
-        }
-
-        public IGlyphTypeface GetTypeface(int designEmHeight)
-        {
-            if (_typefaces.Count == 0)
-            {
-                throw new InvalidOperationException($"No typefaces available in {FamilyName}.");
-            }
-
-            if (_typefaces.ContainsKey(designEmHeight))
-            {
-                return _typefaces[designEmHeight];
-            }
-            //find closest
-            int closest = _typefaces.Keys.OrderBy(k => Math.Abs(k - designEmHeight)).First();
-            return _typefaces[closest];
-        }
-
         public IGlyphTypeface PrimaryTypeface => _typefaces[_typefaces.Keys.Max()];
+
+        PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
+            Color foreground)
+        {
+            IGlyphTypeface typeface = GetTypeface((int)glyphRun.FontRenderingEmSize);
+            var typefaceDrawing = typeface as IGlyphRunRender;
+            ArgumentNullException.ThrowIfNull(typefaceDrawing);
+            return typefaceDrawing.DrawGlyphRun(context, position, glyphRun, foreground);
+        }
 
         public string FamilyName { get; init; }
 
@@ -97,23 +82,6 @@ namespace Consolonia.Core.Text.Fonts
             return PrimaryTypeface.TryGetTable(tag, out table);
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing)
-                {
-                    foreach (var typeface in _typefaces.Values)
-                    {
-                        typeface.Dispose();
-                    }
-                    _typefaces.Clear();
-                }
-
-                _disposedValue = true;
-            }
-        }
-
         // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
         // ~FamilyTypeface()
         // {
@@ -124,25 +92,47 @@ namespace Consolonia.Core.Text.Fonts
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
 
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
         {
-            var typeface = GetTypeface((int)options.FontRenderingEmSize);
+            IGlyphTypeface typeface = GetTypeface((int)options.FontRenderingEmSize);
             var textShaper = typeface as ITextShaperImpl;
             ArgumentNullException.ThrowIfNull(textShaper);
             return textShaper.ShapeText(text, options);
         }
 
-        PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun, Color foreground)
+        public void AddTypeface(IGlyphTypeface typeface)
         {
-            var typeface = GetTypeface((int)glyphRun.FontRenderingEmSize);
-            IGlyphRunRender typefaceDrawing = typeface as IGlyphRunRender;
-            ArgumentNullException.ThrowIfNull(typefaceDrawing);
-            return typefaceDrawing.DrawGlyphRun(context, position, glyphRun, foreground);
+            ArgumentNullException.ThrowIfNull(typeface);
+            _typefaces[typeface.Metrics.DesignEmHeight] = typeface;
+        }
+
+        public IGlyphTypeface GetTypeface(int designEmHeight)
+        {
+            if (_typefaces.Count == 0) throw new InvalidOperationException($"No typefaces available in {FamilyName}.");
+
+            if (_typefaces.ContainsKey(designEmHeight)) return _typefaces[designEmHeight];
+            //find closest
+            int closest = _typefaces.Keys.OrderBy(k => Math.Abs(k - designEmHeight)).First();
+            return _typefaces[closest];
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    foreach (IGlyphTypeface typeface in _typefaces.Values) typeface.Dispose();
+                    _typefaces.Clear();
+                }
+
+                _disposedValue = true;
+            }
         }
     }
 }

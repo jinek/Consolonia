@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
@@ -44,6 +43,7 @@ namespace Consolonia.Core.Text
                 };
                 return true;
             }
+
             glyphTypeface = null;
             return false;
         }

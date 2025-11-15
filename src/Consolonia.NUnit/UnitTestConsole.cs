@@ -174,7 +174,7 @@ namespace Consolonia.NUnit
 
         public IInputElement GetFocus()
         {
-            return this._lifetime.MainWindow.FocusManager.GetFocusedElement();
+            return _lifetime.MainWindow.FocusManager.GetFocusedElement();
         }
 
         public async Task SetFocus<T>(string controlName)
@@ -183,7 +183,7 @@ namespace Consolonia.NUnit
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 // ReSharper disable once AssignNullToNotNullAttribute
-                var control = _lifetime.MainWindow.GetVisualDescendants()
+                T control = _lifetime.MainWindow.GetVisualDescendants()
                     .OfType<T>()
                     .FirstOrDefault(cb => cb.Name == controlName)!;
                 if (control == null)
@@ -198,7 +198,7 @@ namespace Consolonia.NUnit
             return await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 // ReSharper disable once AssignNullToNotNullAttribute
-                var control = this._lifetime.MainWindow.GetVisualDescendants()
+                T control = _lifetime.MainWindow.GetVisualDescendants()
                     .OfType<T>()
                     .FirstOrDefault(cb => cb.Name == controlName)!;
                 if (control == null)

@@ -35,8 +35,8 @@ namespace Consolonia.Gallery.Tests
             await SelectFont("Braille");
 
             await UITest.AssertHasRawText(
-"⣇⣸ ⢀⡀ ⡇ ⡇ ⢀⡀   ⡇⢸ ⢀⡀ ⡀⣀ ⡇ ⢀⣸ ⡇",
-"⠇⠸ ⠣⠭ ⠣ ⠣ ⠣⠜   ⠟⠻ ⠣⠜ ⠏  ⠣ ⠣⠼ ⠅");
+                "⣇⣸ ⢀⡀ ⡇ ⡇ ⢀⡀   ⡇⢸ ⢀⡀ ⡀⣀ ⡇ ⢀⣸ ⡇",
+                "⠇⠸ ⠣⠭ ⠣ ⠣ ⠣⠜   ⠟⠻ ⠣⠜ ⠏  ⠣ ⠣⠼ ⠅");
         }
 
         [Test]
@@ -44,13 +44,13 @@ namespace Consolonia.Gallery.Tests
         {
             await SelectFont("Doom");
             await UITest.AssertHasRawText(
-@" _   _       _ _         _    _             _     _ ",
-@"| | | |     | | |       | |  | |           | |   | |",
-@"| |_| | ___ | | | ___   | |  | |  ___  _ __| | __| |",
-@"|  _  |/ _ \| | |/ _ \  | |/\| | / _ \| '__| |/ _` |",
-@"| | | |  __/| | | (_) | \  /\  /| (_) | |  | | (_| |",
-@"\_| |_/\___||_|_|\___/   \/  \/  \___/|_|  |_|\__,_|"
-                );
+                @" _   _       _ _         _    _             _     _ ",
+                @"| | | |     | | |       | |  | |           | |   | |",
+                @"| |_| | ___ | | | ___   | |  | |  ___  _ __| | __| |",
+                @"|  _  |/ _ \| | |/ _ \  | |/\| | / _ \| '__| |/ _` |",
+                @"| | | |  __/| | | (_) | \  /\  /| (_) | |  | | (_| |",
+                @"\_| |_/\___||_|_|\___/   \/  \/  \___/|_|  |_|\__,_|"
+            );
         }
 
         private static async Task SelectFont(string font)
@@ -58,7 +58,7 @@ namespace Consolonia.Gallery.Tests
             await Dispatcher.UIThread.InvokeAsync(async () =>
             {
                 var combo = await UITest.GetControl<ComboBox>("Fonts");
-                FontsViewModel vm = (FontsViewModel)combo.DataContext!;
+                var vm = (FontsViewModel)combo.DataContext!;
                 vm.SelectedFont = vm.Fonts.FirstOrDefault(f => f.Font == font) ?? vm.Fonts[0];
             });
             await Task.Delay(50);

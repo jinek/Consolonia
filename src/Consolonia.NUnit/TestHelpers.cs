@@ -12,12 +12,11 @@ namespace Consolonia.NUnit
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                var printBuffer = unitTestConsole.PixelBuffer.PrintBuffer();
+                string printBuffer = unitTestConsole.PixelBuffer.PrintBuffer();
 
                 foreach (string text in textToSearch)
-                {
-                    Assert.IsTrue(printBuffer.Contains(text, StringComparison.Ordinal), $"{text} not at the buffer: \r\n" + printBuffer);
-                }
+                    Assert.IsTrue(printBuffer.Contains(text, StringComparison.Ordinal),
+                        $"{text} not at the buffer: \r\n" + printBuffer);
             }, DispatcherPriority.Render);
         }
 
@@ -25,12 +24,12 @@ namespace Consolonia.NUnit
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                var printBuffer = unitTestConsole.PixelBuffer.PrintBuffer();
+                string printBuffer = unitTestConsole.PixelBuffer.PrintBuffer();
 
-                foreach (var regexToSearch in regexesToSearch)
+                foreach (string regexToSearch in regexesToSearch)
                 {
                     var regex = new Regex(regexToSearch);
-                    var found = regex.IsMatch(printBuffer);
+                    bool found = regex.IsMatch(printBuffer);
                     Assert.IsTrue(found,
                         $"'{regexToSearch}' was not found at the buffer: \r\n" + printBuffer);
                 }
