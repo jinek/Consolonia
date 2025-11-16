@@ -16,13 +16,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             var fonts = new FontsViewModel();
             DataContext = fonts;
             Fonts.SelectedIndex = 0;
-            Loaded += GalleryFonts_Loaded;
         }
 
-        private void GalleryFonts_Loaded(object sender, RoutedEventArgs e)
-        {
-            Fonts.Focus();
-        }
     }
 
     [ObservableObject]
@@ -49,7 +44,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             FontWeight.Heavy
         };
 
-        public ObservableCollection<FontViewModel> Fonts = new();
+        [ObservableProperty]
+        private ObservableCollection<FontViewModel> _fonts = new();
 
         [ObservableProperty] private FontViewModel _selectedFont;
 
