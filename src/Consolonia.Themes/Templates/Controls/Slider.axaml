@@ -3,7 +3,6 @@
                     xmlns:console="https://github.com/jinek/consolonia"
                     x:ClassModifier="internal">
     <console:ValueToLeftPaddingConverter x:Key="ValueToLeftPaddingConverter" />
-    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="SliderRepeatTrackTheme"
                   TargetType="RepeatButton">
         <Setter Property="Background"

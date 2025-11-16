@@ -3,7 +3,6 @@
                     xmlns:console="https://github.com/jinek/consolonia">
     <!--TODO: Validation and Focus-->
 
-    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
 
     <Thickness x:Key="DataGridTextColumnCellTextBlockMargin">1,0</Thickness>
 
