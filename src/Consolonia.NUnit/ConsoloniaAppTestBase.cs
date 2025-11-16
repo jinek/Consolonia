@@ -8,7 +8,6 @@ using Avalonia.Platform;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
-using Consolonia.Fonts;
 using NUnit.Framework;
 
 namespace Consolonia.NUnit
@@ -27,6 +26,10 @@ namespace Consolonia.NUnit
             _size = size;
         }
 
+#pragma warning disable CA1819 // todo: provide a solution
+        protected string[] Args { get; init; }
+#pragma warning restore CA1819
+
         protected virtual AppBuilder CreateAppBuilder()
         {
             return AppBuilder.Configure<TApp>()
@@ -40,10 +43,6 @@ namespace Consolonia.NUnit
                 })
                 .LogToException();
         }
-
-#pragma warning disable CA1819 // todo: provide a solution
-        protected string[] Args { get; init; }
-#pragma warning restore CA1819
 
         [OneTimeSetUp]
         public async Task GlobalSetup()

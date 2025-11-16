@@ -1,9 +1,5 @@
-using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Threading;
-using Consolonia.Gallery.Gallery.GalleryViews;
 using Consolonia.Gallery.Tests.Base;
 using Consolonia.NUnit;
 using NUnit.Framework;
@@ -51,7 +47,7 @@ namespace Consolonia.Gallery.Tests
         [Order(3)]
         public async Task DisplaysDoomText()
         {
-            await UITest.KeyInput(4,Key.Down);
+            await UITest.KeyInput(4, Key.Down);
             await UITest.AssertHasText(
                 @" _   _       _ _         _    _             _     _ ",
                 @"| | | |     | | |       | |  | |           | |   | |",
