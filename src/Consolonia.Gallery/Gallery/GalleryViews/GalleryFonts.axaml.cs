@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -16,7 +15,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             var fonts = new FontsViewModel();
             DataContext = fonts;
         }
-
     }
 
     [ObservableObject]
@@ -43,8 +41,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             FontWeight.Heavy
         };
 
-        [ObservableProperty]
-        private ObservableCollection<FontViewModel> _fonts = new();
+        [ObservableProperty] private ObservableCollection<FontViewModel> _fonts = new();
 
         [ObservableProperty] private FontViewModel _selectedFont;
 
@@ -55,7 +52,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public FontsViewModel()
         {
             Fonts.Add(new FontViewModel
-            { Font = "ConsoleDefault", FontFamily = FontFamily.Parse("ConsoleDefault"), FontSize = 1 });
+                { Font = "ConsoleDefault", FontFamily = FontFamily.Parse("ConsoleDefault"), FontSize = 1 });
             Fonts.Add(new FontViewModel("WideTerm", 1));
             Fonts.Add(new FontViewModel("Braille", 2));
             Fonts.Add(new FontViewModel("Circle", 1));
@@ -82,14 +79,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     [ObservableObject]
     public partial class FontViewModel
     {
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(DisplayName))]
+        [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplayName))]
         private string _font;
 
         [ObservableProperty] private FontFamily _fontFamily;
 
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(DisplayName))]
+        [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplayName))]
         private int _fontSize;
 
         [ObservableProperty] private FontStyle _style;

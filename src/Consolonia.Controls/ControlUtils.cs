@@ -107,7 +107,6 @@ namespace Consolonia.Controls
                         lastWidth = 1;
                     }
                 }
-
             }
 
             return width;

@@ -178,7 +178,7 @@ namespace Consolonia.Core.Text.Fonts
             Color foreground, out PixelRect rectToRefresh)
         {
             PixelPoint startPosition = position;
-            
+
             // Handle empty glyph run (e.g., empty TextBox)
             // Avalonia will send us glyph run it has ginned up with with empty width to represent empty text.
             // we need to invalidate the starting character to make sure it's redrawn as empty.
@@ -187,7 +187,7 @@ namespace Consolonia.Core.Text.Fonts
                 rectToRefresh = new PixelRect(startPosition, new PixelSize(1, 1));
                 return;
             }
-            
+
             foreach (GlyphInfo glyphInfo in glyphRun.GlyphInfos)
             {
                 string glyph = GetGlyphText(glyphInfo.GlyphIndex);
@@ -216,8 +216,8 @@ namespace Consolonia.Core.Text.Fonts
             }
 
             rectToRefresh = new PixelRect(startPosition,
-                new PixelSize(position.X - startPosition.X, 
-                              position.Y - startPosition.Y + 1));
+                new PixelSize(position.X - startPosition.X,
+                    position.Y - startPosition.Y + 1));
         }
 
 #pragma warning restore CA1822 // Mark members as static

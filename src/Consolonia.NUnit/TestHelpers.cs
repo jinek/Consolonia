@@ -75,14 +75,11 @@ namespace Consolonia.NUnit
             {
                 string printBuffer = unitTestConsole.PixelBuffer.PrintBuffer();
                 foreach (string pattern in patterns)
-                {
                     if (shouldMatch)
                         Assert.IsTrue(IsMatch(printBuffer, isRegex, pattern), onError(printBuffer, pattern));
                     else
                         Assert.IsFalse(IsMatch(printBuffer, isRegex, pattern), onError(printBuffer, pattern));
-                }
             });
-
         }
 
         private static bool IsMatch(string printBuffer, bool isRegex, string pattern)

@@ -61,7 +61,7 @@ namespace Consolonia.Core.Text.Fonts
             // we need to invalidate the starting character to make sure it's redrawn as empty.
             if (glyphRun.GlyphInfos.Count == 0 || glyphRun.Bounds.Width <= 0)
             {
-                rectToRefresh = new PixelRect(position, new PixelSize(this.Width, this.Height));
+                rectToRefresh = new PixelRect(position, new PixelSize(Width, Height));
                 return;
             }
 
@@ -94,7 +94,8 @@ namespace Consolonia.Core.Text.Fonts
                 pos = pos.WithX(pos.X + (ushort)glyphInfo.GlyphAdvance).WithY(position.Y);
             }
 
-            rectToRefresh  =new PixelRect(startPosition, new PixelSize(pos.X - startPosition.X, Metrics.DesignEmHeight));
+            rectToRefresh =
+                new PixelRect(startPosition, new PixelSize(pos.X - startPosition.X, Metrics.DesignEmHeight));
         }
 
         public string FamilyName { get; init; }
@@ -150,6 +151,31 @@ namespace Consolonia.Core.Text.Fonts
                         new AsciiArtGlyph(this, 0x2009, Enumerable.Repeat(" ", Metrics.DesignEmHeight).ToArray()));
 
             return true;
+        }
+
+        public bool TryGetGlyphMetrics(ushort glyph, out GlyphMetrics metrics)
+        {
+            metrics = new GlyphMetrics
+            {
+                XBearing = 0,
+                YBearing = 0,
+                Height = Metrics.DesignEmHeight,
+                Width = GetGlyphAdvance(glyph)
+            };
+            return true;
+        }
+
+        public bool TryGetTable(uint tag, out byte[] table)
+        {
+            table = Array.Empty<byte>();
+            return false;
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public ShapedBuffer ShapeText(ReadOnlyMemory<char> text, TextShaperOptions options)
@@ -358,24 +384,6 @@ namespace Consolonia.Core.Text.Fonts
             return '\0';
         }
 
-        public bool TryGetGlyphMetrics(ushort glyph, out GlyphMetrics metrics)
-        {
-            metrics = new GlyphMetrics
-            {
-                XBearing = 0,
-                YBearing = 0,
-                Height = Metrics.DesignEmHeight,
-                Width = GetGlyphAdvance(glyph)
-            };
-            return true;
-        }
-
-        public bool TryGetTable(uint tag, out byte[] table)
-        {
-            table = Array.Empty<byte>();
-            return false;
-        }
-
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
@@ -383,15 +391,9 @@ namespace Consolonia.Core.Text.Fonts
                 if (disposing)
                 {
                 }
+
                 _disposedValue = true;
             }
-        }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

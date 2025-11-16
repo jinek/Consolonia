@@ -5,10 +5,10 @@ using Avalonia.Input;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Fonts;
 using Consolonia.Gallery.View;
 using Consolonia.NUnit;
 using NUnit.Framework;
-using Consolonia.Fonts;
 
 namespace Consolonia.Gallery.Tests.Base
 {
