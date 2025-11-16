@@ -177,21 +177,6 @@ namespace Consolonia.NUnit
             return _lifetime.MainWindow.FocusManager.GetFocusedElement();
         }
 
-        public async Task SetFocus<T>(string controlName)
-            where T : InputElement
-        {
-            await Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                // ReSharper disable once AssignNullToNotNullAttribute
-                T control = _lifetime.MainWindow.GetVisualDescendants()
-                    .OfType<T>()
-                    .FirstOrDefault(cb => cb.Name == controlName)!;
-                if (control == null)
-                    throw new InvalidOperationException($"Control '{controlName}' of type {typeof(T).Name} not found.");
-                control.Focus();
-            }, DispatcherPriority.Input);
-        }
-
         public async Task<T> GetControl<T>(string controlName)
             where T : Control
         {
