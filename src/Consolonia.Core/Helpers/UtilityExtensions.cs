@@ -27,7 +27,7 @@ namespace Consolonia.Core.Helpers
                     Setters =
                     {
                         new Setter(TemplatedControl.FontSizeProperty, 16.0),
-                        new Setter(TemplatedControl.FontFamilyProperty, new FontFamily("ConsoleDefault")),
+                        new Setter(TemplatedControl.FontFamilyProperty, new FontFamily("Cascadia Mono")),
                         new Setter(TemplatedControl.ForegroundProperty, foregroundBrush),
                         new Setter(TemplatedControl.BackgroundProperty, backgroundBrush)
                     }

@@ -19,10 +19,10 @@ namespace Consolonia.Core.Text.Fonts
     /// </summary>
     public class AsciiArtTypeface : IGlyphTypeface, ITextShaperImpl, IGlyphRunRender
     {
-        // glyphindex to codepoint
+        /// glyphindex to codepoint
         private readonly Dictionary<uint, ushort> _codepointsToIndex = new();
 
-        // codepoint to glyph
+        /// codepoint to glyph
         private readonly Dictionary<uint, AsciiArtGlyph> _glyphs = new();
         private readonly Dictionary<ushort, uint> _indexToCodepoint = new();
         private bool _disposedValue;

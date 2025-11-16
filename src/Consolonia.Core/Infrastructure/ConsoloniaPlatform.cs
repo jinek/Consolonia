@@ -141,17 +141,7 @@ namespace Consolonia.Core.Infrastructure
                 case NotSupportedRequestCode.DrawGlyphRunNotSupported:
                     notSupportedRequest.SetHandled();
                     break;
-                case NotSupportedRequestCode.DrawGlyphRunWithNonDefaultFontRenderingEmSize:
-                    notSupportedRequest.SetHandled();
-                    var glyphRunImpl = (IGlyphRunImpl)notSupportedRequest.Information[2];
-                    if (glyphRunImpl is GlyphRunImpl glyphRunImpl2)
-                        ((DrawingContextImpl)notSupportedRequest.Information[0]).DrawGlyphRun(
-                            (IBrush)notSupportedRequest.Information[1], new GlyphRunImpl(glyphRunImpl.GlyphTypeface,
-                                glyphRunImpl.FontRenderingEmSize,
-                                glyphRunImpl2.GlyphInfos,
-                                glyphRunImpl2.BaselineOrigin));
-
-                    break;
+               
 
                 case NotSupportedRequestCode.DrawStringWithNonSolidColorBrush:
                     notSupportedRequest.SetHandled(Brushes.Black);

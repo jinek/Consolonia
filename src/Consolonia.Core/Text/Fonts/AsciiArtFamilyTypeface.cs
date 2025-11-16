@@ -82,12 +82,6 @@ namespace Consolonia.Core.Text.Fonts
             return PrimaryTypeface.TryGetTable(tag, out table);
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~FamilyTypeface()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
 
         public void Dispose()
         {
@@ -116,7 +110,6 @@ namespace Consolonia.Core.Text.Fonts
             if (_typefaces.Count == 0) throw new InvalidOperationException($"No typefaces available in {FamilyName}.");
 
             if (_typefaces.ContainsKey(designEmHeight)) return _typefaces[designEmHeight];
-            //find closest
             int closest = _typefaces.Keys.OrderBy(k => Math.Abs(k - designEmHeight)).First();
             return _typefaces[closest];
         }
