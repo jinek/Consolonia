@@ -69,7 +69,7 @@ namespace Consolonia.Core.Drawing
             _clipStack.Push(_pixelBuffer.Size);
         }
 
-        public PixelRect CurrentClip => _clipStack.Peek();
+        private PixelRect CurrentClip => _clipStack.Peek();
 
         public void Dispose()
         {
@@ -285,8 +285,7 @@ namespace Consolonia.Core.Drawing
             var startPosition = new Point().Transform(Transform).ToPixelPoint();
             glyphTypefaceRender.DrawGlyphRun(this, startPosition, glyphRunImpl, foregroundColor, out var rectToRefresh);
 
-            PixelRect intersectRect = CurrentClip.Intersect(rectToRefresh);
-            _consoleWindowImpl.DirtyRegions.AddRect(intersectRect);
+            _consoleWindowImpl.DirtyRegions.AddRect(rectToRefresh);
         }
 
         public IDrawingContextLayerImpl CreateLayer(PixelSize size)

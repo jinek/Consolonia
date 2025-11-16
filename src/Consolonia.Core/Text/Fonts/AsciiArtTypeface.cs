@@ -49,9 +49,22 @@ namespace Consolonia.Core.Text.Fonts
         /// </summary>
         public OldLayoutMode OldLayoutMode { get; set; } = OldLayoutMode.None;
 
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
         void IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
             Color foreground, out PixelRect rectToRefresh)
         {
+            // Handle empty glyph run (e.g., empty TextBox)
+            // Avalonia will send us glyph run it has ginned up with with empty width to represent empty text.
+            // we need to invalidate the starting character to make sure it's redrawn as empty.
+            if (glyphRun.GlyphInfos.Count == 0 || glyphRun.Bounds.Width <= 0)
+            {
+                rectToRefresh = new PixelRect(position, new PixelSize(this.Width, this.Height));
+                return;
+            }
+
             bool smushing = LayoutMode.HasFlag(LayoutMode.Smush) || LayoutMode.HasFlag(LayoutMode.Kern);
             PixelPoint startPosition = position;
             var pos = new PixelPoint(position.X, position.Y);

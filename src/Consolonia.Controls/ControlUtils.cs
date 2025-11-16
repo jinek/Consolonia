@@ -101,7 +101,18 @@ namespace Consolonia.Controls
                         width += 4;
                         lastWidth = 4;
                     }
+                    else if (rune.Value == 0x13 /*\r*/ )
+                    {
+                        // ignore
+                        lastWidth = 0;
+                    }
+                    else if (rune.Value == 0xa /*\n*/)
+                    {
+                        width += 1;
+                        lastWidth = 1;
+                    }
                 }
+
             }
 
             return width;

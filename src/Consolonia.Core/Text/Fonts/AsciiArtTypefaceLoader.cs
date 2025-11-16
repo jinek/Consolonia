@@ -66,9 +66,9 @@ namespace Consolonia.Core.Text.Fonts
                 throw new InvalidDataException("Invalid FIGlet header - missing height parameter");
 
             // ReSharper disable UnusedVariable
-            int height = int.Parse(parts[0]);
+            typeface.Height = int.Parse(parts[0]);
             int baseline = parts.Length > 1 ? int.Parse(parts[1]) : 0;
-            int width = parts.Length > 2 ? int.Parse(parts[2]) : 0;
+            typeface.Width = parts.Length > 2 ? int.Parse(parts[2]) : 0;
             int oldLayout = parts.Length > 3 ? int.Parse(parts[3]) : 0;
             var oldLayoutMode = (OldLayoutMode)oldLayout;
             int commentLines = parts.Length > 4 ? int.Parse(parts[4]) : 0;
@@ -108,7 +108,7 @@ namespace Consolonia.Core.Text.Fonts
 
 #if DEBUG // diagnostic output of parsing. Only in DEBUG builds.
             Debug.WriteLine(
-                $"Font '{name}': height={height}, baseline={baseline}, width={width}, oldLayout={oldLayoutMode} (legacy) layoutMode={typeface.LayoutMode}");
+                $"Font '{name}': height={typeface.Height}, baseline={baseline}, width={typeface.Width}, oldLayout={oldLayoutMode} (legacy) layoutMode={typeface.LayoutMode}");
             // Debug output for modern layout mode
             if (oldLayoutMode >= 0)
             {
@@ -138,8 +138,8 @@ namespace Consolonia.Core.Text.Fonts
             // Load standard ASCII characters (32-126)+ extended characters
             foreach (uint codepoint in Codepoints)
             {
-                string[] charLines = new string[height];
-                for (int i = 0; i < height; i++)
+                string[] charLines = new string[typeface.Height];
+                for (int i = 0; i < typeface.Height; i++)
                 {
                     if (currentLine >= lines.Length)
                         throw new InvalidDataException(
@@ -187,8 +187,8 @@ namespace Consolonia.Core.Text.Fonts
                     currentLine++;
                 }
 
-                string[] charLines = new string[height];
-                for (int i = 0; i < height; i++)
+                string[] charLines = new string[typeface.Height];
+                for (int i = 0; i < typeface.Height; i++)
                 {
                     if (currentLine >= lines.Length)
                         break;
@@ -202,14 +202,14 @@ namespace Consolonia.Core.Text.Fonts
 
             typeface.Metrics = new FontMetrics
             {
-                DesignEmHeight = (short)height,
+                DesignEmHeight = (short)typeface.Height,
                 IsFixedPitch = false,
-                StrikethroughPosition = (short)(height / 2),
+                StrikethroughPosition = (short)(typeface.Height / 2),
                 StrikethroughThickness = 1,
-                UnderlinePosition = (short)(height - 2),
+                UnderlinePosition = (short)(typeface.Height - 2),
                 UnderlineThickness = 1,
                 Ascent = 0,
-                Descent = height,
+                Descent = typeface.Height,
                 LineGap = 0
             };
 

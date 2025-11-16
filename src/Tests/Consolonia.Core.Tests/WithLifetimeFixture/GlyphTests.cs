@@ -72,6 +72,18 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         }
 
         [Test]
+        public void GraphemesForCrLfAndLfAreOneGrapheme()
+        {
+            IReadOnlyList<Grapheme> graphemes = Grapheme.Parse("\r\n", true);
+            Assert.AreEqual(1, graphemes.Count);
+            Assert.AreEqual("\r\n", graphemes[0].Glyph);
+            
+            graphemes = Grapheme.Parse("\n", true);
+            Assert.AreEqual(1, graphemes.Count);
+            Assert.AreEqual("\n", graphemes[0].Glyph);
+        }
+
+        [Test]
         public void GetGraphemesSingleEmojiReturnsSingleGlyph()
         {
             string text = "👍";

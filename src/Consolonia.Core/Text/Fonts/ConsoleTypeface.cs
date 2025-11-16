@@ -107,7 +107,8 @@ namespace Consolonia.Core.Text.Fonts
 
         public bool TryGetTable(uint tag, out byte[] table)
         {
-            throw new NotImplementedException();
+            table = Array.Empty<byte>();
+            return false;
         }
 
         public string FamilyName { get; } = FontManagerImpl.ConsoleDefaultFontFamily();
@@ -177,9 +178,18 @@ namespace Consolonia.Core.Text.Fonts
             Color foreground, out PixelRect rectToRefresh)
         {
             PixelPoint startPosition = position;
+            
+            // Handle empty glyph run (e.g., empty TextBox)
+            // Avalonia will send us glyph run it has ginned up with with empty width to represent empty text.
+            // we need to invalidate the starting character to make sure it's redrawn as empty.
+            if (glyphRun.GlyphInfos.Count == 0 || glyphRun.Bounds.Width <= 0)
+            {
+                rectToRefresh = new PixelRect(startPosition, new PixelSize(1, 1));
+                return;
+            }
+            
             foreach (GlyphInfo glyphInfo in glyphRun.GlyphInfos)
             {
-                // char it introduces artifacts when a wide char is partially clipped.
                 string glyph = GetGlyphText(glyphInfo.GlyphIndex);
                 if (glyph == "\t")
                 {
@@ -194,8 +204,8 @@ namespace Consolonia.Core.Text.Fonts
                 }
                 else if (glyph == "\n" || glyph == "\r\n")
                 {
-                    // we represent new lines as glyphs so that the layout engine can edit the cluster that represents the
-                    // new line,                     // but we don't draw them
+                    context.DrawPixel(new Pixel(Symbol.Space, foreground, Style, Weight), position);
+                    position = position.WithX(position.X + (int)glyphInfo.GlyphAdvance);
                 }
                 else
                 {
@@ -205,7 +215,9 @@ namespace Consolonia.Core.Text.Fonts
                 }
             }
 
-            rectToRefresh = new PixelRect(startPosition, new PixelSize(position.X - startPosition.X, 1));
+            rectToRefresh = new PixelRect(startPosition,
+                new PixelSize(position.X - startPosition.X, 
+                              position.Y - startPosition.Y + 1));
         }
 
 #pragma warning restore CA1822 // Mark members as static
