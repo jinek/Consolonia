@@ -84,7 +84,7 @@ namespace Consolonia.Core.Text.Fonts
             return false;
         }
 
-        // Resharper disable once AssignNullToNotNull - I just can't seem to get Resharper to understand the out parameter here
+        // Resharper disable AssignNullToNotNullAttribute  - I just can't seem to get Resharper to understand the out parameter here
         public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight,
             FontStretch fontStretch, string familyName, CultureInfo culture, out Typeface typeface)
         {
@@ -98,6 +98,7 @@ namespace Consolonia.Core.Text.Fonts
             typeface = new Typeface();
             return false;
         }
+        // Resharper enable AssignNullToNotNullAttribute - I just can't seem to get Resharper to understand the out parameter here
 
         IEnumerator IEnumerable.GetEnumerator()
         {
