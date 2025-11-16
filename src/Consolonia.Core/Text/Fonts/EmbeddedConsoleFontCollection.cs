@@ -63,7 +63,7 @@ namespace Consolonia.Core.Text.Fonts
         }
 
         public bool TryGetGlyphTypeface(string familyName, FontStyle style, FontWeight weight, FontStretch stretch,
-            [NotNullWhen(true)] out IGlyphTypeface glyphTypeface)
+            out IGlyphTypeface glyphTypeface)
         {
             if (_typefaceByName.TryGetValue(familyName, out glyphTypeface)) return true;
 
