@@ -36,7 +36,7 @@ namespace Consolonia.NUnit
                             $"'{pattern}' was not found at the buffer: \r\n" + printBuffer);
                     }
                 }
-            }, DispatcherPriority.Render);
+            });
         }
 
 
@@ -68,7 +68,7 @@ namespace Consolonia.NUnit
                             $"'{pattern}' was found at the buffer: \r\n" + printBuffer);
                     }
                 }
-            }, DispatcherPriority.Render);
+            });
         }
 
         /// <summary>
