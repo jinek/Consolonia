@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:console="https://github.com/jinek/consolonia"
                     x:ClassModifier="internal">
-    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <Thickness x:Key="ToggleSwitchTopHeaderMargin">0,0,0,1</Thickness>
     <GridLength x:Key="ToggleSwitchPreContentMargin">0</GridLength>
     <GridLength x:Key="ToggleSwitchPostContentMargin">0</GridLength>
