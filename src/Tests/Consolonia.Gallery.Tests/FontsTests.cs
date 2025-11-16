@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Threading;
 using Consolonia.Gallery.Gallery.GalleryViews;
 using Consolonia.Gallery.Tests.Base;
@@ -16,33 +17,41 @@ namespace Consolonia.Gallery.Tests
     internal class FontsTests : GalleryTestsBaseBase
     {
         [Test]
+        [Order(0)]
         public async Task DisplaysBasicText()
         {
-            await SelectFont("ConsoleDefault");
+            /*await SelectFont("ConsoleDefault");*/
             await UITest.AssertHasText("Hello World!");
         }
 
+
         [Test]
+        [Order(1)]
         public async Task DisplaysWideTermText()
         {
-            await SelectFont("WideTerm");
+            await UITest.KeyInput(Key.Down);
+            /*await SelectFont("WideTerm");*/
             await UITest.AssertHasText("Ｈ️ｅ️ｌ️ｌ️ｏ️  Ｗ️ｏ️ｒ️ｌ️ｄ️！️");
         }
 
+
         [Test]
+        [Order(2)]
         public async Task DisplaysBrailleText()
         {
-            await SelectFont("Braille");
+            await UITest.KeyInput(Key.Down);
 
             await UITest.AssertHasText(
                 "⣇⣸ ⢀⡀ ⡇ ⡇ ⢀⡀   ⡇⢸ ⢀⡀ ⡀⣀ ⡇ ⢀⣸ ⡇",
                 "⠇⠸ ⠣⠭ ⠣ ⠣ ⠣⠜   ⠟⠻ ⠣⠜ ⠏  ⠣ ⠣⠼ ⠅");
         }
 
+
         [Test]
-        public async Task DisplaysCacaFontText()
+        [Order(3)]
+        public async Task DisplaysDoomText()
         {
-            await SelectFont("Doom");
+            await UITest.KeyInput(4,Key.Down);
             await UITest.AssertHasText(
                 @" _   _       _ _         _    _             _     _ ",
                 @"| | | |     | | |       | |  | |           | |   | |",
@@ -51,17 +60,6 @@ namespace Consolonia.Gallery.Tests
                 @"| | | |  __/| | | (_) | \  /\  /| (_) | |  | | (_| |",
                 @"\_| |_/\___||_|_|\___/   \/  \/  \___/|_|  |_|\__,_|"
             );
-        }
-
-        private static async Task SelectFont(string font)
-        {
-            await Dispatcher.UIThread.InvokeAsync(async () =>
-            {
-                var combo = await UITest.GetControl<ComboBox>("Fonts");
-                var vm = (FontsViewModel)combo.DataContext!;
-                vm.SelectedFont = vm.Fonts.FirstOrDefault(f => f.Font == font) ?? vm.Fonts[0];
-            });
-            await Task.Delay(50);
         }
     }
 }
