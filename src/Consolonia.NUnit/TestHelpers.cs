@@ -10,66 +10,69 @@ namespace Consolonia.NUnit
     public static class TestHelpers
     {
         /// <summary>
-        /// Assert text pattern(s) are present in the console buffer.
+        ///     Assert text pattern(s) are present in the console buffer.
         /// </summary>
         /// <param name="unitTestConsole"></param>
         /// <param name="patterns">Patterns to search for. </param>
         /// <returns></returns>
         public static async Task AssertHasText(this UnitTestConsole unitTestConsole, params string[] patterns)
         {
-            await AssertPatterns(unitTestConsole, 
-                patterns, 
-                isRegex: false, 
-                shouldMatch: true, 
-                onError: (printBuffer, pattern) => $"Regex '{pattern}' was not found in the buffer: \r\n" + printBuffer);
+            await AssertPatterns(unitTestConsole,
+                patterns,
+                false,
+                true,
+                (printBuffer, pattern) => $"Regex '{pattern}' was not found in the buffer: \r\n" + printBuffer);
         }
 
         /// <summary>
-        /// Assert text pattern(s) are NOT present in the console buffer.
+        ///     Assert text pattern(s) are NOT present in the console buffer.
         /// </summary>
         /// <param name="unitTestConsole"></param>
         /// <param name="patterns">Patterns to search for.</param>
         /// <returns></returns>
         public static async Task AssertHasNoText(this UnitTestConsole unitTestConsole, params string[] patterns)
         {
-            await AssertPatterns(unitTestConsole, 
-                patterns, 
-                isRegex: false, 
-                shouldMatch: false, 
-                onError: (printBuffer, pattern) => $"Regex '{pattern}' was found in the buffer: \r\n" + printBuffer);
+            await AssertPatterns(unitTestConsole,
+                patterns,
+                false,
+                false,
+                (printBuffer, pattern) => $"Regex '{pattern}' was found in the buffer: \r\n" + printBuffer);
         }
 
         /// <summary>
-        /// Assert text pattern(s) as regular expressions are present in the console buffer.
+        ///     Assert text pattern(s) as regular expressions are present in the console buffer.
         /// </summary>
         /// <param name="unitTestConsole"></param>
         /// <param name="regexPatterns">Regular expressions to search for.</param>
         /// <returns></returns>
-        public static async Task AssertHasMatch(this UnitTestConsole unitTestConsole, [StringSyntax(StringSyntaxAttribute.Regex)] params string[] regexPatterns)
+        public static async Task AssertHasMatch(this UnitTestConsole unitTestConsole,
+            [StringSyntax(StringSyntaxAttribute.Regex)] params string[] regexPatterns)
         {
-            await AssertPatterns(unitTestConsole, 
-                regexPatterns, 
-                isRegex: true, 
-                shouldMatch: true, 
-                onError: (printBuffer, pattern) => $"Regex '{pattern}' was not found in the buffer: \r\n" + printBuffer);
+            await AssertPatterns(unitTestConsole,
+                regexPatterns,
+                true,
+                true,
+                (printBuffer, pattern) => $"Regex '{pattern}' was not found in the buffer: \r\n" + printBuffer);
         }
 
         /// <summary>
-        /// Assert text pattern(s) as regular expressions are NOT present in the console buffer.
+        ///     Assert text pattern(s) as regular expressions are NOT present in the console buffer.
         /// </summary>
         /// <param name="unitTestConsole"></param>
         /// <param name="regexPatterns">Regular expressions to search for. </param>
         /// <returns></returns>
-        public static async Task AssertHasNoMatch(this UnitTestConsole unitTestConsole, [StringSyntax(StringSyntaxAttribute.Regex)] params string[] regexPatterns)
+        public static async Task AssertHasNoMatch(this UnitTestConsole unitTestConsole,
+            [StringSyntax(StringSyntaxAttribute.Regex)] params string[] regexPatterns)
         {
-            await AssertPatterns(unitTestConsole, 
-                regexPatterns, 
-                isRegex: true, 
-                shouldMatch: false, 
-                onError: (printBuffer, pattern) => $"Regex '{pattern}' was found in the buffer: \r\n" + printBuffer);
+            await AssertPatterns(unitTestConsole,
+                regexPatterns,
+                true,
+                false,
+                (printBuffer, pattern) => $"Regex '{pattern}' was found in the buffer: \r\n" + printBuffer);
         }
 
-        private static async Task AssertPatterns(UnitTestConsole unitTestConsole, string[] patterns, bool isRegex, bool shouldMatch, Func<string, string, string> onError)
+        private static async Task AssertPatterns(UnitTestConsole unitTestConsole, string[] patterns, bool isRegex,
+            bool shouldMatch, Func<string, string, string> onError)
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
@@ -89,10 +92,8 @@ namespace Consolonia.NUnit
                 var regex = new Regex(pattern);
                 return regex.IsMatch(printBuffer);
             }
-            else
-            {
-                return printBuffer.Contains(pattern, StringComparison.Ordinal);
-            }
+
+            return printBuffer.Contains(pattern, StringComparison.Ordinal);
         }
     }
 }
