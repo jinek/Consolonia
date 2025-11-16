@@ -84,6 +84,7 @@ namespace Consolonia.Core.Text.Fonts
             return false;
         }
 
+        // Resharper disable once AssignNullToNotNull - I just can't seem to get Resharper to understand the out parameter here
         public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight,
             FontStretch fontStretch, string familyName, CultureInfo culture, out Typeface typeface)
         {
