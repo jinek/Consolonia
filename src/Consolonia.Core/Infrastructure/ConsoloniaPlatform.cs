@@ -9,7 +9,6 @@ using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Threading;
 using Consolonia.Controls.Brushes;
-using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Text;
@@ -141,7 +140,7 @@ namespace Consolonia.Core.Infrastructure
                 case NotSupportedRequestCode.DrawGlyphRunNotSupported:
                     notSupportedRequest.SetHandled();
                     break;
-               
+
 
                 case NotSupportedRequestCode.DrawStringWithNonSolidColorBrush:
                     notSupportedRequest.SetHandled(Brushes.Black);
