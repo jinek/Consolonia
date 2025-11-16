@@ -88,7 +88,7 @@ namespace Consolonia.Core.Text.Fonts
             FontStretch fontStretch, string familyName, CultureInfo culture, out Typeface typeface)
         {
             if (TryGetGlyphTypeface(familyName, fontStyle, fontWeight, fontStretch, out IGlyphTypeface glyphTypeface))
-                if (glyphTypeface!.TryGetGlyph((uint)codepoint, out _))
+                if (glyphTypeface != null && glyphTypeface.TryGetGlyph((uint)codepoint, out _))
                 {
                     typeface = new Typeface(familyName, fontStyle, fontWeight, fontStretch);
                     return true;

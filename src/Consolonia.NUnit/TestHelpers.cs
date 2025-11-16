@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Joins;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -17,28 +18,8 @@ namespace Consolonia.NUnit
         /// <returns></returns>
         public static async Task AssertHasText(this UnitTestConsole unitTestConsole, params string[] patterns)
         {
-            await Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                string printBuffer = unitTestConsole.PixelBuffer.PrintBuffer();
-
-                foreach (string pattern in patterns)
-                {
-                    if (IsRegexPattern(pattern))
-                    {
-                        var regex = new Regex(StripRegexDelimiters(pattern));
-                        bool found = regex.IsMatch(printBuffer);
-                        Assert.IsTrue(found,
-                            $"Regex '{pattern}' was not found at the buffer: \r\n" + printBuffer);
-                    }
-                    else
-                    {
-                        Assert.IsTrue(printBuffer.Contains(pattern, StringComparison.Ordinal), 
-                            $"'{pattern}' was not found at the buffer: \r\n" + printBuffer);
-                    }
-                }
-            });
+            await AssertPatterns(unitTestConsole, patterns, shouldMatch: true, onError: (printBuffer, pattern) => $"Regex '{pattern}' was not found in the buffer: \r\n" + printBuffer);
         }
-
 
         /// <summary>
         /// Assert text pattern(s) is NOT present in the console buffer.
@@ -49,27 +30,39 @@ namespace Consolonia.NUnit
         /// <returns></returns>
         public static async Task AssertHasNoText(this UnitTestConsole unitTestConsole, params string[] patterns)
         {
+            await AssertPatterns(unitTestConsole, patterns, shouldMatch: false, onError: (printBuffer, pattern) => $"Regex '{pattern}' was found in the buffer: \r\n" + printBuffer);
+        }
+
+        private static async Task AssertPatterns(UnitTestConsole unitTestConsole, string[] patterns, bool shouldMatch, Func<string, string, string> onError)
+        {
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 string printBuffer = unitTestConsole.PixelBuffer.PrintBuffer();
-
                 foreach (string pattern in patterns)
                 {
-                    if (IsRegexPattern(pattern))
-                    {
-                        var regex = new Regex(StripRegexDelimiters(pattern));
-                        bool found = regex.IsMatch(printBuffer);
-                        Assert.IsFalse(found,
-                            $"Regex '{pattern}' was found at the buffer: \r\n" + printBuffer);
-                    }
+                    if (shouldMatch)
+                        Assert.IsTrue(IsMatch(printBuffer, pattern), onError(printBuffer, pattern));
                     else
-                    {
-                        Assert.IsFalse(printBuffer.Contains(pattern, StringComparison.Ordinal),
-                            $"'{pattern}' was found at the buffer: \r\n" + printBuffer);
-                    }
+                        Assert.IsFalse(IsMatch(printBuffer, pattern), onError(printBuffer, pattern));
                 }
             });
+
         }
+
+        private static bool IsMatch(string printBuffer, string pattern)
+        {
+            if (IsRegexPattern(pattern))
+            {
+                var regex = new Regex(StripRegexDelimiters(pattern));
+                return regex.IsMatch(printBuffer);
+            }
+            else
+            {
+                return printBuffer.Contains(pattern, StringComparison.Ordinal);
+            }
+        }
+
+
 
         /// <summary>
         /// Determines if a pattern is a regex based on /pattern/ delimiter syntax.
@@ -80,9 +73,7 @@ namespace Consolonia.NUnit
         {
             return pattern.Length >= 3 &&
                    pattern.StartsWith('/') &&
-                   pattern.EndsWith('/') &&
-                   !pattern.StartsWith("//", StringComparison.Ordinal) &&
-                   !pattern.EndsWith("//", StringComparison.Ordinal);
+                   pattern.EndsWith('/');
         }
 
         /// <summary>
