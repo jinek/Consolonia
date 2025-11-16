@@ -15,7 +15,6 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             InitializeComponent();
             var fonts = new FontsViewModel();
             DataContext = fonts;
-            Fonts.SelectedIndex = 0;
         }
 
     }

@@ -9,7 +9,7 @@ namespace Consolonia.NUnit
     public static class TestHelpers
     {
         /// <summary>
-        /// Assert text is present in the console buffer.
+        /// Assert text pattern(s) is present in the console buffer.
         /// Patterns starting and ending with '/' are treated as regex (e.g., /pattern/).
         /// </summary>
         /// <param name="unitTestConsole"></param>
@@ -41,7 +41,7 @@ namespace Consolonia.NUnit
 
 
         /// <summary>
-        /// Assert text poattern is NOT present in the console buffer.
+        /// Assert text pattern(s) is NOT present in the console buffer.
         /// Patterns starting and ending with '/' are treated as regex (e.g., /pattern/).
         /// </summary>
         /// <param name="unitTestConsole"></param>
