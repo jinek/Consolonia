@@ -1,5 +1,5 @@
 using System;
-using System.Reactive.Joins;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -10,30 +10,66 @@ namespace Consolonia.NUnit
     public static class TestHelpers
     {
         /// <summary>
-        /// Assert text pattern(s) is present in the console buffer.
-        /// Patterns starting and ending with '/' are treated as regex (e.g., /pattern/).
+        /// Assert text pattern(s) are present in the console buffer.
         /// </summary>
         /// <param name="unitTestConsole"></param>
-        /// <param name="patterns">Patterns to search for. Use /pattern/ syntax for regex.</param>
+        /// <param name="patterns">Patterns to search for. </param>
         /// <returns></returns>
         public static async Task AssertHasText(this UnitTestConsole unitTestConsole, params string[] patterns)
         {
-            await AssertPatterns(unitTestConsole, patterns, shouldMatch: true, onError: (printBuffer, pattern) => $"Regex '{pattern}' was not found in the buffer: \r\n" + printBuffer);
+            await AssertPatterns(unitTestConsole, 
+                patterns, 
+                isRegex: false, 
+                shouldMatch: true, 
+                onError: (printBuffer, pattern) => $"Regex '{pattern}' was not found in the buffer: \r\n" + printBuffer);
         }
 
         /// <summary>
-        /// Assert text pattern(s) is NOT present in the console buffer.
-        /// Patterns starting and ending with '/' are treated as regex (e.g., /pattern/).
+        /// Assert text pattern(s) are NOT present in the console buffer.
         /// </summary>
         /// <param name="unitTestConsole"></param>
-        /// <param name="patterns">Patterns to search for. Use /pattern/ syntax for regex.</param>
+        /// <param name="patterns">Patterns to search for.</param>
         /// <returns></returns>
         public static async Task AssertHasNoText(this UnitTestConsole unitTestConsole, params string[] patterns)
         {
-            await AssertPatterns(unitTestConsole, patterns, shouldMatch: false, onError: (printBuffer, pattern) => $"Regex '{pattern}' was found in the buffer: \r\n" + printBuffer);
+            await AssertPatterns(unitTestConsole, 
+                patterns, 
+                isRegex: false, 
+                shouldMatch: false, 
+                onError: (printBuffer, pattern) => $"Regex '{pattern}' was found in the buffer: \r\n" + printBuffer);
         }
 
-        private static async Task AssertPatterns(UnitTestConsole unitTestConsole, string[] patterns, bool shouldMatch, Func<string, string, string> onError)
+        /// <summary>
+        /// Assert text pattern(s) as regular expressions are present in the console buffer.
+        /// </summary>
+        /// <param name="unitTestConsole"></param>
+        /// <param name="regexPatterns">Regular expressions to search for.</param>
+        /// <returns></returns>
+        public static async Task AssertHasMatch(this UnitTestConsole unitTestConsole, [StringSyntax(StringSyntaxAttribute.Regex)] params string[] regexPatterns)
+        {
+            await AssertPatterns(unitTestConsole, 
+                regexPatterns, 
+                isRegex: true, 
+                shouldMatch: true, 
+                onError: (printBuffer, pattern) => $"Regex '{pattern}' was not found in the buffer: \r\n" + printBuffer);
+        }
+
+        /// <summary>
+        /// Assert text pattern(s) as regular expressions are NOT present in the console buffer.
+        /// </summary>
+        /// <param name="unitTestConsole"></param>
+        /// <param name="regexPatterns">Regular expressions to search for. </param>
+        /// <returns></returns>
+        public static async Task AssertHasNoMatch(this UnitTestConsole unitTestConsole, [StringSyntax(StringSyntaxAttribute.Regex)] params string[] regexPatterns)
+        {
+            await AssertPatterns(unitTestConsole, 
+                regexPatterns, 
+                isRegex: true, 
+                shouldMatch: false, 
+                onError: (printBuffer, pattern) => $"Regex '{pattern}' was found in the buffer: \r\n" + printBuffer);
+        }
+
+        private static async Task AssertPatterns(UnitTestConsole unitTestConsole, string[] patterns, bool isRegex, bool shouldMatch, Func<string, string, string> onError)
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
@@ -41,19 +77,19 @@ namespace Consolonia.NUnit
                 foreach (string pattern in patterns)
                 {
                     if (shouldMatch)
-                        Assert.IsTrue(IsMatch(printBuffer, pattern), onError(printBuffer, pattern));
+                        Assert.IsTrue(IsMatch(printBuffer, isRegex, pattern), onError(printBuffer, pattern));
                     else
-                        Assert.IsFalse(IsMatch(printBuffer, pattern), onError(printBuffer, pattern));
+                        Assert.IsFalse(IsMatch(printBuffer, isRegex, pattern), onError(printBuffer, pattern));
                 }
             });
 
         }
 
-        private static bool IsMatch(string printBuffer, string pattern)
+        private static bool IsMatch(string printBuffer, bool isRegex, string pattern)
         {
-            if (IsRegexPattern(pattern))
+            if (isRegex)
             {
-                var regex = new Regex(StripRegexDelimiters(pattern));
+                var regex = new Regex(pattern);
                 return regex.IsMatch(printBuffer);
             }
             else
@@ -61,28 +97,5 @@ namespace Consolonia.NUnit
                 return printBuffer.Contains(pattern, StringComparison.Ordinal);
             }
         }
-
-
-
-        /// <summary>
-        /// Determines if a pattern is a regex based on /pattern/ delimiter syntax.
-        /// </summary>
-        /// <param name="pattern">Pattern to check</param>
-        /// <returns>True if pattern starts and ends with '/' (and is not '//')</returns>
-        private static bool IsRegexPattern(string pattern)
-        {
-            return pattern.Length >= 3 &&
-                   pattern.StartsWith('/') &&
-                   pattern.EndsWith('/');
-        }
-
-        /// <summary>
-        /// Strips the /pattern/ delimiters from a regex pattern.
-        /// </summary>
-        private static string StripRegexDelimiters(string pattern)
-        {
-            return pattern[1..^1];
-        }
-
     }
 }

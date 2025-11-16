@@ -12,28 +12,28 @@ namespace Consolonia.Gallery.Tests
         [Test]
         public async Task PerformSingleTest()
         {
-            await UITest.AssertHasText(
-                "/☐.*Unchecked/",
-                "/🗹.*Checked/",
-                @"/■.*Indeterminate/",
-                "/Disabled/",
-                "/☐.*Three State: Unchecked/",
-                "/🗹.*Three State: Checked/",
-                @"/■.*Three State: Indeterminate/",
-                @"/■.*Three State: Disabled/"
+            await UITest.AssertHasMatch(
+                "☐.*Unchecked",
+                "🗹.*Checked",
+                "■.*Indeterminate",
+                "Disabled",
+                "☐.*Three State: Unchecked",
+                "🗹.*Three State: Checked",
+                "■.*Three State: Indeterminate",
+                "■.*Three State: Disabled"
             );
 
             for (int i = 0; i < 6; i++) await UITest.KeyInput(Key.Space, Key.Tab);
 
-            await UITest.AssertHasText(
-                "/🗹.*Unchecked/",
-                "/☐.*Checked/",
-                "/☐.*Indeterminate/",
-                "/Disabled/",
-                "/🗹.*Three State: Unchecked/",
-                @"/■.*Three State: Checked/",
-                "/☐.*Three State: Indeterminate/",
-                @"/■.*Three State: Disabled/"
+            await UITest.AssertHasMatch(
+                "🗹.*Unchecked",
+                "☐.*Checked",
+                "☐.*Indeterminate",
+                "Disabled",
+                "🗹.*Three State: Unchecked",
+                "■.*Three State: Checked",
+                "☐.*Three State: Indeterminate",
+                "■.*Three State: Disabled"
             );
         }
     }

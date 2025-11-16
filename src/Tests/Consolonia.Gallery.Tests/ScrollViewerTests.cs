@@ -16,7 +16,7 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(30, Key.Right);
 
             // Checking cow eyes visible
-            await UITest.AssertHasText(@"/\(o\)  \(o  \}/");
+            await UITest.AssertHasText(@"\___   (o)  (o  } ");
         }
     }
 }
