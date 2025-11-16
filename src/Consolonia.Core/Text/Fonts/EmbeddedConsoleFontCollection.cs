@@ -82,7 +82,7 @@ namespace Consolonia.Core.Text.Fonts
             }
 
             return false;
-        } 
+        }
 
         public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight,
             FontStretch fontStretch, string familyName, CultureInfo culture, out Typeface typeface)
@@ -94,7 +94,7 @@ namespace Consolonia.Core.Text.Fonts
                     return true;
                 }
 
-            typeface = default!;
+            typeface = new Typeface();
             return false;
         }
 
