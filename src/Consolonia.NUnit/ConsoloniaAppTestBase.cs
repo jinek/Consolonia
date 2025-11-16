@@ -27,6 +27,19 @@ namespace Consolonia.NUnit
             _size = size;
         }
 
+        protected virtual AppBuilder CreateAppBuilder()
+        {
+            return AppBuilder.Configure<TApp>()
+                .UseConsole(UITest)
+                .UseConsolonia()
+                .UseConsoleColorMode(new RgbConsoleColorMode())
+                .With<IPlatformSettings>(new ConsoloniaPlatformSettings
+                {
+                    UnsafeInput = false,
+                    UnsafeRendering = false
+                })
+                .LogToException();
+        }
 
 #pragma warning disable CA1819 // todo: provide a solution
         protected string[] Args { get; init; }
@@ -47,17 +60,7 @@ namespace Consolonia.NUnit
             {
                 _disposeTaskCompletionSource = new TaskCompletionSource();
                 _scope = AvaloniaLocator.EnterScope();
-                _lifetime = ApplicationStartup.CreateLifetime(AppBuilder.Configure<TApp>()
-                    .UseConsole(UITest)
-                    .UseConsolonia()
-                    .WithConsoleFonts()
-                    .UseConsoleColorMode(new RgbConsoleColorMode())
-                    .With<IPlatformSettings>(new ConsoloniaPlatformSettings
-                    {
-                        UnsafeInput = false,
-                        UnsafeRendering = false
-                    })
-                    .LogToException(), Args);
+                _lifetime = ApplicationStartup.CreateLifetime(CreateAppBuilder(), Args);
                 UITest.SetupLifetime(_lifetime);
                 setupTaskSource.SetResult();
                 _lifetime.Start(Args);

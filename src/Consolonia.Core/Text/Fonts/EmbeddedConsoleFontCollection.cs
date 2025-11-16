@@ -11,7 +11,6 @@ using Avalonia.Platform;
 
 namespace Consolonia.Core.Text.Fonts
 {
-#pragma warning disable CA1310 // Specify StringComparison for correctness
     public class EmbeddedConsoleFontCollection : IFontCollection
     {
         private readonly List<FontFamily> _fontFamilies = new();
@@ -83,7 +82,8 @@ namespace Consolonia.Core.Text.Fonts
             }
 
             return false;
-        } // Resharper disable AssignNullToNotNullAttribute
+        } 
+
         public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight,
             FontStretch fontStretch, string familyName, CultureInfo culture, out Typeface typeface)
         {
@@ -94,10 +94,9 @@ namespace Consolonia.Core.Text.Fonts
                     return true;
                 }
 
-            typeface = default;
+            typeface = default!;
             return false;
         }
-        // Resharper enable AssignNullToNotNullAttribute
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -157,18 +156,9 @@ namespace Consolonia.Core.Text.Fonts
                     _fontFamilies.Clear();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
                 _disposedValue = true;
             }
         }
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~EmbeddedConsoleFontCollection()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
 
         public void Dispose()
         {

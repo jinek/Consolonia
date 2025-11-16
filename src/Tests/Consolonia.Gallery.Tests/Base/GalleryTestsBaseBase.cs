@@ -8,6 +8,7 @@ using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Gallery.View;
 using Consolonia.NUnit;
 using NUnit.Framework;
+using Consolonia.Fonts;
 
 namespace Consolonia.Gallery.Tests.Base
 {
@@ -19,6 +20,12 @@ namespace Consolonia.Gallery.Tests.Base
         {
             Args = new string[2];
             Args[1] = GetType().Name[..^5];
+        }
+
+        protected override AppBuilder CreateAppBuilder()
+        {
+            return base.CreateAppBuilder()
+                .WithConsoleFonts();
         }
 
         [OneTimeSetUp]

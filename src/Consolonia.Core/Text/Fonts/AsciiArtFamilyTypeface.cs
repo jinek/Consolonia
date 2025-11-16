@@ -24,13 +24,13 @@ namespace Consolonia.Core.Text.Fonts
 
         public IGlyphTypeface PrimaryTypeface => _typefaces[_typefaces.Keys.Max()];
 
-        PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
-            Color foreground)
+        void IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
+            Color foreground, out PixelRect rectToRefresh)
         {
             IGlyphTypeface typeface = GetTypeface((int)glyphRun.FontRenderingEmSize);
             var typefaceDrawing = typeface as IGlyphRunRender;
             ArgumentNullException.ThrowIfNull(typefaceDrawing);
-            return typefaceDrawing.DrawGlyphRun(context, position, glyphRun, foreground);
+            typefaceDrawing.DrawGlyphRun(context, position, glyphRun, foreground, out rectToRefresh);
         }
 
         public string FamilyName { get; init; }

@@ -14,7 +14,7 @@ namespace Consolonia.Core.Text.Fonts
         /// <param name="glyphRun"></param>
         /// <param name="foreground"></param>
         /// <returns>recttorefresh</returns>
-        PixelRect DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
-            Color foreground);
+        void DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
+            Color foreground, out PixelRect rectToRefresh);
     }
 }

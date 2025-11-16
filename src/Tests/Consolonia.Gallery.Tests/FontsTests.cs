@@ -26,7 +26,7 @@ namespace Consolonia.Gallery.Tests
         public async Task DisplaysWideTermText()
         {
             await SelectFont("WideTerm");
-            await UITest.AssertHasRawText("Ｈ️ｅ️ｌ️ｌ️ｏ️  Ｗ️ｏ️ｒ️ｌ️ｄ️！️");
+            await UITest.AssertHasText("Ｈ️ｅ️ｌ️ｌ️ｏ️  Ｗ️ｏ️ｒ️ｌ️ｄ️！️");
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace Consolonia.Gallery.Tests
         {
             await SelectFont("Braille");
 
-            await UITest.AssertHasRawText(
+            await UITest.AssertHasText(
                 "⣇⣸ ⢀⡀ ⡇ ⡇ ⢀⡀   ⡇⢸ ⢀⡀ ⡀⣀ ⡇ ⢀⣸ ⡇",
                 "⠇⠸ ⠣⠭ ⠣ ⠣ ⠣⠜   ⠟⠻ ⠣⠜ ⠏  ⠣ ⠣⠼ ⠅");
         }
@@ -43,7 +43,7 @@ namespace Consolonia.Gallery.Tests
         public async Task DisplaysCacaFontText()
         {
             await SelectFont("Doom");
-            await UITest.AssertHasRawText(
+            await UITest.AssertHasText(
                 @" _   _       _ _         _    _             _     _ ",
                 @"| | | |     | | |       | |  | |           | |   | |",
                 @"| |_| | ___ | | | ___   | |  | |  ___  _ __| | __| |",

@@ -49,8 +49,8 @@ namespace Consolonia.Core.Text.Fonts
         /// </summary>
         public OldLayoutMode OldLayoutMode { get; set; } = OldLayoutMode.None;
 
-        PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
-            Color foreground)
+        void IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
+            Color foreground, out PixelRect rectToRefresh)
         {
             bool smushing = LayoutMode.HasFlag(LayoutMode.Smush) || LayoutMode.HasFlag(LayoutMode.Kern);
             PixelPoint startPosition = position;
@@ -75,15 +75,13 @@ namespace Consolonia.Core.Text.Fonts
                         iChar += symbol.Width;
                     }
 
-                    // advance to next line
                     pos = pos.WithY(pos.Y + 1);
                 }
 
-                // advance glyph width, reset position height
                 pos = pos.WithX(pos.X + (ushort)glyphInfo.GlyphAdvance).WithY(position.Y);
             }
 
-            return new PixelRect(startPosition, new PixelSize(pos.X - startPosition.X, Metrics.DesignEmHeight));
+            rectToRefresh  =new PixelRect(startPosition, new PixelSize(pos.X - startPosition.X, Metrics.DesignEmHeight));
         }
 
         public string FamilyName { get; init; }
@@ -221,7 +219,6 @@ namespace Consolonia.Core.Text.Fonts
                     continue;
                 }
 
-                // Calculate maximum overlap between glyphs
                 int maxOverlap = CalculateMaxOverlap(leftGlyph, rightGlyph);
 
                 // Advance is the width minus the overlap; clamp to avoid underflow
@@ -231,7 +228,6 @@ namespace Consolonia.Core.Text.Fonts
                 advances[i - 1] = (byte)advance;
             }
 
-            // last glyph advance is its full width
             advances[^1] = glyphs[^1].Width;
             return advances;
         }
@@ -254,10 +250,7 @@ namespace Consolonia.Core.Text.Fonts
                 int leftEnd = lineIdx < leftGlyph.Ends.Length ? leftGlyph.Ends[lineIdx] : -1;
                 int rightStart = lineIdx < rightGlyph.Starts.Length ? rightGlyph.Starts[lineIdx] : rightLine.Length;
 
-                // Calculate SpaceAfter (spaces after last character in left glyph)
                 int spaceAfter = leftEnd < 0 ? leftLine.Length : leftLine.Length - leftEnd - 1;
-
-                // Calculate SpaceBefore (spaces before first character in right glyph)
                 int spaceBefore = rightStart >= rightLine.Length ? rightLine.Length : rightStart;
 
                 // Base move is just the sum of whitespace margins
@@ -307,7 +300,6 @@ namespace Consolonia.Core.Text.Fonts
                 return '\0';
             }
 
-            // Check smush rules
             if (LayoutMode.HasFlag(LayoutMode.Equal))
                 if (leftChar == rightChar)
                     return leftChar;
@@ -353,7 +345,6 @@ namespace Consolonia.Core.Text.Fonts
             return '\0';
         }
 
-        // Resharper disable AssignNullToNotNullAttribute
         public bool TryGetGlyphMetrics(ushort glyph, out GlyphMetrics metrics)
         {
             metrics = new GlyphMetrics
@@ -368,7 +359,7 @@ namespace Consolonia.Core.Text.Fonts
 
         public bool TryGetTable(uint tag, out byte[] table)
         {
-            table = null;
+            table = Array.Empty<byte>();
             return false;
         }
 
@@ -378,21 +369,10 @@ namespace Consolonia.Core.Text.Fonts
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
                 }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
                 _disposedValue = true;
             }
         }
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~AsciiArtTypeface()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
 
         public void Dispose()
         {
@@ -400,6 +380,5 @@ namespace Consolonia.Core.Text.Fonts
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        // Resharper restore AssignNullToNotNullAttribute
     }
 }

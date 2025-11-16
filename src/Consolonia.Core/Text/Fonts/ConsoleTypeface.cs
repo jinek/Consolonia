@@ -173,8 +173,8 @@ namespace Consolonia.Core.Text.Fonts
             return shapedBuffer;
         }
 
-        PixelRect IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
-            Color foreground)
+        void IGlyphRunRender.DrawGlyphRun(DrawingContextImpl context, PixelPoint position, GlyphRunImpl glyphRun,
+            Color foreground, out PixelRect rectToRefresh)
         {
             PixelPoint startPosition = position;
             foreach (GlyphInfo glyphInfo in glyphRun.GlyphInfos)
@@ -205,7 +205,7 @@ namespace Consolonia.Core.Text.Fonts
                 }
             }
 
-            return new PixelRect(startPosition, new PixelSize(position.X - startPosition.X, 1));
+            rectToRefresh = new PixelRect(startPosition, new PixelSize(position.X - startPosition.X, 1));
         }
 
 #pragma warning restore CA1822 // Mark members as static

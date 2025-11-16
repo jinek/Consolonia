@@ -244,7 +244,7 @@ namespace Consolonia.Core.Tests
 
             // Assert
             Assert.IsFalse(result);
-            Assert.IsNull(table);
+            Assert.IsTrue(table.Length == 0);
         }
 
         [Test]

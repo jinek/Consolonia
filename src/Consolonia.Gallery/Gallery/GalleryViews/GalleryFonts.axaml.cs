@@ -28,14 +28,14 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     [ObservableObject]
     public partial class FontsViewModel
     {
-        [ObservableProperty] private List<FontStyle> _fontStyles = new()
+        public List<FontStyle> FontStyles = new()
         {
             FontStyle.Normal,
             FontStyle.Italic,
             FontStyle.Oblique
         };
 
-        [ObservableProperty] private List<FontWeight> _fontWeights = new()
+        public List<FontWeight> FontWeights = new()
         {
             FontWeight.Thin,
             FontWeight.ExtraLight,
@@ -49,7 +49,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             FontWeight.Heavy
         };
 
-        [ObservableProperty] private ObservableCollection<FontViewModel> _fonts = new();
+        public ObservableCollection<FontViewModel> Fonts = new();
 
         [ObservableProperty] private FontViewModel _selectedFont;
 
@@ -60,7 +60,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public FontsViewModel()
         {
             Fonts.Add(new FontViewModel
-                { Font = "ConsoleDefault", FontFamily = FontFamily.Parse("ConsoleDefault"), FontSize = 1 });
+            { Font = "ConsoleDefault", FontFamily = FontFamily.Parse("ConsoleDefault"), FontSize = 1 });
             Fonts.Add(new FontViewModel("WideTerm", 1));
             Fonts.Add(new FontViewModel("Braille", 2));
             Fonts.Add(new FontViewModel("Circle", 1));
@@ -87,12 +87,14 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
     [ObservableObject]
     public partial class FontViewModel
     {
-        [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplayName))]
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(DisplayName))]
         private string _font;
 
         [ObservableProperty] private FontFamily _fontFamily;
 
-        [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplayName))]
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(DisplayName))]
         private int _fontSize;
 
         [ObservableProperty] private FontStyle _style;

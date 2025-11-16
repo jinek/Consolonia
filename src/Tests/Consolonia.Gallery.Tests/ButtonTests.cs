@@ -13,7 +13,7 @@ namespace Consolonia.Gallery.Tests
         public async Task PerformSingleTest()
         {
             await UITest.KeyInput(Key.Enter);
-            await UITest.AssertHasText("Standard _?XAML Button",
+            await UITest.AssertHasText("/Standard _?XAML Button/",
                 "Custom",
                 "Disabled",
                 "Toggle Button",
