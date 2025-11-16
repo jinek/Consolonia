@@ -1,7 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:console="https://github.com/jinek/consolonia">
-    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <ControlTheme x:Key="{x:Type ProgressBar}"
                   TargetType="ProgressBar">
         <Setter Property="BorderBrush"
