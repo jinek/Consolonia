@@ -14,7 +14,7 @@ namespace Consolonia.Gallery.Tests
         {
             await UITest.AssertHasText("First", "Second");
             await UITest.KeyInput(Key.Enter);
-            await UITest.AssertHasText("Standard Menu Item", @"Ctrl\+A");
+            await UITest.AssertHasMatch("Standard Menu Item", @"Ctrl\+A");
             await UITest.KeyInput(Key.Down, Key.Right);
             await UITest.AssertHasText("Submenu 1");
             await UITest.KeyInput(Key.Escape);

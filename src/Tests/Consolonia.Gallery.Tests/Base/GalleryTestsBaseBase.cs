@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Fonts;
 using Consolonia.Gallery.View;
 using Consolonia.NUnit;
 using NUnit.Framework;
@@ -19,6 +20,12 @@ namespace Consolonia.Gallery.Tests.Base
         {
             Args = new string[2];
             Args[1] = GetType().Name[..^5];
+        }
+
+        protected override AppBuilder CreateAppBuilder()
+        {
+            return base.CreateAppBuilder()
+                .WithConsoleFonts();
         }
 
         [OneTimeSetUp]

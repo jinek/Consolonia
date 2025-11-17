@@ -49,7 +49,6 @@ namespace Consolonia.Core.Infrastructure
         ///     Must return <see cref="GlyphRunImpl" />
         /// </summary>
         DrawGlyphRunNotSupported = 17,
-        DrawGlyphRunWithNonDefaultFontRenderingEmSize = 3,
         PushClipWithRoundedRectNotSupported = 2,
         PushOpacityNotSupported = 7,
         TransformLineWithRotationNotSupported = 16,

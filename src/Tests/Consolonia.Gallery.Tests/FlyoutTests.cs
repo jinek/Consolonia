@@ -13,7 +13,7 @@ namespace Consolonia.Gallery.Tests
         public async Task PerformSingleTest()
         {
             await UITest.KeyInput(Key.Enter);
-            await UITest.AssertHasText(@"Item 1\s+⏵",
+            await UITest.AssertHasMatch(@"Item 1\s+⏵",
                 "Item 2");
             await UITest.KeyInput(Key.Right);
             await UITest.AssertHasText("Subitem 1",

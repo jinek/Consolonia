@@ -191,7 +191,6 @@ namespace Consolonia
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
                     _cts?.Dispose();
                     _cts = null;
                     if (MainWindow != null && MainWindow.PlatformImpl != null)
@@ -202,18 +201,9 @@ namespace Consolonia
                     }
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
                 _disposedValue = true;
             }
         }
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~ConsoloniaLifetime()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
 
         public void Dispose()
         {

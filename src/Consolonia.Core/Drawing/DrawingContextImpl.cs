@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Controls.Brushes;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
+using Consolonia.Core.Text.Fonts;
 using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
@@ -262,13 +262,6 @@ namespace Consolonia.Core.Drawing
         public void DrawGlyphRun(IBrush foreground, IGlyphRunImpl glyphRun)
         {
             if (glyphRun.FontRenderingEmSize.IsNearlyEqual(0)) return;
-            if (!glyphRun.FontRenderingEmSize.IsNearlyEqual(1))
-            {
-                ConsoloniaPlatform.RaiseNotSupported(
-                    NotSupportedRequestCode.DrawGlyphRunWithNonDefaultFontRenderingEmSize, this, foreground,
-                    glyphRun);
-                return;
-            }
 
             if (glyphRun is not GlyphRunImpl glyphRunImpl)
             {
@@ -287,25 +280,13 @@ namespace Consolonia.Core.Drawing
                     return;
             }
 
-            var glyphTypeface = (ConsoleTypeface)glyphRun.GlyphTypeface;
+            var glyphTypefaceRender = (IGlyphRunRender)glyphRun.GlyphTypeface;
             Color foregroundColor = solidColorBrush.Color;
             var startPosition = new Point().Transform(Transform).ToPixelPoint();
-            PixelPoint position = startPosition;
+            glyphTypefaceRender.DrawGlyphRun(this, startPosition, glyphRunImpl, foregroundColor,
+                out PixelRect rectToRefresh);
 
-            foreach (GlyphInfo glyphInfo in glyphRunImpl.GlyphInfos)
-                if (glyphInfo.GlyphAdvance > 0)
-                {
-                    DrawGlyphInfoInternal(foregroundColor, glyphInfo, glyphTypeface, position);
-                    position = position.WithX(position.X + (ushort)glyphInfo.GlyphAdvance);
-                }
-
-            // mark the dirty region, start to end, position is after the last drawn char so
-            // already aligned on x; y we need to add 1 to give the rect height.
-            var rectToRefresh = new PixelRect(startPosition,
-                new PixelSize(position.X - startPosition.X,
-                    position.Y - startPosition.Y + 1));
-            PixelRect intersectRect = CurrentClip.Intersect(rectToRefresh);
-            _consoleWindowImpl.DirtyRegions.AddRect(intersectRect);
+            _consoleWindowImpl.DirtyRegions.AddRect(rectToRefresh);
         }
 
         public IDrawingContextLayerImpl CreateLayer(PixelSize size)
@@ -822,35 +803,9 @@ namespace Consolonia.Core.Drawing
             }
         }
 
-        private void DrawGlyphInfoInternal(Color foregroundColor, GlyphInfo glyphInfo, ConsoleTypeface glyphTypeface,
-            PixelPoint position)
+        public void DrawPixel(Pixel pixel, PixelPoint position)
         {
-            // NOTE: we clip at the position of the wide char. If we attempt to clip for the width of the wide
-            // char it introduces artifacts when a wide char is partially clipped.
-            string glyph = glyphTypeface.GetGlyphText(glyphInfo.GlyphIndex);
-            if (glyph == "\t")
-            {
-                var symbol = new Symbol(' ', 1);
-                var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style,
-                    glyphTypeface.Weight);
-
-                for (int i = 0; i < glyphInfo.GlyphAdvance; i++)
-                {
-                    if (CurrentClip.ContainsExclusive(position))
-                        _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
-                    position = position.WithX(position.X + 1);
-                }
-            }
-            else
-            {
-                if (CurrentClip.ContainsExclusive(position))
-                {
-                    var symbol = new Symbol(glyph, (byte)glyphInfo.GlyphAdvance);
-                    var newPixel = new Pixel(symbol, foregroundColor, glyphTypeface.Style,
-                        glyphTypeface.Weight);
-                    _pixelBuffer[position] = _pixelBuffer[position].Blend(newPixel);
-                }
-            }
+            if (CurrentClip.ContainsExclusive(position)) _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
         }
 
         /// <summary>

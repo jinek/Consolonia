@@ -65,7 +65,7 @@ namespace Consolonia.NUnit
                         new PixelForeground(new Symbol(grapheme.Glyph), foreground, style: style, weight: weight,
                             textDecoration: textDecoration),
                         new PixelBackground(background));
-                i++;
+                i += grapheme.Glyph.MeasureText();
             }
         }
 
