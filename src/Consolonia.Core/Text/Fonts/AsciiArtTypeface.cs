@@ -24,6 +24,7 @@ namespace Consolonia.Core.Text.Fonts
 
         /// codepoint to glyph
         private readonly Dictionary<uint, AsciiArtGlyph> _glyphs = new();
+
         private readonly Dictionary<ushort, uint> _indexToCodepoint = new();
         private bool _disposedValue;
 

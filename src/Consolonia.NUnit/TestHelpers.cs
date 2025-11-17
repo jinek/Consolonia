@@ -46,7 +46,8 @@ namespace Consolonia.NUnit
         /// <param name="regexPatterns">Regular expressions to search for.</param>
         /// <returns></returns>
         public static async Task AssertHasMatch(this UnitTestConsole unitTestConsole,
-            [StringSyntax(StringSyntaxAttribute.Regex)] params string[] regexPatterns)
+            [StringSyntax(StringSyntaxAttribute.Regex)]
+            params string[] regexPatterns)
         {
             await AssertPatterns(unitTestConsole,
                 regexPatterns,
@@ -62,7 +63,8 @@ namespace Consolonia.NUnit
         /// <param name="regexPatterns">Regular expressions to search for. </param>
         /// <returns></returns>
         public static async Task AssertHasNoMatch(this UnitTestConsole unitTestConsole,
-            [StringSyntax(StringSyntaxAttribute.Regex)] params string[] regexPatterns)
+            [StringSyntax(StringSyntaxAttribute.Regex)]
+            params string[] regexPatterns)
         {
             await AssertPatterns(unitTestConsole,
                 regexPatterns,
