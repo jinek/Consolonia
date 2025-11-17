@@ -9,6 +9,7 @@ using Consolonia.Core.Controls;
 using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
+using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 
 // ReSharper disable UnusedMember.Global //todo: how to disable it for public methods?
@@ -70,7 +71,7 @@ namespace Consolonia
                 .UseWindowingSubsystem(() => new ConsoloniaPlatform().Initialize(), nameof(ConsoloniaPlatform))
                 .UseRenderingSubsystem(() =>
                 {
-                    var consoloniaRenderInterface = new ConsoloniaRenderInterface();
+                    var consoloniaRenderInterface = new ConsoloniaRenderInterface(new DummyBitmapPlatform());
 
                     AvaloniaLocator.CurrentMutable
                         .Bind<IPlatformRenderInterface>().ToConstant(consoloniaRenderInterface);

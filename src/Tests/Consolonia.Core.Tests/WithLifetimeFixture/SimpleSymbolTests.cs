@@ -3,8 +3,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests.WithLifetimeFixture
@@ -159,22 +159,22 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void JsonSerialization()
         {
             var symbol = new Symbol('a');
-            string json = JsonConvert.SerializeObject(symbol);
-            var deserializedSymbol = JsonConvert.DeserializeObject<Symbol>(json);
+            string json = JsonSerializer.Serialize(symbol);
+            var deserializedSymbol = JsonSerializer.Deserialize<Symbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));
         }
 
         [Test]
         [TestCase("👍")]
         [TestCase("👨‍👩‍👧‍👦")]
-        [TestCase("“")]
-        [TestCase("”")]
+        [TestCase("\u201c")]
+        [TestCase("\u201d")]
         [TestCase("\"")]
         public void JsonSerializationCases(string text)
         {
             var symbol = new Symbol(text);
-            string json = JsonConvert.SerializeObject(symbol);
-            var deserializedSymbol = JsonConvert.DeserializeObject<Symbol>(json);
+            string json = JsonSerializer.Serialize(symbol);
+            var deserializedSymbol = JsonSerializer.Deserialize<Symbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));
         }
 
@@ -182,8 +182,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void JsonSerializationDefault()
         {
             var symbol = new Symbol();
-            string json = JsonConvert.SerializeObject(symbol);
-            var deserializedSymbol = JsonConvert.DeserializeObject<Symbol>(json);
+            string json = JsonSerializer.Serialize(symbol);
+            var deserializedSymbol = JsonSerializer.Deserialize<Symbol>(json);
             Assert.That(deserializedSymbol.Equals(symbol));
         }
     }

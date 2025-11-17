@@ -1,20 +1,21 @@
 using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Avalonia.Media;
-using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public class ColorConverter : JsonConverter<Color>
     {
-        public override Color ReadJson(JsonReader reader, Type objectType, Color existingValue, bool hasExistingValue,
-            JsonSerializer serializer)
+        public override Color Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return Color.TryParse(reader.Value!.ToString(), out Color color) ? color : Colors.Transparent;
+            string? value = reader.GetString();
+            return value != null && Color.TryParse(value, out Color color) ? color : Colors.Transparent;
         }
 
-        public override void WriteJson(JsonWriter writer, Color value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, Color value, JsonSerializerOptions options)
         {
-            writer.WriteValue(value!.ToString());
+            writer.WriteStringValue(value.ToString());
         }
     }
 }

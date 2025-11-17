@@ -6,7 +6,7 @@ using Avalonia.Platform;
 using Avalonia.Skia;
 using SkiaSharp;
 
-namespace Consolonia.Core.Drawing
+namespace Consolonia.Platform.Skia
 {
     internal class BitmapImpl : IWriteableBitmapImpl
     {

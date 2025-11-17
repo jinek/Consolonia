@@ -8,12 +8,18 @@ using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
-using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
 {
     internal class ConsoloniaRenderInterface : IPlatformRenderInterface
     {
+        private readonly IBitmapPlatform _bitmapPlatform;
+        
+        public ConsoloniaRenderInterface(IBitmapPlatform bitmapPlatform)
+        {
+            _bitmapPlatform = bitmapPlatform;
+        }
+
         public IGeometryImpl CreateEllipseGeometry(Rect rect)
         {
             throw new NotImplementedException();
@@ -105,40 +111,30 @@ namespace Consolonia.Core.Drawing
         public IWriteableBitmapImpl CreateWriteableBitmap(PixelSize size, Vector dpi, PixelFormat format,
             AlphaFormat alphaFormat)
         {
-            return new BitmapImpl(size.Width, size.Height, format, alphaFormat);
+            return _bitmapPlatform.CreateWriteableBitmap(size, dpi, format, alphaFormat);
         }
 
         public IBitmapImpl LoadBitmap(string fileName)
         {
             using FileStream stream = File.OpenRead(fileName);
-            return new BitmapImpl(stream);
+            return _bitmapPlatform.LoadBitmap(stream);
         }
 
         public IBitmapImpl LoadBitmap(Stream stream)
         {
-            return new BitmapImpl(stream);
+            return _bitmapPlatform.LoadBitmap(stream);
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
             BitmapInterpolationMode interpolationMode)
         {
-            using var skStream = new SKManagedStream(stream);
-            SKBitmap originalBitmap = SKBitmap.Decode(skStream);
-            int width = (int)(height * ((double)originalBitmap.Width / originalBitmap.Height));
-            SKBitmap resizedBitmap =
-                originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
-            return new BitmapImpl(resizedBitmap);
+            return _bitmapPlatform.LoadWriteableBitmapToHeight(stream, height, interpolationMode);
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
             BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
         {
-            using var skStream = new SKManagedStream(stream);
-            SKBitmap originalBitmap = SKBitmap.Decode(skStream);
-            int height = (int)(width * ((double)originalBitmap.Height / originalBitmap.Width));
-            SKBitmap resizedBitmap =
-                originalBitmap.Resize(new SKImageInfo(width, height), (SKFilterQuality)interpolationMode);
-            return new BitmapImpl(resizedBitmap);
+            return _bitmapPlatform.LoadWriteableBitmapToWidth(stream, width, interpolationMode);
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmap(string fileName)
@@ -149,9 +145,7 @@ namespace Consolonia.Core.Drawing
 
         public IWriteableBitmapImpl LoadWriteableBitmap(Stream stream)
         {
-            using var skStream = new SKManagedStream(stream);
-            SKBitmap originalBitmap = SKBitmap.Decode(skStream);
-            return new BitmapImpl(originalBitmap);
+            return _bitmapPlatform.LoadWriteableBitmap(stream);
         }
 
         public IBitmapImpl LoadBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode)
@@ -167,19 +161,14 @@ namespace Consolonia.Core.Drawing
         public IBitmapImpl ResizeBitmap(IBitmapImpl bitmapImpl, PixelSize destinationSize,
             BitmapInterpolationMode interpolationMode)
         {
-            var consoleBitmap = (BitmapImpl)bitmapImpl;
-            return consoleBitmap.Resize(destinationSize, interpolationMode);
+            return _bitmapPlatform.ResizeBitmap(bitmapImpl, destinationSize, interpolationMode);
         }
 
         public IBitmapImpl LoadBitmap(PixelFormat format, AlphaFormat alphaFormat, IntPtr data, PixelSize size,
             Vector dpi, int stride)
         {
-            var info = new SKImageInfo(size.Width, size.Height, SKColorType.Rgb888x, SKAlphaType.Opaque);
-            var bitmap = new SKBitmap();
-            bitmap.InstallPixels(info, data, stride);
-            return new BitmapImpl(bitmap);
+            return _bitmapPlatform.LoadBitmap(format, alphaFormat, data, size, dpi, stride);
         }
-
 
         public IGlyphRunImpl CreateGlyphRun(IGlyphTypeface glyphTypeface, double fontRenderingEmSize,
             IReadOnlyList<GlyphInfo> glyphInfos,
