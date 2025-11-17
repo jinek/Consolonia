@@ -8,7 +8,7 @@ namespace ConsoloniaEdit.Demo.Resources
 
         internal static string LoadSampleFile(string fileName)
         {
-            Stream stream = typeof(ResourceLoader).GetTypeInfo().Assembly.GetManifestResourceStream(SampleFilesPrefix + fileName);
+            Stream? stream = typeof(ResourceLoader).GetTypeInfo().Assembly.GetManifestResourceStream(SampleFilesPrefix + fileName);
 
             if (stream == null)
                 return string.Empty;

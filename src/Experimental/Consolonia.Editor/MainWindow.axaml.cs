@@ -70,7 +70,7 @@ namespace ConsoloniaEdit.Demo
             DataContext = mainWindowVM;
         }
 
-        private void TextMateInstallationOnAppliedTheme(object sender, TextMate.Installation e)
+        private void TextMateInstallationOnAppliedTheme(object? sender, TextMate.Installation e)
         {
             ApplyThemeColorsToEditor(e);
             ApplyThemeColorsToWindow(e);
@@ -151,7 +151,7 @@ namespace ConsoloniaEdit.Demo
             return true;
         }
 
-        private void Caret_PositionChanged(object sender, EventArgs e)
+        private void Caret_PositionChanged(object? sender, EventArgs e)
         {
             _statusTextBlock.Text = string.Format("Line {0} Column {1}",
                 _textEditor.TextArea.Caret.Line,
@@ -165,9 +165,9 @@ namespace ConsoloniaEdit.Demo
             _textMateInstallation.Dispose();
         }
 
-        private void SyntaxModeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SyntaxModeCombo_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
-            Language language = (Language)_syntaxModeCombo.SelectedItem;
+            var language = (Language)_syntaxModeCombo.SelectedItem!;
 
             if (_foldingManager != null)
             {
