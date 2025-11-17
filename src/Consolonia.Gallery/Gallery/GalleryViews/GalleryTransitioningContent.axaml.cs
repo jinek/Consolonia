@@ -15,12 +15,12 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public partial class GalleryTransitioningContent : UserControl
     {
+        public const int DefaultDurationMs = 500;
+
         public GalleryTransitioningContent()
         {
             InitializeComponent();
         }
-
-        public const int DefaultDurationMs = 500;
     }
 
     public class TransitioningContentControlPageViewModel : ViewModelBase
