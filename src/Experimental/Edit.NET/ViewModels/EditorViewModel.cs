@@ -5,7 +5,6 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using AvaloniaEdit.Document;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Consolonia.Controls;
 using EditNET.DataModels;
 using JetBrains.Annotations;
 using ReactiveUI;
@@ -120,7 +119,6 @@ namespace EditNET.ViewModels
             await HandleFileExceptions(async () =>
             {
                 Document = new TextDocument(new StringTextSource(await File.ReadAllTextAsync(path)));
-                Document = new TextDocument(new StringTextSource(await File.ReadAllTextAsync(path)));
             });
 
             Directory.SetCurrentDirectory(Path.GetDirectoryName(path)!);
@@ -142,7 +140,7 @@ namespace EditNET.ViewModels
             return true;
         }
 
-        private static async Task HandleFileExceptions(Func<Task> action)
+        private async Task HandleFileExceptions(Func<Task> action)
         {
             try
             {
@@ -150,7 +148,8 @@ namespace EditNET.ViewModels
             }
             catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
             {
-                await MessageBox.ShowDialog("File Access Exception", exception.Message);
+                await MessageBoxInteraction.Handle(new MessageBoxModel("File Access Exception", exception.Message,
+                    MessageBoxButtons.Ok));
             }
         }
     }
