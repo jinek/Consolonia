@@ -142,9 +142,12 @@ namespace Consolonia.NUnit
                     .ConfigureAwait(true);
                 await _lifetime.MainWindow.PlatformImpl!.Compositor!.RequestCompositionBatchCommitAsync().Processed
                     .ConfigureAwait(true);
-            }, DispatcherPriority.Render).ConfigureAwait(true);
+            }, DispatcherPriority.Default).ConfigureAwait(true);
 
-            await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
+            await Task.Run(async () =>
+            {
+                await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Default);
+            });
         }
 
         public async Task KeyInput(params Key[] keys)

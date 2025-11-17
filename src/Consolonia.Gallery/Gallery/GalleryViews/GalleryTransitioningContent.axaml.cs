@@ -19,6 +19,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         {
             InitializeComponent();
         }
+
+        public const int DefaultDurationMs = 500;
     }
 
     public class TransitioningContentControlPageViewModel : ViewModelBase
@@ -26,7 +28,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private bool _clipToBounds;
 
 
-        private int _duration = 500;
+        private int _duration = GalleryTransitioningContent.DefaultDurationMs;
         private bool _reversed;
 
 

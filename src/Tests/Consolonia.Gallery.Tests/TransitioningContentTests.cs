@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Avalonia.Input;
+using Consolonia.Gallery.Gallery.GalleryViews;
 using Consolonia.Gallery.Tests.Base;
 using Consolonia.NUnit;
 using NUnit.Framework;
@@ -18,7 +19,8 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Space);
-            await Task.Delay(500); // Wait for the animation to finish
+            await Task.Delay(GalleryTransitioningContent.DefaultDurationMs); // Wait for the animation to finish
+            await UITest.WaitRendered();
             await UITest.AssertHasNoText("Lorem ipsum dolor sit");
             await UITest.AssertHasText("Ut enim ad minima ");
         }
