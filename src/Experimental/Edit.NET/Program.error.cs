@@ -18,7 +18,7 @@ namespace EditNET
                 if (args.ExceptionObject is CrashAppException)
                 {
                     Debug.WriteLine("Application is going to crash");
-                    if(Debugger.IsAttached)
+                    if (Debugger.IsAttached)
                         Debugger.Break();
                     return;
                 }
@@ -35,10 +35,10 @@ namespace EditNET
             {
                 if (args.Exception.InnerException is CrashAppException)
                     ThreadPool.QueueUserWorkItem(_ => throw new CrashAppException(args.Exception));
-                    
+
                 args.SetObserved();
-                
-                if(args.Exception.InnerException!.Data.Contains(App.HandledExceptionHackMark))
+
+                if (args.Exception.InnerException!.Data.Contains(App.HandledExceptionHackMark))
                     return;
 
                 if (Debugger.IsAttached)
@@ -48,7 +48,6 @@ namespace EditNET
                 }
 
                 _ = App.ShowApplicationError(args.Exception);
-                
             };
         }
     }

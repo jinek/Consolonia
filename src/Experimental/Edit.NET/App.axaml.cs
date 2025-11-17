@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Reactive;
-using System.Threading;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
@@ -10,9 +8,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Consolonia;
-using Consolonia.Controls;
 using Consolonia.Themes;
-using EditNET.DataModels;
 using EditNET.ViewModels;
 using EditNET.Views;
 using ReactiveUI;
@@ -70,18 +66,18 @@ namespace EditNET
             };
 
             _notificationManager = new WindowNotificationManager(desktopLifetime.MainWindow!);
-            
+
             base.OnFrameworkInitializationCompleted();
 
             HandleDispatcherExceptions();
-            
+
             if (ViewModel.InitialLoadSettingsException != null)
                 ShowNotification("Settings Error",
                     "Failed to load settings: " + ViewModel.InitialLoadSettingsException.Message,
                     NotificationType.Error);
 
             if (!themeLoaded) ShowThemeIncompatible();
-            
+
             Dispatcher.UIThread.Post(async () =>
             {
                 if (desktopLifetime.Args is { Length: > 0 })

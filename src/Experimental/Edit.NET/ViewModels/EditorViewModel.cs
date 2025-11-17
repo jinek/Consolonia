@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaEdit.Document;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -123,8 +122,8 @@ namespace EditNET.ViewModels
                 Document = new TextDocument(new StringTextSource(await File.ReadAllTextAsync(path)));
                 opened = true;
             });
-            
-            if(opened)
+
+            if (opened)
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(path)!);
         }
 
