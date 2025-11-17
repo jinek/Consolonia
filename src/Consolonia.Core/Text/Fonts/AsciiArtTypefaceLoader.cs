@@ -8,7 +8,6 @@ using System.Diagnostics;
 
 namespace Consolonia.Core.Text.Fonts
 {
-
     /// <summary>
     ///     FIGlet font parser and renderer
     ///     Handles TLF (Caca) fonts with tlf2a header
@@ -29,6 +28,9 @@ namespace Consolonia.Core.Text.Fonts
             122, 123, 124, 125, 126,
             196, 214, 220, 228, 246, 252, 223
         ];
+
+        private static readonly Regex AnsiRegex = new(@"\x1B\[[0-9;]*[A-Za-z]",
+            RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         public static AsciiArtTypeface Load(string path)
         {
@@ -214,9 +216,6 @@ namespace Consolonia.Core.Text.Fonts
 
             return typeface;
         }
-
-        private static readonly Regex AnsiRegex = new(@"\x1B\[[0-9;]*[A-Za-z]",
-            RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         public static string ProcessLine(string input)
         {
