@@ -9,6 +9,10 @@
         <RootNamespace>EditNET</RootNamespace>        
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' != 'Debug'">
+        <DefineConstants>$(DefineConstants);HANDLE_CRASH</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\..\Consolonia.AvaloniaEdit\Consolonia.AvaloniaEdit.csproj" />
         <ProjectReference Include="..\..\Consolonia\Consolonia.csproj" />
@@ -30,6 +34,12 @@
         <Compile Update="EditorView.axaml.cs">
             <DependentUpon>EditorView.axaml</DependentUpon>
         </Compile>
+        <Compile Update="App.error.cs">
+          <DependentUpon>App.axaml</DependentUpon>
+        </Compile>
+        <Compile Update="Program.error.cs">
+          <DependentUpon>Program.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
-
+    
 </Project>

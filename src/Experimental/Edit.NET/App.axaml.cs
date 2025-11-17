@@ -6,6 +6,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using Consolonia;
 using Consolonia.Themes;
 using EditNET.ViewModels;
@@ -15,7 +16,7 @@ using Notification = Avalonia.Controls.Notifications.Notification;
 
 namespace EditNET
 {
-    public class App : Application
+    public partial class App : Application
     {
         private WindowNotificationManager? _notificationManager;
 
@@ -52,27 +53,23 @@ namespace EditNET
             MainWindow.Content = new EditorView { DataContext = ViewModel.EditorViewModel };
         }
 
-        public override async void OnFrameworkInitializationCompleted()
+        public override void OnFrameworkInitializationCompleted()
         {
-            bool themeLoaded = false;
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            var desktopLifetime = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
+            bool themeLoaded = LoadUITheme(ViewModel.EditorViewModel.Settings.ConsoloniaTheme);
+            desktopLifetime.MainWindow = new MainWindow
             {
-                themeLoaded = LoadUITheme(ViewModel.EditorViewModel.Settings.ConsoloniaTheme);
-                desktopLifetime.MainWindow = new MainWindow
-                {
-                    DataContext = ViewModel,
-                    RequestedThemeVariant = ViewModel.EditorViewModel.Settings.LightVariant
-                        ? ThemeVariant.Light
-                        : ThemeVariant.Default
-                };
+                DataContext = ViewModel,
+                RequestedThemeVariant = ViewModel.EditorViewModel.Settings.LightVariant
+                    ? ThemeVariant.Light
+                    : ThemeVariant.Default
+            };
 
-                if (desktopLifetime.Args is { Length: > 0 })
-                    await ViewModel.EditorViewModel.OpenFile(desktopLifetime.Args[0]);
-
-                _notificationManager = new WindowNotificationManager(desktopLifetime.MainWindow!);
-            }
+            _notificationManager = new WindowNotificationManager(desktopLifetime.MainWindow!);
 
             base.OnFrameworkInitializationCompleted();
+
+            HandleDispatcherExceptions();
 
             if (ViewModel.InitialLoadSettingsException != null)
                 ShowNotification("Settings Error",
@@ -80,6 +77,12 @@ namespace EditNET
                     NotificationType.Error);
 
             if (!themeLoaded) ShowThemeIncompatible();
+
+            Dispatcher.UIThread.Post(async () =>
+            {
+                if (desktopLifetime.Args is { Length: > 0 })
+                    await ViewModel.EditorViewModel.OpenFile(desktopLifetime.Args[0]);
+            }, DispatcherPriority.ContextIdle);
         }
 
         private void ShowThemeIncompatible()
