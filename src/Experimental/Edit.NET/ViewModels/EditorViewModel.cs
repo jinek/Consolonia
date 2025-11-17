@@ -119,8 +119,8 @@ namespace EditNET.ViewModels
             FilePath = path;
             await HandleFileExceptions(async () =>
             {
-                if (File.Exists(path))
-                    Document = new TextDocument(new StringTextSource(await File.ReadAllTextAsync(path)));
+                Document = new TextDocument(new StringTextSource(await File.ReadAllTextAsync(path)));
+                Document = new TextDocument(new StringTextSource(await File.ReadAllTextAsync(path)));
             });
 
             Directory.SetCurrentDirectory(Path.GetDirectoryName(path)!);

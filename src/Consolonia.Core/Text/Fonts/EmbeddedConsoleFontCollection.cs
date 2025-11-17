@@ -150,7 +150,6 @@ namespace Consolonia.Core.Text.Fonts
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
                     foreach (IGlyphTypeface typeface in _typefaceByUri.Values.Distinct()) typeface.Dispose();
                     _typefaceByUri.Clear();
                     _typefaceByName.Clear();

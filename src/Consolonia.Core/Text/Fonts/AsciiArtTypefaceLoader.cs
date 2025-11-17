@@ -8,7 +8,6 @@ using System.Diagnostics;
 
 namespace Consolonia.Core.Text.Fonts
 {
-#pragma warning disable CA1310 // Specify StringComparison for correctness
 
     /// <summary>
     ///     FIGlet font parser and renderer
@@ -65,16 +64,16 @@ namespace Consolonia.Core.Text.Fonts
             if (parts.Length < 1)
                 throw new InvalidDataException("Invalid FIGlet header - missing height parameter");
 
-            // ReSharper disable UnusedVariable
             typeface.Height = int.Parse(parts[0]);
             int baseline = parts.Length > 1 ? int.Parse(parts[1]) : 0;
             typeface.Width = parts.Length > 2 ? int.Parse(parts[2]) : 0;
             int oldLayout = parts.Length > 3 ? int.Parse(parts[3]) : 0;
             var oldLayoutMode = (OldLayoutMode)oldLayout;
             int commentLines = parts.Length > 4 ? int.Parse(parts[4]) : 0;
-            int printDirection = parts.Length > 5 ? int.Parse(parts[5]) : 0;
             int layout = parts.Length > 6 ? int.Parse(parts[6]) : -1;
-            int codeTagCount = parts.Length > 7 ? int.Parse(parts[7]) : 0;
+            // header properties I'm not using but am leaving as comments in case I need the information in the future.
+            //int printDirection = parts.Length > 5 ? int.Parse(parts[5]) : 0;
+            //int codeTagCount = parts.Length > 7 ? int.Parse(parts[7]) : 0;
             if (isFiglet)
             {
                 if (layout >= 0)
