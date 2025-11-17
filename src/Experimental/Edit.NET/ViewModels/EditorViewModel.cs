@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaEdit.Document;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -116,12 +117,15 @@ namespace EditNET.ViewModels
         public async Task OpenFile(string path)
         {
             FilePath = path;
+            bool opened = false;
             await HandleFileExceptions(async () =>
             {
                 Document = new TextDocument(new StringTextSource(await File.ReadAllTextAsync(path)));
+                opened = true;
             });
-
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(path)!);
+            
+            if(opened)
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(path)!);
         }
 
         private async Task SaveFileInternalAsync()
