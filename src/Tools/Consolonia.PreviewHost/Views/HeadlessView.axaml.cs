@@ -1,10 +1,10 @@
+using System.Text.Json;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PreviewHost.ViewModels;
-using Newtonsoft.Json;
 
 namespace Consolonia.PreviewHost.Views
 {
@@ -54,7 +54,7 @@ namespace Consolonia.PreviewHost.Views
                 {
                     var consoleTopLevelImpl = lifetime.MainWindow?.PlatformImpl as ConsoleWindowImpl;
                     ArgumentNullException.ThrowIfNull(consoleTopLevelImpl);
-                    string json = JsonConvert.SerializeObject(consoleTopLevelImpl.PixelBuffer);
+                    string json = JsonSerializer.Serialize(consoleTopLevelImpl.PixelBuffer);
                     Console.WriteLine(json);
                 });
         }
