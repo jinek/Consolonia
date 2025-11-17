@@ -71,7 +71,7 @@ namespace Consolonia.Controls
                 var platformRender = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>();
                 var textShaper = AvaloniaLocator.Current.GetService<ITextShaperImpl>();
                 var fontManager = AvaloniaLocator.Current.GetService<IFontManagerImpl>();
-                fontManager.TryCreateGlyphTypeface("ConsoleDefault", FontStyle.Normal, FontWeight.Normal,
+                fontManager.TryCreateGlyphTypeface(FontManager.Current.DefaultFontFamily.Name, FontStyle.Normal, FontWeight.Normal,
                     FontStretch.Normal, out IGlyphTypeface typeface);
                 ArgumentNullException.ThrowIfNull(typeface);
                 ShapedBuffer glyphs =

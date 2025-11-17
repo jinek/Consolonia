@@ -52,7 +52,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public FontsViewModel()
         {
             Fonts.Add(new FontViewModel
-                { Font = "ConsoleDefault", FontFamily = FontFamily.Parse("ConsoleDefault"), FontSize = 1 });
+                { Font = FontManager.Current.DefaultFontFamily.Name, FontFamily = FontFamily.Parse(FontManager.Current.DefaultFontFamily.Name), FontSize = 1 });
             Fonts.Add(new FontViewModel("WideTerm", 1));
             Fonts.Add(new FontViewModel("Braille", 2));
             Fonts.Add(new FontViewModel("Circle", 1));
@@ -72,7 +72,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
             Fonts.Add(new FontViewModel("Standard", 8));
             Fonts.Add(new FontViewModel("Mono", 8));
             Fonts.Add(new FontViewModel("Mono", 10));
-            SelectedFont = Fonts.First(f => f.Font == "ConsoleDefault");
+            SelectedFont = Fonts.First(f => f.Font == FontManager.Current.DefaultFontFamily.Name);
         }
     }
 
