@@ -1,7 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- ManagedWindow resources -->
-    <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
     <!-- ReSharper disable InconsistentNaming We need to keep same names as in WindowManager-->
     <StaticResource x:Key="ManagedWindow_ForegroundBrush"
                     ResourceKey="ThemeForegroundBrush" />
