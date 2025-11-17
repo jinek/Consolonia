@@ -779,7 +779,9 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
             var platformRender = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>();
             var textShaper = AvaloniaLocator.Current.GetService<ITextShaperImpl>();
             var fontManager = AvaloniaLocator.Current.GetService<IFontManagerImpl>();
-            fontManager.TryCreateGlyphTypeface("Cascadia Mono", FontStyle.Normal, FontWeight.Normal, FontStretch.Normal,
+            fontManager.TryCreateGlyphTypeface(FontManager.Current.DefaultFontFamily.Name, FontStyle.Normal,
+                FontWeight.Normal,
+                FontStretch.Normal,
                 out IGlyphTypeface typeface);
             ArgumentNullException.ThrowIfNull(typeface);
             ShapedBuffer glyphs =

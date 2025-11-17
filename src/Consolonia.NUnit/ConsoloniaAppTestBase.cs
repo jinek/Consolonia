@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Platform;
 using Avalonia.Threading;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -25,10 +26,23 @@ namespace Consolonia.NUnit
             _size = size;
         }
 
-
 #pragma warning disable CA1819 // todo: provide a solution
         protected string[] Args { get; init; }
 #pragma warning restore CA1819
+
+        protected virtual AppBuilder CreateAppBuilder()
+        {
+            return AppBuilder.Configure<TApp>()
+                .UseConsole(UITest)
+                .UseConsolonia()
+                .UseConsoleColorMode(new RgbConsoleColorMode())
+                .With<IPlatformSettings>(new ConsoloniaPlatformSettings
+                {
+                    UnsafeInput = false,
+                    UnsafeRendering = false
+                })
+                .LogToException();
+        }
 
         [OneTimeSetUp]
         public async Task GlobalSetup()
@@ -45,12 +59,7 @@ namespace Consolonia.NUnit
             {
                 _disposeTaskCompletionSource = new TaskCompletionSource();
                 _scope = AvaloniaLocator.EnterScope();
-                _lifetime = ApplicationStartup.BuildLifetime<TApp>(UITest, new RgbConsoleColorMode(),
-                    new ConsoloniaPlatformSettings
-                    {
-                        UnsafeInput = false,
-                        UnsafeRendering = false
-                    }, Args);
+                _lifetime = ApplicationStartup.CreateLifetime(CreateAppBuilder(), Args);
                 UITest.SetupLifetime(_lifetime);
                 setupTaskSource.SetResult();
                 _lifetime.Start(Args);

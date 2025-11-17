@@ -23,7 +23,7 @@ namespace Consolonia.Gallery.Tests
             };
 
             await UITest.KeyInput(Key.Tab);
-            await UITest.AssertHasText(expected);
+            await UITest.AssertHasMatch(expected);
         }
     }
 }

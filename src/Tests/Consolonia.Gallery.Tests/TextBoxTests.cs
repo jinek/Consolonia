@@ -13,11 +13,11 @@ namespace Consolonia.Gallery.Tests
         public async Task PerformSingleTest()
         {
             await UITest.KeyInput(Key.Right);
-            await UITest.AssertHasText(@"elit\. ");
+            await UITest.AssertHasText(@"elit. ");
             await UITest.KeyInput(Key.Right);
             await UITest.StringInput("asd");
             await UITest.KeyInput(3, Key.Left, RawInputModifiers.Control);
-            await UITest.AssertHasText(@"t, consectetur adipiscing elit\.asd");
+            await UITest.AssertHasText(@"t, consectetur adipiscing elit.asd");
             await UITest.KeyInput(Key.Home);
             await UITest.KeyInput(7, Key.Right, RawInputModifiers.Control);
             await UITest.AssertHasText("ipsum dolor sit amet, consectetur ");
