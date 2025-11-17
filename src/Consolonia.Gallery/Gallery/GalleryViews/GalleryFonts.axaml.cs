@@ -52,7 +52,10 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         public FontsViewModel()
         {
             Fonts.Add(new FontViewModel
-                { Font = FontManager.Current.DefaultFontFamily.Name, FontFamily = FontFamily.Parse(FontManager.Current.DefaultFontFamily.Name), FontSize = 1 });
+            {
+                Font = FontManager.Current.DefaultFontFamily.Name,
+                FontFamily = FontFamily.Parse(FontManager.Current.DefaultFontFamily.Name), FontSize = 1
+            });
             Fonts.Add(new FontViewModel("WideTerm", 1));
             Fonts.Add(new FontViewModel("Braille", 2));
             Fonts.Add(new FontViewModel("Circle", 1));
