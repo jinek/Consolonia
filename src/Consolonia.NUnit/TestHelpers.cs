@@ -21,7 +21,7 @@ namespace Consolonia.NUnit
                 patterns,
                 false,
                 true,
-                (printBuffer, pattern) => $"Regex '{pattern}' was not found in the buffer: \r\n" + printBuffer);
+                (printBuffer, pattern) => $"Text '{pattern}' was not found in the buffer: \r\n" + printBuffer);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Consolonia.NUnit
                 patterns,
                 false,
                 false,
-                (printBuffer, pattern) => $"Regex '{pattern}' was found in the buffer: \r\n" + printBuffer);
+                (printBuffer, pattern) => $"Text '{pattern}' was found in the buffer: \r\n" + printBuffer);
         }
 
         /// <summary>

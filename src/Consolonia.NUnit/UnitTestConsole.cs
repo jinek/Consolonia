@@ -172,26 +172,6 @@ namespace Consolonia.NUnit
             await WaitRendered().ConfigureAwait(true);
         }
 
-        public IInputElement GetFocus()
-        {
-            return _lifetime.MainWindow.FocusManager.GetFocusedElement();
-        }
-
-        public async Task<T> GetControl<T>(string controlName)
-            where T : Control
-        {
-            return await Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                // ReSharper disable once AssignNullToNotNullAttribute
-                T control = _lifetime.MainWindow.GetVisualDescendants()
-                    .OfType<T>()
-                    .FirstOrDefault(cb => cb.Name == controlName)!;
-                if (control == null)
-                    throw new InvalidOperationException(
-                        $"Control of type {typeof(T)} with name '{controlName}' not found");
-                return control;
-            }, DispatcherPriority.Input);
-        }
 
         public void SetupLifetime(ConsoloniaLifetime lifetime)
         {
