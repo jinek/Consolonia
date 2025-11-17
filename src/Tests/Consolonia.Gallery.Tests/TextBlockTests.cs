@@ -24,8 +24,8 @@ namespace Consolonia.Gallery.Tests
         {
             await UITest.KeyInput(Key.Tab);
             await UITest.AssertHasText(
-                "Text trimming with charac...",
-                "Text trimming with word...");
+                "Lorem ipsum d…",
+                "Lorem ipsum dolor…");
         }
 
         [Test]

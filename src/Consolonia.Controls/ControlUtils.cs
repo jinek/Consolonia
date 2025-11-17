@@ -101,6 +101,11 @@ namespace Consolonia.Controls
                         width += 4;
                         lastWidth = 4;
                     }
+                    else if (rune.Value == '\n')
+                    {
+                        width += 1;
+                        lastWidth = 1;
+                    }
                 }
             }
 
