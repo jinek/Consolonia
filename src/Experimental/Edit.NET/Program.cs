@@ -1,14 +1,18 @@
 // DUPFINDER_ignore
 
+using System.Threading;
 using Avalonia;
 using Consolonia;
 
 namespace EditNET
 {
-    public static class Program
+    public static partial class Program
     {
+        private static Thread? _mainThread;
+
         private static void Main(string[] args)
         {
+            _mainThread = Thread.CurrentThread;
             BuildAvaloniaApp()
                 .StartWithConsoleLifetime(args);
         }
