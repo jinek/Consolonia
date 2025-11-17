@@ -9,7 +9,6 @@ using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Threading;
 using Consolonia.Controls.Brushes;
-using Consolonia.Core.Drawing;
 using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 using Consolonia.Core.Dummy;
 using Consolonia.Core.Text;
@@ -141,16 +140,7 @@ namespace Consolonia.Core.Infrastructure
                 case NotSupportedRequestCode.DrawGlyphRunNotSupported:
                     notSupportedRequest.SetHandled();
                     break;
-                case NotSupportedRequestCode.DrawGlyphRunWithNonDefaultFontRenderingEmSize:
-                    notSupportedRequest.SetHandled();
-                    var glyphRunImpl = (IGlyphRunImpl)notSupportedRequest.Information[2];
-                    if (glyphRunImpl is GlyphRunImpl glyphRunImpl2)
-                        ((DrawingContextImpl)notSupportedRequest.Information[0]).DrawGlyphRun(
-                            (IBrush)notSupportedRequest.Information[1], new GlyphRunImpl(glyphRunImpl.GlyphTypeface,
-                                glyphRunImpl2.GlyphInfos,
-                                glyphRunImpl2.BaselineOrigin));
 
-                    break;
 
                 case NotSupportedRequestCode.DrawStringWithNonSolidColorBrush:
                     notSupportedRequest.SetHandled(Brushes.Black);

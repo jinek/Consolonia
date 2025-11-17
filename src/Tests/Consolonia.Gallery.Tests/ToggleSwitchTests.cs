@@ -17,7 +17,7 @@ namespace Consolonia.Gallery.Tests
             await UITest.KeyInput(Key.Tab);
             await UITest.KeyInput(Key.Space);
             await Task.Delay(200); // Wait for the animation to finish
-            await UITest.AssertHasText(@"⬤.+Yep");
+            await UITest.AssertHasMatch(@"⬤.+Yep");
             await UITest.KeyInput(Key.Enter);
             await Task.Delay(200); // Wait for the animation to finish
             await UITest.AssertHasText("◯    Nope");
