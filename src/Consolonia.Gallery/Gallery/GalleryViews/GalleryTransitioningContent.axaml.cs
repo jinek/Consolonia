@@ -15,6 +15,8 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
 {
     public partial class GalleryTransitioningContent : UserControl
     {
+        public const int DefaultDurationMs = 500;
+
         public GalleryTransitioningContent()
         {
             InitializeComponent();
@@ -26,7 +28,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         private bool _clipToBounds;
 
 
-        private int _duration = 500;
+        private int _duration = GalleryTransitioningContent.DefaultDurationMs;
         private bool _reversed;
 
 
