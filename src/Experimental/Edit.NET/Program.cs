@@ -1,4 +1,5 @@
 // DUPFINDER_ignore
+
 using System.Threading;
 using Avalonia;
 using Consolonia;
