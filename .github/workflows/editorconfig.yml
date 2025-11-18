@@ -49,7 +49,7 @@ jobs:
 
       - name: resharper-cleanup
         run: |                    
-          jb cleanupcode Consolonia.slnx --exclude="**Consolonia.GuiCS/**.*;"
+          jb cleanupcode Consolonia.slnx --exclude="Consolonia.GuiCS/**.*"
         working-directory: ./src
 
 
@@ -57,7 +57,7 @@ jobs:
         uses: muno92/resharper_inspectcode@1.12.0
         with:
           solutionPath: ./src/Consolonia.slnx
-          exclude: "**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*;"
+          exclude: "Consolonia.GuiCS/**;Consolonia.Gallery/**;"
           version: '2025.2.1'
           minimumSeverity: 'warning'
 
@@ -106,8 +106,8 @@ jobs:
         run: dotnet restore
         working-directory: ./src
 
-      - name: Install JetBrains ReSharper GlobalTools (dupfinder 2021.2.3)
-        run: dotnet tool install -g JetBrains.ReSharper.GlobalTools --version 2021.2.3
+      - name: Install JetBrains ReSharper GlobalTools (dupfinder 2025.2.1)
+        run: dotnet tool install -g JetBrains.ReSharper.GlobalTools --version 2025.2.1
 
       - name: Run dupfinder (duplicate code check, produce XML)
         run: |
