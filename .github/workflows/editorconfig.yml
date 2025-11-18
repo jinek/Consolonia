@@ -47,9 +47,14 @@ jobs:
           dotnet tool install --global JetBrains.ReSharper.GlobalTools --version 2025.2.1
         continue-on-error: true # todo: need to check whether has changes
 
+      - name: create .sln
+        run: |
+          dotnet sln Consolonia.slnx --convert-to-sln
+        working-directory: ./src
+
       - name: resharper-cleanup
         run: |                    
-          jb cleanupcode Consolonia.slnx --exclude="Consolonia.GuiCS/**.*"
+          jb cleanupcode Consolonia.sln --exclude="Consolonia.GuiCS/**.*"
         working-directory: ./src
 
 
@@ -109,9 +114,14 @@ jobs:
       - name: Install JetBrains ReSharper GlobalTools (dupfinder 2025.2.1)
         run: dotnet tool install -g JetBrains.ReSharper.GlobalTools --version 2025.2.1
 
+      - name: create .sln
+        run: |
+          dotnet sln Consolonia.slnx --convert-to-sln
+        working-directory: ./src
+
       - name: Run dupfinder (duplicate code check, produce XML)
         run: |
-          ~/.dotnet/tools/jb dupfinder Consolonia.slnx --exclude-code-regions='DUPFINDER_ignore' --exclude-by-comment='DUPFINDER_ignore' --output=dupfinder-report.xml --discard-cost=100
+          ~/.dotnet/tools/jb dupfinder Consolonia.sln --exclude-code-regions='DUPFINDER_ignore' --exclude-by-comment='DUPFINDER_ignore' --output=dupfinder-report.xml --discard-cost=100
         working-directory: ./src
 
       - name: Upload dupfinder XML report
