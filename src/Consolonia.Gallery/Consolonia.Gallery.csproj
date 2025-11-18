@@ -15,7 +15,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Consolonia.Fonts\Consolonia.Fonts.csproj" />
         <ProjectReference Include="..\Consolonia\Consolonia.csproj" />
-        <ProjectReference Include="..\Experimental\Consolonia.Designer\Consolonia.Designer.csproj" />
     </ItemGroup>
 
     <ItemGroup>
