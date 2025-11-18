@@ -65,7 +65,11 @@ namespace EditNET
                     : ThemeVariant.Default
             };
 
-            _notificationManager = new WindowNotificationManager(desktopLifetime.MainWindow!);
+                if (desktopLifetime.Args is { Length: > 0 })
+                    await ViewModel.EditorViewModel.OpenFile(desktopLifetime.Args[0]);
+
+                _notificationManager = new WindowNotificationManager(desktopLifetime.MainWindow!);
+            }
 
             base.OnFrameworkInitializationCompleted();
 
