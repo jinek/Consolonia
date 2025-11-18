@@ -1,4 +1,4 @@
-﻿<Project>
+<Project>
     <PropertyGroup>
         <!--todo: add mono-->
         <TargetFramework>net8.0</TargetFramework>
@@ -6,8 +6,10 @@
     </PropertyGroup>
     <PropertyGroup>
         <VersionPrefix>11.3.7</VersionPrefix>
-        <Authors>https://github.com/jinek/Consolonia/graphs/contributors</Authors>
+        <Authors>https://github.com/consolonia/consolonia/graphs/contributors</Authors>
         <Copyright>© 2021–2025 Evgeny Gorbovoy &amp; Tom Laird-McConnell</Copyright>
+        <ProjectUrl>https://github.com/consolonia/consolonia</ProjectUrl>
+        <RepositoryUrl>https://github.com/consolonia/consolonia</RepositoryUrl>
         <PackageIcon>Icon.png</PackageIcon>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

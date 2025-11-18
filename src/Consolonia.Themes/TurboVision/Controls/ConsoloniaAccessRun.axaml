@@ -1,7 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Consolonia.Core.Controls;assembly=Consolonia.Core"
-        xmlns:consolonia="https://github.com/jinek/consolonia">
+        xmlns:consolonia="https://github.com/consolonia">
     <Style Selector="controls|ConsoloniaAccessRun:showaccesskey">
         <Setter Property="Foreground"
                 Value="{DynamicResource ThemeHighlightForegroundBrush}" />

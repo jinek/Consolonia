@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:console="https://github.com/jinek/consolonia"
+                    xmlns:console="https://github.com/consolonia"
                     x:ClassModifier="internal">
     <Thickness x:Key="ToggleSwitchTopHeaderMargin">0,0,0,1</Thickness>
     <GridLength x:Key="ToggleSwitchPreContentMargin">0</GridLength>

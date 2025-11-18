@@ -1,6 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:console="https://github.com/jinek/consolonia"
+             xmlns:console="https://github.com/consolonia"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryPlatform">
     <StackPanel>
         <HyperlinkButton NavigateUri="https://docs.avaloniaui.net/docs/guides/platforms/platform-specific-code/xaml">Platform specific-code in xaml</HyperlinkButton>

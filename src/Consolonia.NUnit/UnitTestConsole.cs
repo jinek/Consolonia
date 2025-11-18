@@ -122,7 +122,7 @@ namespace Consolonia.NUnit
             {
                 const Key key = Key.None;
                 ulong timestamp = (ulong)Environment.TickCount64;
-                // todo: check why Yield is not enough: https://github.com/jinek/Consolonia/runs/7055199426?check_suite_focus=true
+                // todo: check why Yield is not enough: https://github.com/consolonia/consolonia/runs/7055199426?check_suite_focus=true
                 const ulong interval = 50;
                 KeyEvent?.Invoke(key, c, RawInputModifiers.None, true, timestamp, true);
                 await Task.Delay((int)interval).ConfigureAwait(false);

@@ -1,6 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:brushes="https://github.com/jinek/consolonia">
+        xmlns:brushes="https://github.com/consolonia">
     <Styles.Resources>
         <ControlTheme x:Key="{x:Type DropDownButton}"
                       TargetType="DropDownButton">

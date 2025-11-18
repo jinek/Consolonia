@@ -1,6 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="https://github.com/jinek/consolonia">
+        xmlns:controls="https://github.com/consolonia">
     <Styles.Resources>
         <ControlTheme x:Key="{x:Type RadioButton}"
                       TargetType="RadioButton">

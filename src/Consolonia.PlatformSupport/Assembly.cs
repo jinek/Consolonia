@@ -6,5 +6,5 @@ using Avalonia.Metadata;
 
 [assembly: CLSCompliant(false)] //todo: should we make it compliant?
 
-[assembly: XmlnsDefinition("https://github.com/jinek/consolonia", "Consolonia.PlatformSupport")]
-[assembly: XmlnsDefinition("https://github.com/jinek/consolonia", "Consolonia.PlatformSupport.Clipboard")]
+[assembly: XmlnsDefinition("https://github.com/consolonia", "Consolonia.PlatformSupport")]
+[assembly: XmlnsDefinition("https://github.com/consolonia", "Consolonia.PlatformSupport.Clipboard")]

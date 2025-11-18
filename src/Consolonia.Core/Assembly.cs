@@ -6,5 +6,5 @@ using Avalonia.Metadata;
 [assembly: InternalsVisibleTo("Consolonia.Designer")]
 
 [assembly: CLSCompliant(false)] //todo: should we make it compliant?
-[assembly: XmlnsDefinition("https://github.com/jinek/consolonia", "Consolonia")]
-[assembly: XmlnsDefinition("https://github.com/jinek/consolonia", "Consolonia.Controls")]
+[assembly: XmlnsDefinition("https://github.com/consolonia", "Consolonia")]
+[assembly: XmlnsDefinition("https://github.com/consolonia", "Consolonia.Controls")]
