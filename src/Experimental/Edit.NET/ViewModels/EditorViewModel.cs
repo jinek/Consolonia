@@ -116,7 +116,6 @@ namespace EditNET.ViewModels
         public async Task OpenFile(string path)
         {
             FilePath = path;
-<<<<<<< HEAD
             bool opened = false;
             await HandleFileExceptions(async () =>
             {
@@ -126,14 +125,6 @@ namespace EditNET.ViewModels
 
             if (opened)
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(path)!);
-=======
-            await HandleFileExceptions(async () =>
-            {
-                Document = new TextDocument(new StringTextSource(await File.ReadAllTextAsync(path)));
-            });
-
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(path)!);
->>>>>>> 708f78c2 (Edit dot net (#449))
         }
 
         private async Task SaveFileInternalAsync()
