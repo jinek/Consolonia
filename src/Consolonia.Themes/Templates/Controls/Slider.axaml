@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:console="https://github.com/jinek/consolonia"
+                    xmlns:console="https://github.com/consolonia"
                     x:ClassModifier="internal">
     <console:ValueToLeftPaddingConverter x:Key="ValueToLeftPaddingConverter" />
     <ControlTheme x:Key="SliderRepeatTrackTheme"
