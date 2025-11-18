@@ -10,11 +10,11 @@ namespace ConsoloniaEdit.Demo.ViewModels;
 public class MainWindowViewModel(TextMate.Installation _textMateInstallation, RegistryOptions _registryOptions) : ReactiveObject
 {
     public ObservableCollection<ThemeViewModel> AllThemes { get; set; } = [];
-    private ThemeViewModel _selectedTheme;
+    private ThemeViewModel? _selectedTheme;
 
     public ThemeViewModel SelectedTheme
     {
-        get => _selectedTheme;
+        get => _selectedTheme!;
         set
         {
             this.RaiseAndSetIfChanged(ref _selectedTheme, value);
