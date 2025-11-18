@@ -1,0 +1,34 @@
+<Solution>
+  <Folder Name="/RepoRoot/">
+    <File Path="../.gitignore" />
+    <File Path="../contributing.md" />
+    <File Path="../Directory.Build.props" />
+    <File Path="../Directory.Core.Build.props" />
+    <File Path="../LICENSE" />
+    <File Path="../readme.md" />
+  </Folder>
+  <Folder Name="/RepoRoot/.github/" />
+  <Folder Name="/RepoRoot/.github/workflows/">
+    <File Path="../.github/workflows/dismiss-approvals.yml" />
+    <File Path="../.github/workflows/editorconfig.yml" />
+    <File Path="../.github/workflows/general_build.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="../.editorconfig" />
+    <File Path="readme.md" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Consolonia.Core.Tests/Consolonia.Core.Tests.csproj" />
+    <Project Path="Tests/Consolonia.Gallery.Tests/Consolonia.Gallery.Tests.csproj" />
+    <Project Path="Tests/Sandbox/Sandbox.csproj" />
+  </Folder>
+  <Project Path="Consolonia.Controls/Consolonia.Controls.csproj" />
+  <Project Path="Consolonia.Core/Consolonia.Core.csproj" />
+  <Project Path="Consolonia.Fonts/Consolonia.Fonts.csproj" />
+  <Project Path="Consolonia.Gallery/Consolonia.Gallery.csproj" />
+  <Project Path="Consolonia.GuiCS/Consolonia.GuiCS.csproj" />
+  <Project Path="Consolonia.NUnit/Consolonia.NUnit.csproj" />
+  <Project Path="Consolonia.PlatformSupport/Consolonia.PlatformSupport.csproj" />
+  <Project Path="Consolonia.Themes/Consolonia.Themes.csproj" />
+  <Project Path="Consolonia/Consolonia.csproj" />
+</Solution>
