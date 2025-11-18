@@ -1,0 +1,122 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157 d18.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Controls", "Consolonia.Controls\Consolonia.Controls.csproj", "{5EE44581-22BE-104F-2EC0-5552D47B8186}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Core", "Consolonia.Core\Consolonia.Core.csproj", "{1D461A17-0F4A-3292-ADFC-AB09FEA74F64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Fonts", "Consolonia.Fonts\Consolonia.Fonts.csproj", "{221D0FBD-3004-1C5E-73DA-0FAF07FD918A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Gallery", "Consolonia.Gallery\Consolonia.Gallery.csproj", "{F74BC186-CAAE-2028-AB72-A9C4AEA731BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.GuiCS", "Consolonia.GuiCS\Consolonia.GuiCS.csproj", "{6C5C9413-4156-1B8D-2487-FC64E332B683}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.NUnit", "Consolonia.NUnit\Consolonia.NUnit.csproj", "{DBAAD2CA-0A17-856F-5062-CD5595F8EE26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.PlatformSupport", "Consolonia.PlatformSupport\Consolonia.PlatformSupport.csproj", "{74CE15ED-7297-92FE-0C30-F18039390FA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Themes", "Consolonia.Themes\Consolonia.Themes.csproj", "{4646BE0C-9517-021C-2F8C-3F7BFDB9C86B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia", "Consolonia\Consolonia.csproj", "{3912B771-3378-1340-E18C-BC86AEF18F7A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RepoRoot", "RepoRoot", "{1310B715-F6AC-1098-B2E1-CAFB9DE08E51}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\contributing.md = ..\contributing.md
+		..\Directory.Build.props = ..\Directory.Build.props
+		..\Directory.Core.Build.props = ..\Directory.Core.Build.props
+		..\LICENSE = ..\LICENSE
+		..\readme.md = ..\readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{0A78BBE3-0723-45C5-C68C-7FAD9E2A6FFB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{27CCDAE1-1702-5D6D-D10B-6D9B47F563DA}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\dismiss-approvals.yml = ..\.github\workflows\dismiss-approvals.yml
+		..\.github\workflows\editorconfig.yml = ..\.github\workflows\editorconfig.yml
+		..\.github\workflows\general_build.yml = ..\.github\workflows\general_build.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{089100B1-113F-4E66-888A-E83F3999EAFD}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Core.Tests", "Tests\Consolonia.Core.Tests\Consolonia.Core.Tests.csproj", "{787C0A0F-693B-8585-AE57-04F7AF8F6E42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Gallery.Tests", "Tests\Consolonia.Gallery.Tests\Consolonia.Gallery.Tests.csproj", "{229FDC43-B942-A944-1501-C63A86746949}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Tests\Sandbox\Sandbox.csproj", "{F3DF45D9-031D-18AC-FA69-7E425EB053F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5EE44581-22BE-104F-2EC0-5552D47B8186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EE44581-22BE-104F-2EC0-5552D47B8186}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EE44581-22BE-104F-2EC0-5552D47B8186}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EE44581-22BE-104F-2EC0-5552D47B8186}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D461A17-0F4A-3292-ADFC-AB09FEA74F64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D461A17-0F4A-3292-ADFC-AB09FEA74F64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D461A17-0F4A-3292-ADFC-AB09FEA74F64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D461A17-0F4A-3292-ADFC-AB09FEA74F64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{221D0FBD-3004-1C5E-73DA-0FAF07FD918A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{221D0FBD-3004-1C5E-73DA-0FAF07FD918A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{221D0FBD-3004-1C5E-73DA-0FAF07FD918A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{221D0FBD-3004-1C5E-73DA-0FAF07FD918A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F74BC186-CAAE-2028-AB72-A9C4AEA731BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F74BC186-CAAE-2028-AB72-A9C4AEA731BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F74BC186-CAAE-2028-AB72-A9C4AEA731BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F74BC186-CAAE-2028-AB72-A9C4AEA731BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C5C9413-4156-1B8D-2487-FC64E332B683}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C5C9413-4156-1B8D-2487-FC64E332B683}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C5C9413-4156-1B8D-2487-FC64E332B683}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C5C9413-4156-1B8D-2487-FC64E332B683}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBAAD2CA-0A17-856F-5062-CD5595F8EE26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBAAD2CA-0A17-856F-5062-CD5595F8EE26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBAAD2CA-0A17-856F-5062-CD5595F8EE26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBAAD2CA-0A17-856F-5062-CD5595F8EE26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74CE15ED-7297-92FE-0C30-F18039390FA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74CE15ED-7297-92FE-0C30-F18039390FA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74CE15ED-7297-92FE-0C30-F18039390FA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74CE15ED-7297-92FE-0C30-F18039390FA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4646BE0C-9517-021C-2F8C-3F7BFDB9C86B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4646BE0C-9517-021C-2F8C-3F7BFDB9C86B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4646BE0C-9517-021C-2F8C-3F7BFDB9C86B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4646BE0C-9517-021C-2F8C-3F7BFDB9C86B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3912B771-3378-1340-E18C-BC86AEF18F7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3912B771-3378-1340-E18C-BC86AEF18F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3912B771-3378-1340-E18C-BC86AEF18F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3912B771-3378-1340-E18C-BC86AEF18F7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{787C0A0F-693B-8585-AE57-04F7AF8F6E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{787C0A0F-693B-8585-AE57-04F7AF8F6E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{787C0A0F-693B-8585-AE57-04F7AF8F6E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{787C0A0F-693B-8585-AE57-04F7AF8F6E42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{229FDC43-B942-A944-1501-C63A86746949}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{229FDC43-B942-A944-1501-C63A86746949}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{229FDC43-B942-A944-1501-C63A86746949}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{229FDC43-B942-A944-1501-C63A86746949}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3DF45D9-031D-18AC-FA69-7E425EB053F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3DF45D9-031D-18AC-FA69-7E425EB053F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3DF45D9-031D-18AC-FA69-7E425EB053F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3DF45D9-031D-18AC-FA69-7E425EB053F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0A78BBE3-0723-45C5-C68C-7FAD9E2A6FFB} = {1310B715-F6AC-1098-B2E1-CAFB9DE08E51}
+		{27CCDAE1-1702-5D6D-D10B-6D9B47F563DA} = {0A78BBE3-0723-45C5-C68C-7FAD9E2A6FFB}
+		{787C0A0F-693B-8585-AE57-04F7AF8F6E42} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
+		{229FDC43-B942-A944-1501-C63A86746949} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
+		{F3DF45D9-031D-18AC-FA69-7E425EB053F5} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
+	EndGlobalSection
+EndGlobal

@@ -28,11 +28,6 @@ jobs:
           ref: ${{ steps.comment-branch.outputs.ref }}
           persist-credentials: false
 
-      - name: Setup .NET 8.x
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 8.0.x
-          
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v1
         with:
@@ -46,11 +41,6 @@ jobs:
         run: |
           dotnet tool install --global JetBrains.ReSharper.GlobalTools --version 2025.2.1
         continue-on-error: true # todo: need to check whether has changes
-
-      - name: create .sln
-        run: |
-          dotnet sln Consolonia.slnx --convert-to-sln
-        working-directory: ./src
 
       - name: resharper-cleanup
         run: |                    
@@ -96,11 +86,6 @@ jobs:
         with:
           ref: ${{ steps.comment-branch.outputs.ref }}
           persist-credentials: false
-
-      - name: Setup .NET 8.x
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 8.0.x
 
       - name: Setup .NET 10.x
         uses: actions/setup-dotnet@v1
