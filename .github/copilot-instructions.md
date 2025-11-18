@@ -173,7 +173,7 @@ Always perform these validation steps for CI compatibility:
 - **`Experimental/`** - Experimental features (may have warnings/errors)
 
 ### Important Files
-- **`src/Consolonia.slnx`** - Main solution file
+- **`src/Consolonia.sln`** - Main solution file
 - **`src/.editorconfig`** - Code formatting rules (extensive)
 - **`.github/workflows/general_build.yml`** - CI build configuration
 - **`.github/workflows/editorconfig.yml`** - Code formatting CI check

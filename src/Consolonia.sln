@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11205.157 d18.0
+VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consolonia.Controls", "Consolonia.Controls\Consolonia.Controls.csproj", "{5EE44581-22BE-104F-2EC0-5552D47B8186}"
 EndProject
@@ -32,6 +32,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RepoRoot", "RepoRoot", "{13
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{0A78BBE3-0723-45C5-C68C-7FAD9E2A6FFB}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\copilot-instructions.md = ..\.github\copilot-instructions.md
+		..\.github\FUNDING.yml = ..\.github\FUNDING.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{27CCDAE1-1702-5D6D-D10B-6D9B47F563DA}"
 	ProjectSection(SolutionItems) = preProject
@@ -118,5 +122,8 @@ Global
 		{787C0A0F-693B-8585-AE57-04F7AF8F6E42} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 		{229FDC43-B942-A944-1501-C63A86746949} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 		{F3DF45D9-031D-18AC-FA69-7E425EB053F5} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BE959623-A85D-4158-8300-4DB305BCB8EC}
 	EndGlobalSection
 EndGlobal

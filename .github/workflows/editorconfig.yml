@@ -28,11 +28,11 @@ jobs:
           ref: ${{ steps.comment-branch.outputs.ref }}
           persist-credentials: false
 
-      - name: Setup .NET 10
+      - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 10.0.x
-
+          dotnet-version: 8.0.x
+          
       - name: Restore
         run: dotnet restore
         working-directory: ./src
@@ -44,15 +44,15 @@ jobs:
 
       - name: resharper-cleanup
         run: |                    
-          jb cleanupcode Consolonia.sln --exclude="Consolonia.GuiCS/**.*"
+          jb cleanupcode Consolonia.sln --exclude="**Consolonia.GuiCS/**.*"
         working-directory: ./src
 
 
       - name: Inspect code
         uses: muno92/resharper_inspectcode@1.12.0
         with:
-          solutionPath: ./src/Consolonia.slnx
-          exclude: "Consolonia.GuiCS/**;Consolonia.Gallery/**;"
+          solutionPath: ./src/Consolonia.sln
+          exclude: "**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*"
           version: '2025.2.1'
           minimumSeverity: 'warning'
 
@@ -87,22 +87,17 @@ jobs:
           ref: ${{ steps.comment-branch.outputs.ref }}
           persist-credentials: false
 
-      - name: Setup .NET 10.x
+      - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: 8.0.x
 
       - name: Restore
         run: dotnet restore
         working-directory: ./src
 
-      - name: Install JetBrains ReSharper GlobalTools (dupfinder 2025.2.1)
-        run: dotnet tool install -g JetBrains.ReSharper.GlobalTools --version 2025.2.1
-
-      - name: create .sln
-        run: |
-          dotnet sln Consolonia.slnx --convert-to-sln
-        working-directory: ./src
+      - name: Install JetBrains ReSharper GlobalTools (dupfinder 2021.2.3)
+        run: dotnet tool install -g JetBrains.ReSharper.GlobalTools --version 2021.2.3
 
       - name: Run dupfinder (duplicate code check, produce XML)
         run: |
