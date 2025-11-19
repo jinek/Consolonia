@@ -11,18 +11,13 @@ concurrency:
   group: file-sync-${{ github.ref }}
   cancel-in-progress: false
 
-permissions:
-  contents: read
-
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source repository
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@main
       - name: Run repo file sync
         uses: BetaHuhn/repo-file-sync-action@v1
         with:
           GH_PAT: ${{ secrets.SYNC_TOKEN }}
-
