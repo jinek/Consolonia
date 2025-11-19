@@ -1,6 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:console="https://github.com/jinek/consolonia"
+        xmlns:console="https://github.com/consolonia"
         xmlns:wm="using:Iciclecreek.Avalonia.WindowManager">
     <Styles.Resources>
         <ResourceDictionary>

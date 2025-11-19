@@ -17,8 +17,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
     }
 
-    [ObservableObject]
-    public partial class FontsViewModel
+    public partial class FontsViewModel : ObservableObject
     {
         public List<FontStyle> FontStyles = new()
         {
@@ -79,8 +78,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
         }
     }
 
-    [ObservableObject]
-    public partial class FontViewModel
+    public partial class FontViewModel : ObservableObject
     {
         [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplayName))]
         private string _font;
