@@ -22,5 +22,5 @@ jobs:
       - name: Run repo file sync
         uses: BetaHuhn/repo-file-sync-action@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.SYNC_TOKEN }}
+          GH_PAT: ${{ secrets.SYNC_TOKEN }}
 
