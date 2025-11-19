@@ -62,11 +62,7 @@ namespace Consolonia.Core.Drawing
             using IBitmapImpl resizedBitmap = renderInterface.ResizeBitmap(source, targetSize, BitmapInterpolationMode.MediumQuality);
 
             // Get pixel data from the resized bitmap
-            if (resizedBitmap is not IReadableBitmapImpl readableBitmap)
-            {
-                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.DrawGlyphRunNotSupported, this, source, opacity, sourceRect, destRect);
-                return;
-            }
+            var readableBitmap = (IReadableBitmapImpl)resizedBitmap;
 
             using ILockedFramebuffer frameBuffer = readableBitmap.Lock();
 

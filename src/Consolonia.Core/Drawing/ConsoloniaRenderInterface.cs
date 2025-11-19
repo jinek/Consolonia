@@ -6,6 +6,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
+using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
 
@@ -113,21 +114,25 @@ namespace Consolonia.Core.Drawing
         {
             if (_fallback != null)
                 return _fallback.CreateWriteableBitmap(size, dpi, format, alphaFormat);
-            throw new NotImplementedException(nameof(CreateWriteableBitmap));
+
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(CreateWriteableBitmap));
+            return null;
         }
 
         public IBitmapImpl LoadBitmap(string fileName)
         {
             if (_fallback != null)
                 return _fallback.LoadBitmap(fileName);
-            throw new NotImplementedException(nameof(LoadBitmap));
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
+            return null;
         }
 
         public IBitmapImpl LoadBitmap(Stream stream)
         {
             if (_fallback != null)
                 return _fallback.LoadBitmap(stream);
-            throw new NotImplementedException(nameof(LoadBitmap));
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
+            return null;
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
@@ -135,7 +140,8 @@ namespace Consolonia.Core.Drawing
         {
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmapToHeight(stream, height, interpolationMode);
-            throw new NotImplementedException(nameof(LoadWriteableBitmapToHeight));
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadWriteableBitmapToHeight));
+            return null;
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
@@ -143,35 +149,40 @@ namespace Consolonia.Core.Drawing
         {
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmapToWidth(stream, width, interpolationMode);
-            throw new NotImplementedException(nameof(LoadWriteableBitmapToWidth));
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadWriteableBitmapToWidth));
+            return null;
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmap(string fileName)
         {
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmap(fileName);
-            throw new NotImplementedException(nameof(LoadWriteableBitmap));
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadWriteableBitmap));
+            return null;
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmap(Stream stream)
         {
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmap(stream);
-            throw new NotImplementedException(nameof(LoadWriteableBitmap));
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadWriteableBitmap));
+            return null;
         }
 
         public IBitmapImpl LoadBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode)
         {
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmapToWidth(stream, width, interpolationMode);
-            throw new NotImplementedException(nameof(LoadWriteableBitmapToWidth));
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmapToWidth));
+            return null;
         }
 
         public IBitmapImpl LoadBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode)
         {
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmapToHeight(stream, height, interpolationMode);
-            throw new NotImplementedException(nameof(LoadWriteableBitmapToHeight));
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmapToHeight));
+            return null;
         }
 
         public IBitmapImpl ResizeBitmap(IBitmapImpl bitmapImpl, PixelSize destinationSize,
@@ -179,7 +190,8 @@ namespace Consolonia.Core.Drawing
         {
             if (_fallback != null)
                 return _fallback.ResizeBitmap(bitmapImpl, destinationSize, interpolationMode);
-            throw new NotImplementedException(nameof(ResizeBitmap));
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(ResizeBitmap));
+            return null;
         }
 
         public IBitmapImpl LoadBitmap(PixelFormat format, AlphaFormat alphaFormat, IntPtr data, PixelSize size,
@@ -187,7 +199,8 @@ namespace Consolonia.Core.Drawing
         {
             if (_fallback != null)
                 return _fallback.LoadBitmap(format, alphaFormat, data, size, dpi, stride);
-            throw new NotImplementedException(nameof(LoadBitmap));
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
+            return null;
         }
 
         public IGlyphRunImpl CreateGlyphRun(IGlyphTypeface glyphTypeface,
@@ -207,7 +220,10 @@ namespace Consolonia.Core.Drawing
 
         public bool IsSupportedBitmapPixelFormat(PixelFormat format)
         {
-            throw new NotImplementedException();
+            if (_fallback != null)
+                return _fallback.IsSupportedBitmapPixelFormat(format);
+            ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(IsSupportedBitmapPixelFormat));
+            return false;
         }
 
         public IPlatformRenderInterfaceRegion CreateRegion()
@@ -217,9 +233,27 @@ namespace Consolonia.Core.Drawing
 
         public bool SupportsIndividualRoundRects => false;
 
-        public AlphaFormat DefaultAlphaFormat => throw new NotImplementedException();
+        public AlphaFormat DefaultAlphaFormat
+        {
+            get
+            {
+                if (_fallback != null)
+                    return _fallback.DefaultAlphaFormat;
+                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(IsSupportedBitmapPixelFormat));
+                return AlphaFormat.Opaque;
+            }
+        }
 
-        public PixelFormat DefaultPixelFormat => throw new NotImplementedException();
+        public PixelFormat DefaultPixelFormat
+        {
+            get
+            {
+                if (_fallback != null)
+                    return _fallback.DefaultPixelFormat;
+                ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(IsSupportedBitmapPixelFormat));
+                return PixelFormat.Bgra8888;
+            }
+        }
 
         public bool SupportsRegions => false;
     }
