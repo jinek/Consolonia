@@ -15,6 +15,7 @@ namespace Consolonia.Core.Infrastructure
     public class AnsiConsoleOutput : IConsoleOutput
     {
         private const string TestEmoji = "👨‍👩‍👧‍👦";
+        private StringBuilder _renderBuffer = new StringBuilder();
 
         private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
             new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
@@ -56,37 +57,55 @@ namespace Consolonia.Core.Infrastructure
             return _headBufferPoint;
         }
 
+        public void StartRender()
+        {
+            _renderBuffer.Clear();
+        }
+
+        public void EndRender()
+        {
+            WriteText(_renderBuffer.ToString());
+            _renderBuffer.Clear();
+        }
+
         public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
             //todo: performance of retrieval of the service, at least can be retrieved once
             Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
-            var sb = new StringBuilder();
+            bool resetNeeded = false;
             if (textDecoration == TextDecorationLocation.Underline)
-                sb.Append(Esc.Underline);
+            {
+                _renderBuffer.Append(Esc.Underline);
+                resetNeeded = true;
+            }
 
             if (textDecoration == TextDecorationLocation.Strikethrough)
-                sb.Append(Esc.Strikethrough);
+            {
+                _renderBuffer.Append(Esc.Strikethrough);
+                resetNeeded = true;
+            }
 
             if (style == FontStyle.Italic)
-                sb.Append(Esc.Italic);
+            {
+                _renderBuffer.Append(Esc.Italic);
+                resetNeeded = true;
+            }
 
             (object mappedBackground, object mappedForeground) =
                 consoleColorMode.Value.MapColors(background, foreground, weight);
-            sb.Append(Esc.Foreground(mappedForeground));
-            sb.Append(Esc.Background(mappedBackground));
+            _renderBuffer.Append(Esc.Foreground(mappedForeground));
+            _renderBuffer.Append(Esc.Background(mappedBackground));
 
-            // write attributes
-            WriteText(sb.ToString());
-
-            ushort textWidth = str.MeasureText();
 
             // move to position
             if (SupportsEmojiVariation)
             {
-                SetCaretPosition(bufferPoint);
-                WriteText(str);
+                _renderBuffer.Append(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+                _renderBuffer.Append(str);
+
+                ushort textWidth = str.MeasureText();
                 bufferPoint = new PixelBufferCoordinate((ushort)(bufferPoint.X + textWidth), bufferPoint.Y);
             }
             else
@@ -98,19 +117,23 @@ namespace Consolonia.Core.Infrastructure
                     ushort glyphWidth = grapheme.Glyph.MeasureText();
                     if (glyphWidth > 1)
                     {
-                        WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
-                        WriteText(new string(' ', Math.Min(Size.Width - bufferPoint.X - 1, glyphWidth - 1)));
+                        _renderBuffer.Append(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
+                        _renderBuffer.Append(new string(' ', Math.Min(Size.Width - bufferPoint.X - 1, glyphWidth - 1)));
                     }
 
-                    WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-                    WriteText(grapheme.Glyph);
+                    _renderBuffer.Append(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+                    _renderBuffer.Append(grapheme.Glyph);
 
                     bufferPoint =
                         new PixelBufferCoordinate((ushort)(bufferPoint.X + glyphWidth), bufferPoint.Y);
                 }
+
             }
 
-            WriteText(Esc.Reset);
+            if (resetNeeded)
+            {
+                _renderBuffer.Append(Esc.Reset);
+            }
             _headBufferPoint = bufferPoint;
         }
 

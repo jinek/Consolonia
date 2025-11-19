@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -63,6 +64,12 @@ namespace Consolonia.Core.Infrastructure
         /// </summary>
         void ClearScreen();
 
+
+        /// <summary>
+        /// Start rendering pass
+        /// </summary>
+        void StartRender();
+
         /// <summary>
         ///     Print formatted text to the console
         /// </summary>
@@ -75,6 +82,11 @@ namespace Consolonia.Core.Infrastructure
         /// <param name="str"></param>
         void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
             FontWeight? weight, TextDecorationLocation? textDecoration, string str);
+
+        /// <summary>
+        /// End rendering pass, all output should be flushed to the console
+        /// </summary>
+        void EndRender();
 
         /// <summary>
         ///     Write raw text to the console

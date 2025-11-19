@@ -113,5 +113,13 @@ namespace Consolonia.Core.Dummy
                 _disposed = true;
             }
         }
+
+        public void StartRender()
+        {
+        }
+
+        public void EndRender()
+        {
+        }
     }
 }
