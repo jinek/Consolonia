@@ -9,7 +9,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Infrastructure;
+using Consolonia.Core.Dummy;
 
 namespace Consolonia.Core.Drawing
 {
@@ -45,10 +45,13 @@ namespace Consolonia.Core.Drawing
         public static readonly BgraColor Transparent = new BgraColor(0, 0, 0, 0);
     }
 
-    internal partial class DrawingContextImpl : IDrawingContextImpl
+    internal partial class DrawingContextImpl 
     {
         public void DrawBitmap(IBitmapImpl source, double opacity, Rect sourceRect, Rect destRect)
         {
+            if (source is DummyBitmap)
+                return;
+
             // resize bitmap to destination rect size
             var targetRect = new Rect(Transform.Transform(new Point(destRect.TopLeft.X, destRect.TopLeft.Y)),
                     Transform.Transform(new Point(destRect.BottomRight.X, destRect.BottomRight.Y)))

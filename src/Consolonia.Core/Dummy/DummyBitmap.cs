@@ -1,0 +1,73 @@
+using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using Avalonia;
+using Avalonia.Platform;
+
+namespace Consolonia.Core.Dummy
+{
+
+	internal class DummyBitmap : IBitmapImpl, IDrawingContextLayerImpl, IWriteableBitmapImpl
+	{
+		public Size Size { get; }
+
+		public DummyBitmap(Size size, Vector dpi)
+		{
+			Size = size;
+			Dpi = dpi;
+			var pixel = Size * (Dpi / 96);
+			PixelSize = new PixelSize(Math.Max(1, (int)pixel.Width), Math.Max(1, (int)pixel.Height));
+		}
+
+		public DummyBitmap(PixelSize size, Vector dpi)
+		{
+			PixelSize = size;
+			Dpi = dpi;
+			Size = PixelSize.ToSizeWithDpi(dpi);
+		}
+
+		public void Dispose()
+		{
+
+		}
+
+		public IDrawingContextImpl CreateDrawingContext(bool _)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool IsCorrupted => false;
+
+		public void Blit(IDrawingContextImpl context)
+		{
+
+		}
+
+		public bool CanBlit => false;
+
+		public Vector Dpi { get; }
+		public PixelSize PixelSize { get; }
+		public PixelFormat? Format { get; }
+		public AlphaFormat? AlphaFormat { get; }
+		public int Version { get; set; }
+
+		public void Save(string fileName, int? quality = null)
+		{
+
+		}
+
+		public void Save(Stream stream, int? quality = null)
+		{
+
+		}
+
+
+		public ILockedFramebuffer Lock()
+		{
+			Version++;
+			var mem = Marshal.AllocHGlobal(PixelSize.Width * PixelSize.Height * 4);
+			return new LockedFramebuffer(mem, PixelSize, PixelSize.Width * 4, Dpi, PixelFormat.Rgba8888,
+				() => Marshal.FreeHGlobal(mem));
+		}
+	}
+}

@@ -13,7 +13,7 @@ using Consolonia.Core.InternalHelpers;
 
 namespace Consolonia.Core.Drawing
 {
-    internal partial class DrawingContextImpl : IDrawingContextImpl
+    internal partial class DrawingContextImpl 
     {
         private const byte VerticalStartPattern = 0b0010;
         private const byte VerticalLinePattern = 0b1010;

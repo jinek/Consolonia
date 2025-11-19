@@ -6,6 +6,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
+using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
@@ -116,7 +117,7 @@ namespace Consolonia.Core.Drawing
                 return _fallback.CreateWriteableBitmap(size, dpi, format, alphaFormat);
 
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(CreateWriteableBitmap));
-            return null;
+            return new DummyBitmap(size, dpi);
         }
 
         public IBitmapImpl LoadBitmap(string fileName)
@@ -124,7 +125,7 @@ namespace Consolonia.Core.Drawing
             if (_fallback != null)
                 return _fallback.LoadBitmap(fileName);
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
-            return null;
+            return new DummyBitmap(new PixelSize(1,1), new Vector(1,1));
         }
 
         public IBitmapImpl LoadBitmap(Stream stream)
@@ -132,7 +133,7 @@ namespace Consolonia.Core.Drawing
             if (_fallback != null)
                 return _fallback.LoadBitmap(stream);
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
-            return null;
+            return new DummyBitmap(new PixelSize(1, 1), new Vector(1, 1));
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
@@ -141,7 +142,7 @@ namespace Consolonia.Core.Drawing
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmapToHeight(stream, height, interpolationMode);
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadWriteableBitmapToHeight));
-            return null;
+            return new DummyBitmap(new PixelSize(1, height), new Vector(1, 1));
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmapToWidth(Stream stream, int width,
@@ -150,7 +151,7 @@ namespace Consolonia.Core.Drawing
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmapToWidth(stream, width, interpolationMode);
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadWriteableBitmapToWidth));
-            return null;
+            return new DummyBitmap(new PixelSize(width, 1), new Vector(1, 1));
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmap(string fileName)
@@ -158,7 +159,7 @@ namespace Consolonia.Core.Drawing
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmap(fileName);
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadWriteableBitmap));
-            return null;
+            return new DummyBitmap(new PixelSize(1, 1), new Vector(1, 1));
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmap(Stream stream)
@@ -166,7 +167,7 @@ namespace Consolonia.Core.Drawing
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmap(stream);
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadWriteableBitmap));
-            return null;
+            return new DummyBitmap(new PixelSize(1, 1), new Vector(1, 1));
         }
 
         public IBitmapImpl LoadBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode)
@@ -174,7 +175,7 @@ namespace Consolonia.Core.Drawing
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmapToWidth(stream, width, interpolationMode);
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmapToWidth));
-            return null;
+            return new DummyBitmap(new PixelSize(width, 1), new Vector(1, 1));
         }
 
         public IBitmapImpl LoadBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode)
@@ -182,7 +183,7 @@ namespace Consolonia.Core.Drawing
             if (_fallback != null)
                 return _fallback.LoadWriteableBitmapToHeight(stream, height, interpolationMode);
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmapToHeight));
-            return null;
+            return new DummyBitmap(new PixelSize(1, height), new Vector(1, 1));
         }
 
         public IBitmapImpl ResizeBitmap(IBitmapImpl bitmapImpl, PixelSize destinationSize,
@@ -191,7 +192,7 @@ namespace Consolonia.Core.Drawing
             if (_fallback != null)
                 return _fallback.ResizeBitmap(bitmapImpl, destinationSize, interpolationMode);
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(ResizeBitmap));
-            return null;
+            return new DummyBitmap(destinationSize, new Vector(1, 1));
         }
 
         public IBitmapImpl LoadBitmap(PixelFormat format, AlphaFormat alphaFormat, IntPtr data, PixelSize size,
@@ -200,7 +201,7 @@ namespace Consolonia.Core.Drawing
             if (_fallback != null)
                 return _fallback.LoadBitmap(format, alphaFormat, data, size, dpi, stride);
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
-            return null;
+            return new DummyBitmap(size, dpi);
         }
 
         public IGlyphRunImpl CreateGlyphRun(IGlyphTypeface glyphTypeface,
