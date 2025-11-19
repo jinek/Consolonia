@@ -30,15 +30,15 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
                     switch (propertyName)
                     {
-                        case "Symbol":
+                        case nameof(PixelForeground.Symbol):
                             symbol = JsonSerializer.Deserialize<Symbol>(ref reader, options);
                             break;
-                        case "Color":
+                        case nameof(PixelForeground.Color):
                             string colorStr = reader.GetString();
                             if (colorStr != null && Color.TryParse(colorStr, out Color parsedColor))
                                 color = parsedColor;
                             break;
-                        case "Weight":
+                        case nameof(PixelForeground.Weight):
                             if (reader.TokenType != JsonTokenType.Null)
                             {
                                 string weightStr = reader.GetString();
@@ -46,7 +46,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                                     weight = parsedWeight;
                             }
                             break;
-                        case "Style":
+                        case nameof(PixelForeground.Style):
                             if (reader.TokenType != JsonTokenType.Null)
                             {
                                 string styleStr = reader.GetString();
@@ -54,7 +54,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                                     style = parsedStyle;
                             }
                             break;
-                        case "TextDecoration":
+                        case nameof(PixelForeground.TextDecoration):
                             if (reader.TokenType != JsonTokenType.Null)
                             {
                                 string decorationStr = reader.GetString();
@@ -73,20 +73,20 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             writer.WriteStartObject();
             
-            writer.WritePropertyName("Symbol");
+            writer.WritePropertyName(nameof(PixelForeground.Symbol));
             JsonSerializer.Serialize(writer, value.Symbol, options);
             
-            writer.WriteString("Color", value.Color.ToString());
+            writer.WriteString(nameof(PixelForeground.Color), value.Color.ToString());
             
             if (value.Weight.HasValue)
-                writer.WriteString("Weight", value.Weight.Value.ToString());
+                writer.WriteString(nameof(PixelForeground.Weight), value.Weight.Value.ToString());
             
             if (value.Style.HasValue)
-                writer.WriteString("Style", value.Style.Value.ToString());
+                writer.WriteString(nameof(PixelForeground.Style), value.Style.Value.ToString());
             
             if (value.TextDecoration.HasValue)
-                writer.WriteString("TextDecoration", value.TextDecoration.Value.ToString());
-            
+                writer.WriteString(nameof(PixelForeground.TextDecoration), value.TextDecoration.Value.ToString());
+
             writer.WriteEndObject();
         }
     }
