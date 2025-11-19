@@ -5,30 +5,56 @@
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryImage">
 
-    <Grid>
-        <ScrollViewer>
-            <WrapPanel ItemWidth="50">
-                <Image Source="avares://Consolonia.Gallery/Resources/0.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/1.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/2.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/3.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/4.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/5.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/6.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/7.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/8.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/9.jpg"
-                       Stretch="Uniform" />
-            </WrapPanel>
-        </ScrollViewer>
-    </Grid>
+    <TabControl TabStripPlacement="Left">
+        <TabItem Header="0.jpg">
+            <Image Source="avares://Consolonia.Gallery/Resources/0.jpg"
+                   Width="50" Height="25"
+                   Stretch="Fill" />
+        </TabItem>
+        <TabItem Header="1.jpg">
+            <Image Source="avares://Consolonia.Gallery/Resources/1.jpg"
+                   Width="50" Height="25"
+                   Stretch="Fill" />
+        </TabItem>
+        <TabItem Header="2.jpg">
+            <Image Source="avares://Consolonia.Gallery/Resources/2.jpg"
+                   Width="50" Height="25"
+                   Stretch="Fill" />
+        </TabItem>
+        <TabItem Header="3.jpg">
+            <Image Source="avares://Consolonia.Gallery/Resources/3.jpg"
+                   Width="50" Height="25"
+                   Stretch="Fill" />
+        </TabItem>
+        <TabItem Header="4.jpg">
+            <Image Source="avares://Consolonia.Gallery/Resources/4.jpg"
+                   Width="50" Height="25"
+                   Stretch="Fill" />
+        </TabItem>
+        <TabItem Header="5.jpg">
+            <Image Source="avares://Consolonia.Gallery/Resources/5.jpg"
+                   Width="50" Height="25"
+                   Stretch="Fill" />
+        </TabItem>
+        <TabItem Header="6.jpg">
+            <Image Source="avares://Consolonia.Gallery/Resources/6.jpg"
+                   Width="50" Height="25"
+                   Stretch="Fill" />
+        </TabItem>
+        <TabItem Header="7.jpg">
+            <Image Source="avares://Consolonia.Gallery/Resources/7.jpg"
+                   Width="50" Height="25"
+                   Stretch="Fill" />
+        </TabItem>
+        <TabItem Header="8.jpg">
+            <Image Source="avares://Consolonia.Gallery/Resources/8.jpg"
+                   Width="50" Height="25"
+                   Stretch="Fill" />
+        </TabItem>
+        <TabItem Header="9.jpg">
+            <Image Source="avares://Consolonia.Gallery/Resources/9.jpg"
+                   Width="50" Height="25"
+                   Stretch="Fill" />
+        </TabItem>
+    </TabControl>
 </UserControl>

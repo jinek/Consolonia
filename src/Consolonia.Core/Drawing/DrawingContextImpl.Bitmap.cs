@@ -13,6 +13,38 @@ using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.Core.Drawing
 {
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal struct BgraColor
+    {
+        public byte B;
+        public byte G;
+        public byte R;
+        public byte A;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BgraColor(byte b, byte g, byte r, byte a)
+        {
+            B = b;
+            G = g;
+            R = r;
+            A = a;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public readonly Color ToColor()
+        {
+            return Color.FromArgb(A, R, G, B);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BgraColor FromColor(Color color)
+        {
+            return new BgraColor(color.B, color.G, color.R, color.A);
+        }
+
+        public static readonly BgraColor Transparent = new BgraColor(0, 0, 0, 0);
+    }
+
     internal partial class DrawingContextImpl : IDrawingContextImpl
     {
         public void DrawBitmap(IBitmapImpl source, double opacity, Rect sourceRect, Rect destRect)
@@ -40,11 +72,12 @@ namespace Consolonia.Core.Drawing
 
             int stride = frameBuffer.RowBytes;
             int bytesPerPixel = frameBuffer.Format.BitsPerPixel / 8;
-            byte[] pixels = new byte[stride * frameBuffer.Size.Height];
-            Marshal.Copy(frameBuffer.Address, pixels, 0, pixels.Length);
+            byte[] pixelBytes = new byte[stride * frameBuffer.Size.Height];
+            Marshal.Copy(frameBuffer.Address, pixelBytes, 0, pixelBytes.Length);
+            Span<BgraColor> pixels = MemoryMarshal.Cast<byte, BgraColor>(pixelBytes);
 
             // this is reused by each pixel as we process the bitmap
-            Span<Color> quadPixelColors = stackalloc Color[4];
+            Span<BgraColor> quadPixelColors = stackalloc BgraColor[4];
 
             int py = targetRect.TopLeft.Y;
 
@@ -56,7 +89,7 @@ namespace Consolonia.Core.Drawing
                     var point = new PixelPoint(px, py);
                     if (CurrentClip.ContainsExclusive(point))
                     {
-                        // get the quad pixel from the bitmap as a quad of 4 Color values
+                        // get the quad pixel from the bitmap as a quad of 4 BgraColor values
                         quadPixelColors[0] = GetPixelColor(pixels, x, y, stride, bytesPerPixel);
                         quadPixelColors[1] = GetPixelColor(pixels, x + 1, y, stride, bytesPerPixel);
                         quadPixelColors[2] = GetPixelColor(pixels, x, y + 1, stride, bytesPerPixel);
@@ -82,15 +115,19 @@ namespace Consolonia.Core.Drawing
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Color GetPixelColor(byte[] pixels, int x, int y, int stride, int bytesPerPixel)
+        private static BgraColor GetPixelColor(Span<BgraColor> pixels, int x, int y, int stride, int bytesPerPixel)
         {
-            int offset = y * stride + x * bytesPerPixel;
-            byte b = pixels[offset];
-            byte g = pixels[offset + 1];
-            byte r = pixels[offset + 2];
-            byte a = bytesPerPixel == 4 ? pixels[offset + 3] : (byte)255;
-
-            return Color.FromArgb(a, r, g, b);
+            int bytesPerRow = stride;
+            int pixelsPerRow = bytesPerRow / bytesPerPixel;
+            int offset = y * pixelsPerRow + x;
+            
+            BgraColor pixel = pixels[offset];
+            
+            // Handle RGB24 format (no alpha channel)
+            if (bytesPerPixel == 3)
+                pixel.A = 255;
+            
+            return pixel;
         }
 
         public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
@@ -105,7 +142,7 @@ namespace Consolonia.Core.Drawing
         /// <param name="colors"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        private static char GetQuadPixelCharacter(Span<Color> colors)
+        private static char GetQuadPixelCharacter(Span<BgraColor> colors)
         {
             char character = GetColorsPattern(colors) switch
             {
@@ -140,33 +177,33 @@ namespace Consolonia.Core.Drawing
         /// <param name="pixelColors">4 colors</param>
         /// <returns>foreground color</returns>
         /// <exception cref="NotImplementedException"></exception>
-        private static Color GetForegroundColorForQuadPixel(char quadPixel, Span<Color> pixelColors)
+        private static Color GetForegroundColorForQuadPixel(char quadPixel, Span<BgraColor> pixelColors)
         {
             if (pixelColors.Length != 4)
                 throw new ArgumentException($"{nameof(pixelColors)} must have 4 elements.");
 
-            Color color = quadPixel switch
+            BgraColor bgraColor = quadPixel switch
             {
-                ' ' => Colors.Transparent,
+                ' ' => BgraColor.Transparent,
                 '▘' => pixelColors[0],
                 '▝' => pixelColors[1],
                 '▖' => pixelColors[2],
                 '▗' => pixelColors[3],
-                '▚' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[2] }),
-                '▞' => CombineColors(stackalloc Color[] { pixelColors[1], pixelColors[3] }),
-                '▌' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[2] }),
-                '▐' => CombineColors(stackalloc Color[] { pixelColors[1], pixelColors[3] }),
-                '▄' => CombineColors(stackalloc Color[] { pixelColors[2], pixelColors[3] }),
-                '▀' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[1] }),
-                '▛' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[1], pixelColors[2] }),
-                '▜' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[1], pixelColors[3] }),
-                '▙' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[2], pixelColors[3] }),
-                '▟' => CombineColors(stackalloc Color[] { pixelColors[1], pixelColors[2], pixelColors[3] }),
+                '▚' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[2] }),
+                '▞' => CombineColors(stackalloc BgraColor[] { pixelColors[1], pixelColors[3] }),
+                '▌' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[2] }),
+                '▐' => CombineColors(stackalloc BgraColor[] { pixelColors[1], pixelColors[3] }),
+                '▄' => CombineColors(stackalloc BgraColor[] { pixelColors[2], pixelColors[3] }),
+                '▀' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[1] }),
+                '▛' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[1], pixelColors[2] }),
+                '▜' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[1], pixelColors[3] }),
+                '▙' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[2], pixelColors[3] }),
+                '▟' => CombineColors(stackalloc BgraColor[] { pixelColors[1], pixelColors[2], pixelColors[3] }),
                 '█' => CombineColors(pixelColors),
                 _ => throw new NotImplementedException()
             };
 
-            return color;
+            return bgraColor.ToColor();
         }
 
 
@@ -177,38 +214,38 @@ namespace Consolonia.Core.Drawing
         /// <param name="pixelColors"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        private static Color GetBackgroundColorForQuadPixel(char quadPixel, Span<Color> pixelColors)
+        private static Color GetBackgroundColorForQuadPixel(char quadPixel, Span<BgraColor> pixelColors)
         {
-            Color color = quadPixel switch
+            BgraColor bgraColor = quadPixel switch
             {
                 ' ' => CombineColors(pixelColors),
-                '▘' => CombineColors(stackalloc Color[] { pixelColors[1], pixelColors[2], pixelColors[3] }),
-                '▝' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[2], pixelColors[3] }),
-                '▖' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[1], pixelColors[3] }),
-                '▗' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[1], pixelColors[2] }),
-                '▚' => CombineColors(stackalloc Color[] { pixelColors[1], pixelColors[2] }),
-                '▞' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[3] }),
-                '▌' => CombineColors(stackalloc Color[] { pixelColors[1], pixelColors[3] }),
-                '▐' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[2] }),
-                '▄' => CombineColors(stackalloc Color[] { pixelColors[0], pixelColors[1] }),
-                '▀' => CombineColors(stackalloc Color[] { pixelColors[2], pixelColors[3] }),
+                '▘' => CombineColors(stackalloc BgraColor[] { pixelColors[1], pixelColors[2], pixelColors[3] }),
+                '▝' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[2], pixelColors[3] }),
+                '▖' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[1], pixelColors[3] }),
+                '▗' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[1], pixelColors[2] }),
+                '▚' => CombineColors(stackalloc BgraColor[] { pixelColors[1], pixelColors[2] }),
+                '▞' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[3] }),
+                '▌' => CombineColors(stackalloc BgraColor[] { pixelColors[1], pixelColors[3] }),
+                '▐' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[2] }),
+                '▄' => CombineColors(stackalloc BgraColor[] { pixelColors[0], pixelColors[1] }),
+                '▀' => CombineColors(stackalloc BgraColor[] { pixelColors[2], pixelColors[3] }),
                 '▛' => pixelColors[3],
                 '▜' => pixelColors[2],
                 '▙' => pixelColors[1],
                 '▟' => pixelColors[0],
-                '█' => Colors.Transparent,
+                '█' => BgraColor.Transparent,
                 _ => throw new NotImplementedException()
             };
-            return color;
+            return bgraColor.ToColor();
         }
 
 
-        private static Color CombineColors(Span<Color> colors)
+        private static BgraColor CombineColors(Span<BgraColor> colors)
         {
             float accumR = 0, accumG = 0, accumB = 0;
             float accumAlpha = 0;
 
-            foreach (ref readonly Color color in colors)
+            foreach (ref readonly BgraColor color in colors)
             {
                 float a1 = color.A / 255f;
                 float oneMinusA = 1f - accumAlpha;
@@ -224,7 +261,7 @@ namespace Consolonia.Core.Drawing
             byte b = (byte)Math.Clamp(accumB, 0, 255);
             byte a = (byte)Math.Clamp(accumAlpha * 255f, 0, 255);
 
-            return Color.FromArgb(a, r, g, b);
+            return new BgraColor(b, g, r, a);
         }
 
         /// <summary>
@@ -233,13 +270,14 @@ namespace Consolonia.Core.Drawing
         /// <param name="colors"></param>
         /// <returns>T or F for each color as a string</returns>
         /// <exception cref="ArgumentException"></exception>
-        private static byte GetColorsPattern(Span<Color> colors)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static byte GetColorsPattern(Span<BgraColor> colors)
         {
             if (colors.Length != 4) throw new ArgumentException("Array must contain exactly 4 colors.");
 
             // Initial guess: two clusters with the first two colors as centers
-            Span<Color> clusterCenters = stackalloc Color[2] { colors[0], colors[1] };
-            Span<Color> newClusterCenters = stackalloc Color[2];
+            Span<BgraColor> clusterCenters = stackalloc BgraColor[2] { colors[0], colors[1] };
+            Span<BgraColor> newClusterCenters = stackalloc BgraColor[2];
             Span<int> clusters = stackalloc int[4];
 
             for (int iteration = 0; iteration < 10; iteration++) // limit iterations to avoid infinite loop
@@ -249,8 +287,8 @@ namespace Consolonia.Core.Drawing
                     clusters[i] = GetColorCluster(colors[i], clusterCenters);
 
                 // Recalculate cluster centers
-                newClusterCenters[0] = Colors.Transparent;
-                newClusterCenters[1] = Colors.Transparent;
+                newClusterCenters[0] = BgraColor.Transparent;
+                newClusterCenters[1] = BgraColor.Transparent;
                 for (int cluster = 0; cluster < 2; cluster++)
                 {
                     // Calculate average for this cluster 
@@ -261,7 +299,7 @@ namespace Consolonia.Core.Drawing
                     for (int i = 0; i < colors.Length; i++)
                         if (clusters[i] == cluster)
                         {
-                            Color color = colors[i];
+                            BgraColor color = colors[i];
                             totalRed += color.R;
                             totalGreen += color.G;
                             totalBlue += color.B;
@@ -273,11 +311,12 @@ namespace Consolonia.Core.Drawing
                         }
 
                     if (count > 0)
-                        newClusterCenters[cluster] = Color.FromArgb(
-                            (byte)(totalAlpha / count),
-                            (byte)(totalRed / count),
-                            (byte)(totalGreen / count),
-                            (byte)(totalBlue / count));
+                    {
+                        newClusterCenters[cluster].B = (byte)(totalBlue / count);
+                        newClusterCenters[cluster].G = (byte)(totalGreen / count);
+                        newClusterCenters[cluster].R = (byte)(totalRed / count);
+                        newClusterCenters[cluster].A = (byte)(totalAlpha / count);
+                    }
 
                     if (count == 4 && allTransparent)
                         return 0;
@@ -286,7 +325,7 @@ namespace Consolonia.Core.Drawing
                 // Check for convergence
                 bool converged = true;
                 for (int i = 0; i < 2; i++)
-                    if (!clusterCenters[i].Equals(newClusterCenters[i]))
+                    if (!ColorEquals(clusterCenters[i], newClusterCenters[i]))
                     {
                         converged = false;
                         break;
@@ -311,7 +350,14 @@ namespace Consolonia.Core.Drawing
                  (clusters[3] == higherCluster ? 0b0001 : 0));
         }
 
-        private static int GetColorCluster(Color color, Span<Color> clusterCenters)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool ColorEquals(BgraColor c1, BgraColor c2)
+        {
+            return c1.B == c2.B && c1.G == c2.G && c1.R == c2.R && c1.A == c2.A;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int GetColorCluster(BgraColor color, Span<BgraColor> clusterCenters)
         {
             double minDistance = double.MaxValue;
             int closestCluster = -1;
@@ -329,7 +375,8 @@ namespace Consolonia.Core.Drawing
             return closestCluster;
         }
 
-        private static double GetColorDistance(Color c1, Color c2)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double GetColorDistance(BgraColor c1, BgraColor c2)
         {
             int dr = c1.R - c2.R;
             int dg = c1.G - c2.G;
@@ -339,8 +386,8 @@ namespace Consolonia.Core.Drawing
             return Math.Sqrt(dr * dr + dg * dg + db * db + da * da);
         }
 
-
-        private static double GetColorBrightness(Color color)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double GetColorBrightness(BgraColor color)
         {
             return 0.299 * color.R + 0.587 * color.G + 0.114 * color.B + color.A;
         }

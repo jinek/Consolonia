@@ -3,17 +3,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
-using Consolonia.Controls.Brushes;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
 using Consolonia.Core.Text.Fonts;
-using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
 {

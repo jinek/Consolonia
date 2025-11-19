@@ -4,7 +4,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Templates;
 using Avalonia.Platform;
-using Avalonia.Skia;
 using Consolonia.Controls;
 using Consolonia.Core.Controls;
 using Consolonia.Core.Drawing;
@@ -66,12 +65,16 @@ namespace Consolonia
 
         public static AppBuilder UseConsolonia(this AppBuilder builder)
         {
+            var initialize = builder.RenderingSubsystemInitializer;
+
             return builder
                 .UseStandardRuntimePlatformSubsystem()
                 .UseWindowingSubsystem(() => new ConsoloniaPlatform().Initialize(), nameof(ConsoloniaPlatform))
                 .UseRenderingSubsystem(() =>
                 {
-                    SkiaPlatform.Initialize();
+                    if (initialize != null)
+                        initialize();
+
                     var fallback = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>();
                     var consoloniaRenderInterface = new ConsoloniaRenderInterface(fallback);
 
