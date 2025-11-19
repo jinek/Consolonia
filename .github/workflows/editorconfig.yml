@@ -44,7 +44,7 @@ jobs:
 
       - name: resharper-cleanup
         run: |                    
-          jb cleanupcode Consolonia.sln --exclude="**Consolonia.GuiCS/**.*;**Consolonia.Templates/**.*;**Consolonia.Editor/**.*"
+          jb cleanupcode Consolonia.sln --exclude="**Consolonia.GuiCS/**.*"
         working-directory: ./src
 
 
@@ -52,7 +52,7 @@ jobs:
         uses: muno92/resharper_inspectcode@1.12.0
         with:
           solutionPath: ./src/Consolonia.sln
-          exclude: "**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*;**Example/**.*;**Consolonia.Templates/**.*;**Consolonia.Editor/**.*"
+          exclude: "**Consolonia.GuiCS/**.*;**Consolonia.Gallery/**.*"
           version: '2025.2.1'
           minimumSeverity: 'warning'
 
