@@ -5,16 +5,21 @@ group:
   files:
     - source: .github/workflows
       dest: .github/workflows
-      exclude:
-        - repo-file-sync.yml
+      deleteOrphaned: true
+      exclude: |
+        repo-file-sync.yml
     - source: .editorconfig
       dest: .editorconfig
+      deleteOrphaned: true
     - source: .gitignore
       dest: .gitignore
+      deleteOrphaned: true
     - source: Directory.Build.props
       dest: Directory.Build.props
+      deleteOrphaned: true
     - source: Directory.Core.Build.props
       dest: Directory.Core.Build.props
+      deleteOrphaned: true
   repos: |
       Consolonia/Consolonia.Labs
       Consolonia/Consolonia.Templates
