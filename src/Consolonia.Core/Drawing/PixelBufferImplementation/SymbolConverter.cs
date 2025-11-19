@@ -10,7 +10,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             if (reader.TokenType == JsonTokenType.String)
             {
-                string? value = reader.GetString();
+                string value = reader.GetString();
                 return value != null ? new Symbol(value) : Symbol.Empty;
             }
 

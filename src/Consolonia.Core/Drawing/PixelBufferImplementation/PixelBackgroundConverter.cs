@@ -15,7 +15,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                 if (reader.TokenType == JsonTokenType.PropertyName && reader.GetString() == "Color")
                 {
                     reader.Read(); // Move to property value
-                    string? colorValue = reader.GetString();
+                    string colorValue = reader.GetString();
                     reader.Read(); // Move past end object
                     
                     if (colorValue != null && Color.TryParse(colorValue, out Color color))

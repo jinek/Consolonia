@@ -9,7 +9,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     {
         public override Color Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            string? value = reader.GetString();
+            string value = reader.GetString();
             return value != null && Color.TryParse(value, out Color color) ? color : Colors.Transparent;
         }
 
