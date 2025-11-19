@@ -1,6 +1,6 @@
+using System.Text.Json;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests.WithLifetimeFixture
@@ -74,8 +74,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void JsonSerialization()
         {
             var pixelBackground = new PixelBackground(Colors.Red);
-            string json = JsonConvert.SerializeObject(pixelBackground);
-            var pixelBackground2 = JsonConvert.DeserializeObject<PixelBackground>(json);
+            string json = JsonSerializer.Serialize(pixelBackground);
+            var pixelBackground2 = JsonSerializer.Deserialize<PixelBackground>(json);
             Assert.That(pixelBackground.Equals(pixelBackground2));
         }
     }

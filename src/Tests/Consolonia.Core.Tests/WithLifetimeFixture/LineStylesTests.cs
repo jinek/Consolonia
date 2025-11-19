@@ -1,8 +1,8 @@
 // DUPFINDER_ignore
 
 using System;
+using System.Text.Json;
 using Consolonia.Controls.Brushes;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests.WithLifetimeFixture
@@ -151,8 +151,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void TestJsonSerialization()
         {
             var lineStyles = new LineStyles(LineStyle.SingleLine, LineStyle.DoubleLine, LineStyle.Edge, LineStyle.Bold);
-            string json = JsonConvert.SerializeObject(lineStyles);
-            var deserialized = JsonConvert.DeserializeObject<LineStyles>(json);
+            string json = JsonSerializer.Serialize(lineStyles);
+            var deserialized = JsonSerializer.Deserialize<LineStyles>(json);
             Assert.That(deserialized.Left, Is.EqualTo(LineStyle.SingleLine));
             Assert.That(deserialized.Top, Is.EqualTo(LineStyle.DoubleLine));
             Assert.That(deserialized.Right, Is.EqualTo(LineStyle.Edge));

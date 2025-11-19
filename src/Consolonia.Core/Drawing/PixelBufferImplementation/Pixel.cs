@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Media;
 using Consolonia.Controls;
-using Newtonsoft.Json;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -19,6 +19,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
     [SuppressMessage("ReSharper", "NotResolvedInText", MessageId = "Symbol")]
     [DebuggerDisplay(
         "'{Foreground.Symbol}', Foreground: {Foreground.Color}, Background: {Background.Color}, CaretStyle: {CaretStyle}")]
+    [JsonConverter(typeof(PixelConverter))]
     public readonly struct Pixel : IEquatable<Pixel>
     {
         private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
@@ -104,11 +105,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             PixelBackground.Transparent);
 
 #pragma warning disable CA1051 // Do not declare visible instance fields
-        [JsonProperty] public readonly PixelForeground Foreground;
-
-        [JsonProperty] public readonly PixelBackground Background;
-
-        [JsonProperty] public readonly CaretStyle CaretStyle;
+        public readonly PixelForeground Foreground;
+        public readonly PixelBackground Background;
+        public readonly CaretStyle CaretStyle;
 #pragma warning restore CA1051 // Do not declare visible instance fields
 
         [JsonIgnore] public ushort Width => Foreground.Symbol.Width;

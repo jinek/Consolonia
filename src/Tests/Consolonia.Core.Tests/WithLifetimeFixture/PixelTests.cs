@@ -1,10 +1,10 @@
 // DUPFINDER_ignore
 
 using System.Collections.Generic;
+using System.Text.Json;
 using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests.WithLifetimeFixture
@@ -269,8 +269,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             var pixel = new Pixel(new PixelForeground(new Symbol('a'), Colors.Red),
                 new PixelBackground(Colors.Blue));
-            string json = JsonConvert.SerializeObject(pixel);
-            var pixel2 = JsonConvert.DeserializeObject<Pixel>(json);
+            string json = JsonSerializer.Serialize(pixel);
+            var pixel2 = JsonSerializer.Deserialize<Pixel>(json);
             Assert.That(pixel.Equals(pixel2));
         }
     }

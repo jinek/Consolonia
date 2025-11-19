@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json.Serialization;
 using Avalonia;
-using Newtonsoft.Json;
 
 // ReSharper disable UnusedMember.Global
 
