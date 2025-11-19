@@ -3,6 +3,7 @@ name: Repo file sync
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 concurrency:
   group: file-sync-${{ github.ref }}
@@ -23,5 +24,4 @@ jobs:
         with:
           CONFIG_PATH: .github/sync.yml
           GITHUB_TOKEN: ${{ secrets.SYNC_TOKEN }}
-          # Provide a classic PAT in the repository secret named SYNC_TOKEN.
-          # Scopes required: repo (all), workflow (for updating workflows in targets).
+
