@@ -1,0 +1,23 @@
+# Repo File Sync configuration
+# https://github.com/marketplace/actions/repo-file-sync-action
+
+- group: shared
+  repos:
+    - Consolonia/Consolonia.Labs
+    - Consolonia/Consolonia.Templates
+    - Consolonia/Consolonia.AvaloniaEdit
+    - Consolonia/Consolonia.Blazor
+    - Consolonia/Edit.NET
+  files:
+    - source: .github/workflows
+      dest: .github/workflows
+      exclude:
+        - repo-file-sync.yml
+    - source: .editorconfig
+      dest: .editorconfig
+    - source: .gitignore
+      dest: .gitignore
+    - source: Directory.Build.props
+      dest: Directory.Build.props
+    - source: Directory.Core.Build.props
+      dest: Directory.Core.Build.props
