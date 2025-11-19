@@ -15,10 +15,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             }
 
             if (reader.TokenType == JsonTokenType.Number)
-            {
                 if (reader.TryGetInt64(out long value))
                     return new Symbol((byte)value);
-            }
 
             return Symbol.Empty;
         }

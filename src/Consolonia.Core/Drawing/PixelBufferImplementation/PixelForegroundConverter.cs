@@ -7,12 +7,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public class PixelForegroundConverter : JsonConverter<PixelForeground>
     {
-        public override PixelForeground Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override PixelForeground Read(ref Utf8JsonReader reader, Type typeToConvert,
+            JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.StartObject)
                 throw new JsonException();
 
-            Symbol symbol = Symbol.Empty;
+            var symbol = Symbol.Empty;
             Color color = Colors.Transparent;
             FontWeight? weight = null;
             FontStyle? style = null;
@@ -42,25 +43,28 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                             if (reader.TokenType != JsonTokenType.Null)
                             {
                                 string weightStr = reader.GetString();
-                                if (Enum.TryParse<FontWeight>(weightStr, out FontWeight parsedWeight))
+                                if (Enum.TryParse(weightStr, out FontWeight parsedWeight))
                                     weight = parsedWeight;
                             }
+
                             break;
                         case "Style":
                             if (reader.TokenType != JsonTokenType.Null)
                             {
                                 string styleStr = reader.GetString();
-                                if (Enum.TryParse<FontStyle>(styleStr, out FontStyle parsedStyle))
+                                if (Enum.TryParse(styleStr, out FontStyle parsedStyle))
                                     style = parsedStyle;
                             }
+
                             break;
                         case "TextDecoration":
                             if (reader.TokenType != JsonTokenType.Null)
                             {
                                 string decorationStr = reader.GetString();
-                                if (Enum.TryParse<TextDecorationLocation>(decorationStr, out TextDecorationLocation parsedDecoration))
+                                if (Enum.TryParse(decorationStr, out TextDecorationLocation parsedDecoration))
                                     textDecoration = parsedDecoration;
                             }
+
                             break;
                     }
                 }
@@ -72,21 +76,21 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public override void Write(Utf8JsonWriter writer, PixelForeground value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            
+
             writer.WritePropertyName("Symbol");
             JsonSerializer.Serialize(writer, value.Symbol, options);
-            
+
             writer.WriteString("Color", value.Color.ToString());
-            
+
             if (value.Weight.HasValue)
                 writer.WriteString("Weight", value.Weight.Value.ToString());
-            
+
             if (value.Style.HasValue)
                 writer.WriteString("Style", value.Style.Value.ToString());
-            
+
             if (value.TextDecoration.HasValue)
                 writer.WriteString("TextDecoration", value.TextDecoration.Value.ToString());
-            
+
             writer.WriteEndObject();
         }
     }
