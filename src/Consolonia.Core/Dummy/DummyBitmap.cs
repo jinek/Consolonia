@@ -6,52 +6,59 @@ using Avalonia.Platform;
 
 namespace Consolonia.Core.Dummy
 {
-
-	internal class DummyBitmap : IDrawingContextLayerImpl, IWriteableBitmapImpl
-	{
-		public Size Size { get; }
-
-		public DummyBitmap(Size size, Vector dpi)
-		{
-			Size = size;
-			Dpi = dpi;
-			var pixel = Size * (Dpi / 96);
-			PixelSize = new PixelSize(Math.Max(1, (int)pixel.Width), Math.Max(1, (int)pixel.Height));
-            Format = PixelFormat.Bgra8888;
-            AlphaFormat = Avalonia.Platform.AlphaFormat.Opaque;
-		}
-
-		public DummyBitmap(PixelSize size, Vector dpi)
-		{
-			PixelSize = size;
-			Dpi = dpi;
-			Size = PixelSize.ToSizeWithDpi(dpi);
+    internal class DummyBitmap : IDrawingContextLayerImpl, IWriteableBitmapImpl
+    {
+        public DummyBitmap(Size size, Vector dpi)
+        {
+            Size = size;
+            Dpi = dpi;
+            Size pixel = Size * (Dpi / 96);
+            PixelSize = new PixelSize(Math.Max(1, (int)pixel.Width), Math.Max(1, (int)pixel.Height));
             Format = PixelFormat.Bgra8888;
             AlphaFormat = Avalonia.Platform.AlphaFormat.Opaque;
         }
 
+        public DummyBitmap(PixelSize size, Vector dpi)
+        {
+            PixelSize = size;
+            Dpi = dpi;
+            Size = PixelSize.ToSizeWithDpi(dpi);
+            Format = PixelFormat.Bgra8888;
+            AlphaFormat = Avalonia.Platform.AlphaFormat.Opaque;
+        }
+
+        public Size Size { get; }
+
         public void Dispose()
-		{
+        {
+        }
 
-		}
+        public IDrawingContextImpl CreateDrawingContext(bool _)
+        {
+            throw new NotImplementedException();
+        }
 
-		public IDrawingContextImpl CreateDrawingContext(bool _)
-		{
-			throw new NotImplementedException();
-		}
+        public bool IsCorrupted => false;
 
-		public bool IsCorrupted => false;
+        public void Blit(IDrawingContextImpl context)
+        {
+        }
 
-		public void Blit(IDrawingContextImpl context)
-		{
+        public bool CanBlit => false;
 
-		}
+        public Vector Dpi { get; init; }
 
-		public bool CanBlit => false;
+        public PixelSize PixelSize { get; init; }
 
-		public Vector Dpi { get; init;  }
+        public int Version { get; set; }
 
-		public PixelSize PixelSize { get; init; }
+        public void Save(string fileName, int? quality = null)
+        {
+        }
+
+        public void Save(Stream stream, int? quality = null)
+        {
+        }
 
         // resharper disable once UnassignedGetOnlyAutoProperty
         public PixelFormat? Format { get; init; }
@@ -59,25 +66,13 @@ namespace Consolonia.Core.Dummy
         // resharper disable once UnassignedGetOnlyAutoProperty
         public AlphaFormat? AlphaFormat { get; init; }
 
-        public int Version { get; set; }
 
-		public void Save(string fileName, int? quality = null)
-		{
-
-		}
-
-		public void Save(Stream stream, int? quality = null)
-		{
-
-		}
-
-
-		public ILockedFramebuffer Lock()
-		{
-			Version++;
-			var mem = Marshal.AllocHGlobal(PixelSize.Width * PixelSize.Height * 4);
-			return new LockedFramebuffer(mem, PixelSize, PixelSize.Width * 4, Dpi, PixelFormat.Rgba8888,
-				() => Marshal.FreeHGlobal(mem));
-		}
-	}
+        public ILockedFramebuffer Lock()
+        {
+            Version++;
+            IntPtr mem = Marshal.AllocHGlobal(PixelSize.Width * PixelSize.Height * 4);
+            return new LockedFramebuffer(mem, PixelSize, PixelSize.Width * 4, Dpi, PixelFormat.Rgba8888,
+                () => Marshal.FreeHGlobal(mem));
+        }
+    }
 }

@@ -8,91 +8,101 @@
     <TabControl TabStripPlacement="Left">
         <TabItem Header="0.jpg">
             <Image Source="avares://Consolonia.Gallery/Resources/0.jpg"
-                   Stretch="Uniform" >
+                   Stretch="Uniform">
                 <Image.RenderTransform>
                     <!-- aspect ratio for most terminal fonts is 2:1 It's not knowable what the font is, but this is a reasonable approximation -->
-                    <ScaleTransform ScaleX="2" ScaleY="1" />
+                    <ScaleTransform ScaleX="2"
+                                    ScaleY="1" />
                 </Image.RenderTransform>
             </Image>
         </TabItem>
         <TabItem Header="1.jpg">
-            <Image Source="avares://Consolonia.Gallery/Resources/1.jpg" 
+            <Image Source="avares://Consolonia.Gallery/Resources/1.jpg"
                    MaxHeight="100"
-                   Stretch="Uniform" >
+                   Stretch="Uniform">
                 <Image.RenderTransform>
-                    <ScaleTransform ScaleX="2" ScaleY="1" />
+                    <ScaleTransform ScaleX="2"
+                                    ScaleY="1" />
                 </Image.RenderTransform>
             </Image>
         </TabItem>
         <TabItem Header="2.jpg">
             <Image Source="avares://Consolonia.Gallery/Resources/2.jpg"
                    MaxHeight="100"
-                   Stretch="Uniform" >
+                   Stretch="Uniform">
                 <Image.RenderTransform>
-                    <ScaleTransform ScaleX="2" ScaleY="1" />
+                    <ScaleTransform ScaleX="2"
+                                    ScaleY="1" />
                 </Image.RenderTransform>
             </Image>
         </TabItem>
         <TabItem Header="3.jpg">
             <Image Source="avares://Consolonia.Gallery/Resources/3.jpg"
                    MaxHeight="100"
-                   Stretch="Uniform" >
+                   Stretch="Uniform">
                 <Image.RenderTransform>
-                    <ScaleTransform ScaleX="2" ScaleY="1" />
+                    <ScaleTransform ScaleX="2"
+                                    ScaleY="1" />
                 </Image.RenderTransform>
             </Image>
         </TabItem>
         <TabItem Header="4.jpg">
             <Image Source="avares://Consolonia.Gallery/Resources/4.jpg"
                    MaxHeight="100"
-                   Stretch="Uniform" >
+                   Stretch="Uniform">
                 <Image.RenderTransform>
-                    <ScaleTransform ScaleX="2" ScaleY="1" />
+                    <ScaleTransform ScaleX="2"
+                                    ScaleY="1" />
                 </Image.RenderTransform>
             </Image>
         </TabItem>
         <TabItem Header="5.jpg">
             <Image Source="avares://Consolonia.Gallery/Resources/5.jpg"
                    MaxHeight="100"
-                   Stretch="Uniform" >
+                   Stretch="Uniform">
                 <Image.RenderTransform>
-                    <ScaleTransform ScaleX="2" ScaleY="1" />
+                    <ScaleTransform ScaleX="2"
+                                    ScaleY="1" />
                 </Image.RenderTransform>
             </Image>
         </TabItem>
         <TabItem Header="6.jpg">
             <Image Source="avares://Consolonia.Gallery/Resources/6.jpg"
                    MaxHeight="100"
-                   Stretch="Uniform" >
+                   Stretch="Uniform">
                 <Image.RenderTransform>
-                    <ScaleTransform ScaleX="2" ScaleY="1" />
+                    <ScaleTransform ScaleX="2"
+                                    ScaleY="1" />
                 </Image.RenderTransform>
             </Image>
         </TabItem>
         <TabItem Header="7.jpg">
             <Image Source="avares://Consolonia.Gallery/Resources/7.jpg"
                    MaxHeight="100"
-                   Stretch="Uniform" >
+                   Stretch="Uniform">
                 <Image.RenderTransform>
-                    <ScaleTransform ScaleX="2" ScaleY="1" />
+                    <ScaleTransform ScaleX="2"
+                                    ScaleY="1" />
                 </Image.RenderTransform>
             </Image>
         </TabItem>
         <TabItem Header="8.jpg">
             <Image Source="avares://Consolonia.Gallery/Resources/8.jpg"
                    MaxHeight="100"
-                   Stretch="Uniform" >
+                   Stretch="Uniform">
                 <Image.RenderTransform>
-                    <ScaleTransform ScaleX="2" ScaleY="1" />
+                    <ScaleTransform ScaleX="2"
+                                    ScaleY="1" />
                 </Image.RenderTransform>
             </Image>
         </TabItem>
         <TabItem Header="9.jpg">
             <Image Source="avares://Consolonia.Gallery/Resources/9.jpg"
                    MaxHeight="100"
-                   Stretch="Uniform" >
+                   Stretch="Uniform">
                 <Image.RenderTransform>
-                    <ScaleTransform ScaleX="2" ScaleY="1" />
+                    <ScaleTransform ScaleX="2"
+                                    ScaleY="1" />
                 </Image.RenderTransform>
             </Image>
         </TabItem>

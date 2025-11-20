@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -66,7 +65,7 @@ namespace Consolonia.Core.Infrastructure
 
 
         /// <summary>
-        /// Start rendering pass
+        ///     Start rendering pass
         /// </summary>
         void StartRender();
 
@@ -84,7 +83,7 @@ namespace Consolonia.Core.Infrastructure
             FontWeight? weight, TextDecorationLocation? textDecoration, string str);
 
         /// <summary>
-        /// End rendering pass, all output should be flushed to the console
+        ///     End rendering pass, all output should be flushed to the console
         /// </summary>
         void EndRender();
 
