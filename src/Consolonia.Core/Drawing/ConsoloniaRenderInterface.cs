@@ -6,7 +6,6 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Platform;
-using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
@@ -119,7 +118,8 @@ namespace Consolonia.Core.Drawing
                 return new AspectRatioAdjustedBitmap(bitmap);
             }
 
-            return ConsoloniaPlatform.RaiseNotSupported<IWriteableBitmapImpl>(NotSupportedRequestCode.BitmapsNotSupported, this,
+            return ConsoloniaPlatform.RaiseNotSupported<IWriteableBitmapImpl>(
+                NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(CreateWriteableBitmap));
         }
 
@@ -131,7 +131,8 @@ namespace Consolonia.Core.Drawing
                 return new AspectRatioAdjustedBitmap(bitmap);
             }
 
-            return ConsoloniaPlatform.RaiseNotSupported<IBitmapImpl>(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
+            return ConsoloniaPlatform.RaiseNotSupported<IBitmapImpl>(NotSupportedRequestCode.BitmapsNotSupported, this,
+                nameof(LoadBitmap));
         }
 
         public IBitmapImpl LoadBitmap(Stream stream)
@@ -142,7 +143,8 @@ namespace Consolonia.Core.Drawing
                 return new AspectRatioAdjustedBitmap(bitmap);
             }
 
-            return ConsoloniaPlatform.RaiseNotSupported<IBitmapImpl>(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
+            return ConsoloniaPlatform.RaiseNotSupported<IBitmapImpl>(NotSupportedRequestCode.BitmapsNotSupported, this,
+                nameof(LoadBitmap));
         }
 
         public IWriteableBitmapImpl LoadWriteableBitmapToHeight(Stream stream, int height,
@@ -154,7 +156,8 @@ namespace Consolonia.Core.Drawing
                 return new AspectRatioAdjustedBitmap(bitmap);
             }
 
-            return ConsoloniaPlatform.RaiseNotSupported<IWriteableBitmapImpl>(NotSupportedRequestCode.BitmapsNotSupported, this,
+            return ConsoloniaPlatform.RaiseNotSupported<IWriteableBitmapImpl>(
+                NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(LoadWriteableBitmapToHeight));
         }
 
@@ -167,7 +170,8 @@ namespace Consolonia.Core.Drawing
                 return new AspectRatioAdjustedBitmap(bitmap);
             }
 
-            return ConsoloniaPlatform.RaiseNotSupported<IWriteableBitmapImpl>(NotSupportedRequestCode.BitmapsNotSupported, this,
+            return ConsoloniaPlatform.RaiseNotSupported<IWriteableBitmapImpl>(
+                NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(LoadWriteableBitmapToWidth));
         }
 
@@ -179,7 +183,8 @@ namespace Consolonia.Core.Drawing
                 return new AspectRatioAdjustedBitmap(bitmap);
             }
 
-            return ConsoloniaPlatform.RaiseNotSupported<IWriteableBitmapImpl>(NotSupportedRequestCode.BitmapsNotSupported, this,
+            return ConsoloniaPlatform.RaiseNotSupported<IWriteableBitmapImpl>(
+                NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(LoadWriteableBitmap));
         }
 
@@ -191,7 +196,8 @@ namespace Consolonia.Core.Drawing
                 return new AspectRatioAdjustedBitmap(bitmap);
             }
 
-            return ConsoloniaPlatform.RaiseNotSupported<IWriteableBitmapImpl>(NotSupportedRequestCode.BitmapsNotSupported, this,
+            return ConsoloniaPlatform.RaiseNotSupported<IWriteableBitmapImpl>(
+                NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(LoadWriteableBitmap));
         }
 
@@ -246,7 +252,8 @@ namespace Consolonia.Core.Drawing
                 return new AspectRatioAdjustedBitmap(bitmap);
             }
 
-            return ConsoloniaPlatform.RaiseNotSupported<IBitmapImpl>(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
+            return ConsoloniaPlatform.RaiseNotSupported<IBitmapImpl>(NotSupportedRequestCode.BitmapsNotSupported, this,
+                nameof(LoadBitmap));
         }
 
         public IGlyphRunImpl CreateGlyphRun(IGlyphTypeface glyphTypeface,
