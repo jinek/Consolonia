@@ -7,7 +7,7 @@ using Avalonia.Platform;
 namespace Consolonia.Core.Dummy
 {
 
-	internal class DummyBitmap : IBitmapImpl, IDrawingContextLayerImpl, IWriteableBitmapImpl
+	internal class DummyBitmap : IDrawingContextLayerImpl, IWriteableBitmapImpl
 	{
 		public Size Size { get; }
 
@@ -45,11 +45,17 @@ namespace Consolonia.Core.Dummy
 
 		public bool CanBlit => false;
 
-		public Vector Dpi { get; }
-		public PixelSize PixelSize { get; }
-		public PixelFormat? Format { get; }
-		public AlphaFormat? AlphaFormat { get; }
-		public int Version { get; set; }
+		public Vector Dpi { get; init;  }
+
+		public PixelSize PixelSize { get; init; }
+
+        // resharper disable once UnassignedGetOnlyAutoProperty
+        public PixelFormat? Format { get; init; }
+
+        // resharper disable once UnassignedGetOnlyAutoProperty
+        public AlphaFormat? AlphaFormat { get; init; }
+
+        public int Version { get; set; }
 
 		public void Save(string fileName, int? quality = null)
 		{
