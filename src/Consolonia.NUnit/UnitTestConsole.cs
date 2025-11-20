@@ -104,6 +104,14 @@ namespace Consolonia.NUnit
         {
         }
 
+        public void StartRender()
+        {
+        }
+
+        public void EndRender()
+        {
+        }
+
         public void Dispose()
         {
             _lifetime = null;
@@ -177,14 +185,6 @@ namespace Consolonia.NUnit
         public void SetupLifetime(ConsoloniaLifetime lifetime)
         {
             _lifetime = lifetime;
-        }
-
-        public void StartRender()
-        {
-        }
-
-        public void EndRender()
-        {
         }
 
 

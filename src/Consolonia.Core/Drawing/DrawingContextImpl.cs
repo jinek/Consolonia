@@ -202,7 +202,5 @@ namespace Consolonia.Core.Drawing
         {
             if (CurrentClip.ContainsExclusive(position)) _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
         }
-
-
     }
 }

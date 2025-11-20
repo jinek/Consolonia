@@ -15,10 +15,11 @@ namespace Consolonia.Core.Infrastructure
     public class AnsiConsoleOutput : IConsoleOutput
     {
         private const string TestEmoji = "👨‍👩‍👧‍👦";
-        private StringBuilder _renderBuffer = new StringBuilder();
 
         private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
             new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
+
+        private readonly StringBuilder _renderBuffer = new();
 
         private PixelBufferCoordinate _headBufferPoint;
 
@@ -127,13 +128,9 @@ namespace Consolonia.Core.Infrastructure
                     bufferPoint =
                         new PixelBufferCoordinate((ushort)(bufferPoint.X + glyphWidth), bufferPoint.Y);
                 }
-
             }
 
-            if (resetNeeded)
-            {
-                _renderBuffer.Append(Esc.Reset);
-            }
+            if (resetNeeded) _renderBuffer.Append(Esc.Reset);
             _headBufferPoint = bufferPoint;
         }
 

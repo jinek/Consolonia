@@ -42,10 +42,10 @@ namespace Consolonia.Core.Drawing
             return new BgraColor(color.B, color.G, color.R, color.A);
         }
 
-        public static readonly BgraColor Transparent = new BgraColor(0, 0, 0, 0);
+        public static readonly BgraColor Transparent = new(0, 0, 0, 0);
     }
 
-    internal partial class DrawingContextImpl 
+    internal partial class DrawingContextImpl
     {
         public void DrawBitmap(IBitmapImpl source, double opacity, Rect sourceRect, Rect destRect)
         {
@@ -58,11 +58,12 @@ namespace Consolonia.Core.Drawing
                 .ToPixelRect();
 
             // Get the platform render interface to resize the bitmap
-            IPlatformRenderInterface renderInterface = AvaloniaLocator.Current.GetRequiredService<IPlatformRenderInterface>();
+            var renderInterface = AvaloniaLocator.Current.GetRequiredService<IPlatformRenderInterface>();
 
             // Resize source to be target rect * 2 so we can map to quad pixels
             var targetSize = new PixelSize(targetRect.Width * 2, targetRect.Height * 2);
-            using IBitmapImpl resizedBitmap = renderInterface.ResizeBitmap(source, targetSize, BitmapInterpolationMode.MediumQuality);
+            using IBitmapImpl resizedBitmap =
+                renderInterface.ResizeBitmap(source, targetSize, BitmapInterpolationMode.MediumQuality);
 
             // Get pixel data from the resized bitmap
             var readableBitmap = (IReadableBitmapImpl)resizedBitmap;
@@ -113,25 +114,25 @@ namespace Consolonia.Core.Drawing
             _consoleWindowImpl.DirtyRegions.AddRect(targetRect);
         }
 
+        public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
+        {
+            throw new NotImplementedException();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static BgraColor GetPixelColor(Span<BgraColor> pixels, int x, int y, int stride, int bytesPerPixel)
         {
             int bytesPerRow = stride;
             int pixelsPerRow = bytesPerRow / bytesPerPixel;
             int offset = y * pixelsPerRow + x;
-            
+
             BgraColor pixel = pixels[offset];
-            
+
             // Handle RGB24 format (no alpha channel)
             if (bytesPerPixel == 3)
                 pixel.A = 255;
-            
-            return pixel;
-        }
 
-        public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
-        {
-            throw new NotImplementedException();
+            return pixel;
         }
 
 

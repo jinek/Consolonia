@@ -65,7 +65,7 @@ namespace Consolonia
 
         public static AppBuilder UseConsolonia(this AppBuilder builder)
         {
-            var initialize = builder.RenderingSubsystemInitializer;
+            Action? initialize = builder.RenderingSubsystemInitializer;
 
             return builder
                 .UseStandardRuntimePlatformSubsystem()

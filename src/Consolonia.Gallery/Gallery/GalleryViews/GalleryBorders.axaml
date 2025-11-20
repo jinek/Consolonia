@@ -86,7 +86,7 @@
                                Background="AntiqueWhite" />
                 </Border>
             </WrapPanel>
-<!--            <WrapPanel>
+            <!--            <WrapPanel>
                 <Border BorderThickness="1">
                     <Border.BorderBrush>
                         <console:LineBrush LineStyle="Edge"
