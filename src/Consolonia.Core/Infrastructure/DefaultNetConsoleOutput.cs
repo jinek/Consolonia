@@ -141,13 +141,5 @@ namespace Consolonia.Core.Infrastructure
         {
             Console.Clear();
         }
-
-        public void StartRender()
-        {
-        }
-
-        public void EndRender()
-        {
-        }
     }
 }

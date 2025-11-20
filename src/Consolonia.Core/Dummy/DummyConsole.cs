@@ -94,14 +94,6 @@ namespace Consolonia.Core.Dummy
         {
         }
 
-        public void StartRender()
-        {
-        }
-
-        public void EndRender()
-        {
-        }
-
         public void ClearOutput()
         {
             SetCaretPosition(new PixelBufferCoordinate(0, 0));

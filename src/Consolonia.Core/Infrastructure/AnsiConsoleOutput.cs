@@ -19,8 +19,6 @@ namespace Consolonia.Core.Infrastructure
         private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
             new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
 
-        private readonly StringBuilder _renderBuffer = new();
-
         private PixelBufferCoordinate _headBufferPoint;
 
         private bool? _supportsComplexEmoji;
@@ -58,55 +56,37 @@ namespace Consolonia.Core.Infrastructure
             return _headBufferPoint;
         }
 
-        public void StartRender()
-        {
-            _renderBuffer.Clear();
-        }
-
-        public void EndRender()
-        {
-            WriteText(_renderBuffer.ToString());
-            _renderBuffer.Clear();
-        }
-
         public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
             FontWeight? weight, TextDecorationLocation? textDecoration, string str)
         {
             //todo: performance of retrieval of the service, at least can be retrieved once
             Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
-            bool resetNeeded = false;
+            var sb = new StringBuilder();
             if (textDecoration == TextDecorationLocation.Underline)
-            {
-                _renderBuffer.Append(Esc.Underline);
-                resetNeeded = true;
-            }
+                sb.Append(Esc.Underline);
 
             if (textDecoration == TextDecorationLocation.Strikethrough)
-            {
-                _renderBuffer.Append(Esc.Strikethrough);
-                resetNeeded = true;
-            }
+                sb.Append(Esc.Strikethrough);
 
             if (style == FontStyle.Italic)
-            {
-                _renderBuffer.Append(Esc.Italic);
-                resetNeeded = true;
-            }
+                sb.Append(Esc.Italic);
 
             (object mappedBackground, object mappedForeground) =
                 consoleColorMode.Value.MapColors(background, foreground, weight);
-            _renderBuffer.Append(Esc.Foreground(mappedForeground));
-            _renderBuffer.Append(Esc.Background(mappedBackground));
+            sb.Append(Esc.Foreground(mappedForeground));
+            sb.Append(Esc.Background(mappedBackground));
 
+            // write attributes
+            WriteText(sb.ToString());
+
+            ushort textWidth = str.MeasureText();
 
             // move to position
             if (SupportsEmojiVariation)
             {
-                _renderBuffer.Append(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-                _renderBuffer.Append(str);
-
-                ushort textWidth = str.MeasureText();
+                SetCaretPosition(bufferPoint);
+                WriteText(str);
                 bufferPoint = new PixelBufferCoordinate((ushort)(bufferPoint.X + textWidth), bufferPoint.Y);
             }
             else
@@ -118,19 +98,19 @@ namespace Consolonia.Core.Infrastructure
                     ushort glyphWidth = grapheme.Glyph.MeasureText();
                     if (glyphWidth > 1)
                     {
-                        _renderBuffer.Append(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
-                        _renderBuffer.Append(new string(' ', Math.Min(Size.Width - bufferPoint.X - 1, glyphWidth - 1)));
+                        WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
+                        WriteText(new string(' ', Math.Min(Size.Width - bufferPoint.X - 1, glyphWidth - 1)));
                     }
 
-                    _renderBuffer.Append(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-                    _renderBuffer.Append(grapheme.Glyph);
+                    WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+                    WriteText(grapheme.Glyph);
 
                     bufferPoint =
                         new PixelBufferCoordinate((ushort)(bufferPoint.X + glyphWidth), bufferPoint.Y);
                 }
             }
 
-            if (resetNeeded) _renderBuffer.Append(Esc.Reset);
+            WriteText(Esc.Reset);
             _headBufferPoint = bufferPoint;
         }
 

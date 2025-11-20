@@ -24,12 +24,10 @@ namespace Consolonia.Core.Drawing
         // cache of pixels written so we can ignore them if unchanged.
         private Pixel?[,] _cache;
         private ConsoleCursor _consoleCursor;
-        private FlushingBuffer _flushingBuffer;
 
         internal RenderTarget(ConsoleWindowImpl consoleTopLevelImpl)
         {
             _console = AvaloniaLocator.Current.GetService<IConsoleOutput>()!;
-            _flushingBuffer = new FlushingBuffer(_console);
             _consoleTopLevelImpl = consoleTopLevelImpl;
             _cache = InitializeCache(_consoleTopLevelImpl.PixelBuffer.Width, _consoleTopLevelImpl.PixelBuffer.Height);
             _consoleTopLevelImpl.Resized += OnResized;
@@ -113,11 +111,10 @@ namespace Consolonia.Core.Drawing
 
             _console.HideCaret();
 
-            _console.StartRender();
-
             PixelBufferCoordinate? caretPosition = null;
             CaretStyle? caretStyle = null;
 
+            var flushingBuffer = new FlushingBuffer(_console);
             for (ushort y = 0; y < pixelBuffer.Height; y++)
             for (ushort x = 0; x < pixelBuffer.Width;)
             {
@@ -170,7 +167,7 @@ namespace Consolonia.Core.Drawing
                 //todo: indexOutOfRange during resize
 
                 // paint the pixel
-                _flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
+                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
 
                 // determine end point for wide pixels
                 int end = Math.Min(pixelBuffer.Width, x + pixel.Width);
@@ -183,9 +180,7 @@ namespace Consolonia.Core.Drawing
                     _cache[x++, y] = Pixel.Empty;
             }
 
-            _flushingBuffer.Flush();
-
-            _console.EndRender();
+            flushingBuffer.Flush();
 
             if (caretPosition != null && caretStyle != CaretStyle.None)
             {

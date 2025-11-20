@@ -104,13 +104,6 @@ namespace Consolonia.NUnit
         {
         }
 
-        public void StartRender()
-        {
-        }
-
-        public void EndRender()
-        {
-        }
 
         public void Dispose()
         {

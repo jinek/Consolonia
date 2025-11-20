@@ -157,9 +157,6 @@ namespace Consolonia.Core.Infrastructure
                 case NotSupportedRequestCode.TransformLineWithRotationNotSupported:
                     notSupportedRequest.SetHandled(notSupportedRequest.Information[1]);
                     break;
-                case NotSupportedRequestCode.BitmapsNotSupported:
-                    throw new MissingMethodException(
-                        $"Api {notSupportedRequest.Information[1]} called but there is no platform renderer for bitmaps. Add Avalonia.Skia package and call .UseSkia() before .UseConsolonia() to enable bitmaps");
                 case NotSupportedRequestCode.PushClipWithRoundedRectNotSupported:
                 case NotSupportedRequestCode.PushOpacityNotSupported:
                 case NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle:
