@@ -76,18 +76,18 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public override void Write(Utf8JsonWriter writer, PixelForeground value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            
+
             writer.WritePropertyName(nameof(PixelForeground.Symbol));
             JsonSerializer.Serialize(writer, value.Symbol, options);
-            
+
             writer.WriteString(nameof(PixelForeground.Color), value.Color.ToString());
-            
+
             if (value.Weight.HasValue)
                 writer.WriteString(nameof(PixelForeground.Weight), value.Weight.Value.ToString());
-            
+
             if (value.Style.HasValue)
                 writer.WriteString(nameof(PixelForeground.Style), value.Style.Value.ToString());
-            
+
             if (value.TextDecoration.HasValue)
                 writer.WriteString(nameof(PixelForeground.TextDecoration), value.TextDecoration.Value.ToString());
 
