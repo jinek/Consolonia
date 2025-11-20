@@ -104,7 +104,6 @@ namespace Consolonia.NUnit
         {
         }
 
-
         public void Dispose()
         {
             _lifetime = null;
