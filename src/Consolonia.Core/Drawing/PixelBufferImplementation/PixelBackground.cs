@@ -2,12 +2,13 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using Avalonia.Media;
-using Newtonsoft.Json;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     [DebuggerDisplay("[{Color}]")]
+    [JsonConverter(typeof(PixelBackgroundConverter))]
     public readonly struct PixelBackground(Color color) : IEquatable<PixelBackground>
     {
         public static readonly PixelBackground Transparent = new();
@@ -31,7 +32,6 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         }
 
 #pragma warning disable CA1051 // Do not declare visible instance fields
-        [JsonConverter(typeof(ColorConverter))] [JsonProperty]
         public readonly Color Color = color;
 #pragma warning restore CA1051 // Do not declare visible instance fields
 

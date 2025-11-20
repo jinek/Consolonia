@@ -14,7 +14,6 @@
         <PackageReference Include="Iciclecreek.Avalonia.WindowManager" Version="3.0.9" />
         <PackageReference Include="NLog" Version="6.0.2" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.116.1" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
     <ItemGroup>

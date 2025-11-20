@@ -2,9 +2,9 @@
 
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests.WithLifetimeFixture
@@ -177,8 +177,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void JsonSerialization()
         {
             var pixelForeground = new PixelForeground(new Symbol('a'), Colors.Red);
-            string json = JsonConvert.SerializeObject(pixelForeground);
-            var pixelForeground2 = JsonConvert.DeserializeObject<PixelForeground>(json);
+            string json = JsonSerializer.Serialize(pixelForeground);
+            var pixelForeground2 = JsonSerializer.Deserialize<PixelForeground>(json);
             Assert.That(pixelForeground.Equals(pixelForeground2));
         }
 
@@ -188,8 +188,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         {
             var pixelForeground = new PixelForeground(new Symbol('a'), Colors.Red, FontWeight.Bold,
                 FontStyle.Italic, TextDecorationLocation.Underline);
-            string json = JsonConvert.SerializeObject(pixelForeground);
-            var pixelForeground2 = JsonConvert.DeserializeObject<PixelForeground>(json);
+            string json = JsonSerializer.Serialize(pixelForeground);
+            var pixelForeground2 = JsonSerializer.Deserialize<PixelForeground>(json);
             Assert.That(pixelForeground.Equals(pixelForeground2));
         }
 
@@ -197,8 +197,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void JsonSerializationDefault()
         {
             var pixelForeground = PixelForeground.Default;
-            string json = JsonConvert.SerializeObject(pixelForeground);
-            var pixelForeground2 = JsonConvert.DeserializeObject<PixelForeground>(json);
+            string json = JsonSerializer.Serialize(pixelForeground);
+            var pixelForeground2 = JsonSerializer.Deserialize<PixelForeground>(json);
             Assert.That(pixelForeground.Equals(pixelForeground2));
         }
     }

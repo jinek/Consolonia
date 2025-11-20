@@ -1,38 +1,36 @@
 using System;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public class SymbolConverter : JsonConverter<Symbol>
     {
-        public override Symbol ReadJson(JsonReader reader, Type objectType, Symbol existingValue,
-            bool hasExistingValue, JsonSerializer serializer)
+        public override Symbol Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (reader.Value != null)
+            if (reader.TokenType == JsonTokenType.String)
             {
-                if (reader.ValueType == typeof(string))
-                    return new Symbol((string)reader.Value);
-
-                if (reader.ValueType == typeof(long))
-                {
-                    long value = (long)reader.Value;
-                    return new Symbol((byte)value);
-                }
+                string value = reader.GetString();
+                return value != null ? new Symbol(value) : Symbol.Empty;
             }
+
+            if (reader.TokenType == JsonTokenType.Number)
+                if (reader.TryGetInt64(out long value))
+                    return new Symbol((byte)value);
 
             return Symbol.Empty;
         }
 
-        public override void WriteJson(JsonWriter writer, Symbol value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, Symbol value, JsonSerializerOptions options)
         {
             if (value.IsBoxSymbol())
-                writer.WriteValue(value.Pattern);
+                writer.WriteNumberValue(value.Pattern);
             else if (!string.IsNullOrEmpty(value.Complex))
-                writer.WriteValue(value.Complex);
+                writer.WriteStringValue(value.Complex);
             else if (value.Character != char.MinValue)
-                writer.WriteValue(value.Character.ToString());
+                writer.WriteStringValue(value.Character.ToString());
             else
-                writer.WriteValue((string)null);
+                writer.WriteNullValue();
         }
     }
 }

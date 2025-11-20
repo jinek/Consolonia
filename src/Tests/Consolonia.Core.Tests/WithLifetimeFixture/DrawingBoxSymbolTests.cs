@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests.WithLifetimeFixture
@@ -117,8 +117,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void JsonSerialization()
         {
             var symbol = new Symbol(0b0000_1111);
-            string json = JsonConvert.SerializeObject(symbol);
-            var deserializedSymbol = JsonConvert.DeserializeObject<Symbol>(json);
+            string json = JsonSerializer.Serialize(symbol);
+            var deserializedSymbol = JsonSerializer.Deserialize<Symbol>(json);
             Assert.That(symbol.Equals(deserializedSymbol));
         }
     }
