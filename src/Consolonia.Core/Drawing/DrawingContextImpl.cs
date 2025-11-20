@@ -97,8 +97,8 @@ namespace Consolonia.Core.Drawing
                 return;
 
             var targetRect = new Rect(Transform.Transform(destRect.TopLeft),
-                                      Transform.Transform(destRect.BottomRight))
-                                .ToPixelRect();
+                    Transform.Transform(destRect.BottomRight))
+                .ToPixelRect();
 
             var renderInterface = AvaloniaLocator.Current.GetRequiredService<IPlatformRenderInterface>();
 
@@ -115,7 +115,8 @@ namespace Consolonia.Core.Drawing
             int bytesPerPixel = frameBuffer.Format.BitsPerPixel / 8;
             unsafe
             {
-                ReadOnlySpan<byte> pixelBytes = MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef<byte>((void*)frameBuffer.Address), stride * frameBuffer.Size.Height);
+                ReadOnlySpan<byte> pixelBytes = MemoryMarshal.CreateReadOnlySpan(
+                    ref Unsafe.AsRef<byte>((void*)frameBuffer.Address), stride * frameBuffer.Size.Height);
                 ReadOnlySpan<BgraColor> pixels = MemoryMarshal.Cast<byte, BgraColor>(pixelBytes);
 
 
@@ -135,7 +136,7 @@ namespace Consolonia.Core.Drawing
                                 GetPixelColor(pixels, x, y, stride, bytesPerPixel),
                                 GetPixelColor(pixels, x + 1, y, stride, bytesPerPixel),
                                 GetPixelColor(pixels, x, y + 1, stride, bytesPerPixel),
-                                GetPixelColor(pixels, x + 1, y + 1, stride, bytesPerPixel),
+                                GetPixelColor(pixels, x + 1, y + 1, stride, bytesPerPixel)
                             ];
 
                             // map it to a single char to represent the 4 pixels
@@ -874,7 +875,8 @@ namespace Consolonia.Core.Drawing
         }
 
 
-        private static BgraColor GetPixelColor(ReadOnlySpan<BgraColor> pixels, int x, int y, int stride, int bytesPerPixel)
+        private static BgraColor GetPixelColor(ReadOnlySpan<BgraColor> pixels, int x, int y, int stride,
+            int bytesPerPixel)
         {
             int bytesPerRow = stride;
             int pixelsPerRow = bytesPerRow / bytesPerPixel;
@@ -936,16 +938,16 @@ namespace Consolonia.Core.Drawing
                 '▝' => pixelColors[1],
                 '▖' => pixelColors[2],
                 '▗' => pixelColors[3],
-                '▚' => CombineColors([pixelColors[0], pixelColors[2] ]),
-                '▞' => CombineColors([pixelColors[1], pixelColors[3] ]),
-                '▌' => CombineColors([pixelColors[0], pixelColors[2] ]),
-                '▐' => CombineColors([ pixelColors[1], pixelColors[3] ]),
-                '▄' => CombineColors([ pixelColors[2], pixelColors[3] ]),
-                '▀' => CombineColors([ pixelColors[0], pixelColors[1] ]),
-                '▛' => CombineColors([ pixelColors[0], pixelColors[1], pixelColors[2] ]),
-                '▜' => CombineColors([ pixelColors[0], pixelColors[1], pixelColors[3] ]),
-                '▙' => CombineColors([ pixelColors[0], pixelColors[2], pixelColors[3] ]),
-                '▟' => CombineColors([ pixelColors[1], pixelColors[2], pixelColors[3] ]),
+                '▚' => CombineColors([pixelColors[0], pixelColors[2]]),
+                '▞' => CombineColors([pixelColors[1], pixelColors[3]]),
+                '▌' => CombineColors([pixelColors[0], pixelColors[2]]),
+                '▐' => CombineColors([pixelColors[1], pixelColors[3]]),
+                '▄' => CombineColors([pixelColors[2], pixelColors[3]]),
+                '▀' => CombineColors([pixelColors[0], pixelColors[1]]),
+                '▛' => CombineColors([pixelColors[0], pixelColors[1], pixelColors[2]]),
+                '▜' => CombineColors([pixelColors[0], pixelColors[1], pixelColors[3]]),
+                '▙' => CombineColors([pixelColors[0], pixelColors[2], pixelColors[3]]),
+                '▟' => CombineColors([pixelColors[1], pixelColors[2], pixelColors[3]]),
                 '█' => CombineColors(pixelColors),
                 _ => throw new NotImplementedException()
             };
@@ -967,16 +969,16 @@ namespace Consolonia.Core.Drawing
             BgraColor bgraColor = quadPixel switch
             {
                 ' ' => CombineColors(pixelColors),
-                '▘' => CombineColors([ pixelColors[1], pixelColors[2], pixelColors[3] ]),
-                '▝' => CombineColors([ pixelColors[0], pixelColors[2], pixelColors[3] ]),
-                '▖' => CombineColors([ pixelColors[0], pixelColors[1], pixelColors[3] ]),
-                '▗' => CombineColors([ pixelColors[0], pixelColors[1], pixelColors[2] ]),
-                '▚' => CombineColors([ pixelColors[1], pixelColors[2] ]),
-                '▞' => CombineColors([ pixelColors[0], pixelColors[3] ]),
-                '▌' => CombineColors([ pixelColors[1], pixelColors[3] ]),
-                '▐' => CombineColors([ pixelColors[0], pixelColors[2] ]),
-                '▄' => CombineColors([ pixelColors[0], pixelColors[1] ]),
-                '▀' => CombineColors([ pixelColors[2], pixelColors[3] ]),
+                '▘' => CombineColors([pixelColors[1], pixelColors[2], pixelColors[3]]),
+                '▝' => CombineColors([pixelColors[0], pixelColors[2], pixelColors[3]]),
+                '▖' => CombineColors([pixelColors[0], pixelColors[1], pixelColors[3]]),
+                '▗' => CombineColors([pixelColors[0], pixelColors[1], pixelColors[2]]),
+                '▚' => CombineColors([pixelColors[1], pixelColors[2]]),
+                '▞' => CombineColors([pixelColors[0], pixelColors[3]]),
+                '▌' => CombineColors([pixelColors[1], pixelColors[3]]),
+                '▐' => CombineColors([pixelColors[0], pixelColors[2]]),
+                '▄' => CombineColors([pixelColors[0], pixelColors[1]]),
+                '▀' => CombineColors([pixelColors[2], pixelColors[3]]),
                 '▛' => pixelColors[3],
                 '▜' => pixelColors[2],
                 '▙' => pixelColors[1],
