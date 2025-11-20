@@ -17,6 +17,8 @@ namespace Consolonia.Core.Dummy
 			Dpi = dpi;
 			var pixel = Size * (Dpi / 96);
 			PixelSize = new PixelSize(Math.Max(1, (int)pixel.Width), Math.Max(1, (int)pixel.Height));
+            Format = PixelFormat.Bgra8888;
+            AlphaFormat = Avalonia.Platform.AlphaFormat.Opaque;
 		}
 
 		public DummyBitmap(PixelSize size, Vector dpi)
@@ -24,9 +26,11 @@ namespace Consolonia.Core.Dummy
 			PixelSize = size;
 			Dpi = dpi;
 			Size = PixelSize.ToSizeWithDpi(dpi);
-		}
+            Format = PixelFormat.Bgra8888;
+            AlphaFormat = Avalonia.Platform.AlphaFormat.Opaque;
+        }
 
-		public void Dispose()
+        public void Dispose()
 		{
 
 		}
