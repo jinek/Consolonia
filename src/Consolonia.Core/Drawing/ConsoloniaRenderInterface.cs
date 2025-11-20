@@ -114,7 +114,10 @@ namespace Consolonia.Core.Drawing
             AlphaFormat alphaFormat)
         {
             if (_fallback != null)
-                return _fallback.CreateWriteableBitmap(size, dpi, format, alphaFormat);
+            {
+                var bitmap = _fallback.CreateWriteableBitmap(size, dpi, format, alphaFormat);
+                return new AspectRatioAdjustedBitmap(bitmap);
+            }
 
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(CreateWriteableBitmap));
@@ -124,7 +127,10 @@ namespace Consolonia.Core.Drawing
         public IBitmapImpl LoadBitmap(string fileName)
         {
             if (_fallback != null)
-                return _fallback.LoadBitmap(fileName);
+            {
+                var bitmap = _fallback.LoadBitmap(fileName);
+                return new AspectRatioAdjustedBitmap(bitmap);
+            }
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
             return new DummyBitmap(new PixelSize(1, 1), new Vector(1, 1));
         }
@@ -132,7 +138,10 @@ namespace Consolonia.Core.Drawing
         public IBitmapImpl LoadBitmap(Stream stream)
         {
             if (_fallback != null)
-                return _fallback.LoadBitmap(stream);
+            {
+                var bitmap = _fallback.LoadBitmap(stream);
+                return new AspectRatioAdjustedBitmap(bitmap);
+            }
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
             return new DummyBitmap(new PixelSize(1, 1), new Vector(1, 1));
         }
@@ -141,7 +150,10 @@ namespace Consolonia.Core.Drawing
             BitmapInterpolationMode interpolationMode)
         {
             if (_fallback != null)
-                return _fallback.LoadWriteableBitmapToHeight(stream, height, interpolationMode);
+            {
+                var bitmap = _fallback.LoadWriteableBitmapToHeight(stream, height, interpolationMode);
+                return new AspectRatioAdjustedBitmap(bitmap);
+            }
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(LoadWriteableBitmapToHeight));
             return new DummyBitmap(new PixelSize(1, height), new Vector(1, 1));
@@ -151,7 +163,10 @@ namespace Consolonia.Core.Drawing
             BitmapInterpolationMode interpolationMode = BitmapInterpolationMode.HighQuality)
         {
             if (_fallback != null)
-                return _fallback.LoadWriteableBitmapToWidth(stream, width, interpolationMode);
+            {
+                var bitmap = _fallback.LoadWriteableBitmapToWidth(stream, width, interpolationMode);
+                return new AspectRatioAdjustedBitmap(bitmap);
+            }
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(LoadWriteableBitmapToWidth));
             return new DummyBitmap(new PixelSize(width, 1), new Vector(1, 1));
@@ -160,7 +175,10 @@ namespace Consolonia.Core.Drawing
         public IWriteableBitmapImpl LoadWriteableBitmap(string fileName)
         {
             if (_fallback != null)
-                return _fallback.LoadWriteableBitmap(fileName);
+            {
+                var bitmap = _fallback.LoadWriteableBitmap(fileName);
+                return new AspectRatioAdjustedBitmap(bitmap);
+            }
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(LoadWriteableBitmap));
             return new DummyBitmap(new PixelSize(1, 1), new Vector(1, 1));
@@ -169,7 +187,10 @@ namespace Consolonia.Core.Drawing
         public IWriteableBitmapImpl LoadWriteableBitmap(Stream stream)
         {
             if (_fallback != null)
-                return _fallback.LoadWriteableBitmap(stream);
+            {
+                var bitmap = _fallback.LoadWriteableBitmap(stream);
+                return new AspectRatioAdjustedBitmap(bitmap);
+            }
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(LoadWriteableBitmap));
             return new DummyBitmap(new PixelSize(1, 1), new Vector(1, 1));
@@ -178,7 +199,10 @@ namespace Consolonia.Core.Drawing
         public IBitmapImpl LoadBitmapToWidth(Stream stream, int width, BitmapInterpolationMode interpolationMode)
         {
             if (_fallback != null)
-                return _fallback.LoadWriteableBitmapToWidth(stream, width, interpolationMode);
+            {
+                var bitmap = _fallback.LoadWriteableBitmapToWidth(stream, width, interpolationMode);
+                return new AspectRatioAdjustedBitmap(bitmap);
+            }
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(LoadBitmapToWidth));
             return new DummyBitmap(new PixelSize(width, 1), new Vector(1, 1));
@@ -187,7 +211,10 @@ namespace Consolonia.Core.Drawing
         public IBitmapImpl LoadBitmapToHeight(Stream stream, int height, BitmapInterpolationMode interpolationMode)
         {
             if (_fallback != null)
-                return _fallback.LoadWriteableBitmapToHeight(stream, height, interpolationMode);
+            {
+                var bitmap = _fallback.LoadWriteableBitmapToHeight(stream, height, interpolationMode);
+                return new AspectRatioAdjustedBitmap(bitmap);
+            }
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(LoadBitmapToHeight));
             return new DummyBitmap(new PixelSize(1, height), new Vector(1, 1));
@@ -197,7 +224,15 @@ namespace Consolonia.Core.Drawing
             BitmapInterpolationMode interpolationMode)
         {
             if (_fallback != null)
-                return _fallback.ResizeBitmap(bitmapImpl, destinationSize, interpolationMode);
+            {
+                // Unwrap if it's already aspect-adjusted to get the actual bitmap
+                IBitmapImpl sourceBitmap = bitmapImpl is AspectRatioAdjustedBitmap adjusted
+                    ? adjusted.InnerBitmap
+                    : bitmapImpl;
+
+                var bitmap = _fallback.ResizeBitmap(sourceBitmap, destinationSize, interpolationMode);
+                return new AspectRatioAdjustedBitmap(bitmap);
+            }
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this,
                 nameof(ResizeBitmap));
             return new DummyBitmap(destinationSize, new Vector(1, 1));
@@ -207,7 +242,10 @@ namespace Consolonia.Core.Drawing
             Vector dpi, int stride)
         {
             if (_fallback != null)
-                return _fallback.LoadBitmap(format, alphaFormat, data, size, dpi, stride);
+            {
+                var bitmap = _fallback.LoadBitmap(format, alphaFormat, data, size, dpi, stride);
+                return new AspectRatioAdjustedBitmap(bitmap);
+            }
             ConsoloniaPlatform.RaiseNotSupported(NotSupportedRequestCode.BitmapsNotSupported, this, nameof(LoadBitmap));
             return new DummyBitmap(size, dpi);
         }
