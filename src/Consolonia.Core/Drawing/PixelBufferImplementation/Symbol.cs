@@ -5,9 +5,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json.Serialization;
 using Consolonia.Controls;
 using NeoSmart.Unicode;
-using Newtonsoft.Json;
 using Wcwidth;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
