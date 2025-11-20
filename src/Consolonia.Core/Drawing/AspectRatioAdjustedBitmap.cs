@@ -10,7 +10,7 @@ namespace Consolonia.Core.Drawing
     /// Console characters are typically 2:1 aspect ratio (twice as tall as wide),
     /// so we report half the actual height to make layouts work correctly.
     /// </summary>
-    internal class AspectRatioAdjustedBitmap : IBitmapImpl, IReadableBitmapImpl, IWriteableBitmapImpl, IReadableBitmapWithAlphaImpl
+    internal class AspectRatioAdjustedBitmap : IWriteableBitmapImpl
     {
         public IBitmapImpl InnerBitmap { get; }
 
