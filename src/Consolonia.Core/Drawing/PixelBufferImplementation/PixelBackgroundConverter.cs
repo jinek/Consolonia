@@ -7,7 +7,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public class PixelBackgroundConverter : JsonConverter<PixelBackground>
     {
-        public override PixelBackground Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override PixelBackground Read(ref Utf8JsonReader reader, Type typeToConvert,
+            JsonSerializerOptions options)
         {
             if (reader.TokenType == JsonTokenType.StartObject)
             {
@@ -17,14 +18,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                     reader.Read(); // Move to property value
                     string colorValue = reader.GetString();
                     reader.Read(); // Move past end object
-                    
+
                     if (colorValue != null && Color.TryParse(colorValue, out Color color))
                         return new PixelBackground(color);
-                    
+
                     return new PixelBackground(Colors.Transparent);
                 }
             }
-            
+
             return new PixelBackground(Colors.Transparent);
         }
 

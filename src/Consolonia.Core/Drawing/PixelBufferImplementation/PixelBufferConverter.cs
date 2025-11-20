@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -6,6 +7,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public class PixelBufferConverter : JsonConverter<PixelBuffer>
     {
+        private const string PixelsPropertyName = "Pixels";
+
         public override PixelBuffer Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType == JsonTokenType.Null) return null;
@@ -34,16 +37,17 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                         case nameof(PixelBuffer.Height):
                             height = reader.GetUInt16();
                             break;
-                        case "Pixels":
+                        case PixelsPropertyName:
                             if (reader.TokenType != JsonTokenType.StartArray)
                                 throw new JsonException();
-                            
-                            var pixelList = new System.Collections.Generic.List<Pixel>();
+
+                            var pixelList = new List<Pixel>();
                             while (reader.Read() && reader.TokenType != JsonTokenType.EndArray)
                             {
                                 var pixel = JsonSerializer.Deserialize<Pixel>(ref reader, options);
                                 pixelList.Add(pixel);
                             }
+
                             pixels = new[] { pixelList.ToArray() };
                             break;
                     }
@@ -57,9 +61,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             int i = 0;
             for (ushort y = 0; y < height; y++)
             for (ushort x = 0; x < width; x++)
-            {
                 pixelBuffer[x, y] = pixels[0][i++];
-            }
 
             return pixelBuffer;
         }
@@ -69,7 +71,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             writer.WriteStartObject();
             writer.WriteNumber(nameof(PixelBuffer.Width), value.Width);
             writer.WriteNumber(nameof(PixelBuffer.Height), value.Height);
-            writer.WritePropertyName("Pixels");
+            writer.WritePropertyName(PixelsPropertyName);
             writer.WriteStartArray();
             for (ushort y = 0; y < value.Height; y++)
             for (ushort x = 0; x < value.Width; x++)

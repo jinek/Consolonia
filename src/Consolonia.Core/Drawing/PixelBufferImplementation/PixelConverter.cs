@@ -12,9 +12,9 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             if (reader.TokenType != JsonTokenType.StartObject)
                 throw new JsonException();
 
-            PixelForeground foreground = PixelForeground.Default;
+            var foreground = PixelForeground.Default;
             PixelBackground background = PixelBackground.Transparent;
-            CaretStyle caretStyle = CaretStyle.None;
+            var caretStyle = CaretStyle.None;
 
             while (reader.Read())
             {
@@ -38,13 +38,14 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
                             if (reader.TokenType == JsonTokenType.String)
                             {
                                 string caretStr = reader.GetString();
-                                if (Enum.TryParse<CaretStyle>(caretStr, out CaretStyle parsedCaret))
+                                if (Enum.TryParse(caretStr, out CaretStyle parsedCaret))
                                     caretStyle = parsedCaret;
                             }
                             else if (reader.TokenType == JsonTokenType.Number)
                             {
                                 caretStyle = (CaretStyle)reader.GetInt32();
                             }
+
                             break;
                     }
                 }
@@ -56,16 +57,16 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public override void Write(Utf8JsonWriter writer, Pixel value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            
+
             writer.WritePropertyName("Foreground");
             JsonSerializer.Serialize(writer, value.Foreground, options);
-            
+
             writer.WritePropertyName("Background");
             JsonSerializer.Serialize(writer, value.Background, options);
-            
+
             writer.WritePropertyName("CaretStyle");
             JsonSerializer.Serialize(writer, value.CaretStyle, options);
-            
+
             writer.WriteEndObject();
         }
     }
