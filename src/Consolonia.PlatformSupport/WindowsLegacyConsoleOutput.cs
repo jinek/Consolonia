@@ -12,7 +12,7 @@ namespace Consolonia.PlatformSupport
     ///     This creates an alternate screen buffer using windows apis,
     ///     and switches Console output to use it.
     /// </summary>
-    internal class WindowsLegacyConsoleOutput : DefaultNetConsoleOutput
+    public class WindowsLegacyConsoleOutput : DefaultNetConsoleOutput
     {
         private WindowsConsoleBuffer _consoleBuffer;
         private WindowsConsoleBuffer _originalBuffer;
