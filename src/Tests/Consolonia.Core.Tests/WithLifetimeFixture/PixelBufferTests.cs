@@ -1,7 +1,7 @@
 using System;
+using System.Text.Json;
 using Avalonia.Media;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Consolonia.Core.Tests.WithLifetimeFixture
@@ -80,8 +80,8 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
         public void JsonSerialization()
         {
             PixelBuffer buffer = CreateBuffer();
-            string json = JsonConvert.SerializeObject(buffer);
-            var buffer2 = JsonConvert.DeserializeObject<PixelBuffer>(json);
+            string json = JsonSerializer.Serialize(buffer);
+            var buffer2 = JsonSerializer.Deserialize<PixelBuffer>(json);
             AssertBufferEqual(buffer, buffer2);
         }
 

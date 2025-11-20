@@ -1,50 +1,81 @@
 using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
     public class PixelBufferConverter : JsonConverter<PixelBuffer>
     {
-        public override PixelBuffer ReadJson(JsonReader reader, Type objectType, PixelBuffer existingValue,
-            bool hasExistingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
+        private const string PixelsPropertyName = "Pixels";
 
-            JObject jObject = JObject.Load(reader);
-            ushort width = jObject[nameof(PixelBuffer.Width)]!.Value<ushort>();
-            ushort height = jObject[nameof(PixelBuffer.Height)]!.Value<ushort>();
+        public override PixelBuffer Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            if (reader.TokenType == JsonTokenType.Null) return null;
+
+            if (reader.TokenType != JsonTokenType.StartObject)
+                throw new JsonException();
+
+            ushort width = 0, height = 0;
+            Pixel[][] pixels = null;
+
+            while (reader.Read())
+            {
+                if (reader.TokenType == JsonTokenType.EndObject)
+                    break;
+
+                if (reader.TokenType == JsonTokenType.PropertyName)
+                {
+                    string propertyName = reader.GetString();
+                    reader.Read();
+
+                    switch (propertyName)
+                    {
+                        case nameof(PixelBuffer.Width):
+                            width = reader.GetUInt16();
+                            break;
+                        case nameof(PixelBuffer.Height):
+                            height = reader.GetUInt16();
+                            break;
+                        case PixelsPropertyName:
+                            if (reader.TokenType != JsonTokenType.StartArray)
+                                throw new JsonException();
+
+                            var pixelList = new List<Pixel>();
+                            while (reader.Read() && reader.TokenType != JsonTokenType.EndArray)
+                            {
+                                var pixel = JsonSerializer.Deserialize<Pixel>(ref reader, options);
+                                pixelList.Add(pixel);
+                            }
+
+                            pixels = new[] { pixelList.ToArray() };
+                            break;
+                    }
+                }
+            }
+
+            if (width == 0 || height == 0 || pixels == null)
+                throw new JsonException();
+
             var pixelBuffer = new PixelBuffer(width, height);
-            JToken pixels = jObject["Pixels"];
-            ArgumentNullException.ThrowIfNull(pixels);
             int i = 0;
             for (ushort y = 0; y < height; y++)
             for (ushort x = 0; x < width; x++)
-            {
-                JToken pixelRecord = pixels[i++];
-                ArgumentNullException.ThrowIfNull(pixelRecord);
-                JsonReader rdr = pixelRecord.CreateReader()!;
-                ArgumentNullException.ThrowIfNull(rdr);
-                var pixel = serializer.Deserialize<Pixel>(rdr);
-                ArgumentNullException.ThrowIfNull(pixel);
-                pixelBuffer[x, y] = pixel;
-            }
+                pixelBuffer[x, y] = pixels[0][i++];
 
             return pixelBuffer;
         }
 
-        public override void WriteJson(JsonWriter writer, PixelBuffer value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, PixelBuffer value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            writer.WritePropertyName(nameof(PixelBuffer.Width));
-            writer.WriteValue(value.Width);
-            writer.WritePropertyName(nameof(PixelBuffer.Height));
-            writer.WriteValue(value.Height);
-            writer.WritePropertyName("Pixels");
+            writer.WriteNumber(nameof(PixelBuffer.Width), value.Width);
+            writer.WriteNumber(nameof(PixelBuffer.Height), value.Height);
+            writer.WritePropertyName(PixelsPropertyName);
             writer.WriteStartArray();
             for (ushort y = 0; y < value.Height; y++)
             for (ushort x = 0; x < value.Width; x++)
-                serializer.Serialize(writer, value[x, y]);
+                JsonSerializer.Serialize(writer, value[x, y], options);
             writer.WriteEndArray();
             writer.WriteEndObject();
         }
