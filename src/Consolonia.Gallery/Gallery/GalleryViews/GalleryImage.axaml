@@ -4,50 +4,57 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Consolonia.Gallery.Gallery.GalleryViews.GalleryImage">
-    <Grid>
-        <ScrollViewer>
-            <WrapPanel ItemWidth="50">
-                <Image Source="avares://Consolonia.Gallery/Resources/0.jpg"
-                       Stretch="Uniform"/>
-                <Image Source="avares://Consolonia.Gallery/Resources/1.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/2.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/3.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/4.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/5.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/6.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/7.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/8.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/9.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/0.jpg"
-                       Stretch="Uniform"/>
-                <Image Source="avares://Consolonia.Gallery/Resources/1.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/2.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/3.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/4.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/5.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/6.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/7.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/8.jpg"
-                       Stretch="Uniform" />
-                <Image Source="avares://Consolonia.Gallery/Resources/9.jpg"
-                       Stretch="Uniform" />
-            </WrapPanel>
+    <Grid Grid.RowDefinitions="Auto *">
+        <Button Grid.Row="0"
+                Content="Open Image..."
+                Click="Button_Click"/>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <Image x:Name="BigImage" IsVisible="false"/>
+
+                <WrapPanel ItemWidth="50" x:Name="WrapPanel">
+                    <Image Source="avares://Consolonia.Gallery/Resources/0.jpg"
+                           Stretch="Uniform"/>
+                    <Image Source="avares://Consolonia.Gallery/Resources/1.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/2.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/3.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/4.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/5.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/6.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/7.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/8.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/9.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/0.jpg"
+                           Stretch="Uniform"/>
+                    <Image Source="avares://Consolonia.Gallery/Resources/1.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/2.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/3.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/4.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/5.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/6.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/7.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/8.jpg"
+                           Stretch="Uniform" />
+                    <Image Source="avares://Consolonia.Gallery/Resources/9.jpg"
+                           Stretch="Uniform" />
+                </WrapPanel>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 
