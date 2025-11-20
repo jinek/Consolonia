@@ -6,18 +6,18 @@ using Avalonia.Platform;
 namespace Consolonia.Core.Drawing
 {
     /// <summary>
-    /// Wraps a bitmap to report aspect-ratio-adjusted dimensions to Avalonia's layout system.
-    /// Console characters are typically 2:1 aspect ratio (twice as tall as wide),
-    /// so we report half the actual height to make layouts work correctly.
+    ///     Wraps a bitmap to report aspect-ratio-adjusted dimensions to Avalonia's layout system.
+    ///     Console characters are typically 2:1 aspect ratio (twice as tall as wide),
+    ///     so we report half the actual height to make layouts work correctly.
     /// </summary>
     internal class AspectRatioAdjustedBitmap : IWriteableBitmapImpl
     {
-        public IBitmapImpl InnerBitmap { get; }
-
         public AspectRatioAdjustedBitmap(IBitmapImpl innerBitmap)
         {
             InnerBitmap = innerBitmap ?? throw new ArgumentNullException(nameof(innerBitmap));
         }
+
+        public IBitmapImpl InnerBitmap { get; }
 
         public Vector Dpi => InnerBitmap.Dpi;
 
@@ -51,6 +51,5 @@ namespace Consolonia.Core.Drawing
                 return readable.Lock();
             throw new NotSupportedException("Inner bitmap does not support reading.");
         }
-
     }
 }
