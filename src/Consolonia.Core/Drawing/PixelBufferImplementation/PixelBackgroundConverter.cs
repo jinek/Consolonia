@@ -13,7 +13,8 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
             if (reader.TokenType == JsonTokenType.StartObject)
             {
                 reader.Read(); // Move to property name
-                if (reader.TokenType == JsonTokenType.PropertyName && reader.GetString() == nameof(PixelBackground.Color))
+                if (reader.TokenType == JsonTokenType.PropertyName &&
+                    reader.GetString() == nameof(PixelBackground.Color))
                 {
                     reader.Read(); // Move to property value
                     string colorValue = reader.GetString();
