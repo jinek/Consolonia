@@ -86,20 +86,6 @@
                                Background="AntiqueWhite" />
                 </Border>
             </WrapPanel>
-            <!--            <WrapPanel>
-                <Border BorderThickness="1">
-                    <Border.BorderBrush>
-                        <console:LineBrush LineStyle="Edge"
-                                           Brush="Gray" />
-                    </Border.BorderBrush>
-                    <Panel Background="AntiqueWhite">
-                        <Image Source="avares://Consolonia.Gallery/Resources/happy.png"
-                               Width="40"
-                               Height="20" />
-                    </Panel>
-                </Border>
-
-            </WrapPanel>
--->        </StackPanel>
+        </StackPanel>
     </ScrollViewer>
 </UserControl>
