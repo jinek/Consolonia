@@ -6,8 +6,8 @@ using Avalonia.Platform;
 
 namespace Consolonia.Core.Dummy
 {
-
-	internal class DummyBitmap : IDrawingContextLayerImpl, IWriteableBitmapImpl
+    // copy of Avalonia.HeadlessServer HeadlessBitmapStub with minor changes
+    internal class DummyBitmap : IDrawingContextLayerImpl, IWriteableBitmapImpl
 	{
 		public Size Size { get; }
 
