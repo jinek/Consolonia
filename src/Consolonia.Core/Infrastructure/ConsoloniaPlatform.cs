@@ -157,6 +157,9 @@ namespace Consolonia.Core.Infrastructure
                 case NotSupportedRequestCode.TransformLineWithRotationNotSupported:
                     notSupportedRequest.SetHandled(notSupportedRequest.Information[1]);
                     break;
+                case NotSupportedRequestCode.BitmapsNotSupported:
+                    notSupportedRequest.SetHandled(new DummyBitmap());
+                    break;
                 case NotSupportedRequestCode.PushClipWithRoundedRectNotSupported:
                 case NotSupportedRequestCode.PushOpacityNotSupported:
                 case NotSupportedRequestCode.DrawingRoundedOrNonUniformRectandle:

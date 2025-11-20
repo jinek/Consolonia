@@ -28,6 +28,8 @@ namespace Consolonia.Gallery
         public static AppBuilder BuildAvaloniaApp()
         {
             return AppBuilder.Configure<App>()
+                // adding skia to have bitmap support
+                .UseSkia()
                 .UseConsolonia()
                 .UseAutoDetectedConsole()
                 .WithConsoleFonts()

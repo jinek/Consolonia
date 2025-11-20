@@ -65,12 +65,18 @@ namespace Consolonia
 
         public static AppBuilder UseConsolonia(this AppBuilder builder)
         {
+            Action? initialize = builder.RenderingSubsystemInitializer;
+
             return builder
                 .UseStandardRuntimePlatformSubsystem()
                 .UseWindowingSubsystem(() => new ConsoloniaPlatform().Initialize(), nameof(ConsoloniaPlatform))
                 .UseRenderingSubsystem(() =>
                 {
-                    var consoloniaRenderInterface = new ConsoloniaRenderInterface();
+                    if (initialize != null)
+                        initialize();
+
+                    var fallback = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>();
+                    var consoloniaRenderInterface = new ConsoloniaRenderInterface(fallback);
 
                     AvaloniaLocator.CurrentMutable
                         .Bind<IPlatformRenderInterface>().ToConstant(consoloniaRenderInterface);

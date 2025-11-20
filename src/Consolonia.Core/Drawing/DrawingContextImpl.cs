@@ -4,16 +4,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Consolonia.Controls.Brushes;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
+using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.Core.InternalHelpers;
 using Consolonia.Core.Text;
 using Consolonia.Core.Text.Fonts;
-using SkiaSharp;
 
 namespace Consolonia.Core.Drawing
 {
@@ -90,51 +93,65 @@ namespace Consolonia.Core.Drawing
 
         public void DrawBitmap(IBitmapImpl source, double opacity, Rect sourceRect, Rect destRect)
         {
-            // resize bitmap to destination rect size
-            var targetRect = new Rect(Transform.Transform(new Point(destRect.TopLeft.X, destRect.TopLeft.Y)),
-                    Transform.Transform(new Point(destRect.BottomRight.X, destRect.BottomRight.Y)))
+            if (source is DummyBitmap)
+                return;
+
+            var targetRect = new Rect(Transform.Transform(destRect.TopLeft),
+                    Transform.Transform(destRect.BottomRight))
                 .ToPixelRect();
-            var bmp = (BitmapImpl)source;
 
-            // resize source to be target rect * 2 so we can map to quad pixels
-            using var bitmap = new SKBitmap(targetRect.Width * 2, targetRect.Height * 2);
-            using var canvas = new SKCanvas(bitmap);
-            using var skPaint = new SKPaint();
-            skPaint.FilterQuality = SKFilterQuality.Medium;
-            canvas.DrawBitmap(bmp.Bitmap, new SKRect(0, 0, bitmap.Width, bitmap.Height), skPaint);
+            var renderInterface = AvaloniaLocator.Current.GetRequiredService<IPlatformRenderInterface>();
 
-            // this is reused by each pixel as we process the bitmap
-            Span<SKColor> quadPixelColors = stackalloc SKColor[4];
+            // Resize source to be target rect * 2 so we can map to quad pixels
+            var targetSize = new PixelSize(targetRect.Width * 2, targetRect.Height * 2);
+            using IBitmapImpl resizedBitmap =
+                renderInterface.ResizeBitmap(source, targetSize, BitmapInterpolationMode.MediumQuality);
 
-            int py = targetRect.TopLeft.Y;
-            SKColor[] pixels = bitmap.Pixels;
-            int pixelRow = 0;
-            for (int y = 0; y < bitmap.Info.Height; y += 2, py++, pixelRow += 2 * bitmap.Width)
+            var readableBitmap = (IReadableBitmapImpl)resizedBitmap;
+
+            using ILockedFramebuffer frameBuffer = readableBitmap.Lock();
+
+            int stride = frameBuffer.RowBytes;
+            int bytesPerPixel = frameBuffer.Format.BitsPerPixel / 8;
+            unsafe
             {
-                int px = targetRect.TopLeft.X;
-                for (int x = 0; x < bitmap.Info.Width; x += 2, px++)
+                ReadOnlySpan<byte> pixelBytes = MemoryMarshal.CreateReadOnlySpan(
+                    ref Unsafe.AsRef<byte>((void*)frameBuffer.Address), stride * frameBuffer.Size.Height);
+                ReadOnlySpan<BgraColor> pixels = MemoryMarshal.Cast<byte, BgraColor>(pixelBytes);
+
+
+                int py = targetRect.TopLeft.Y;
+
+                for (int y = 0; y < targetSize.Height; y += 2, py++)
                 {
-                    var point = new PixelPoint(px, py);
-                    if (CurrentClip.ContainsExclusive(point))
+                    int px = targetRect.TopLeft.X;
+                    for (int x = 0; x < targetSize.Width; x += 2, px++)
                     {
-                        // get the quad pixel from the bitmap as a quad of 4 SKColor values
-                        quadPixelColors[0] = pixels[pixelRow + x];
-                        quadPixelColors[1] = pixels[pixelRow + x + 1];
-                        quadPixelColors[2] = pixels[pixelRow + bitmap.Width + x];
-                        quadPixelColors[3] = pixels[pixelRow + bitmap.Width + x + 1];
+                        var point = new PixelPoint(px, py);
+                        if (CurrentClip.ContainsExclusive(point))
+                        {
+                            // get the quad pixel from the bitmap as a quad of 4 BgraColor values
+                            Span<BgraColor> quadPixelColors =
+                            [
+                                GetPixelColor(pixels, x, y, stride, bytesPerPixel),
+                                GetPixelColor(pixels, x + 1, y, stride, bytesPerPixel),
+                                GetPixelColor(pixels, x, y + 1, stride, bytesPerPixel),
+                                GetPixelColor(pixels, x + 1, y + 1, stride, bytesPerPixel)
+                            ];
 
-                        // map it to a single char to represent the 4 pixels
-                        char quadPixelChar = GetQuadPixelCharacter(quadPixelColors);
+                            // map it to a single char to represent the 4 pixels
+                            char quadPixelChar = GetQuadPixelCharacter(quadPixelColors);
 
-                        // get the combined colors for the quad pixel
-                        Color foreground = GetForegroundColorForQuadPixel(quadPixelChar, quadPixelColors);
-                        Color background = GetBackgroundColorForQuadPixel(quadPixelChar, quadPixelColors);
+                            // get the combined colors for the quad pixel
+                            Color foreground = GetForegroundColorForQuadPixel(quadPixelChar, quadPixelColors);
+                            Color background = GetBackgroundColorForQuadPixel(quadPixelChar, quadPixelColors);
 
-                        var imagePixel = new Pixel(
-                            new PixelForeground(new Symbol(quadPixelChar), foreground),
-                            new PixelBackground(background));
+                            var imagePixel = new Pixel(
+                                new PixelForeground(new Symbol(quadPixelChar), foreground),
+                                new PixelBackground(background));
 
-                        _pixelBuffer[point] = _pixelBuffer[point].Blend(imagePixel);
+                            _pixelBuffer[point] = _pixelBuffer[point].Blend(imagePixel);
+                        }
                     }
                 }
             }
@@ -857,13 +874,24 @@ namespace Consolonia.Core.Drawing
             _consoleWindowImpl.DirtyRegions.AddRect(intersectLine);
         }
 
-        /// <summary>
-        ///     given 4 colors return quadPixel character which is suitable to represent the colors
-        /// </summary>
-        /// <param name="colors"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        private static char GetQuadPixelCharacter(Span<SKColor> colors)
+
+        private static BgraColor GetPixelColor(ReadOnlySpan<BgraColor> pixels, int x, int y, int stride,
+            int bytesPerPixel)
+        {
+            int bytesPerRow = stride;
+            int pixelsPerRow = bytesPerRow / bytesPerPixel;
+            int offset = y * pixelsPerRow + x;
+
+            BgraColor pixel = pixels[offset];
+
+            // Handle RGB24 format (no alpha channel)
+            if (bytesPerPixel == 3)
+                pixel.A = 255;
+
+            return pixel;
+        }
+
+        private static char GetQuadPixelCharacter(ReadOnlySpan<BgraColor> colors)
         {
             char character = GetColorsPattern(colors) switch
             {
@@ -890,7 +918,6 @@ namespace Consolonia.Core.Drawing
             return character;
         }
 
-
         /// <summary>
         ///     Combine the colors for the white part of the quad pixel character.
         /// </summary>
@@ -898,33 +925,34 @@ namespace Consolonia.Core.Drawing
         /// <param name="pixelColors">4 colors</param>
         /// <returns>foreground color</returns>
         /// <exception cref="NotImplementedException"></exception>
-        private static Color GetForegroundColorForQuadPixel(char quadPixel, Span<SKColor> pixelColors)
+        private static Color GetForegroundColorForQuadPixel(char quadPixel, ReadOnlySpan<BgraColor> pixelColors)
         {
             if (pixelColors.Length != 4)
                 throw new ArgumentException($"{nameof(pixelColors)} must have 4 elements.");
 
-            SKColor skColor = quadPixel switch
+            // TODO: Some of these chars don't work in IBM Codepage
+            BgraColor bgraColor = quadPixel switch
             {
-                ' ' => SKColors.Transparent,
+                ' ' => BgraColor.Transparent,
                 '▘' => pixelColors[0],
                 '▝' => pixelColors[1],
                 '▖' => pixelColors[2],
                 '▗' => pixelColors[3],
-                '▚' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[2] }),
-                '▞' => CombineColors(stackalloc SKColor[] { pixelColors[1], pixelColors[3] }),
-                '▌' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[2] }),
-                '▐' => CombineColors(stackalloc SKColor[] { pixelColors[1], pixelColors[3] }),
-                '▄' => CombineColors(stackalloc SKColor[] { pixelColors[2], pixelColors[3] }),
-                '▀' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[1] }),
-                '▛' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[1], pixelColors[2] }),
-                '▜' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[1], pixelColors[3] }),
-                '▙' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[2], pixelColors[3] }),
-                '▟' => CombineColors(stackalloc SKColor[] { pixelColors[1], pixelColors[2], pixelColors[3] }),
+                '▚' => CombineColors([pixelColors[0], pixelColors[2]]),
+                '▞' => CombineColors([pixelColors[1], pixelColors[3]]),
+                '▌' => CombineColors([pixelColors[0], pixelColors[2]]),
+                '▐' => CombineColors([pixelColors[1], pixelColors[3]]),
+                '▄' => CombineColors([pixelColors[2], pixelColors[3]]),
+                '▀' => CombineColors([pixelColors[0], pixelColors[1]]),
+                '▛' => CombineColors([pixelColors[0], pixelColors[1], pixelColors[2]]),
+                '▜' => CombineColors([pixelColors[0], pixelColors[1], pixelColors[3]]),
+                '▙' => CombineColors([pixelColors[0], pixelColors[2], pixelColors[3]]),
+                '▟' => CombineColors([pixelColors[1], pixelColors[2], pixelColors[3]]),
                 '█' => CombineColors(pixelColors),
                 _ => throw new NotImplementedException()
             };
 
-            return Color.FromRgb(skColor.Red, skColor.Green, skColor.Blue);
+            return bgraColor.ToColor();
         }
 
 
@@ -935,45 +963,46 @@ namespace Consolonia.Core.Drawing
         /// <param name="pixelColors"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        private static Color GetBackgroundColorForQuadPixel(char quadPixel, Span<SKColor> pixelColors)
+        private static Color GetBackgroundColorForQuadPixel(char quadPixel, ReadOnlySpan<BgraColor> pixelColors)
         {
-            SKColor skColor = quadPixel switch
+            // TODO: Some of these chars don't work in IBM Codepage
+            BgraColor bgraColor = quadPixel switch
             {
                 ' ' => CombineColors(pixelColors),
-                '▘' => CombineColors(stackalloc SKColor[] { pixelColors[1], pixelColors[2], pixelColors[3] }),
-                '▝' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[2], pixelColors[3] }),
-                '▖' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[1], pixelColors[3] }),
-                '▗' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[1], pixelColors[2] }),
-                '▚' => CombineColors(stackalloc SKColor[] { pixelColors[1], pixelColors[2] }),
-                '▞' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[3] }),
-                '▌' => CombineColors(stackalloc SKColor[] { pixelColors[1], pixelColors[3] }),
-                '▐' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[2] }),
-                '▄' => CombineColors(stackalloc SKColor[] { pixelColors[0], pixelColors[1] }),
-                '▀' => CombineColors(stackalloc SKColor[] { pixelColors[2], pixelColors[3] }),
+                '▘' => CombineColors([pixelColors[1], pixelColors[2], pixelColors[3]]),
+                '▝' => CombineColors([pixelColors[0], pixelColors[2], pixelColors[3]]),
+                '▖' => CombineColors([pixelColors[0], pixelColors[1], pixelColors[3]]),
+                '▗' => CombineColors([pixelColors[0], pixelColors[1], pixelColors[2]]),
+                '▚' => CombineColors([pixelColors[1], pixelColors[2]]),
+                '▞' => CombineColors([pixelColors[0], pixelColors[3]]),
+                '▌' => CombineColors([pixelColors[1], pixelColors[3]]),
+                '▐' => CombineColors([pixelColors[0], pixelColors[2]]),
+                '▄' => CombineColors([pixelColors[0], pixelColors[1]]),
+                '▀' => CombineColors([pixelColors[2], pixelColors[3]]),
                 '▛' => pixelColors[3],
                 '▜' => pixelColors[2],
                 '▙' => pixelColors[1],
                 '▟' => pixelColors[0],
-                '█' => SKColors.Transparent,
+                '█' => BgraColor.Transparent,
                 _ => throw new NotImplementedException()
             };
-            return Color.FromArgb(skColor.Alpha, skColor.Red, skColor.Green, skColor.Blue);
+            return bgraColor.ToColor();
         }
 
 
-        private static SKColor CombineColors(Span<SKColor> colors)
+        private static BgraColor CombineColors(ReadOnlySpan<BgraColor> colors)
         {
             float accumR = 0, accumG = 0, accumB = 0;
             float accumAlpha = 0;
 
-            foreach (ref readonly SKColor color in colors)
+            foreach (ref readonly BgraColor color in colors)
             {
-                float a1 = color.Alpha / 255f;
+                float a1 = color.A / 255f;
                 float oneMinusA = 1f - accumAlpha;
 
-                accumR += color.Red * a1 * oneMinusA;
-                accumG += color.Green * a1 * oneMinusA;
-                accumB += color.Blue * a1 * oneMinusA;
+                accumR += color.R * a1 * oneMinusA;
+                accumG += color.G * a1 * oneMinusA;
+                accumB += color.B * a1 * oneMinusA;
                 accumAlpha += a1 * oneMinusA;
             }
 
@@ -982,7 +1011,7 @@ namespace Consolonia.Core.Drawing
             byte b = (byte)Math.Clamp(accumB, 0, 255);
             byte a = (byte)Math.Clamp(accumAlpha * 255f, 0, 255);
 
-            return new SKColor(r, g, b, a);
+            return new BgraColor(b, g, r, a);
         }
 
         /// <summary>
@@ -991,13 +1020,13 @@ namespace Consolonia.Core.Drawing
         /// <param name="colors"></param>
         /// <returns>T or F for each color as a string</returns>
         /// <exception cref="ArgumentException"></exception>
-        private static byte GetColorsPattern(Span<SKColor> colors)
+        private static byte GetColorsPattern(ReadOnlySpan<BgraColor> colors)
         {
             if (colors.Length != 4) throw new ArgumentException("Array must contain exactly 4 colors.");
 
             // Initial guess: two clusters with the first two colors as centers
-            Span<SKColor> clusterCenters = stackalloc SKColor[2] { colors[0], colors[1] };
-            Span<SKColor> newClusterCenters = stackalloc SKColor[2];
+            Span<BgraColor> clusterCenters = stackalloc BgraColor[2] { colors[0], colors[1] };
+            Span<BgraColor> newClusterCenters = stackalloc BgraColor[2];
             Span<int> clusters = stackalloc int[4];
 
             for (int iteration = 0; iteration < 10; iteration++) // limit iterations to avoid infinite loop
@@ -1007,8 +1036,8 @@ namespace Consolonia.Core.Drawing
                     clusters[i] = GetColorCluster(colors[i], clusterCenters);
 
                 // Recalculate cluster centers
-                newClusterCenters[0] = SKColor.Empty;
-                newClusterCenters[1] = SKColor.Empty;
+                newClusterCenters[0] = BgraColor.Transparent;
+                newClusterCenters[1] = BgraColor.Transparent;
                 for (int cluster = 0; cluster < 2; cluster++)
                 {
                     // Calculate average for this cluster 
@@ -1019,23 +1048,24 @@ namespace Consolonia.Core.Drawing
                     for (int i = 0; i < colors.Length; i++)
                         if (clusters[i] == cluster)
                         {
-                            SKColor color = colors[i];
-                            totalRed += color.Red;
-                            totalGreen += color.Green;
-                            totalBlue += color.Blue;
-                            totalAlpha += color.Alpha;
+                            BgraColor color = colors[i];
+                            totalRed += color.R;
+                            totalGreen += color.G;
+                            totalBlue += color.B;
+                            totalAlpha += color.A;
                             count++;
 
-                            if (color.Alpha != 0)
+                            if (color.A != 0)
                                 allTransparent = false;
                         }
 
                     if (count > 0)
-                        newClusterCenters[cluster] = new SKColor(
-                            (byte)(totalRed / count),
-                            (byte)(totalGreen / count),
-                            (byte)(totalBlue / count),
-                            (byte)(totalAlpha / count));
+                    {
+                        newClusterCenters[cluster].B = (byte)(totalBlue / count);
+                        newClusterCenters[cluster].G = (byte)(totalGreen / count);
+                        newClusterCenters[cluster].R = (byte)(totalRed / count);
+                        newClusterCenters[cluster].A = (byte)(totalAlpha / count);
+                    }
 
                     if (count == 4 && allTransparent)
                         return 0;
@@ -1044,7 +1074,7 @@ namespace Consolonia.Core.Drawing
                 // Check for convergence
                 bool converged = true;
                 for (int i = 0; i < 2; i++)
-                    if (!clusterCenters[i].Equals(newClusterCenters[i]))
+                    if (!ColorEquals(clusterCenters[i], newClusterCenters[i]))
                     {
                         converged = false;
                         break;
@@ -1069,7 +1099,12 @@ namespace Consolonia.Core.Drawing
                  (clusters[3] == higherCluster ? 0b0001 : 0));
         }
 
-        private static int GetColorCluster(SKColor color, Span<SKColor> clusterCenters)
+        private static bool ColorEquals(BgraColor c1, BgraColor c2)
+        {
+            return Unsafe.As<BgraColor, int>(ref c1) == Unsafe.As<BgraColor, int>(ref c2);
+        }
+
+        private static int GetColorCluster(BgraColor color, ReadOnlySpan<BgraColor> clusterCenters)
         {
             double minDistance = double.MaxValue;
             int closestCluster = -1;
@@ -1087,20 +1122,19 @@ namespace Consolonia.Core.Drawing
             return closestCluster;
         }
 
-        private static double GetColorDistance(SKColor c1, SKColor c2)
+        private static double GetColorDistance(BgraColor c1, BgraColor c2)
         {
-            int dr = c1.Red - c2.Red;
-            int dg = c1.Green - c2.Green;
-            int db = c1.Blue - c2.Blue;
-            int da = c1.Alpha - c2.Alpha;
+            int dr = c1.R - c2.R;
+            int dg = c1.G - c2.G;
+            int db = c1.B - c2.B;
+            int da = c1.A - c2.A;
 
             return Math.Sqrt(dr * dr + dg * dg + db * db + da * da);
         }
 
-
-        private static double GetColorBrightness(SKColor color)
+        private static double GetColorBrightness(BgraColor color)
         {
-            return 0.299 * color.Red + 0.587 * color.Green + 0.114 * color.Blue + color.Alpha;
+            return 0.299 * color.R + 0.587 * color.G + 0.114 * color.B + color.A;
         }
     }
 }
