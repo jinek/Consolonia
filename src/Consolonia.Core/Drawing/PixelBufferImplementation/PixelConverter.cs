@@ -28,13 +28,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
 
                     switch (propertyName)
                     {
-                        case "Foreground":
+                        case nameof(Pixel.Foreground):
                             foreground = JsonSerializer.Deserialize<PixelForeground>(ref reader, options);
                             break;
-                        case "Background":
+                        case nameof(Pixel.Background):
                             background = JsonSerializer.Deserialize<PixelBackground>(ref reader, options);
                             break;
-                        case "CaretStyle":
+                        case nameof(Pixel.CaretStyle):
                             if (reader.TokenType == JsonTokenType.String)
                             {
                                 string caretStr = reader.GetString();
@@ -58,13 +58,13 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         {
             writer.WriteStartObject();
 
-            writer.WritePropertyName("Foreground");
+            writer.WritePropertyName(nameof(Pixel.Foreground));
             JsonSerializer.Serialize(writer, value.Foreground, options);
 
-            writer.WritePropertyName("Background");
+            writer.WritePropertyName(nameof(Pixel.Background));
             JsonSerializer.Serialize(writer, value.Background, options);
 
-            writer.WritePropertyName("CaretStyle");
+            writer.WritePropertyName(nameof(Pixel.CaretStyle));
             JsonSerializer.Serialize(writer, value.CaretStyle, options);
 
             writer.WriteEndObject();

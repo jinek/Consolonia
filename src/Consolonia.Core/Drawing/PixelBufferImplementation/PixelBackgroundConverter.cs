@@ -32,7 +32,7 @@ namespace Consolonia.Core.Drawing.PixelBufferImplementation
         public override void Write(Utf8JsonWriter writer, PixelBackground value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            writer.WriteString("Color", value.Color.ToString());
+            writer.WriteString(nameof(PixelBackground.Color), value.Color.ToString());
             writer.WriteEndObject();
         }
     }
