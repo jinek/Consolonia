@@ -9,6 +9,12 @@ namespace Consolonia.Core.Dummy
     // copy of Avalonia.HeadlessServer HeadlessBitmapStub with minor changes
     internal class DummyBitmap : IDrawingContextLayerImpl, IWriteableBitmapImpl
     {
+
+        public DummyBitmap()
+            : this(new PixelSize(1, 1), new Vector(1, 1))
+        {
+        }
+
         public DummyBitmap(Size size, Vector dpi)
         {
             Size = size;
