@@ -1,4 +1,3 @@
-
 //DUPFINDER_ignore
 //todo: this file is under refactoring. Restore the duplication finder
 
@@ -15,9 +14,9 @@ using Consolonia.Core.Dummy;
 namespace Consolonia.Core.Drawing
 {
     /// <summary>
-    /// Bitmap - drawing implementation
+    ///     Bitmap - drawing implementation
     /// </summary>
-    internal partial class DrawingContextImpl 
+    internal partial class DrawingContextImpl
     {
         public void DrawBitmap(IBitmapImpl source, double opacity, Rect sourceRect, Rect destRect)
         {

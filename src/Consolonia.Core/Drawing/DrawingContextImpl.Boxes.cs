@@ -14,9 +14,9 @@ using Consolonia.Core.InternalHelpers;
 namespace Consolonia.Core.Drawing
 {
     /// <summary>
-    /// Lines and boxes methods
+    ///     Lines and boxes methods
     /// </summary>
-    internal partial class DrawingContextImpl 
+    internal partial class DrawingContextImpl
     {
         private const byte VerticalStartPattern = 0b0010;
         private const byte VerticalLinePattern = 0b1010;
