@@ -67,12 +67,12 @@ namespace Consolonia.Core.Infrastructure
             return _headBufferPoint;
         }
 
-        public void WritePixel(PixelBufferCoordinate bufferPoint, in Pixel pixel)
+        public void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
             //todo: performance of retrieval of the service, at least can be retrieved once
             Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
-            if (bufferPoint != _headBufferPoint) SetCaretPosition(bufferPoint);
+            if (position != _headBufferPoint) SetCaretPosition(position);
 
             if (pixel.Foreground.TextDecoration != _lastTextDecoration)
             {
@@ -143,16 +143,16 @@ namespace Consolonia.Core.Infrastructure
             if (pixel.Foreground.Symbol.Complex == null)
             {
                 WriteChar(pixel.Foreground.Symbol.Character);
-                bufferPoint = new PixelBufferCoordinate((ushort)(bufferPoint.X + pixel.Width), bufferPoint.Y);
+                position = new PixelBufferCoordinate((ushort)(position.X + pixel.Width), position.Y);
             }
             else
             {
                 // complex symbol, could be emoji or other multi-char glyph
                 if (SupportsEmojiVariation)
                 {
-                    SetCaretPosition(bufferPoint);
+                    SetCaretPosition(position);
                     WriteText(pixel.Foreground.Symbol.Complex);
-                    bufferPoint = new PixelBufferCoordinate((ushort)(bufferPoint.X + pixel.Width), bufferPoint.Y);
+                    position = new PixelBufferCoordinate((ushort)(position.X + pixel.Width), position.Y);
                 }
                 else
                 {
@@ -163,21 +163,21 @@ namespace Consolonia.Core.Infrastructure
                         ushort glyphWidth = grapheme.Glyph.MeasureText();
                         if (glyphWidth > 1)
                         {
-                            WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
-                            WriteText(new string(' ', Math.Min(Size.Width - bufferPoint.X - 1, glyphWidth - 1)));
+                            WriteText(Esc.SetCursorPosition(position.X + 1, position.Y));
+                            WriteText(new string(' ', Math.Min(Size.Width - position.X - 1, glyphWidth - 1)));
                         }
 
-                        WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+                        WriteText(Esc.SetCursorPosition(position.X, position.Y));
                         WriteText(grapheme.Glyph);
 
-                        bufferPoint =
-                            new PixelBufferCoordinate((ushort)(bufferPoint.X + glyphWidth), bufferPoint.Y);
+                        position =
+                            new PixelBufferCoordinate((ushort)(position.X + glyphWidth), position.Y);
                     }
                 }
             }
 
-            if (bufferPoint.X >= Size.Width) bufferPoint = new PixelBufferCoordinate(0, (ushort)(bufferPoint.Y + 1));
-            _headBufferPoint = bufferPoint;
+            if (position.X >= Size.Width) position = new PixelBufferCoordinate(0, (ushort)(position.Y + 1));
+            _headBufferPoint = position;
         }
 
         public void Flush()

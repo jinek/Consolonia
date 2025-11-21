@@ -52,7 +52,7 @@ namespace Consolonia.Core.Dummy
         }
 
 
-        public void WritePixel(PixelBufferCoordinate bufferPoint, in Pixel pixel)
+        public void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
         }
 

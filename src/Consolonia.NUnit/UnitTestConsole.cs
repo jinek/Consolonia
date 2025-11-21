@@ -51,13 +51,13 @@ namespace Consolonia.NUnit
             return _fakeCaretPosition;
         }
 
-        public void WritePixel(PixelBufferCoordinate bufferPoint, in Pixel pixel)
+        public void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
             if (pixel.CaretStyle != CaretStyle.None)
                 // we don't render caret in unit test console
-                PixelBuffer[bufferPoint] = new Pixel(pixel.Foreground, pixel.Background, CaretStyle.None);
+                PixelBuffer[position] = new Pixel(pixel.Foreground, pixel.Background, CaretStyle.None);
             else 
-                PixelBuffer[bufferPoint] = pixel;
+                PixelBuffer[position] = pixel;
         }
 
         public void WriteText(string str)

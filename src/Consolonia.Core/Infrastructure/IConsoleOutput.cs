@@ -66,9 +66,9 @@ namespace Consolonia.Core.Infrastructure
         /// <summary>
         ///     Write a pixel to the console
         /// </summary>
-        /// <param name="bufferPoint">location</param>
+        /// <param name="position">location for pixel</param>
         /// <param name="pixel">pixel to print</param>
-        void WritePixel(PixelBufferCoordinate bufferPoint, in Pixel pixel);
+        void WritePixel(PixelBufferCoordinate position, in Pixel pixel);
 
         /// <summary>
         ///     Write raw text to the console

@@ -157,9 +157,9 @@ namespace Consolonia.Core.Infrastructure
             _consoleOutput.PrepareConsole();
         }
 
-        public virtual void WritePixel(PixelBufferCoordinate bufferPoint, in Pixel pixel)
+        public virtual void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
-            _consoleOutput.WritePixel(bufferPoint, in pixel);
+            _consoleOutput.WritePixel(position, in pixel);
         }
 
         public virtual void RestoreConsole()
