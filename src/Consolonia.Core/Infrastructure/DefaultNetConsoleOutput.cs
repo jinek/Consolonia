@@ -37,12 +37,6 @@ namespace Consolonia.Core.Infrastructure
 
         public virtual PixelBufferSize Size { get; set; }
 
-        protected int Length => _stringBuilder.Length;
-
-        protected PixelBufferCoordinate StartPosition => _startPoint;
-
-        protected PixelBufferCoordinate CurrentPosition => _currentBufferPoint;
-
         public virtual bool SupportsComplexEmoji => _supportsComplexEmoji;
 
         public virtual bool SupportsEmojiVariation => _supportsEmojiVariation;
