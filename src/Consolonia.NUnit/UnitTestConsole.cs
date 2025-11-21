@@ -4,11 +4,9 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
-using Avalonia.Media;
 using Avalonia.Threading;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.NUnit
@@ -55,8 +53,8 @@ namespace Consolonia.NUnit
         {
             if (pixel.CaretStyle != CaretStyle.None)
                 // we don't render caret in unit test console
-                PixelBuffer[position] = new Pixel(pixel.Foreground, pixel.Background, CaretStyle.None);
-            else 
+                PixelBuffer[position] = new Pixel(pixel.Foreground, pixel.Background);
+            else
                 PixelBuffer[position] = pixel;
         }
 
