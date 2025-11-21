@@ -34,7 +34,7 @@ namespace Consolonia.Gallery.Gallery.GalleryViews
                     }
                 });
 
-                IStorageFile file = files.FirstOrDefault();
+                IStorageFile file = files?.FirstOrDefault();
                 if (file != null)
                 {
                     BigImage.Source = new Bitmap(file.Path.LocalPath);
