@@ -1,9 +1,6 @@
 #pragma warning disable CA1416 // Validate platform compatibility
 using System;
 using System.Text;
-using Avalonia.Media;
-using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Drawing.PixelBufferImplementation.EgaConsoleColor;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.PlatformSupport

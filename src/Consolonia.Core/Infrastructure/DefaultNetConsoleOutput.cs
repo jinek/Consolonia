@@ -1,8 +1,5 @@
 using System;
-using System.Diagnostics;
 using System.Text;
-using Avalonia.Controls;
-using Avalonia.Controls.Platform;
 using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -18,14 +15,14 @@ namespace Consolonia.Core.Infrastructure
     /// </remarks>
     public class DefaultNetConsoleOutput : IConsoleOutput
     {
+        private readonly StringBuilder _stringBuilder;
+        private PixelBufferCoordinate _currentBufferPoint;
+        private Color _lastBackgroundColor;
+        private Color _lastForegroundColor;
         private ConsoleColor _originalBackground;
         private ConsoleColor _originalForeground;
         private bool _supportsComplexEmoji;
         private bool _supportsEmojiVariation;
-        private readonly StringBuilder _stringBuilder;
-        private Color _lastBackgroundColor;
-        private Color _lastForegroundColor;
-        private PixelBufferCoordinate _currentBufferPoint;
 
         public DefaultNetConsoleOutput()
         {
@@ -83,7 +80,7 @@ namespace Consolonia.Core.Infrastructure
             if (background != _lastBackgroundColor)
             {
                 Flush();
-                
+
                 (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(background);
                 Console.BackgroundColor = consoleColor;
                 _lastBackgroundColor = background;

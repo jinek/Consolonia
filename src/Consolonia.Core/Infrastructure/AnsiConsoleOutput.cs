@@ -14,7 +14,7 @@ namespace Consolonia.Core.Infrastructure
     ///     Console implementation which uses ANSI escape sequences for output
     /// </summary>
     /// <remarks>
-    /// This console buffers all output and only writes to the console on Flush.
+    ///     This console buffers all output and only writes to the console on Flush.
     /// </remarks>
     public class AnsiConsoleOutput : IConsoleOutput
     {
@@ -23,13 +23,14 @@ namespace Consolonia.Core.Infrastructure
         private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
             new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
 
+        private readonly StringBuilder _outputBuffer = new();
+
         private PixelBufferCoordinate _headBufferPoint;
-        private StringBuilder _outputBuffer = new StringBuilder();
-        private Color _lastForeground = Colors.Transparent;
         private Color _lastBackground = Colors.Transparent;
+        private Color _lastForeground = Colors.Transparent;
         private FontStyle? _lastStyle;
-        private FontWeight? _lastWeight;
         private TextDecorationLocation? _lastTextDecoration;
+        private FontWeight? _lastWeight;
 
         private bool? _supportsComplexEmoji;
         private bool? _supportsEmojiVariation;
@@ -73,10 +74,7 @@ namespace Consolonia.Core.Infrastructure
             //todo: performance of retrieval of the service, at least can be retrieved once
             Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
-            if (bufferPoint != _headBufferPoint)
-            {
-                SetCaretPosition(bufferPoint);
-            }
+            if (bufferPoint != _headBufferPoint) SetCaretPosition(bufferPoint);
 
             if (textDecoration != _lastTextDecoration)
             {
@@ -85,7 +83,7 @@ namespace Consolonia.Core.Infrastructure
                 {
                     TextDecorationLocation.Strikethrough => Esc.NoStrikethrough,
                     TextDecorationLocation.Underline => Esc.NoUnderline,
-                    _ => String.Empty
+                    _ => string.Empty
                 });
 
                 // Add new decoration
@@ -93,7 +91,7 @@ namespace Consolonia.Core.Infrastructure
                 {
                     TextDecorationLocation.Underline => Esc.Underline,
                     TextDecorationLocation.Strikethrough => Esc.Strikethrough,
-                    _ => String.Empty
+                    _ => string.Empty
                 });
                 _lastTextDecoration = textDecoration;
             }
@@ -104,13 +102,13 @@ namespace Consolonia.Core.Infrastructure
                 WriteText(_lastStyle switch
                 {
                     FontStyle.Italic => Esc.NoItalic,
-                    _ => String.Empty
+                    _ => string.Empty
                 });
 
                 WriteText(style switch
                 {
                     FontStyle.Italic => Esc.Italic,
-                    _ => String.Empty
+                    _ => string.Empty
                 });
                 _lastStyle = style;
             }
@@ -173,10 +171,7 @@ namespace Consolonia.Core.Infrastructure
                 }
             }
 
-            if (bufferPoint.X >= Size.Width)
-            {
-                bufferPoint = new PixelBufferCoordinate(0, (ushort)(bufferPoint.Y + 1));
-            }
+            if (bufferPoint.X >= Size.Width) bufferPoint = new PixelBufferCoordinate(0, (ushort)(bufferPoint.Y + 1));
             _headBufferPoint = bufferPoint;
         }
 
