@@ -97,8 +97,8 @@ namespace Consolonia.Core.Drawing
 
             // initialize the cache with Pixel.Empty as it literally means nothing
             for (ushort y = 0; y < height; y++)
-            for (ushort x = 0; x < width; x++)
-                cache[x, y] = Pixel.Empty;
+                for (ushort x = 0; x < width; x++)
+                    cache[x, y] = Pixel.Empty;
 
             return cache;
         }
@@ -114,73 +114,78 @@ namespace Consolonia.Core.Drawing
             PixelBufferCoordinate? caretPosition = null;
             CaretStyle? caretStyle = null;
 
-            var flushingBuffer = new FlushingBuffer(_console);
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-            for (ushort x = 0; x < pixelBuffer.Width;)
-            {
-                Pixel pixel = pixelBuffer[x, y];
-
-                if (pixel.IsCaret())
+                for (ushort x = 0; x < pixelBuffer.Width;)
                 {
-                    if (caretPosition != null)
-                        throw new InvalidOperationException("Caret is already shown");
-                    caretPosition = new PixelBufferCoordinate(x, y);
-                    caretStyle = pixel.CaretStyle;
-                }
+                    Pixel pixel = pixelBuffer[x, y];
 
-                // if it's not a dirty region, no need to paint it.
-                if (!dirtyRegions.Contains(x, y, false))
-                {
-                    x += Math.Max((ushort)1, pixel.Width);
-                    continue;
-                }
+                    if (pixel.IsCaret())
+                    {
+                        if (caretPosition != null)
+                            throw new InvalidOperationException("Caret is already shown");
+                        caretPosition = new PixelBufferCoordinate(x, y);
+                        caretStyle = pixel.CaretStyle;
+                    }
 
-                // if there is a cursor and it's in the range that will be painted by this pixel.
-                if (_consoleCursor.Coordinate.Y == y &&
-                    !_consoleCursor.IsEmpty() &&
-                    _consoleCursor.Coordinate.X >= x && _consoleCursor.Coordinate.X < x + pixel.Width)
-                {
-                    // cursor takes precedence over the overlapped pixel, we render the cursor pixel instead 
+                    // if it's not a dirty region, no need to paint it.
+                    if (!dirtyRegions.Contains(x, y, false))
+                    {
+                        x += Math.Max((ushort)1, pixel.Width);
+                        continue;
+                    }
 
-                    // clear cache for this pixel
-                    while (x < _consoleCursor.Coordinate.X)
+                    // if there is a cursor and it's in the range that will be painted by this pixel.
+                    if (_consoleCursor.Coordinate.Y == y &&
+                        !_consoleCursor.IsEmpty() &&
+                        _consoleCursor.Coordinate.X >= x && _consoleCursor.Coordinate.X < x + pixel.Width)
+                    {
+                        // cursor takes precedence over the overlapped pixel, we render the cursor pixel instead 
+
+                        // clear cache for this pixel
+                        while (x < _consoleCursor.Coordinate.X)
+                            _cache[x++, y] = Pixel.Empty;
+
+                        // x is now the location of the cursor (because it can be pointing midway in a wide pixel)
+
+                        // get current pixel for consoleCursor location
+                        pixel = pixelBuffer[x, y];
+
+                        // create our cursor pixel, using current pixel to compute inverted foreground color
+                        var cursorPixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type),
+                            GetInvertColor(pixel.Background.Color)));
+                        pixel = pixel.Blend(cursorPixel);
+                    }
+                    // if it's not changed from last paint, no reason to paint it.
+                    else if (_cache[x, y] == pixel)
+                    {
+                        // just advance to next paintable pixel 
+                        x += Math.Max((ushort)1, pixel.Width);
+                        continue;
+                    }
+
+                    //todo: indexOutOfRange during resize
+
+                    // paint the pixel
+                    _console.Print(new PixelBufferCoordinate(x, y), 
+                            pixel.Background.Color,
+                            pixel.Foreground.Color, 
+                            pixel.Foreground.Style, 
+                            pixel.Foreground.Weight, 
+                            pixel.Foreground.TextDecoration,
+                            pixel.Foreground.Symbol.GetText());
+
+                    // determine end point for wide pixels
+                    int end = Math.Min(pixelBuffer.Width, x + pixel.Width);
+
+                    // cache painted pixel
+                    _cache[x++, y] = pixel;
+
+                    // if it's a wide pixel clear cache for overlapped pixels
+                    while (x < end)
                         _cache[x++, y] = Pixel.Empty;
-
-                    // x is now the location of the cursor (because it can be pointing midway in a wide pixel)
-
-                    // get current pixel for consoleCursor location
-                    pixel = pixelBuffer[x, y];
-
-                    // create our cursor pixel, using current pixel to compute inverted foreground color
-                    var cursorPixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type),
-                        GetInvertColor(pixel.Background.Color)));
-                    pixel = pixel.Blend(cursorPixel);
-                }
-                // if it's not changed from last paint, no reason to paint it.
-                else if (_cache[x, y] == pixel)
-                {
-                    // just advance to next paintable pixel 
-                    x += Math.Max((ushort)1, pixel.Width);
-                    continue;
                 }
 
-                //todo: indexOutOfRange during resize
-
-                // paint the pixel
-                flushingBuffer.WritePixel(new PixelBufferCoordinate(x, y), pixel);
-
-                // determine end point for wide pixels
-                int end = Math.Min(pixelBuffer.Width, x + pixel.Width);
-
-                // cache painted pixel
-                _cache[x++, y] = pixel;
-
-                // if it's a wide pixel clear cache for overlapped pixels
-                while (x < end)
-                    _cache[x++, y] = Pixel.Empty;
-            }
-
-            flushingBuffer.Flush();
+            _console.Flush();
 
             if (caretPosition != null && caretStyle != CaretStyle.None)
             {
@@ -222,72 +227,5 @@ namespace Consolonia.Core.Drawing
             RenderToDevice();
         }
 
-        private struct FlushingBuffer
-        {
-            //todo: move class out
-            private readonly IConsoleOutput _console;
-            private readonly StringBuilder _stringBuilder;
-            private Color _lastBackgroundColor;
-            private Color _lastForegroundColor;
-            private FontStyle? _lastStyle;
-            private FontWeight? _lastWeight;
-            private TextDecorationLocation? _lastTextDecoration;
-            private PixelBufferCoordinate _currentBufferPoint;
-            private PixelBufferCoordinate _lastBufferPointStart;
-
-            public FlushingBuffer(IConsoleOutput console)
-            {
-                this = new FlushingBuffer();
-                _console = console;
-                _stringBuilder = new StringBuilder();
-            }
-
-            public void WritePixel(
-                PixelBufferCoordinate bufferPoint,
-                Pixel pixel)
-            {
-                if (!bufferPoint.Equals(_currentBufferPoint) /*todo: performance*/ ||
-                    !pixel.Foreground.IsNothingToDraw() && _lastForegroundColor != pixel.Foreground.Color ||
-                    _lastBackgroundColor != pixel.Background.Color ||
-                    _lastWeight != pixel.Foreground.Weight ||
-                    _lastStyle != pixel.Foreground.Style ||
-                    _lastTextDecoration != pixel.Foreground.TextDecoration)
-                    Flush();
-
-                if (_stringBuilder.Length == 0)
-                {
-                    _lastBackgroundColor = pixel.Background.Color;
-                    _lastForegroundColor = pixel.Foreground.Color;
-                    _lastStyle = pixel.Foreground.Style;
-                    _lastWeight = pixel.Foreground.Weight;
-                    _lastTextDecoration = pixel.Foreground.TextDecoration;
-                    _lastBufferPointStart = _currentBufferPoint = bufferPoint;
-                }
-
-                // the only pixels without width are Empty pixels, which we don't 
-                // want to output as they are already invisible and represented
-                // by the complex glyph coming before it (aka double-wide chars)
-                if (pixel.Foreground.Symbol.Width > 0)
-                {
-                    if (!string.IsNullOrEmpty(pixel.Foreground.Symbol.Complex))
-                        _stringBuilder.Append(pixel.Foreground.Symbol.Complex);
-                    else
-                        _stringBuilder.Append(pixel.Foreground.Symbol.Character);
-                }
-
-                _currentBufferPoint = new PixelBufferCoordinate((ushort)(_currentBufferPoint.X + pixel.Width),
-                    _currentBufferPoint.Y);
-            }
-
-            public void Flush()
-            {
-                if (_stringBuilder.Length == 0)
-                    return;
-
-                _console.Print(_lastBufferPointStart, _lastBackgroundColor, _lastForegroundColor, _lastStyle,
-                    _lastWeight, _lastTextDecoration, _stringBuilder.ToString());
-                _stringBuilder.Clear();
-            }
-        }
     }
 }

@@ -113,5 +113,9 @@ namespace Consolonia.Core.Dummy
                 _disposed = true;
             }
         }
+
+        public void Flush()
+        {
+        }
     }
 }

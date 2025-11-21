@@ -1,5 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.Text;
+using Avalonia.Controls;
+using Avalonia.Controls.Platform;
 using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -11,17 +14,34 @@ namespace Consolonia.Core.Infrastructure
     ///     IConsoleOutput implementation which purely uses Console API and not ANSI escape sequences.
     /// </summary>
     /// <remarks>
-    ///     This only supports ConsoleColor and not mouse or other advanced features.
+    ///     Buffers on TextRuns of shared color/textstyle/properties
     /// </remarks>
     public class DefaultNetConsoleOutput : IConsoleOutput
     {
         private ConsoleColor _originalBackground;
         private ConsoleColor _originalForeground;
-
         private bool _supportsComplexEmoji;
         private bool _supportsEmojiVariation;
+        private readonly StringBuilder _stringBuilder;
+        private Color _lastBackgroundColor;
+        private Color _lastForegroundColor;
+        private PixelBufferCoordinate _startPoint;
+        private PixelBufferCoordinate _currentBufferPoint;
+
+        public DefaultNetConsoleOutput()
+        {
+            _stringBuilder = new StringBuilder();
+            _lastBackgroundColor = Colors.Transparent;
+            _lastForegroundColor = Colors.Transparent;
+        }
 
         public virtual PixelBufferSize Size { get; set; }
+
+        protected int Length => _stringBuilder.Length;
+
+        protected PixelBufferCoordinate StartPosition => _startPoint;
+
+        protected PixelBufferCoordinate CurrentPosition => _currentBufferPoint;
 
         public virtual bool SupportsComplexEmoji => _supportsComplexEmoji;
 
@@ -51,23 +71,55 @@ namespace Consolonia.Core.Infrastructure
             return new PixelBufferCoordinate((ushort)left, (ushort)top);
         }
 
-        public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground,
+        public virtual void Print(PixelBufferCoordinate bufferPoint,
+            Color background,
+            Color foreground,
             FontStyle? style,
-            FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+            FontWeight? weight,
+            TextDecorationLocation? textDecoration,
+            string str)
         {
-            ConsoleColor originalForeground = Console.ForegroundColor;
-            ConsoleColor originalBackground = Console.BackgroundColor;
+            if (bufferPoint != _currentBufferPoint || _stringBuilder.Length == 0)
+            {
+                Flush();
 
-            (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(foreground);
-            Console.ForegroundColor = consoleColor;
-            (consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(background);
-            Console.BackgroundColor = consoleColor;
+                SetCaretPosition(bufferPoint);
+                _startPoint = bufferPoint; 
+                _currentBufferPoint = bufferPoint;
+            }
 
-            SetCaretPosition(bufferPoint);
-            Console.Write(str);
+            if (background != _lastBackgroundColor)
+            {
+                Flush();
+                
+                (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(background);
+                Console.BackgroundColor = consoleColor;
+                _lastBackgroundColor = background;
+            }
 
-            Console.ForegroundColor = originalForeground;
-            Console.BackgroundColor = originalBackground;
+            if (foreground != _lastForegroundColor)
+            {
+                Flush();
+
+                (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(foreground);
+                Console.ForegroundColor = consoleColor;
+                _lastForegroundColor = foreground;
+            }
+
+            _stringBuilder.Append(str);
+
+            _currentBufferPoint = new PixelBufferCoordinate((ushort)(_currentBufferPoint.X + str.MeasureText()),
+                _currentBufferPoint.Y);
+        }
+
+        public virtual void Flush()
+        {
+            if (_stringBuilder.Length == 0)
+                return;
+
+            // Debug.WriteLine($"[{_currentBufferPoint.X},{_currentBufferPoint.Y}] {_lastForegroundColor} on {_lastBackgroundColor} '{_stringBuilder}'");
+            Console.Write(_stringBuilder.ToString());
+            _stringBuilder.Clear();
         }
 
         public virtual void WriteText(string str)

@@ -179,6 +179,10 @@ namespace Consolonia.NUnit
             _lifetime = lifetime;
         }
 
+        public void Flush()
+        {
+        }
+
 
 #pragma warning disable CS0067
         public event Action Resized;

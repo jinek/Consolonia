@@ -81,5 +81,10 @@ namespace Consolonia.Core.Infrastructure
         /// </summary>
         /// <param name="str"></param>
         void WriteText(string str);
+
+        /// <summary>
+        ///     Flush any buffered output
+        /// </summary>
+        void Flush();
     }
 }

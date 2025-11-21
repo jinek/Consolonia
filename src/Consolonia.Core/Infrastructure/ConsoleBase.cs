@@ -225,6 +225,11 @@ namespace Consolonia.Core.Infrastructure
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
+        public void Flush()
+        {
+            _consoleOutput.Flush();
+        }
+
         #endregion
     }
 }

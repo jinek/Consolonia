@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using Avalonia;
 
 // ReSharper disable UnusedMember.Global
 
 namespace Consolonia.Core.Drawing.PixelBufferImplementation
 {
+    [DebuggerDisplay("[{X},{Y}]")]
     public readonly struct PixelBufferCoordinate(ushort x, ushort y)
         : IComparable<PixelBufferCoordinate>, IEquatable<PixelBufferCoordinate>
     {
