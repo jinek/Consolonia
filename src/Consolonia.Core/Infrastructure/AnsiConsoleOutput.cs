@@ -94,7 +94,8 @@ namespace Consolonia.Core.Infrastructure
                 _lastTextDecoration = pixel.Foreground.TextDecoration;
             }
 
-            if (pixel.Foreground.Style != _lastStyle)
+            var style = pixel.Foreground.Style ?? FontStyle.Normal;
+            if (style != _lastStyle)
             {
                 //reset previous style
                 WriteText(_lastStyle switch
@@ -103,24 +104,26 @@ namespace Consolonia.Core.Infrastructure
                     _ => string.Empty
                 });
 
-                WriteText(pixel.Foreground.Style switch
+                WriteText(style switch
                 {
                     FontStyle.Italic => Esc.Italic,
                     _ => string.Empty
                 });
-                _lastStyle = pixel.Foreground.Style;
+                _lastStyle = style;
             }
 
-            if (pixel.Foreground.Weight != _lastWeight)
+            var weight = pixel.Foreground.Weight ?? FontWeight.Normal;
+            if (weight != _lastWeight)
             {
-                WriteText(pixel.Foreground.Weight switch
+                WriteText(weight switch
                 {
                     FontWeight.Bold or FontWeight.SemiBold or FontWeight.ExtraBold or FontWeight.Black =>
                         Esc.Bold,
-                    FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light => Esc.Dim,
+                    FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light => 
+                        Esc.Dim,
                     _ => Esc.Normal
                 });
-                _lastWeight = pixel.Foreground.Weight;
+                _lastWeight = weight;
             }
 
             if (pixel.Foreground.Color != _lastForeground || pixel.Background.Color != _lastBackground)
