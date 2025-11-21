@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Text;
 using Avalonia;
 using Avalonia.Media;
@@ -129,7 +128,8 @@ namespace Consolonia.Core.Infrastructure
             if (pixel.Foreground.Color != _lastForeground || pixel.Background.Color != _lastBackground)
             {
                 (object mappedBackground, object mappedForeground) =
-                    consoleColorMode.Value.MapColors(pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight);
+                    consoleColorMode.Value.MapColors(pixel.Background.Color, pixel.Foreground.Color,
+                        pixel.Foreground.Weight);
                 if (pixel.Foreground.Color != _lastForeground)
                 {
                     WriteText(Esc.Foreground(mappedForeground));
@@ -200,15 +200,6 @@ namespace Consolonia.Core.Infrastructure
         public void WriteText(string str)
         {
             _outputBuffer.Append(str);
-        }
-
-        /// <summary>
-        /// Write char to the console
-        /// </summary>
-        /// <param name="ch"></param>
-        public void WriteChar(char ch)
-        {
-            _outputBuffer.Append(ch);
         }
 
         public void PrepareConsole()
@@ -288,6 +279,15 @@ namespace Consolonia.Core.Infrastructure
             WriteText(Esc.ClearScreen);
             _headBufferPoint = new PixelBufferCoordinate(0, 0);
             WriteText(Esc.SetCursorPosition(0, 0));
+        }
+
+        /// <summary>
+        ///     Write char to the console
+        /// </summary>
+        /// <param name="ch"></param>
+        public void WriteChar(char ch)
+        {
+            _outputBuffer.Append(ch);
         }
     }
 }
