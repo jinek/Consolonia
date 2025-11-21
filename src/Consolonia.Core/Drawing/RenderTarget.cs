@@ -165,13 +165,7 @@ namespace Consolonia.Core.Drawing
                 //todo: indexOutOfRange during resize
 
                 // paint the pixel
-                _console.Print(new PixelBufferCoordinate(x, y),
-                    pixel.Background.Color,
-                    pixel.Foreground.Color,
-                    pixel.Foreground.Style,
-                    pixel.Foreground.Weight,
-                    pixel.Foreground.TextDecoration,
-                    pixel.Foreground.Symbol.GetText());
+                _console.WritePixel(new PixelBufferCoordinate(x, y), in pixel);
 
                 // determine end point for wide pixels
                 int end = Math.Min(pixelBuffer.Width, x + pixel.Width);

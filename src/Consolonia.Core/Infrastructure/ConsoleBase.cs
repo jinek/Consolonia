@@ -157,10 +157,9 @@ namespace Consolonia.Core.Infrastructure
             _consoleOutput.PrepareConsole();
         }
 
-        public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground,
-            FontStyle? style, FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+        public virtual void WritePixel(PixelBufferCoordinate bufferPoint, in Pixel pixel)
         {
-            _consoleOutput.Print(bufferPoint, background, foreground, style, weight, textDecoration, str);
+            _consoleOutput.WritePixel(bufferPoint, in pixel);
         }
 
         public virtual void RestoreConsole()

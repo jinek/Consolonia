@@ -51,22 +51,13 @@ namespace Consolonia.NUnit
             return _fakeCaretPosition;
         }
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
-            FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+        public void WritePixel(PixelBufferCoordinate bufferPoint, in Pixel pixel)
         {
-            (ushort x, ushort y) = bufferPoint;
-
-            int i = 0;
-            foreach (Grapheme grapheme in Grapheme.Parse(str, true))
-            {
-                var coord = new PixelBufferCoordinate((ushort)(x + i), y);
-                PixelBuffer[coord] =
-                    new Pixel(
-                        new PixelForeground(new Symbol(grapheme.Glyph), foreground, style: style, weight: weight,
-                            textDecoration: textDecoration),
-                        new PixelBackground(background));
-                i += grapheme.Glyph.MeasureText();
-            }
+            if (pixel.CaretStyle != CaretStyle.None)
+                // we don't render caret in unit test console
+                PixelBuffer[bufferPoint] = new Pixel(pixel.Foreground, pixel.Background, CaretStyle.None);
+            else 
+                PixelBuffer[bufferPoint] = pixel;
         }
 
         public void WriteText(string str)

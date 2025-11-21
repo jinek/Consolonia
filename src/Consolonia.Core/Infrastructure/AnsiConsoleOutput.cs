@@ -52,7 +52,6 @@ namespace Consolonia.Core.Infrastructure
 
             try
             {
-                Debug.WriteLine($"Setting caret position to {bufferPoint.X},{bufferPoint.Y}");
                 WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
                 _headBufferPoint = bufferPoint;
             }
@@ -68,15 +67,14 @@ namespace Consolonia.Core.Infrastructure
             return _headBufferPoint;
         }
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
-            FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+        public void WritePixel(PixelBufferCoordinate bufferPoint, in Pixel pixel)
         {
             //todo: performance of retrieval of the service, at least can be retrieved once
             Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
             if (bufferPoint != _headBufferPoint) SetCaretPosition(bufferPoint);
 
-            if (textDecoration != _lastTextDecoration)
+            if (pixel.Foreground.TextDecoration != _lastTextDecoration)
             {
                 // reset previous decoration
                 WriteText(_lastTextDecoration switch
@@ -87,16 +85,16 @@ namespace Consolonia.Core.Infrastructure
                 });
 
                 // Add new decoration
-                WriteText(textDecoration switch
+                WriteText(pixel.Foreground.TextDecoration switch
                 {
                     TextDecorationLocation.Underline => Esc.Underline,
                     TextDecorationLocation.Strikethrough => Esc.Strikethrough,
                     _ => string.Empty
                 });
-                _lastTextDecoration = textDecoration;
+                _lastTextDecoration = pixel.Foreground.TextDecoration;
             }
 
-            if (style != _lastStyle)
+            if (pixel.Foreground.Style != _lastStyle)
             {
                 //reset previous style
                 WriteText(_lastStyle switch
@@ -105,69 +103,76 @@ namespace Consolonia.Core.Infrastructure
                     _ => string.Empty
                 });
 
-                WriteText(style switch
+                WriteText(pixel.Foreground.Style switch
                 {
                     FontStyle.Italic => Esc.Italic,
                     _ => string.Empty
                 });
-                _lastStyle = style;
+                _lastStyle = pixel.Foreground.Style;
             }
 
-            if (weight != _lastWeight)
+            if (pixel.Foreground.Weight != _lastWeight)
             {
-                WriteText(weight switch
+                WriteText(pixel.Foreground.Weight switch
                 {
                     FontWeight.Bold or FontWeight.SemiBold or FontWeight.ExtraBold or FontWeight.Black =>
                         Esc.Bold,
                     FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light => Esc.Dim,
                     _ => Esc.Normal
                 });
-                _lastWeight = weight;
+                _lastWeight = pixel.Foreground.Weight;
             }
 
-            if (foreground != _lastForeground || background != _lastBackground)
+            if (pixel.Foreground.Color != _lastForeground || pixel.Background.Color != _lastBackground)
             {
                 (object mappedBackground, object mappedForeground) =
-                    consoleColorMode.Value.MapColors(background, foreground, weight);
-                if (foreground != _lastForeground)
+                    consoleColorMode.Value.MapColors(pixel.Background.Color, pixel.Foreground.Color, pixel.Foreground.Weight);
+                if (pixel.Foreground.Color != _lastForeground)
                 {
                     WriteText(Esc.Foreground(mappedForeground));
-                    _lastForeground = foreground;
+                    _lastForeground = pixel.Foreground.Color;
                 }
 
-                if (background != _lastBackground)
+                if (pixel.Background.Color != _lastBackground)
                 {
                     WriteText(Esc.Background(mappedBackground));
-                    _lastBackground = background;
+                    _lastBackground = pixel.Background.Color;
                 }
             }
 
-            // move to position
-            if (SupportsEmojiVariation)
+            if (pixel.Foreground.Symbol.Complex == null)
             {
-                SetCaretPosition(bufferPoint);
-                WriteText(str);
-                ushort textWidth = str.MeasureText();
-                bufferPoint = new PixelBufferCoordinate((ushort)(bufferPoint.X + textWidth), bufferPoint.Y);
+                WriteChar(pixel.Foreground.Symbol.Character);
+                bufferPoint = new PixelBufferCoordinate((ushort)(bufferPoint.X + pixel.Width), bufferPoint.Y);
             }
             else
             {
-                // rendering over the top with the glyph.
-                // process each glyph, rendering the width as spaces then moving the cursor and
-                foreach (Grapheme grapheme in Grapheme.Parse(str, SupportsComplexEmoji))
+                // complex symbol, could be emoji or other multi-char glyph
+                if (SupportsEmojiVariation)
                 {
-                    ushort glyphWidth = grapheme.Glyph.MeasureText();
-                    if (glyphWidth > 1)
+                    SetCaretPosition(bufferPoint);
+                    WriteText(pixel.Foreground.Symbol.Complex);
+                    bufferPoint = new PixelBufferCoordinate((ushort)(bufferPoint.X + pixel.Width), bufferPoint.Y);
+                }
+                else
+                {
+                    // rendering over the top with the glyph.
+                    // process each glyph, rendering the width as spaces then moving the cursor and
+                    foreach (Grapheme grapheme in Grapheme.Parse(pixel.Foreground.Symbol.Complex, SupportsComplexEmoji))
                     {
-                        WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
-                        WriteText(new string(' ', Math.Min(Size.Width - bufferPoint.X - 1, glyphWidth - 1)));
+                        ushort glyphWidth = grapheme.Glyph.MeasureText();
+                        if (glyphWidth > 1)
+                        {
+                            WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
+                            WriteText(new string(' ', Math.Min(Size.Width - bufferPoint.X - 1, glyphWidth - 1)));
+                        }
+
+                        WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+                        WriteText(grapheme.Glyph);
+
+                        bufferPoint =
+                            new PixelBufferCoordinate((ushort)(bufferPoint.X + glyphWidth), bufferPoint.Y);
                     }
-
-                    WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-                    WriteText(grapheme.Glyph);
-
-                    bufferPoint =
-                        new PixelBufferCoordinate((ushort)(bufferPoint.X + glyphWidth), bufferPoint.Y);
                 }
             }
 
@@ -179,7 +184,6 @@ namespace Consolonia.Core.Infrastructure
         {
             if (_outputBuffer.Length > 0)
             {
-                Debug.WriteLine(_outputBuffer.Length);
                 Console.Write(_outputBuffer.ToString());
                 _outputBuffer.Clear();
             }
@@ -193,6 +197,15 @@ namespace Consolonia.Core.Infrastructure
         public void WriteText(string str)
         {
             _outputBuffer.Append(str);
+        }
+
+        /// <summary>
+        /// Write char to the console
+        /// </summary>
+        /// <param name="ch"></param>
+        public void WriteChar(char ch)
+        {
+            _outputBuffer.Append(ch);
         }
 
         public void PrepareConsole()
@@ -218,6 +231,7 @@ namespace Consolonia.Core.Infrastructure
             _supportsEmojiVariation = left3 - left2 == 2;
 
             ClearScreen();
+            // flush because we want to clear the screen while the rendering pipeline is being initialized for first render.
             Flush();
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
         }

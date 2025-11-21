@@ -16,7 +16,7 @@ namespace Consolonia.Core.Infrastructure
     public class DefaultNetConsoleOutput : IConsoleOutput
     {
         private readonly StringBuilder _stringBuilder;
-        private PixelBufferCoordinate _currentBufferPoint;
+        private PixelBufferCoordinate _currentPosition;
         private Color _lastBackgroundColor;
         private Color _lastForegroundColor;
         private ConsoleColor _originalBackground;
@@ -61,44 +61,41 @@ namespace Consolonia.Core.Infrastructure
             return new PixelBufferCoordinate((ushort)left, (ushort)top);
         }
 
-        public virtual void Print(PixelBufferCoordinate bufferPoint,
-            Color background,
-            Color foreground,
-            FontStyle? style,
-            FontWeight? weight,
-            TextDecorationLocation? textDecoration,
-            string str)
+        public virtual void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
-            if (bufferPoint != _currentBufferPoint || _stringBuilder.Length == 0)
+            if (position != _currentPosition)
             {
                 Flush();
 
-                SetCaretPosition(bufferPoint);
-                _currentBufferPoint = bufferPoint;
+                SetCaretPosition(position);
+                _currentPosition = position;
             }
 
-            if (background != _lastBackgroundColor)
+            if (pixel.Background.Color != _lastBackgroundColor)
             {
                 Flush();
 
-                (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(background);
+                (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(pixel.Background.Color);
                 Console.BackgroundColor = consoleColor;
-                _lastBackgroundColor = background;
+                _lastBackgroundColor = pixel.Background.Color;
             }
 
-            if (foreground != _lastForegroundColor)
+            if (pixel.Foreground.Color != _lastForegroundColor)
             {
                 Flush();
 
-                (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(foreground);
+                (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(pixel.Foreground.Color);
                 Console.ForegroundColor = consoleColor;
-                _lastForegroundColor = foreground;
+                _lastForegroundColor = pixel.Foreground.Color;
             }
 
-            _stringBuilder.Append(str);
+            if (pixel.Foreground.Symbol.Complex != null)
+                _stringBuilder.Append(pixel.Foreground.Symbol.Complex);
+            else
+                _stringBuilder.Append(pixel.Foreground.Symbol.Character);
 
-            _currentBufferPoint = new PixelBufferCoordinate((ushort)(_currentBufferPoint.X + str.MeasureText()),
-                _currentBufferPoint.Y);
+            _currentPosition = new PixelBufferCoordinate((ushort)(_currentPosition.X + pixel.Width),
+                _currentPosition.Y);
         }
 
         public virtual void Flush()

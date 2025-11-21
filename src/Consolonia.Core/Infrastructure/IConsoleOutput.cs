@@ -64,17 +64,11 @@ namespace Consolonia.Core.Infrastructure
         void ClearScreen();
 
         /// <summary>
-        ///     Print formatted text to the console
+        ///     Write a pixel to the console
         /// </summary>
-        /// <param name="bufferPoint"></param>
-        /// <param name="background"></param>
-        /// <param name="foreground"></param>
-        /// <param name="style"></param>
-        /// <param name="weight"></param>
-        /// <param name="textDecoration"></param>
-        /// <param name="str"></param>
-        void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
-            FontWeight? weight, TextDecorationLocation? textDecoration, string str);
+        /// <param name="bufferPoint">location</param>
+        /// <param name="pixel">pixel to print</param>
+        void WritePixel(PixelBufferCoordinate bufferPoint, in Pixel pixel);
 
         /// <summary>
         ///     Write raw text to the console
