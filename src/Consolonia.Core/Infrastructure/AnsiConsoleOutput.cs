@@ -93,7 +93,7 @@ namespace Consolonia.Core.Infrastructure
                 _lastTextDecoration = pixel.Foreground.TextDecoration;
             }
 
-            var style = pixel.Foreground.Style ?? FontStyle.Normal;
+            FontStyle style = pixel.Foreground.Style ?? FontStyle.Normal;
             if (style != _lastStyle)
             {
                 //reset previous style
@@ -111,14 +111,14 @@ namespace Consolonia.Core.Infrastructure
                 _lastStyle = style;
             }
 
-            var weight = pixel.Foreground.Weight ?? FontWeight.Normal;
+            FontWeight weight = pixel.Foreground.Weight ?? FontWeight.Normal;
             if (weight != _lastWeight)
             {
                 WriteText(weight switch
                 {
                     FontWeight.Bold or FontWeight.SemiBold or FontWeight.ExtraBold or FontWeight.Black =>
                         Esc.Bold,
-                    FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light => 
+                    FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light =>
                         Esc.Dim,
                     _ => Esc.Normal
                 });
