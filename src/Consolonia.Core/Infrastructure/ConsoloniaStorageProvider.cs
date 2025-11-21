@@ -53,7 +53,7 @@ namespace Consolonia.Core.Infrastructure
 
         public async Task<SaveFilePickerResult> SaveFilePickerWithResultAsync(FilePickerSaveOptions options)
         {
-            var file = await SaveFilePickerAsync(options);
+            IStorageFile file = await SaveFilePickerAsync(options);
             return new SaveFilePickerResult
             {
                 File = file,
