@@ -12,6 +12,9 @@ namespace Consolonia.Core.Infrastructure
     /// <summary>
     ///     Console implementation which uses ANSI escape sequences for output
     /// </summary>
+    /// <remarks>
+    ///     This console buffers all output and only writes to the console on Flush.
+    /// </remarks>
     public class AnsiConsoleOutput : IConsoleOutput
     {
         private const string TestEmoji = "👨‍👩‍👧‍👦";
@@ -19,7 +22,14 @@ namespace Consolonia.Core.Infrastructure
         private static readonly Lazy<IConsoleColorMode> ConsoleColorMode =
             new(() => AvaloniaLocator.Current.GetRequiredService<IConsoleColorMode>());
 
+        private readonly StringBuilder _outputBuffer = new();
+
         private PixelBufferCoordinate _headBufferPoint;
+        private Color _lastBackground = Colors.Transparent;
+        private Color _lastForeground = Colors.Transparent;
+        private FontStyle? _lastStyle;
+        private TextDecorationLocation? _lastTextDecoration;
+        private FontWeight? _lastWeight;
 
         private bool? _supportsComplexEmoji;
         private bool? _supportsEmojiVariation;
@@ -56,62 +66,130 @@ namespace Consolonia.Core.Infrastructure
             return _headBufferPoint;
         }
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
-            FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+        public void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
             //todo: performance of retrieval of the service, at least can be retrieved once
             Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
-            var sb = new StringBuilder();
-            if (textDecoration == TextDecorationLocation.Underline)
-                sb.Append(Esc.Underline);
+            if (position != _headBufferPoint) SetCaretPosition(position);
 
-            if (textDecoration == TextDecorationLocation.Strikethrough)
-                sb.Append(Esc.Strikethrough);
-
-            if (style == FontStyle.Italic)
-                sb.Append(Esc.Italic);
-
-            (object mappedBackground, object mappedForeground) =
-                consoleColorMode.Value.MapColors(background, foreground, weight);
-            sb.Append(Esc.Foreground(mappedForeground));
-            sb.Append(Esc.Background(mappedBackground));
-
-            // write attributes
-            WriteText(sb.ToString());
-
-            ushort textWidth = str.MeasureText();
-
-            // move to position
-            if (SupportsEmojiVariation)
+            if (pixel.Foreground.TextDecoration != _lastTextDecoration)
             {
-                SetCaretPosition(bufferPoint);
-                WriteText(str);
-                bufferPoint = new PixelBufferCoordinate((ushort)(bufferPoint.X + textWidth), bufferPoint.Y);
-            }
-            else
-            {
-                // rendering over the top with the glyph.
-                // process each glyph, rendering the width as spaces then moving the cursor and
-                foreach (Grapheme grapheme in Grapheme.Parse(str, SupportsComplexEmoji))
+                // reset previous decoration
+                WriteText(_lastTextDecoration switch
                 {
-                    ushort glyphWidth = grapheme.Glyph.MeasureText();
-                    if (glyphWidth > 1)
-                    {
-                        WriteText(Esc.SetCursorPosition(bufferPoint.X + 1, bufferPoint.Y));
-                        WriteText(new string(' ', Math.Min(Size.Width - bufferPoint.X - 1, glyphWidth - 1)));
-                    }
+                    TextDecorationLocation.Strikethrough => Esc.NoStrikethrough,
+                    TextDecorationLocation.Underline => Esc.NoUnderline,
+                    _ => string.Empty
+                });
 
-                    WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-                    WriteText(grapheme.Glyph);
+                // Add new decoration
+                WriteText(pixel.Foreground.TextDecoration switch
+                {
+                    TextDecorationLocation.Underline => Esc.Underline,
+                    TextDecorationLocation.Strikethrough => Esc.Strikethrough,
+                    _ => string.Empty
+                });
+                _lastTextDecoration = pixel.Foreground.TextDecoration;
+            }
 
-                    bufferPoint =
-                        new PixelBufferCoordinate((ushort)(bufferPoint.X + glyphWidth), bufferPoint.Y);
+            FontStyle style = pixel.Foreground.Style ?? FontStyle.Normal;
+            if (style != _lastStyle)
+            {
+                //reset previous style
+                WriteText(_lastStyle switch
+                {
+                    FontStyle.Italic => Esc.NoItalic,
+                    _ => string.Empty
+                });
+
+                WriteText(style switch
+                {
+                    FontStyle.Italic => Esc.Italic,
+                    _ => string.Empty
+                });
+                _lastStyle = style;
+            }
+
+            FontWeight weight = pixel.Foreground.Weight ?? FontWeight.Normal;
+            if (weight != _lastWeight)
+            {
+                WriteText(weight switch
+                {
+                    FontWeight.Bold or FontWeight.SemiBold or FontWeight.ExtraBold or FontWeight.Black =>
+                        Esc.Bold,
+                    FontWeight.Thin or FontWeight.ExtraLight or FontWeight.Light =>
+                        Esc.Dim,
+                    _ => Esc.Normal
+                });
+                _lastWeight = weight;
+            }
+
+            if (pixel.Foreground.Color != _lastForeground || pixel.Background.Color != _lastBackground)
+            {
+                (object mappedBackground, object mappedForeground) =
+                    consoleColorMode.Value.MapColors(pixel.Background.Color, pixel.Foreground.Color,
+                        pixel.Foreground.Weight);
+                if (pixel.Foreground.Color != _lastForeground)
+                {
+                    WriteText(Esc.Foreground(mappedForeground));
+                    _lastForeground = pixel.Foreground.Color;
+                }
+
+                if (pixel.Background.Color != _lastBackground)
+                {
+                    WriteText(Esc.Background(mappedBackground));
+                    _lastBackground = pixel.Background.Color;
                 }
             }
 
-            WriteText(Esc.Reset);
-            _headBufferPoint = bufferPoint;
+            if (pixel.Foreground.Symbol.Complex == null)
+            {
+                WriteChar(pixel.Foreground.Symbol.Character);
+                position = new PixelBufferCoordinate((ushort)(position.X + pixel.Width), position.Y);
+            }
+            else
+            {
+                // complex symbol, could be emoji or other multi-char glyph
+                if (SupportsEmojiVariation)
+                {
+                    SetCaretPosition(position);
+                    WriteText(pixel.Foreground.Symbol.Complex);
+                    position = new PixelBufferCoordinate((ushort)(position.X + pixel.Width), position.Y);
+                }
+                else
+                {
+                    // rendering over the top with the glyph.
+                    // process each glyph, rendering the width as spaces then moving the cursor and
+                    foreach (Grapheme grapheme in Grapheme.Parse(pixel.Foreground.Symbol.Complex, SupportsComplexEmoji))
+                    {
+                        ushort glyphWidth = grapheme.Glyph.MeasureText();
+                        if (glyphWidth > 1)
+                        {
+                            WriteText(Esc.SetCursorPosition(position.X + 1, position.Y));
+                            WriteText(new string(' ', Math.Min(Size.Width - position.X - 1, glyphWidth - 1)));
+                        }
+
+                        WriteText(Esc.SetCursorPosition(position.X, position.Y));
+                        WriteText(grapheme.Glyph);
+
+                        position =
+                            new PixelBufferCoordinate((ushort)(position.X + glyphWidth), position.Y);
+                    }
+                }
+            }
+
+            if (position.X >= Size.Width) position = new PixelBufferCoordinate(0, (ushort)(position.Y + 1));
+            _headBufferPoint = position;
+        }
+
+        public void Flush()
+        {
+            if (_outputBuffer.Length > 0)
+            {
+                Console.Write(_outputBuffer.ToString());
+                _outputBuffer.Clear();
+            }
         }
 
         /// <summary>
@@ -121,7 +199,7 @@ namespace Consolonia.Core.Infrastructure
         /// <param name="str"></param>
         public void WriteText(string str)
         {
-            Console.Write(str);
+            _outputBuffer.Append(str);
         }
 
         public void PrepareConsole()
@@ -130,23 +208,25 @@ namespace Consolonia.Core.Infrastructure
             Console.OutputEncoding = Encoding.UTF8;
 
             // enable alternate screen so original console screen is not affected by the app
-            WriteText(Esc.EnableAlternateBuffer);
+            Console.Write(Esc.EnableAlternateBuffer);
 
             Size = new PixelBufferSize((ushort)Console.WindowWidth, (ushort)Console.WindowHeight);
 
             // Detect complex emoji support by writing a complex emoji and checking cursor position.
             // If the cursor moves 2 positions, it indicates proper rendering of composite surrogate pairs.
             (int left, _) = Console.GetCursorPosition();
-            WriteText(TestEmoji);
+            Console.Write(TestEmoji);
             (int left2, _) = Console.GetCursorPosition();
             _supportsComplexEmoji = left2 - left == 2;
 
             // write out a char with wide variation selector
-            WriteText("\U0001F5D1\uFE0F"); // 🗑 Wastebasket + emoji variation selector
+            Console.Write("\U0001F5D1\uFE0F"); // 🗑 Wastebasket + emoji variation selector
             (int left3, _) = Console.GetCursorPosition();
             _supportsEmojiVariation = left3 - left2 == 2;
 
             ClearScreen();
+            // flush because we want to clear the screen while the rendering pipeline is being initialized for first render.
+            Flush();
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
@@ -199,6 +279,15 @@ namespace Consolonia.Core.Infrastructure
             WriteText(Esc.ClearScreen);
             _headBufferPoint = new PixelBufferCoordinate(0, 0);
             WriteText(Esc.SetCursorPosition(0, 0));
+        }
+
+        /// <summary>
+        ///     Write char to the console
+        /// </summary>
+        /// <param name="ch"></param>
+        public void WriteChar(char ch)
+        {
+            _outputBuffer.Append(ch);
         }
     }
 }

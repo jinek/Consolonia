@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
-using Avalonia.Media;
 using Avalonia.Threading;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
@@ -157,10 +156,9 @@ namespace Consolonia.Core.Infrastructure
             _consoleOutput.PrepareConsole();
         }
 
-        public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground,
-            FontStyle? style, FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+        public virtual void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
-            _consoleOutput.Print(bufferPoint, background, foreground, style, weight, textDecoration, str);
+            _consoleOutput.WritePixel(position, in pixel);
         }
 
         public virtual void RestoreConsole()
@@ -223,6 +221,11 @@ namespace Consolonia.Core.Infrastructure
             GC.SuppressFinalize(this);
 #pragma warning restore CA1063 // Implement IDisposable Correctly
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
+        }
+
+        public void Flush()
+        {
+            _consoleOutput.Flush();
         }
 
         #endregion

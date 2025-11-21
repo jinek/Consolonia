@@ -1,4 +1,3 @@
-using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 using Consolonia.Core.Infrastructure;
@@ -52,8 +51,7 @@ namespace Consolonia.Core.Dummy
         }
 
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
-            FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+        public void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
         }
 
@@ -91,6 +89,10 @@ namespace Consolonia.Core.Dummy
         }
 
         public void ClearScreen()
+        {
+        }
+
+        public void Flush()
         {
         }
 

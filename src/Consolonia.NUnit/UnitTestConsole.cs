@@ -4,11 +4,9 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
-using Avalonia.Media;
 using Avalonia.Threading;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Helpers;
 using Consolonia.Core.Infrastructure;
 
 namespace Consolonia.NUnit
@@ -51,22 +49,13 @@ namespace Consolonia.NUnit
             return _fakeCaretPosition;
         }
 
-        public void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
-            FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+        public void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
-            (ushort x, ushort y) = bufferPoint;
-
-            int i = 0;
-            foreach (Grapheme grapheme in Grapheme.Parse(str, true))
-            {
-                var coord = new PixelBufferCoordinate((ushort)(x + i), y);
-                PixelBuffer[coord] =
-                    new Pixel(
-                        new PixelForeground(new Symbol(grapheme.Glyph), foreground, style: style, weight: weight,
-                            textDecoration: textDecoration),
-                        new PixelBackground(background));
-                i += grapheme.Glyph.MeasureText();
-            }
+            if (pixel.CaretStyle != CaretStyle.None)
+                // we don't render caret in unit test console
+                PixelBuffer[position] = new Pixel(pixel.Foreground, pixel.Background);
+            else
+                PixelBuffer[position] = pixel;
         }
 
         public void WriteText(string str)
@@ -101,6 +90,10 @@ namespace Consolonia.NUnit
         }
 
         public void ClearScreen()
+        {
+        }
+
+        public void Flush()
         {
         }
 

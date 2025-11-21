@@ -11,15 +11,25 @@ namespace Consolonia.Core.Infrastructure
     ///     IConsoleOutput implementation which purely uses Console API and not ANSI escape sequences.
     /// </summary>
     /// <remarks>
-    ///     This only supports ConsoleColor and not mouse or other advanced features.
+    ///     Buffers on TextRuns of shared color/textstyle/properties
     /// </remarks>
     public class DefaultNetConsoleOutput : IConsoleOutput
     {
+        private readonly StringBuilder _stringBuilder;
+        private PixelBufferCoordinate _currentPosition;
+        private Color _lastBackgroundColor;
+        private Color _lastForegroundColor;
         private ConsoleColor _originalBackground;
         private ConsoleColor _originalForeground;
-
         private bool _supportsComplexEmoji;
         private bool _supportsEmojiVariation;
+
+        public DefaultNetConsoleOutput()
+        {
+            _stringBuilder = new StringBuilder();
+            _lastBackgroundColor = Colors.Transparent;
+            _lastForegroundColor = Colors.Transparent;
+        }
 
         public virtual PixelBufferSize Size { get; set; }
 
@@ -51,23 +61,51 @@ namespace Consolonia.Core.Infrastructure
             return new PixelBufferCoordinate((ushort)left, (ushort)top);
         }
 
-        public virtual void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground,
-            FontStyle? style,
-            FontWeight? weight, TextDecorationLocation? textDecoration, string str)
+        public virtual void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
-            ConsoleColor originalForeground = Console.ForegroundColor;
-            ConsoleColor originalBackground = Console.BackgroundColor;
+            if (position != _currentPosition)
+            {
+                Flush();
 
-            (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(foreground);
-            Console.ForegroundColor = consoleColor;
-            (consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(background);
-            Console.BackgroundColor = consoleColor;
+                SetCaretPosition(position);
+                _currentPosition = position;
+            }
 
-            SetCaretPosition(bufferPoint);
-            Console.Write(str);
+            if (pixel.Background.Color != _lastBackgroundColor)
+            {
+                Flush();
 
-            Console.ForegroundColor = originalForeground;
-            Console.BackgroundColor = originalBackground;
+                (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(pixel.Background.Color);
+                Console.BackgroundColor = consoleColor;
+                _lastBackgroundColor = pixel.Background.Color;
+            }
+
+            if (pixel.Foreground.Color != _lastForegroundColor)
+            {
+                Flush();
+
+                (ConsoleColor consoleColor, _) = EgaConsoleColorMode.ConvertToConsoleColorMode(pixel.Foreground.Color);
+                Console.ForegroundColor = consoleColor;
+                _lastForegroundColor = pixel.Foreground.Color;
+            }
+
+            if (pixel.Foreground.Symbol.Complex != null)
+                _stringBuilder.Append(pixel.Foreground.Symbol.Complex);
+            else
+                _stringBuilder.Append(pixel.Foreground.Symbol.Character);
+
+            _currentPosition = new PixelBufferCoordinate((ushort)(_currentPosition.X + pixel.Width),
+                _currentPosition.Y);
+        }
+
+        public virtual void Flush()
+        {
+            if (_stringBuilder.Length == 0)
+                return;
+
+            // Debug.WriteLine($"[{_currentBufferPoint.X},{_currentBufferPoint.Y}] {_lastForegroundColor} on {_lastBackgroundColor} '{_stringBuilder}'");
+            Console.Write(_stringBuilder.ToString());
+            _stringBuilder.Clear();
         }
 
         public virtual void WriteText(string str)

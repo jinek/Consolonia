@@ -20,8 +20,11 @@ namespace Consolonia.Core.Text
 
         // text decorations
         public const string Italic = "\u001b[3m";
+        public const string NoItalic = "\u001b[23m";
         public const string Underline = "\u001b[4m";
+        public const string NoUnderline = "\u001b[24m";
         public const string Strikethrough = "\u001b[9m";
+        public const string NoStrikethrough = "\u001b[29m";
 
         // screen buffer
         public const string EnableAlternateBuffer = "\u001b[?1049h";

@@ -1,4 +1,3 @@
-using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
 
@@ -64,22 +63,21 @@ namespace Consolonia.Core.Infrastructure
         void ClearScreen();
 
         /// <summary>
-        ///     Print formatted text to the console
+        ///     Write a pixel to the console
         /// </summary>
-        /// <param name="bufferPoint"></param>
-        /// <param name="background"></param>
-        /// <param name="foreground"></param>
-        /// <param name="style"></param>
-        /// <param name="weight"></param>
-        /// <param name="textDecoration"></param>
-        /// <param name="str"></param>
-        void Print(PixelBufferCoordinate bufferPoint, Color background, Color foreground, FontStyle? style,
-            FontWeight? weight, TextDecorationLocation? textDecoration, string str);
+        /// <param name="position">location for pixel</param>
+        /// <param name="pixel">pixel to print</param>
+        void WritePixel(PixelBufferCoordinate position, in Pixel pixel);
 
         /// <summary>
         ///     Write raw text to the console
         /// </summary>
         /// <param name="str"></param>
         void WriteText(string str);
+
+        /// <summary>
+        ///     Flush any buffered output
+        /// </summary>
+        void Flush();
     }
 }
