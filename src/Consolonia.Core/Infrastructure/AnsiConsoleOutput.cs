@@ -43,6 +43,7 @@ namespace Consolonia.Core.Infrastructure
         public void SetTitle(string title)
         {
             WriteText(Esc.SetWindowTitle(title));
+            Flush();
         }
 
         public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
@@ -225,8 +226,6 @@ namespace Consolonia.Core.Infrastructure
             _supportsEmojiVariation = left3 - left2 == 2;
 
             ClearScreen();
-            // flush because we want to clear the screen while the rendering pipeline is being initialized for first render.
-            Flush();
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
         }
 
@@ -235,6 +234,7 @@ namespace Consolonia.Core.Infrastructure
             WriteText(Esc.DisableAlternateBuffer);
             WriteText(Esc.Reset);
             WriteText(Esc.ShowCursor);
+            Flush();
         }
 
         public void SetCaretStyle(CaretStyle caretStyle)
@@ -267,11 +267,13 @@ namespace Consolonia.Core.Infrastructure
         public void HideCaret()
         {
             WriteText(Esc.HideCursor);
+            Flush();
         }
 
         public void ShowCaret()
         {
             WriteText(Esc.ShowCursor);
+            Flush();
         }
 
         public void ClearScreen()
@@ -279,6 +281,7 @@ namespace Consolonia.Core.Infrastructure
             WriteText(Esc.ClearScreen);
             _headBufferPoint = new PixelBufferCoordinate(0, 0);
             WriteText(Esc.SetCursorPosition(0, 0));
+            Flush();
         }
 
         /// <summary>
