@@ -40,7 +40,7 @@ namespace Consolonia.Core.Drawing
 
             // Calculate the intersection of the target rectangle with the clipping region
             PixelRect intersectedRect = CurrentClip.Intersect(targetRect);
-            
+
             if (intersectedRect.IsEmpty())
                 return;
 
@@ -55,8 +55,8 @@ namespace Consolonia.Core.Drawing
                 // Calculate the starting bitmap coordinates based on the intersection
                 int startY = (intersectedRect.Y - targetRect.TopLeft.Y) * 2;
                 int startX = (intersectedRect.X - targetRect.TopLeft.X) * 2;
-                int endY = startY + (intersectedRect.Height * 2);
-                int endX = startX + (intersectedRect.Width * 2);
+                int endY = startY + intersectedRect.Height * 2;
+                int endX = startX + intersectedRect.Width * 2;
 
                 int py = intersectedRect.Y;
 
@@ -66,7 +66,7 @@ namespace Consolonia.Core.Drawing
                     for (int x = startX; x < endX; x += 2, px++)
                     {
                         var point = new PixelPoint(px, py);
-                        
+
                         // get the quad pixel from the bitmap as a quad of 4 BgraColor values
                         Span<BgraColor> quadPixelColors =
                         [
