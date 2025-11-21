@@ -12,7 +12,8 @@ namespace Consolonia.Core.Controls
     {
         [ObservableProperty] private ObservableCollection<IStorageFile> _selectedFiles = new();
 
-        [ObservableProperty] [NotifyPropertyChangedFor(nameof(CurrentFolderPath))]
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(CurrentFolderPath))]
         private int _selectedFilterIndex;
 
         [ObservableProperty] private SelectionMode _selectionMode;
@@ -39,7 +40,13 @@ namespace Consolonia.Core.Controls
                     return true;
 
                 foreach (string pattern in selectedFileType.Patterns)
-                    if (Glob.Parse(pattern).IsMatch(file.Name))
+                    if (Glob.Parse(pattern, new GlobOptions() 
+                    {
+                        Evaluation = new EvaluationOptions()
+                        {
+                            CaseInsensitive = true
+                        }
+                    }).IsMatch(file.Name))
                         return true;
                 return false;
             }
