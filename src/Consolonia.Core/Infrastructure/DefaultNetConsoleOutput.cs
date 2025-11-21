@@ -25,7 +25,6 @@ namespace Consolonia.Core.Infrastructure
         private readonly StringBuilder _stringBuilder;
         private Color _lastBackgroundColor;
         private Color _lastForegroundColor;
-        private PixelBufferCoordinate _startPoint;
         private PixelBufferCoordinate _currentBufferPoint;
 
         public DefaultNetConsoleOutput()
@@ -78,7 +77,6 @@ namespace Consolonia.Core.Infrastructure
                 Flush();
 
                 SetCaretPosition(bufferPoint);
-                _startPoint = bufferPoint; 
                 _currentBufferPoint = bufferPoint;
             }
 
