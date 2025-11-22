@@ -51,6 +51,16 @@ namespace Consolonia.Core.Infrastructure
             return results;
         }
 
+        public async Task<SaveFilePickerResult> SaveFilePickerWithResultAsync(FilePickerSaveOptions options)
+        {
+            IStorageFile file = await SaveFilePickerAsync(options);
+            return new SaveFilePickerResult
+            {
+                File = file,
+                SelectedFileType = null
+            };
+        }
+
         public Task<IStorageFile> TryGetFileFromPathAsync(Uri filePath)
         {
             if (File.Exists(filePath.LocalPath))
