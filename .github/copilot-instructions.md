@@ -1,8 +1,17 @@
-# Consolonia TUI Framework
+# Consolonia TUI Framework - GitHub Copilot Instructions
+
+> **About this file**: This document provides comprehensive guidance for GitHub Copilot coding agents working on the Consolonia repository. It contains validated build instructions, coding conventions, testing requirements, and troubleshooting tips to help you work effectively with this codebase.
+
+## Overview
 
 Consolonia is a TUI (Text User Interface) implementation for Avalonia UI. It enables building modern, console-based applications using Avalonia's XAML markup, data binding, and declarative patterns while running entirely in the terminal.
 
-Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
+**Always reference these instructions first** and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
+
+### Quick Links
+- [Project Wiki](https://github.com/jinek/Consolonia/wiki) - Comprehensive documentation
+- [Contributing Guide](../contributing.md) - How to contribute
+- [README](../readme.md) - Project overview and quick start
 
 ## Working Effectively
 
@@ -219,3 +228,100 @@ dotnet pack --configuration release -o ./packages --version-suffix beta.test
 - **Publishing**: Automated NuGet package publishing to nuget.org on main branch
 
 Always build and exercise your changes using the validation scenarios above before committing.
+
+## Security Best Practices
+
+When contributing code to Consolonia:
+
+### Critical Security Rules
+- **NEVER commit secrets, API keys, passwords, or credentials** to the repository
+- **NEVER commit tokens or authentication information** in code, comments, or test files
+- **DO NOT introduce known security vulnerabilities** - use secure coding practices
+- **DO NOT disable security features** without explicit justification and review
+
+### Secure Coding Practices
+- **Validate all user input** - Especially important for TUI applications that parse console input
+- **Use secure dependencies** - Keep Avalonia UI and other dependencies up to date
+- **Handle exceptions properly** - Don't expose sensitive information in error messages
+- **Review third-party packages** - Check for known vulnerabilities before adding dependencies
+- **Use secure communication** - If adding network features, use HTTPS/TLS
+
+### Code Review for Security
+- All changes go through pull request review
+- Security-sensitive changes require extra scrutiny
+- If you discover a security vulnerability, report it privately to maintainers before creating a public issue
+
+## Coding Patterns and Conventions
+
+### Architecture Patterns
+- **MVVM Pattern**: Consolonia uses the Model-View-ViewModel pattern from Avalonia
+  - Views: AXAML files defining UI layout
+  - ViewModels: C# classes handling logic and data binding
+  - Models: Data structures and business logic
+  
+- **Control Pattern**: Custom TUI controls inherit from Avalonia controls
+  - Override rendering methods for console output
+  - Use Avalonia's layout and styling system
+  - Respect existing control hierarchy
+
+### File Organization
+- **Controls**: `/src/Consolonia.Controls/` - TUI-specific UI controls
+- **Core**: `/src/Consolonia.Core/` - Core rendering and platform abstraction
+- **Themes**: `/src/Consolonia.Themes/` - Styling and theming
+- **Tests**: `/src/Tests/` - NUnit tests organized by project
+- **Examples**: `/src/Example/` and `/src/Consolonia.Gallery/` - Sample applications
+
+### Naming Conventions
+- Follow C# naming conventions (PascalCase for public members, camelCase for private)
+- Use descriptive names that indicate purpose
+- AXAML files should match their code-behind class names
+- Test classes should end with `Tests` suffix
+
+### Documentation Standards
+- **XML Documentation**: Add XML doc comments for public APIs
+- **Inline Comments**: Use sparingly, prefer self-documenting code
+- **README Updates**: Update relevant documentation when adding features
+- **Wiki Updates**: Major features should be documented in the wiki
+
+## Contribution Workflow
+
+### Before Starting Work
+1. Check existing issues and discussions
+2. For bugs, verify the issue exists in Avalonia first
+3. For features, discuss the approach in an issue
+4. Review the [contributing guide](../contributing.md)
+
+### Making Changes
+1. Create a feature branch from main
+2. Make focused, logical commits with clear messages
+3. Follow the code style (enforced by .editorconfig)
+4. Add or update tests for your changes
+5. Run the full build and test suite
+6. Format code with `dotnet format`
+
+### Pull Request Process
+1. Ensure all validation steps pass
+2. Write clear PR description explaining changes
+3. Reference related issues
+4. Respond to review feedback
+5. Squash commits if requested
+6. PR will be merged by squashing (commit messages matter!)
+
+## Additional Resources
+
+### External Dependencies
+- **Avalonia UI 11.3.4**: Core UI framework - [Documentation](https://docs.avaloniaui.net/)
+- **.NET 8.0**: Target framework - [Documentation](https://learn.microsoft.com/en-us/dotnet/)
+- **NUnit**: Testing framework - [Documentation](https://docs.nunit.org/)
+
+### Getting Help
+- **GitHub Issues**: For bugs and feature requests
+- **GitHub Discussions**: For questions and general discussion
+- **Wiki**: For comprehensive documentation
+- **Contributing Guide**: For contribution guidelines
+
+### Known Limitations
+- Some Avalonia features are not yet supported in console rendering
+- Performance may vary significantly between terminal emulators
+- Windows, macOS, and Linux terminals have different capabilities
+- Some tests may be skipped in CI due to environment constraints
