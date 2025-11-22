@@ -38,7 +38,6 @@ namespace Consolonia.Core.Drawing
 
             using ILockedFramebuffer frameBuffer = readableBitmap.Lock();
 
-            // Calculate the intersection of the target rectangle with the clipping region
             PixelRect intersectedRect = CurrentClip.Intersect(targetRect);
 
             if (intersectedRect.IsEmpty())
@@ -52,7 +51,6 @@ namespace Consolonia.Core.Drawing
                     ref Unsafe.AsRef<byte>((void*)frameBuffer.Address), stride * frameBuffer.Size.Height);
                 ReadOnlySpan<BgraColor> pixels = MemoryMarshal.Cast<byte, BgraColor>(pixelBytes);
 
-                // Calculate the starting bitmap coordinates based on the intersection
                 int startY = (intersectedRect.Y - targetRect.TopLeft.Y) * 2;
                 int startX = (intersectedRect.X - targetRect.TopLeft.X) * 2;
                 int endY = startY + intersectedRect.Height * 2;
