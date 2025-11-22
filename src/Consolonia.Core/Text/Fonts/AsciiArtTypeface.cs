@@ -202,7 +202,7 @@ namespace Consolonia.Core.Text.Fonts
 
 
             var shapedBuffer =
-                new ShapedBuffer(text, graphemes.Count, this, 1, 0 /*todo: must be 1 for right to left?*/);
+                new ShapedBuffer(text, graphemes.Count, this, this.Metrics.DesignEmHeight, 0 /*todo: must be 1 for right to left?*/);
 
             for (ushort i = 0; i < shapedBuffer.Length; i++)
                 shapedBuffer[i] = new GlyphInfo(glyphIndices[i], i, advances[i]);
