@@ -38,6 +38,11 @@ namespace Consolonia.Core.Drawing
 
             using ILockedFramebuffer frameBuffer = readableBitmap.Lock();
 
+            PixelRect intersectedRect = CurrentClip.Intersect(targetRect);
+
+            if (intersectedRect.IsEmpty())
+                return;
+
             int stride = frameBuffer.RowBytes;
             int bytesPerPixel = frameBuffer.Format.BitsPerPixel / 8;
             unsafe
@@ -46,44 +51,46 @@ namespace Consolonia.Core.Drawing
                     ref Unsafe.AsRef<byte>((void*)frameBuffer.Address), stride * frameBuffer.Size.Height);
                 ReadOnlySpan<BgraColor> pixels = MemoryMarshal.Cast<byte, BgraColor>(pixelBytes);
 
+                int startY = (intersectedRect.Y - targetRect.TopLeft.Y) * 2;
+                int startX = (intersectedRect.X - targetRect.TopLeft.X) * 2;
+                int endY = startY + intersectedRect.Height * 2;
+                int endX = startX + intersectedRect.Width * 2;
 
-                int py = targetRect.TopLeft.Y;
+                int py = intersectedRect.Y;
 
-                for (int y = 0; y < targetSize.Height; y += 2, py++)
+                for (int y = startY; y < endY; y += 2, py++)
                 {
-                    int px = targetRect.TopLeft.X;
-                    for (int x = 0; x < targetSize.Width; x += 2, px++)
+                    int px = intersectedRect.X;
+                    for (int x = startX; x < endX; x += 2, px++)
                     {
                         var point = new PixelPoint(px, py);
-                        if (CurrentClip.ContainsExclusive(point))
-                        {
-                            // get the quad pixel from the bitmap as a quad of 4 BgraColor values
-                            Span<BgraColor> quadPixelColors =
-                            [
-                                GetPixelColor(pixels, x, y, stride, bytesPerPixel),
-                                GetPixelColor(pixels, x + 1, y, stride, bytesPerPixel),
-                                GetPixelColor(pixels, x, y + 1, stride, bytesPerPixel),
-                                GetPixelColor(pixels, x + 1, y + 1, stride, bytesPerPixel)
-                            ];
 
-                            // map it to a single char to represent the 4 pixels
-                            char quadPixelChar = GetQuadPixelCharacter(quadPixelColors);
+                        // get the quad pixel from the bitmap as a quad of 4 BgraColor values
+                        Span<BgraColor> quadPixelColors =
+                        [
+                            GetPixelColor(pixels, x, y, stride, bytesPerPixel),
+                            GetPixelColor(pixels, x + 1, y, stride, bytesPerPixel),
+                            GetPixelColor(pixels, x, y + 1, stride, bytesPerPixel),
+                            GetPixelColor(pixels, x + 1, y + 1, stride, bytesPerPixel)
+                        ];
 
-                            // get the combined colors for the quad pixel
-                            Color foreground = GetForegroundColorForQuadPixel(quadPixelChar, quadPixelColors);
-                            Color background = GetBackgroundColorForQuadPixel(quadPixelChar, quadPixelColors);
+                        // map it to a single char to represent the 4 pixels
+                        char quadPixelChar = GetQuadPixelCharacter(quadPixelColors);
 
-                            var imagePixel = new Pixel(
-                                new PixelForeground(new Symbol(quadPixelChar), foreground),
-                                new PixelBackground(background));
+                        // get the combined colors for the quad pixel
+                        Color foreground = GetForegroundColorForQuadPixel(quadPixelChar, quadPixelColors);
+                        Color background = GetBackgroundColorForQuadPixel(quadPixelChar, quadPixelColors);
 
-                            _pixelBuffer[point] = _pixelBuffer[point].Blend(imagePixel);
-                        }
+                        var imagePixel = new Pixel(
+                            new PixelForeground(new Symbol(quadPixelChar), foreground),
+                            new PixelBackground(background));
+
+                        _pixelBuffer[point] = _pixelBuffer[point].Blend(imagePixel);
                     }
                 }
             }
 
-            _consoleWindowImpl.DirtyRegions.AddRect(targetRect);
+            _consoleWindowImpl.DirtyRegions.AddRect(intersectedRect);
         }
 
         public void DrawBitmap(IBitmapImpl source, IBrush opacityMask, Rect opacityMaskRect, Rect destRect)
