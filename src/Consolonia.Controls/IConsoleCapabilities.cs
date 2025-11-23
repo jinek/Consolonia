@@ -7,6 +7,5 @@ namespace Consolonia.Controls
         /// </summary>
         bool SupportsComplexEmoji { get; }
 
-        bool SupportsEmojiVariation { get; }
     }
 }

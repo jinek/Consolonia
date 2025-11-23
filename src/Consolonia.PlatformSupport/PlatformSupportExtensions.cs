@@ -11,6 +11,7 @@ using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
 using Consolonia.PlatformSupport.Clipboard;
+using jinek.X11;
 using X11Clipboard = Consolonia.PlatformSupport.Clipboard.X11Clipboard;
 
 // ReSharper disable CheckNamespace
@@ -78,19 +79,25 @@ namespace Consolonia
             {
                 if (IsWslPlatform())
                     clipboardImpl = new WslClipboard();
-                else if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
-                    clipboardImpl = new X11Clipboard();
                 else
+                {
                     try
                     {
-                        // alternatively use xclip CLI tool
-                        clipboardImpl = new XClipClipboard();
+                        clipboardImpl = new X11Clipboard();
                     }
-                    catch (NotSupportedException err2)
+                    catch (X11ClipboardException)
                     {
-                        Debug.WriteLine(err2.Message);
-                        clipboardImpl = new ConsoleClipboard();
+                        try
+                        {
+                            // alternatively use xclip CLI tool
+                            clipboardImpl = new XClipClipboard();
+                        }
+                        catch (NotSupportedException)
+                        {
+                            clipboardImpl = new ConsoleClipboard();
+                        }
                     }
+                }
             }
             else
             {
@@ -152,13 +159,13 @@ namespace Consolonia
                 switch (Environment.OSVersion.Platform)
                 {
                     case PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT:
-                    {
-                        // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
-                        if (Console.IsOutputRedirected || IsWindowsTerminal())
-                            result = new RgbConsoleColorMode();
-                        else
-                            result = new EgaConsoleColorMode();
-                    }
+                        {
+                            // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
+                            if (Console.IsOutputRedirected || IsWindowsTerminal())
+                                result = new RgbConsoleColorMode();
+                            else
+                                result = new EgaConsoleColorMode();
+                        }
                         break;
                     case PlatformID.MacOSX:
                         result = new RgbConsoleColorMode();
