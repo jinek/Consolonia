@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Avalonia;
@@ -80,7 +79,6 @@ namespace Consolonia
                 if (IsWslPlatform())
                     clipboardImpl = new WslClipboard();
                 else
-                {
                     try
                     {
                         if (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
@@ -102,7 +100,6 @@ namespace Consolonia
                             clipboardImpl = new ConsoleClipboard();
                         }
                     }
-                }
             }
             else
             {
@@ -164,13 +161,13 @@ namespace Consolonia
                 switch (Environment.OSVersion.Platform)
                 {
                     case PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.Win32NT:
-                        {
-                            // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
-                            if (Console.IsOutputRedirected || IsWindowsTerminal())
-                                result = new RgbConsoleColorMode();
-                            else
-                                result = new EgaConsoleColorMode();
-                        }
+                    {
+                        // if output is redirected, or we are a windows terminal we use the win32 ANSI based console.
+                        if (Console.IsOutputRedirected || IsWindowsTerminal())
+                            result = new RgbConsoleColorMode();
+                        else
+                            result = new EgaConsoleColorMode();
+                    }
                         break;
                     case PlatformID.MacOSX:
                         result = new RgbConsoleColorMode();
