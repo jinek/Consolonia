@@ -65,7 +65,7 @@ namespace Consolonia
         /// </remarks>
         public static AppBuilder UseAutoDetectClipboard(this AppBuilder builder)
         {
-            IClipboardImpl clipboardImpl;
+            IClipboardImpl clipboardImpl = null;
 
             if (OperatingSystem.IsWindows())
             {
@@ -83,9 +83,14 @@ namespace Consolonia
                 {
                     try
                     {
-                        clipboardImpl = new X11Clipboard();
+                        if (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
+                            clipboardImpl = new X11Clipboard();
                     }
                     catch (X11ClipboardException)
+                    {
+                    }
+
+                    if (clipboardImpl == null)
                     {
                         try
                         {

@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using System.Text;
 using Avalonia;
 using Avalonia.Media;
@@ -132,22 +133,24 @@ namespace Consolonia.Core.Infrastructure
                 }
             }
 
-            if (pixel.Foreground.Symbol.Complex == null)
-            {
-                WriteChar(pixel.Foreground.Symbol.Character);
-                position = new PixelBufferCoordinate((ushort)(position.X + pixel.Width), position.Y);
-            }
-            else
+            if (pixel.Width > 1)
             {
                 // We write out blank chars because we don't know how many cells will be rendered by the terminal
                 // then we draw the complex glyph on top of the blank chars.
                 WriteText(new string(' ', pixel.Width));
                 SetCaretPosition(position);
-                WriteText(pixel.Foreground.Symbol.Complex);
+            }
 
+            if (pixel.Foreground.Symbol.Complex != null)
+                WriteText(pixel.Foreground.Symbol.Complex);
+            else
+                WriteChar(pixel.Foreground.Symbol.Character);
+
+            position = new PixelBufferCoordinate((ushort)(position.X + pixel.Width), position.Y);
+            if (pixel.Width > 1 || pixel.Foreground.Symbol.Complex != null)
+            {
                 // then we force set the next position to where we want to be because again
                 // we can't rely on the terminal to advance the caret correctly.
-                position = new PixelBufferCoordinate((ushort)(position.X + pixel.Width), position.Y);
                 SetCaretPosition(position);
             }
 
@@ -256,7 +259,8 @@ namespace Consolonia.Core.Infrastructure
         /// <param name="ch"></param>
         public void WriteChar(char ch)
         {
-            _outputBuffer.Append(ch);
+            if (ch > 0)
+                _outputBuffer.Append(ch);
         }
     }
 }
