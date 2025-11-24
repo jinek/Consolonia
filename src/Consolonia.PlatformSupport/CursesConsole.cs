@@ -220,6 +220,7 @@ namespace Consolonia.PlatformSupport
             WriteText(Esc.DisableAllMouseEvents);
             WriteText(Esc.DisableExtendedMouseTracking);
             WriteText(Esc.DisableBracketedPasteMode);
+            Flush();
             Curses.mousemask(0, out Curses.Event _);
             Curses.nocbreak();
             _cursesWindow.keypad(false);

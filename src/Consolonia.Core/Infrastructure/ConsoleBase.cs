@@ -162,6 +162,7 @@ namespace Consolonia.Core.Infrastructure
         public virtual void RestoreConsole()
         {
             _consoleOutput.RestoreConsole();
+            _consoleOutput.Flush();
         }
 
         public virtual void SetCaretPosition(PixelBufferCoordinate bufferPoint)

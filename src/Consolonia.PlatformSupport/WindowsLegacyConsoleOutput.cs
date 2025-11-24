@@ -30,6 +30,7 @@ namespace Consolonia.PlatformSupport
         {
             _originalBuffer.SetAsActiveBuffer();
             base.RestoreConsole();
+            Flush();
         }
     }
 }
