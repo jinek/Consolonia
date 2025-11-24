@@ -11,8 +11,8 @@ namespace Consolonia.Core.Helpers.InputProcessing
 {
     public class InputProcessor<T>(IEnumerable<IMatcher<T>> matchers)
     {
-        private readonly ParametrizedLogger _traceLogger = Log.CreateInputLogger(LogEventLevel.Verbose);
         private readonly ParametrizedLogger _infoLogger = Log.CreateInputLogger(LogEventLevel.Information);
+        private readonly ParametrizedLogger _traceLogger = Log.CreateInputLogger(LogEventLevel.Verbose);
 
         private int _previousTopMatcherIndex = -1;
         private ImmutableArray<IMatcher<T>> Matchers { get; } = [..matchers];
