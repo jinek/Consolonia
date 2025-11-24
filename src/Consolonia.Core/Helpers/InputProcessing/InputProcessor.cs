@@ -4,33 +4,34 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using Avalonia.Logging;
 using Consolonia.Core.Helpers.Logging;
-using NLog;
 
 namespace Consolonia.Core.Helpers.InputProcessing
 {
     public class InputProcessor<T>(IEnumerable<IMatcher<T>> matchers)
     {
-        private readonly ILogger _logger = Log.CreateInputLogger();
+        private readonly ParametrizedLogger _traceLogger = Log.CreateInputLogger(LogEventLevel.Verbose);
+        private readonly ParametrizedLogger _infoLogger = Log.CreateInputLogger(LogEventLevel.Information);
 
         private int _previousTopMatcherIndex = -1;
         private ImmutableArray<IMatcher<T>> Matchers { get; } = [..matchers];
 
         public void ProcessChunk(IReadOnlyCollection<T> chunk)
         {
-            _logger.Trace("Processing input chunk with {Count} items...", chunk.Count);
+            _traceLogger.Log2("Processing input chunk with {Count} items...", chunk.Count);
 
             foreach (T input in chunk)
                 ProcessSingleInput(input);
 
-            _logger.Info("Trying to flush starting from index 0");
+            _infoLogger.Log2("Trying to flush starting from index 0");
             TryFlushStartingFrom(0);
             LogMatchersState();
         }
 
         private void ProcessSingleInput(T input)
         {
-            _logger.Info("Processing single input: {Input}", input);
+            _infoLogger.Log2("Processing single input: {Input}", input);
             int currentTopMatcherIndex = Matchers.Length;
 
 
@@ -44,13 +45,13 @@ namespace Consolonia.Core.Helpers.InputProcessing
                 {
                     IMatcher<T> matcher = Matchers[i];
 
-                    _logger.Trace("Processing matcher {MatcherIndex}: {Matcher}", i, matcher.GetDebugInfo());
+                    _traceLogger.Log3("Processing matcher {MatcherIndex}: {Matcher}", i, matcher.GetDebugInfo());
                     logSb.AppendJoin(" ", i.ToString(), i == _previousTopMatcherIndex ? "*" : " ",
                         matcher.GetDebugInfo());
                     AppendResult result = matcher.Append(input);
-                    _logger.Trace("Matcher {MatcherIndex} result: {Result}", i, result);
+                    _traceLogger.Log3("Matcher {MatcherIndex} result: {Result}", i, result);
                     bool isPreviousTopMatcher = i == _previousTopMatcherIndex;
-                    _logger.Trace("Is previous top matcher: {IsPreviousTopMatcher}", isPreviousTopMatcher);
+                    _traceLogger.Log2("Is previous top matcher: {IsPreviousTopMatcher}", isPreviousTopMatcher);
 
                     if (result == AppendResult.NoMatch)
                     {
@@ -102,9 +103,9 @@ namespace Consolonia.Core.Helpers.InputProcessing
                 "Legend: * - top matcher, ✅ - match, ❌ - no match, ⚡ - auto flushed, ? - reset matchers from this index");
             logAllSb.AppendLine("-----------------------------------------------------");
 
-            _logger.Info(logAllSb.ToString());
+            _infoLogger.Log2(logAllSb.ToString());
 
-            _logger.Info(
+            _infoLogger.Log3(
                 "Finished processing input: {Input}, current top matcher index: {CurrentTopMatcherIndex}, previous top matcher index: {PreviousTopMatcherIndex}, updating previous to current",
                 input, currentTopMatcherIndex, _previousTopMatcherIndex);
             _previousTopMatcherIndex = currentTopMatcherIndex;
@@ -115,7 +116,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
             for (int i = startIndex; i < Matchers.Length; i++)
                 if (Matchers[i].TryFlush())
                 {
-                    _logger.Info(
+                    _infoLogger.Log3(
                         "Matcher {Matcher} at index {MatcherIndex} flushed successfully, resetting matchers from index {NextMatcherIndex}",
                         Matchers[i].GetDebugInfo(), i, i + 1);
                     ResetMatchersFrom(i + 1);
@@ -146,7 +147,7 @@ namespace Consolonia.Core.Helpers.InputProcessing
             }
 
             sb.AppendLine("-----------------------------------------------------");
-            _logger.Info(sb.ToString());
+            _infoLogger.Log2(sb.ToString());
         }
     }
 }
