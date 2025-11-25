@@ -132,8 +132,7 @@ namespace Consolonia.Core.Drawing
                         continue;
 
                     // painting mouse cursor if within the range of current pixel (possibly wide)
-                    if (_consoleCursor.Coordinate.Y == y &&
-                        !_consoleCursor.IsEmpty() &&
+                    if (_consoleCursor.Coordinate.Y == y && !_consoleCursor.IsEmpty() &&
                         _consoleCursor.Coordinate.X == x)
                         pixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type),
                                 GetInvertColor(pixel.Background.Color)));
