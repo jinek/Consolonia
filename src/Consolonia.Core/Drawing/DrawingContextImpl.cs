@@ -198,18 +198,13 @@ namespace Consolonia.Core.Drawing
             if (CurrentClip.ContainsExclusive(position))
             {
                 if (pixel.Width == 1)
-                {
                     _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
-                }
                 else if (CurrentClip.ContainsExclusive(position.WithX(position.X + pixel.Width - 1)))
-                {
                     _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
-                }
                 else
-                {
                     // we need to clip the wide pixel manually with a space 
-                    _pixelBuffer[position] = _pixelBuffer[position].Blend(new Pixel(PixelForeground.Space, pixel.Background));
-                }
+                    _pixelBuffer[position] =
+                        _pixelBuffer[position].Blend(new Pixel(PixelForeground.Space, pixel.Background));
             }
         }
     }
