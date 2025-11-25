@@ -140,8 +140,22 @@ namespace Consolonia.Core.Drawing
                         //drawing empty space on all other pixels within the width
                         : new Pixel(PixelForeground.Default, pixel.Background);
 
-                if (_cache[x, y] == pixel)
-                    continue;
+                {
+                    //todo: seems this does not work 
+                    //todo: this check does not check mouse cursor on top of any of the following pixels
+                    bool anyDifferent = false;
+                    for (ushort i = 0; i < pixel.Width; i++)
+                    {
+                        if (_cache[x + i, y] != pixelBuffer[(ushort)(x + i), y])
+                        {
+                            anyDifferent = true;
+                            break;
+                        }
+                    }
+                    
+                    if(!anyDifferent)
+                        continue;
+                }
 
                 //todo: indexOutOfRange during resize
 
