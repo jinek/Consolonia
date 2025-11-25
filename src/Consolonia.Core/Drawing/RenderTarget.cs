@@ -114,7 +114,7 @@ namespace Consolonia.Core.Drawing
             CaretStyle? caretStyle = null;
 
             for (ushort y = 0; y < pixelBuffer.Height; y++)
-            for (ushort x = 0; x < pixelBuffer.Width;)
+            for (ushort x = 0; x < pixelBuffer.Width; x++)
             {
                 Pixel pixel = pixelBuffer[x, y];
 
@@ -125,57 +125,31 @@ namespace Consolonia.Core.Drawing
                     caretPosition = new PixelBufferCoordinate(x, y);
                     caretStyle = pixel.CaretStyle;
                 }
-
-                // if it's not a dirty region, no need to paint it.
+                
                 if (!dirtyRegions.Contains(x, y, false))
-                {
-                    x += Math.Max((ushort)1, pixel.Width);
                     continue;
-                }
 
-                // if there is a cursor and it's in the range that will be painted by this pixel.
+                // painting mouse cursor if within the range of current pixel (possibly wide)
                 if (_consoleCursor.Coordinate.Y == y &&
                     !_consoleCursor.IsEmpty() &&
                     _consoleCursor.Coordinate.X >= x && _consoleCursor.Coordinate.X < x + pixel.Width)
                 {
-                    // cursor takes precedence over the overlapped pixel, we render the cursor pixel instead 
-
-                    // clear cache for this pixel
-                    while (x < _consoleCursor.Coordinate.X)
-                        _cache[x++, y] = Pixel.Empty;
-
-                    // x is now the location of the cursor (because it can be pointing midway in a wide pixel)
-
-                    // get current pixel for consoleCursor location
-                    pixel = pixelBuffer[x, y];
-
-                    // create our cursor pixel, using current pixel to compute inverted foreground color
-                    var cursorPixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type),
-                        GetInvertColor(pixel.Background.Color)));
-                    pixel = pixel.Blend(cursorPixel);
+                    pixel = x == _consoleCursor.Coordinate.X
+                        //drawing cursor itself only on matched coordinate
+                        ? new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type),
+                            GetInvertColor(pixel.Background.Color)))
+                        //drawing empty space on all other pixels within the width
+                        : new Pixel(PixelForeground.Default, pixel.Background);
                 }
-                // if it's not changed from last paint, no reason to paint it.
-                else if (_cache[x, y] == pixel)
-                {
-                    // just advance to next paintable pixel 
-                    x += Math.Max((ushort)1, pixel.Width);
+                
+                if (_cache[x, y] == pixel)
                     continue;
-                }
 
                 //todo: indexOutOfRange during resize
-
-                // paint the pixel
+                
                 _console.WritePixel(new PixelBufferCoordinate(x, y), in pixel);
-
-                // determine end point for wide pixels
-                int end = Math.Min(pixelBuffer.Width, x + pixel.Width);
-
-                // cache painted pixel
-                _cache[x++, y] = pixel;
-
-                // if it's a wide pixel clear cache for overlapped pixels
-                while (x < end)
-                    _cache[x++, y] = Pixel.Empty;
+                
+                _cache[x, y] = pixel;
             }
 
             _console.Flush();

@@ -45,6 +45,13 @@ namespace Consolonia.Core.Infrastructure
 
         public void SetCaretPosition(PixelBufferCoordinate bufferPoint)
         {
+            if (bufferPoint.Equals(GetCaretPosition())) return;
+
+            SetCaretPositionInternal(bufferPoint);
+        }
+
+        private void SetCaretPositionInternal(PixelBufferCoordinate bufferPoint)
+        {
             WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
             _headBufferPoint = bufferPoint;
         }
@@ -56,10 +63,13 @@ namespace Consolonia.Core.Infrastructure
 
         public void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
+            if (pixel.Width <= 0) // todo: do we still need to write width ==0 or -1 ? if so - ensure not to messup the caret position changes 
+                return;
+            
             //todo: performance of retrieval of the service, at least can be retrieved once
             Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
-            if (position != _headBufferPoint) SetCaretPosition(position);
+            SetCaretPosition(position);
 
             if (pixel.Foreground.TextDecoration != _lastTextDecoration)
             {
@@ -136,7 +146,7 @@ namespace Consolonia.Core.Infrastructure
                 // We write out blank chars because we don't know how many cells will be rendered by the terminal
                 // then we draw the complex glyph on top of the blank chars.
                 WriteText(new string(' ', pixel.Width));
-                SetCaretPosition(position);
+                SetCaretPositionInternal(position);
             }
 
             if (pixel.Foreground.Symbol.Complex != null)
@@ -148,10 +158,13 @@ namespace Consolonia.Core.Infrastructure
             if (pixel.Width > 1 || pixel.Foreground.Symbol.Complex != null)
                 // then we force set the next position to where we want to be because again
                 // we can't rely on the terminal to advance the caret correctly.
-                SetCaretPosition(position);
-
-            if (position.X >= Size.Width) position = new PixelBufferCoordinate(0, (ushort)(position.Y + 1));
-            _headBufferPoint = position;
+                SetCaretPositionInternal(position);
+            else
+            {
+                if (position.X >= Size.Width) position = new PixelBufferCoordinate(0, (ushort)(position.Y + 1));
+                
+                _headBufferPoint = position;
+            }
         }
 
         public void Flush()

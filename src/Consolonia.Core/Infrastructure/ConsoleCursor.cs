@@ -25,6 +25,10 @@ namespace Consolonia.Core.Infrastructure
 
         public int CompareTo(ConsoleCursor other)
         {
+            if (string.IsNullOrEmpty(Type) && string.IsNullOrEmpty(other.Type))
+                // empty/absent cursor is same anywhere on the screen
+                return 0;
+            
             int coordinateComparison = Coordinate.CompareTo(other.Coordinate);
             return coordinateComparison != 0
                 ? coordinateComparison
@@ -83,7 +87,7 @@ namespace Consolonia.Core.Infrastructure
 
         public bool Equals(ConsoleCursor other)
         {
-            return Coordinate.Equals(other.Coordinate) && string.Equals(Type, other.Type, StringComparison.Ordinal);
+            return CompareTo(other) == 0;
         }
     }
 }
