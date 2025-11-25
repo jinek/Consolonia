@@ -144,7 +144,7 @@ namespace Consolonia.Core.Drawing
                     //todo: seems this does not work 
                     //todo: this check does not check mouse cursor on top of any of the following pixels
                     bool anyDifferent = false;
-                    for (ushort i = 0; i < pixel.Width; i++)
+                    for (ushort i = 0; i < ushort.Max(pixel.Width, 1); i++)
                     {
                         if (_cache[x + i, y] != pixelBuffer[(ushort)(x + i), y])
                         {
