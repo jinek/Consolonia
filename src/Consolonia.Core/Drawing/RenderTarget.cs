@@ -134,13 +134,9 @@ namespace Consolonia.Core.Drawing
                     // painting mouse cursor if within the range of current pixel (possibly wide)
                     if (_consoleCursor.Coordinate.Y == y &&
                         !_consoleCursor.IsEmpty() &&
-                        _consoleCursor.Coordinate.X >= x && _consoleCursor.Coordinate.X < x + pixel.Width)
-                        pixel = x == _consoleCursor.Coordinate.X
-                            //drawing cursor itself only on matched coordinate
-                            ? new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type),
-                                GetInvertColor(pixel.Background.Color)))
-                            //drawing empty space on all other pixels within the width
-                            : new Pixel(PixelForeground.Default, pixel.Background);
+                        _consoleCursor.Coordinate.X == x)
+                        pixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type),
+                                GetInvertColor(pixel.Background.Color)));
 
                     if (pixel.Width > 1)
                     {// checking that there are enough empty pixels after current wide character
