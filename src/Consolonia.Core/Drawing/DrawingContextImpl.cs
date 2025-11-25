@@ -195,16 +195,16 @@ namespace Consolonia.Core.Drawing
 
         public void DrawPixel(Pixel pixel, PixelPoint position)
         {
-            if (!CurrentClip.ContainsExclusive(position)) 
+            if (!CurrentClip.ContainsExclusive(position))
                 return;
-            
+
             if (pixel.Width == 1)
             {
                 _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
                 return;
             }
 
-            if (CurrentClip.ContainsExclusive(position.WithX(position.X + pixel.Width - 1))) 
+            if (CurrentClip.ContainsExclusive(position.WithX(position.X + pixel.Width - 1)))
                 // here we are also assuming currentclip is smaller than buffer size
             {
                 _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
@@ -217,8 +217,8 @@ namespace Consolonia.Core.Drawing
 
                 return;
             }
-            
-            
+
+
             // no enough room for wide pixel, filling what's left with empty space
             for (int i = 0; i < CurrentClip.Right - 1 - position.X; i++)
             {

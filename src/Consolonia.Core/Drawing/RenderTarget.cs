@@ -125,7 +125,7 @@ namespace Consolonia.Core.Drawing
                     caretPosition = new PixelBufferCoordinate(x, y);
                     caretStyle = pixel.CaretStyle;
                 }
-                
+
                 if (!dirtyRegions.Contains(x, y, false))
                     continue;
 
@@ -133,22 +133,20 @@ namespace Consolonia.Core.Drawing
                 if (_consoleCursor.Coordinate.Y == y &&
                     !_consoleCursor.IsEmpty() &&
                     _consoleCursor.Coordinate.X >= x && _consoleCursor.Coordinate.X < x + pixel.Width)
-                {
                     pixel = x == _consoleCursor.Coordinate.X
                         //drawing cursor itself only on matched coordinate
                         ? new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type),
                             GetInvertColor(pixel.Background.Color)))
                         //drawing empty space on all other pixels within the width
                         : new Pixel(PixelForeground.Default, pixel.Background);
-                }
-                
+
                 if (_cache[x, y] == pixel)
                     continue;
 
                 //todo: indexOutOfRange during resize
-                
+
                 _console.WritePixel(new PixelBufferCoordinate(x, y), in pixel);
-                
+
                 _cache[x, y] = pixel;
             }
 

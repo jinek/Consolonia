@@ -50,12 +50,6 @@ namespace Consolonia.Core.Infrastructure
             SetCaretPositionInternal(bufferPoint);
         }
 
-        private void SetCaretPositionInternal(PixelBufferCoordinate bufferPoint)
-        {
-            WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-            _headBufferPoint = bufferPoint;
-        }
-
         public PixelBufferCoordinate GetCaretPosition()
         {
             return _headBufferPoint;
@@ -63,9 +57,10 @@ namespace Consolonia.Core.Infrastructure
 
         public void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
-            if (pixel.Width <= 0) // todo: do we still need to write width ==0 or -1 ? if so - ensure not to messup the caret position changes 
+            if (pixel.Width <=
+                0) // todo: do we still need to write width ==0 or -1 ? if so - ensure not to messup the caret position changes 
                 return;
-            
+
             //todo: performance of retrieval of the service, at least can be retrieved once
             Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
@@ -158,11 +153,13 @@ namespace Consolonia.Core.Infrastructure
             if (pixel.Width > 1 || pixel.Foreground.Symbol.Complex != null)
                 // then we force set the next position to where we want to be because again
                 // we can't rely on the terminal to advance the caret correctly.
+            {
                 SetCaretPositionInternal(position);
+            }
             else
             {
                 if (position.X >= Size.Width) position = new PixelBufferCoordinate(0, (ushort)(position.Y + 1));
-                
+
                 _headBufferPoint = position;
             }
         }
@@ -260,6 +257,12 @@ namespace Consolonia.Core.Infrastructure
             _headBufferPoint = new PixelBufferCoordinate(0, 0);
             WriteText(Esc.SetCursorPosition(0, 0));
             Flush();
+        }
+
+        private void SetCaretPositionInternal(PixelBufferCoordinate bufferPoint)
+        {
+            WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+            _headBufferPoint = bufferPoint;
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace Consolonia.Core.Infrastructure
             if (string.IsNullOrEmpty(Type) && string.IsNullOrEmpty(other.Type))
                 // empty/absent cursor is same anywhere on the screen
                 return 0;
-            
+
             int coordinateComparison = Coordinate.CompareTo(other.Coordinate);
             return coordinateComparison != 0
                 ? coordinateComparison
