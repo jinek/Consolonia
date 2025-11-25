@@ -198,36 +198,22 @@ namespace Consolonia.Core.Drawing
             if (!CurrentClip.ContainsExclusive(position))
                 return;
 
+            _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
+
             if (pixel.Width == 1)
-            {
-                _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
                 return;
-            }
 
-            if (CurrentClip.ContainsExclusive(position.WithX(position.X + pixel.Width - 1)))
-                // here we are also assuming currentclip is smaller than buffer size
+            int rightLimit = int.Max(CurrentClip.Right, position.X + pixel.Width) - 1;
+
+            for (int x = position.X + 1; x <= rightLimit; x++)
             {
-                _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
-
-                for (int i = 1; i < pixel.Width; i++)
                 {
-                    PixelPoint positionInSequence = position.WithX(position.X + i);
+                    PixelPoint positionInSequence = position.WithX(x);
                     Pixel blendedPixel = _pixelBuffer[positionInSequence]
                         .Blend(new Pixel(PixelForeground.Empty, pixel.Background));
-                    
+
                     _pixelBuffer[positionInSequence] = new Pixel(PixelForeground.Empty, blendedPixel.Background);
                 }
-
-                return;
-            }
-
-
-            // no enough room for wide pixel, filling what's left with empty space
-            for (int i = 0; i < CurrentClip.Right - 1 - position.X; i++)
-            {
-                PixelPoint positionInSequence = position.WithX(position.X + i);
-                _pixelBuffer[positionInSequence] = _pixelBuffer[positionInSequence]
-                    .Blend(new Pixel(PixelForeground.Space, pixel.Background));
             }
         }
     }
