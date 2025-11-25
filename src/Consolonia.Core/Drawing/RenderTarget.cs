@@ -143,21 +143,38 @@ namespace Consolonia.Core.Drawing
                             : new Pixel(PixelForeground.Default, pixel.Background);
 
                     if (pixel.Width > 1)
-                        isWide = true;
-                    else if (pixel.Width == 1)
-                        isWide = false;
+                    {// checking that there are enough empty pixels after current wide character
+                        for (ushort i = 1; i < pixel.Width && x + i < pixelBuffer.Width; i++)
+                        {
+                            if (pixelBuffer[(ushort)(x + i), y].Width != 0)
+                            {
+                                pixel = new Pixel(
+                                    new PixelForeground(Symbol.Space, pixel.Foreground.Color, pixel.Foreground.Weight,
+                                        pixel.Foreground.Style, pixel.Foreground.TextDecoration), pixel.Background,
+                                    pixel.CaretStyle);
+                                break;
+                            }
+                        }
+                    }
+
+                    {// tracking if on wide character currently
+                        if (pixel.Width > 1)
+                            isWide = true;
+                        else if (pixel.Width == 1)
+                            isWide = false;
+                    }
 
                     if (pixel.Width == 0 && !isWide)
-                    {
+                    { // fallback to spaces if wide character missed
                         pixel = new Pixel(
                             new PixelForeground(Symbol.Space, pixel.Foreground.Color, pixel.Foreground.Weight,
                                 pixel.Foreground.Style, pixel.Foreground.TextDecoration), pixel.Background,
                             pixel.CaretStyle);
                     }
                     
-                    /*{
-                        //todo: seems this does not work
+                    { // checking cache
                         //todo: this check does not check mouse cursor on top of any of the following pixels
+                        //todo: it also does not consider that some of them will be replaced by space. But both issues go as pessimistic, just unnecessary redraws
                         bool anyDifferent = false;
                         for (ushort i = 0; i < ushort.Max(pixel.Width, 1); i++)
                         {
@@ -170,7 +187,7 @@ namespace Consolonia.Core.Drawing
 
                         if(!anyDifferent)
                             continue;
-                    }*/
+                    }
 
                     //todo: indexOutOfRange during resize
                     
