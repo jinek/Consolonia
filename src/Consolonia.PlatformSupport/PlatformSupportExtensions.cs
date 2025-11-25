@@ -81,24 +81,22 @@ namespace Consolonia
                 else
                     try
                     {
-                        if (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
+                        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
                             clipboardImpl = new X11Clipboard();
                     }
                     catch (X11ClipboardException)
                     {
                     }
 
-                    if (clipboardImpl == null)
+                if (clipboardImpl == null)
+                    try
                     {
-                        try
-                        {
-                            // alternatively use xclip CLI tool
-                            clipboardImpl = new XClipClipboard();
-                        }
-                        catch (NotSupportedException)
-                        {
-                            clipboardImpl = new ConsoleClipboard();
-                        }
+                        // alternatively use xclip CLI tool
+                        clipboardImpl = new XClipClipboard();
+                    }
+                    catch (NotSupportedException)
+                    {
+                        clipboardImpl = new ConsoleClipboard();
                     }
             }
             else

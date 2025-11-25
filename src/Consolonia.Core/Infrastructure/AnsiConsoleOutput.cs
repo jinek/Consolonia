@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using System.Text;
 using Avalonia;
 using Avalonia.Media;
@@ -147,11 +146,9 @@ namespace Consolonia.Core.Infrastructure
 
             position = new PixelBufferCoordinate((ushort)(position.X + pixel.Width), position.Y);
             if (pixel.Width > 1 || pixel.Foreground.Symbol.Complex != null)
-            {
                 // then we force set the next position to where we want to be because again
                 // we can't rely on the terminal to advance the caret correctly.
                 SetCaretPosition(position);
-            }
 
             if (position.X >= Size.Width) position = new PixelBufferCoordinate(0, (ushort)(position.Y + 1));
             _headBufferPoint = position;
