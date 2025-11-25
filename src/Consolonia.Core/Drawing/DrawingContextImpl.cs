@@ -212,7 +212,10 @@ namespace Consolonia.Core.Drawing
                 for (int i = 1; i < pixel.Width; i++)
                 {
                     PixelPoint positionInSequence = position.WithX(position.X + i);
-                    _pixelBuffer[positionInSequence] = new Pixel(PixelForeground.Empty, pixel.Background);
+                    Pixel blendedPixel = _pixelBuffer[positionInSequence]
+                        .Blend(new Pixel(PixelForeground.Empty, pixel.Background));
+                    
+                    _pixelBuffer[positionInSequence] = new Pixel(PixelForeground.Empty, blendedPixel.Background);
                 }
 
                 return;
