@@ -8,3 +8,7 @@ using Avalonia.Metadata;
 
 [assembly: XmlnsDefinition("https://github.com/consolonia", "Consolonia.PlatformSupport")]
 [assembly: XmlnsDefinition("https://github.com/consolonia", "Consolonia.PlatformSupport.Clipboard")]
+
+// backward compatibility TODO remove when possible
+[assembly: XmlnsDefinition("https://github.com/jinek/consolonia", "Consolonia.PlatformSupport")]
+[assembly: XmlnsDefinition("https://github.com/jinek/consolonia", "Consolonia.PlatformSupport.Clipboard")]
