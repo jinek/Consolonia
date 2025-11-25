@@ -195,8 +195,10 @@ namespace Consolonia.Core.Drawing
 
         public void DrawPixel(Pixel pixel, PixelPoint position)
         {
-            if (CurrentClip.ContainsExclusive(position))
-                _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
+            if (!CurrentClip.ContainsExclusive(position))
+                return;
+            
+            _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
 
             if (pixel.Width == 1)
                 return;
