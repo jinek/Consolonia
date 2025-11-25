@@ -199,11 +199,11 @@ namespace Consolonia.Core.Drawing
                 return;
 
             _pixelBuffer[position] = _pixelBuffer[position].Blend(pixel);
-
+    
             if (pixel.Width == 1)
                 return;
 
-            int rightLimit = int.Max(CurrentClip.Right, position.X + pixel.Width) - 1;
+            int rightLimit = int.Min(CurrentClip.Right, position.X + pixel.Width) - 1;
 
             for (int x = position.X + 1; x <= rightLimit; x++)
             {
