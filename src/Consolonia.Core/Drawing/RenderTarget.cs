@@ -135,12 +135,11 @@ namespace Consolonia.Core.Drawing
                     if (_consoleCursor.Coordinate.Y == y && !_consoleCursor.IsEmpty() &&
                         _consoleCursor.Coordinate.X == x)
                         pixel = new Pixel(new PixelForeground(new Symbol(_consoleCursor.Type),
-                                GetInvertColor(pixel.Background.Color)));
+                            GetInvertColor(pixel.Background.Color)));
 
                     if (pixel.Width > 1)
-                    {// checking that there are enough empty pixels after current wide character
+                        // checking that there are enough empty pixels after current wide character
                         for (ushort i = 1; i < pixel.Width && x + i < pixelBuffer.Width; i++)
-                        {
                             if (pixelBuffer[(ushort)(x + i), y].Width != 0)
                             {
                                 pixel = new Pixel(
@@ -149,10 +148,9 @@ namespace Consolonia.Core.Drawing
                                     pixel.CaretStyle);
                                 break;
                             }
-                        }
-                    }
 
-                    {// tracking if on wide character currently
+                    {
+                        // tracking if on wide character currently
                         if (pixel.Width > 1)
                             isWide = true;
                         else if (pixel.Width == 1)
@@ -160,37 +158,36 @@ namespace Consolonia.Core.Drawing
                     }
 
                     if (pixel.Width == 0 && !isWide)
-                    { // fallback to spaces if wide character missed
+                        // fallback to spaces if wide character missed
                         pixel = new Pixel(
                             new PixelForeground(Symbol.Space, pixel.Foreground.Color, pixel.Foreground.Weight,
                                 pixel.Foreground.Style, pixel.Foreground.TextDecoration), pixel.Background,
                             pixel.CaretStyle);
-                    }
-                    
-                    { // checking cache
+
+                    {
+                        // checking cache
                         //todo: this check does not check mouse cursor on top of any of the following pixels
                         //todo: it also does not consider that some of them will be replaced by space. But both issues go as pessimistic, just unnecessary redraws
                         bool anyDifferent = false;
                         for (ushort i = 0; i < ushort.Max(pixel.Width, 1); i++)
-                        {
                             if (_cache[x + i, y] != pixelBuffer[(ushort)(x + i), y])
                             {
                                 anyDifferent = true;
                                 break;
                             }
-                        }
 
-                        if(!anyDifferent)
+                        if (!anyDifferent)
                             continue;
                     }
 
                     //todo: indexOutOfRange during resize
-                    
+
                     _console.WritePixel(new PixelBufferCoordinate(x, y), in pixel);
 
                     _cache[x, y] = pixel;
                 }
             }
+
             _console.Flush();
 
             if (caretPosition != null && caretStyle != CaretStyle.None)
