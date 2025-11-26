@@ -1,10 +1,10 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="Sandbox.MainWindow"
-        Title="Sandbox"
-        KeyDown="InputElement_OnKeyDown">
-<Panel>
-<TextBlock Text="x😎x" />
-<TextBlock x:Name="overlapTxt" Text="|" />
-</Panel>
+        Title="Sandbox">
+    <StackPanel>
+        <Button Content="E_xit"
+                Click="OnExit"
+                HorizontalAlignment="Left" />
+    </StackPanel>
 </Window>
