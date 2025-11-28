@@ -91,6 +91,11 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     Assert.IsTrue(pixel.Foreground.Symbol.Complex == "🏳️‍🌈");
                     Assert.IsTrue(pixel.Foreground.Color == Colors.Blue);
                 }
+                else if (x == 6)
+                {
+                    Assert.IsTrue(pixel.Width == 0);
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == 0);
+                }
                 else
                 {
                     Assert.IsTrue(pixel.Width == 1);
@@ -117,6 +122,11 @@ namespace Consolonia.Core.Tests.WithLifetimeFixture
                     Assert.IsTrue(pixel.Width == 1);
                     Assert.IsTrue(pixel.Foreground.Symbol.Character == 'X');
                     Assert.IsTrue(pixel.Foreground.Color == Colors.Red);
+                }
+                else if (x == 6)
+                {
+                    Assert.IsTrue(pixel.Width == 0);
+                    Assert.IsTrue(pixel.Foreground.Symbol.Character == 0);
                 }
                 else
                 {

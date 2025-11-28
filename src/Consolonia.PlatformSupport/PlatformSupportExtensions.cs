@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Avalonia;
@@ -11,6 +10,7 @@ using Consolonia.Core.Dummy;
 using Consolonia.Core.Infrastructure;
 using Consolonia.PlatformSupport;
 using Consolonia.PlatformSupport.Clipboard;
+using jinek.X11;
 using X11Clipboard = Consolonia.PlatformSupport.Clipboard.X11Clipboard;
 
 // ReSharper disable CheckNamespace
@@ -64,7 +64,7 @@ namespace Consolonia
         /// </remarks>
         public static AppBuilder UseAutoDetectClipboard(this AppBuilder builder)
         {
-            IClipboardImpl clipboardImpl;
+            IClipboardImpl clipboardImpl = null;
 
             if (OperatingSystem.IsWindows())
             {
@@ -78,17 +78,24 @@ namespace Consolonia
             {
                 if (IsWslPlatform())
                     clipboardImpl = new WslClipboard();
-                else if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
-                    clipboardImpl = new X11Clipboard();
                 else
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISPLAY")))
+                            clipboardImpl = new X11Clipboard();
+                    }
+                    catch (X11ClipboardException)
+                    {
+                    }
+
+                if (clipboardImpl == null)
                     try
                     {
                         // alternatively use xclip CLI tool
                         clipboardImpl = new XClipClipboard();
                     }
-                    catch (NotSupportedException err2)
+                    catch (NotSupportedException)
                     {
-                        Debug.WriteLine(err2.Message);
                         clipboardImpl = new ConsoleClipboard();
                     }
             }

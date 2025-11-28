@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Media;
 using Consolonia.Controls;
 using Consolonia.Core.Drawing.PixelBufferImplementation;
-using Consolonia.Core.Helpers;
 using Consolonia.Core.Text;
 
 namespace Consolonia.Core.Infrastructure
@@ -16,6 +15,7 @@ namespace Consolonia.Core.Infrastructure
     ///     This console buffers all output and only writes to the console on Flush.
     /// </remarks>
     public class AnsiConsoleOutput : IConsoleOutput
+
     {
         private const string TestEmoji = "👨‍👩‍👧‍👦";
 
@@ -32,11 +32,8 @@ namespace Consolonia.Core.Infrastructure
         private FontWeight? _lastWeight;
 
         private bool? _supportsComplexEmoji;
-        private bool? _supportsEmojiVariation;
 
         public bool SupportsComplexEmoji => _supportsComplexEmoji ?? false;
-
-        public bool SupportsEmojiVariation => _supportsEmojiVariation ?? false;
 
         public PixelBufferSize Size { get; set; }
 
@@ -50,16 +47,7 @@ namespace Consolonia.Core.Infrastructure
         {
             if (bufferPoint.Equals(GetCaretPosition())) return;
 
-            try
-            {
-                WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
-                _headBufferPoint = bufferPoint;
-            }
-            catch (ArgumentOutOfRangeException argumentOutOfRangeException)
-            {
-                throw new InvalidDrawingContextException("Window has been resized probably",
-                    argumentOutOfRangeException);
-            }
+            SetCaretPositionInternal(bufferPoint);
         }
 
         public PixelBufferCoordinate GetCaretPosition()
@@ -69,10 +57,14 @@ namespace Consolonia.Core.Infrastructure
 
         public void WritePixel(PixelBufferCoordinate position, in Pixel pixel)
         {
+            if (pixel.Width <=
+                0) // todo: do we still need to write width ==0 or -1 ? if so - ensure not to messup the caret position changes 
+                return;
+
             //todo: performance of retrieval of the service, at least can be retrieved once
             Lazy<IConsoleColorMode> consoleColorMode = ConsoleColorMode;
 
-            if (position != _headBufferPoint) SetCaretPosition(position);
+            SetCaretPosition(position);
 
             if (pixel.Foreground.TextDecoration != _lastTextDecoration)
             {
@@ -144,44 +136,32 @@ namespace Consolonia.Core.Infrastructure
                 }
             }
 
-            if (pixel.Foreground.Symbol.Complex == null)
+            if (pixel.Width > 1)
             {
+                // We write out blank chars because we don't know how many cells will be rendered by the terminal
+                // then we draw the complex glyph on top of the blank chars.
+                WriteText(new string(' ', pixel.Width));
+                SetCaretPositionInternal(position);
+            }
+
+            if (pixel.Foreground.Symbol.Complex != null)
+                WriteText(pixel.Foreground.Symbol.Complex);
+            else
                 WriteChar(pixel.Foreground.Symbol.Character);
-                position = new PixelBufferCoordinate((ushort)(position.X + pixel.Width), position.Y);
+
+            position = new PixelBufferCoordinate((ushort)(position.X + pixel.Width), position.Y);
+            if (pixel.Width > 1 || pixel.Foreground.Symbol.Complex != null)
+                // then we force set the next position to where we want to be because again
+                // we can't rely on the terminal to advance the caret correctly.
+            {
+                SetCaretPositionInternal(position);
             }
             else
             {
-                // complex symbol, could be emoji or other multi-char glyph
-                if (SupportsEmojiVariation)
-                {
-                    SetCaretPosition(position);
-                    WriteText(pixel.Foreground.Symbol.Complex);
-                    position = new PixelBufferCoordinate((ushort)(position.X + pixel.Width), position.Y);
-                }
-                else
-                {
-                    // rendering over the top with the glyph.
-                    // process each glyph, rendering the width as spaces then moving the cursor and
-                    foreach (Grapheme grapheme in Grapheme.Parse(pixel.Foreground.Symbol.Complex, SupportsComplexEmoji))
-                    {
-                        ushort glyphWidth = grapheme.Glyph.MeasureText();
-                        if (glyphWidth > 1)
-                        {
-                            WriteText(Esc.SetCursorPosition(position.X + 1, position.Y));
-                            WriteText(new string(' ', Math.Min(Size.Width - position.X - 1, glyphWidth - 1)));
-                        }
+                if (position.X >= Size.Width) position = new PixelBufferCoordinate(0, (ushort)(position.Y + 1));
 
-                        WriteText(Esc.SetCursorPosition(position.X, position.Y));
-                        WriteText(grapheme.Glyph);
-
-                        position =
-                            new PixelBufferCoordinate((ushort)(position.X + glyphWidth), position.Y);
-                    }
-                }
+                _headBufferPoint = position;
             }
-
-            if (position.X >= Size.Width) position = new PixelBufferCoordinate(0, (ushort)(position.Y + 1));
-            _headBufferPoint = position;
         }
 
         public void Flush()
@@ -219,11 +199,6 @@ namespace Consolonia.Core.Infrastructure
             Console.Write(TestEmoji);
             (int left2, _) = Console.GetCursorPosition();
             _supportsComplexEmoji = left2 - left == 2;
-
-            // write out a char with wide variation selector
-            Console.Write("\U0001F5D1\uFE0F"); // 🗑 Wastebasket + emoji variation selector
-            (int left3, _) = Console.GetCursorPosition();
-            _supportsEmojiVariation = left3 - left2 == 2;
 
             ClearScreen();
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
@@ -284,13 +259,20 @@ namespace Consolonia.Core.Infrastructure
             Flush();
         }
 
+        private void SetCaretPositionInternal(PixelBufferCoordinate bufferPoint)
+        {
+            WriteText(Esc.SetCursorPosition(bufferPoint.X, bufferPoint.Y));
+            _headBufferPoint = bufferPoint;
+        }
+
         /// <summary>
         ///     Write char to the console
         /// </summary>
         /// <param name="ch"></param>
         public void WriteChar(char ch)
         {
-            _outputBuffer.Append(ch);
+            if (ch > 0)
+                _outputBuffer.Append(ch);
         }
     }
 }
